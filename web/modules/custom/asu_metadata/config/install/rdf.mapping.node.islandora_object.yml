@@ -1,0 +1,82 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.islandora_object
+  enforced:
+    module:
+      - islandora_demo
+  module:
+    - node
+id: node.islandora_object
+targetEntityType: node
+bundle: islandora_object
+types:
+  - 'pcdm:Object'
+fieldMappings:
+  field_alternative_title:
+    properties:
+      - 'dc:alternative'
+  field_edtf_date:
+    properties:
+      - 'dc:date'
+    datatype_callback:
+      callable: 'Drupal\controlled_access_terms\EDTFConverter::dateIso8601Value'
+  field_edtf_date_created:
+    properties:
+      - 'dc:created'
+    datatype_callback:
+      callable: 'Drupal\controlled_access_terms\EDTFConverter::dateIso8601Value'
+  field_edtf_date_issued:
+    properties:
+      - 'dc:issued'
+    datatype_callback:
+      callable: 'Drupal\controlled_access_terms\EDTFConverter::dateIso8601Value'
+  field_description:
+    properties:
+      - 'dc:description'
+  field_extent:
+    properties:
+      - 'dc:extent'
+  field_identifier:
+    properties:
+      - 'dc:identifier'
+  field_member_of:
+    properties:
+      - 'pcdm:memberOf'
+    mapping_type: rel
+  field_resource_type:
+    properties:
+      - 'dc:type'
+    mapping_type: rel
+  field_rights:
+    properties:
+      - 'dc:rights'
+  field_reuse:
+    properties:
+      - 'dc:rights'
+    mapping_type: rel
+  field_citation:
+    properties:
+      - 'dcterms:bibliographicCitation'
+  field_subject:
+    properties:
+      - 'dc:subject'
+    mapping_type: rel
+  title:
+    properties:
+      - 'dc:title'
+  created:
+    properties:
+      - 'schema:dateCreated'
+    datatype_callback:
+      callable: 'Drupal\rdf\CommonDataConverter::dateIso8601Value'
+  changed:
+    properties:
+      - 'schema:dateModified'
+    datatype_callback:
+      callable: 'Drupal\rdf\CommonDataConverter::dateIso8601Value'
+  uid:
+    properties:
+      - 'schema:author'
+    mapping_type: rel
