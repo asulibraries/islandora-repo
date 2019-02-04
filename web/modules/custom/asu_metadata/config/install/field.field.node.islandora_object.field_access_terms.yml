@@ -2,15 +2,18 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_reuse
+    - field.storage.node.field_access_terms
     - node.type.islandora_object
-    - taxonomy.vocabulary.reuse_licenses
-id: node.islandora_object.field_reuse
-field_name: field_reuse
+    - taxonomy.vocabulary.islandora_access
+  enforced:
+    module:
+      - islandora_demo
+id: node.islandora_object.field_access_terms
+field_name: field_access_terms
 entity_type: node
 bundle: islandora_object
-label: 'Reuse License'
-description: ''
+label: 'Access Control'
+description: 'Terms that define who has access to view/edit this resource.'
 required: false
 translatable: false
 default_value: {  }
@@ -19,7 +22,7 @@ settings:
   handler: 'default:taxonomy_term'
   handler_settings:
     target_bundles:
-      reuse_licenses: reuse_licenses
+      islandora_access: islandora_access
     sort:
       field: name
       direction: asc

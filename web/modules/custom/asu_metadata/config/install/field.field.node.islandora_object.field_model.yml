@@ -2,16 +2,19 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_reuse
+    - field.storage.node.field_model
     - node.type.islandora_object
-    - taxonomy.vocabulary.reuse_licenses
-id: node.islandora_object.field_reuse
-field_name: field_reuse
+    - taxonomy.vocabulary.islandora_models
+  enforced:
+    module:
+      - islandora_demo
+id: node.islandora_object.field_model
+field_name: field_model
 entity_type: node
 bundle: islandora_object
-label: 'Reuse License'
-description: ''
-required: false
+label: Model
+description: 'This is the "type" of resource, this does affect how it is displayed/viewed.'
+required: true
 translatable: false
 default_value: {  }
 default_value_callback: ''
@@ -19,7 +22,7 @@ settings:
   handler: 'default:taxonomy_term'
   handler_settings:
     target_bundles:
-      reuse_licenses: reuse_licenses
+      islandora_models: islandora_models
     sort:
       field: name
       direction: asc
