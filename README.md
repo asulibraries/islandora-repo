@@ -15,3 +15,9 @@ Local Development Setup
 3. Run vagrant up (from within the claw-playbook root)
 
 
+If you get an error in the Drupal Status report saying that it couldn't connect to ClamAV, likely the service isn't running.
+1. SSH to the VM `vagrant ssh`
+2. `sudo service clamav-freshclam status`
+3. If its down, restart it `sudo service clamav-freshclam restart` or if its up, proceed to the next step. Note that sometimes it needs to be up for 1 minute before proceeding to the next step.
+4. `sudo service clamav-daemon status` Likely this will tell you it is down. If freshclam is running, it needs to get the updated ClamAV Virus Database (.cvd) file(s) from freshclam before the daemon can be started.
+5. `sudo service clamav-daemon restart`
