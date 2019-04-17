@@ -21,3 +21,12 @@ If you get an error in the Drupal Status report saying that it couldn't connect 
 3. If its down, restart it `sudo service clamav-freshclam restart` or if its up, proceed to the next step. Note that sometimes it needs to be up for 1 minute before proceeding to the next step.
 4. `sudo service clamav-daemon status` Likely this will tell you it is down. If freshclam is running, it needs to get the updated ClamAV Virus Database (.cvd) file(s) from freshclam before the daemon can be started.
 5. `sudo service clamav-daemon restart`
+
+
+
+
+Helpful Hints
+=============
+To use any of the API endpoints or Gemini, you need a JWT token - which can be generated with a request like `curl -i -u admin:islandora http://localhost:8000/jwt/token` but this requires the JWT Authentication Issuer module to be enabled.
+
+If you need to update your ansible roles (to get updated versions of the packages), you mine as well `rm -rf roles/external` and `vagrant provision` to fix that. This will take some time.
