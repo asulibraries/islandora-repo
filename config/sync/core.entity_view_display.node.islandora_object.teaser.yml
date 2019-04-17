@@ -1,0 +1,73 @@
+uuid: 57a5b5ee-e64c-41dc-93bb-992778d48d13
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.islandora_object.field_access_terms
+    - field.field.node.islandora_object.field_alternative_title
+    - field.field.node.islandora_object.field_description
+    - field.field.node.islandora_object.field_display_hints
+    - field.field.node.islandora_object.field_edtf_date
+    - field.field.node.islandora_object.field_edtf_date_created
+    - field.field.node.islandora_object.field_edtf_date_issued
+    - field.field.node.islandora_object.field_extent
+    - field.field.node.islandora_object.field_identifier
+    - field.field.node.islandora_object.field_linked_agent
+    - field.field.node.islandora_object.field_member_of
+    - field.field.node.islandora_object.field_model
+    - field.field.node.islandora_object.field_pid
+    - field.field.node.islandora_object.field_resource_type
+    - field.field.node.islandora_object.field_rights
+    - field.field.node.islandora_object.field_subject
+    - node.type.islandora_object
+  enforced:
+    module:
+      - islandora_demo
+  module:
+    - user
+_core:
+  default_config_hash: gAZsQPDSeH59KRb8WH1-b1kUCW_3z1ZA1akk1HW6R2g
+id: node.islandora_object.teaser
+targetEntityType: node
+bundle: islandora_object
+mode: teaser
+content:
+  display_media_thumbnail:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  links:
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  display_media_entity_view_1: true
+  display_media_entity_view_2: true
+  display_media_service_file: true
+  field_access_terms: true
+  field_alternative_title: true
+  field_description: true
+  field_display_hints: true
+  field_edtf_date: true
+  field_edtf_date_created: true
+  field_edtf_date_issued: true
+  field_extent: true
+  field_identifier: true
+  field_linked_agent: true
+  field_member_of: true
+  field_model: true
+  field_pid: true
+  field_resource_type: true
+  field_rights: true
+  field_subject: true
+  langcode: true
+  members_eva_entity_view_1: true
+  openseadragon_media_evas_entity_view_1: true
+  openseadragon_media_evas_entity_view_2: true
+  openseadragon_media_evas_service_file: true
+  pdfjs_media_evas_entity_view_1: true
+  pdfjs_media_evas_entity_view_2: true
+  pdfjs_media_evas_service_file: true

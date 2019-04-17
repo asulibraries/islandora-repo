@@ -1,0 +1,26 @@
+uuid: ee4aa2b2-23c2-4c67-9668-d7d75009a5ad
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_media_of
+    - media.type.file
+  enforced:
+    module:
+      - islandora_core_feature
+_core:
+  default_config_hash: ZoFg1xcTNbj60kVradrk0lqIv9uKpyipN6vwxdFV7nQ
+id: media.file.field_media_of
+field_name: field_media_of
+entity_type: media
+bundle: file
+label: 'Media of'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings: {  }
+field_type: entity_reference

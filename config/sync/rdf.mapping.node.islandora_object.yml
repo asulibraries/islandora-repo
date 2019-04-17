@@ -1,0 +1,78 @@
+uuid: 13835fe3-c260-4aa8-aff0-f2c731638c73
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.islandora_object
+  enforced:
+    module:
+      - islandora_demo
+  module:
+    - node
+_core:
+  default_config_hash: '-t2qJx_bWMdZNY9Z_OAZP12AcaUeKzlKy2JV6Pj_mxg'
+id: node.islandora_object
+targetEntityType: node
+bundle: islandora_object
+types:
+  - 'pcdm:Object'
+fieldMappings:
+  field_alternative_title:
+    properties:
+      - 'dc:alternative'
+  field_edtf_date:
+    properties:
+      - 'dc:date'
+    datatype_callback:
+      callable: 'Drupal\controlled_access_terms\EDTFConverter::dateIso8601Value'
+  field_edtf_date_created:
+    properties:
+      - 'dc:created'
+    datatype_callback:
+      callable: 'Drupal\controlled_access_terms\EDTFConverter::dateIso8601Value'
+  field_edtf_date_issued:
+    properties:
+      - 'dc:issued'
+    datatype_callback:
+      callable: 'Drupal\controlled_access_terms\EDTFConverter::dateIso8601Value'
+  field_description:
+    properties:
+      - 'dc:description'
+  field_extent:
+    properties:
+      - 'dc:extent'
+  field_identifier:
+    properties:
+      - 'dc:identifier'
+  field_member_of:
+    properties:
+      - 'pcdm:memberOf'
+    mapping_type: rel
+  field_resource_type:
+    properties:
+      - 'dc:type'
+    mapping_type: rel
+  field_rights:
+    properties:
+      - 'dc:rights'
+  field_subject:
+    properties:
+      - 'dc:subject'
+    mapping_type: rel
+  title:
+    properties:
+      - 'dc:title'
+  created:
+    properties:
+      - 'schema:dateCreated'
+    datatype_callback:
+      callable: 'Drupal\rdf\CommonDataConverter::dateIso8601Value'
+  changed:
+    properties:
+      - 'schema:dateModified'
+    datatype_callback:
+      callable: 'Drupal\rdf\CommonDataConverter::dateIso8601Value'
+  uid:
+    properties:
+      - 'schema:author'
+    mapping_type: rel

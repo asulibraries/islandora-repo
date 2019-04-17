@@ -1,0 +1,32 @@
+uuid: 5d401650-5989-430a-a4e8-fffb16211fe4
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.geo_location
+  module:
+    - taxonomy
+_core:
+  default_config_hash: l2IvJ3Rbd7ta0H-fhdt_V04l4NdeIoqjSAkDtD3fsY0
+id: taxonomy_term.geo_location
+targetEntityType: taxonomy_term
+bundle: geo_location
+types:
+  - 'dc:Location'
+  - 'schema:Place'
+fieldMappings:
+  name:
+    properties:
+      - 'schema:name'
+  description:
+    properties:
+      - 'schema:description'
+  field_authority_link:
+    properties:
+      - 'schema:sameAs'
+  field_geo_geolocation:
+    properties:
+      - 'wgs84_pos:lat_long'
+  field_geo_broader:
+    properties:
+      - 'schema:containedInPlace'

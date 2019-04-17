@@ -1,0 +1,28 @@
+uuid: 8e17c2ff-a77d-4d0e-9f8c-a1eba4b5e56b
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora
+_core:
+  default_config_hash: L7r-lh2T-cZ5xs4cY8FjXqc-sZu80qUxEAFdPRxwpjw
+name: pdfjs
+label: PDFjs
+group: Islandora
+description: 'Displays file using the PDFjs viewer'
+requireAllConditions: false
+disabled: false
+conditions:
+  node_has_term:
+    id: node_has_term
+    negate: 0
+    uuid: f77caead-2e84-41e3-bcd5-11368f0342b2
+    uri: 'http://mozilla.github.io/pdf.js'
+    context_mapping:
+      node: '@node.node_route_context:node'
+reactions:
+  view_mode_alter:
+    id: view_mode_alter
+    mode: node.pdfjs
+    saved: false
+weight: 0

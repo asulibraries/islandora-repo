@@ -1,0 +1,48 @@
+uuid: 10f3880f-6b2f-43ee-a9ee-29bde1ed593c
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - islandora_demo
+  module:
+    - islandora
+_core:
+  default_config_hash: Ebgjc-ccPnklx_85FYJocJ7ts8qbKeT43IDn9_BNAX0
+name: collection
+label: Collection
+group: Islandora
+description: 'Islandora collections'
+requireAllConditions: false
+disabled: false
+conditions:
+  node_has_term:
+    id: node_has_term
+    negate: 0
+    uuid: 30424693-e24a-444f-8aeb-11ab527ed233
+    context_mapping:
+      node: '@node.node_route_context:node'
+    uri: 'http://purl.org/dc/dcmitype/Collection'
+reactions:
+  blocks:
+    blocks:
+      41f1d520-14ae-479e-90d2-34aa6f4a750e:
+        id: 'views_block:members-block_1'
+        label: ''
+        provider: views
+        label_display: visible
+        views_label: ''
+        items_per_page: none
+        region: content_suffix
+        weight: '0'
+        context_mapping: {  }
+        theme: carapace
+        css_class: ''
+        unique: 0
+        context_id: collection
+        uuid: 41f1d520-14ae-479e-90d2-34aa6f4a750e
+    id: blocks
+    saved: false
+    uuid: 379baa20-03b9-4402-8a5c-20a3201f239b
+    include_default_blocks: 1
+weight: 0

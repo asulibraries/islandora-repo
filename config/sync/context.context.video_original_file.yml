@@ -1,0 +1,36 @@
+uuid: a729bc8d-7ed2-4b06-9773-571ae41c74b9
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora
+_core:
+  default_config_hash: kh3DdWSptJ6_jSHfQgvo4NR44HRY2KyYhXQokVsyqRQ
+name: video_original_file
+label: 'Video Original File'
+group: Islandora
+description: 'Reactions for video original files'
+requireAllConditions: true
+disabled: false
+conditions:
+  media_has_term:
+    id: media_has_term
+    negate: 0
+    uuid: ee21a5e7-ab00-49f8-8ef1-1f8c81ed1d14
+    uri: 'http://pcdm.org/use#OriginalFile'
+    context_mapping:
+      media: '@islandora.media_route_context_provider:media'
+  parent_node_has_term:
+    id: parent_node_has_term
+    negate: 0
+    uuid: e215a087-46d2-401e-8d73-db5bde00e485
+    uri: 'http://purl.org/coar/resource_type/c_12ce'
+    context_mapping:
+      media: '@islandora.media_route_context_provider:media'
+reactions:
+  derivative:
+    id: derivative
+    actions:
+      video_generate_a_service_file_from_an_original_file: video_generate_a_service_file_from_an_original_file
+    saved: false
+weight: 0

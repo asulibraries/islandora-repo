@@ -1,0 +1,48 @@
+uuid: 75345220-cbf9-4f2e-bd08-e60f70b83baf
+langcode: en
+status: true
+dependencies:
+  config:
+    - media.type.video
+  enforced:
+    module:
+      - islandora_core_feature
+  module:
+    - media
+_core:
+  default_config_hash: bONjXQhdzf1bmQEc5BOuDwyeqBNz4oUk0-QaVQZ6TnQ
+id: media.video
+targetEntityType: media
+bundle: video
+types:
+  - 'pcdm:File'
+fieldMappings:
+  name:
+    properties:
+      - 'dc:title'
+      - 'rdf:label'
+  created:
+    properties:
+      - 'schema:dateCreated'
+    datatype_callback:
+      callable: 'Drupal\rdf\CommonDataConverter::dateIso8601Value'
+  changed:
+    properties:
+      - 'schema:dateModified'
+    datatype_callback:
+      callable: 'Drupal\rdf\CommonDataConverter::dateIso8601Value'
+  uid:
+    properties:
+      - 'schema:author'
+    mapping_type: rel
+  field_mime_type:
+    properties:
+      - 'ebucore:hasMimeType'
+  field_media_of:
+    properties:
+      - 'pcdm:fileOf'
+    mapping_type: rel
+  field_tags:
+    properties:
+      - 'schema:additionalType'
+    mapping_type: rel

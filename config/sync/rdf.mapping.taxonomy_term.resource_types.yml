@@ -1,0 +1,25 @@
+uuid: c57ccbd5-5ea0-4c26-93c5-a6f266953b7c
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.resource_types
+  module:
+    - taxonomy
+_core:
+  default_config_hash: Ml80o-0hdfcmQD2qRqnFgGCBbbGJLXbUYyTwd8-oZl8
+id: taxonomy_term.resource_types
+targetEntityType: taxonomy_term
+bundle: resource_types
+types:
+  - 'schema:Thing'
+fieldMappings:
+  name:
+    properties:
+      - 'schema:name'
+  description:
+    properties:
+      - 'schema:description'
+  field_authority_link:
+    properties:
+      - 'schema:sameAs'

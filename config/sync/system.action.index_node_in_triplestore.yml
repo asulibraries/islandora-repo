@@ -1,0 +1,18 @@
+uuid: 17347c2e-75e9-444f-abce-5ddcebde6b6a
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - islandora_core_feature
+  module:
+    - islandora
+_core:
+  default_config_hash: ZC1bGQVzhqVV4_7RGEoD6Bt3X532YgfjG1N7nuGHh0U
+id: index_node_in_triplestore
+label: 'Index Node in Triplestore'
+type: node
+plugin: emit_node_event
+configuration:
+  queue: islandora-indexing-triplestore-index
+  event: update

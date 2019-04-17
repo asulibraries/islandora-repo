@@ -1,0 +1,31 @@
+uuid: cb63a124-1895-42d1-9ae6-1d1d70af36ca
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.family
+  module:
+    - taxonomy
+_core:
+  default_config_hash: rCeNVy4F2ihHcsUfcf4zz-kvOJ4Sp60Ygrghs1ebILY
+id: taxonomy_term.family
+targetEntityType: taxonomy_term
+bundle: family
+types:
+  - 'schema:Organization'
+fieldMappings:
+  name:
+    properties:
+      - 'schema:name'
+  description:
+    properties:
+      - 'schema:description'
+  field_authority_link:
+    properties:
+      - 'schema:sameAs'
+  field_cat_date_end:
+    properties:
+      - 'schema:dissolutionDate'
+  field_cat_date_begin:
+    properties:
+      - 'schema:foundingDate'

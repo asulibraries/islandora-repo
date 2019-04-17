@@ -1,0 +1,25 @@
+uuid: d6685ed2-8565-46b6-b096-030fa60d3e9d
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - islandora_demo
+  module:
+    - islandora_image
+_core:
+  default_config_hash: 3tkgEp-AkQwlod36AviSaZ4pIdtr4wcGq84brTFUX88
+id: generate_a_thumbnail_from_an_image_service_file
+label: 'Image - Generate a thumbnail from a service file'
+type: node
+plugin: generate_image_derivative
+configuration:
+  queue: islandora-connector-houdini
+  event: 'Generate Derivative'
+  source_term_uri: 'http://pcdm.org/use#ServiceFile'
+  derivative_term_uri: 'http://pcdm.org/use#ThumbnailImage'
+  mimetype: image/jpeg
+  args: '-thumbnail 100x100'
+  scheme: public
+  path: '[date:custom:Y]-[date:custom:m]/[node:nid]-[term:name].jpg'
+  destination_media_type: image

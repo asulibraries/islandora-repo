@@ -1,0 +1,22 @@
+uuid: 87c0277b-7803-4c4a-9049-02b84640fe9d
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+  theme:
+    - carapace
+_core:
+  default_config_hash: JFJpAJKU-UfgpnjwDmKv0cieKMdqU5Y9x4lFQZZHos8
+id: carapace_login
+theme: carapace
+region: sidebar_second
+weight: 20
+provider: null
+plugin: user_login_block
+settings:
+  id: user_login_block
+  label: 'User login'
+  provider: user
+  label_display: visible
+visibility: {  }

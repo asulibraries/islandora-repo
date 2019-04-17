@@ -1,0 +1,34 @@
+uuid: 4e8597ba-ba23-455f-8935-619c3bdac809
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.corporate_body
+  module:
+    - taxonomy
+_core:
+  default_config_hash: D05YnGp5dpzY6wRI2GNx2CNmWLM7tjzy6egdRVlkG4I
+id: taxonomy_term.corporate_body
+targetEntityType: taxonomy_term
+bundle: corporate_body
+types:
+  - 'schema:Organization'
+fieldMappings:
+  name:
+    properties:
+      - 'schema:name'
+  description:
+    properties:
+      - 'schema:description'
+  field_corp_alt_name:
+    properties:
+      - 'schema:alternateName'
+  field_cat_date_end:
+    properties:
+      - 'schema:dissolutionDate'
+  field_cat_date_begin:
+    properties:
+      - 'schema:foundingDate'
+  field_authority_link:
+    properties:
+      - 'schema:sameAs'

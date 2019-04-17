@@ -1,0 +1,25 @@
+uuid: 8c7d6386-473a-4ea8-8331-4e03889667a0
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - carapace
+_core:
+  default_config_hash: l2kI3VocgFztymekEMDU3uRYElx-EV27rSO99wjjf5g
+id: carapace_branding
+theme: carapace
+region: header_first
+weight: 0
+provider: null
+plugin: system_branding_block
+settings:
+  id: system_branding_block
+  label: 'Site branding'
+  provider: system
+  label_display: '0'
+  use_site_logo: true
+  use_site_name: true
+  use_site_slogan: false
+visibility: {  }

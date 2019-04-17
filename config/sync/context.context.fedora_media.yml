@@ -1,0 +1,36 @@
+uuid: eac8fe79-5a80-4605-85eb-cd52ce440a6d
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora
+_core:
+  default_config_hash: 3d5W_53imesTZRhTsxeO4SzDuZcC5z8FTzNp2b9faBw
+name: fedora_media
+label: 'Fedora Media'
+group: Islandora
+description: 'Reactions for media whose source is in Fedora'
+requireAllConditions: false
+disabled: false
+conditions:
+  media_uses_filesystem:
+    id: media_uses_filesystem
+    filesystems:
+      fedora: fedora
+    negate: 0
+    uuid: 7754b373-7734-42ac-ba38-21b8574b60d6
+    context_mapping:
+      media: '@islandora.media_route_context_provider:media'
+reactions:
+  index:
+    id: index
+    actions:
+      index_media_in_fedora: index_media_in_fedora
+      index_media_in_triplestore: index_media_in_triplestore
+    saved: false
+  delete:
+    id: delete
+    actions:
+      delete_media_from_triplestore: delete_media_from_triplestore
+    saved: false
+weight: 0

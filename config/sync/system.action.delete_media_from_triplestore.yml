@@ -1,0 +1,18 @@
+uuid: 53c85f8e-bea5-4d6b-94ea-c8ddd0a6ebfb
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - islandora_core_feature
+  module:
+    - islandora
+_core:
+  default_config_hash: BffWAWcJ8cZxlC-onUlx6N8xMZhLyZ5u0mdDUlsgJaU
+id: delete_media_from_triplestore
+label: 'Delete Media from Triplestore'
+type: media
+plugin: emit_media_event
+configuration:
+  queue: islandora-indexing-triplestore-delete
+  event: delete
