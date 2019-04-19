@@ -8,13 +8,15 @@ It will also include ansible scripts for provisioning and deploying to additiona
 
 Local Development Setup
 =======================
-1. Go to the claw-playbook repo
-2. Clone claw-playbook
+1. Go to the (ASU claw-playbook repo)[https://github.com/asulibraries/claw-playbook]
+2. Clone ASU claw-playbook
 3. cd into claw-playbook
 4. Clone this repo into a folder called claw-sandbox
 3. Run vagrant up (from within the claw-playbook root)
 
 
+ClamAV Notes
+============
 If you get an error in the Drupal Status report saying that it couldn't connect to ClamAV, likely the service isn't running.
 1. SSH to the VM `vagrant ssh`
 2. `sudo service clamav-freshclam status`
