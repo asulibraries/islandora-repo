@@ -1,18 +1,18 @@
-uuid: e9f90211-2842-452e-af74-e9b0868f0e74
+uuid: 7c41fe53-b719-4c78-b05e-b0355a8d8d09
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_resource_type
+    - field.storage.node.field_reuse
     - node.type.islandora_object
-    - taxonomy.vocabulary.resource_types
+    - taxonomy.vocabulary.reuse_licenses
 _core:
-  default_config_hash: FsQFpgp2cpLBMyOnHmUA5xlWA9HiAC4qPUkcK2O2jzc
-id: node.islandora_object.field_resource_type
-field_name: field_resource_type
+  default_config_hash: roff-RQm0p4T9BiAaWGwKOG7iYm82Pp2LC_CrBU3nbA
+id: node.islandora_object.field_reuse
+field_name: field_reuse
 entity_type: node
 bundle: islandora_object
-label: 'Resource Type'
+label: 'Reuse License'
 description: ''
 required: false
 translatable: false
@@ -22,7 +22,7 @@ settings:
   handler: 'default:taxonomy_term'
   handler_settings:
     target_bundles:
-      resource_types: resource_types
+      reuse_licenses: reuse_licenses
     sort:
       field: name
       direction: asc
