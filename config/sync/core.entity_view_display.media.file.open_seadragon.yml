@@ -1,9 +1,10 @@
-uuid: 291f490c-1f53-4b10-9e09-770c3e539c14
+uuid: 1259f025-02c7-4120-ad4c-aef91bc3d8fb
 langcode: en
 status: true
 dependencies:
   config:
     - core.entity_view_mode.media.open_seadragon
+    - field.field.media.file.field_access_terms
     - field.field.media.file.field_file_size
     - field.field.media.file.field_media_file
     - field.field.media.file.field_media_of
@@ -31,6 +32,7 @@ content:
     region: content
 hidden:
   created: true
+  field_access_terms: true
   field_file_size: true
   field_media_of: true
   field_media_use: true
