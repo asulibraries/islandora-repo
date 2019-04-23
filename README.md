@@ -10,7 +10,10 @@ It will also include ansible scripts for provisioning and deploying to additiona
 2. Clone ASU claw-playbook
 3. cd into claw-playbook
 4. Clone this repo into a folder called claw-sandbox
-3. Run vagrant up (from within the claw-playbook root)
+5. Run vagrant up (from within the claw-playbook root)
+
+# Ansible
+If you've already provisioned your vagrant environment and need to re-run the ASU specific provisioning, you can do so with `ansible-playbook asu-install.yml -i inventory/vagrant -l all -e ansible_ssh_user=ubuntu -e islandora_distro=ubuntu/xenial64`
 
 
 # Helpful Hints
@@ -20,6 +23,11 @@ Understanding how drupal entities relate to fedora objects - https://drive.googl
 
 Get the json-ld for an object in Drupal like so : http://localhost:8000/node/1?_format=jsonld
 
+## So you want to add a module
+1. Add the module to the composer requirements in the ASU specific ansible role
+2. Add the module to the drush enabling in the ASU specific ansible role
+3. Run the ASU specific ansible role
+
 
 
 # Component Glossary and Notes
@@ -27,6 +35,8 @@ Get the json-ld for an object in Drupal like so : http://localhost:8000/node/1?_
 
 ## Alpaca
 ## Api-X
+https://github.com/fcrepo4-labs/fcrepo-api-x/blob/master/src/site/markdown/apix-design-overview.md
+
 ## Carapace
 ## Cantaloupe
 ## Chullo
