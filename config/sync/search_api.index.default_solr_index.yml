@@ -6,10 +6,15 @@ dependencies:
     - search_api_solr
     - node
     - user
+    - taxonomy
     - search_api
   config:
+    - field.storage.node.field_alternative_title
+    - field.storage.node.body
     - field.storage.node.field_description
-    - field.storage.node.field_tags
+    - field.storage.node.field_identifier
+    - field.storage.node.field_model
+    - field.storage.node.field_resource_type
     - search_api.server.default_solr_server
     - core.entity_view_mode.node.search_index
 third_party_settings:
@@ -51,6 +56,14 @@ field_settings:
         - node
         - user
         - user
+  body:
+    label: Body
+    datasource_id: 'entity:node'
+    property_path: body
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.body
   changed:
     label: Changed
     datasource_id: 'entity:node'
@@ -67,6 +80,14 @@ field_settings:
     dependencies:
       module:
         - node
+  field_alternative_title:
+    label: 'Alternative Title'
+    datasource_id: 'entity:node'
+    property_path: field_alternative_title
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_alternative_title
   field_description:
     label: Description
     datasource_id: 'entity:node'
@@ -75,14 +96,51 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_description
-  field_tags:
-    label: Tags
+  field_identifier:
+    label: Identifier
     datasource_id: 'entity:node'
-    property_path: field_tags
+    property_path: field_identifier
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_identifier
+  field_model:
+    label: Model
+    datasource_id: 'entity:node'
+    property_path: field_model
     type: integer
     dependencies:
       config:
-        - field.storage.node.field_tags
+        - field.storage.node.field_model
+  field_resource_type:
+    label: 'Resource Type'
+    datasource_id: 'entity:node'
+    property_path: field_resource_type
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_resource_type
+  name:
+    label: 'Authored by » User » Name'
+    datasource_id: 'entity:node'
+    property_path: 'uid:entity:name'
+    type: string
+    dependencies:
+      module:
+        - node
+        - user
+        - user
+  name_1:
+    label: 'Model » Taxonomy term » Name'
+    datasource_id: 'entity:node'
+    property_path: 'field_model:entity:name'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_model
+      module:
+        - taxonomy
+        - taxonomy
   node_grants:
     label: 'Node access information'
     property_path: search_api_node_grants
@@ -125,6 +183,14 @@ field_settings:
     property_path: title
     type: text
     boost: !!float 8
+    dependencies:
+      module:
+        - node
+  title_1:
+    label: Title
+    datasource_id: 'entity:node'
+    property_path: title
+    type: string
     dependencies:
       module:
         - node
