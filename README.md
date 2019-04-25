@@ -6,6 +6,12 @@ For development purposes, this repository should be integrated with the (islando
 It will also include ansible scripts for provisioning and deploying to additional environments.
 
 # Local Development Setup
+0. Install dependencies
+    a. VirtualBox version 5.whatever (not 6.0)
+    b. Vagrant (tested up to version 2.1.2)
+    c. git
+    d. ansible
+    e. vagrant vbguest plugin (`vagrant plugin install vagrant-vbguest`)
 1. Go to the (ASU claw-playbook repo)[https://github.com/asulibraries/claw-playbook]
 2. Clone ASU claw-playbook
 3. cd into claw-playbook
@@ -13,7 +19,7 @@ It will also include ansible scripts for provisioning and deploying to additiona
 5. Run vagrant up (from within the claw-playbook root)
 
 # Ansible
-If you've already provisioned your vagrant environment and need to re-run the ASU specific provisioning, you can do so with `ansible-playbook asu-install.yml -i inventory/vagrant -l all -e ansible_ssh_user=ubuntu -e islandora_distro=ubuntu/xenial64`
+If you've already provisioned your vagrant environment and need to re-run the ASU specific provisioning, you can do so with `ansible-playbook asu-install.yml -i inventory/vagrant -l all -e ansible_ssh_user=$vagrantUser -e islandora_distro=ubuntu/xenial64` Your $vagrantUser will either be ubuntu or vagrant. Check to see what user you become when you `vagrant ssh`.
 
 
 # Helpful Hints
