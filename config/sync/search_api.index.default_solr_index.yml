@@ -1,4 +1,4 @@
-uuid: 5267d6d8-4a88-4d14-8273-a67d59bb4c44
+uuid: b4bea6eb-4472-4ee8-9a77-a4ca26012eae
 langcode: en
 status: true
 dependencies:
@@ -15,6 +15,7 @@ dependencies:
     - field.storage.node.field_identifier
     - field.storage.node.field_model
     - field.storage.node.field_resource_type
+    - field.storage.node.field_tags
     - search_api.server.default_solr_server
     - core.entity_view_mode.node.search_index
 third_party_settings:
@@ -120,6 +121,14 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_resource_type
+  field_tags:
+    label: Tags
+    datasource_id: 'entity:node'
+    property_path: field_tags
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_tags
   name:
     label: 'Authored by » User » Name'
     datasource_id: 'entity:node'
