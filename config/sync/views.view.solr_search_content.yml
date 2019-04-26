@@ -1,4 +1,4 @@
-uuid: 41aa95da-7d9f-4512-9bcf-40f320f448c3
+uuid: be4c32e8-4011-471e-b390-b9539d1fcafd
 langcode: en
 status: true
 dependencies:
@@ -7,7 +7,7 @@ dependencies:
   module:
     - search_api
 _core:
-  default_config_hash: WL4w5mZNKQaKr_LN6ix_lTtr-GqNDdB468D-WjlTtD0
+  default_config_hash: HOLKQFo9Gxd0-FHu9o5XZeZbGOFMmJpFCwDguu0nGgI
 id: solr_search_content
 label: 'Solr search content'
 module: views
@@ -70,8 +70,48 @@ display:
           view_modes:
             'entity:node':
               article: search_result
+              islandora_object: teaser
               page: search_result
       filters:
+        type:
+          id: type
+          table: search_api_index_default_solr_index
+          field: type
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value:
+            islandora_object: islandora_object
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          plugin_id: search_api_options
         search_api_fulltext:
           id: search_api_fulltext
           table: search_api_index_default_solr_index
@@ -79,24 +119,26 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          operator: and
+          operator: or
           value: ''
           group: 1
           exposed: true
           expose:
-            operator_id: search_op
-            label: Search
+            operator_id: search_api_fulltext_op
+            label: 'Fulltext search'
             description: ''
             use_operator: false
-            operator: search_op
-            identifier: keys
-            required: true
+            operator: search_api_fulltext_op
+            identifier: search_api_fulltext
+            required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
               anonymous: '0'
               administrator: '0'
+              fedoraadmin: '0'
+            placeholder: ''
           is_grouped: false
           group_info:
             label: ''
@@ -110,7 +152,7 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           parse_mode: terms
-          min_length: 3
+          min_length: null
           fields: {  }
           plugin_id: search_api_fulltext
       sorts: {  }
@@ -131,6 +173,10 @@ display:
       relationships: {  }
       arguments: {  }
       display_extenders: {  }
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
     cache_metadata:
       contexts:
         - 'languages:language_interface'
@@ -146,7 +192,8 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: search
+      path: solr-search/content
+      exposed_block: true
     cache_metadata:
       contexts:
         - 'languages:language_interface'
