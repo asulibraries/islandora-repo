@@ -1,11 +1,10 @@
-uuid: 258a917d-15f5-467a-b745-18a76ddfeddb
+uuid: 33e96217-d3d7-447e-92ab-f8eeeea127f6
 langcode: en
 status: true
 dependencies:
   config:
     - field.field.node.islandora_object.field_access_terms
     - field.field.node.islandora_object.field_alternative_title
-    - field.field.node.islandora_object.field_citation
     - field.field.node.islandora_object.field_description
     - field.field.node.islandora_object.field_display_hints
     - field.field.node.islandora_object.field_edtf_date
@@ -18,7 +17,6 @@ dependencies:
     - field.field.node.islandora_object.field_model
     - field.field.node.islandora_object.field_pid
     - field.field.node.islandora_object.field_resource_type
-    - field.field.node.islandora_object.field_reuse
     - field.field.node.islandora_object.field_rights
     - field.field.node.islandora_object.field_subject
     - node.type.islandora_object
@@ -29,7 +27,7 @@ dependencies:
     - controlled_access_terms
     - user
 _core:
-  default_config_hash: JyS5Eq8FZ3HDKG9egwaKI5-HWrqhtGU6LUXkzmmZNTo
+  default_config_hash: tCE8u-mQGrolDW4eIzSkHiCj4Bb7dTDnEe0GEt9DHM0
 id: node.islandora_object.default
 targetEntityType: node
 bundle: islandora_object
@@ -43,14 +41,6 @@ content:
   field_alternative_title:
     type: string
     weight: 0
-    region: content
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-  field_citation:
-    type: string
-    weight: 13
     region: content
     label: above
     settings:
@@ -139,14 +129,6 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
     region: content
-  field_reuse:
-    weight: 14
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
   field_rights:
     type: string
     weight: 13
@@ -177,21 +159,6 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  pdfjs_media_evas_entity_view_1:
-    weight: 10
-    settings: {  }
-    third_party_settings: {  }
-    region: content
-  pdfjs_media_evas_entity_view_2:
-    weight: 10
-    settings: {  }
-    third_party_settings: {  }
-    region: content
-  pdfjs_media_evas_service_file:
-    weight: 10
-    settings: {  }
-    third_party_settings: {  }
-    region: content
 hidden:
   display_media_entity_view_1: true
   display_media_entity_view_2: true
@@ -203,3 +170,6 @@ hidden:
   openseadragon_media_evas_entity_view_1: true
   openseadragon_media_evas_entity_view_2: true
   openseadragon_media_evas_service_file: true
+  pdfjs_media_evas_entity_view_1: true
+  pdfjs_media_evas_entity_view_2: true
+  pdfjs_media_evas_service_file: true
