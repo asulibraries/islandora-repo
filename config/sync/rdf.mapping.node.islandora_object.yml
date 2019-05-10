@@ -1,3 +1,4 @@
+uuid: 12720288-2ecd-4b3c-a651-84e341eebb56
 langcode: en
 status: true
 dependencies:
@@ -8,6 +9,8 @@ dependencies:
       - islandora_demo
   module:
     - node
+_core:
+  default_config_hash: '-t2qJx_bWMdZNY9Z_OAZP12AcaUeKzlKy2JV6Pj_mxg'
 id: node.islandora_object
 targetEntityType: node
 bundle: islandora_object
@@ -52,13 +55,6 @@ fieldMappings:
   field_rights:
     properties:
       - 'dc:rights'
-  field_reuse:
-    properties:
-      - 'dc:rights'
-    mapping_type: rel
-  field_citation:
-    properties:
-      - 'dcterms:bibliographicCitation'
   field_subject:
     properties:
       - 'dc:subject'

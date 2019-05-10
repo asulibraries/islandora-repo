@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.media.source
+    - field.field.media.audio.field_access_terms
     - field.field.media.audio.field_file_size
     - field.field.media.audio.field_media_audio_file
     - field.field.media.audio.field_media_of
@@ -19,6 +20,11 @@ targetEntityType: media
 bundle: audio
 mode: source
 content:
+  field_gemini_uri:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
   field_media_audio_file:
     type: file_audio
     weight: 0
@@ -32,6 +38,7 @@ content:
     region: content
 hidden:
   created: true
+  field_access_terms: true
   field_file_size: true
   field_media_of: true
   field_media_use: true

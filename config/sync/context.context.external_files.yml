@@ -1,0 +1,35 @@
+uuid: c2b3dd0c-708e-4ff3-8489-632c06fefb3b
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora
+_core:
+  default_config_hash: 8PzYtZMB0-HZNFQLuuxai6FrGppyDx_3jy6hsnE-Nh0
+name: external_files
+label: 'External Files'
+group: Islandora
+description: 'Reactions for files not in Fedora'
+requireAllConditions: false
+disabled: false
+conditions:
+  file_uses_filesystem:
+    id: file_uses_filesystem
+    filesystems:
+      public: public
+    negate: 0
+    uuid: 399d6acd-013e-4cb1-8c45-ece5c18060d5
+    context_mapping:
+      file: '@islandora.file_route_context_provider:file'
+reactions:
+  index:
+    id: index
+    actions:
+      index_file_as_fedora_external_content: index_file_as_fedora_external_content
+    saved: false
+  delete:
+    id: delete
+    actions:
+      delete_file_as_fedora_external_content: delete_file_as_fedora_external_content
+    saved: false
+weight: 0

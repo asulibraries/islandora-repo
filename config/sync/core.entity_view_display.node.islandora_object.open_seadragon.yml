@@ -1,3 +1,4 @@
+uuid: 8ac8cf59-d0e7-49e1-a93f-3baf62260145
 langcode: en
 status: true
 dependencies:
@@ -5,7 +6,6 @@ dependencies:
     - core.entity_view_mode.node.open_seadragon
     - field.field.node.islandora_object.field_access_terms
     - field.field.node.islandora_object.field_alternative_title
-    - field.field.node.islandora_object.field_citation
     - field.field.node.islandora_object.field_description
     - field.field.node.islandora_object.field_display_hints
     - field.field.node.islandora_object.field_edtf_date
@@ -18,7 +18,6 @@ dependencies:
     - field.field.node.islandora_object.field_model
     - field.field.node.islandora_object.field_pid
     - field.field.node.islandora_object.field_resource_type
-    - field.field.node.islandora_object.field_reuse
     - field.field.node.islandora_object.field_rights
     - field.field.node.islandora_object.field_subject
     - node.type.islandora_object
@@ -28,6 +27,8 @@ dependencies:
   module:
     - controlled_access_terms
     - user
+_core:
+  default_config_hash: NM8bQEagz4b-suUesyfJaqmPuZKkCRG0HSBl-fa_5lI
 id: node.islandora_object.open_seadragon
 targetEntityType: node
 bundle: islandora_object
@@ -41,14 +42,6 @@ content:
   field_alternative_title:
     type: string
     weight: 0
-    region: content
-    label: above
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-  field_citation:
-    type: string
-    weight: 13
     region: content
     label: above
     settings:
@@ -105,6 +98,11 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
+  field_gemini_uri:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
   field_identifier:
     type: string
     weight: 1
@@ -137,14 +135,6 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-  field_reuse:
-    weight: 14
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
   field_rights:
     type: string
     weight: 13
@@ -180,21 +170,6 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  pdfjs_media_evas_entity_view_1:
-    weight: 10
-    settings: {  }
-    third_party_settings: {  }
-    region: content
-  pdfjs_media_evas_entity_view_2:
-    weight: 10
-    settings: {  }
-    third_party_settings: {  }
-    region: content
-  pdfjs_media_evas_service_file:
-    weight: 10
-    settings: {  }
-    third_party_settings: {  }
-    region: content
 hidden:
   display_media_entity_view_1: true
   display_media_entity_view_2: true
@@ -206,3 +181,6 @@ hidden:
   field_pid: true
   openseadragon_media_evas_entity_view_2: true
   openseadragon_media_evas_service_file: true
+  pdfjs_media_evas_entity_view_1: true
+  pdfjs_media_evas_entity_view_2: true
+  pdfjs_media_evas_service_file: true

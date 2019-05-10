@@ -6,10 +6,12 @@ dependencies:
       - islandora_core_feature
   module:
     - islandora
+_core:
+  default_config_hash: Baw3Jc9LnpN1yTsFvNF-VMf3RsOI5Elda0qGVe5ZST4
 id: index_media_in_triplestore
 label: 'Index Media in Triplestore'
 type: media
 plugin: emit_media_event
 configuration:
   queue: islandora-indexing-triplestore-index
-  event: update
+  event: Update

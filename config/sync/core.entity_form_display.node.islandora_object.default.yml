@@ -1,10 +1,10 @@
+uuid: 7a334596-a847-4ee7-bdd1-5a2a2177e7bc
 langcode: en
 status: true
 dependencies:
   config:
     - field.field.node.islandora_object.field_access_terms
     - field.field.node.islandora_object.field_alternative_title
-    - field.field.node.islandora_object.field_citation
     - field.field.node.islandora_object.field_description
     - field.field.node.islandora_object.field_display_hints
     - field.field.node.islandora_object.field_edtf_date
@@ -17,7 +17,6 @@ dependencies:
     - field.field.node.islandora_object.field_model
     - field.field.node.islandora_object.field_pid
     - field.field.node.islandora_object.field_resource_type
-    - field.field.node.islandora_object.field_reuse
     - field.field.node.islandora_object.field_rights
     - field.field.node.islandora_object.field_subject
     - node.type.islandora_object
@@ -57,9 +56,7 @@ third_party_settings:
         - field_description
         - langcode
         - field_extent
-        - field_reuse
         - field_rights
-        - field_citation
         - field_linked_agent
         - field_edtf_date
         - field_subject
@@ -76,6 +73,8 @@ third_party_settings:
         classes: ''
       label: General
       region: content
+_core:
+  default_config_hash: KeUZoDCB_cik95hg04QcH9TijNzEzopIz-3x1lC9k5Y
 id: node.islandora_object.default
 targetEntityType: node
 bundle: islandora_object
@@ -96,14 +95,6 @@ content:
   field_alternative_title:
     type: string_textfield
     weight: 1
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_citation:
-    type: string_textfield
-    weight: 7
     region: content
     settings:
       size: 60
@@ -196,12 +187,6 @@ content:
     type: string_textfield
     region: content
   field_resource_type:
-    weight: 3
-    settings: {  }
-    third_party_settings: {  }
-    type: options_select
-    region: content
-  field_reuse:
     weight: 3
     settings: {  }
     third_party_settings: {  }

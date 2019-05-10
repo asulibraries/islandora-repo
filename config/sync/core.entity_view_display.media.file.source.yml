@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.media.source
+    - field.field.media.file.field_access_terms
     - field.field.media.file.field_file_size
     - field.field.media.file.field_media_file
     - field.field.media.file.field_media_of
@@ -19,6 +20,11 @@ targetEntityType: media
 bundle: file
 mode: source
 content:
+  field_gemini_uri:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
   field_media_file:
     label: hidden
     settings:
@@ -29,6 +35,7 @@ content:
     region: content
 hidden:
   created: true
+  field_access_terms: true
   field_file_size: true
   field_media_of: true
   field_media_use: true

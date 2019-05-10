@@ -1,0 +1,15 @@
+uuid: 6bde5406-c39f-437f-900b-8199fc25a502
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora
+_core:
+  default_config_hash: Ug973H3ch20MpS_o8Yz9TU4-dizDVtassI0-4sOg8GU
+id: index_file_as_fedora_external_content
+label: 'Index File as Fedora External Content'
+type: file
+plugin: emit_file_event
+configuration:
+  queue: islandora-indexing-fcrepo-file-external
+  event: Update
