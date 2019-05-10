@@ -11,6 +11,8 @@ dependencies:
   config:
     - field.storage.node.field_alternative_title
     - field.storage.node.body
+    - field.storage.node.field_edtf_date
+    - field.storage.node.field_edtf_date_created
     - field.storage.node.field_description
     - field.storage.node.field_identifier
     - field.storage.node.field_model
@@ -97,6 +99,22 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_description
+  field_edtf_date:
+    label: Date
+    datasource_id: 'entity:node'
+    property_path: field_edtf_date
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_edtf_date
+  field_edtf_date_created:
+    label: 'Date Created'
+    datasource_id: 'entity:node'
+    property_path: field_edtf_date_created
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_edtf_date_created
   field_identifier:
     label: Identifier
     datasource_id: 'entity:node'
@@ -129,6 +147,14 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_tags
+  langcode:
+    label: Language
+    datasource_id: 'entity:node'
+    property_path: langcode
+    type: string
+    dependencies:
+      module:
+        - node
   name:
     label: 'Authored by » User » Name'
     datasource_id: 'entity:node'
