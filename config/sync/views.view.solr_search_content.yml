@@ -1,3 +1,4 @@
+uuid: d320fe5d-e183-4ca0-af31-9940247ce360
 langcode: en
 status: true
 dependencies:
@@ -5,6 +6,8 @@ dependencies:
     - search_api.index.default_solr_index
   module:
     - search_api
+_core:
+  default_config_hash: HOLKQFo9Gxd0-FHu9o5XZeZbGOFMmJpFCwDguu0nGgI
 id: solr_search_content
 label: 'Solr search content'
 module: views
@@ -189,8 +192,12 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: solr-search/content
+      path: search
       exposed_block: true
+      cache:
+        type: none
+      defaults:
+        cache: false
     cache_metadata:
       contexts:
         - 'languages:language_interface'

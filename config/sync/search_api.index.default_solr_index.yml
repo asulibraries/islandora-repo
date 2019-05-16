@@ -1,3 +1,4 @@
+uuid: eeddd964-7281-410f-ab65-8d15f40c46d6
 langcode: en
 status: true
 dependencies:
@@ -152,17 +153,7 @@ field_settings:
     dependencies:
       module:
         - node
-  name:
-    label: 'Authored by » User » Name'
-    datasource_id: 'entity:node'
-    property_path: 'uid:entity:name'
-    type: string
-    dependencies:
-      module:
-        - node
-        - user
-        - user
-  name_1:
+  model:
     label: 'Model » Taxonomy term » Name'
     datasource_id: 'entity:node'
     property_path: 'field_model:entity:name'
@@ -173,6 +164,16 @@ field_settings:
       module:
         - taxonomy
         - taxonomy
+  name:
+    label: 'Authored by » User » Name'
+    datasource_id: 'entity:node'
+    property_path: 'uid:entity:name'
+    type: string
+    dependencies:
+      module:
+        - node
+        - user
+        - user
   node_grants:
     label: 'Node access information'
     property_path: search_api_node_grants
