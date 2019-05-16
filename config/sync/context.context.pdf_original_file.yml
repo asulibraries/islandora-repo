@@ -1,37 +1,36 @@
-uuid: 92ba3b25-4abf-48f3-a895-d826e179c2bf
+uuid: db5fcb0c-5d21-436b-a2b8-f7633aa50b68
 langcode: en
 status: true
 dependencies:
-  enforced:
-    module:
-      - islandora_demo
   module:
     - islandora
-name: image_service_file
-label: 'Image Service File'
+_core:
+  default_config_hash: fPF6O3XSazYwCC1IgFqKbvT0zOJ-84-OgxyFCtR3_Ag
+name: pdf_original_file
+label: 'PDF Original File'
 group: Islandora
-description: 'Service files for images'
+description: 'Context reactions for pdf documents'
 requireAllConditions: true
 disabled: false
 conditions:
   media_has_term:
     id: media_has_term
     negate: 0
-    uuid: 481cd239-1012-4767-8a28-caac7036c9cb
-    uri: 'http://pcdm.org/use#ServiceFile'
+    uuid: a263091f-a591-4aff-b890-64bd88c3b01e
+    uri: 'http://pcdm.org/use#OriginalFile'
     context_mapping:
       media: '@islandora.media_route_context_provider:media'
   parent_node_has_term:
     id: parent_node_has_term
     negate: 0
-    uuid: 9f617394-6f70-4eec-8a9b-865bb2ab9fa1
-    uri: 'http://purl.org/coar/resource_type/c_c513'
+    uuid: 5654bf7d-f82b-48ca-a738-f36720b4e252
+    uri: 'https://schema.org/DigitalDocument'
     context_mapping:
       media: '@islandora.media_route_context_provider:media'
 reactions:
   derivative:
     id: derivative
     actions:
-      generate_a_thumbnail_from_an_image_service_file: generate_a_thumbnail_from_an_image_service_file
+      image_generate_a_thumbnail_from_an_original_file: image_generate_a_thumbnail_from_an_original_file
     saved: false
 weight: 0
