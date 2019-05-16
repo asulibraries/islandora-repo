@@ -1,8 +1,11 @@
+uuid: bc0057f8-7502-4d52-8136-9353c1830d6e
 langcode: en
 status: true
 dependencies:
   module:
     - islandora
+_core:
+  default_config_hash: Oa89kyhkCEnE5ciUBNJ10-dWXgr8zTbK5V5-e-6apAs
 name: image_original_file
 label: 'Image Original File'
 group: Islandora
@@ -29,5 +32,6 @@ reactions:
     id: derivative
     actions:
       image_generate_a_service_file_from_an_original_file: image_generate_a_service_file_from_an_original_file
+      image_generate_a_thumbnail_from_an_original_file: image_generate_a_thumbnail_from_an_original_file
     saved: false
 weight: 0
