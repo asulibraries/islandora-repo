@@ -1,4 +1,4 @@
-uuid: 333062c8-0e59-4845-b4aa-6614065a53ca
+uuid: 89b296e4-5876-4cb8-8505-e63cc50c8e94
 langcode: en
 status: true
 dependencies:
@@ -7,6 +7,8 @@ dependencies:
     - taxonomy.vocabulary.person
   module:
     - name
+_core:
+  default_config_hash: hPi3mTkZ1KEOmgZpRTKT7EOlml7y7PHDBnU0jCxWAFU
 id: taxonomy_term.person.field_person_preferred_name
 field_name: field_person_preferred_name
 entity_type: taxonomy_term
@@ -14,7 +16,7 @@ bundle: person
 label: 'Person Preferred Name'
 description: ''
 required: true
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
@@ -39,16 +41,87 @@ settings:
     family: text
     generational: select
     credentials: text
-  inline_css:
-    name: ''
-    given: ''
-    middle: ''
-    family: ''
-    generational: ''
-    credentials: ''
-  component_css: ''
   component_layout: default
   show_component_required_marker: false
   credentials_inline: false
   override_format: default
+  components:
+    title: true
+    given: true
+    middle: true
+    family: true
+    generational: true
+    credentials: true
+  minimum_components:
+    title: false
+    given: true
+    middle: false
+    family: true
+    generational: false
+    credentials: false
+  allow_family_or_given: false
+  max_length:
+    title: 31
+    given: 63
+    middle: 127
+    family: 63
+    generational: 15
+    credentials: 255
+  autocomplete_source:
+    title:
+      - title
+    given: {  }
+    middle: {  }
+    family: {  }
+    generational:
+      - generation
+    credentials: {  }
+  autocomplete_separator:
+    title: ' '
+    given: ' -'
+    middle: ' -'
+    family: ' -'
+    generational: ' '
+    credentials: ', '
+  title_options:
+    - '-- --'
+    - Mr.
+    - Mrs.
+    - Miss
+    - Ms.
+    - Dr.
+    - Prof.
+  generational_options:
+    - '-- --'
+    - Jr.
+    - Sr.
+    - I
+    - II
+    - III
+    - IV
+    - V
+    - VI
+    - VII
+    - VIII
+    - IX
+    - X
+  sort_options:
+    title: false
+    given: false
+    middle: false
+    family: false
+    generational: false
+    credentials: false
+  labels:
+    title: Title
+    given: Given
+    middle: 'Middle name(s)'
+    family: Family
+    generational: Generational
+    credentials: Credentials
+  widget_layout: stacked
+  preferred_field_reference: ''
+  preferred_field_reference_separator: ', '
+  alternative_field_reference: ''
+  alternative_field_reference_separator: ', '
 field_type: name

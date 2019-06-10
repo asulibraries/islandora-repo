@@ -1,4 +1,4 @@
-uuid: a7340e22-4dcc-4109-8d29-235f992607a8
+uuid: febb9af5-704b-4976-8e47-5bb345a7354e
 langcode: en
 status: true
 dependencies:
@@ -22,12 +22,12 @@ dependencies:
     - node.type.islandora_object
   enforced:
     module:
-      - islandora_demo
+      - islandora_defaults
   module:
     - controlled_access_terms
     - user
 _core:
-  default_config_hash: tCE8u-mQGrolDW4eIzSkHiCj4Bb7dTDnEe0GEt9DHM0
+  default_config_hash: AUD0qyaFHBoXd-qf4TBs-XRwu-kzs5N0EvV_kGPLzWE
 id: node.islandora_object.default
 targetEntityType: node
 bundle: islandora_object
@@ -97,11 +97,6 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-  field_gemini_uri:
-    weight: 100
-    settings: {  }
-    third_party_settings: {  }
-    region: content
   field_identifier:
     type: string
     weight: 1

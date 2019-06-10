@@ -1,10 +1,12 @@
-uuid: 6a84d693-f772-4991-b4fc-f9827b942a85
+uuid: 3ba73169-232e-471f-8748-9c0266341308
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.taxonomy_term.field_geo_alt_name
     - taxonomy.vocabulary.geo_location
+_core:
+  default_config_hash: gWWWBQMbh08JC7CTWKnwKxTtXQvg2DW1UDPIMwPPxP8
 id: taxonomy_term.geo_location.field_geo_alt_name
 field_name: field_geo_alt_name
 entity_type: taxonomy_term
@@ -12,7 +14,7 @@ bundle: geo_location
 label: 'Alternate Name'
 description: ''
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings: {  }

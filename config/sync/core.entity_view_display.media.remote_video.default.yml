@@ -1,4 +1,4 @@
-uuid: aeba7908-d50d-4a4a-9457-4985f4774a72
+uuid: c631e220-1c2a-4ee5-9112-30896576c09f
 langcode: en
 status: true
 dependencies:
@@ -7,16 +7,13 @@ dependencies:
     - media.type.remote_video
   module:
     - media
+_core:
+  default_config_hash: gUaDZKMQD3lmLKWPn727X3JHVdKJ525g4EJCCcDVAqk
 id: media.remote_video.default
 targetEntityType: media
 bundle: remote_video
 mode: default
 content:
-  field_gemini_uri:
-    weight: 100
-    settings: {  }
-    third_party_settings: {  }
-    region: content
   field_media_oembed_video:
     type: oembed
     weight: 0

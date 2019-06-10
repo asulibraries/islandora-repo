@@ -1,10 +1,9 @@
-uuid: cfa0511d-021a-4ddb-b63a-9123dd569dd0
+uuid: c0c7a3af-7cac-4f59-b955-d3068d6b95ad
 langcode: en
 status: true
 dependencies:
   config:
     - core.entity_view_mode.media.source
-    - field.field.media.file.field_access_terms
     - field.field.media.file.field_file_size
     - field.field.media.file.field_media_file
     - field.field.media.file.field_media_of
@@ -17,17 +16,12 @@ dependencies:
   module:
     - file
 _core:
-  default_config_hash: tlqhHvp-1jCB_7_X_oD3Z2lAmdlXAGzYtc_3I8IIbxY
+  default_config_hash: sGc7pGybBKeXzDOOiQNzB7NggzXRakKJ-WqkIJvW5jY
 id: media.file.source
 targetEntityType: media
 bundle: file
 mode: source
 content:
-  field_gemini_uri:
-    weight: 100
-    settings: {  }
-    third_party_settings: {  }
-    region: content
   field_media_file:
     label: hidden
     settings:
@@ -38,8 +32,8 @@ content:
     region: content
 hidden:
   created: true
-  field_access_terms: true
   field_file_size: true
+  field_gemini_uri: true
   field_media_of: true
   field_media_use: true
   field_mime_type: true

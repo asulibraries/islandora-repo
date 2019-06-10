@@ -1,10 +1,9 @@
-uuid: 0c726750-d007-4d9d-ada8-418d54236d47
+uuid: dc7ebcf2-e3c1-4837-a87e-94cab7239ce7
 langcode: en
 status: true
 dependencies:
   config:
     - core.entity_view_mode.media.source
-    - field.field.media.video.field_access_terms
     - field.field.media.video.field_file_size
     - field.field.media.video.field_media_of
     - field.field.media.video.field_media_use
@@ -23,11 +22,6 @@ targetEntityType: media
 bundle: video
 mode: source
 content:
-  field_gemini_uri:
-    weight: 100
-    settings: {  }
-    third_party_settings: {  }
-    region: content
   field_media_video_file:
     type: file_video
     weight: 0
@@ -44,7 +38,6 @@ content:
     region: content
 hidden:
   created: true
-  field_access_terms: true
   field_file_size: true
   field_media_of: true
   field_media_use: true

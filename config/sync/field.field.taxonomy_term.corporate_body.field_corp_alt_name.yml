@@ -1,10 +1,12 @@
-uuid: b21eff7b-b3bf-4c7a-b954-67add3279116
+uuid: 137d9df1-add5-472f-bd8a-6d93dd1c91a0
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.taxonomy_term.field_corp_alt_name
     - taxonomy.vocabulary.corporate_body
+_core:
+  default_config_hash: K-bS8JMYTTIFVjkUNLJXnemZKNSx18oX_8W6XNy5DNc
 id: taxonomy_term.corporate_body.field_corp_alt_name
 field_name: field_corp_alt_name
 entity_type: taxonomy_term
@@ -12,7 +14,7 @@ bundle: corporate_body
 label: 'Corporate Body Alternate Name'
 description: ''
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings: {  }

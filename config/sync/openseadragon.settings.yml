@@ -1,4 +1,5 @@
 default_options:
+  fit_to_aspect_ratio: false
   tabIndex: 0
   debugMode: false
   debugGridColor: '#437AB2'
@@ -8,7 +9,11 @@ default_options:
   immediateRender: false
   defaultZoomLevel: 0
   opacity: 1
+  compositeOperation: ''
+  placeholderFillStyle: ''
   degrees: 0
+  minZoomLevel: ''
+  maxZoomLevel: ''
   homeFillsViewer: false
   panHorizontal: true
   panVertical: true
@@ -73,6 +78,10 @@ default_options:
   navigatorPosition: TOP_RIGHT
   navigatorSizeRatio: 0.2
   navigatorMaintainSizeRatio: false
+  navigatorTop: ''
+  navigatorLeft: ''
+  navigatorHeight: ''
+  navigatorWidth: ''
   navigatorAutoResize: true
   navigatorAutoFade: true
   navigatorRotate: true
@@ -98,6 +107,8 @@ default_options:
   preserveOverlays: false
   showReferenceStrip: false
   referenceStripScroll: horizontal
+  referenceStripHeight: ''
+  referenceStripWidth: ''
   referenceStripPosition: BOTTOM_LEFT
   referenceStripSizeRatio: 0.2
   collectionMode: false
@@ -109,4 +120,6 @@ default_options:
   crossOriginPolicy: false
   ajaxWithCredentials: false
   tileSize: 256
+_core:
+  default_config_hash: SodgIAY6XQHkm493PQ-sLrnBtM2PoP9g8agJU-HM-U8
 iiif_server: 'http://localhost:8080/cantaloupe/iiif/2'

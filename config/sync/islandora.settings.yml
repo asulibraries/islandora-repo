@@ -2,9 +2,10 @@ broker_url: 'tcp://localhost:61613'
 jwt_expiry: '+2 hour'
 gemini_url: 'http://localhost:8000/gemini'
 gemini_pseudo_bundles:
-  'islandora_object:node': 'islandora_object:node'
-  'audio:media': 'audio:media'
-  'file:media': 'file:media'
-  'image:media': 'image:media'
-  'remote_video:media': 'remote_video:media'
-  'video:media': 'video:media'
+  - 'islandora_object:node'
+  - 'image:media'
+  - 'file:media'
+  - 'audio:media'
+  - 'video:media'
+_core:
+  default_config_hash: XgeYJpPmZIOwE_nA73tYvFw-Rcj-HtlbNwfktqSVsaQ

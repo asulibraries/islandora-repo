@@ -1,4 +1,4 @@
-uuid: 557da0b5-5837-4d50-9383-9170939b8b5d
+uuid: 01c32717-a800-4c58-b678-3358b2983ff3
 langcode: en
 status: true
 dependencies:
@@ -13,21 +13,16 @@ dependencies:
     - media.type.file
   enforced:
     module:
-      - islandora_demo
+      - islandora_defaults
   module:
     - openseadragon
 _core:
-  default_config_hash: Nx4IIgXEoeAa-ZUAptA9k-0iDl6uXVandcaNWJYq7t0
+  default_config_hash: cJGM1LsJUaX9QZ7lnthD4rDotLsJQVC6MCLe6KkmEc0
 id: media.file.open_seadragon
 targetEntityType: media
 bundle: file
 mode: open_seadragon
 content:
-  field_gemini_uri:
-    weight: 100
-    settings: {  }
-    third_party_settings: {  }
-    region: content
   field_media_file:
     label: hidden
     settings: {  }
@@ -39,6 +34,7 @@ hidden:
   created: true
   field_access_terms: true
   field_file_size: true
+  field_gemini_uri: true
   field_media_of: true
   field_media_use: true
   field_mime_type: true

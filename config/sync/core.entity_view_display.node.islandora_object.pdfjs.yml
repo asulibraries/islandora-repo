@@ -1,4 +1,4 @@
-uuid: 6f95fea0-80b6-4bd3-a090-ff4e673d0c38
+uuid: 3effb9ba-9439-46f9-953d-45745abd6e0c
 langcode: en
 status: true
 dependencies:
@@ -23,22 +23,17 @@ dependencies:
     - node.type.islandora_object
   enforced:
     module:
-      - islandora_demo
+      - islandora_defaults
   module:
     - controlled_access_terms
     - user
 _core:
-  default_config_hash: AiLTVPbw3Xgx44MFbNtWCe6K66yLmGM91Kg9UF_YDdY
+  default_config_hash: BfMoECRm4a9GNksaC0G3KoT9njQxCpm8Fzwz7oMoQ6s
 id: node.islandora_object.pdfjs
 targetEntityType: node
 bundle: islandora_object
 mode: pdfjs
 content:
-  display_media_service_file:
-    weight: 3
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   field_alternative_title:
     type: string
     weight: 0
@@ -60,7 +55,6 @@ content:
     region: content
     label: above
     settings:
-      season_hemisphere: north
       date_separator: dash
       date_order: big_endian
       month_format: mm
@@ -76,7 +70,6 @@ content:
       date_order: big_endian
       month_format: mm
       day_format: dd
-      season_hemisphere: north
     third_party_settings: {  }
   field_edtf_date_issued:
     type: edtf_default
@@ -88,21 +81,20 @@ content:
       date_order: big_endian
       month_format: mm
       day_format: dd
-      season_hemisphere: north
     third_party_settings: {  }
   field_extent:
     type: string
-    weight: 14
+    weight: 11
     region: content
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
   field_gemini_uri:
-    weight: 100
+    weight: 16
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
   field_identifier:
     type: string
     weight: 1
@@ -128,7 +120,7 @@ content:
       link: true
     third_party_settings: {  }
   field_pid:
-    weight: 18
+    weight: 15
     label: above
     settings:
       link_to_entity: false
@@ -136,7 +128,7 @@ content:
     type: string
     region: content
   field_resource_type:
-    weight: 17
+    weight: 14
     label: above
     settings:
       link: true
@@ -145,14 +137,14 @@ content:
     region: content
   field_rights:
     type: string
-    weight: 16
+    weight: 13
     region: content
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
   field_subject:
-    weight: 15
+    weight: 12
     label: above
     settings:
       link: true
@@ -174,23 +166,14 @@ content:
     settings: {  }
     third_party_settings: {  }
   pdfjs_media_evas_entity_view_1:
-    weight: 11
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  pdfjs_media_evas_entity_view_2:
-    weight: 12
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  pdfjs_media_evas_service_file:
-    weight: 13
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
   display_media_entity_view_1: true
   display_media_entity_view_2: true
+  display_media_service_file: true
   display_media_thumbnail: true
   field_access_terms: true
   field_display_hints: true
@@ -198,3 +181,5 @@ hidden:
   openseadragon_media_evas_entity_view_1: true
   openseadragon_media_evas_entity_view_2: true
   openseadragon_media_evas_service_file: true
+  pdfjs_media_evas_entity_view_2: true
+  pdfjs_media_evas_service_file: true
