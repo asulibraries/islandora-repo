@@ -33,10 +33,23 @@ targetEntityType: node
 bundle: islandora_object
 mode: default
 content:
+  display_media_entity_view_2:
+    weight: 16
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   display_media_service_file:
     weight: 3
     region: content
     settings: {  }
+    third_party_settings: {  }
+  field_access_terms:
+    type: entity_reference_label
+    weight: 15
+    region: content
+    label: above
+    settings:
+      link: true
     third_party_settings: {  }
   field_alternative_title:
     type: string
@@ -59,7 +72,6 @@ content:
     region: content
     label: above
     settings:
-      season_hemisphere: north
       date_separator: dash
       date_order: big_endian
       month_format: mm
@@ -75,7 +87,6 @@ content:
       date_order: big_endian
       month_format: mm
       day_format: dd
-      season_hemisphere: north
     third_party_settings: {  }
   field_edtf_date_issued:
     type: edtf_default
@@ -87,7 +98,6 @@ content:
       date_order: big_endian
       month_format: mm
       day_format: dd
-      season_hemisphere: north
     third_party_settings: {  }
   field_extent:
     type: string
@@ -96,6 +106,11 @@ content:
     label: above
     settings:
       link_to_entity: false
+    third_party_settings: {  }
+  field_gemini_uri:
+    weight: 17
+    region: content
+    settings: {  }
     third_party_settings: {  }
   field_identifier:
     type: string
@@ -161,9 +176,7 @@ content:
     third_party_settings: {  }
 hidden:
   display_media_entity_view_1: true
-  display_media_entity_view_2: true
   display_media_thumbnail: true
-  field_access_terms: true
   field_display_hints: true
   field_model: true
   field_pid: true
