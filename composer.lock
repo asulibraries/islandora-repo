@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0ae816d7441db54711e63549c554cb41",
+    "content-hash": "d088caca357be3cd4234169641e641d7",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -3080,10 +3080,11 @@
         },
         {
             "name": "drupal/entity_embed",
-            "version": "1.0.0-beta3",
+            "version": "1.0.0-rc1",
             "source": {
                 "type": "git",
-                "url": "https://git.drupalcode.org/project/entity_embed.git"
+                "url": "https://git.drupalcode.org/project/entity_embed.git",
+                "reference": "8.x-1.0-rc1"
             },
             "dist": {
                 "type": "zip",
@@ -3621,9 +3622,10 @@
             "type": "drupal-module",
             "extra": {
                 "branch-alias": {
-                    "dev-2.x": "2.x-dev"
+                    "dev-3.x": "3.x-dev"
                 },
                 "drupal": {
+                    "version": "8.x-3.0-rc1",
                     "datestamp": "1554457681",
                     "security-coverage": {
                         "status": "not-covered",
@@ -3631,6 +3633,7 @@
                     }
                 }
             },
+            "notification-url": "https://packages.drupal.org/8/downloads",
             "license": [
                 "GPL-2.0+"
             ],
@@ -3692,6 +3695,18 @@
                 {
                     "name": "edwardchiapet",
                     "homepage": "https://www.drupal.org/user/2354784"
+                },
+                {
+                    "name": "gabesullice",
+                    "homepage": "https://www.drupal.org/user/2287430"
+                },
+                {
+                    "name": "jonathan.green",
+                    "homepage": "https://www.drupal.org/user/3505671"
+                },
+                {
+                    "name": "pwolanin",
+                    "homepage": "https://www.drupal.org/user/49851"
                 }
             ],
             "description": "Provides a JSON Web Token authentication provider",
@@ -5330,9 +5345,10 @@
         },
         {
             "name": "islandora/chullo",
-            "version": "0.2.0",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
+                "url": "https://github.com/Islandora-CLAW/chullo.git",
                 "reference": "fc60e9c271c4f83290b3a98ad46825a7e418d51e"
             },
             "dist": {
@@ -5342,6 +5358,7 @@
                 "shasum": ""
             },
             "require": {
+                "easyrdf/easyrdf": "^0.9.1",
                 "guzzlehttp/guzzle": "^6.1.0",
                 "ml/json-ld": "^1.0.4",
                 "php": ">=5.6.0"
@@ -5411,9 +5428,13 @@
             },
             "type": "drupal-module",
             "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
             "authors": [
                 {
                     "name": "Islandora Foundation",
+                    "email": "community@islandora.ca",
                     "role": "Owner"
                 },
                 {
@@ -5459,7 +5480,11 @@
             "require-dev": {
                 "mikey179/vfsstream": "^1.6",
                 "phpunit/phpunit": "^5.0",
+                "sebastian/phpcpd": "^3.0",
+                "squizlabs/php_codesniffer": "^2.0"
+            },
             "type": "library",
+            "autoload": {
                 "psr-4": {
                     "Islandora\\Crayfish\\Commons\\": "src/"
                 }
@@ -5577,11 +5602,13 @@
             "license": [
                 "GPL-2.0+"
             ],
-            "description": "Islandora Demo",
+            "description": "Islandora Defaults",
+            "homepage": "https://github.com/Islandora-CLAW/islandora_defaults",
             "keywords": [
                 "Islandora",
                 "drupal"
-            ]
+            ],
+            "time": "2019-06-02T02:20:13+00:00"
         },
         {
             "name": "islandora/jsonld",
@@ -5594,7 +5621,8 @@
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/Islandora-CLAW/jsonld/zipball/e7fcd3599e15f546af906891242c534c0d44dc2e",
-                "reference": "e7fcd3599e15f546af906891242c534c0d44dc2e"
+                "reference": "e7fcd3599e15f546af906891242c534c0d44dc2e",
+                "shasum": ""
             },
             "type": "drupal-module",
             "notification-url": "https://packagist.org/downloads/",
@@ -7840,6 +7868,10 @@
                     "/Tests/"
                 ]
             },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
             "authors": [
                 {
                     "name": "Bernhard Schussek",
@@ -11704,6 +11736,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "drupal/content_browser": 15,
+        "drupal/entity_embed": 5,
         "drupal/pdf": 20
     },
     "prefer-stable": true,
