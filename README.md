@@ -34,12 +34,23 @@ Get the json-ld for an object in Drupal like so : http://localhost:8000/node/1?_
 2. Add the module to the drush enabling in the ASU specific ansible role
 3. Run the ASU specific ansible role
 
+## So you want to update an existing Islandora/Drupal Site
+1. pull down the most recent claw-playbook code from github
+2. pull down the most recent isladora-repo code from github (in claw-sandbox folder)
+3. examine your config sync and see if you have things you either want to export and commit or don't care if you lose them - http://localhost:8000/admin/config/development/configuration
+4. vagrant ssh and cd to /var/www/html/drupal, run composer install
+5. cd /var/www/html/drupal/web, run drush config:import (note that if your step 3 showed that you have config changes in your DB that aren't in code, those would get wiped away by a config:import)
+6. drush udpatedb - to update the database
+7. drush cache-rebuild - to clear the cache
+
 
 
 # Component Glossary and Notes
 (in alphabetical order)
 
 ## Alpaca
+Apache Camel middleware which listens to events emitted from Drupal and distributes them to the microservices
+
 ## Api-X
 https://github.com/fcrepo4-labs/fcrepo-api-x/blob/master/src/site/markdown/apix-design-overview.md
 
