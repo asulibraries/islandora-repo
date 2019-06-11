@@ -1,0 +1,16 @@
+uuid: c4afa2b0-6e41-4c9d-b57f-3153d33d7ba1
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - islandora_core_feature
+  module:
+    - islandora
+id: version_node_in_fedora
+label: 'Version Node in Fedora'
+type: node
+plugin: emit_node_event
+configuration:
+  queue: islandora-indexing-fcrepo-content
+  event: Version
