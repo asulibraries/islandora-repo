@@ -43,7 +43,11 @@ Get the json-ld for an object in Drupal like so : http://localhost:8000/node/1?_
 6. drush udpatedb - to update the database
 7. drush cache-rebuild - to clear the cache
 
-
+# Deploying to AWS
+An ansible script for provisioning a box on the DEV set up of AWS has been added - aws_provision.yml
+1. locally run aws_provision.yml
+2. locally run ansible-galaxy install -r requirements.yml
+3. locally run ansible-playbook -i inventory/aws playbook.yml -e "islandora_distro=ubuntu/xenial64" -e @inventory/aws/group_vars/all/passwords.yml
 
 # Component Glossary and Notes
 (in alphabetical order)
