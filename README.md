@@ -1,7 +1,7 @@
 # ASU Digital Repository on Islandora8
 This repository is a drupal root for ASU Digital Repository built using Islandora8.
 
-For development purposes, this repository should be integrated with the (islandora provided vagrant environment)[https://github.com/Islandora-Devops/claw-playbook].
+For development purposes, this repository should be integrated with the [islandora provided vagrant environment](https://github.com/Islandora-Devops/claw-playbook).
 
 It will also include ansible scripts for provisioning and deploying to additional environments.
 
@@ -12,7 +12,7 @@ It will also include ansible scripts for provisioning and deploying to additiona
     c. git
     d. ansible
     e. vagrant vbguest plugin (`vagrant plugin install vagrant-vbguest`)
-1. Go to the (ASU claw-playbook repo)[https://github.com/asulibraries/claw-playbook]
+1. Go to the [ASU claw-playbook repo](https://github.com/asulibraries/claw-playbook)
 2. Clone ASU claw-playbook
 3. cd into claw-playbook
 4. Clone this repo into a folder called claw-sandbox
@@ -48,6 +48,9 @@ An ansible script for provisioning a box on the DEV set up of AWS has been added
 1. locally run aws_provision.yml
 2. locally run ansible-galaxy install -r requirements.yml
 3. locally run ansible-playbook -i inventory/aws playbook.yml -e "islandora_distro=ubuntu/xenial64" -e @inventory/aws/group_vars/all/passwords.yml
+<!-- must have an IAM role and key with privileges to administer EC2 -->
+<!-- must have upped the php memory_limit to 1GB for composer not to fall over -->
+<!-- had to run php -d memory_limit=-1 `which composer` install the first time since it was running out of memory -->
 
 # Component Glossary and Notes
 (in alphabetical order)
