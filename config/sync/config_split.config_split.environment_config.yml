@@ -1,10 +1,9 @@
-uuid: 1a1589b3-40b3-403a-81b7-ec672de110b9
 langcode: en
 status: true
 dependencies: {  }
 id: environment_config
 label: 'Environment Config'
-description: ''
+description: 'Settings that are specific per environment'
 folder: ../config/env
 module: {  }
 theme: {  }
@@ -13,6 +12,8 @@ graylist:
   - islandora.settings
   - jwt.config
   - key.key.islandora_rsa_key
+  - key.key.islandora_syn_token
+  - search_api_solr.settings
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 0
