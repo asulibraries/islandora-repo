@@ -1,5 +1,5 @@
 # ASU Digital Repository on Islandora8
-This repository is a drupal root for ASU Digital Repository built using Islandora8.
+This repository is a drupal root for ASU Digital Repository built using [Islandora 8](https://islandora.ca/). ([Islandora Documentation](https://islandora-claw.github.io/CLAW/))
 
 For development purposes, this repository should be integrated with the [islandora provided vagrant environment](https://github.com/Islandora-Devops/claw-playbook).
 
@@ -37,11 +37,15 @@ Get the json-ld for an object in Drupal like so : http://localhost:8000/node/1?_
 ## So you want to update an existing Islandora/Drupal Site
 1. pull down the most recent claw-playbook code from github
 2. pull down the most recent isladora-repo code from github (in claw-sandbox folder)
-3. examine your config sync and see if you have things you either want to export and commit or don't care if you lose them - http://localhost:8000/admin/config/development/configuration
+3. examine your config sync and see if you have things you either want to export and commit or don't care if you lose them - http://localhost:8000/admin/config/development/configuration (see Tips for Config Syncing below)
 4. vagrant ssh and cd to /var/www/html/drupal, run composer install
 5. cd /var/www/html/drupal/web, run drush config:import (note that if your step 3 showed that you have config changes in your DB that aren't in code, those would get wiped away by a config:import)
 6. drush udpatedb - to update the database
 7. drush cache-rebuild - to clear the cache
+
+## Tips on Config Syncing
+* To export content, go to your drupal root such as `/var/www/html/drupal/web` and run `drupal config:export --directory /var/www/html/drupal/config/sync --remove-uuid --remove-config-hash` ([see](https://hechoendrupal.gitbooks.io/drupal-console/content/en/commands/config-export.html))
+* To import content, go to your drupal root such as `/var/www/html/drupal/web` and run `drupal config:import --skip-uuid --directory /var/www/html/drupal/config/sync` ([see](https://hechoendrupal.gitbooks.io/drupal-console/content/en/commands/config-import.html))
 
 # Deploying to AWS
 An ansible script for provisioning a box on the DEV set up of AWS has been added - aws_provision.yml
@@ -55,18 +59,26 @@ An ansible script for provisioning a box on the DEV set up of AWS has been added
 # Component Glossary and Notes
 (in alphabetical order)
 
-## Alpaca
-Apache Camel middleware which listens to events emitted from Drupal and distributes them to the microservices
+## [Alpaca](https://github.com/Islandora-CLAW/Alpaca)
+Apache Camel middleware which listens to events emitted from Drupal and distributes them to the microservices. ASU fork is [here](https://github.com/asulibraries/alpaca).
 
 ## Api-X
 https://github.com/fcrepo4-labs/fcrepo-api-x/blob/master/src/site/markdown/apix-design-overview.md
 
-## Blazegraph
-## Carapace
-## Cantaloupe
-## Chullo
+## [Blazegraph](https://www.blazegraph.com/)
+A high performance graph database, aka the triplestore
 
-## ClamAV
+
+## [Carapace](https://github.com/Islandora-CLAW/carapace)
+A Drupal theme for Islandora, based on [AdaptiveTheme](https://www.drupal.org/project/adaptivetheme)
+
+## [Cantaloupe](https://github.com/cantaloupe-project/cantaloupe)
+A IIIF compliant image server, written in Java
+
+## [Chullo](https://github.com/Islandora-CLAW/chullo)
+A PHP client which directly communicates with the Fedora 5 API. ASU fork is [here](https://github.com/asulibraries/chullo)
+
+## [ClamAV](https://www.clamav.net/)
 A virus scanning application.
 If you get an error in the Drupal Status report saying that it couldn't connect to ClamAV, likely the service isn't running.
 1. SSH to the VM `vagrant ssh`
@@ -75,12 +87,14 @@ If you get an error in the Drupal Status report saying that it couldn't connect 
 4. `sudo service clamav-daemon status` Likely this will tell you it is down. If freshclam is running, it needs to get the updated ClamAV Virus Database (.cvd) file(s) from freshclam before the daemon can be started.
 5. `sudo service clamav-daemon restart`
 
-## Crayfish
-A collection of micro-services.
+## [Crayfish](https://github.com/Islandora-CLAW/Crayfish)
+A collection of micro-services: Gemini, Homarus, Houdini, Hypercube, Milliner, and Recast. ASU fork is [here](https://github.com/asulibraries/Crayfish)
 
 ## Controlled Access Terms
 
 ## Crayfish-commons
+
+## Fedora
 
 ## Flysystem
 - https://github.com/Islandora-CLAW/CLAW/blob/master/docs/technical-documentation/flysystem.md
