@@ -21,6 +21,11 @@ targetEntityType: media
 bundle: audio
 mode: source
 content:
+  field_gemini_uri:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
   field_media_audio_file:
     type: file_audio
     weight: 0
@@ -34,6 +39,7 @@ content:
     region: content
 hidden:
   created: true
+  field_access_terms: true
   field_file_size: true
   field_media_of: true
   field_media_use: true
