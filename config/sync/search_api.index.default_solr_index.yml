@@ -5,8 +5,18 @@ dependencies:
     - search_api_solr
     - node
     - user
+    - taxonomy
     - search_api
   config:
+    - field.storage.node.field_alternative_title
+    - field.storage.node.field_edtf_date_created
+    - field.storage.node.field_description
+    - field.storage.node.field_identifier
+    - field.storage.node.field_linked_agent
+    - field.storage.node.field_member_of
+    - field.storage.node.field_model
+    - field.storage.node.field_resource_type
+    - field.storage.node.field_subject
     - field.storage.node.field_tags
     - search_api.server.default_solr_server
     - core.entity_view_mode.node.search_index
@@ -65,6 +75,38 @@ field_settings:
     dependencies:
       module:
         - node
+  field_alternative_title:
+    label: 'Alternative Title'
+    datasource_id: 'entity:node'
+    property_path: field_alternative_title
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_alternative_title
+  field_description:
+    label: Description
+    datasource_id: 'entity:node'
+    property_path: field_description
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_description
+  field_edtf_date_created:
+    label: 'Date Created'
+    datasource_id: 'entity:node'
+    property_path: field_edtf_date_created
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_edtf_date_created
+  field_identifier:
+    label: Identifier
+    datasource_id: 'entity:node'
+    property_path: field_identifier
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_identifier
   field_tags:
     label: Tags
     datasource_id: 'entity:node'
@@ -73,6 +115,55 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_tags
+  langcode:
+    label: Language
+    datasource_id: 'entity:node'
+    property_path: langcode
+    type: string
+    dependencies:
+      module:
+        - node
+  linked_agent_name:
+    label: 'Linked Agent » Taxonomy term » Name'
+    datasource_id: 'entity:node'
+    property_path: 'field_linked_agent:entity:name'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_linked_agent
+      module:
+        - taxonomy
+        - taxonomy
+  member_of_title:
+    label: 'Member of » Content » Title'
+    datasource_id: 'entity:node'
+    property_path: 'field_member_of:entity:title'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_member_of
+      module:
+        - node
+        - node
+  model_name:
+    label: 'Model » Taxonomy term » Name'
+    datasource_id: 'entity:node'
+    property_path: 'field_model:entity:name'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_model
+      module:
+        - taxonomy
+        - taxonomy
+  nid:
+    label: ID
+    datasource_id: 'entity:node'
+    property_path: nid
+    type: integer
+    dependencies:
+      module:
+        - node
   node_grants:
     label: 'Node access information'
     property_path: search_api_node_grants
@@ -80,6 +171,16 @@ field_settings:
     indexed_locked: true
     type_locked: true
     hidden: true
+  publishing_status:
+    label: 'Publishing status'
+    datasource_id: 'entity:node'
+    property_path: status
+    type: boolean
+    indexed_locked: true
+    type_locked: true
+    dependencies:
+      module:
+        - node
   rendered_item:
     label: 'Rendered item'
     property_path: rendered_item
@@ -91,16 +192,17 @@ field_settings:
         'entity:node':
           article: search_index
           page: search_index
-  status:
-    label: 'Publishing status'
+  resource_type_name:
+    label: 'Resource Type » Taxonomy term » Name'
     datasource_id: 'entity:node'
-    property_path: status
-    type: boolean
-    indexed_locked: true
-    type_locked: true
+    property_path: 'field_resource_type:entity:name'
+    type: string
     dependencies:
+      config:
+        - field.storage.node.field_resource_type
       module:
-        - node
+        - taxonomy
+        - taxonomy
   sticky:
     label: 'Sticky at top of lists'
     datasource_id: 'entity:node'
@@ -109,6 +211,17 @@ field_settings:
     dependencies:
       module:
         - node
+  subject_name:
+    label: 'Subject » Taxonomy term » Name'
+    datasource_id: 'entity:node'
+    property_path: 'field_subject:entity:name'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_subject
+      module:
+        - taxonomy
+        - taxonomy
   title:
     label: Title
     datasource_id: 'entity:node'
@@ -133,6 +246,14 @@ field_settings:
     type: integer
     indexed_locked: true
     type_locked: true
+    dependencies:
+      module:
+        - node
+  uuid:
+    label: UUID
+    datasource_id: 'entity:node'
+    property_path: uuid
+    type: string
     dependencies:
       module:
         - node
