@@ -154,7 +154,43 @@ display:
           min_length: null
           fields: {  }
           plugin_id: search_api_fulltext
-      sorts: {  }
+      sorts:
+        field_edtf_date_created:
+          id: field_edtf_date_created
+          table: search_api_index_default_solr_index
+          field: field_edtf_date_created
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: ASC
+          exposed: true
+          expose:
+            label: 'Date Created'
+          plugin_id: search_api
+        title:
+          id: title
+          table: search_api_index_default_solr_index
+          field: title
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: ASC
+          exposed: true
+          expose:
+            label: Title
+          plugin_id: search_api
+        search_api_relevance:
+          id: search_api_relevance
+          table: search_api_index_default_solr_index
+          field: search_api_relevance
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: ASC
+          exposed: true
+          expose:
+            label: Relevance
+          plugin_id: search_api
       title: 'Search Content'
       header:
         result:
@@ -181,6 +217,8 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - 'url.query_args:sort_by'
+        - 'url.query_args:sort_order'
       cacheable: false
       max-age: -1
       tags: {  }
@@ -202,6 +240,8 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - 'url.query_args:sort_by'
+        - 'url.query_args:sort_order'
       cacheable: false
       max-age: -1
       tags: {  }
