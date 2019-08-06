@@ -29,6 +29,13 @@ Understanding how drupal entities relate to fedora objects - https://drive.googl
 
 Get the json-ld for an object in Drupal like so : http://localhost:8000/node/1?_format=jsonld
 
+# Updating an existing install
+1. pull down updated claw-app (`cd /var/www/html/drupal && git pull`)
+2. drupal config:import like `drupal config:import --directory /var/www/html/drupal/config/sync`
+3. run database migrations - `drush udpatedb`
+4. clear drupal cache - `drush cache-rebuild`
+5. composer updates?
+
 ## So you want to add a module
 1. Add the module to the composer requirements in the ASU specific ansible role
 2. Add the module to the drush enabling in the ASU specific ansible role
@@ -44,17 +51,31 @@ Get the json-ld for an object in Drupal like so : http://localhost:8000/node/1?_
 7. drush cache-rebuild - to clear the cache
 
 ## Tips on Config Syncing
-* To export content, go to your drupal root such as `/var/www/html/drupal/web` and run `drupal config:export --directory /var/www/html/drupal/config/sync --remove-uuid --remove-config-hash` ([see](https://hechoendrupal.gitbooks.io/drupal-console/content/en/commands/config-export.html))
-* To import content, go to your drupal root such as `/var/www/html/drupal/web` and run `drupal config:import --skip-uuid --directory /var/www/html/drupal/config/sync` ([see](https://hechoendrupal.gitbooks.io/drupal-console/content/en/commands/config-import.html))
+* To export content, go to your drupal root such as `/var/www/html/drupal/web` and run `drupal config:export --directory /var/www/html/drupal/config/sync --remove-uuid` ([see](https://hechoendrupal.gitbooks.io/drupal-console/content/en/commands/config-export.html))
+* To import content, go to your drupal root such as `/var/www/html/drupal/web` and run `drupal config:import --directory /var/www/html/drupal/config/sync` ([see](https://hechoendrupal.gitbooks.io/drupal-console/content/en/commands/config-import.html))
+
+## Tips on Using Drush
+[Drush full command list](https://drushcommands.com/drush-9x/)
+Common Commands
+* `drush cache-rebuild` - clear cache
+* `drush pm:enable module_name` - enable module
+* `drush pm:uninstall module_name` - disable module
+
+## Tips on Using Composer
+* To install everything from a composer.json file - `composer install`
+* To add a package `composer require packagename`
+* To update a package `composer update packagename`
+
 
 # Deploying to AWS
 An ansible script for provisioning a box on the DEV set up of AWS has been added - aws_provision.yml
-1. locally run aws_provision.yml
-2. locally run ansible-galaxy install -r requirements.yml
-3. locally run ansible-playbook -i inventory/aws playbook.yml -e "islandora_distro=ubuntu/xenial64" -e @inventory/aws/group_vars/all/passwords.yml
+1. locally run `ansible-playbook aws_provision.yml`
+2. locally run `ansible-galaxy install -r requirements.yml`
+3. locally run `ansible-playbook -i inventory/aws playbook.yml -e "islandora_distro=ubuntu/xenial64" -e @inventory/aws/group_vars/all/passwords.yml`
 <!-- must have an IAM role and key with privileges to administer EC2 -->
 <!-- must have upped the php memory_limit to 1GB for composer not to fall over -->
 <!-- had to run php -d memory_limit=-1 `which composer` install the first time since it was running out of memory -->
+<!-- must have security group configured correctly - ie ASU only for dev site -->
 
 # Component Glossary and Notes
 (in alphabetical order)
