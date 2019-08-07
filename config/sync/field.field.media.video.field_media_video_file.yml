@@ -4,10 +4,13 @@ dependencies:
   config:
     - field.storage.media.field_media_video_file
     - media.type.video
+  enforced:
+    module:
+      - islandora_core_feature
   module:
     - file
 _core:
-  default_config_hash: OA1qtcEH8xxQhIPvf4TykZOp1MqSTA1R4HoWxbcWZD0
+  default_config_hash: aVsH94glMbKDyF_GDPdx83nXIjQmnd9chf7vHN1ApGc
 id: media.video.field_media_video_file
 field_name: field_media_video_file
 entity_type: media
@@ -15,7 +18,7 @@ bundle: video
 label: 'Video file'
 description: ''
 required: true
-translatable: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
