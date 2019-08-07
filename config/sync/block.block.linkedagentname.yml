@@ -2,24 +2,24 @@ langcode: en
 status: true
 dependencies:
   config:
-    - facets.facet.subject_name
+    - facets.facet.linked_agent_taxonomy_term_name
   module:
     - facets
     - system
   theme:
     - carapace
-id: subjectname
+id: linkedagentname
 theme: carapace
 region: sidebar_second
-weight: -4
+weight: -6
 provider: null
-plugin: 'facet_block:subject_name'
+plugin: 'facet_block:linked_agent_taxonomy_term_name'
 settings:
-  id: 'facet_block:subject_name'
-  label: Subject
+  id: 'facet_block:linked_agent_taxonomy_term_name'
+  label: Contributor
   provider: facets
   label_display: visible
-  block_id: subjectname
+  block_id: linkedagentname
 visibility:
   request_path:
     id: request_path
