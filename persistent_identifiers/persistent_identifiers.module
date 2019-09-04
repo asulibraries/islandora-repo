@@ -1,0 +1,40 @@
+<?php
+
+/**
+ * @file
+ * Contains persistent_identifiers.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function persistent_identifiers_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the persistent_identifiers module.
+    case 'help.page.persistent_identifiers':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('A module for handling persistent identifiers like Handles, ARKs, and DOIs.') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function persistent_identifiers_theme() {
+  return [
+    'persistent_identifiers' => [
+      'render element' => 'children',
+    ],
+  ];
+}
+
+function persistent_identifiers_entity_insert(EntityInterface $entity){
+  $type = \Drupal::service('plugin.manager.persistent_identifiers');
+  \Drupal::logger('persistent identifiers')->info(print_r($type->getDefinitions(), TRUE));
+}
