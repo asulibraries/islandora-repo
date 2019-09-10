@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Entity\EntityInterface;
 
 /**
  * Implements hook_help().
@@ -34,7 +35,15 @@ function persistent_identifiers_theme() {
   ];
 }
 
-function persistent_identifiers_entity_insert(EntityInterface $entity){
+/**
+ * Implements hook_entity_insert().
+ */
+function persistent_identifiers_entity_insert(EntityInterface $entity) {
   $type = \Drupal::service('plugin.manager.persistent_identifiers');
   \Drupal::logger('persistent identifiers')->info(print_r($type->getDefinitions(), TRUE));
+  // TODO get enabled plugins from the config.
+  $action = $type->createInstance('pi_handle');
+  \Drupal::logger('persistent identifiers')->info(print_r($action, TRUE));
+  \Drupal::logger('persistent identifiers')->info("about to create the handle");
+  $action->getOrCreatePi($entity);
 }
