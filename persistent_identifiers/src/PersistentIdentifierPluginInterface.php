@@ -1,22 +1,34 @@
 <?php
 
 namespace Drupal\persistent_identifiers;
+
 use Drupal\Component\Plugin\PluginInspectionInterface;
 
 /**
  * Defines an interface for persistent identifier plugins.
  */
-interface PersistentIdentifierPluginInterface extends PluginInspectionInterface{
-    /**
-     * @param string node
-     * @return string url
-     */
-    public function get_or_create_pi(string $node);
+interface PersistentIdentifierPluginInterface extends PluginInspectionInterface {
 
-    /**
-     * @param string node
-     * @return string url
-     */
-    public function tombstone_pi(string $node);
+  /**
+   * Get or create the identifier.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface|null $entity
+   *   The entity.
+   *
+   * @return string
+   *   The url.
+   */
+  public function getOrCreatePi(EntityInterface $entity = NULL);
+
+  /**
+   * Point the identifier to a tombstone page.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface $entity
+   *   The entity.
+   *
+   * @return string
+   *   The url.
+   */
+  public function tombstonePi(EntityInterface $entity);
 
 }
