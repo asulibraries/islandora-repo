@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora
+    - node
+  theme:
+    - carapace
+id: miradordiv
+theme: carapace
+region: content
+weight: -3
+provider: null
+plugin: miradordiv
+settings:
+  id: miradordiv
+  label: 'Mirador Div'
+  provider: islandora
+  label_display: visible
+visibility:
+  node_type:
+    id: node_type
+    bundles:
+      islandora_object: islandora_object
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
