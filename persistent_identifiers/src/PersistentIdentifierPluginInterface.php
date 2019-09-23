@@ -2,6 +2,7 @@
 
 namespace Drupal\persistent_identifiers;
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Component\Plugin\PluginInspectionInterface;
 
 /**
