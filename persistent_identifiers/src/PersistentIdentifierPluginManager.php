@@ -6,11 +6,12 @@ use Drupal\Core\Extension\ModuleHandlerInterface;
 use Drupal\Core\Plugin\DefaultPluginManager;
 
 /**
- * Manages persistent identifier plugins
+ * Manages persistent identifier plugins.
  * @see plugin_api
  */
 class PersistentIdentifierPluginManager extends DefaultPluginManager {
-    /**
+
+  /**
    * Constructs a PersistentIdentifierPluginManager object.
    *
    * @param \Traversable $namespaces
@@ -26,6 +27,5 @@ class PersistentIdentifierPluginManager extends DefaultPluginManager {
     $this->setCacheBackend($cache_backend, 'persistent_identifiers_plugins');
     $this->alterInfo('persistent_identifiers_plugin_info');
   }
-
 
 }
