@@ -45,5 +45,7 @@ function persistent_identifiers_entity_insert(EntityInterface $entity) {
   $action = $type->createInstance('pi_handle');
   \Drupal::logger('persistent identifiers')->info(print_r($action, TRUE));
   \Drupal::logger('persistent identifiers')->info("about to create the handle");
-  $action->getOrCreatePi($entity);
+  // TODO get the entities to perform this on from somewhere - maybe config
+  \Drupal::logger('persistent identifiers')->info(print_r($entity->getEntityType(), TRUE));
+  // $action->getOrCreatePi($entity);
 }
