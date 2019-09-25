@@ -4,7 +4,7 @@ dependencies:
   module:
     - islandora
 _core:
-  default_config_hash: WonJWGlJauyHt_Q7N7KqMGz26H82dZ1euyVO6n1BIxg
+  default_config_hash: dzH8wIqyJkvYEjk5EaJ4MSzIaxI7zox4vbVT6hER7w8
 name: audio_original_file
 label: 'Audio Original File'
 group: Islandora
@@ -15,14 +15,12 @@ conditions:
   media_has_term:
     id: media_has_term
     negate: 0
-    uuid: 6a56b625-4b86-46dc-8997-b3bc2443d48b
     uri: 'http://pcdm.org/use#OriginalFile'
     context_mapping:
       media: '@islandora.media_route_context_provider:media'
   parent_node_has_term:
     id: parent_node_has_term
     negate: 0
-    uuid: a05516b2-72e0-44a4-b0db-45c71d5d8105
     uri: 'http://purl.org/coar/resource_type/c_18cc'
     context_mapping:
       media: '@islandora.media_route_context_provider:media'

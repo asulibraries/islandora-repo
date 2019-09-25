@@ -4,7 +4,7 @@ dependencies:
   module:
     - islandora
 _core:
-  default_config_hash: fPF6O3XSazYwCC1IgFqKbvT0zOJ-84-OgxyFCtR3_Ag
+  default_config_hash: qn-ji9blfRizb2o_B2oLrWXNmUo-oBZ93gbTv36T7mk
 name: pdf_original_file
 label: 'PDF Original File'
 group: Islandora
@@ -15,14 +15,12 @@ conditions:
   media_has_term:
     id: media_has_term
     negate: 0
-    uuid: a263091f-a591-4aff-b890-64bd88c3b01e
     uri: 'http://pcdm.org/use#OriginalFile'
     context_mapping:
       media: '@islandora.media_route_context_provider:media'
   parent_node_has_term:
     id: parent_node_has_term
     negate: 0
-    uuid: 5654bf7d-f82b-48ca-a738-f36720b4e252
     uri: 'https://schema.org/DigitalDocument'
     context_mapping:
       media: '@islandora.media_route_context_provider:media'
@@ -30,6 +28,7 @@ reactions:
   derivative:
     id: derivative
     actions:
+      get_ocr_from_image: get_ocr_from_image
       image_generate_a_thumbnail_from_an_original_file: image_generate_a_thumbnail_from_an_original_file
     saved: false
 weight: 0

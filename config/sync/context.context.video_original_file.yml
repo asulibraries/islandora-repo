@@ -4,7 +4,7 @@ dependencies:
   module:
     - islandora
 _core:
-  default_config_hash: NP55xIsI21Ms77k1N11nrclPoFt0A-vgNB5oykF3Oj8
+  default_config_hash: qv1mf86xi4yYnIw1BKylii2CvebHnQPy59qG0GZLFBc
 name: video_original_file
 label: 'Video Original File'
 group: Islandora
@@ -15,14 +15,12 @@ conditions:
   media_has_term:
     id: media_has_term
     negate: 0
-    uuid: ee21a5e7-ab00-49f8-8ef1-1f8c81ed1d14
     uri: 'http://pcdm.org/use#OriginalFile'
     context_mapping:
       media: '@islandora.media_route_context_provider:media'
   parent_node_has_term:
     id: parent_node_has_term
     negate: 0
-    uuid: e215a087-46d2-401e-8d73-db5bde00e485
     uri: 'http://purl.org/coar/resource_type/c_12ce'
     context_mapping:
       media: '@islandora.media_route_context_provider:media'
