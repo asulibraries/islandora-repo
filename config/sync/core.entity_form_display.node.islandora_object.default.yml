@@ -18,6 +18,7 @@ dependencies:
     - field.field.node.islandora_object.field_resource_type
     - field.field.node.islandora_object.field_rights
     - field.field.node.islandora_object.field_subject
+    - field.field.node.islandora_object.field_weight
     - node.type.islandora_object
   enforced:
     module:
@@ -35,11 +36,11 @@ third_party_settings:
         - field_access_terms
         - field_display_hints
         - field_pid
+        - field_weight
       parent_name: ''
       weight: 2
       format_type: details
       format_settings:
-        label: System
         open: true
         required_fields: true
         id: ''
@@ -65,7 +66,6 @@ third_party_settings:
       weight: 1
       format_type: details
       format_settings:
-        label: General
         open: true
         required_fields: true
         id: ''
@@ -73,7 +73,7 @@ third_party_settings:
       label: General
       region: content
 _core:
-  default_config_hash: J4Q92jsh1vQ7qBhzDgR99-NYj3tuJdUrQKhCH8vlR9c
+  default_config_hash: XoJHWJkj5zXGKh6Swptdc3esiS9mwGO6HvwAMrdp7k8
 id: node.islandora_object.default
 targetEntityType: node
 bundle: islandora_object
@@ -120,6 +120,7 @@ content:
     settings:
       strict_dates: false
       intervals: false
+      sets: false
     third_party_settings: {  }
   field_edtf_date_created:
     type: edtf_default
@@ -128,6 +129,7 @@ content:
     settings:
       strict_dates: false
       intervals: false
+      sets: false
     third_party_settings: {  }
   field_edtf_date_issued:
     type: edtf_default
@@ -136,6 +138,7 @@ content:
     settings:
       strict_dates: false
       intervals: false
+      sets: false
     third_party_settings: {  }
   field_extent:
     type: string_textfield
@@ -207,6 +210,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+    region: content
+  field_weight:
+    weight: 26
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
     region: content
   langcode:
     type: language_select
