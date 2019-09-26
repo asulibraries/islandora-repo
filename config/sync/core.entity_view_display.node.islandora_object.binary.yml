@@ -19,6 +19,7 @@ dependencies:
     - field.field.node.islandora_object.field_resource_type
     - field.field.node.islandora_object.field_rights
     - field.field.node.islandora_object.field_subject
+    - field.field.node.islandora_object.field_weight
     - node.type.islandora_object
   enforced:
     module:
@@ -102,11 +103,6 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-  field_gemini_uri:
-    weight: 100
-    settings: {  }
-    third_party_settings: {  }
-    region: content
   field_identifier:
     type: string
     weight: 1
@@ -182,6 +178,7 @@ hidden:
   field_display_hints: true
   field_model: true
   field_pid: true
+  field_weight: true
   openseadragon_media_evas_entity_view_2: true
   openseadragon_media_evas_service_file: true
   pdfjs_media_evas_entity_view_1: true

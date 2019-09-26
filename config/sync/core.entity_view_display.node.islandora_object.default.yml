@@ -18,6 +18,7 @@ dependencies:
     - field.field.node.islandora_object.field_resource_type
     - field.field.node.islandora_object.field_rights
     - field.field.node.islandora_object.field_subject
+    - field.field.node.islandora_object.field_weight
     - node.type.islandora_object
   enforced:
     module:
@@ -26,7 +27,7 @@ dependencies:
     - controlled_access_terms
     - user
 _core:
-  default_config_hash: AUD0qyaFHBoXd-qf4TBs-XRwu-kzs5N0EvV_kGPLzWE
+  default_config_hash: vPVmBMzLFxIIFlGvCB0dtMWjWgXtMnhJqkw4fDY3gTM
 id: node.islandora_object.default
 targetEntityType: node
 bundle: islandora_object
@@ -58,7 +59,6 @@ content:
     region: content
     label: above
     settings:
-      season_hemisphere: north
       date_separator: dash
       date_order: big_endian
       month_format: mm
@@ -74,7 +74,6 @@ content:
       date_order: big_endian
       month_format: mm
       day_format: dd
-      season_hemisphere: north
     third_party_settings: {  }
   field_edtf_date_issued:
     type: edtf_default
@@ -86,7 +85,6 @@ content:
       date_order: big_endian
       month_format: mm
       day_format: dd
-      season_hemisphere: north
     third_party_settings: {  }
   field_extent:
     type: string
@@ -96,11 +94,6 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-  field_gemini_uri:
-    weight: 100
-    settings: {  }
-    third_party_settings: {  }
-    region: content
   field_identifier:
     type: string
     weight: 1
@@ -171,6 +164,7 @@ hidden:
   field_display_hints: true
   field_model: true
   field_pid: true
+  field_weight: true
   openseadragon_media_evas_entity_view_1: true
   openseadragon_media_evas_entity_view_2: true
   openseadragon_media_evas_service_file: true

@@ -2,56 +2,50 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.media.file.field_access_terms
-    - field.field.media.file.field_file_size
-    - field.field.media.file.field_media_file
-    - field.field.media.file.field_media_of
-    - field.field.media.file.field_media_use
-    - field.field.media.file.field_mime_type
-    - media.type.file
+    - field.field.media.extracted_text.field_edited_text
+    - field.field.media.extracted_text.field_media_file
+    - field.field.media.extracted_text.field_media_of
+    - field.field.media.extracted_text.field_media_use
+    - field.field.media.extracted_text.field_mime_type
+    - media.type.extracted_text
   module:
     - file
     - path
+    - text
 _core:
-  default_config_hash: fml_aPtecXt0DBObwjtlOW8ZwRFa26NuiZtEFs4I1ew
-id: media.file.default
+  default_config_hash: 0Zeu8012np-BZS2tUHhI5CnSeZbuJD7pUtXGIsgDUdk
+id: media.extracted_text.default
 targetEntityType: media
-bundle: file
+bundle: extracted_text
 mode: default
 content:
   created:
     type: datetime_timestamp
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_edited_text:
+    type: text_textarea
+    weight: 7
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_media_file:
+    type: file_generic
     weight: 6
     region: content
-    settings: {  }
-    third_party_settings: {  }
-  field_access_terms:
-    weight: 3
-    settings: {  }
-    third_party_settings: {  }
-    type: options_buttons
-    region: content
-  field_media_file:
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
-    type: file_generic
+  langcode:
+    type: language_select
     weight: 1
     region: content
-  field_media_of:
-    type: entity_reference_autocomplete
-    weight: 4
-    region: content
     settings:
-      match_operator: CONTAINS
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_media_use:
-    type: options_buttons
-    weight: 2
-    region: content
-    settings: {  }
+      include_locked: true
     third_party_settings: {  }
   name:
     type: string_textfield
@@ -63,7 +57,7 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 7
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -71,17 +65,12 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 8
+    weight: 5
     region: content
-    third_party_settings: {  }
-  translation:
-    weight: 9
-    region: content
-    settings: {  }
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 5
+    weight: 2
     settings:
       match_operator: CONTAINS
       size: 60
@@ -89,6 +78,6 @@ content:
     region: content
     third_party_settings: {  }
 hidden:
-  field_file_size: true
+  field_media_of: true
+  field_media_use: true
   field_mime_type: true
-  langcode: true
