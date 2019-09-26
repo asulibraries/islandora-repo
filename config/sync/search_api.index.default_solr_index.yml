@@ -7,7 +7,10 @@ dependencies:
     - user
     - taxonomy
     - search_api
+    - media
   config:
+    - field.storage.media.field_edited_text
+    - field.storage.media.field_media_of
     - field.storage.node.field_alternative_title
     - field.storage.node.field_edtf_date_created
     - field.storage.node.field_description
@@ -19,7 +22,6 @@ dependencies:
     - field.storage.node.field_subject
     - field.storage.node.field_tags
     - search_api.server.default_solr_server
-    - core.entity_view_mode.node.search_index
 third_party_settings:
   search_api_solr:
     finalize: false
@@ -91,6 +93,15 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_description
+  field_edited_text:
+    label: 'Edited Text'
+    datasource_id: 'entity:media'
+    property_path: field_edited_text
+    type: text
+    boost: 0.2
+    dependencies:
+      config:
+        - field.storage.media.field_edited_text
   field_edtf_date_created:
     label: 'Date Created'
     datasource_id: 'entity:node'
@@ -107,6 +118,14 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_identifier
+  field_media_of:
+    label: 'Media of'
+    datasource_id: 'entity:media'
+    property_path: field_media_of
+    type: integer
+    dependencies:
+      config:
+        - field.storage.media.field_media_of
   field_tags:
     label: Tags
     datasource_id: 'entity:node'
@@ -181,18 +200,6 @@ field_settings:
     dependencies:
       module:
         - node
-  rendered_item:
-    label: 'Rendered item'
-    property_path: rendered_item
-    type: text
-    configuration:
-      roles:
-        anonymous: anonymous
-      view_mode:
-        'entity:node':
-          article: search_index
-          islandora_object: ''
-          page: search_index
   resource_type_name:
     label: 'Resource Type » Taxonomy term » Name'
     datasource_id: 'entity:node'
@@ -259,6 +266,14 @@ field_settings:
       module:
         - node
 datasource_settings:
+  'entity:media':
+    bundles:
+      default: false
+      selected:
+        - extracted_text
+    languages:
+      default: true
+      selected: {  }
   'entity:node':
     bundles:
       default: true
@@ -280,12 +295,19 @@ processor_settings:
   entity_status:
     weights:
       preprocess_index: -10
-  html_filter:
+  highlight:
+    highlight: always
+    highlight_partial: false
+    excerpt: true
+    excerpt_length: 256
+    exclude_fields: {  }
+    prefix: '<strong>'
+    suffix: '</strong>'
     weights:
-      preprocess_index: -3
-      preprocess_query: -6
-    fields:
-      - rendered_item
+      postprocess_query: 0
+  html_filter:
+    all_fields: false
+    fields: {  }
     title: true
     alt: true
     tags:
@@ -294,12 +316,16 @@ processor_settings:
       h2: 3
       h3: 2
       string: 2
-    all_fields: false
+    weights:
+      preprocess_index: -3
+      preprocess_query: -6
   rendered_item:
     weights:
       add_properties: 0
       pre_index_save: -10
-  solr_date_range: {  }
+  solr_date_range:
+    weights:
+      preprocess_index: 0
 tracker_settings:
   default:
     indexing_order: fifo
