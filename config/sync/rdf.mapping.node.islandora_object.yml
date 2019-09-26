@@ -9,7 +9,7 @@ dependencies:
   module:
     - node
 _core:
-  default_config_hash: 3fAlAZZjzkT5NiSEacRn9HhS6Yj1h86NxsdfT8PmJD0
+  default_config_hash: Fd3bPChZ2qioKDdxdVrCcnE5nas6UtzoAuRBuo22-Cg
 id: node.islandora_object
 targetEntityType: node
 bundle: islandora_object
@@ -58,6 +58,9 @@ fieldMappings:
     properties:
       - 'dc:subject'
     mapping_type: rel
+  field_weight:
+    properties:
+      - 'co:index'
   title:
     properties:
       - 'dc:title'
