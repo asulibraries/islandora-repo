@@ -5,15 +5,13 @@ dependencies:
     module:
       - islandora_core_feature
   module:
-    - jsonld
+    - islandora
     - node
-    - rest
-    - serialization
     - user
 _core:
-  default_config_hash: Zwu8JUsBiYaxPko_9DbJJhA-ZZSGOm81I9XtT9NH3M4
-id: manage_members
-label: 'Manage members'
+  default_config_hash: sO4neDNq9QVeYw2bgVjVCtYpt243U_qPM-hpFfx2SRc
+id: reorder_children
+label: 'Reorder children'
 module: views
 description: 'Manage members belonging to a piece of content'
 tag: ''
@@ -53,81 +51,31 @@ display:
           sort_asc_label: Asc
           sort_desc_label: Desc
       pager:
-        type: mini
+        type: full
         options:
           items_per_page: 10
           offset: 0
           id: 0
           total_pages: null
-          expose:
-            items_per_page: false
-            items_per_page_label: 'Items per page'
-            items_per_page_options: '5, 10, 25, 50'
-            items_per_page_options_all: false
-            items_per_page_options_all_label: '- All -'
-            offset: false
-            offset_label: Offset
           tags:
             previous: ‹‹
             next: ››
+            first: '« First'
+            last: 'Last »'
+          expose:
+            items_per_page: true
+            items_per_page_label: 'Items per page'
+            items_per_page_options: '10, 25, 50, 100'
+            items_per_page_options_all: true
+            items_per_page_options_all_label: '- All -'
+            offset: false
+            offset_label: Offset
+          quantity: 9
       style:
         type: table
       row:
         type: fields
       fields:
-        node_bulk_form:
-          id: node_bulk_form
-          table: node
-          field: node_bulk_form
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: 'Node operations bulk form'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          action_title: Action
-          include_exclude: exclude
-          selected_actions: {  }
-          entity_type: node
-          plugin_id: node_bulk_form
         title:
           id: title
           table: node_field_data
@@ -175,14 +123,14 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        operations:
-          id: operations
-          table: node
-          field: operations
+        field_weight:
+          id: field_weight
+          table: node__field_weight
+          field: field_weight
           relationship: none
           group_type: group
           admin_label: ''
-          label: 'Operations links'
+          label: ''
           exclude: false
           alter:
             alter_text: false
@@ -215,7 +163,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: true
+          element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -223,12 +171,22 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          destination: false
-          entity_type: node
-          plugin_id: entity_operations
+          plugin_id: integer_weight_selector
       filters: {  }
-      sorts: {  }
-      title: 'Manage members'
+      sorts:
+        field_weight_value:
+          id: field_weight_value
+          table: node__field_weight
+          field: field_weight_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: ASC
+          exposed: false
+          expose:
+            label: ''
+          plugin_id: standard
+      title: 'Reorder children'
       header: {  }
       footer: {  }
       empty: {  }
@@ -277,7 +235,7 @@ display:
         operator: AND
         groups: {  }
     cache_metadata:
-      max-age: 0
+      max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
@@ -293,10 +251,10 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: node/%node/members
+      path: node/%node/reorder
       menu:
         type: tab
-        title: Children
+        title: 'Reorder Children'
         description: ''
         expanded: false
         parent: ''
@@ -304,41 +262,12 @@ display:
         context: '0'
         menu_name: main
     cache_metadata:
-      max-age: 0
+      max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url
         - url.query_args
-        - 'user.node_grants:view'
-        - user.permissions
-      tags: {  }
-  rest_export_1:
-    display_plugin: rest_export
-    id: rest_export_1
-    display_title: 'REST export'
-    position: 1
-    display_options:
-      display_extenders: {  }
-      path: node/%node/members
-      style:
-        type: serializer
-        options:
-          uses_fields: false
-          formats:
-            jsonld: jsonld
-            json: json
-      auth:
-        - basic_auth
-        - jwt_auth
-        - cookie
-    cache_metadata:
-      max-age: 0
-      contexts:
-        - 'languages:language_content'
-        - 'languages:language_interface'
-        - request_format
-        - url
         - 'user.node_grants:view'
         - user.permissions
       tags: {  }
