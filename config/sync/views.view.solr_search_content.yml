@@ -200,7 +200,7 @@ display:
   page_1:
     display_plugin: page
     id: page_1
-    display_title: Page
+    display_title: 'Search - no excerpt'
     position: 1
     display_options:
       display_extenders: {  }
@@ -210,6 +210,7 @@ display:
         type: none
       defaults:
         cache: false
+      display_description: ''
     cache_metadata:
       contexts:
         - 'languages:language_interface'
@@ -223,7 +224,7 @@ display:
   page_2:
     display_plugin: page
     id: page_2
-    display_title: Page
+    display_title: 'Search - with excerpt'
     position: 1
     display_options:
       display_extenders: {  }
@@ -237,8 +238,16 @@ display:
         row: false
         fields: false
       style:
-        type: default
-        options: {  }
+        type: grid
+        options:
+          grouping: {  }
+          columns: 1
+          automatic_width: true
+          alignment: horizontal
+          col_class_default: true
+          col_class_custom: ''
+          row_class_default: true
+          row_class_custom: ''
       row:
         type: fields
         options:
@@ -773,6 +782,7 @@ display:
                 view_mode: default
           entity_type: media
           plugin_id: search_api_field
+      display_description: ''
     cache_metadata:
       contexts:
         - 'languages:language_content'

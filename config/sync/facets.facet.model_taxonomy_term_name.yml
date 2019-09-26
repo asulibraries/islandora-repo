@@ -6,14 +6,14 @@ dependencies:
     - views.view.solr_search_content
   module:
     - search_api
-id: language
-name: Language
-url_alias: language
-weight: 1
+id: model_taxonomy_term_name
+name: 'Model » Taxonomy term » Name'
+url_alias: model_taxonomy_term_name
+weight: 0
 min_count: 1
 show_only_one_result: false
-field_identifier: langcode
-facet_source_id: 'search_api:views_page__solr_search_content__page_1'
+field_identifier: model_name
+facet_source_id: 'search_api:views_page__solr_search_content__page_2'
 widget:
   type: links
   config:

@@ -1,28 +1,28 @@
 langcode: en
-status: false
+status: true
 dependencies:
   config:
-    - facets.facet.language
+    - facets.facet.model_taxonomy_term_name
   module:
     - facets
     - system
   theme:
     - carapace
-id: language
+id: modeltaxonomytermname
 theme: carapace
 region: sidebar_second
-weight: -5
+weight: 0
 provider: null
-plugin: 'facet_block:language'
+plugin: 'facet_block:model_taxonomy_term_name'
 settings:
-  id: 'facet_block:language'
-  label: Language
+  id: 'facet_block:model_taxonomy_term_name'
+  label: Model
   provider: facets
   label_display: visible
-  block_id: language
+  block_id: modeltaxonomytermname
 visibility:
   request_path:
     id: request_path
-    pages: '/search*'
+    pages: '/search-full-text*'
     negate: false
     context_mapping: {  }
