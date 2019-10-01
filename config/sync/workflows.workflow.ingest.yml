@@ -1,0 +1,53 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.islandora_object
+  module:
+    - content_moderation
+id: ingest
+label: Ingest
+type: content_moderation
+type_settings:
+  states:
+    declined:
+      published: false
+      default_revision: false
+      label: Declined
+      weight: 2
+    draft:
+      label: Draft
+      published: false
+      default_revision: false
+      weight: 0
+    published:
+      label: Published
+      published: true
+      default_revision: true
+      weight: 1
+  transitions:
+    create_new_draft:
+      label: 'Create New Draft'
+      to: draft
+      weight: 0
+      from:
+        - draft
+        - published
+    decline_submission:
+      label: 'Decline Submission'
+      from:
+        - draft
+        - published
+      to: declined
+      weight: 2
+    publish:
+      label: Publish
+      to: published
+      weight: 1
+      from:
+        - draft
+        - published
+  entity_types:
+    node:
+      - islandora_object
+  default_moderation_state: draft

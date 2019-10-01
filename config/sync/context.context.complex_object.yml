@@ -1,0 +1,42 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora
+name: complex_object
+label: 'Complex Object'
+group: Islandora
+description: 'Adds blocks for complex object display'
+requireAllConditions: false
+disabled: false
+conditions:
+  node_has_term:
+    id: node_has_term
+    negate: 0
+    uuid: 34c815f0-543b-4d38-bd0e-ec0b121a34d7
+    uri: 'https://schema.org/CreativeWork'
+    context_mapping:
+      node: '@node.node_route_context:node'
+reactions:
+  blocks:
+    blocks:
+      8f71968b-6209-46b2-ad8e-83ce04e6ba6d:
+        id: 'views_block:complex_object_children-block_1'
+        label: ''
+        provider: views
+        label_display: visible
+        views_label: ''
+        items_per_page: none
+        region: content
+        weight: '0'
+        context_mapping: {  }
+        theme: carapace
+        css_class: ''
+        unique: 0
+        context_id: complex_object
+        uuid: 8f71968b-6209-46b2-ad8e-83ce04e6ba6d
+    id: blocks
+    saved: false
+    uuid: 9a73d05f-afaf-43ac-a03b-285035a1d420
+    include_default_blocks: 1
+weight: 0

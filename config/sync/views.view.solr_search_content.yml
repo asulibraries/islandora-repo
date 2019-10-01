@@ -40,7 +40,7 @@ display:
           reset_button: false
           reset_button_label: Reset
           exposed_sorts_label: 'Sort by'
-          expose_sort_order: true
+          expose_sort_order: false
           sort_asc_label: Asc
           sort_desc_label: Desc
       pager:
@@ -193,7 +193,6 @@ display:
         - url
         - url.query_args
         - 'url.query_args:sort_by'
-        - 'url.query_args:sort_order'
       cacheable: false
       max-age: -1
       tags: {  }
@@ -217,7 +216,6 @@ display:
         - url
         - url.query_args
         - 'url.query_args:sort_by'
-        - 'url.query_args:sort_order'
       cacheable: false
       max-age: -1
       tags: {  }
@@ -790,7 +788,6 @@ display:
         - url
         - url.query_args
         - 'url.query_args:sort_by'
-        - 'url.query_args:sort_order'
       cacheable: false
       max-age: -1
       tags:
