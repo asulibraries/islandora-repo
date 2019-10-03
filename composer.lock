@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cedf6171b8f5f4ac3e2b9fc4ea26072f",
+    "content-hash": "7f691dfd49654c64d24a81b94b99b05c",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -2183,17 +2183,11 @@
         },
         {
             "name": "drupal/adaptivetheme",
-            "version": "2.1.0",
+            "version": "dev-3.x",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/adaptivetheme.git",
-                "reference": "8.x-2.1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/adaptivetheme-8.x-2.1.zip",
-                "reference": "8.x-2.1",
-                "shasum": "38f1af270325d64faba6cbda3e7e2860be87c725"
+                "reference": "82867ba9913b66e3261329b83bcd16985c2a85f6"
             },
             "require": {
                 "drupal/core": "~8.0"
@@ -2201,14 +2195,14 @@
             "type": "drupal-theme",
             "extra": {
                 "branch-alias": {
-                    "dev-2.x": "2.x-dev"
+                    "dev-3.x": "3.x-dev"
                 },
                 "drupal": {
-                    "version": "8.x-2.1",
-                    "datestamp": "1511473985",
+                    "version": "8.x-3.1+1-dev",
+                    "datestamp": "1521061984",
                     "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
+                        "status": "not-covered",
+                        "message": "Dev releases are not covered by Drupal security advisories."
                     }
                 }
             },
@@ -2225,7 +2219,8 @@
             "homepage": "https://www.drupal.org/project/adaptivetheme",
             "support": {
                 "source": "https://git.drupalcode.org/project/adaptivetheme"
-            }
+            },
+            "time": "2018-03-14T21:12:35+00:00"
         },
         {
             "name": "drupal/admin_toolbar",
@@ -2306,61 +2301,6 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/admin_toolbar",
                 "issues": "https://www.drupal.org/project/issues/admin_toolbar"
-            }
-        },
-        {
-            "name": "drupal/at_tools",
-            "version": "2.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/at_tools.git",
-                "reference": "8.x-2.1"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/at_tools-8.x-2.1.zip",
-                "reference": "8.x-2.1",
-                "shasum": "3556ca88077adf2d8ef26020a61c49e3749519ed"
-            },
-            "require": {
-                "drupal/core": "~8.0"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "branch-alias": {
-                    "dev-2.x": "2.x-dev"
-                },
-                "drupal": {
-                    "version": "8.x-2.1",
-                    "datestamp": "1511474584",
-                    "security-coverage": {
-                        "status": "covered",
-                        "message": "Covered by Drupal's security advisory policy"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "Jeff Burnz",
-                    "homepage": "http://adaptivethemes.com/",
-                    "role": "Maintainer"
-                }
-            ],
-            "description": "Tools to support Adaptivetheme and sub-themes.",
-            "homepage": "https://www.drupal.org/project/at_tools",
-            "keywords": [
-                "adaptivetheme",
-                "base theme",
-                "drupal",
-                "theme"
-            ],
-            "support": {
-                "source": "https://www.drupal.org/project/at_tools",
-                "issues": "http://drupal.org/project/issues/at_tools"
             }
         },
         {
@@ -4372,65 +4312,6 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/key",
                 "issues": "http://drupal.org/project/key"
-            }
-        },
-        {
-            "name": "drupal/layout_plugin",
-            "version": "1.0.0-alpha23",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/layout_plugin.git",
-                "reference": "8.x-1.0-alpha23"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/layout_plugin-8.x-1.0-alpha23.zip",
-                "reference": "8.x-1.0-alpha23",
-                "shasum": "c79992e2f52ac6a7c8dc0706512f2c70fc9f5e11"
-            },
-            "require": {
-                "drupal/core": "~8.0"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "branch-alias": {
-                    "dev-1.x": "1.x-dev"
-                },
-                "drupal": {
-                    "version": "8.x-1.0-alpha23",
-                    "datestamp": "1476269960",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Project has not opted into security advisory coverage!"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "David Snopek",
-                    "homepage": "https://www.drupal.org/user/172527"
-                },
-                {
-                    "name": "Bram Goffings",
-                    "homepage": "https://www.drupal.org/user/266527"
-                },
-                {
-                    "name": "Fredrik Lassen",
-                    "homepage": "https://www.drupal.org/user/243377"
-                }
-            ],
-            "description": "An API module to hold the Drupal 8 plugin manager for layouts.",
-            "homepage": "https://www.drupal.org/project/layout_plugin",
-            "keywords": [
-                "layout",
-                "php"
-            ],
-            "support": {
-                "source": "https://git.drupalcode.org/project/layout_plugin"
             }
         },
         {
@@ -6462,22 +6343,20 @@
         },
         {
             "name": "islandora/carapace",
-            "version": "1.0.0",
+            "version": "dev-8.x-3.x",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Islandora-CLAW/carapace.git",
-                "reference": "677368c4f0600ea33f12f33086fde96da2648654"
+                "reference": "e83fe3edf00e6a440e635bf2cb128d811c71527a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Islandora-CLAW/carapace/zipball/677368c4f0600ea33f12f33086fde96da2648654",
-                "reference": "677368c4f0600ea33f12f33086fde96da2648654",
+                "url": "https://api.github.com/repos/Islandora-CLAW/carapace/zipball/e83fe3edf00e6a440e635bf2cb128d811c71527a",
+                "reference": "e83fe3edf00e6a440e635bf2cb128d811c71527a",
                 "shasum": ""
             },
             "require": {
-                "drupal/adaptivetheme": "^2.0",
-                "drupal/at_tools": "^2.0",
-                "drupal/layout_plugin": "^1.0@alpha"
+                "drupal/adaptivetheme": "dev-3.x"
             },
             "require-dev": {
                 "drupal/coder": "*",
@@ -6508,7 +6387,7 @@
                 "Islandora",
                 "drupal"
             ],
-            "time": "2018-01-30T18:10:55+00:00"
+            "time": "2019-10-03T13:56:47+00:00"
         },
         {
             "name": "islandora/chullo",
@@ -13718,6 +13597,7 @@
         "drupal/message_subscribe_email": 10,
         "drupal/orcid": 20,
         "drupal/pdf": 20,
+        "islandora/carapace": 20,
         "islandora/islandora_defaults": 20,
         "islandora/openseadragon": 20
     },
