@@ -58,6 +58,7 @@ class DepositWebformHandler extends WebformHandlerBase {
     $this->debug(__FUNCTION__);
     \Drupal::logger("webform")->notice("submit form");
     \Drupal::logger("webform")->notice("<pre><code>" . $webform_submission . "</code></pre>");
+    // TODO put functionality that looks up the user and gives them the ability to create/edit repository items now
   }
 
 }
