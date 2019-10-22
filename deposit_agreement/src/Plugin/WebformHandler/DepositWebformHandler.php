@@ -2,63 +2,44 @@
 
 namespace Drupal\deposit_agreement\Plugin\WebformHandler;
 
-use Drupal\Core\Config\ConfigFactoryInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Logger\LoggerChannelFactoryInterface;
+use Drupal\node\Entity\Node;
+use Drupal\webform\WebformInterface;
 use Drupal\webform\Plugin\WebformHandlerBase;
+use Drupal\webform\webformSubmissionInterface;
+use Drupal\webform\Entity\WebformSubmission;
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Logger\LoggerChannelFactoryInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\webform\WebformSubmissionConditionsValidatorInterface;
-use Drupal\webform\WebformSubmissionInterface;
 use Drupal\webform\WebformTokenManagerInterface;
 
 /**
- * Webform handler.
+ * Deposit webform Handler.
  *
  * @WebformHandler(
- *   id = "deposit_agreement",
- *   submission = \Drupal\Plugin\WebformHandlerInterface::SUBMISSION_REQUIRED
+ *   id = "deposit_webform_handler",
+ *   label = @Translation("Deposit Webform Handler"),
+ *   category = @Translation("ASU"),
+ *   description = @Translation("handler for assigning permissions"),
+ *   cardinality = \Drupal\webform\Plugin\WebformHandlerInterface::CARDINALITY_UNLIMITED,
+ *   results = \Drupal\webform\Plugin\WebformHandlerInterface::RESULTS_PROCESSED,
+ *   submission = \Drupal\webform\Plugin\WebformHandlerInterface::SUBMISSION_REQUIRED,
  * )
  */
 class DepositWebformHandler extends WebformHandlerBase {
-  /**
-   * The token manager.
-   *
-   * @var \Drupal\webform\WebformTokenManagerInterface
-   */
-  protected $tokenManager;
 
   /**
    * {@inheritdoc}
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, LoggerChannelFactoryInterface $logger_factory, ConfigFactoryInterface $config_factory, EntityTypeManagerInterface $entity_type_manager, WebformSubmissionConditionsValidatorInterface $conditions_validator, WebformTokenManagerInterface $token_manager) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition, $logger_factory, $config_factory, $entity_type_manager, $conditions_validator);
-    $this->tokenManager = $token_manager;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new static(
-      $configuration,
-      $plugin_id,
-      $plugin_definition,
-      $container->get('logger.factory'),
-      $container->get('config.factory'),
-      $container->get('entity_type.manager'),
-      $container->get('webform_submission.conditions_validator'),
-      $container->get('webform.token_manager')
-    );
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function submitForm(array &$form, FormStateInterface $form_state, WebformSubmissionInterface $webform_submission) {
-    $this->debug(__FUNCTION__);
-    \Drupal::logger("webform")->notice("submit form");
-    \Drupal::logger("webform")->notice("<pre><code>" . $webform_submission . "</code></pre>");
-    // TODO put functionality that looks up the user and gives them the ability to create/edit repository items now
+  public function postSave(WebformSubmissionInterface $webform_submission, $update = TRUE) {
+    // \Drupal::logger("webform")->notice("submit form");
+    // $values = $webform_submission->getData();
+    $uid = \Drupal::currentUser()->id();
+    $user = User::load($uid);
+    $user->addRole('depositor');
+    // TODO make sure the depositor role exists with the correct permissions - probably a migration or config/install necessary
+    $user->save();
   }
 
 }
