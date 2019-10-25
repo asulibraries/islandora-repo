@@ -4,25 +4,25 @@ dependencies:
   config:
     - field.storage.media.field_media_file
     - field.storage.media.field_media_image
-    - media.type.file
-    - media.type.image
-    - node.type.islandora_object
   module:
     - file
-    - islandora
+    - image
     - islandora_iiif
     - media
     - node
     - rest
     - serialization
+    - taxonomy
     - user
+_core:
+  default_config_hash: ZHZyDY_6xO99m2P7IlKCCScuNhpOIQOetR5p2qm_m18
 id: iiif_manifest
 label: 'IIIF Manifest'
 module: views
-description: ''
+description: 'Generates IIIF manifests for paged content'
 tag: ''
-base_table: node_field_data
-base_field: nid
+base_table: media_field_data
+base_field: mid
 core: 8.x
 display:
   default:
@@ -34,7 +34,7 @@ display:
       access:
         type: perm
         options:
-          perm: 'access content'
+          perm: 'view media'
       cache:
         type: tag
         options: {  }
@@ -84,75 +84,11 @@ display:
           hide_empty: false
           default_field_elements: true
       fields:
-        field_media_image:
-          id: field_media_image
-          table: media__field_media_image
-          field: field_media_image
-          relationship: reverse__media__field_media_of
-          group_type: group
-          admin_label: ''
-          label: ''
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: target_id
-          type: islandora_image
-          settings:
-            image_style: ''
-            image_link: ''
-          group_column: ''
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          plugin_id: field
         field_media_file:
           id: field_media_file
           table: media__field_media_file
           field: field_media_file
-          relationship: reverse__media__field_media_of
+          relationship: none
           group_type: group
           admin_label: ''
           label: ''
@@ -211,38 +147,91 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
+        field_media_image:
+          id: field_media_image
+          table: media__field_media_image
+          field: field_media_image
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: image
+          settings:
+            image_style: ''
+            image_link: ''
+          group_column: ''
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
       filters:
         status:
           value: '1'
-          table: node_field_data
+          table: media_field_data
           field: status
           plugin_id: boolean
-          entity_type: node
+          entity_type: media
           entity_field: status
           id: status
           expose:
             operator: ''
           group: 1
-        type:
-          id: type
-          table: node_field_data
-          field: type
-          value:
-            islandora_object: islandora_object
-          entity_type: node
-          entity_field: type
-          plugin_id: bundle
-        bundle:
-          id: bundle
-          table: media_field_data
-          field: bundle
-          relationship: reverse__media__field_media_of
+        field_external_uri_uri:
+          id: field_external_uri_uri
+          table: taxonomy_term__field_external_uri
+          field: field_external_uri_uri
+          relationship: field_media_use
           group_type: group
           admin_label: ''
-          operator: in
-          value:
-            file: file
-            image: image
+          operator: '='
+          value: 'http://pcdm.org/use#ServiceFile'
           group: 1
           exposed: false
           expose:
@@ -257,7 +246,7 @@ display:
             multiple: false
             remember_roles:
               authenticated: authenticated
-            reduce: false
+            placeholder: ''
           is_grouped: false
           group_info:
             label: ''
@@ -270,30 +259,48 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          entity_type: media
-          entity_field: bundle
-          plugin_id: bundle
-      sorts: {  }
+          plugin_id: string
+      sorts:
+        field_weight_value:
+          id: field_weight_value
+          table: node__field_weight
+          field: field_weight_value
+          relationship: field_media_of
+          group_type: group
+          admin_label: ''
+          order: ASC
+          exposed: false
+          expose:
+            label: ''
+          plugin_id: standard
       header: {  }
       footer: {  }
       empty: {  }
       relationships:
-        reverse__media__field_media_of:
-          id: reverse__media__field_media_of
-          table: node_field_data
-          field: reverse__media__field_media_of
+        field_media_of:
+          id: field_media_of
+          table: media__field_media_of
+          field: field_media_of
           relationship: none
           group_type: group
-          admin_label: field_media_of
+          admin_label: 'field_media_of: Content'
           required: true
-          entity_type: node
-          plugin_id: entity_reverse
-      arguments:
-        nid:
-          id: nid
-          table: node_field_data
-          field: nid
+          plugin_id: standard
+        field_media_use:
+          id: field_media_use
+          table: media__field_media_use
+          field: field_media_use
           relationship: none
+          group_type: group
+          admin_label: 'field_media_use: Taxonomy term'
+          required: false
+          plugin_id: standard
+      arguments:
+        field_member_of_target_id:
+          id: field_member_of_target_id
+          table: node__field_member_of
+          field: field_member_of_target_id
+          relationship: field_media_of
           group_type: group
           admin_label: ''
           default_action: default
@@ -315,17 +322,23 @@ display:
             sort_order: asc
             number_of_records: 0
             format: default_summary
-          specify_validation: false
+          specify_validation: true
           validate:
-            type: none
+            type: 'entity:node'
             fail: 'not found'
-          validate_options: {  }
+          validate_options:
+            access: true
+            operation: view
+            multiple: 0
+            bundles: {  }
           break_phrase: false
           not: false
-          entity_type: node
-          entity_field: nid
-          plugin_id: node_nid
+          plugin_id: numeric
       display_extenders: {  }
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
     cache_metadata:
       max-age: -1
       contexts:
@@ -334,7 +347,6 @@ display:
         - request_format
         - url
         - url.query_args
-        - 'user.node_grants:view'
         - user.permissions
       tags:
         - 'config:field.storage.media.field_media_file'
@@ -347,7 +359,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: node/%/iiif-manifest
+      path: node/%node/manifest
       pager:
         type: none
         options:
@@ -355,23 +367,22 @@ display:
       style:
         type: iiif_manifest
         options:
-          iiif_tile_field: field_media_file
+          iiif_tile_field:
+            field_media_file: field_media_file
+            field_media_image: field_media_image
       row:
         type: data_field
         options:
           field_options:
-            title:
+            name:
               alias: ''
               raw_output: false
-      auth:
-        - cookie
     cache_metadata:
       max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url
-        - 'user.node_grants:view'
         - user.permissions
       tags:
         - 'config:field.storage.media.field_media_file'
