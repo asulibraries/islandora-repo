@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - field_permissions
+    - user
+third_party_settings:
+  field_permissions:
+    permission_type: public
+_core:
+  default_config_hash: 2n9hmjNRgnRsHhCAVL9WaDCZ5ILzehlacDLQv0Wu1Oo
+id: user.field_orcid_id
+field_name: field_orcid_id
+entity_type: user
+type: string
+settings:
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
