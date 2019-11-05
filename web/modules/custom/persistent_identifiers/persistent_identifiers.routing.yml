@@ -1,0 +1,8 @@
+# Persistent Identifiers configuration form
+system.persistent_identifiers_settings:
+  path: '/admin/config/system/persistent_identifiers'
+  defaults:
+    _form: '\Drupal\persistent_identifiers\Form\PersistentIdentifiersSettingsForm'
+    _title: 'Persistent Identifiers Settings'
+  requirements:
+    _permission: 'administer site configuration'
