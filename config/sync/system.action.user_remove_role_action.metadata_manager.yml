@@ -1,0 +1,13 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.metadata_manager
+  module:
+    - user
+id: user_remove_role_action.metadata_manager
+label: 'Remove the Metadata Manager role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: metadata_manager
