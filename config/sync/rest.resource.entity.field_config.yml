@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - basic_auth
+    - field
+    - jwt
+    - serialization
+    - user
+id: entity.field_config
+plugin_id: 'entity:field_config'
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - basic_auth
+    - jwt_auth
+    - cookie
