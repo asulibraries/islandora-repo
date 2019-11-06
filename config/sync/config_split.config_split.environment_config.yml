@@ -5,14 +5,14 @@ id: environment_config
 label: 'Environment Config'
 description: 'Settings that are specific per environment'
 folder: ../config/env
-module: {  }
+module:
+  jwt: 0
 theme: {  }
 blacklist: {  }
 graylist:
   - islandora.settings
   - jwt.config
   - key.key.islandora_rsa_key
-  - key.key.islandora_syn_token
   - search_api_solr.settings
 graylist_dependents: true
 graylist_skip_equal: true
