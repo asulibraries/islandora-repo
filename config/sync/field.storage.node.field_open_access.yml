@@ -1,23 +1,17 @@
 langcode: en
 status: true
 dependencies:
-  enforced:
-    module:
-      - islandora
   module:
     - field_permissions
     - node
 third_party_settings:
   field_permissions:
     permission_type: public
-_core:
-  default_config_hash: 8cYoje9ObIxX1k3ffRc-tWuu3hcddJzy3EHCPlq8JPI
-id: node.field_description
-field_name: field_description
+id: node.field_open_access
+field_name: field_open_access
 entity_type: node
-type: string_long
-settings:
-  case_sensitive: false
+type: boolean
+settings: {  }
 module: core
 locked: false
 cardinality: 1

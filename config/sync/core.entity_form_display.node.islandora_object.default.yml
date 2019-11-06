@@ -14,6 +14,8 @@ dependencies:
     - field.field.node.islandora_object.field_linked_agent
     - field.field.node.islandora_object.field_member_of
     - field.field.node.islandora_object.field_model
+    - field.field.node.islandora_object.field_open_access
+    - field.field.node.islandora_object.field_peer_reviewed
     - field.field.node.islandora_object.field_pid
     - field.field.node.islandora_object.field_resource_type
     - field.field.node.islandora_object.field_rights
@@ -24,6 +26,7 @@ dependencies:
     module:
       - islandora_defaults
   module:
+    - content_moderation
     - controlled_access_terms
     - field_group
     - path
@@ -180,6 +183,20 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_open_access:
+    weight: 101
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_peer_reviewed:
+    weight: 102
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
   field_pid:
     weight: 12
     settings:
@@ -224,6 +241,12 @@ content:
     region: content
     settings:
       include_locked: true
+    third_party_settings: {  }
+  moderation_state:
+    type: moderation_state_default
+    weight: 100
+    settings: {  }
+    region: content
     third_party_settings: {  }
   path:
     type: path

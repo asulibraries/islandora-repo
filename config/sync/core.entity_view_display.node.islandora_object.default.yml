@@ -14,6 +14,8 @@ dependencies:
     - field.field.node.islandora_object.field_linked_agent
     - field.field.node.islandora_object.field_member_of
     - field.field.node.islandora_object.field_model
+    - field.field.node.islandora_object.field_open_access
+    - field.field.node.islandora_object.field_peer_reviewed
     - field.field.node.islandora_object.field_pid
     - field.field.node.islandora_object.field_resource_type
     - field.field.node.islandora_object.field_rights
@@ -33,6 +35,11 @@ targetEntityType: node
 bundle: islandora_object
 mode: default
 content:
+  content_moderation_control:
+    weight: -20
+    settings: {  }
+    third_party_settings: {  }
+    region: content
   display_media_service_file:
     weight: 3
     region: content
@@ -123,6 +130,26 @@ content:
     settings:
       link: true
     third_party_settings: {  }
+  field_open_access:
+    weight: 101
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  field_peer_reviewed:
+    weight: 102
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
   field_resource_type:
     weight: 14
     label: above
@@ -146,6 +173,16 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
+  flag_email_node:
+    weight: 10
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  flag_subscribe_node:
+    weight: 10
+    settings: {  }
+    third_party_settings: {  }
     region: content
   langcode:
     type: language
