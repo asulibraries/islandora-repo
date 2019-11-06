@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_member_of
+    - node.type.collection
+    - node.type.organization
+id: node.organization.field_member_of
+field_name: field_member_of
+entity_type: node
+bundle: organization
+label: 'Member of'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      collection: collection
+    sort:
+      field: title
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: collection
+field_type: entity_reference
