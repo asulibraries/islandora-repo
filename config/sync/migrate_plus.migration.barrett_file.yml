@@ -1,0 +1,53 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - migrate_islandora_csv
+_core:
+  default_config_hash: X8y9p36jQYqlOfZYY52J0NIo7BGAIH1mBmaeLr7jue4
+id: barrett_file
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: null
+migration_group: migrate_islandora_csv
+label: 'Import Barrett Files'
+source:
+  plugin: csv
+  path: modules/contrib/migrate_islandora_csv/data/barrett_migration.csv
+  delimiter: ','
+  header_row_count: 1
+  keys:
+    - file
+  constants:
+    destination_dir: 'fedora://csv_migration'
+    mime: application/pdf
+    uid: 1
+process:
+  filemime: constants/mime
+  uid: constants/uid
+  filename:
+    -
+      plugin: callback
+      callable: pathinfo
+      source: file
+    -
+      plugin: extract
+      index:
+        - basename
+  destination:
+    plugin: concat
+    delimiter: /
+    source:
+      - constants/destination_dir
+      - '@filename'
+  uri:
+    plugin: file_copy
+    source:
+      - file
+      - '@destination'
+destination:
+  plugin: 'entity:file'
+  type: file
+migration_dependencies: null

@@ -1,0 +1,122 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - migrate_islandora_csv
+_core:
+  default_config_hash: OZAu2y9o5YWBuiNFlSufWypxnwGrmH-qoGY-3oND-is
+id: barrett_node
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: null
+migration_group: migrate_islandora_csv
+label: 'Import Barrett Nodes from CSV'
+source:
+  plugin: csv
+  path: modules/contrib/migrate_islandora_csv/data/barrett_migration.csv
+  header_row_count: 1
+  keys:
+    - id
+  constants:
+    model: 'Digital Document'
+    uid: 1
+process:
+  title: title
+  uid: constants/uid
+  field_alternative_title:
+    plugin: skip_on_empty
+    source: subtitle
+    method: process
+  field_description: description
+  field_identifier:
+    plugin: skip_on_empty
+    source: identifier
+    method: process
+  field_pid: id
+  field_extent:
+    plugin: skip_on_empty
+    source: extent
+    method: process
+  field_edtf_date: issued
+  field_model:
+    plugin: entity_lookup
+    source: constants/model
+    entity_type: taxonomy_term
+    value_key: name
+    bundle_key: vid
+    bundle: islandora_models
+  field_subject:
+    -
+      plugin: skip_on_empty
+      source: subject
+      method: process
+    -
+      plugin: explode
+      delimiter: '|'
+    -
+      plugin: entity_generate
+      entity_type: taxonomy_term
+      value_key: name
+      bundle_key: vid
+      bundle: subject
+  authors:
+    -
+      source: author
+      plugin: skip_on_empty
+      method: process
+    -
+      plugin: explode
+      delimiter: '|'
+    -
+      plugin: str_to_assoc
+      key: name
+  linked_agent_aut:
+    plugin: sub_process
+    source: '@authors'
+    process:
+      target_id:
+        plugin: entity_generate
+        source: name
+        entity_type: taxonomy_term
+        value_key: name
+        bundle_key: vid
+        bundle: person
+      rel_type:
+        plugin: default_value
+        default_value: 'relators:aut'
+  providers:
+    -
+      source: provider
+      plugin: skip_on_empty
+      method: process
+    -
+      plugin: explode
+      delimiter: '|'
+    -
+      plugin: str_to_assoc
+      key: name
+  linked_agent_pbl:
+    plugin: sub_process
+    source: '@providers'
+    process:
+      target_id:
+        plugin: entity_generate
+        source: name
+        entity_type: taxonomy_term
+        value_key: name
+        bundle_key: vid
+        bundle: corporate_body
+      rel_type:
+        plugin: default_value
+        default_value: 'relators:pbl'
+  field_linked_agent:
+    plugin: merge
+    source:
+      - '@linked_agent_aut'
+      - '@linked_agent_pbl'
+destination:
+  plugin: 'entity:node'
+  default_bundle: islandora_object
+migration_dependencies: null
