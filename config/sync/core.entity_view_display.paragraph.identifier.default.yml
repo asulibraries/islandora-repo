@@ -1,0 +1,29 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.identifier.field_identifier
+    - field.field.paragraph.identifier.field_identifier_type
+    - paragraphs.paragraphs_type.identifier
+id: paragraph.identifier.default
+targetEntityType: paragraph
+bundle: identifier
+mode: default
+content:
+  field_identifier:
+    weight: 0
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_identifier_type:
+    weight: 1
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+hidden: {  }
