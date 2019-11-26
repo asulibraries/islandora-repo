@@ -1,8 +1,6 @@
 langcode: en
 status: true
 dependencies:
-  config:
-    - node.type.islandora_object
   module:
     - content_moderation
 _core:
@@ -60,7 +58,5 @@ type_settings:
       from:
         - draft
         - published
-  entity_types:
-    node:
-      - islandora_object
+  entity_types: {  }
   default_moderation_state: draft
