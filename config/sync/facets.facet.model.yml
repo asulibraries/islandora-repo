@@ -3,17 +3,17 @@ status: true
 dependencies:
   config:
     - search_api.index.default_solr_index
-    - views.view.solr_search_content
+    - views.view.search
   module:
     - search_api
-id: subject
-name: Subject
-url_alias: subject
+id: model
+name: Model
+url_alias: model
 weight: 0
 min_count: 1
 show_only_one_result: false
-field_identifier: subject_name
-facet_source_id: 'search_api:views_page__solr_search_content__page_2'
+field_identifier: model_name
+facet_source_id: 'search_api:views_page__search__page_1'
 widget:
   type: links
   config:
