@@ -11,6 +11,7 @@ dependencies:
     - field.field.node.islandora_object.field_edtf_date_issued
     - field.field.node.islandora_object.field_extent
     - field.field.node.islandora_object.field_identifier
+    - field.field.node.islandora_object.field_identifier_with_type
     - field.field.node.islandora_object.field_linked_agent
     - field.field.node.islandora_object.field_member_of
     - field.field.node.islandora_object.field_model
@@ -26,9 +27,9 @@ dependencies:
     module:
       - islandora_defaults
   module:
-    - content_moderation
     - controlled_access_terms
     - field_group
+    - paragraphs
     - path
 third_party_settings:
   field_group:
@@ -159,6 +160,18 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_identifier_with_type:
+    type: entity_reference_paragraphs
+    weight: 103
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
+    region: content
   field_linked_agent:
     weight: 8
     settings:

@@ -11,6 +11,7 @@ dependencies:
     - field.field.node.islandora_object.field_edtf_date_issued
     - field.field.node.islandora_object.field_extent
     - field.field.node.islandora_object.field_identifier
+    - field.field.node.islandora_object.field_identifier_with_type
     - field.field.node.islandora_object.field_linked_agent
     - field.field.node.islandora_object.field_member_of
     - field.field.node.islandora_object.field_model
@@ -27,6 +28,7 @@ dependencies:
       - islandora_defaults
   module:
     - controlled_access_terms
+    - entity_reference_revisions
     - user
 _core:
   default_config_hash: Y9GIszF_zubPeiGNqWoaVR5AZQ5cOnO5dG5dUKfm5Jo
@@ -114,6 +116,15 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
+  field_identifier_with_type:
+    type: entity_reference_revisions_entity_view
+    weight: 103
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
   field_linked_agent:
     weight: 8
     label: above
