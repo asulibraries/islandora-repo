@@ -36,7 +36,7 @@ class Handle extends PersistentIdentifierPluginBase implements PersistentIdentif
     // TODO $handle_prefix, $handle_type_qualifier, $admin_handle, $endpoint_url, $handle_admin_index  from config.
     $handle_prefix = '2286.9';
     // Prod just uses '2286'.
-    $handle_type_qualifier = 'R.N';
+    $handle_type_qualifier = 'R.2.N';
     // Currently using I,C,A for item, collection, attachment.
     $handle = $handle_prefix . '/' . $handle_type_qualifier . '.' . $entity->id();
     \Drupal::logger('persistent identifiers')->info($handle);
@@ -47,23 +47,26 @@ class Handle extends PersistentIdentifierPluginBase implements PersistentIdentif
     // TODO HTTPS??
     $endpoint_url = 'http://handle-test.lib.asu.edu:8000/api/handles/';
     $handle_json = [
-      [
-        'index' => 1,
-        'type' => "URL",
-        'data' => [
-          'format' => "string",
-          'value' => $url,
+      'auth' => ['300%3A2286/ASU_ADMIN', 'wmLtIzNJpg3f'],
+      'json' => [
+        [
+          'index' => 1,
+          'type' => "URL",
+          'data' => [
+            'format' => "string",
+            'value' => $url,
+          ],
         ],
-      ],
-      [
-        'index' => 100,
-        'type' => 'HS_ADMIN',
-        'data' => [
-          'format' => 'admin',
-          'value' => [
-            'handle' => $admin_handle,
-            'index' => $handle_admin_index,
-            'permissions' => "111111111111",
+        [
+          'index' => 100,
+          'type' => 'HS_ADMIN',
+          'data' => [
+            'format' => 'admin',
+            'value' => [
+              'handle' => $admin_handle,
+              'index' => $handle_admin_index,
+              'permissions' => "111111111111",
+            ],
           ],
         ],
       ],
@@ -72,18 +75,18 @@ class Handle extends PersistentIdentifierPluginBase implements PersistentIdentif
     $client = \Drupal::httpClient();
     // TODO media type null?
     // TODO add auth.
-    // try {
-    //   $request = $client->request('PUT', $endpoint_url . $handle, $handle_json);
-    //   $request->addHeader('Content-Type', 'application/json');
-    //   $request->addHeader('Accept', 'application/json');
-    //   $response = json_decode($request->getBody());
-    //   \Drupal::logger('persistent identifiers')->info(print_r($response, TRUE));
+    try {
+      $request = $client->request('PUT', $endpoint_url . $handle . "?overwrite=true", $handle_json);
+      $request->addHeader('Content-Type', 'application/json');
+      $request->addHeader('Accept', 'application/json');
+      $response = json_decode($request->getBody());
+      \Drupal::logger('persistent identifiers')->info(print_r($response, TRUE));
 
-    // }
-    // catch (ClientException $e) {
-    //   \Drupal::logger('persistent identifiers')->error(print_r($e, TRUE));
-    //   return FALSE;
-    // }
+    }
+    catch (ClientException $e) {
+      \Drupal::logger('persistent identifiers')->error(print_r($e, TRUE));
+      return FALSE;
+    }
 
     $entity->set('field_identifier', 'thisisthehandle');
     $entity->setNewRevision(FALSE);
