@@ -9,24 +9,49 @@ dependencies:
     - jsonld
     - jwt
     - node
+    - rest_oai_pmh
     - serialization
     - user
 _core:
   default_config_hash: Bs7fv0SCvDv2xd3Mk5Yn62onxQ3VhKK2s-3obhAeGFE
 id: entity.node
 plugin_id: 'entity:node'
-granularity: resource
+granularity: method
 configuration:
-  methods:
-    - GET
-    - POST
-    - DELETE
-    - PATCH
-  formats:
-    - jsonld
-    - json
-    - xml
-  authentication:
-    - basic_auth
-    - jwt_auth
-    - cookie
+  GET:
+    supported_formats:
+      - jsonld
+      - oai_dc
+      - json
+      - xml
+    supported_auth:
+      - basic_auth
+      - jwt_auth
+      - cookie
+  POST:
+    supported_formats:
+      - jsonld
+      - json
+      - xml
+    supported_auth:
+      - basic_auth
+      - jwt_auth
+      - cookie
+  DELETE:
+    supported_formats:
+      - jsonld
+      - json
+      - xml
+    supported_auth:
+      - basic_auth
+      - jwt_auth
+      - cookie
+  PATCH:
+    supported_formats:
+      - jsonld
+      - json
+      - xml
+    supported_auth:
+      - basic_auth
+      - jwt_auth
+      - cookie
