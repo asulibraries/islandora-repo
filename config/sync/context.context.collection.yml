@@ -15,12 +15,16 @@ description: 'Islandora collections'
 requireAllConditions: false
 disabled: false
 conditions:
-  node_has_term:
-    id: node_has_term
+  entity_bundle:
+    id: entity_bundle
+    bundles:
+      collection: collection
     negate: 0
+    uuid: 6dd452db-d23f-4861-8c08-ad4ee488ebcd
     context_mapping:
       node: '@node.node_route_context:node'
-    uri: 'http://purl.org/dc/dcmitype/Collection'
+      media: '@islandora.media_route_context_provider:media'
+      taxonomy_term: '@islandora.taxonomy_term_route_context_provider:taxonomy_term'
 reactions:
   blocks:
     blocks:
