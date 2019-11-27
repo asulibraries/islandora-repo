@@ -3,9 +3,14 @@
 namespace Drupal\persistent_identifiers;
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\Core\Plugin\PluginBase;
+// use Drupal\Core\Plugin\PluginBase;
+use Drupal\Component\Plugin\PluginBase;
+use Drupal\Core\Entity\EntityInterface;
 
-abstract class PersistentIdentifierPluginBase extends PluginBase {
+/**
+ * Base class for Persistent Identifier plugins.
+ */
+abstract class PersistentIdentifierPluginBase extends PluginBase implements PersistentIdentifierPluginInterface {
 
   /**
    * {@inheritdoc}
@@ -64,31 +69,46 @@ abstract class PersistentIdentifierPluginBase extends PluginBase {
     return [];
   }
 
-//     /**
-//    * Constructs a new Handle .
-//    *
-//    * @param array $configuration
-//    *   A configuration array containing information about the plugin instance.
-//    * @param string $plugin_id
-//    *   The plugin_id for the plugin instance.
-//    * @param mixed $plugin_definition
-//    *   The plugin implementation definition.
-//    * @param \Drupal\Core\Config\ConfigManagerInterface $manager
-//    *   The config manager for retrieving dependent config.
-//    * @param \Drupal\Core\Config\StorageInterface|null $secondary
-//    *   The config storage for the blacklisted config.
-//    */
-//   public function __construct(array $configuration, $plugin_id, $plugin_definition, ConfigManagerInterface $manager, StorageInterface $secondary = NULL) {
-//     parent::__construct($configuration, $plugin_id, $plugin_definition);
-//     $this->manager = $manager;
+  //     /**
+  //    * Constructs a new Handle .
+  //    *
+  //    * @param array $configuration
+  //    *   A configuration array containing information about the plugin instance.
+  //    * @param string $plugin_id
+  //    *   The plugin_id for the plugin instance.
+  //    * @param mixed $plugin_definition
+  //    *   The plugin implementation definition.
+  //    * @param \Drupal\Core\Config\ConfigManagerInterface $manager
+  //    *   The config manager for retrieving dependent config.
+  //    * @param \Drupal\Core\Config\StorageInterface|null $secondary
+  //    *   The config storage for the blacklisted config.
+  //    */
+  //   public function __construct(array $configuration, $plugin_id, $plugin_definition, ConfigManagerInterface $manager, StorageInterface $secondary = NULL) {
+  //     parent::__construct($configuration, $plugin_id, $plugin_definition);
+  //     $this->manager = $manager;
 
-//   }
+  //   }
 
-//   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-//     $plugin = parent::create($container, $configuration, $plugin_id, $plugin_definition);
+  // /**
+  //  * {@inheritdoc}
+  //  */
+  // public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+  //   $plugin = parent::create($container, $configuration, $plugin_id, $plugin_definition);
 
-//     $plugin->eventDispatcher = $container->get('event_dispatcher');
+  //   $plugin->eventDispatcher = $container->get('event_dispatcher');
 
-//     return $plugin;
-//   }
+  //   return $plugin;
+  // }
+
+  /**
+   * Get or create the identifier.
+   *
+   * @param \Drupal\Core\Entity\EntityInterface|null $entity
+   *   The entity.
+   *
+   * @return string
+   *   The url.
+   */
+  abstract public function getOrCreatePi(EntityInterface $entity = NULL);
+
 }
