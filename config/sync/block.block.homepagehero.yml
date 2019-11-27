@@ -1,0 +1,30 @@
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:4499f093-8422-4546-9633-7d544e8031bd'
+  module:
+    - block_content
+    - system
+  theme:
+    - carapace
+id: homepagehero
+theme: carapace
+region: content
+weight: 0
+provider: null
+plugin: 'block_content:4499f093-8422-4546-9633-7d544e8031bd'
+settings:
+  id: 'block_content:4499f093-8422-4546-9633-7d544e8031bd'
+  label: 'Home page Hero'
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: false
+    context_mapping: {  }
