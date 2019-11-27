@@ -2,32 +2,29 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.collection.body
+    - field.field.node.collection.field_description
     - node.type.collection
   module:
-    - content_moderation
     - path
-    - text
 id: node.collection.default
 targetEntityType: node
 bundle: collection
 mode: default
 content:
-  body:
-    type: text_textarea_with_summary
-    weight: 121
-    settings:
-      rows: 9
-      summary_rows: 3
-      placeholder: ''
-    third_party_settings: {  }
-    region: content
   created:
     type: datetime_timestamp
     weight: 10
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_description:
+    weight: 122
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
   langcode:
     type: language_select
     weight: 2

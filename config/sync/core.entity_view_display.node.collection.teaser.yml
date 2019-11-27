@@ -3,24 +3,15 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
-    - field.field.node.collection.body
+    - field.field.node.collection.field_description
     - node.type.collection
   module:
-    - text
     - user
 id: node.collection.teaser
 targetEntityType: node
 bundle: collection
 mode: teaser
 content:
-  body:
-    label: hidden
-    type: text_summary_or_trimmed
-    weight: 101
-    settings:
-      trim_length: 600
-    third_party_settings: {  }
-    region: content
   display_media_entity_view_1:
     weight: 10
     settings: {  }
@@ -87,4 +78,5 @@ content:
     third_party_settings: {  }
     region: content
 hidden:
+  field_description: true
   langcode: true
