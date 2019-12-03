@@ -18,7 +18,7 @@ use Drupal\Core\Entity\EntityInterface;
  *  label="Handle"
  * )
  */
-class Handle extends PersistentIdentifierPluginBase implements PersistentIdentifierPluginInterface {
+class Handle extends PersistentIdentifierPluginBase {
 
   /**
    * Get or create the identifier.
@@ -45,10 +45,14 @@ class Handle extends PersistentIdentifierPluginBase implements PersistentIdentif
     $admin_handle = "2286/ASU_ADMIN";
     $handle_admin_index = 300;
     // TODO HTTPS??
-    $endpoint_url = 'http://handle-test.lib.asu.edu:8000/api/handles/';
+    $endpoint_url = 'https://handle-test.lib.asu.edu:8000/api/handles/';
+    // $handle_json = [
+      // 'auth' => ['300%3A2286/ASU_ADMIN', 'wmLtIzNJpg3f'],
+      // 'json' => [
+
+      // ],
+    // ];
     $handle_json = [
-      'auth' => ['300%3A2286/ASU_ADMIN', 'wmLtIzNJpg3f'],
-      'json' => [
         [
           'index' => 1,
           'type' => "URL",
@@ -69,18 +73,39 @@ class Handle extends PersistentIdentifierPluginBase implements PersistentIdentif
             ],
           ],
         ],
-      ],
     ];
+    // $handle_json_string = '[{
+    //     "index": 1,
+    //     "type": "URL",
+    //     "data": {
+    //         "format": "string",
+    //         "value": ' . $url . '
+    //     }
+    // },
+    // {
+    //     "index": 100,
+    //     "type": "HS_ADMIN",
+    //     "data": {
+    //         "format": "admin",
+    //         "value": {
+    //             "handle": ' . $admin_handle . ',
+    //             "index": ' . $handle_admin_index . ',
+    //             "permissions": "111111111111"
+    //         }
+    //     }
+    // }]';
 
     $client = \Drupal::httpClient();
     // TODO media type null?
     // TODO add auth.
     try {
-      $request = $client->request('PUT', $endpoint_url . $handle . "?overwrite=true", $handle_json);
+      $request = $client->request('PUT', $endpoint_url . $handle . "?overwrite=true", ['json' => $handle_json]);
       $request->addHeader('Content-Type', 'application/json');
       $request->addHeader('Accept', 'application/json');
-      $response = json_decode($request->getBody());
-      \Drupal::logger('persistent identifiers')->info(print_r($response, TRUE));
+      $request->addHeader('Authorization', 'Basic ' . base64_encode('admin:islandora'));
+      \Drupal::logger('persistent identifiers')->info(print_r($request, TRUE));
+      // $response = json_decode($request->getBody());
+      // \Drupal::logger('persistent identifiers')->info(print_r($response, TRUE));
 
     }
     catch (ClientException $e) {
