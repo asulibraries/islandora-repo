@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_member_of
+    - node.type.collection
     - node.type.islandora_object
   enforced:
     module:
@@ -21,5 +22,12 @@ default_value: {  }
 default_value_callback: ''
 settings:
   handler: 'default:node'
-  handler_settings: {  }
+  handler_settings:
+    target_bundles:
+      collection: collection
+      islandora_object: islandora_object
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: collection
 field_type: entity_reference
