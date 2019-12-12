@@ -9,7 +9,7 @@ dependencies:
   module:
     - media
 _core:
-  default_config_hash: 2axcqJqVB1ROMTP9WJJc3dPxRnqBVsWSPA3kE5Lm8W4
+  default_config_hash: UaP-9V7vbf9aMvosXbwTtsKzHmkpm1QC3HqC6Sz8mCA
 id: media.audio
 targetEntityType: media
 bundle: audio
@@ -41,6 +41,9 @@ fieldMappings:
     properties:
       - 'pcdm:fileOf'
     mapping_type: rel
+  field_original_name:
+    properties:
+      - 'premis3:originalName'
   field_tags:
     properties:
       - 'schema:additionalType'
