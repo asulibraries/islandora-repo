@@ -1,0 +1,23 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.complex_subject.field_subject_subfield
+    - paragraphs.paragraphs_type.complex_subject
+  module:
+    - entity_reference_revisions
+id: paragraph.complex_subject.default
+targetEntityType: paragraph
+bundle: complex_subject
+mode: default
+content:
+  field_subject_subfield:
+    type: entity_reference_revisions_entity_view
+    weight: 0
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
+hidden: {  }

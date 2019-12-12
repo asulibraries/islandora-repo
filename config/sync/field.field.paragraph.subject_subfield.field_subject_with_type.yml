@@ -1,0 +1,47 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_subject_with_type
+    - paragraphs.paragraphs_type.subject_subfield
+    - taxonomy.vocabulary.corporate_body
+    - taxonomy.vocabulary.family
+    - taxonomy.vocabulary.geo_location
+    - taxonomy.vocabulary.person
+    - taxonomy.vocabulary.subject
+  module:
+    - controlled_access_terms
+id: paragraph.subject_subfield.field_subject_with_type
+field_name: field_subject_with_type
+entity_type: paragraph
+bundle: subject_subfield
+label: 'Subject Term with Type'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      corporate_body: corporate_body
+      family: family
+      geo_location: geo_location
+      person: person
+      subject: subject
+    sort:
+      field: name
+      direction: asc
+    auto_create: 0
+    auto_create_bundle: geo_location
+  rel_types:
+    'modsrdf:subjectGenre': Genre
+    'modsrdf:subjectGeographic': Geographic
+    'modsrdf:subjectGeographicCode': 'Geographic Code'
+    'modsrdf:subjectHierarchicalGeographic': 'Hierarchical Geographic'
+    'modsrdf:subjectName': Name
+    'modsrdf:subjectOccupation': Occupation
+    'modsrdf:subjectTemporal': Temporal
+    'modsrdf:subjectTopic': Topic
+field_type: typed_relation

@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.subject_subfield.field_subject_with_type
+    - paragraphs.paragraphs_type.subject_subfield
+  module:
+    - controlled_access_terms
+id: paragraph.subject_subfield.default
+targetEntityType: paragraph
+bundle: subject_subfield
+mode: default
+content:
+  field_subject_with_type:
+    weight: 0
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: typed_relation_default
+    region: content
+hidden: {  }

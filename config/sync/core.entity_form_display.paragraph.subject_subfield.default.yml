@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.subject_subfield.field_subject_with_type
+    - paragraphs.paragraphs_type.subject_subfield
+  module:
+    - controlled_access_terms
+id: paragraph.subject_subfield.default
+targetEntityType: paragraph
+bundle: subject_subfield
+mode: default
+content:
+  field_subject_with_type:
+    weight: 0
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: typed_relation_default
+    region: content
+hidden:
+  created: true
+  status: true
