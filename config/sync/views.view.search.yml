@@ -14,7 +14,6 @@ description: 'A search page preconfigured to search through the content of your 
 tag: ''
 base_table: search_api_index_default_solr_index
 base_field: search_api_id
-core: 8.x
 display:
   default:
     display_plugin: default
@@ -97,6 +96,8 @@ display:
             remember_roles:
               authenticated: authenticated
             reduce: false
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -140,6 +141,8 @@ display:
               content_approver: '0'
               depositor: '0'
             placeholder: ''
+            operator_limit_selection: false
+            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''

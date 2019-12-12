@@ -3,13 +3,9 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
-    - node.type.islandora_object
-    - taxonomy.vocabulary.islandora_models
-  content:
-    - 'taxonomy_term:islandora_models:88eaa958-3394-4cda-9002-74a8fc0aeaaa'
+    - node.type.collection
   module:
     - node
-    - taxonomy
     - user
 id: collections
 label: Collections
@@ -18,7 +14,6 @@ description: ''
 tag: ''
 base_table: node_field_data
 base_field: nid
-core: 8.x
 display:
   default:
     display_plugin: default
@@ -134,26 +129,19 @@ display:
           id: status
           expose:
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
           group: 1
         type:
           id: type
           table: node_field_data
           field: type
-          value:
-            islandora_object: islandora_object
-          entity_type: node
-          entity_field: type
-          plugin_id: bundle
-        field_model_target_id:
-          id: field_model_target_id
-          table: node__field_model
-          field: field_model_target_id
           relationship: none
           group_type: group
           admin_label: ''
-          operator: or
+          operator: in
           value:
-            23: 23
+            collection: collection
           group: 1
           exposed: false
           expose:
@@ -162,6 +150,8 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
@@ -181,13 +171,9 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          reduce_duplicates: false
-          type: select
-          limit: true
-          vid: islandora_models
-          hierarchy: false
-          error_message: true
-          plugin_id: taxonomy_index_tid
+          entity_type: node
+          entity_field: type
+          plugin_id: bundle
       sorts:
         created:
           id: created
@@ -217,7 +203,6 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.permissions
       tags: {  }
@@ -235,7 +220,6 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.permissions
       tags: {  }
