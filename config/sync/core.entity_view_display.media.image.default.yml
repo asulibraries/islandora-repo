@@ -9,12 +9,13 @@ dependencies:
     - field.field.media.image.field_media_of
     - field.field.media.image.field_media_use
     - field.field.media.image.field_mime_type
+    - field.field.media.image.field_original_name
     - field.field.media.image.field_width
     - media.type.image
   module:
     - image
 _core:
-  default_config_hash: 5x4wNG4WWY9bswmpolJYGF1PK3V07Nz0axCYxFG-nmU
+  default_config_hash: QSsWA3YB1bwHQeIIMX_XcdSCYMbe1nWcb8n1GlGc4UU
 id: media.image.default
 targetEntityType: media
 bundle: image
@@ -84,6 +85,13 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
+  field_original_name:
+    weight: 101
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
   field_width:
     type: number_integer
     weight: 4

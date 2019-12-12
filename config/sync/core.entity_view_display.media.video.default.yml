@@ -8,11 +8,12 @@ dependencies:
     - field.field.media.video.field_media_use
     - field.field.media.video.field_media_video_file
     - field.field.media.video.field_mime_type
+    - field.field.media.video.field_original_name
     - media.type.video
   module:
     - file
 _core:
-  default_config_hash: ItHlpgd5rNzP3p6liQvuZXY8kgWeXObWbGazG5arATA
+  default_config_hash: vLzYRJOw7vN__DvPOfqESPVCf5PekD5_yup5dPJnI4g
 id: media.video.default
 targetEntityType: media
 bundle: video
@@ -78,6 +79,13 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
+  field_original_name:
+    weight: 101
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
   name:
     type: string
     weight: 0

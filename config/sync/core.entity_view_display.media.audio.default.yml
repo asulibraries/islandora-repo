@@ -8,11 +8,12 @@ dependencies:
     - field.field.media.audio.field_media_of
     - field.field.media.audio.field_media_use
     - field.field.media.audio.field_mime_type
+    - field.field.media.audio.field_original_name
     - media.type.audio
   module:
     - file
 _core:
-  default_config_hash: i4odCcWsXHdrkyqHaZP1XZ7HWl2EGvxd4BmowhVgjCM
+  default_config_hash: xt3UReb12XCFyxeNDriZOtGMGhgK64yZgps6pRnFii8
 id: media.audio.default
 targetEntityType: media
 bundle: audio
@@ -75,6 +76,13 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
+  field_original_name:
+    weight: 101
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
   name:
     type: string
     weight: 0
