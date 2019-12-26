@@ -8,12 +8,13 @@ dependencies:
     - field.field.media.video.field_media_use
     - field.field.media.video.field_media_video_file
     - field.field.media.video.field_mime_type
+    - field.field.media.video.field_original_name
     - media.type.video
   module:
     - file
     - path
 _core:
-  default_config_hash: eFFwiUYq8b4ES11MYUYNeiiaW0rHKvGkZw-RZOlnKJo
+  default_config_hash: s8_Q7OxHFa53J5yaMac4DvpYszR1TkOKYEZP03NAsKI
 id: media.video.default
 targetEntityType: media
 bundle: video
@@ -39,6 +40,7 @@ content:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     third_party_settings: {  }
   field_media_use:
     type: options_buttons
@@ -52,6 +54,14 @@ content:
       progress_indicator: throbber
     third_party_settings: {  }
     type: file_generic
+    region: content
+  field_original_name:
+    weight: 26
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
     region: content
   name:
     type: string_textfield
@@ -86,6 +96,7 @@ content:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     region: content
     third_party_settings: {  }
 hidden:

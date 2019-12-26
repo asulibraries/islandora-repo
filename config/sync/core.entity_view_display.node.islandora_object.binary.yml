@@ -5,6 +5,7 @@ dependencies:
     - core.entity_view_mode.node.binary
     - field.field.node.islandora_object.field_access_terms
     - field.field.node.islandora_object.field_alternative_title
+    - field.field.node.islandora_object.field_complex_subject
     - field.field.node.islandora_object.field_description
     - field.field.node.islandora_object.field_display_hints
     - field.field.node.islandora_object.field_edtf_date
@@ -12,9 +13,12 @@ dependencies:
     - field.field.node.islandora_object.field_edtf_date_issued
     - field.field.node.islandora_object.field_extent
     - field.field.node.islandora_object.field_identifier
+    - field.field.node.islandora_object.field_identifier_with_type
     - field.field.node.islandora_object.field_linked_agent
     - field.field.node.islandora_object.field_member_of
     - field.field.node.islandora_object.field_model
+    - field.field.node.islandora_object.field_open_access
+    - field.field.node.islandora_object.field_peer_reviewed
     - field.field.node.islandora_object.field_pid
     - field.field.node.islandora_object.field_resource_type
     - field.field.node.islandora_object.field_rights
@@ -34,11 +38,6 @@ targetEntityType: node
 bundle: islandora_object
 mode: binary
 content:
-  content_moderation_control:
-    weight: -20
-    settings: {  }
-    third_party_settings: {  }
-    region: content
   display_media_entity_view_2:
     weight: 3
     region: content
@@ -185,6 +184,7 @@ hidden:
   display_media_service_file: true
   display_media_thumbnail: true
   field_access_terms: true
+  field_complex_subject: true
   field_display_hints: true
   field_identifier_with_type: true
   field_model: true
