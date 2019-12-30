@@ -74,11 +74,20 @@ Common Commands
 An ansible script for provisioning a box on the DEV set up of AWS has been added - aws_provision.yml
 1. locally run `ansible-playbook aws_provision.yml`
 2. locally run `ansible-galaxy install -r requirements.yml`
-3. locally run `ansible-playbook -i inventory/aws playbook.yml -e "islandora_distro=ubuntu/xenial64" -e @inventory/aws/group_vars/all/passwords.yml`
+3. locally run `ansible-playbook -i inventory/aws playbook.yml -e "islandora_distro=ubuntu/xenial64" -e @inventory/aws/group_vars/all/passwords.yml -u ubuntu --private-key=~/.ssh/Islandora-Dev.pem`
 <!-- must have an IAM role and key with privileges to administer EC2 -->
 <!-- must have upped the php memory_limit to 1GB for composer not to fall over -->
 <!-- had to run php -d memory_limit=-1 `which composer` install the first time since it was running out of memory -->
 <!-- must have security group configured correctly - ie ASU only for dev site -->
+- Set your env variable like `export EC2_INI_PATH=/etc/ansible/ec2.ini` and put the [file](https://raw.githubusercontent.com/ansible/ansible/devel/contrib/inventory/ec2.ini) there
+- Use aws_create_ec2.yml to create EC2 instances - you can manage the name and the tags directly in that script, `ansible-playbook aws_create_ec2.yml`
+- Test out searching for your EC2 instances for ansible with `./ec2.py --list --profile repo-dev`
+- Ping boxes with a certain tag via ansible like `AWS_PROFILE=repo-dev ansible -i ec2.py -u ubuntu -m ping tag_repository_purpose_web --private-key ~/.ssh/ASUAWSDev.pem`
+- Use `rds_provision.yml` to create RDS databases
+
+# Updating existing components
+## Islandora modules
+`composer update drupal/module_name`
 
 # Component Glossary and Notes
 (in alphabetical order)
