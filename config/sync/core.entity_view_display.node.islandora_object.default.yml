@@ -4,6 +4,7 @@ dependencies:
   config:
     - field.field.node.islandora_object.field_access_terms
     - field.field.node.islandora_object.field_alternative_title
+    - field.field.node.islandora_object.field_complex_subject
     - field.field.node.islandora_object.field_description
     - field.field.node.islandora_object.field_display_hints
     - field.field.node.islandora_object.field_edtf_date
@@ -28,7 +29,6 @@ dependencies:
       - islandora_defaults
   module:
     - controlled_access_terms
-    - entity_reference_revisions
     - user
 _core:
   default_config_hash: Y9GIszF_zubPeiGNqWoaVR5AZQ5cOnO5dG5dUKfm5Jo
@@ -37,11 +37,6 @@ targetEntityType: node
 bundle: islandora_object
 mode: default
 content:
-  content_moderation_control:
-    weight: -20
-    settings: {  }
-    third_party_settings: {  }
-    region: content
   display_media_service_file:
     weight: 3
     region: content
@@ -116,15 +111,6 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-  field_identifier_with_type:
-    type: entity_reference_revisions_entity_view
-    weight: 103
-    label: above
-    settings:
-      view_mode: default
-      link: ''
-    third_party_settings: {  }
-    region: content
   field_linked_agent:
     weight: 8
     label: above
@@ -141,26 +127,6 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-  field_open_access:
-    weight: 101
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    type: boolean
-    region: content
-  field_peer_reviewed:
-    weight: 102
-    label: above
-    settings:
-      format: default
-      format_custom_false: ''
-      format_custom_true: ''
-    third_party_settings: {  }
-    type: boolean
-    region: content
   field_resource_type:
     weight: 14
     label: above
@@ -185,16 +151,6 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
     region: content
-  flag_email_node:
-    weight: 10
-    settings: {  }
-    third_party_settings: {  }
-    region: content
-  flag_subscribe_node:
-    weight: 10
-    settings: {  }
-    third_party_settings: {  }
-    region: content
   langcode:
     type: language
     weight: 9
@@ -214,8 +170,12 @@ hidden:
   display_media_entity_view_2: true
   display_media_thumbnail: true
   field_access_terms: true
+  field_complex_subject: true
   field_display_hints: true
+  field_identifier_with_type: true
   field_model: true
+  field_open_access: true
+  field_peer_reviewed: true
   field_pid: true
   field_weight: true
   openseadragon_media_evas_entity_view_1: true

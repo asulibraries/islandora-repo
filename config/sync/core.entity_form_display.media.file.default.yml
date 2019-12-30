@@ -8,12 +8,13 @@ dependencies:
     - field.field.media.file.field_media_of
     - field.field.media.file.field_media_use
     - field.field.media.file.field_mime_type
+    - field.field.media.file.field_original_name
     - media.type.file
   module:
     - file
     - path
 _core:
-  default_config_hash: fml_aPtecXt0DBObwjtlOW8ZwRFa26NuiZtEFs4I1ew
+  default_config_hash: 72szYVuQcMFsc-l_7L8cbdIT0U60_w15srNV1iN87rE
 id: media.file.default
 targetEntityType: media
 bundle: file
@@ -46,6 +47,7 @@ content:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     third_party_settings: {  }
   field_media_use:
     type: options_buttons
@@ -53,6 +55,14 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_original_name:
+    weight: 26
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
   name:
     type: string_textfield
     weight: 0
@@ -86,6 +96,7 @@ content:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
+      match_limit: 10
     region: content
     third_party_settings: {  }
 hidden:
