@@ -2,7 +2,13 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.collection.field_collaborating_institutions
+    - field.field.node.collection.field_def
     - field.field.node.collection.field_description
+    - field.field.node.collection.field_handle
+    - field.field.node.collection.field_member_of
+    - field.field.node.collection.field_model
+    - field.field.node.collection.field_oai_set
     - node.type.collection
   module:
     - path
@@ -17,6 +23,26 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_collaborating_institutions:
+    weight: 128
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_def:
+    weight: 123
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
   field_description:
     weight: 122
     settings:
@@ -24,6 +50,44 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textarea
+    region: content
+  field_handle:
+    weight: 126
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_member_of:
+    weight: 125
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_model:
+    weight: 127
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_oai_set:
+    weight: 124
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
     region: content
   langcode:
     type: language_select
