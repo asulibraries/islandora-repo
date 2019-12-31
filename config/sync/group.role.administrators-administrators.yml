@@ -1,0 +1,23 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.administrators
+id: administrators-administrators
+label: Administrators
+weight: 8
+internal: false
+audience: member
+group_type: administrators
+permissions_ui: true
+permissions:
+  - 'administer members'
+  - 'create group_node:collection entity'
+  - 'update any group_node:collection content'
+  - 'update any group_node:collection entity'
+  - 'update own group_node:collection content'
+  - 'update own group_node:collection entity'
+  - 'view group_membership content'
+  - 'view group_node:collection content'
+  - 'view group_node:collection entity'
+  - 'view unpublished group_node:collection entity'
