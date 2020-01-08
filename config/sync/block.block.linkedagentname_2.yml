@@ -1,25 +1,25 @@
 langcode: en
-status: false
+status: true
 dependencies:
   config:
-    - facets.facet.linked_agent_taxonomy_term_name
+    - facets.facet.linked_agent_name
   module:
     - facets
     - system
   theme:
     - carapace
-id: linkedagentname
+id: linkedagentname_2
 theme: carapace
 region: sidebar_second
-weight: -10
+weight: 0
 provider: null
-plugin: 'facet_block:linked_agent_taxonomy_term_name'
+plugin: 'facet_block:linked_agent_name'
 settings:
-  id: 'facet_block:linked_agent_taxonomy_term_name'
-  label: Contributor
+  id: 'facet_block:linked_agent_name'
+  label: 'Linked Agent » Name'
   provider: facets
   label_display: visible
-  block_id: linkedagentname
+  block_id: linkedagentname_2
 visibility:
   request_path:
     id: request_path

@@ -3,17 +3,17 @@ status: true
 dependencies:
   config:
     - search_api.index.default_solr_index
-    - views.view.solr_search_content
+    - views.view.search
   module:
     - search_api
-id: language
-name: Language
-url_alias: language
-weight: 1
+id: linked_agent_name
+name: 'Linked Agent » Name'
+url_alias: linked_agent_name
+weight: 0
 min_count: 1
 show_only_one_result: false
-field_identifier: langcode
-facet_source_id: 'search_api:views_page__solr_search_content__page_1'
+field_identifier: linked_agent_name
+facet_source_id: 'search_api:views_page__search__page_1'
 widget:
   type: links
   config:

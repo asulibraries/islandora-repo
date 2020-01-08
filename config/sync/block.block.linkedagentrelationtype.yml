@@ -1,25 +1,25 @@
 langcode: en
-status: false
+status: true
 dependencies:
   config:
-    - facets.facet.language
+    - facets.facet.linked_agent_relation_type
   module:
     - facets
     - system
   theme:
     - carapace
-id: language
+id: linkedagentrelationtype
 theme: carapace
 region: sidebar_second
-weight: -8
+weight: 0
 provider: null
-plugin: 'facet_block:language'
+plugin: 'facet_block:linked_agent_relation_type'
 settings:
-  id: 'facet_block:language'
-  label: Language
+  id: 'facet_block:linked_agent_relation_type'
+  label: 'Linked Agent Relation Type'
   provider: facets
   label_display: visible
-  block_id: language
+  block_id: linkedagentrelationtype
 visibility:
   request_path:
     id: request_path

@@ -3,17 +3,17 @@ status: true
 dependencies:
   config:
     - search_api.index.default_solr_index
-    - views.view.solr_search_content
+    - views.view.search
   module:
     - search_api
-id: subject_name
-name: 'Subject Name'
-url_alias: subject_name
+id: linked_agent_relation_type
+name: 'Linked Agent Relation Type'
+url_alias: linked_agent_relation_type
 weight: 0
 min_count: 1
 show_only_one_result: false
-field_identifier: subject_name
-facet_source_id: 'search_api:views_page__solr_search_content__page_1'
+field_identifier: linked_agent_rel_type
+facet_source_id: 'search_api:views_page__search__page_1'
 widget:
   type: links
   config:
@@ -51,11 +51,6 @@ processor_configs:
       sort: 40
     settings:
       sort: ASC
-  hide_1_result_facet:
-    processor_id: hide_1_result_facet
-    weights:
-      build: 50
-    settings: {  }
   url_processor_handler:
     processor_id: url_processor_handler
     weights:
