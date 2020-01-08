@@ -54,8 +54,8 @@ Get the json-ld for an object in Drupal like so : http://localhost:8000/node/1?_
 7. drush cache-rebuild - to clear the cache
 
 ## Tips on Config Syncing
-* To export content, go to your drupal root such as `/var/www/html/drupal/web` and run `drupal config:export --directory /var/www/html/drupal/config/sync --remove-uuid` ([see](https://hechoendrupal.gitbooks.io/drupal-console/content/en/commands/config-export.html))
-* To import content, go to your drupal root such as `/var/www/html/drupal/web` and run `drupal config:import --directory /var/www/html/drupal/config/sync` ([see](https://hechoendrupal.gitbooks.io/drupal-console/content/en/commands/config-import.html))
+* To export content, go to your drupal root such as `/var/www/html/drupal` and run `drupal config:export --directory config/sync --remove-uuid` ([see](https://hechoendrupal.gitbooks.io/drupal-console/content/en/commands/config-export.html))
+* To import content, go to your drupal root such as `/var/www/html/drupal` and run `drupal config:import --directory config/sync` ([see](https://hechoendrupal.gitbooks.io/drupal-console/content/en/commands/config-import.html))
 
 ## Tips on Using Drush
 [Drush full command list](https://drushcommands.com/drush-9x/)
@@ -74,7 +74,7 @@ Common Commands
 An ansible script for provisioning a box on the DEV set up of AWS has been added - aws_provision.yml
 1. locally run `ansible-playbook aws_provision.yml`
 2. locally run `ansible-galaxy install -r requirements.yml`
-3. locally run `ansible-playbook -i inventory/aws playbook.yml -e "islandora_distro=ubuntu/xenial64" -e @inventory/aws/group_vars/all/passwords.yml -u ubuntu --private-key=~/.ssh/Islandora-Dev.pem`
+3. locally run `ansible-playbook -i inventory/aws playbook.yml -e "islandora_distro=ubuntu/xenial64" -e @inventory/aws/group_vars/all/passwords.yml`
 <!-- must have an IAM role and key with privileges to administer EC2 -->
 <!-- must have upped the php memory_limit to 1GB for composer not to fall over -->
 <!-- had to run php -d memory_limit=-1 `which composer` install the first time since it was running out of memory -->
@@ -84,6 +84,16 @@ An ansible script for provisioning a box on the DEV set up of AWS has been added
 - Test out searching for your EC2 instances for ansible with `./ec2.py --list --profile repo-dev`
 - Ping boxes with a certain tag via ansible like `AWS_PROFILE=repo-dev ansible -i ec2.py -u ubuntu -m ping tag_repository_purpose_web --private-key ~/.ssh/ASUAWSDev.pem`
 - Use `rds_provision.yml` to create RDS databases
+- The approach I've taken thus far is to create 4 EC2 instances in the following breakdown:
+  - webserver - for the actual drupal site
+  - microservices - for karaf, alpaca, crayfish
+  - tomcat - for fedora, cantaloupe, blazegraph
+  - solr - for solr
+- The ideal state might look something like: https://www.lucidchart.com/invitations/accept/8a83a394-5cf6-48c8-9434-6803456c283a
+- For the time being, I've set up separate security groups for each EC2 instance to allow inbound traffic on the required ports from various locations (such as ASU IPs and the other EC2 instances)
+- All 4 EC2 instances have static Elastic Block volumes associated with them (8GB each)
+- The webserver also has a related S3 bucket (asulibdev-islandora-bucket) which is currently being used for islandora_bagger to send preservation bags. It has a automatic rule to push to Glacier after 30 days of inactivity.
+- An RDS MYSQL instance has also been provisioned and connection is allowed to the webserver for the purpose of hosting the drupal database. It may be extended to host the gemini database and fedora database. (The Riprap database is currently being integrated with the Drupal database).
 
 # Updating existing components
 ## Islandora modules
@@ -123,11 +133,15 @@ If you get an error in the Drupal Status report saying that it couldn't connect 
 ## [Crayfish](https://github.com/Islandora-CLAW/Crayfish)
 A collection of micro-services: Gemini, Homarus, Houdini, Hypercube, Milliner, and Recast. ASU fork is [here](https://github.com/asulibraries/Crayfish)
 
-## Controlled Access Terms
+## [Controlled Access Terms](https://github.com/Islandora/controlled_access_terms)
+An Islandora module that adds vocabularies and fields to allowed controlled vocabulary usage in Islandora. The most significant of these being the "linked agent" field with a custom "Typed Relation" field type.
 
-## Crayfish-commons
+## [Crayfish-commons](https://github.com/Islandora/Crayfish-Commons)
+Shared code for the Crayfish microservices
 
 ## Fedora
+
+## Fits
 
 ## Flysystem
 - https://github.com/Islandora-CLAW/CLAW/blob/master/docs/technical-documentation/flysystem.md
