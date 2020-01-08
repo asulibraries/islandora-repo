@@ -1,0 +1,21 @@
+uuid: ea0716b5-8c2c-463f-8a8d-c77bc2afe3fd
+langcode: en
+status: true
+dependencies:
+  module:
+    - basic_auth
+    - field
+    - jwt
+    - serialization
+    - user
+id: entity.field_config
+plugin_id: 'entity:field_config'
+granularity: method
+configuration:
+  GET:
+    supported_formats:
+      - json
+    supported_auth:
+      - basic_auth
+      - jwt_auth
+      - cookie
