@@ -1,0 +1,47 @@
+<?php
+
+/**
+ * @file
+ * Contains asu_permissions.module.
+ */
+
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
+use Drupal\group\Entity\Group;
+
+/**
+ * Implements hook_entity_insert().
+ *
+ * Alternatively could trigger this with a context reaction.
+ */
+function asu_permissions_entity_insert(EntityInterface $entity) {
+  $ettype = $entity->getEntityTypeId();
+  if ($ettype == "node") {
+    \Drupal::logger('asu_permissions')->info("its a node");
+    \Drupal::logger('asu_permissions')->info("bundle is " . $entity->bundle());
+    if ($entity->bundle() == "collection") {
+      // create a new group for the collection
+      $pluginId = 'group_node:' . $entity->bundle();
+      $col_group = Group::create(['type' => 'administrators', 'label' => 'Collection ' . $entity->id()]);
+      $col_group->save();
+      // $col_group->addMember($account);
+      $col_group->addContent($entity, $pluginId);
+      $col_group->save();
+    }
+  }
+}
+
+/**
+ * Implements hook_node_view().
+ *
+ * Could also be done in the template.
+ */
+function asu_permissions_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
+  if ($entity->bundle() == "collection" || $entity->bundle() == "islandora_object") {
+    $build['developer_addition_markup'] = array(
+      '#markup' => '<a target="_blank" href="/form/feedback?source_entity_type=node&source_entity_id=' . $entity->id() . '&item=' . $entity->id() . '">Feedback</a>',
+      '#prefix' => '<div class="feedback-buttons">',
+      '#suffix' => '</div>'
+    );
+  }
+}

@@ -2,6 +2,7 @@ broker_url: 'tcp://localhost:61613'
 jwt_expiry: '+2 hour'
 gemini_url: 'http://127.0.0.1:8000/gemini'
 gemini_pseudo_bundles:
+  'collection:node': 'collection:node'
   'islandora_object:node': 'islandora_object:node'
   'audio:media': 'audio:media'
   'file:media': 'file:media'
@@ -12,10 +13,5 @@ gemini_pseudo_bundles:
   'geo_location:taxonomy_term': 'geo_location:taxonomy_term'
   'person:taxonomy_term': 'person:taxonomy_term'
   'subject:taxonomy_term': 'subject:taxonomy_term'
-  0: 'islandora_object:node'
-  1: 'image:media'
-  2: 'file:media'
-  3: 'audio:media'
-  4: 'video:media'
 _core:
   default_config_hash: XgeYJpPmZIOwE_nA73tYvFw-Rcj-HtlbNwfktqSVsaQ

@@ -1,0 +1,15 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.administrators
+id: administrators-viewers
+label: Viewers
+weight: 7
+internal: false
+audience: member
+group_type: administrators
+permissions_ui: true
+permissions:
+  - 'view group_node:collection entity'
+  - 'view unpublished group_node:collection entity'

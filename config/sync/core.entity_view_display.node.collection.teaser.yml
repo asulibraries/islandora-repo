@@ -3,7 +3,13 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
+    - field.field.node.collection.field_collaborating_institutions
+    - field.field.node.collection.field_def
     - field.field.node.collection.field_description
+    - field.field.node.collection.field_handle
+    - field.field.node.collection.field_member_of
+    - field.field.node.collection.field_model
+    - field.field.node.collection.field_oai_set
     - node.type.collection
   module:
     - user
@@ -29,6 +35,11 @@ content:
     region: content
   display_media_thumbnail:
     weight: 10
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  field_gemini_uri:
+    weight: 100
     settings: {  }
     third_party_settings: {  }
     region: content
@@ -78,5 +89,11 @@ content:
     third_party_settings: {  }
     region: content
 hidden:
+  field_collaborating_institutions: true
+  field_def: true
   field_description: true
+  field_handle: true
+  field_member_of: true
+  field_model: true
+  field_oai_set: true
   langcode: true

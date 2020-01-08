@@ -1,0 +1,18 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.administrators
+id: administrators-contributors
+label: Contributors
+weight: 6
+internal: false
+audience: member
+group_type: administrators
+permissions_ui: true
+permissions:
+  - 'create group_node:collection entity'
+  - 'update any group_node:collection entity'
+  - 'update own group_node:collection entity'
+  - 'view group_node:collection entity'
+  - 'view unpublished group_node:collection entity'

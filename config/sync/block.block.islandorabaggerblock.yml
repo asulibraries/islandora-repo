@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora_bagger_integration
+    - node
+  theme:
+    - carapace
+id: islandorabaggerblock
+theme: carapace
+region: content_suffix
+weight: -10
+provider: null
+plugin: islandora_bagger_block
+settings:
+  id: islandora_bagger_block
+  label: 'Islandora Bagger block'
+  provider: islandora_bagger_integration
+  label_display: visible
+visibility:
+  node_type:
+    id: node_type
+    bundles:
+      islandora_object: islandora_object
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
