@@ -8,7 +8,15 @@ folder: ../config/env
 module:
   jwt: 0
 theme: {  }
-blacklist: {  }
+blacklist:
+  - clamav.settings
+  - context.context.openseadragon_block
+  - context.context.open_seadragon
+  - islandora.settings
+  - islandora_bagger_integration.settings
+  - islandora_iiif.settings
+  - islandora_riprap.settings
+  - matomo.settings
 graylist:
   - islandora.settings
   - jwt.config
