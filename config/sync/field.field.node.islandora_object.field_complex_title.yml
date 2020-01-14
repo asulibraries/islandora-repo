@@ -1,0 +1,39 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_complex_title
+    - node.type.islandora_object
+    - paragraphs.paragraphs_type.title
+  module:
+    - entity_reference_revisions
+id: node.islandora_object.field_complex_title
+field_name: field_complex_title
+entity_type: node
+bundle: islandora_object
+label: 'Complex Title'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      title: title
+    target_bundles_drag_drop:
+      complex_subject:
+        weight: 5
+        enabled: false
+      identifier:
+        weight: 6
+        enabled: false
+      subject_subfield:
+        weight: 7
+        enabled: false
+      title:
+        enabled: true
+        weight: 8
+field_type: entity_reference_revisions
