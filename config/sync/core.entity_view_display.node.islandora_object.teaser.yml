@@ -6,6 +6,7 @@ dependencies:
     - field.field.node.islandora_object.field_access_terms
     - field.field.node.islandora_object.field_alternative_title
     - field.field.node.islandora_object.field_complex_subject
+    - field.field.node.islandora_object.field_complex_title
     - field.field.node.islandora_object.field_description
     - field.field.node.islandora_object.field_display_hints
     - field.field.node.islandora_object.field_edtf_date
@@ -47,6 +48,16 @@ content:
     settings: {  }
     third_party_settings: {  }
     region: content
+  flag_email_node:
+    weight: 10
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  flag_subscribe_node:
+    weight: 10
+    settings: {  }
+    third_party_settings: {  }
+    region: content
   links:
     weight: 1
     region: content
@@ -59,6 +70,7 @@ hidden:
   field_access_terms: true
   field_alternative_title: true
   field_complex_subject: true
+  field_complex_title: true
   field_description: true
   field_display_hints: true
   field_edtf_date: true

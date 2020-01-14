@@ -5,6 +5,7 @@ dependencies:
     - field.field.node.islandora_object.field_access_terms
     - field.field.node.islandora_object.field_alternative_title
     - field.field.node.islandora_object.field_complex_subject
+    - field.field.node.islandora_object.field_complex_title
     - field.field.node.islandora_object.field_description
     - field.field.node.islandora_object.field_display_hints
     - field.field.node.islandora_object.field_edtf_date
@@ -29,6 +30,7 @@ dependencies:
       - islandora_defaults
   module:
     - controlled_access_terms
+    - entity_reference_revisions
     - user
 _core:
   default_config_hash: Y9GIszF_zubPeiGNqWoaVR5AZQ5cOnO5dG5dUKfm5Jo
@@ -50,6 +52,15 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
+  field_complex_title:
+    type: entity_reference_revisions_entity_view
+    weight: 101
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
   field_description:
     type: basic_string
     weight: 10
@@ -150,6 +161,16 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
+  flag_email_node:
+    weight: 10
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  flag_subscribe_node:
+    weight: 10
+    settings: {  }
+    third_party_settings: {  }
     region: content
   langcode:
     type: language
