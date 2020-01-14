@@ -1,0 +1,24 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.physical_form
+  module:
+    - taxonomy
+_core:
+  default_config_hash: FsdXm1H6MOv1k61FWPRPA4OHVFb3yhkQoDkSn-89AT8
+id: taxonomy_term.physical_form
+targetEntityType: taxonomy_term
+bundle: physical_form
+types:
+  - 'schema:Thing'
+fieldMappings:
+  name:
+    properties:
+      - 'schema:name'
+  description:
+    properties:
+      - 'schema:description'
+  field_authority_link:
+    properties:
+      - 'schema:sameAs'

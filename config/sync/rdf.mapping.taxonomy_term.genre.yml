@@ -1,0 +1,24 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.genre
+  module:
+    - taxonomy
+_core:
+  default_config_hash: Ijp6GLlaHqXd9wPke1zvaXR-KJ4JHVztxPElhnw_kZU
+id: taxonomy_term.genre
+targetEntityType: taxonomy_term
+bundle: genre
+types:
+  - 'schema:Thing'
+fieldMappings:
+  name:
+    properties:
+      - 'schema:name'
+  description:
+    properties:
+      - 'schema:description'
+  field_authority_link:
+    properties:
+      - 'schema:sameAs'
