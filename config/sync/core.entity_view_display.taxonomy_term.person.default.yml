@@ -71,7 +71,7 @@ content:
     label: above
     settings:
       format: default
-      markup: ''
+      markup: false
       output: default
       multiple: default
       multiple_delimiter: ', '
@@ -87,7 +87,7 @@ content:
     label: above
     settings:
       format: default
-      markup: ''
+      markup: false
       output: default
       multiple: default
       multiple_delimiter: ', '
@@ -105,6 +105,16 @@ content:
       link: true
     third_party_settings: {  }
     type: typed_relation_default
+    region: content
+  flag_email_term:
+    weight: 10
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  flag_subscribe_term:
+    weight: 10
+    settings: {  }
+    third_party_settings: {  }
     region: content
 hidden:
   langcode: true

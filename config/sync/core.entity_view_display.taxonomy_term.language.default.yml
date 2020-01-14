@@ -2,41 +2,35 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.taxonomy_term.subject.field_authority_link
-    - taxonomy.vocabulary.subject
+    - field.field.taxonomy_term.language.field_authority_link
+    - taxonomy.vocabulary.language
   module:
-    - controlled_access_terms
     - text
 _core:
-  default_config_hash: 3yMrATFYT7qVlZ_yZ36wuZPE_ueigt20gMnev5Yf_QE
-id: taxonomy_term.subject.default
+  default_config_hash: Xw8AzsLqoqKzBBPcxUQaM73ycgnDOUMGwjATsch7Xx4
+id: taxonomy_term.language.default
 targetEntityType: taxonomy_term
-bundle: subject
+bundle: language
 mode: default
 content:
   description:
     label: hidden
     type: text_default
-    weight: 101
+    weight: 0
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
-  field_authority_link:
-    weight: 103
+  field_authority_sources:
+    weight: 1
     label: above
     settings:
-      trim_length: '80'
-      url_only: ''
-      url_plain: ''
+      trim_length: 80
+      url_only: false
+      url_plain: false
       rel: ''
       target: _blank
     third_party_settings: {  }
     type: authority_formatter_default
-    region: content
-  field_gemini_uri:
-    weight: 100
-    settings: {  }
-    third_party_settings: {  }
     region: content
   flag_email_term:
     weight: 10
@@ -49,4 +43,5 @@ content:
     third_party_settings: {  }
     region: content
 hidden:
+  field_authority_link: true
   langcode: true
