@@ -14,6 +14,7 @@ dependencies:
     - field.storage.media.field_media_use
     - field.storage.node.field_alternative_title
     - field.storage.node.field_member_of
+    - field.storage.node.field_complex_title
     - field.storage.node.field_edtf_date_created
     - field.storage.node.field_description
     - field.storage.node.field_identifier
@@ -132,6 +133,14 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_member_of
+  field_complex_title:
+    label: 'Complex Title'
+    datasource_id: 'entity:node'
+    property_path: field_complex_title
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_complex_title
   field_description:
     label: Description
     datasource_id: 'entity:node'
