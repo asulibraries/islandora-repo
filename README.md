@@ -35,7 +35,7 @@ Get the json-ld for an object in Drupal like so : http://localhost:8000/node/1?_
 2. drupal config:import like `drupal config:import --directory /var/www/html/drupal/config/sync`
 3. cd into web directory
 3. run database migrations - `drush updatedb`
-4. update entity schemas - `drush entity-updates`
+4. update entity schemas - `drush devel-entity-updates`
 5. clear drupal cache - `drush cache-rebuild`
 6. composer updates?
 
