@@ -4,25 +4,40 @@ dependencies:
   config:
     - field.field.node.islandora_object.field_access_terms
     - field.field.node.islandora_object.field_alternative_title
-    - field.field.node.islandora_object.field_complex_subject
-    - field.field.node.islandora_object.field_complex_title
+    - field.field.node.islandora_object.field_classification
+    - field.field.node.islandora_object.field_coordinates
+    - field.field.node.islandora_object.field_coordinates_text
     - field.field.node.islandora_object.field_description
+    - field.field.node.islandora_object.field_dewey_classification
     - field.field.node.islandora_object.field_display_hints
+    - field.field.node.islandora_object.field_edition
     - field.field.node.islandora_object.field_edtf_date
     - field.field.node.islandora_object.field_edtf_date_created
     - field.field.node.islandora_object.field_edtf_date_issued
     - field.field.node.islandora_object.field_extent
+    - field.field.node.islandora_object.field_genre
+    - field.field.node.islandora_object.field_geographic_subject
     - field.field.node.islandora_object.field_identifier
-    - field.field.node.islandora_object.field_identifier_with_type
+    - field.field.node.islandora_object.field_isbn
+    - field.field.node.islandora_object.field_language
+    - field.field.node.islandora_object.field_lcc_classification
     - field.field.node.islandora_object.field_linked_agent
+    - field.field.node.islandora_object.field_local_identifier
     - field.field.node.islandora_object.field_member_of
     - field.field.node.islandora_object.field_model
+    - field.field.node.islandora_object.field_note
+    - field.field.node.islandora_object.field_oclc_number
     - field.field.node.islandora_object.field_open_access
     - field.field.node.islandora_object.field_peer_reviewed
+    - field.field.node.islandora_object.field_physical_form
     - field.field.node.islandora_object.field_pid
+    - field.field.node.islandora_object.field_place_published
     - field.field.node.islandora_object.field_resource_type
     - field.field.node.islandora_object.field_rights
     - field.field.node.islandora_object.field_subject
+    - field.field.node.islandora_object.field_subjects_name
+    - field.field.node.islandora_object.field_table_of_contents
+    - field.field.node.islandora_object.field_temporal_subject
     - field.field.node.islandora_object.field_weight
     - node.type.islandora_object
   enforced:
@@ -31,20 +46,22 @@ dependencies:
   module:
     - controlled_access_terms
     - field_group
-    - paragraphs
+    - geolocation
     - path
+    - text
 third_party_settings:
   field_group:
     group_structure:
       children:
         - field_model
         - field_member_of
+        - langcode
         - field_access_terms
         - field_display_hints
         - field_pid
         - field_weight
       parent_name: ''
-      weight: 2
+      weight: 1
       format_type: details
       format_settings:
         open: true
@@ -59,17 +76,34 @@ third_party_settings:
         - field_alternative_title
         - field_identifier
         - field_resource_type
-        - field_description
-        - langcode
-        - field_extent
-        - field_rights
+        - field_genre
         - field_linked_agent
-        - field_edtf_date
-        - field_subject
         - field_edtf_date_created
         - field_edtf_date_issued
+        - field_edtf_date
+        - field_edition
+        - field_place_published
+        - field_language
+        - field_description
+        - field_table_of_contents
+        - field_physical_form
+        - field_extent
+        - field_rights
+        - field_subject
+        - field_geographic_subject
+        - field_coordinates
+        - field_coordinates_text
+        - field_temporal_subject
+        - field_subjects_name
+        - field_dewey_classification
+        - field_lcc_classification
+        - field_classification
+        - field_local_identifier
+        - field_isbn
+        - field_oclc_number
+        - field_note
       parent_name: ''
-      weight: 1
+      weight: 0
       format_type: details
       format_settings:
         open: true
@@ -79,7 +113,7 @@ third_party_settings:
       label: General
       region: content
 _core:
-  default_config_hash: XoJHWJkj5zXGKh6Swptdc3esiS9mwGO6HvwAMrdp7k8
+  default_config_hash: HLvUbruUDjxBUB1PEtEQF7ZvGRY-87E68yLt78KBruM
 id: node.islandora_object.default
 targetEntityType: node
 bundle: islandora_object
@@ -93,7 +127,7 @@ content:
     third_party_settings: {  }
   field_access_terms:
     type: options_buttons
-    weight: 10
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -105,35 +139,61 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-  field_complex_title:
-    type: entity_reference_paragraphs
-    weight: 104
+  field_classification:
+    weight: 26
     settings:
-      title: Paragraph
-      title_plural: Paragraphs
-      edit_mode: open
-      add_mode: dropdown
-      form_display_mode: default
-      default_paragraph_type: ''
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_coordinates:
+    weight: 20
+    settings: {  }
+    third_party_settings: {  }
+    type: geolocation_latlng
+    region: content
+  field_coordinates_text:
+    weight: 21
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
     region: content
   field_description:
     type: string_textarea
-    weight: 4
+    weight: 13
     region: content
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
+  field_dewey_classification:
+    weight: 24
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   field_display_hints:
     type: options_buttons
-    weight: 11
+    weight: 13
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_edition:
+    weight: 9
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   field_edtf_date:
     type: edtf_default
-    weight: 9
+    weight: 8
     region: content
     settings:
       strict_dates: false
@@ -142,7 +202,7 @@ content:
     third_party_settings: {  }
   field_edtf_date_created:
     type: edtf_default
-    weight: 11
+    weight: 6
     region: content
     settings:
       strict_dates: false
@@ -151,7 +211,7 @@ content:
     third_party_settings: {  }
   field_edtf_date_issued:
     type: edtf_default
-    weight: 12
+    weight: 7
     region: content
     settings:
       strict_dates: false
@@ -160,12 +220,32 @@ content:
     third_party_settings: {  }
   field_extent:
     type: string_textfield
-    weight: 6
+    weight: 16
     region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_genre:
+    type: entity_reference_autocomplete
+    weight: 4
+    region: content
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+      match_limit: 10
+    third_party_settings: {  }
+  field_geographic_subject:
+    weight: 19
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+      match_limit: 10
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
   field_identifier:
     type: string_textfield
     weight: 2
@@ -174,20 +254,34 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-  field_identifier_with_type:
-    type: entity_reference_paragraphs
-    weight: 103
+  field_isbn:
+    weight: 28
     settings:
-      title: Paragraph
-      title_plural: Paragraphs
-      edit_mode: open
-      add_mode: dropdown
-      form_display_mode: default
-      default_paragraph_type: ''
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_language:
+    type: entity_reference_autocomplete
+    weight: 12
+    region: content
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+      match_limit: 10
+    third_party_settings: {  }
+  field_lcc_classification:
+    weight: 25
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
     region: content
   field_linked_agent:
-    weight: 8
+    weight: 5
     settings:
       match_operator: CONTAINS
       size: '60'
@@ -195,6 +289,14 @@ content:
       match_limit: 10
     third_party_settings: {  }
     type: typed_relation_default
+    region: content
+  field_local_identifier:
+    weight: 27
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
     region: content
   field_member_of:
     type: entity_reference_autocomplete
@@ -212,22 +314,42 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_open_access:
-    weight: 101
+  field_note:
+    weight: 30
     settings:
-      display_label: true
+      rows: 5
+      placeholder: ''
     third_party_settings: {  }
-    type: boolean_checkbox
+    type: text_textarea
     region: content
-  field_peer_reviewed:
-    weight: 102
+  field_oclc_number:
+    weight: 29
     settings:
-      display_label: true
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
-    type: boolean_checkbox
+    type: string_textfield
     region: content
+  field_physical_form:
+    type: entity_reference_autocomplete
+    weight: 15
+    region: content
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+      match_limit: 10
+    third_party_settings: {  }
   field_pid:
-    weight: 12
+    weight: 14
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_place_published:
+    weight: 10
     settings:
       size: 60
       placeholder: ''
@@ -242,14 +364,42 @@ content:
     region: content
   field_rights:
     type: string_textfield
-    weight: 7
+    weight: 17
     region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
   field_subject:
-    weight: 10
+    weight: 18
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+      match_limit: 10
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_subjects_name:
+    weight: 23
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+      match_limit: 10
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_table_of_contents:
+    weight: 14
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_temporal_subject:
+    weight: 22
     settings:
       match_operator: CONTAINS
       size: 60
@@ -259,7 +409,7 @@ content:
     type: entity_reference_autocomplete
     region: content
   field_weight:
-    weight: 26
+    weight: 15
     settings:
       placeholder: ''
     third_party_settings: {  }
@@ -267,20 +417,14 @@ content:
     region: content
   langcode:
     type: language_select
-    weight: 5
+    weight: 10
     region: content
     settings:
       include_locked: true
     third_party_settings: {  }
-  moderation_state:
-    type: moderation_state_default
-    weight: 100
-    settings: {  }
-    region: content
-    third_party_settings: {  }
   path:
     type: path
-    weight: 4
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -314,7 +458,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
   translation:
-    weight: 3
+    weight: 2
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -328,5 +472,4 @@ content:
       placeholder: ''
       match_limit: 10
     third_party_settings: {  }
-hidden:
-  field_complex_subject: true
+hidden: {  }

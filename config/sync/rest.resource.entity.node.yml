@@ -9,7 +9,6 @@ dependencies:
     - jsonld
     - jwt
     - node
-    - rest_oai_pmh
     - serialization
     - user
 _core:
@@ -21,36 +20,28 @@ configuration:
   GET:
     supported_formats:
       - jsonld
-      - oai_dc
       - json
-      - xml
     supported_auth:
       - basic_auth
       - jwt_auth
       - cookie
   POST:
     supported_formats:
-      - jsonld
       - json
-      - xml
     supported_auth:
       - basic_auth
       - jwt_auth
       - cookie
   DELETE:
     supported_formats:
-      - jsonld
       - json
-      - xml
     supported_auth:
       - basic_auth
       - jwt_auth
       - cookie
   PATCH:
     supported_formats:
-      - jsonld
       - json
-      - xml
     supported_auth:
       - basic_auth
       - jwt_auth

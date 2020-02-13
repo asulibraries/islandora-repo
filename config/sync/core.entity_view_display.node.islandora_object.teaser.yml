@@ -5,25 +5,38 @@ dependencies:
     - core.entity_view_mode.node.teaser
     - field.field.node.islandora_object.field_access_terms
     - field.field.node.islandora_object.field_alternative_title
-    - field.field.node.islandora_object.field_complex_subject
-    - field.field.node.islandora_object.field_complex_title
+    - field.field.node.islandora_object.field_classification
+    - field.field.node.islandora_object.field_coordinates
+    - field.field.node.islandora_object.field_coordinates_text
     - field.field.node.islandora_object.field_description
+    - field.field.node.islandora_object.field_dewey_classification
     - field.field.node.islandora_object.field_display_hints
+    - field.field.node.islandora_object.field_edition
     - field.field.node.islandora_object.field_edtf_date
     - field.field.node.islandora_object.field_edtf_date_created
     - field.field.node.islandora_object.field_edtf_date_issued
     - field.field.node.islandora_object.field_extent
+    - field.field.node.islandora_object.field_genre
+    - field.field.node.islandora_object.field_geographic_subject
     - field.field.node.islandora_object.field_identifier
-    - field.field.node.islandora_object.field_identifier_with_type
+    - field.field.node.islandora_object.field_isbn
+    - field.field.node.islandora_object.field_language
+    - field.field.node.islandora_object.field_lcc_classification
     - field.field.node.islandora_object.field_linked_agent
+    - field.field.node.islandora_object.field_local_identifier
     - field.field.node.islandora_object.field_member_of
     - field.field.node.islandora_object.field_model
-    - field.field.node.islandora_object.field_open_access
-    - field.field.node.islandora_object.field_peer_reviewed
+    - field.field.node.islandora_object.field_note
+    - field.field.node.islandora_object.field_oclc_number
+    - field.field.node.islandora_object.field_physical_form
     - field.field.node.islandora_object.field_pid
+    - field.field.node.islandora_object.field_place_published
     - field.field.node.islandora_object.field_resource_type
     - field.field.node.islandora_object.field_rights
     - field.field.node.islandora_object.field_subject
+    - field.field.node.islandora_object.field_subjects_name
+    - field.field.node.islandora_object.field_table_of_contents
+    - field.field.node.islandora_object.field_temporal_subject
     - field.field.node.islandora_object.field_weight
     - node.type.islandora_object
   enforced:
@@ -48,13 +61,8 @@ content:
     settings: {  }
     third_party_settings: {  }
     region: content
-  flag_email_node:
-    weight: 10
-    settings: {  }
-    third_party_settings: {  }
-    region: content
-  flag_subscribe_node:
-    weight: 10
+  islandora_fits_checksum:
+    weight: 100
     settings: {  }
     third_party_settings: {  }
     region: content
@@ -69,25 +77,38 @@ hidden:
   display_media_service_file: true
   field_access_terms: true
   field_alternative_title: true
-  field_complex_subject: true
-  field_complex_title: true
+  field_classification: true
+  field_coordinates: true
+  field_coordinates_text: true
   field_description: true
+  field_dewey_classification: true
   field_display_hints: true
+  field_edition: true
   field_edtf_date: true
   field_edtf_date_created: true
   field_edtf_date_issued: true
   field_extent: true
+  field_genre: true
+  field_geographic_subject: true
   field_identifier: true
-  field_identifier_with_type: true
+  field_isbn: true
+  field_language: true
+  field_lcc_classification: true
   field_linked_agent: true
+  field_local_identifier: true
   field_member_of: true
   field_model: true
-  field_open_access: true
-  field_peer_reviewed: true
+  field_note: true
+  field_oclc_number: true
+  field_physical_form: true
   field_pid: true
+  field_place_published: true
   field_resource_type: true
   field_rights: true
   field_subject: true
+  field_subjects_name: true
+  field_table_of_contents: true
+  field_temporal_subject: true
   field_weight: true
   langcode: true
   members_eva_entity_view_1: true

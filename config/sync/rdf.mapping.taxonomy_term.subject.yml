@@ -6,7 +6,7 @@ dependencies:
   module:
     - taxonomy
 _core:
-  default_config_hash: 7dhQX-FT16CcrLdhBdu0zaKOz0WYJlp_2jhiu_ZeeQU
+  default_config_hash: 3WGvlX2CdD-Ul3QsGMJ1X9gbKrSeQIbaPYOZpuyKiF8
 id: taxonomy_term.subject
 targetEntityType: taxonomy_term
 bundle: subject
@@ -22,3 +22,8 @@ fieldMappings:
   field_authority_link:
     properties:
       - 'schema:sameAs'
+  changed:
+    properties:
+      - 'schema:dateModified'
+    datatype_callback:
+      callable: 'Drupal\rdf\CommonDataConverter::dateIso8601Value'

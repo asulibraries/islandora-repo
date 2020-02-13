@@ -6,7 +6,7 @@ dependencies:
   module:
     - taxonomy
 _core:
-  default_config_hash: MTUhcNtS9IOszPcaNXe9ycw_UeGz9eDUECrYC3rWKAg
+  default_config_hash: KX0pFKkMx4ZAGouXVz0cnSj-IsU7az9RIVLFOvHdwBE
 id: taxonomy_term.person
 targetEntityType: taxonomy_term
 bundle: person
@@ -31,3 +31,8 @@ fieldMappings:
   field_cat_date_end:
     properties:
       - 'schema:deathDate'
+  changed:
+    properties:
+      - 'schema:dateModified'
+    datatype_callback:
+      callable: 'Drupal\rdf\CommonDataConverter::dateIso8601Value'
