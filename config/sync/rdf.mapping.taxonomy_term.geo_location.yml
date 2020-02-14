@@ -6,7 +6,7 @@ dependencies:
   module:
     - taxonomy
 _core:
-  default_config_hash: l2IvJ3Rbd7ta0H-fhdt_V04l4NdeIoqjSAkDtD3fsY0
+  default_config_hash: h5TsW1n-2MIijEHXZ8K8Zz2YocfcFQh4z1xTOKZc66M
 id: taxonomy_term.geo_location
 targetEntityType: taxonomy_term
 bundle: geo_location
@@ -29,3 +29,8 @@ fieldMappings:
   field_geo_broader:
     properties:
       - 'schema:containedInPlace'
+  changed:
+    properties:
+      - 'schema:dateModified'
+    datatype_callback:
+      callable: 'Drupal\rdf\CommonDataConverter::dateIso8601Value'

@@ -1,0 +1,30 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora
+_core:
+  default_config_hash: hWNDzPMaFh9AYj8gpL6VzV8fmb6OGai7NG2RhM3yPds
+name: open_seadragon
+label: 'Open Seadragon'
+group: Islandora
+description: 'Displays media using the Open Seadragon viewer'
+requireAllConditions: false
+disabled: false
+conditions:
+  node_has_term:
+    id: node_has_term
+    negate: 0
+    tids:
+      -
+        target_id: '35'
+    context_mapping:
+      node: '@node.node_route_context:node'
+    uri: 'http://openseadragon.github.io'
+    logic: and
+reactions:
+  view_mode_alter:
+    id: view_mode_alter
+    mode: node.open_seadragon
+    saved: false
+weight: 0

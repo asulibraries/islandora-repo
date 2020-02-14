@@ -5,7 +5,7 @@ dependencies:
     module:
       - webform
 _core:
-  default_config_hash: CjLyKc08W5pQDmtIk0iDWmit1eCAlCVJtOzxMdHI51Q
+  default_config_hash: z-xqCZwXhZ-pXe52c0MCf7kYjLzvlLDyOusIt5u1C0g
 open: null
 close: null
 weight: 0
@@ -205,16 +205,17 @@ handlers:
       ignore_access: false
       exclude_empty: true
       exclude_empty_checkbox: false
+      exclude_attachments: false
       html: true
       attachments: false
       twig: false
       theme_name: ''
+      parameters: {  }
       debug: false
       reply_to: ''
       return_path: ''
       sender_mail: ''
       sender_name: ''
-      parameters: {  }
   email_notification:
     id: email
     label: 'Email notification'
@@ -240,13 +241,15 @@ handlers:
       ignore_access: false
       exclude_empty: true
       exclude_empty_checkbox: false
+      exclude_attachments: false
       html: true
       attachments: false
       twig: false
       theme_name: ''
+      parameters: {  }
       debug: false
       reply_to: ''
       return_path: ''
       sender_mail: ''
       sender_name: ''
-      parameters: {  }
+variants: {  }

@@ -6,7 +6,7 @@ dependencies:
   module:
     - taxonomy
 _core:
-  default_config_hash: rCeNVy4F2ihHcsUfcf4zz-kvOJ4Sp60Ygrghs1ebILY
+  default_config_hash: 53GoJnRZR6upUctj5_gv1KI6v-z0bvV-ZewqQ3KaUhQ
 id: taxonomy_term.family
 targetEntityType: taxonomy_term
 bundle: family
@@ -28,3 +28,8 @@ fieldMappings:
   field_cat_date_begin:
     properties:
       - 'schema:foundingDate'
+  changed:
+    properties:
+      - 'schema:dateModified'
+    datatype_callback:
+      callable: 'Drupal\rdf\CommonDataConverter::dateIso8601Value'

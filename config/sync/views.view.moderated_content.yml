@@ -1,11 +1,14 @@
 langcode: en
 status: true
 dependencies:
+  enforced:
+    module:
+      - content_moderation
   module:
     - node
     - user
 _core:
-  default_config_hash: epCHwxXumnS0FQR7duKz2_r2nkW5CJxTracGsaPMuzE
+  default_config_hash: Kjqf5d4F134C3zua0tXV7LA3m5OEeS_Fowa2dP9kk2I
 id: moderated_content
 label: 'Moderated content'
 module: views
@@ -381,7 +384,7 @@ display:
           separator: ', '
           field_api_classes: false
           entity_type: node
-          plugin_id: moderation_state_field
+          plugin_id: field
         changed:
           id: changed
           table: node_field_revision
@@ -799,7 +802,7 @@ display:
         groups:
           1: AND
     cache_metadata:
-      max-age: 0
+      max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
@@ -818,7 +821,7 @@ display:
       path: admin/content/moderated
       display_description: ''
     cache_metadata:
-      max-age: 0
+      max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'

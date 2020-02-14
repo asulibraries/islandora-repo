@@ -6,7 +6,7 @@ dependencies:
   module:
     - taxonomy
 _core:
-  default_config_hash: Ijp6GLlaHqXd9wPke1zvaXR-KJ4JHVztxPElhnw_kZU
+  default_config_hash: h_dG9wdbT4CT0HRr05ADMGyDZAg4JwnFIe8PjZ2jxLA
 id: taxonomy_term.genre
 targetEntityType: taxonomy_term
 bundle: genre
@@ -22,3 +22,8 @@ fieldMappings:
   field_authority_link:
     properties:
       - 'schema:sameAs'
+  changed:
+    properties:
+      - 'schema:dateModified'
+    datatype_callback:
+      callable: 'Drupal\rdf\CommonDataConverter::dateIso8601Value'

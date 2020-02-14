@@ -16,10 +16,8 @@ It will also include ansible scripts for provisioning and deploying to additiona
 2. Clone ASU claw-playbook
 3. cd into claw-playbook
 4. Make a file called in your user root called .asurepo_vault_pass and get it from the lastpass. (this is the password for decrypting ansible vault stuff which will allow you to deploy to create and encrypt files)
-5. Clone this repo into a folder called claw-sandbox
-6. Edit the vagrantfile to disable the vm.synced_folder sites/default/files
-7. Run vagrant up (from within the claw-playbook root)
-8. Edit the vagrantfile to enable the vm.synced_folder and do `vagrant reload` to activate
+5. Run vagrant up (from within the claw-playbook root)
+6. This repo will be available inside the vagrant VM as `/var/www/html/drupal`
 
 # Ansible
 If you've already provisioned your vagrant environment and need to re-run the ASU specific provisioning, you can do so with `ansible-playbook asu-install.yml -i inventory/vagrant -l all -e ansible_ssh_user=$vagrantUser -e islandora_distro=ubuntu/xenial64` Your $vagrantUser will either be ubuntu or vagrant. Check to see what user you become when you `vagrant ssh`.
@@ -35,7 +33,8 @@ Get the json-ld for an object in Drupal like so : http://localhost:8000/node/1?_
 # Updating an existing install
 1. pull down updated claw-app (`cd /var/www/html/drupal && git pull`)
 2. drupal config:import like `drupal config:import --directory /var/www/html/drupal/config/sync`
-3. run database migrations - `drush udpatedb`
+3. cd into web directory
+3. run database migrations - `drush updatedb`
 4. clear drupal cache - `drush cache-rebuild`
 5. composer updates?
 
