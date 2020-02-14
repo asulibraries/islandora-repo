@@ -56,6 +56,8 @@ Get the json-ld for an object in Drupal like so : http://localhost:8000/node/1?_
 ## Tips on Config Syncing
 * To export content, go to your drupal root such as `/var/www/html/drupal` and run `drupal config:export --directory config/sync --remove-uuid` ([see](https://hechoendrupal.gitbooks.io/drupal-console/content/en/commands/config-export.html))
 * To import content, go to your drupal root such as `/var/www/html/drupal` and run `drupal config:import --directory config/sync` ([see](https://hechoendrupal.gitbooks.io/drupal-console/content/en/commands/config-import.html))
+* To export the configs split based on environments, use `drupal config_split:export --split config_split.config_split.environment_config`
+* To import the split config (or any one part of config), use `drush config:import --partial --source=/the/path/`
 
 ## Tips on Using Drush
 [Drush full command list](https://drushcommands.com/drush-9x/)
@@ -74,7 +76,7 @@ Common Commands
 An ansible script for provisioning a box on the DEV set up of AWS has been added - aws_provision.yml
 1. locally run `ansible-playbook aws_provision.yml`
 2. locally run `ansible-galaxy install -r requirements.yml`
-3. locally run `ansible-playbook -i inventory/aws playbook.yml -e "islandora_distro=ubuntu/xenial64" -e @inventory/aws/group_vars/all/passwords.yml`
+3. locally run `ansible-playbook -i inventory/aws playbook.yml -e "islandora_distro=ubuntu/xenial64" -e @inventory/aws/group_vars/all/passwords.yml -e @aws_keys.yml`
 <!-- must have an IAM role and key with privileges to administer EC2 -->
 <!-- must have upped the php memory_limit to 1GB for composer not to fall over -->
 <!-- had to run php -d memory_limit=-1 `which composer` install the first time since it was running out of memory -->
@@ -93,7 +95,7 @@ An ansible script for provisioning a box on the DEV set up of AWS has been added
 - For the time being, I've set up separate security groups for each EC2 instance to allow inbound traffic on the required ports from various locations (such as ASU IPs and the other EC2 instances)
 - All 4 EC2 instances have static Elastic Block volumes associated with them (8GB each)
 - The webserver also has a related S3 bucket (asulibdev-islandora-bucket) which is currently being used for islandora_bagger to send preservation bags. It has a automatic rule to push to Glacier after 30 days of inactivity.
-- An RDS MYSQL instance has also been provisioned and connection is allowed to the webserver for the purpose of hosting the drupal database. It may be extended to host the gemini database and fedora database. (The Riprap database is currently being integrated with the Drupal database).
+- An RDS MYSQL instance has also been provisioned and connection is allowed to the webserver for the purpose of hosting the drupal database. It may be extended to host the gemini database, fedora database, matomo database. (The Riprap database is currently being integrated with the Drupal database). You can connect to the RDS instance from the webserver EC2 instance manually like `mysql -u drupal8 -p -h islandora-drupal.cvznsvixsvec.us-west-2.rds.amazonaws.com --port 3306`
 
 # Updating existing components
 ## Islandora modules
