@@ -6,11 +6,9 @@ dependencies:
       - islandora_defaults
   module:
     - islandora
-_core:
-  default_config_hash: mvej23P4MGj7YDRZpWfYmr1j0q_zx7s5P4MMEYb6HVc
 name: taxonomy_terms
 label: 'Taxonomy Terms'
-group: Islandora
+group: Indexing
 description: 'All taxonomy terms'
 requireAllConditions: false
 disabled: false
@@ -35,4 +33,4 @@ reactions:
       delete_taxonomy_term_in_fedora: delete_taxonomy_term_in_fedora
       delete_taxonomy_term_in_triplestore: delete_taxonomy_term_in_triplestore
     saved: false
-weight: 0
+weight: -4

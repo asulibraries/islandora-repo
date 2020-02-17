@@ -4,26 +4,12 @@ dependencies:
   module:
     - search_api_solr
     - node
-    - taxonomy
-    - media
     - user
     - search_api
   config:
-    - field.storage.media.field_edited_text
-    - field.storage.media.field_media_of
-    - field.storage.media.field_media_use
-    - field.storage.node.field_alternative_title
-    - field.storage.node.field_member_of
-    - field.storage.node.field_complex_title
-    - field.storage.node.field_edtf_date_created
-    - field.storage.node.field_description
-    - field.storage.node.field_identifier
-    - field.storage.node.field_linked_agent
-    - field.storage.node.field_model
-    - field.storage.node.field_resource_type
-    - field.storage.node.field_subject
     - field.storage.node.field_tags
     - search_api.server.default_solr_server
+    - core.entity_view_mode.node.search_index
 third_party_settings:
   search_api_solr:
     finalize: false
@@ -46,51 +32,11 @@ third_party_settings:
         fragsize: 0
     advanced:
       index_prefix: ''
-_core:
-  default_config_hash: lB3g7pP4d5WoIDhvi41ngXGpcOj78D0gn2e6BTMKikw
 id: default_solr_index
 name: 'Default Solr content index'
 description: 'Default content index created by the Solr Search Defaults module'
 read_only: false
 field_settings:
-  aggregated_field:
-    label: 'Concatenated all the fields'
-    property_path: aggregated_field
-    type: text
-    configuration:
-      type: concat
-      fields:
-        - 'entity:media/field_edited_text'
-        - 'entity:node/body'
-        - 'entity:node/comment'
-        - 'entity:node/field_alternative_title'
-        - 'entity:node/field_complex_subject'
-        - 'entity:node/field_description'
-        - 'entity:node/field_edtf_date'
-        - 'entity:node/field_edtf_date_created'
-        - 'entity:node/field_edtf_date_issued'
-        - 'entity:node/field_extent'
-        - 'entity:node/field_identifier'
-        - 'entity:node/field_identifier_with_type'
-        - 'entity:node/field_image'
-        - 'entity:node/field_linked_agent'
-        - 'entity:node/field_member_of'
-        - 'entity:node/field_model'
-        - 'entity:node/field_open_access'
-        - 'entity:node/field_peer_reviewed'
-        - 'entity:node/field_pid'
-        - 'entity:node/field_resource_type'
-        - 'entity:node/field_rights'
-        - 'entity:node/field_subject'
-        - 'entity:node/field_tags'
-        - 'entity:node/langcode'
-        - 'entity:node/nid'
-        - 'entity:node/title'
-        - 'entity:node/type'
-        - 'entity:node/uid'
-        - 'entity:node/uuid'
-        - rendered_item
-        - search_api_url
   author:
     label: 'Author name'
     datasource_id: 'entity:node'
@@ -117,82 +63,6 @@ field_settings:
     dependencies:
       module:
         - node
-  field_alternative_title:
-    label: 'Alternative Title'
-    datasource_id: 'entity:node'
-    property_path: field_alternative_title
-    type: string
-    dependencies:
-      config:
-        - field.storage.node.field_alternative_title
-  field_ancestors:
-    label: Ancestors
-    datasource_id: 'entity:node'
-    property_path: field_member_of
-    type: integer
-    dependencies:
-      config:
-        - field.storage.node.field_member_of
-  field_complex_title:
-    label: 'Complex Title'
-    datasource_id: 'entity:node'
-    property_path: field_complex_title
-    type: text
-    dependencies:
-      config:
-        - field.storage.node.field_complex_title
-  field_description:
-    label: Description
-    datasource_id: 'entity:node'
-    property_path: field_description
-    type: text
-    dependencies:
-      config:
-        - field.storage.node.field_description
-  field_edited_text:
-    label: 'Edited Text'
-    datasource_id: 'entity:media'
-    property_path: field_edited_text
-    type: text
-    boost: 0.2
-    dependencies:
-      config:
-        - field.storage.media.field_edited_text
-  field_edtf_date_created:
-    label: 'Date Created'
-    datasource_id: 'entity:node'
-    property_path: field_edtf_date_created
-    type: string
-    dependencies:
-      config:
-        - field.storage.node.field_edtf_date_created
-  field_identifier:
-    label: Identifier
-    datasource_id: 'entity:node'
-    property_path: field_identifier
-    type: string
-    dependencies:
-      config:
-        - field.storage.node.field_identifier
-  field_media_of:
-    label: 'Media of'
-    datasource_id: 'entity:media'
-    property_path: field_media_of
-    type: integer
-    dependencies:
-      config:
-        - field.storage.media.field_media_of
-  field_media_use:
-    label: 'Media Use » Taxonomy term » Name'
-    datasource_id: 'entity:media'
-    property_path: 'field_media_use:entity:name'
-    type: string
-    dependencies:
-      config:
-        - field.storage.media.field_media_use
-      module:
-        - taxonomy
-        - taxonomy
   field_tags:
     label: Tags
     datasource_id: 'entity:node'
@@ -201,93 +71,6 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_tags
-  langcode:
-    label: Language
-    datasource_id: 'entity:node'
-    property_path: langcode
-    type: string
-    dependencies:
-      module:
-        - node
-  linked_agent_name:
-    label: 'Linked Agent » Taxonomy term » Name'
-    datasource_id: 'entity:node'
-    property_path: 'field_linked_agent:entity:name'
-    type: string
-    dependencies:
-      config:
-        - field.storage.node.field_linked_agent
-      module:
-        - taxonomy
-        - taxonomy
-  linked_agent_rel_type:
-    label: 'Linked Agent » Type'
-    datasource_id: 'entity:node'
-    property_path: 'field_linked_agent:rel_type'
-    type: string
-    dependencies:
-      config:
-        - field.storage.node.field_linked_agent
-  media_of_nid_1:
-    label: 'Media of » Content » ID'
-    datasource_id: 'entity:media'
-    property_path: 'field_media_of:entity:nid'
-    type: integer
-    dependencies:
-      config:
-        - field.storage.media.field_media_of
-      module:
-        - node
-        - node
-  member_of_nid_2:
-    label: 'Member of » Content » ID'
-    datasource_id: 'entity:node'
-    property_path: 'field_member_of:entity:nid'
-    type: integer
-    dependencies:
-      config:
-        - field.storage.node.field_member_of
-      module:
-        - node
-        - node
-  member_of_title:
-    label: 'Member of » Content » Title'
-    datasource_id: 'entity:node'
-    property_path: 'field_member_of:entity:title'
-    type: string
-    dependencies:
-      config:
-        - field.storage.node.field_member_of
-      module:
-        - node
-        - node
-  model_name:
-    label: 'Model » Taxonomy term » Name'
-    datasource_id: 'entity:node'
-    property_path: 'field_model:entity:name'
-    type: string
-    dependencies:
-      config:
-        - field.storage.node.field_model
-      module:
-        - taxonomy
-        - taxonomy
-  name:
-    label: Name
-    datasource_id: 'entity:media'
-    property_path: name
-    type: string
-    dependencies:
-      module:
-        - media
-  nid:
-    label: ID
-    datasource_id: 'entity:node'
-    property_path: nid
-    type: integer
-    dependencies:
-      module:
-        - node
   node_grants:
     label: 'Node access information'
     property_path: search_api_node_grants
@@ -295,7 +78,18 @@ field_settings:
     indexed_locked: true
     type_locked: true
     hidden: true
-  publishing_status:
+  rendered_item:
+    label: 'Rendered item'
+    property_path: rendered_item
+    type: text
+    configuration:
+      roles:
+        anonymous: anonymous
+      view_mode:
+        'entity:node':
+          article: search_index
+          page: search_index
+  status:
     label: 'Publishing status'
     datasource_id: 'entity:node'
     property_path: status
@@ -305,25 +99,6 @@ field_settings:
     dependencies:
       module:
         - node
-  rendered_item:
-    label: 'Rendered HTML output'
-    property_path: rendered_item
-    type: text
-    configuration:
-      roles:
-        - anonymous
-      view_mode: {  }
-  resource_type_name:
-    label: 'Resource Type » Taxonomy term » Name'
-    datasource_id: 'entity:node'
-    property_path: 'field_resource_type:entity:name'
-    type: string
-    dependencies:
-      config:
-        - field.storage.node.field_resource_type
-      module:
-        - taxonomy
-        - taxonomy
   sticky:
     label: 'Sticky at top of lists'
     datasource_id: 'entity:node'
@@ -332,17 +107,6 @@ field_settings:
     dependencies:
       module:
         - node
-  subject_name:
-    label: 'Subject » Taxonomy term » Name'
-    datasource_id: 'entity:node'
-    property_path: 'field_subject:entity:name'
-    type: string
-    dependencies:
-      config:
-        - field.storage.node.field_subject
-      module:
-        - taxonomy
-        - taxonomy
   title:
     label: Title
     datasource_id: 'entity:node'
@@ -370,34 +134,8 @@ field_settings:
     dependencies:
       module:
         - node
-  url:
-    label: URI
-    property_path: search_api_url
-    type: string
-  uuid:
-    label: UUID
-    datasource_id: 'entity:node'
-    property_path: uuid
-    type: string
-    dependencies:
-      module:
-        - node
 datasource_settings:
-  'entity:media':
-    bundles:
-      default: true
-      selected: {  }
-    languages:
-      default: true
-      selected: {  }
   'entity:node':
-    bundles:
-      default: true
-      selected: {  }
-    languages:
-      default: true
-      selected: {  }
-  'entity:taxonomy_term':
     bundles:
       default: true
       selected: {  }
@@ -418,26 +156,12 @@ processor_settings:
   entity_status:
     weights:
       preprocess_index: -10
-  hierarchy:
-    fields:
-      field_ancestors: node-field_member_of
-    weights:
-      preprocess_index: -45
-  highlight:
-    highlight: always
-    highlight_partial: false
-    excerpt: true
-    excerpt_length: 256
-    exclude_fields: {  }
-    prefix: '<strong>'
-    suffix: '</strong>'
-    weights:
-      postprocess_query: 0
   html_filter:
-    all_fields: false
+    weights:
+      preprocess_index: -3
+      preprocess_query: -6
     fields:
-      - aggregated_field
-      - field_description
+      - rendered_item
     title: true
     alt: true
     tags:
@@ -446,17 +170,12 @@ processor_settings:
       h2: 3
       h3: 2
       string: 2
-    weights:
-      preprocess_index: -3
-      preprocess_query: -6
+    all_fields: false
   rendered_item:
     weights:
       add_properties: 0
       pre_index_save: -10
-  reverse_entity_references: {  }
-  solr_date_range:
-    weights:
-      preprocess_index: 0
+  solr_date_range: {  }
 tracker_settings:
   default:
     indexing_order: fifo

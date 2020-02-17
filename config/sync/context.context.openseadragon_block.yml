@@ -3,12 +3,10 @@ status: true
 dependencies:
   module:
     - islandora
-_core:
-  default_config_hash: w5VVkksrSiRj-vjiOtzC4KYLPKUt0EewRkkjM6V4nGo
 name: openseadragon_block
-label: 'Openseadragon Block'
-group: Islandora
-description: 'A context for determining when and where to place the openseadragon block.'
+label: 'Paged Content - Openseadragon'
+group: Display
+description: 'Display a block for Paged Content'
 requireAllConditions: false
 disabled: false
 conditions:
@@ -55,4 +53,4 @@ reactions:
     saved: false
     uuid: 50b9b25e-0836-4531-8a78-9698d71d81de
     include_default_blocks: 1
-weight: 0
+weight: -1

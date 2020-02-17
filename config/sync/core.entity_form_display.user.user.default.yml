@@ -3,15 +3,11 @@ status: true
 dependencies:
   config:
     - field.field.user.user.field_orcid_id
-    - field.field.user.user.message_digest
-    - field.field.user.user.message_subscribe_email
     - field.field.user.user.user_picture
     - image.style.thumbnail
   module:
     - image
     - user
-_core:
-  default_config_hash: K-1rBM8mTIkFp9RqOC2tMRUukOQ1xbRCfSKK8dEddnA
 id: user.user.default
 targetEntityType: user
 bundle: user
@@ -29,19 +25,6 @@ content:
   matomo:
     weight: 3
     settings: {  }
-    third_party_settings: {  }
-    region: content
-  message_digest:
-    type: options_select
-    settings: {  }
-    weight: 26
-    third_party_settings: {  }
-    region: content
-  message_subscribe_email:
-    type: boolean_checkbox
-    weight: 25
-    settings:
-      display_label: true
     third_party_settings: {  }
     region: content
   timezone:

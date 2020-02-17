@@ -3,11 +3,9 @@ status: true
 dependencies:
   module:
     - islandora
-_core:
-  default_config_hash: wblZIGAv3xxst8DQe9YFA2XNJq111OCzh81tGu7B0kA
 name: all_media
 label: 'All Media'
-group: Islandora
+group: Indexing
 description: 'All media, regardless of where it lives'
 requireAllConditions: false
 disabled: false
@@ -16,6 +14,7 @@ conditions:
     id: entity_bundle
     bundles:
       audio: audio
+      extracted_text: extracted_text
       file: file
       image: image
       video: video
@@ -42,4 +41,4 @@ reactions:
     actions:
       delete_media_from_triplestore: delete_media_from_triplestore
     saved: false
-weight: 0
+weight: -8

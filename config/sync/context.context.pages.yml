@@ -3,12 +3,10 @@ status: true
 dependencies:
   module:
     - islandora
-_core:
-  default_config_hash: kfMkUKumntXeIvEoFdVOez1mGrVfwYjytRl5vHoVwBw
 name: pages
-label: Pages
-group: Islandora
-description: 'Context for page objects'
+label: 'Page Derivatives'
+group: Derivatives
+description: 'Derivatives for Pages'
 requireAllConditions: true
 disabled: false
 conditions:
@@ -18,12 +16,14 @@ conditions:
     uri: 'http://id.loc.gov/ontologies/bibframe/part'
     context_mapping:
       media: '@islandora.media_route_context_provider:media'
+    logic: and
   media_has_term:
     id: media_has_term
     negate: 0
     uri: 'http://pcdm.org/use#OriginalFile'
     context_mapping:
       media: '@islandora.media_route_context_provider:media'
+    logic: and
 reactions:
   derivative:
     id: derivative
@@ -32,4 +32,4 @@ reactions:
       image_generate_a_service_file_from_an_original_file: image_generate_a_service_file_from_an_original_file
       image_generate_a_thumbnail_from_an_original_file: image_generate_a_thumbnail_from_an_original_file
     saved: false
-weight: 0
+weight: -7

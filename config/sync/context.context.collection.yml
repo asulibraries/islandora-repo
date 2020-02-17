@@ -6,13 +6,10 @@ dependencies:
       - islandora_defaults
   module:
     - islandora
-    - node
-_core:
-  default_config_hash: Zn1qfI1R27Q9r8hAR_J7_oQRtaX9nYfmXf-Zkom_kak
 name: collection
 label: Collection
-group: Islandora
-description: 'Islandora collections'
+group: Display
+description: 'Display block of children'
 requireAllConditions: false
 disabled: false
 conditions:
@@ -22,33 +19,12 @@ conditions:
     context_mapping:
       node: '@node.node_route_context:node'
     uri: 'http://purl.org/dc/dcmitype/Collection'
-  node_type:
-    id: node_type
-    bundles:
-      collection: collection
-    negate: 0
-    uuid: ee37f98b-8785-46d9-8c3d-1192d9da8121
-    context_mapping:
-      node: '@node.node_route_context:node'
+    logic: and
 reactions:
   blocks:
     blocks:
       41f1d520-14ae-479e-90d2-34aa6f4a750e:
         id: 'views_block:members-block_1'
-        label: ''
-        provider: views
-        label_display: visible
-        views_label: ''
-        items_per_page: none
-        region: content_suffix
-        weight: '-1'
-        context_mapping: {  }
-        theme: carapace
-        css_class: ''
-        unique: 0
-        context_id: collection
-      8f4a8d02-ece1-4387-befd-dc0dbf259b0c:
-        id: 'views_block:search_within_collection-block_1'
         label: ''
         provider: views
         label_display: visible
@@ -61,27 +37,7 @@ reactions:
         css_class: ''
         unique: 0
         context_id: collection
-        uuid: 8f4a8d02-ece1-4387-befd-dc0dbf259b0c
-      eec098ab-824e-4afb-826a-1d08454335a1:
-        id: 'views_block:search_within_collection-block_2'
-        label: ''
-        provider: views
-        label_display: visible
-        views_label: ''
-        items_per_page: none
-        region: content_suffix
-        weight: '1'
-        context_mapping: {  }
-        theme: carapace
-        css_class: ''
-        unique: 0
-        context_id: collection
-        uuid: eec098ab-824e-4afb-826a-1d08454335a1
     id: blocks
     saved: false
     include_default_blocks: 1
-  index:
-    id: index
-    saved: false
-    uuid: 08946e30-b669-49bd-bcfc-5f783866b54b
-weight: 0
+weight: 1

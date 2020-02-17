@@ -3,12 +3,10 @@ status: true
 dependencies:
   module:
     - islandora
-_core:
-  default_config_hash: HLOfSgv_TwfV9V9m4x-aEFewyskxDjzNhlItzNqrBBQ
 name: external_files
 label: 'External Files'
-group: Islandora
-description: 'Reactions for files not in Fedora'
+group: Indexing
+description: 'Files not in Fedora'
 requireAllConditions: false
 disabled: false
 conditions:
@@ -30,4 +28,4 @@ reactions:
     actions:
       delete_file_as_fedora_external_content: delete_file_as_fedora_external_content
     saved: false
-weight: 0
+weight: -7

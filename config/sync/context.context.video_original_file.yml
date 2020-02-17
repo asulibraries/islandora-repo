@@ -3,12 +3,10 @@ status: true
 dependencies:
   module:
     - islandora
-_core:
-  default_config_hash: qv1mf86xi4yYnIw1BKylii2CvebHnQPy59qG0GZLFBc
 name: video_original_file
-label: 'Video Original File'
-group: Islandora
-description: 'Reactions for video original files'
+label: 'Video Derivatives'
+group: Derivatives
+description: 'Derivatives for Video'
 requireAllConditions: true
 disabled: false
 conditions:
@@ -33,4 +31,4 @@ reactions:
       video_generate_a_service_file_from_an_original_file: video_generate_a_service_file_from_an_original_file
       video_generate_a_thumbnail_from_an_original_file: video_generate_a_thumbnail_from_an_original_file
     saved: false
-weight: 0
+weight: -5

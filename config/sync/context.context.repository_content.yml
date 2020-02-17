@@ -6,13 +6,10 @@ dependencies:
       - islandora_defaults
   module:
     - islandora
-    - islandora_bagger_integration
     - node
-_core:
-  default_config_hash: p7StYXM-NaNcwf_NTOLTKnkv6L64NH6XFua16gTgtEo
 name: repository_content
 label: Content
-group: Islandora
+group: Indexing
 description: 'All repository content'
 requireAllConditions: false
 disabled: false
@@ -20,7 +17,6 @@ conditions:
   node_type:
     id: node_type
     bundles:
-      collection: collection
       islandora_object: islandora_object
     negate: 0
     context_mapping:
@@ -46,8 +42,4 @@ reactions:
     id: alter_jsonld_type
     source_field: field_model
     saved: false
-  islandora_bagger_integration_config_options:
-    id: islandora_bagger_integration_config_options
-    bagger_config_options: 'bag-info: Contact-Email: repository@lib.asu.edu'
-    saved: false
-weight: 0
+weight: -5
