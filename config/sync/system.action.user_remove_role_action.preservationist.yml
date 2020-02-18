@@ -1,0 +1,13 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.preservationist
+  module:
+    - user
+id: user_remove_role_action.preservationist
+label: 'Remove the Preservationist role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: preservationist
