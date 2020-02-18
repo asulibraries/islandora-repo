@@ -3,12 +3,10 @@ status: true
 dependencies:
   module:
     - islandora
-_core:
-  default_config_hash: hWNDzPMaFh9AYj8gpL6VzV8fmb6OGai7NG2RhM3yPds
 name: open_seadragon
 label: 'Open Seadragon'
-group: Islandora
-description: 'Displays media using the Open Seadragon viewer'
+group: Display
+description: 'Open Seadragon viewer for Images'
 requireAllConditions: false
 disabled: false
 conditions:
@@ -27,4 +25,4 @@ reactions:
     id: view_mode_alter
     mode: node.open_seadragon
     saved: false
-weight: 0
+weight: -2

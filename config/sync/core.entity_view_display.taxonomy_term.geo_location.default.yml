@@ -11,8 +11,6 @@ dependencies:
     - controlled_access_terms
     - geolocation
     - text
-_core:
-  default_config_hash: 2IWu7AK6BJrbzWfbJyQntIT3yljHO6KDqltuhjUMQQU
 id: taxonomy_term.geo_location.default
 targetEntityType: taxonomy_term
 bundle: geo_location
@@ -29,9 +27,9 @@ content:
     weight: 1
     label: inline
     settings:
-      trim_length: '80'
-      url_only: ''
-      url_plain: ''
+      trim_length: 80
+      url_only: false
+      url_plain: false
       rel: ''
       target: _blank
     third_party_settings: {  }

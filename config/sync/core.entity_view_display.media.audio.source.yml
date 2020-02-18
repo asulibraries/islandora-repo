@@ -16,13 +16,16 @@ dependencies:
       - islandora_core_feature
   module:
     - file
-_core:
-  default_config_hash: Du-_yziDViUUUEVZsL7NOBnG6lH7ZM0DMEs3v9HmFBQ
 id: media.audio.source
 targetEntityType: media
 bundle: audio
 mode: source
 content:
+  field_gemini_uri:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
   field_media_audio_file:
     type: file_audio
     weight: 0

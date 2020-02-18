@@ -16,13 +16,16 @@ dependencies:
       - islandora_core_feature
   module:
     - file
-_core:
-  default_config_hash: yaLDrd6GKno0G_pC5v6C87dnnjRetEN16ZSQ0uGYjOw
 id: media.video.source
 targetEntityType: media
 bundle: video
 mode: source
 content:
+  field_gemini_uri:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
   field_media_video_file:
     type: file_video
     weight: 0

@@ -3,12 +3,10 @@ status: true
 dependencies:
   module:
     - islandora
-_core:
-  default_config_hash: qn-ji9blfRizb2o_B2oLrWXNmUo-oBZ93gbTv36T7mk
 name: pdf_original_file
-label: 'PDF Original File'
-group: Islandora
-description: 'Context reactions for pdf documents'
+label: 'PDF Derivatives'
+group: Derivatives
+description: 'Derivatives for PDF documents'
 requireAllConditions: true
 disabled: false
 conditions:
@@ -18,17 +16,19 @@ conditions:
     uri: 'http://pcdm.org/use#OriginalFile'
     context_mapping:
       media: '@islandora.media_route_context_provider:media'
+    logic: and
   parent_node_has_term:
     id: parent_node_has_term
     negate: 0
     uri: 'https://schema.org/DigitalDocument'
     context_mapping:
       media: '@islandora.media_route_context_provider:media'
+    logic: and
 reactions:
   derivative:
     id: derivative
     actions:
       get_ocr_from_image: get_ocr_from_image
-      image_generate_a_thumbnail_from_an_original_file: image_generate_a_thumbnail_from_an_original_file
+      image_generate_a_thumbnail_from_an_original_file: digital_document_generate_a_thumbnail_from_an_original_file
     saved: false
-weight: 0
+weight: -6

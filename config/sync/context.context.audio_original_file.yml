@@ -3,12 +3,10 @@ status: true
 dependencies:
   module:
     - islandora
-_core:
-  default_config_hash: dzH8wIqyJkvYEjk5EaJ4MSzIaxI7zox4vbVT6hER7w8
 name: audio_original_file
-label: 'Audio Original File'
-group: Islandora
-description: 'Reactions for audio original files'
+label: 'Audio Derivatives'
+group: Derivatives
+description: 'Derivatives for Audio'
 requireAllConditions: true
 disabled: false
 conditions:
@@ -32,4 +30,4 @@ reactions:
     actions:
       audio_generate_a_service_file_from_an_original_file: audio_generate_a_service_file_from_an_original_file
     saved: false
-weight: 0
+weight: -8

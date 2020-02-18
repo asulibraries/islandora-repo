@@ -7,8 +7,6 @@ dependencies:
   module:
     - media
     - path
-_core:
-  default_config_hash: uWhRDlQVs_4mPe2Ndg4OPnEbSc_MDRwz-QBCGlnm-zs
 id: media.remote_video.default
 targetEntityType: media
 bundle: remote_video
@@ -53,9 +51,9 @@ content:
     weight: 5
     settings:
       match_operator: CONTAINS
+      match_limit: 10
       size: 60
       placeholder: ''
-      match_limit: 10
     region: content
     third_party_settings: {  }
 hidden:

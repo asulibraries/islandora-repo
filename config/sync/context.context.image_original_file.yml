@@ -3,12 +3,10 @@ status: true
 dependencies:
   module:
     - islandora
-_core:
-  default_config_hash: TxizEYLJn35GYaITfuOh3NUrUZzT7olaUt5k1kqppQo
 name: image_original_file
-label: 'Image Original File'
-group: Islandora
-description: 'Original files for images'
+label: 'Image Derivatives'
+group: Derivatives
+description: 'Derivatives for Images'
 requireAllConditions: true
 disabled: false
 conditions:
@@ -18,12 +16,14 @@ conditions:
     uri: 'http://pcdm.org/use#OriginalFile'
     context_mapping:
       media: '@islandora.media_route_context_provider:media'
+    logic: and
   parent_node_has_term:
     id: parent_node_has_term
     negate: 0
     uri: 'http://purl.org/coar/resource_type/c_c513'
     context_mapping:
       media: '@islandora.media_route_context_provider:media'
+    logic: and
 reactions:
   derivative:
     id: derivative
@@ -31,4 +31,4 @@ reactions:
       image_generate_a_service_file_from_an_original_file: image_generate_a_service_file_from_an_original_file
       image_generate_a_thumbnail_from_an_original_file: image_generate_a_thumbnail_from_an_original_file
     saved: false
-weight: 0
+weight: -3
