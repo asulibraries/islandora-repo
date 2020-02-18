@@ -30,6 +30,7 @@ dependencies:
     - field.field.node.islandora_object.field_physical_form
     - field.field.node.islandora_object.field_pid
     - field.field.node.islandora_object.field_place_published
+    - field.field.node.islandora_object.field_preservation_state
     - field.field.node.islandora_object.field_resource_type
     - field.field.node.islandora_object.field_rights
     - field.field.node.islandora_object.field_subject
@@ -351,6 +352,12 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
+  field_preservation_state:
+    weight: 31
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
     region: content
   field_resource_type:
     weight: 3
