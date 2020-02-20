@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.physical_form
+  module:
+    - facets
+    - system
+  theme:
+    - carapace
+id: physicalform
+theme: carapace
+region: sidebar_second
+weight: 0
+provider: null
+plugin: 'facet_block:physical_form'
+settings:
+  id: 'facet_block:physical_form'
+  label: 'Physical Form'
+  provider: facets
+  label_display: visible
+  block_id: physicalform
+visibility:
+  request_path:
+    id: request_path
+    pages: /solr-search/content
+    negate: false
+    context_mapping: {  }

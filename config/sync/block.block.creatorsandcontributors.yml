@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.creators_and_contributors
+  module:
+    - facets
+    - system
+  theme:
+    - carapace
+id: creatorsandcontributors
+theme: carapace
+region: sidebar_second
+weight: 0
+provider: null
+plugin: 'facet_block:creators_and_contributors'
+settings:
+  id: 'facet_block:creators_and_contributors'
+  label: 'Creators and Contributors'
+  provider: facets
+  label_display: visible
+  block_id: creatorsandcontributors
+visibility:
+  request_path:
+    id: request_path
+    pages: /solr-search/content
+    negate: false
+    context_mapping: {  }
