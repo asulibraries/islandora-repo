@@ -2,7 +2,11 @@ langcode: en
 status: true
 dependencies:
   module:
+    - field_permissions
     - node
+third_party_settings:
+  field_permissions:
+    permission_type: public
 id: node.field_edtf_date_created
 field_name: field_edtf_date_created
 entity_type: node
