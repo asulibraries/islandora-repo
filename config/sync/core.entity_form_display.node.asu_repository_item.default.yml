@@ -1,0 +1,199 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.asu_repository_item.field_description
+    - field.field.node.asu_repository_item.field_display_hints
+    - field.field.node.asu_repository_item.field_edition
+    - field.field.node.asu_repository_item.field_edtf_date_created
+    - field.field.node.asu_repository_item.field_extent
+    - field.field.node.asu_repository_item.field_handle
+    - field.field.node.asu_repository_item.field_language
+    - field.field.node.asu_repository_item.field_linked_agent
+    - field.field.node.asu_repository_item.field_member_of
+    - field.field.node.asu_repository_item.field_model
+    - field.field.node.asu_repository_item.field_place_published
+    - field.field.node.asu_repository_item.field_preservation_state
+    - field.field.node.asu_repository_item.field_table_of_contents
+    - field.field.node.asu_repository_item.field_weight
+    - node.type.asu_repository_item
+  module:
+    - controlled_access_terms
+    - path
+    - text
+id: node.asu_repository_item.default
+targetEntityType: node
+bundle: asu_repository_item
+mode: default
+content:
+  created:
+    type: datetime_timestamp
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_description:
+    weight: 121
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+  field_display_hints:
+    weight: 134
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
+    region: content
+  field_edition:
+    weight: 129
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_edtf_date_created:
+    weight: 128
+    settings:
+      strict_dates: false
+      intervals: true
+      sets: false
+    third_party_settings: {  }
+    type: edtf_default
+    region: content
+  field_extent:
+    weight: 125
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_handle:
+    weight: 127
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_language:
+    weight: 124
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_linked_agent:
+    weight: 123
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: typed_relation_default
+    region: content
+  field_member_of:
+    weight: 126
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_model:
+    weight: 132
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_place_published:
+    weight: 130
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_preservation_state:
+    weight: 131
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_table_of_contents:
+    weight: 122
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_weight:
+    weight: 133
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+    type: number
+    region: content
+  langcode:
+    type: language_select
+    weight: 2
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 30
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  promote:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 15
+    region: content
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 120
+    region: content
+    third_party_settings: {  }
+  sticky:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 16
+    region: content
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  uid:
+    type: entity_reference_autocomplete
+    weight: 5
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+      match_limit: 10
+    region: content
+    third_party_settings: {  }
+hidden: {  }

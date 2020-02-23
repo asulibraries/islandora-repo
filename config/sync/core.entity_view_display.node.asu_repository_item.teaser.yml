@@ -2,25 +2,29 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.organization.body
-    - field.field.node.organization.field_description
-    - field.field.node.organization.field_member_of
-    - node.type.organization
+    - core.entity_view_mode.node.teaser
+    - field.field.node.asu_repository_item.field_description
+    - field.field.node.asu_repository_item.field_display_hints
+    - field.field.node.asu_repository_item.field_edition
+    - field.field.node.asu_repository_item.field_edtf_date_created
+    - field.field.node.asu_repository_item.field_extent
+    - field.field.node.asu_repository_item.field_handle
+    - field.field.node.asu_repository_item.field_language
+    - field.field.node.asu_repository_item.field_linked_agent
+    - field.field.node.asu_repository_item.field_member_of
+    - field.field.node.asu_repository_item.field_model
+    - field.field.node.asu_repository_item.field_place_published
+    - field.field.node.asu_repository_item.field_preservation_state
+    - field.field.node.asu_repository_item.field_table_of_contents
+    - field.field.node.asu_repository_item.field_weight
+    - node.type.asu_repository_item
   module:
-    - text
     - user
-id: node.organization.default
+id: node.asu_repository_item.teaser
 targetEntityType: node
-bundle: organization
-mode: default
+bundle: asu_repository_item
+mode: teaser
 content:
-  body:
-    label: hidden
-    type: text_default
-    weight: 101
-    settings: {  }
-    third_party_settings: {  }
-    region: content
   display_media_entity_view_1:
     weight: 10
     settings: {  }
@@ -41,28 +45,8 @@ content:
     settings: {  }
     third_party_settings: {  }
     region: content
-  field_description:
-    weight: 102
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: basic_string
-    region: content
-  field_member_of:
-    weight: 103
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  flag_email_node:
-    weight: 10
-    settings: {  }
-    third_party_settings: {  }
-    region: content
-  flag_subscribe_node:
-    weight: 10
+  islandora_fits_checksum:
+    weight: 100
     settings: {  }
     third_party_settings: {  }
     region: content
@@ -102,4 +86,18 @@ content:
     third_party_settings: {  }
     region: content
 hidden:
+  field_description: true
+  field_display_hints: true
+  field_edition: true
+  field_edtf_date_created: true
+  field_extent: true
+  field_handle: true
+  field_language: true
+  field_linked_agent: true
+  field_member_of: true
+  field_model: true
+  field_place_published: true
+  field_preservation_state: true
+  field_table_of_contents: true
+  field_weight: true
   langcode: true
