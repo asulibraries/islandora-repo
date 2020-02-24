@@ -73,29 +73,20 @@ Common Commands
 
 
 # Deploying to AWS
-An ansible script for provisioning a box on the DEV set up of AWS has been added - aws_provision.yml
-1. locally run `ansible-playbook aws_provision.yml`
-2. locally run `ansible-galaxy install -r requirements.yml`
-3. locally run `ansible-playbook -i inventory/aws playbook.yml -e "islandora_distro=ubuntu/xenial64" -e @inventory/aws/group_vars/all/passwords.yml -e @aws_keys.yml`
+1. `pip install boto boto3`
+2. run `ansible-playbook aws_create_multiple_ec2.yml`
+3. locally run `ansible-galaxy install -r requirements.yml`
+4. locally run `ansible-playbook -i inventory/stage playbook.yml -e "islandora_distro=ubuntu/xenial64" -e @inventory/stage/group_vars/all/passwords.yml -e @aws_keys.yml`
 <!-- must have an IAM role and key with privileges to administer EC2 -->
-<!-- must have upped the php memory_limit to 1GB for composer not to fall over -->
-<!-- had to run php -d memory_limit=-1 `which composer` install the first time since it was running out of memory -->
-<!-- must have security group configured correctly - ie ASU only for dev site -->
-- Set your env variable like `export EC2_INI_PATH=/etc/ansible/ec2.ini` and put the [file](https://raw.githubusercontent.com/ansible/ansible/devel/contrib/inventory/ec2.ini) there
-- Use aws_create_ec2.yml to create EC2 instances - you can manage the name and the tags directly in that script, `ansible-playbook aws_create_ec2.yml`
-- Test out searching for your EC2 instances for ansible with `./ec2.py --list --profile repo-dev`
-- Ping boxes with a certain tag via ansible like `AWS_PROFILE=repo-dev ansible -i ec2.py -u ubuntu -m ping tag_repository_purpose_web --private-key ~/.ssh/ASUAWSDev.pem`
-- Use `rds_provision.yml` to create RDS databases
-- The approach I've taken thus far is to create 4 EC2 instances in the following breakdown:
-  - webserver - for the actual drupal site
-  - microservices - for karaf, alpaca, crayfish
-  - tomcat - for fedora, cantaloupe, blazegraph
-  - solr - for solr
+- The approach I've taken thus far is to create 2 EC2 instances in the following breakdown:
+  - webserver - for the actual drupal site, cantaloupe
+  - services - for karaf, alpaca, crayfish, fedora, cantaloupe, blazegraph, solr
+- There are two RDS databases connected as well: for drupal and fedora
 - The ideal state might look something like: https://www.lucidchart.com/invitations/accept/8a83a394-5cf6-48c8-9434-6803456c283a
 - For the time being, I've set up separate security groups for each EC2 instance to allow inbound traffic on the required ports from various locations (such as ASU IPs and the other EC2 instances)
-- All 4 EC2 instances have static Elastic Block volumes associated with them (8GB each)
+- All EC2 instances have static Elastic Block volumes associated with them (8GB each)
 - The webserver also has a related S3 bucket (asulibdev-islandora-bucket) which is currently being used for islandora_bagger to send preservation bags. It has a automatic rule to push to Glacier after 30 days of inactivity.
-- An RDS MYSQL instance has also been provisioned and connection is allowed to the webserver for the purpose of hosting the drupal database. It may be extended to host the gemini database, fedora database, matomo database. (The Riprap database is currently being integrated with the Drupal database). You can connect to the RDS instance from the webserver EC2 instance manually like `mysql -u drupal8 -p -h islandora-drupal.cvznsvixsvec.us-west-2.rds.amazonaws.com --port 3306`
+- An RDS MYSQL instance has also been provisioned and connection is allowed to the webserver for the purpose of hosting the drupal database. In the future, additional RDS instances can be created for the gemini database, matomo database. (The Riprap database is currently being integrated with the Drupal database). You can connect to the RDS instance from the webserver EC2 instance manually like `mysql -u drupal8 -p -h islandora-drupal.cvznsvixsvec.us-west-2.rds.amazonaws.com --port 3306`
 
 # Updating existing components
 ## Islandora modules
