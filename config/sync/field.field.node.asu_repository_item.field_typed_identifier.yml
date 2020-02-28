@@ -1,0 +1,36 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_typed_identifier
+    - node.type.asu_repository_item
+    - paragraphs.paragraphs_type.typed_identifier
+  module:
+    - entity_reference_revisions
+id: node.asu_repository_item.field_typed_identifier
+field_name: field_typed_identifier
+entity_type: node
+bundle: asu_repository_item
+label: Identifier
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      typed_identifier: typed_identifier
+    target_bundles_drag_drop:
+      complex_note:
+        weight: 4
+        enabled: false
+      complex_title:
+        weight: 5
+        enabled: false
+      typed_identifier:
+        enabled: true
+        weight: 6
+field_type: entity_reference_revisions

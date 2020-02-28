@@ -1,0 +1,33 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.typed_identifier.field_identifier_type
+    - field.field.paragraph.typed_identifier.field_identifier_value
+    - paragraphs.paragraphs_type.typed_identifier
+id: paragraph.typed_identifier.default
+targetEntityType: paragraph
+bundle: typed_identifier
+mode: default
+content:
+  field_identifier_type:
+    weight: 1
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_identifier_value:
+    weight: 0
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+hidden:
+  created: true
+  status: true
