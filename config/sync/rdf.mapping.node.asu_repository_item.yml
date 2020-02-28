@@ -1,0 +1,62 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.asu_repository_item
+  enforced:
+    module:
+      - islandora_defaults
+  module:
+    - node
+id: node.asu_repository_item
+targetEntityType: node
+bundle: asu_repository_item
+types:
+  - 'pcdm:Object'
+fieldMappings:
+  field_description:
+    properties:
+      - 'dcterms:description'
+  field_extent:
+    properties:
+      - 'dcterms:extent'
+  field_member_of:
+    properties:
+      - 'pcdm:memberOf'
+    mapping_type: rel
+  field_language:
+    properties:
+      - 'dcterms:language'
+  field_edition:
+    properties:
+      - 'rdau:P60329'
+  field_place_published:
+    properties:
+      - 'relators:pup'
+  field_table_of_contents:
+    properties:
+      - 'dcterms:tableOfContents'
+  field_note_text:
+    properties:
+      - 'skos:note'
+    mapping_type: par
+  field_weight:
+    properties:
+      - 'co:index'
+  title:
+    properties:
+      - 'dcterms:title'
+  created:
+    properties:
+      - 'schema:dateCreated'
+    datatype_callback:
+      callable: 'Drupal\rdf\CommonDataConverter::dateIso8601Value'
+  changed:
+    properties:
+      - 'schema:dateModified'
+    datatype_callback:
+      callable: 'Drupal\rdf\CommonDataConverter::dateIso8601Value'
+  uid:
+    properties:
+      - 'schema:author'
+    mapping_type: rel
