@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.complex_note.field_note_text
+    - field.field.paragraph.complex_note.field_note_type
+    - paragraphs.paragraphs_type.complex_note
+id: paragraph.complex_note.default
+targetEntityType: paragraph
+bundle: complex_note
+mode: default
+content:
+  field_note_text:
+    weight: 0
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_note_type:
+    weight: 1
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+hidden: {  }

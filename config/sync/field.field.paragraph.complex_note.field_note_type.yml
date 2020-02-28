@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_note_type
+    - paragraphs.paragraphs_type.complex_note
+    - taxonomy.vocabulary.note_types
+id: paragraph.complex_note.field_note_type
+field_name: field_note_type
+entity_type: paragraph
+bundle: complex_note
+label: 'Note type'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      note_types: note_types
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference
