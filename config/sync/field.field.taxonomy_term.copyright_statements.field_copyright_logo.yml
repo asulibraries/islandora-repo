@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_copyright_logo
+    - taxonomy.vocabulary.copyright_statements
+  module:
+    - file
+id: taxonomy_term.copyright_statements.field_copyright_logo
+field_name: field_copyright_logo
+entity_type: taxonomy_term
+bundle: copyright_statements
+label: 'Copyright Logo'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: '[date:custom:Y]-[date:custom:m]'
+  file_extensions: 'svg png gif jpg jpeg'
+  max_filesize: ''
+  description_field: false
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: file
