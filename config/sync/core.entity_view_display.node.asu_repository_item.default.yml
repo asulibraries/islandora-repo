@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.asu_repository_item.field_copyright_statement
     - field.field.node.asu_repository_item.field_description
     - field.field.node.asu_repository_item.field_display_hints
     - field.field.node.asu_repository_item.field_edition
@@ -12,13 +13,18 @@ dependencies:
     - field.field.node.asu_repository_item.field_linked_agent
     - field.field.node.asu_repository_item.field_member_of
     - field.field.node.asu_repository_item.field_model
+    - field.field.node.asu_repository_item.field_note_para
     - field.field.node.asu_repository_item.field_place_published
+    - field.field.node.asu_repository_item.field_preferred_citation
     - field.field.node.asu_repository_item.field_preservation_state
     - field.field.node.asu_repository_item.field_table_of_contents
+    - field.field.node.asu_repository_item.field_title
+    - field.field.node.asu_repository_item.field_typed_identifier
     - field.field.node.asu_repository_item.field_weight
     - node.type.asu_repository_item
   module:
     - controlled_access_terms
+    - entity_reference_revisions
     - text
     - user
 id: node.asu_repository_item.default
@@ -28,23 +34,32 @@ mode: default
 content:
   display_media_entity_view_1:
     weight: 10
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
   display_media_entity_view_2:
     weight: 10
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
   display_media_service_file:
     weight: 10
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
   display_media_thumbnail:
     weight: 10
+    region: content
     settings: {  }
     third_party_settings: {  }
+  field_copyright_statement:
+    weight: 119
+    label: above
+    settings:
+      view_mode: default
+      link: false
+    third_party_settings: {  }
+    type: entity_reference_entity_view
     region: content
   field_description:
     weight: 101
@@ -128,6 +143,15 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
     region: content
+  field_note_para:
+    type: entity_reference_revisions_entity_view
+    weight: 117
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
   field_place_published:
     weight: 110
     label: above
@@ -135,6 +159,13 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
+  field_preferred_citation:
+    weight: 116
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
     region: content
   field_preservation_state:
     weight: 111
@@ -151,6 +182,24 @@ content:
     third_party_settings: {  }
     type: text_default
     region: content
+  field_title:
+    type: entity_reference_revisions_entity_view
+    weight: 115
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
+  field_typed_identifier:
+    type: entity_reference_revisions_entity_view
+    weight: 118
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
   field_weight:
     weight: 113
     label: above
@@ -162,43 +211,43 @@ content:
     region: content
   islandora_fits_checksum:
     weight: 100
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
   links:
     weight: 100
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
   openseadragon_media_evas_entity_view_1:
     weight: 10
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
   openseadragon_media_evas_entity_view_2:
     weight: 10
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
   openseadragon_media_evas_service_file:
     weight: 10
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
   pdfjs_media_evas_entity_view_1:
     weight: 10
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
   pdfjs_media_evas_entity_view_2:
     weight: 10
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
   pdfjs_media_evas_service_file:
     weight: 10
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden:
   langcode: true

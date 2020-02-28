@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
+    - field.field.node.asu_repository_item.field_copyright_statement
     - field.field.node.asu_repository_item.field_description
     - field.field.node.asu_repository_item.field_display_hints
     - field.field.node.asu_repository_item.field_edition
@@ -13,9 +14,13 @@ dependencies:
     - field.field.node.asu_repository_item.field_linked_agent
     - field.field.node.asu_repository_item.field_member_of
     - field.field.node.asu_repository_item.field_model
+    - field.field.node.asu_repository_item.field_note_para
     - field.field.node.asu_repository_item.field_place_published
+    - field.field.node.asu_repository_item.field_preferred_citation
     - field.field.node.asu_repository_item.field_preservation_state
     - field.field.node.asu_repository_item.field_table_of_contents
+    - field.field.node.asu_repository_item.field_title
+    - field.field.node.asu_repository_item.field_typed_identifier
     - field.field.node.asu_repository_item.field_weight
     - node.type.asu_repository_item
   module:
@@ -86,6 +91,7 @@ content:
     third_party_settings: {  }
     region: content
 hidden:
+  field_copyright_statement: true
   field_description: true
   field_display_hints: true
   field_edition: true
@@ -96,8 +102,12 @@ hidden:
   field_linked_agent: true
   field_member_of: true
   field_model: true
+  field_note_para: true
   field_place_published: true
+  field_preferred_citation: true
   field_preservation_state: true
   field_table_of_contents: true
+  field_title: true
+  field_typed_identifier: true
   field_weight: true
   langcode: true
