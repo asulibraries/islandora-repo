@@ -1,0 +1,29 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.identifier_types.field_identifier_predicate
+    - taxonomy.vocabulary.identifier_types
+  module:
+    - text
+id: taxonomy_term.identifier_types.default
+targetEntityType: taxonomy_term
+bundle: identifier_types
+mode: default
+content:
+  description:
+    label: hidden
+    type: text_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_identifier_predicate:
+    weight: 1
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+hidden:
+  langcode: true
