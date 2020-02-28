@@ -1,0 +1,30 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_title
+    - node.type.asu_repository_item
+    - paragraphs.paragraphs_type.complex_title
+  module:
+    - entity_reference_revisions
+id: node.asu_repository_item.field_title
+field_name: field_title
+entity_type: node
+bundle: asu_repository_item
+label: Title
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    negate: 0
+    target_bundles:
+      complex_title: complex_title
+    target_bundles_drag_drop:
+      complex_title:
+        enabled: true
+        weight: 2
+field_type: entity_reference_revisions
