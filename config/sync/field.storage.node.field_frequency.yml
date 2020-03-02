@@ -1,0 +1,75 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - field_permissions
+    - node
+    - options
+third_party_settings:
+  field_permissions:
+    permission_type: public
+id: node.field_frequency
+field_name: field_frequency
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: 'Continuously updated'
+      label: 'Continuously updated'
+    -
+      value: Daily
+      label: Daily
+    -
+      value: Semiweekly
+      label: Semiweekly
+    -
+      value: 'Three times a week'
+      label: 'Three times a week'
+    -
+      value: Weekly
+      label: Weekly
+    -
+      value: Biweekly
+      label: Biweekly
+    -
+      value: 'Three times a month'
+      label: 'Three times a month'
+    -
+      value: Semimonthly
+      label: Semimonthly
+    -
+      value: Monthly
+      label: Monthly
+    -
+      value: Bimonthly
+      label: Bimonthly
+    -
+      value: Quarterly
+      label: Quarterly
+    -
+      value: 'Three times a year'
+      label: 'Three times a year'
+    -
+      value: Semiannual
+      label: Semiannual
+    -
+      value: Annual
+      label: Annual
+    -
+      value: Biennial
+      label: Biennial
+    -
+      value: Triennial
+      label: Triennial
+    -
+      value: 'Completely irregular'
+      label: 'Completely irregular'
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false
