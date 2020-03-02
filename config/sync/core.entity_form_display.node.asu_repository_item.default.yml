@@ -8,12 +8,16 @@ dependencies:
     - field.field.node.asu_repository_item.field_edition
     - field.field.node.asu_repository_item.field_edtf_date_created
     - field.field.node.asu_repository_item.field_extent
+    - field.field.node.asu_repository_item.field_frequency
     - field.field.node.asu_repository_item.field_handle
+    - field.field.node.asu_repository_item.field_issuance
     - field.field.node.asu_repository_item.field_language
     - field.field.node.asu_repository_item.field_linked_agent
     - field.field.node.asu_repository_item.field_member_of
     - field.field.node.asu_repository_item.field_model
     - field.field.node.asu_repository_item.field_note_para
+    - field.field.node.asu_repository_item.field_open_access
+    - field.field.node.asu_repository_item.field_peer_reviewed
     - field.field.node.asu_repository_item.field_place_published
     - field.field.node.asu_repository_item.field_preferred_citation
     - field.field.node.asu_repository_item.field_preservation_state
@@ -105,6 +109,12 @@ content:
     third_party_settings: {  }
     type: string_textfield
     region: content
+  field_frequency:
+    weight: 33
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
   field_handle:
     weight: 15
     settings:
@@ -112,6 +122,12 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
+  field_issuance:
+    weight: 32
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
     region: content
   field_language:
     weight: 12
@@ -160,6 +176,20 @@ content:
       form_display_mode: default
       default_paragraph_type: ''
     third_party_settings: {  }
+    region: content
+  field_open_access:
+    weight: 31
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_peer_reviewed:
+    weight: 30
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
     region: content
   field_place_published:
     weight: 18
