@@ -2,7 +2,11 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.asu_repository_item.field_additional_memberships
+    - field.field.node.asu_repository_item.field_coordinates
+    - field.field.node.asu_repository_item.field_copyright_date
     - field.field.node.asu_repository_item.field_copyright_statement
+    - field.field.node.asu_repository_item.field_date_digitized
     - field.field.node.asu_repository_item.field_description
     - field.field.node.asu_repository_item.field_display_hints
     - field.field.node.asu_repository_item.field_edition
@@ -18,9 +22,15 @@ dependencies:
     - field.field.node.asu_repository_item.field_note_para
     - field.field.node.asu_repository_item.field_open_access
     - field.field.node.asu_repository_item.field_peer_reviewed
+    - field.field.node.asu_repository_item.field_pid
     - field.field.node.asu_repository_item.field_place_published
     - field.field.node.asu_repository_item.field_preferred_citation
     - field.field.node.asu_repository_item.field_preservation_state
+    - field.field.node.asu_repository_item.field_related_item
+    - field.field.node.asu_repository_item.field_resource_type
+    - field.field.node.asu_repository_item.field_reuse_permissions
+    - field.field.node.asu_repository_item.field_series
+    - field.field.node.asu_repository_item.field_statement_responsibility
     - field.field.node.asu_repository_item.field_table_of_contents
     - field.field.node.asu_repository_item.field_title
     - field.field.node.asu_repository_item.field_typed_identifier
@@ -28,7 +38,9 @@ dependencies:
     - node.type.asu_repository_item
   module:
     - controlled_access_terms
+    - datetime
     - entity_reference_revisions
+    - geolocation
     - options
     - text
     - user
@@ -57,6 +69,30 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_additional_memberships:
+    weight: 134
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_coordinates:
+    weight: 133
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: geolocation_latlng
+    region: content
+  field_copyright_date:
+    weight: 127
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
   field_copyright_statement:
     weight: 119
     label: above
@@ -65,6 +101,17 @@ content:
       link: false
     third_party_settings: {  }
     type: entity_reference_entity_view
+    region: content
+  field_date_digitized:
+    weight: 128
+    label: above
+    settings:
+      date_separator: dash
+      date_order: big_endian
+      month_format: mm
+      day_format: dd
+    third_party_settings: {  }
+    type: edtf_default
     region: content
   field_description:
     weight: 101
@@ -191,6 +238,14 @@ content:
     third_party_settings: {  }
     type: boolean
     region: content
+  field_pid:
+    weight: 125
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
   field_place_published:
     weight: 110
     label: above
@@ -213,6 +268,45 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
+  field_related_item:
+    weight: 131
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: typed_relation_default
+    region: content
+  field_resource_type:
+    weight: 124
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_reuse_permissions:
+    weight: 129
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_series:
+    weight: 130
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_statement_responsibility:
+    weight: 132
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
     region: content
   field_table_of_contents:
     weight: 102

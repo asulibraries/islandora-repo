@@ -2,7 +2,11 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.asu_repository_item.field_additional_memberships
+    - field.field.node.asu_repository_item.field_coordinates
+    - field.field.node.asu_repository_item.field_copyright_date
     - field.field.node.asu_repository_item.field_copyright_statement
+    - field.field.node.asu_repository_item.field_date_digitized
     - field.field.node.asu_repository_item.field_description
     - field.field.node.asu_repository_item.field_display_hints
     - field.field.node.asu_repository_item.field_edition
@@ -18,9 +22,15 @@ dependencies:
     - field.field.node.asu_repository_item.field_note_para
     - field.field.node.asu_repository_item.field_open_access
     - field.field.node.asu_repository_item.field_peer_reviewed
+    - field.field.node.asu_repository_item.field_pid
     - field.field.node.asu_repository_item.field_place_published
     - field.field.node.asu_repository_item.field_preferred_citation
     - field.field.node.asu_repository_item.field_preservation_state
+    - field.field.node.asu_repository_item.field_related_item
+    - field.field.node.asu_repository_item.field_resource_type
+    - field.field.node.asu_repository_item.field_reuse_permissions
+    - field.field.node.asu_repository_item.field_series
+    - field.field.node.asu_repository_item.field_statement_responsibility
     - field.field.node.asu_repository_item.field_table_of_contents
     - field.field.node.asu_repository_item.field_title
     - field.field.node.asu_repository_item.field_typed_identifier
@@ -28,7 +38,9 @@ dependencies:
     - node.type.asu_repository_item
   module:
     - controlled_access_terms
+    - datetime
     - field_group
+    - geolocation
     - paragraphs
     - path
     - text
@@ -39,6 +51,9 @@ third_party_settings:
         - field_title
         - title
         - field_model
+        - field_member_of
+        - field_description
+        - field_linked_agent
       parent_name: ''
       weight: 0
       format_type: fieldset
@@ -49,6 +64,30 @@ third_party_settings:
         description: ''
         required_fields: true
       label: Basic
+    group_system:
+      children:
+        - field_pid
+        - field_handle
+        - field_preservation_state
+        - field_display_hints
+        - uid
+        - promote
+        - created
+        - sticky
+        - path
+        - status
+      parent_name: ''
+      weight: 24
+      format_type: details_sidebar
+      region: content
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+        open: false
+        required_fields: true
+        weight: 0
+      label: System
 id: node.asu_repository_item.default
 targetEntityType: node
 bundle: asu_repository_item
@@ -56,12 +95,12 @@ mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 4
+    weight: 35
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_copyright_statement:
-    weight: 29
+  field_additional_memberships:
+    weight: 41
     settings:
       match_operator: CONTAINS
       match_limit: 10
@@ -70,8 +109,35 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
+  field_coordinates:
+    weight: 40
+    settings: {  }
+    third_party_settings: {  }
+    type: geolocation_latlng
+    region: content
+  field_copyright_date:
+    weight: 13
+    settings: {  }
+    third_party_settings: {  }
+    type: datetime_default
+    region: content
+  field_copyright_statement:
+    weight: 14
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_date_digitized:
+    weight: 12
+    settings:
+      strict_dates: false
+      intervals: true
+      sets: false
+    third_party_settings: {  }
+    type: edtf_default
+    region: content
   field_description:
-    weight: 9
+    weight: 27
     settings:
       rows: 5
       placeholder: ''
@@ -79,13 +145,13 @@ content:
     type: string_textarea
     region: content
   field_display_hints:
-    weight: 22
+    weight: 32
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
     region: content
   field_edition:
-    weight: 17
+    weight: 18
     settings:
       size: 60
       placeholder: ''
@@ -93,7 +159,7 @@ content:
     type: string_textfield
     region: content
   field_edtf_date_created:
-    weight: 16
+    weight: 11
     settings:
       strict_dates: false
       intervals: true
@@ -102,7 +168,7 @@ content:
     type: edtf_default
     region: content
   field_extent:
-    weight: 13
+    weight: 4
     settings:
       size: 60
       placeholder: ''
@@ -110,13 +176,13 @@ content:
     type: string_textfield
     region: content
   field_frequency:
-    weight: 33
+    weight: 20
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_handle:
-    weight: 15
+    weight: 30
     settings:
       size: 60
       placeholder: ''
@@ -124,13 +190,13 @@ content:
     type: string_textfield
     region: content
   field_issuance:
-    weight: 32
+    weight: 19
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
   field_language:
-    weight: 12
+    weight: 3
     settings:
       match_operator: CONTAINS
       match_limit: 10
@@ -140,7 +206,7 @@ content:
     type: entity_reference_autocomplete
     region: content
   field_linked_agent:
-    weight: 11
+    weight: 28
     settings:
       match_operator: CONTAINS
       match_limit: 10
@@ -150,7 +216,7 @@ content:
     type: typed_relation_default
     region: content
   field_member_of:
-    weight: 14
+    weight: 26
     settings:
       match_operator: CONTAINS
       match_limit: 10
@@ -167,7 +233,7 @@ content:
     region: content
   field_note_para:
     type: entity_reference_paragraphs
-    weight: 27
+    weight: 8
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -178,21 +244,29 @@ content:
     third_party_settings: {  }
     region: content
   field_open_access:
-    weight: 31
+    weight: 17
     settings:
       display_label: true
     third_party_settings: {  }
     type: boolean_checkbox
     region: content
   field_peer_reviewed:
-    weight: 30
+    weight: 16
     settings:
       display_label: true
     third_party_settings: {  }
     type: boolean_checkbox
     region: content
+  field_pid:
+    weight: 29
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
   field_place_published:
-    weight: 18
+    weight: 5
     settings:
       size: 60
       placeholder: ''
@@ -200,7 +274,7 @@ content:
     type: string_textfield
     region: content
   field_preferred_citation:
-    weight: 26
+    weight: 7
     settings:
       rows: 5
       placeholder: ''
@@ -208,13 +282,55 @@ content:
     type: text_textarea
     region: content
   field_preservation_state:
-    weight: 19
+    weight: 31
     settings: {  }
     third_party_settings: {  }
     type: options_select
     region: content
+  field_related_item:
+    weight: 23
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: typed_relation_default
+    region: content
+  field_resource_type:
+    weight: 21
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_reuse_permissions:
+    weight: 15
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_series:
+    weight: 22
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
+    region: content
+  field_statement_responsibility:
+    weight: 39
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
   field_table_of_contents:
-    weight: 10
+    weight: 2
     settings:
       rows: 5
       placeholder: ''
@@ -235,7 +351,7 @@ content:
     region: content
   field_typed_identifier:
     type: entity_reference_paragraphs
-    weight: 28
+    weight: 9
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -246,7 +362,7 @@ content:
     third_party_settings: {  }
     region: content
   field_weight:
-    weight: 21
+    weight: 6
     settings:
       placeholder: ''
     third_party_settings: {  }
@@ -254,14 +370,14 @@ content:
     region: content
   langcode:
     type: language_select
-    weight: 2
+    weight: 1
     region: content
     settings:
       include_locked: true
     third_party_settings: {  }
   path:
     type: path
-    weight: 7
+    weight: 37
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -269,21 +385,21 @@ content:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 5
+    weight: 34
     region: content
     third_party_settings: {  }
   status:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 8
+    weight: 38
     region: content
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
     settings:
       display_label: true
-    weight: 6
+    weight: 36
     region: content
     third_party_settings: {  }
   title:
@@ -296,7 +412,7 @@ content:
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 3
+    weight: 33
     settings:
       match_operator: CONTAINS
       size: 60
