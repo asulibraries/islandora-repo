@@ -7,16 +7,12 @@ dependencies:
     - user
     - taxonomy
     - search_api
+    - asu_search
   config:
-    - field.storage.taxonomy_term.field_person_alternate_names
-    - field.storage.taxonomy_term.field_cat_date_begin
-    - field.storage.taxonomy_term.field_cat_date_end
-    - field.storage.taxonomy_term.field_corp_alt_name
-    - field.storage.node.field_description
     - field.storage.node.field_edtf_date
     - field.storage.node.field_edtf_date_created
     - field.storage.node.field_edtf_date_issued
-    - field.storage.taxonomy_term.field_geo_alt_name
+    - field.storage.node.field_description
     - field.storage.node.field_identifier
     - field.storage.node.field_linked_agent
     - field.storage.node.field_local_identifier
@@ -28,6 +24,11 @@ dependencies:
     - field.storage.node.field_table_of_contents
     - field.storage.node.field_tags
     - field.storage.node.field_temporal_subject
+    - field.storage.taxonomy_term.field_geo_alt_name
+    - field.storage.taxonomy_term.field_corp_alt_name
+    - field.storage.taxonomy_term.field_cat_date_end
+    - field.storage.taxonomy_term.field_cat_date_begin
+    - field.storage.taxonomy_term.field_person_alternate_names
     - field.storage.taxonomy_term.field_person_preferred_name
     - search_api.server.default_solr_server
     - core.entity_view_mode.node.search_index
@@ -58,6 +59,13 @@ name: 'Default Solr content index'
 description: 'Default content index created by the Solr Search Defaults module'
 read_only: false
 field_settings:
+  aggregated_field:
+    label: 'Aggregated field'
+    property_path: aggregated_field
+    type: string
+    configuration:
+      type: union
+      fields: {  }
   alternate_family_name:
     label: 'Person Alternate Family Name'
     datasource_id: 'entity:taxonomy_term'
@@ -82,6 +90,14 @@ field_settings:
     dependencies:
       config:
         - field.storage.taxonomy_term.field_person_alternate_names
+  asu_isbn:
+    label: 'ISBN Identifier'
+    property_path: asu_isbn
+    type: string
+  asu_local:
+    label: 'Local Identifier'
+    property_path: asu_local
+    type: string
   author:
     label: 'Author name'
     datasource_id: 'entity:node'
@@ -329,7 +345,7 @@ field_settings:
       config:
         - field.storage.taxonomy_term.field_person_preferred_name
   rendered_item:
-    label: 'Rendered item'
+    label: 'Rendered HTML output'
     property_path: rendered_item
     type: text
     configuration:
@@ -337,21 +353,63 @@ field_settings:
         anonymous: anonymous
       view_mode:
         'entity:node':
-          article: search_index
+          article: ''
+          asu_repository_item: search_index
+          collection: ''
           islandora_object: search_index
-          page: search_index
+          page: ''
         'entity:taxonomy_term':
-          corporate_body: default
-          family: default
-          genre: default
-          geo_location: default
-          language: default
-          person: default
-          physical_form: default
-          resource_types: default
-          subject: default
-          tags: default
-          temporal: default
+          copyright_statements: ''
+          corporate_body: ''
+          family: ''
+          genre: ''
+          geo_location: ''
+          identifier_types: ''
+          institution: ''
+          language: ''
+          note_types: ''
+          oai_sets: ''
+          person: ''
+          physical_form: ''
+          preservation_states: ''
+          resource_types: ''
+          reuse_permissions: ''
+          subject: ''
+          tags: ''
+          temporal: ''
+  repo_item_search_index:
+    label: 'Repo Item Search Index'
+    property_path: rendered_item
+    type: text
+    configuration:
+      roles:
+        anonymous: anonymous
+      view_mode:
+        'entity:node':
+          article: ''
+          asu_repository_item: ''
+          collection: ''
+          islandora_object: search_index
+          page: ''
+        'entity:taxonomy_term':
+          copyright_statements: ''
+          corporate_body: ''
+          family: ''
+          genre: ''
+          geo_location: ''
+          identifier_types: ''
+          institution: ''
+          language: ''
+          note_types: ''
+          oai_sets: ''
+          person: ''
+          physical_form: ''
+          preservation_states: ''
+          resource_types: ''
+          reuse_permissions: ''
+          subject: ''
+          tags: ''
+          temporal: ''
   status:
     label: 'Publishing status'
     datasource_id: 'entity:node'
@@ -417,6 +475,35 @@ datasource_settings:
       default: true
       selected: {  }
 processor_settings:
+  add_url:
+    weights:
+      preprocess_index: -30
+  aggregated_field:
+    weights:
+      add_properties: 20
+  content_access:
+    weights:
+      preprocess_index: -6
+      preprocess_query: -4
+  entity_status:
+    weights:
+      preprocess_index: -10
+  hierarchy:
+    fields:
+      field_member_of: node-field_member_of
+    weights:
+      preprocess_index: -45
+  highlight:
+    highlight: always
+    highlight_partial: true
+    excerpt: true
+    excerpt_length: 256
+    exclude_fields:
+      - rendered_item
+    prefix: '<strong>'
+    suffix: '</strong>'
+    weights:
+      postprocess_query: 0
   html_filter:
     all_fields: false
     fields:
@@ -432,40 +519,12 @@ processor_settings:
     weights:
       preprocess_index: -3
       preprocess_query: -6
-  content_access:
-    weights:
-      preprocess_index: -6
-      preprocess_query: -4
-  entity_status:
-    weights:
-      preprocess_index: -10
-  add_url:
-    weights:
-      preprocess_index: -30
-  aggregated_field:
-    weights:
-      add_properties: 20
-  reverse_entity_references: {  }
-  highlight:
-    highlight: always
-    highlight_partial: true
-    excerpt: true
-    excerpt_length: 256
-    exclude_fields:
-      - rendered_item
-    prefix: '<strong>'
-    suffix: '</strong>'
-    weights:
-      postprocess_query: 0
+  identifier_by_type: {  }
   rendered_item:
     weights:
       add_properties: 0
       pre_index_save: -10
-  hierarchy:
-    fields:
-      field_member_of: node-field_member_of
-    weights:
-      preprocess_index: -45
+  reverse_entity_references: {  }
   solr_date_range:
     weights:
       preprocess_index: 0
