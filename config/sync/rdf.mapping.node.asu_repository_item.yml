@@ -14,6 +14,25 @@ bundle: asu_repository_item
 types:
   - 'pcdm:Object'
 fieldMappings:
+  field_edtf_date_created:
+    properties:
+      - 'dcterms:created'
+    datatype_callback:
+      callable: 'Drupal\controlled_access_terms\EDTFConverter::dateIso8601Value'
+  field_copyright_date:
+    properties:
+      - 'dcterms:dateCopyrighted'
+    datatype_callback:
+      callable: 'Drupal\rdf\CommonDataConverter::dateIso8601Value'
+  field_preferred_citation:
+    properties:
+      - 'mods:bibliographicCitation'
+  field_copyright_statement:
+    properties:
+      - 'dcterms:rights'
+  field_reuse_permissions:
+    properties:
+      - 'dcterms:rights'
   field_description:
     properties:
       - 'dcterms:description'
