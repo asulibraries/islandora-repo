@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_source
+    - taxonomy.vocabulary.reuse_permissions
+  module:
+    - link
+id: taxonomy_term.reuse_permissions.field_source
+field_name: field_source
+entity_type: taxonomy_term
+bundle: reuse_permissions
+label: Source
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  link_type: 17
+  title: 1
+field_type: link
