@@ -2,24 +2,23 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_member_of
+    - field.storage.node.field_additional_memberships
     - node.type.asu_repository_item
     - node.type.collection
-id: node.asu_repository_item.field_member_of
-field_name: field_member_of
+id: node.asu_repository_item.field_additional_memberships
+field_name: field_additional_memberships
 entity_type: node
 bundle: asu_repository_item
-label: 'Primary Member of'
+label: 'Additional Memberships'
 description: ''
 required: false
-translatable: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
   handler: 'default:node'
   handler_settings:
     target_bundles:
-      asu_repository_item: asu_repository_item
       collection: collection
     sort:
       field: _none
