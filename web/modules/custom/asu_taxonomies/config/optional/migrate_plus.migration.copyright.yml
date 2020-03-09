@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - asu_taxonomies
+id: copyright
+migration_group: asu_taxonomies
+label: 'Preservation States migration for ASU Taxonomies'
+source:
+  plugin: 'csv'
+  path: modules/custom/asu_taxonomies/migrate/copyright_statements.csv
+  header_row_count: 1
+  keys:
+    - name
+process:
+  name: name
+  vid: vid
+  field_source/uri: source
+  field_copyright_logo:
+    plugin: file_import
+    source: logo
+
+destination:
+  plugin: 'entity:taxonomy_term'
+  default_bundle: copyright_statements
