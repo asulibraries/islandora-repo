@@ -2,18 +2,25 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.taxonomy_term.field_logo
-    - taxonomy.vocabulary.institution
+    - field.storage.node.field_image
+    - node.type.institution
   module:
+    - content_translation
     - image
-id: taxonomy_term.institution.field_logo
-field_name: field_logo
-entity_type: taxonomy_term
+third_party_settings:
+  content_translation:
+    translation_sync:
+      alt: alt
+      title: title
+      file: '0'
+id: node.institution.field_image
+field_name: field_image
+entity_type: node
 bundle: institution
 label: Logo
 description: ''
 required: false
-translatable: false
+translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
