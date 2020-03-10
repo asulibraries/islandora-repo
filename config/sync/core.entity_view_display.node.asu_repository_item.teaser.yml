@@ -4,6 +4,7 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.asu_repository_item.field_additional_memberships
+    - field.field.node.asu_repository_item.field_collaborating_institutions
     - field.field.node.asu_repository_item.field_coordinates
     - field.field.node.asu_repository_item.field_copyright_date
     - field.field.node.asu_repository_item.field_copyright_statement
@@ -14,6 +15,8 @@ dependencies:
     - field.field.node.asu_repository_item.field_edtf_date_created
     - field.field.node.asu_repository_item.field_extent
     - field.field.node.asu_repository_item.field_frequency
+    - field.field.node.asu_repository_item.field_genre
+    - field.field.node.asu_repository_item.field_geographic_subject
     - field.field.node.asu_repository_item.field_handle
     - field.field.node.asu_repository_item.field_issuance
     - field.field.node.asu_repository_item.field_language
@@ -32,7 +35,10 @@ dependencies:
     - field.field.node.asu_repository_item.field_reuse_permissions
     - field.field.node.asu_repository_item.field_series
     - field.field.node.asu_repository_item.field_statement_responsibility
+    - field.field.node.asu_repository_item.field_subject
+    - field.field.node.asu_repository_item.field_subjects_name
     - field.field.node.asu_repository_item.field_table_of_contents
+    - field.field.node.asu_repository_item.field_temporal_subject
     - field.field.node.asu_repository_item.field_title
     - field.field.node.asu_repository_item.field_typed_identifier
     - field.field.node.asu_repository_item.field_weight
@@ -106,6 +112,7 @@ content:
     region: content
 hidden:
   field_additional_memberships: true
+  field_collaborating_institutions: true
   field_coordinates: true
   field_copyright_date: true
   field_copyright_statement: true
@@ -116,6 +123,8 @@ hidden:
   field_edtf_date_created: true
   field_extent: true
   field_frequency: true
+  field_genre: true
+  field_geographic_subject: true
   field_handle: true
   field_issuance: true
   field_language: true
@@ -134,7 +143,10 @@ hidden:
   field_reuse_permissions: true
   field_series: true
   field_statement_responsibility: true
+  field_subject: true
+  field_subjects_name: true
   field_table_of_contents: true
+  field_temporal_subject: true
   field_title: true
   field_typed_identifier: true
   field_weight: true
