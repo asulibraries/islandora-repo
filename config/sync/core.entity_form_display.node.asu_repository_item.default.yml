@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - field.field.node.asu_repository_item.field_additional_memberships
+    - field.field.node.asu_repository_item.field_collaborating_institutions
     - field.field.node.asu_repository_item.field_coordinates
     - field.field.node.asu_repository_item.field_copyright_date
     - field.field.node.asu_repository_item.field_copyright_statement
@@ -13,6 +14,8 @@ dependencies:
     - field.field.node.asu_repository_item.field_edtf_date_created
     - field.field.node.asu_repository_item.field_extent
     - field.field.node.asu_repository_item.field_frequency
+    - field.field.node.asu_repository_item.field_genre
+    - field.field.node.asu_repository_item.field_geographic_subject
     - field.field.node.asu_repository_item.field_handle
     - field.field.node.asu_repository_item.field_issuance
     - field.field.node.asu_repository_item.field_language
@@ -31,7 +34,10 @@ dependencies:
     - field.field.node.asu_repository_item.field_reuse_permissions
     - field.field.node.asu_repository_item.field_series
     - field.field.node.asu_repository_item.field_statement_responsibility
+    - field.field.node.asu_repository_item.field_subject
+    - field.field.node.asu_repository_item.field_subjects_name
     - field.field.node.asu_repository_item.field_table_of_contents
+    - field.field.node.asu_repository_item.field_temporal_subject
     - field.field.node.asu_repository_item.field_title
     - field.field.node.asu_repository_item.field_typed_identifier
     - field.field.node.asu_repository_item.field_weight
@@ -101,6 +107,16 @@ content:
     third_party_settings: {  }
   field_additional_memberships:
     weight: 41
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_collaborating_institutions:
+    weight: 47
     settings:
       match_operator: CONTAINS
       match_limit: 10
@@ -180,6 +196,26 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: options_select
+    region: content
+  field_genre:
+    weight: 42
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_geographic_subject:
+    weight: 43
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
     region: content
   field_handle:
     weight: 30
@@ -329,6 +365,26 @@ content:
     third_party_settings: {  }
     type: string_textarea
     region: content
+  field_subject:
+    weight: 46
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_subjects_name:
+    weight: 45
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
   field_table_of_contents:
     weight: 2
     settings:
@@ -336,6 +392,16 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: text_textarea
+    region: content
+  field_temporal_subject:
+    weight: 44
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
     region: content
   field_title:
     type: entity_reference_paragraphs
