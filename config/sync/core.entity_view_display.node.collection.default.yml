@@ -2,13 +2,18 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.collection.field_collaborating_institutions
     - field.field.node.collection.field_description
+    - field.field.node.collection.field_external_links
     - field.field.node.collection.field_handle
     - field.field.node.collection.field_member_of
     - field.field.node.collection.field_model
     - field.field.node.collection.field_oai_set
+    - field.field.node.collection.field_title
     - node.type.collection
   module:
+    - entity_reference_revisions
+    - link
     - user
 id: node.collection.default
 targetEntityType: node
@@ -36,7 +41,7 @@ content:
     third_party_settings: {  }
     region: content
   field_collaborating_institutions:
-    weight: 108
+    weight: 111
     label: above
     settings:
       link: true
@@ -57,6 +62,18 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: basic_string
+    region: content
+  field_external_links:
+    weight: 109
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
     region: content
   field_gemini_uri:
     weight: 100
@@ -94,6 +111,15 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
+  field_title:
+    weight: 110
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    type: entity_reference_revisions_entity_view
     region: content
   flag_email_node:
     weight: 10

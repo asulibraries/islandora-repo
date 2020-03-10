@@ -3,11 +3,14 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.node.teaser
+    - field.field.node.collection.field_collaborating_institutions
     - field.field.node.collection.field_description
+    - field.field.node.collection.field_external_links
     - field.field.node.collection.field_handle
     - field.field.node.collection.field_member_of
     - field.field.node.collection.field_model
     - field.field.node.collection.field_oai_set
+    - field.field.node.collection.field_title
     - node.type.collection
   module:
     - user
@@ -95,8 +98,10 @@ hidden:
   field_collaborating_institutions: true
   field_def: true
   field_description: true
+  field_external_links: true
   field_handle: true
   field_member_of: true
   field_model: true
   field_oai_set: true
+  field_title: true
   langcode: true
