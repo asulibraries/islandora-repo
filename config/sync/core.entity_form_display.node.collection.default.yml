@@ -2,13 +2,18 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.node.collection.field_collaborating_institutions
     - field.field.node.collection.field_description
+    - field.field.node.collection.field_external_links
     - field.field.node.collection.field_handle
     - field.field.node.collection.field_member_of
     - field.field.node.collection.field_model
     - field.field.node.collection.field_oai_set
+    - field.field.node.collection.field_title
     - node.type.collection
   module:
+    - entity_reference_revisions
+    - link
     - path
 id: node.collection.default
 targetEntityType: node
@@ -22,7 +27,7 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_collaborating_institutions:
-    weight: 128
+    weight: 131
     settings:
       match_operator: CONTAINS
       match_limit: 10
@@ -48,6 +53,14 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textarea
+    region: content
+  field_external_links:
+    weight: 129
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: link_default
     region: content
   field_handle:
     weight: 126
@@ -86,6 +99,16 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+    region: content
+  field_title:
+    weight: 130
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_revisions_autocomplete
     region: content
   langcode:
     type: language_select
