@@ -1,0 +1,38 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.taxonomy_term.image_as_link
+    - field.field.taxonomy_term.copyright_statements.field_copyright_logo
+    - field.field.taxonomy_term.copyright_statements.field_source
+    - taxonomy.vocabulary.copyright_statements
+  module:
+    - file
+    - link
+id: taxonomy_term.copyright_statements.image_as_link
+targetEntityType: taxonomy_term
+bundle: copyright_statements
+mode: image_as_link
+content:
+  field_copyright_logo:
+    weight: 0
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: file_url_plain
+    region: content
+  field_source:
+    type: link
+    weight: 1
+    region: content
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: true
+      url_plain: true
+      rel: '0'
+      target: '0'
+    third_party_settings: {  }
+hidden:
+  description: true
+  langcode: true
