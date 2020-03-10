@@ -1,0 +1,66 @@
+<?php
+use Drupal\jsonld\Normalizer\NormalizerBase;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\paragraphs\Entity\Paragraph;
+
+/**
+ * Implements hook_rdf_namespaces().
+ */
+function asu_custom_rdf_rdf_namespaces() {
+  return [
+    'mods' => 'http://www.loc.gov/mods/modsrdf/v1#',
+    'rdau' => 'http://www.rdaregistry.info/Elements/u/',
+  ];
+}
+
+/**
+ * Implements hook_jsonld_alter_normalized_array().
+ */
+function asu_custom_rdf_jsonld_alter_normalized_array(EntityInterface $entity, array &$normalized, array $context) {
+  // if (isset($normalized['@graph']) && is_array($normalized['@graph'])) {
+  //   foreach ($entity->getFieldDefinitions() as $field => $field_definition) {
+  //     if (!empty($entity->get($field)->getValue())) {
+  //       // \Drupal::logger('')
+
+  //       if ($field_definition->getType() == 'typed_relation') {
+
+  //       }
+  //       elseif ($field_definition->getType() == 'edtf') {
+
+  //       }
+  //       elseif ($field_definition->getType() == 'entity_reference_revisions'){
+  //           // \Drupal::logger('asu custom RDF module')->info('this should be a paragraph aka ' . $field_definition->getType());
+  //           // \Drupal::logger('asu custom')->info('field value comes next');
+  //           // \Drupal::logger('asu custom')->info(print_r($entity->get($field)->getValue(), TRUE));
+  //           foreach ($entity->get($field)->getValue() as $value) {
+  //               $paragraph = Paragraph::load($value['target_id']);
+  //               \Drupal::logger('asu custom')->info('paragraph type is ' . $paragraph->getType());
+  //               // \Drupal::logger('asu custom')->info('sub field value is ' . $paragraph->);
+  //               // \Drupal::logger('asu custom')->info();
+  //               foreach ($paragraph->getFieldDefinitions() as $parfield => $parfield_definition) {
+  //                   \Drupal::logger('asu custom')->info('field ' . $parfield_definition->getName());
+  //                   \Drupal::logger('asu custom')->info(print_r($context['current_entity_rdf_mapping']->get('fieldMappings'), TRUE));
+  //                   // \Drupal::logger('asu custom')->info($context['current_entity_rdf_mapping']->get('fieldMappings')[$complex_name]['properties']);
+  //                   if ($context['current_entity_rdf_mapping']->get('fieldMappings')[$parfield_definition->getName()]){
+  //                       foreach ($context['current_entity_rdf_mapping']->get('fieldMappings')[$parfield_definition->getName()]['properties'] as $predicate) {
+  //                           // if has mapping type par
+  //                           \Drupal::logger('asu custom')->info($parfield_definition->getName() . " has an RDF mapping of " . $predicate);
+
+  //                       //     $predicate_normalized = NormalizerBase::escapePrefix($predicate, $context['namespaces']);
+  //                           // \Drupal::logger('asu custom')->info('field value is ' . $paragraph->get('field_note_text'));
+  //                           // may be an existing array in the normalized content already, here i'm making an assumption that the array doesn't already exist.
+  //                           // $normalized['@graph'][0][$predicate_normalized][] = [
+  //                           //     '@value' => $paragraph->get($parfield_definition->getName()),
+  //                           //     '@language' => 'en'
+  //                           // ];
+  //                           // would have to handle different kinds of fields here like strings or a taxo reference or what not
+  //                       }
+  //                   }
+
+  //               }
+  //           }
+  //       }
+  //     }
+  //   }
+  // }
+}
