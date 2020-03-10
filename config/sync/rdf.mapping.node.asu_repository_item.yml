@@ -14,6 +14,14 @@ bundle: asu_repository_item
 types:
   - 'pcdm:Object'
 fieldMappings:
+  id:
+    properties:
+      - 'dcterms:identifier'
+      - 'mods:identifier'
+  field_pid:
+    properties:
+      - 'dcterms:identifier'
+      - 'mods:identifier'
   field_edtf_date_created:
     properties:
       - 'dcterms:created'
@@ -27,6 +35,24 @@ fieldMappings:
   field_preferred_citation:
     properties:
       - 'mods:bibliographicCitation'
+      - 'dcterms:bibliographicCitation'
+  field_issuance:
+    properties:
+      - 'rdau:modeOfIssuance'
+  field_frequency:
+    properties:
+      - 'mods:frequency'
+  field_resource_type:
+    properties:
+      - 'dc:type'
+      - 'mods:typeOfResource'
+  field_genre:
+    properties:
+      - 'dc:type'
+      - 'mods:genre'
+  field_statement_responsibility:
+    properties:
+      - 'mods:statementOfResponsibility'
   field_copyright_statement:
     properties:
       - 'dcterms:rights'
@@ -36,10 +62,15 @@ fieldMappings:
   field_description:
     properties:
       - 'dcterms:description'
+      - 'schema:description'
   field_extent:
     properties:
       - 'dcterms:extent'
   field_member_of:
+    properties:
+      - 'pcdm:memberOf'
+    mapping_type: rel
+  field_additional_memberships:
     properties:
       - 'pcdm:memberOf'
     mapping_type: rel
@@ -51,10 +82,11 @@ fieldMappings:
       - 'rdau:P60329'
   field_place_published:
     properties:
-      - 'relators:pup'
+            - 'mods:placeOfOrigin'
   field_table_of_contents:
     properties:
       - 'dcterms:tableOfContents'
+      - 'mods:tableOfContents'
   field_note_text:
     properties:
       - 'skos:note'
@@ -79,3 +111,24 @@ fieldMappings:
     properties:
       - 'schema:author'
     mapping_type: rel
+  field_handle:
+    properties:
+      - 'dcterms:identifier'
+      - 'mods:identifier'
+  field_subjects_name:
+    properties:
+      - 'dcterms:subject'
+      - 'mods:subjectName'
+  field_temporal_subject:
+    properties:
+      - 'dcterms:subject'
+      - 'mods:subjectTemporal'
+  field_geographic_subject:
+    properties:
+      - 'dcterms:subject'
+      - 'mods:subjectGeograhpic'
+  field_subject:
+    properties:
+      - 'dcterms:subject'
+      - 'mods:subjectTopic'
+
