@@ -6,6 +6,7 @@ dependencies:
       - islandora_defaults
   module:
     - islandora
+    - islandora_bagger_integration
     - node
 name: repository_content
 label: Content
@@ -43,5 +44,9 @@ reactions:
   alter_jsonld_type:
     id: alter_jsonld_type
     source_field: field_model
+    saved: false
+  islandora_bagger_integration_config_options:
+    id: islandora_bagger_integration_config_options
+    bagger_config_options: ''
     saved: false
 weight: -5
