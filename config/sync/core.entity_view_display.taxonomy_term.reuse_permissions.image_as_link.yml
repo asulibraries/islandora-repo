@@ -1,0 +1,38 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.taxonomy_term.image_as_link
+    - field.field.taxonomy_term.reuse_permissions.field_copyright_logo
+    - field.field.taxonomy_term.reuse_permissions.field_source
+    - taxonomy.vocabulary.reuse_permissions
+  module:
+    - file
+    - link
+id: taxonomy_term.reuse_permissions.image_as_link
+targetEntityType: taxonomy_term
+bundle: reuse_permissions
+mode: image_as_link
+content:
+  field_copyright_logo:
+    weight: 0
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: file_url_plain
+    region: content
+  field_source:
+    weight: 1
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: true
+      url_plain: true
+      rel: '0'
+      target: '0'
+    third_party_settings: {  }
+    type: link
+    region: content
+hidden:
+  description: true
+  langcode: true
