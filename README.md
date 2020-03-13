@@ -55,7 +55,7 @@ Get the json-ld for an object in Drupal like so : http://localhost:8000/node/1?_
 
 ## Tips on Config Syncing
 * To export content, go to your drupal root such as `/var/www/html/drupal` and run `drupal config:export --directory config/sync --remove-uuid --remove-config-hash` ([see](https://hechoendrupal.gitbooks.io/drupal-console/content/en/commands/config-export.html))
-* To import content, go to your drupal root such as `/var/www/html/drupal` and run `drupal config:import --directory config/sync` ([see](https://hechoendrupal.gitbooks.io/drupal-console/content/en/commands/config-import.html))
+* To import content, go to your drupal root such as `/var/www/html/drupal` and run `drupal config:import --directory /var/www/html/drupal/config/sync` ([see](https://hechoendrupal.gitbooks.io/drupal-console/content/en/commands/config-import.html))
 * To export the configs split based on environments, use `drupal config_split:export --split config_split.config_split.environment_config`
 * To import the split config (or any one part of config), use `drush config:import --partial --source=/the/path/`
 
