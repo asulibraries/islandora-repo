@@ -1,0 +1,28 @@
+<?php
+
+/**
+ * @file
+ * Contains islandora_pub_unpub_actions.module.
+ */
+
+use Drupal\node\NodeInterface;
+
+/**
+ * Implements hook_node_update().
+ */
+function islandora_pub_unpub_actions_node_update(NodeInterface $node) {
+  $utils = \Drupal::service('islandora.utils');
+  if (!$utils->haveFieldsChanged($node, $node->original)) {
+    return;
+  };
+  if ($node->isPublished() && !$node->original->isPublished()) {
+    // fire the publish actions
+    $utils->executeNodeReactions('\Drupal\islandora_pub_unpub_actions\Plugin\ContextReaction\PublishReaction', $node);
+    \Drupal::logger('islandora')->info('going from unpub to pub');
+  }
+  if (!$node->isPublished() && $node->original->isPublished()) {
+    // fire the unpublish actions aka tombstone the stuff
+    $utils->executeNodeReactions('\Drupal\islandora_pub_unpub_actions\Plugin\ContextReaction\UnpublishReaction', $node);
+    \Drupal::logger('islandora')->info('going from pub to unpub');
+  }
+}
