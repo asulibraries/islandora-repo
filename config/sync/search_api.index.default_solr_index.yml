@@ -132,6 +132,14 @@ field_settings:
     dependencies:
       module:
         - taxonomy
+  field_ancestors:
+    label: Ancestors
+    datasource_id: 'entity:node'
+    property_path: field_member_of
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_member_of
   field_cat_date_begin:
     label: 'Founding Date'
     datasource_id: 'entity:taxonomy_term'

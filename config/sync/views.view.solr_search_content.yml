@@ -61,12 +61,35 @@ display:
       style:
         type: default
       row:
-        type: fields
+        type: search_api
         options:
-          default_field_elements: true
-          inline: {  }
-          separator: ''
-          hide_empty: false
+          view_modes:
+            'entity:node':
+              article: default
+              asu_repository_item: teaser
+              collection: teaser
+              institution: default
+              islandora_object: teaser
+              page: default
+            'entity:taxonomy_term':
+              copyright_statements: default
+              corporate_body: default
+              family: default
+              genre: default
+              geo_location: default
+              identifier_types: default
+              institution: default
+              language: default
+              note_types: default
+              oai_sets: default
+              person: default
+              physical_form: default
+              preservation_states: default
+              resource_types: default
+              reuse_permissions: default
+              subject: default
+              tags: default
+              temporal: default
       filters:
         type:
           id: type
@@ -77,6 +100,8 @@ display:
           admin_label: ''
           operator: or
           value:
+            asu_repository_item: asu_repository_item
+            collection: collection
             islandora_object: islandora_object
           group: 1
           exposed: false
@@ -86,6 +111,8 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
@@ -93,8 +120,6 @@ display:
             remember_roles:
               authenticated: authenticated
             reduce: false
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -162,7 +187,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          order: ASC
+          order: DESC
           exposed: false
           expose:
             label: ''
