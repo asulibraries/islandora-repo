@@ -1,0 +1,45 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.reuse_permissions.field_copyright_logo
+    - field.field.taxonomy_term.reuse_permissions.field_source
+    - taxonomy.vocabulary.reuse_permissions
+  module:
+    - file
+    - link
+    - text
+id: taxonomy_term.reuse_permissions.default
+targetEntityType: taxonomy_term
+bundle: reuse_permissions
+mode: default
+content:
+  description:
+    label: hidden
+    type: text_default
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_copyright_logo:
+    weight: 2
+    label: above
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    type: file_default
+    region: content
+  field_source:
+    weight: 1
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    type: link
+    region: content
+hidden:
+  langcode: true

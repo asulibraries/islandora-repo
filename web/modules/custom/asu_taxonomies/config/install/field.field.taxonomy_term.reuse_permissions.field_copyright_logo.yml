@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_copyright_logo
+    - taxonomy.vocabulary.reuse_permissions
+  module:
+    - file
+id: taxonomy_term.reuse_permissions.field_copyright_logo
+field_name: field_copyright_logo
+entity_type: taxonomy_term
+bundle: reuse_permissions
+label: 'Reuse Logo'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: '[date:custom:Y]-[date:custom:m]'
+  file_extensions: 'png gif jpg jpeg svg'
+  max_filesize: ''
+  description_field: false
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: file
