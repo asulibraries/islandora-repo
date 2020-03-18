@@ -1,0 +1,15 @@
+<?php
+/**
+ * Implements hook_form_alter().
+ * @param $form
+ * @param FormStateInterface $form_state
+ * @param $form_id
+ */
+function asu_search_form_views_exposed_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id){
+  if ($form['#id'] == 'views-exposed-form-solr-search-content-page-2') {
+    $current_path = \Drupal::service('path.current')->getPath();
+    $col_id = preg_match('/\/([^\/]+)\/?$/', $current_path);;
+    $new_search_path = preg_replace('/all/', $col_id, $form['#action']);
+    $form['#action'] = $new_search_path;
+  }
+}
