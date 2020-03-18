@@ -1,0 +1,37 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.collection_group
+id: collection_group-admin
+label: Admin
+weight: 100
+internal: false
+audience: member
+group_type: collection_group
+permissions_ui: true
+permissions:
+  - 'access content overview'
+  - 'access group_node overview'
+  - 'administer group'
+  - 'administer members'
+  - 'create group_node:asu_repository_item content'
+  - 'create group_node:asu_repository_item entity'
+  - 'delete group'
+  - 'edit group'
+  - 'leave group'
+  - 'update any group_node:asu_repository_item content'
+  - 'update any group_node:asu_repository_item entity'
+  - 'update any group_node:collection content'
+  - 'update any group_node:collection entity'
+  - 'update own group_membership content'
+  - 'update own group_node:asu_repository_item content'
+  - 'update own group_node:asu_repository_item entity'
+  - 'update own group_node:collection content'
+  - 'update own group_node:collection entity'
+  - 'view group'
+  - 'view group_membership content'
+  - 'view group_node:asu_repository_item content'
+  - 'view group_node:asu_repository_item entity'
+  - 'view group_node:collection content'
+  - 'view unpublished group_node:asu_repository_item entity'
