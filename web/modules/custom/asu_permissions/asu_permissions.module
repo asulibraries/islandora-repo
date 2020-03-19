@@ -22,11 +22,28 @@ function asu_permissions_entity_insert(EntityInterface $entity) {
     if ($entity->bundle() == "collection") {
       // create a new group for the collection
       $pluginId = 'group_node:' . $entity->bundle();
-      $col_group = Group::create(['type' => 'administrators', 'label' => 'Collection ' . $entity->id()]);
+      $col_group = Group::create(['type' => 'collection_group', 'label' => 'Collection ' . $entity->id() . ' Group']);
       $col_group->save();
-      // $col_group->addMember($account);
       $col_group->addContent($entity, $pluginId);
       $col_group->save();
+    } elseif ($entity->bundle() == 'asu_repository_item'){
+      // add the asu_repository_item to the parent collection's group
+      // TODO - will this need to traverse up the member_of tree to a grandparent?
+      $parents = $entity->field_member_of->getValue();
+      $pluginId = 'group_node:' . $entity->bundle();
+      foreach ($parents as $parent) {
+        $cid = $parent['target_id'];
+        $database = \Drupal::database();
+        $query = $database->select('groups_field_data', 'gfd');
+        $query->condition('gfd.label', 'Collection ' . $cid . ' Group', '=')
+              ->fields('gfd', ['id'])
+              ->range(0, 1);
+        $result = $query->execute();
+        foreach($result as $record){
+          $col_group = Group::load($record->id);
+          $col_group->addContent($entity, $pluginId);
+        }
+      }
     }
   }
 }
