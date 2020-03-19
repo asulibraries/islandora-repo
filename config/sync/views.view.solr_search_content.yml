@@ -382,6 +382,7 @@ display:
         filters: false
         filter_groups: false
         relationships: false
+        footer: false
       filters:
         type:
           id: type
@@ -476,6 +477,7 @@ display:
         groups:
           1: AND
       relationships: {  }
+      footer: {  }
     cache_metadata:
       contexts:
         - 'languages:language_interface'
@@ -499,7 +501,7 @@ display:
         relationships: false
         arguments: false
         header: false
-      path: solr-search/collection/%
+      path: solr-search-collection/%
       exposed_block: true
       filters:
         type:
@@ -558,7 +560,7 @@ display:
           exposed: true
           expose:
             operator_id: search_api_fulltext_op
-            label: 'Fulltext search'
+            label: 'Search full text'
             description: ''
             use_operator: false
             operator: search_api_fulltext_op
@@ -630,7 +632,7 @@ display:
           title: ''
           default_argument_type: raw
           default_argument_options:
-            index: 2
+            index: 1
             use_alias: false
           default_argument_skip_url: false
           summary_options: {  }
