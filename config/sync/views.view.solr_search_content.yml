@@ -7,7 +7,7 @@ dependencies:
     - node
     - search_api
 id: solr_search_content
-label: 'Solr search content'
+label: 'Search content'
 module: views
 description: 'A search page preconfigured to search through the content of your site'
 tag: ''
@@ -373,7 +373,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: solr-search/content
+      path: search/content
       exposed_block: true
       arguments: {  }
       defaults:
@@ -501,7 +501,7 @@ display:
         relationships: false
         arguments: false
         header: false
-      path: solr-search-collection/%
+      path: search-collection/%
       exposed_block: true
       filters:
         type:
