@@ -214,7 +214,17 @@ display:
           content: 'Displaying results @start - @end of @total'
           plugin_id: result
       footer: {  }
-      empty: {  }
+      empty:
+        result:
+          id: result
+          table: views
+          field: result
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          content: 'Displaying @start - @end of @total'
+          plugin_id: result
       relationships:
         field_member_of:
           id: field_member_of
@@ -489,7 +499,7 @@ display:
   page_2:
     display_plugin: page
     id: page_2
-    display_title: 'Search Within Collection'
+    display_title: 'Page 2'
     position: 2
     display_options:
       display_extenders: {  }
@@ -649,6 +659,19 @@ display:
           not: false
           plugin_id: search_api
       header:
+        entity_node:
+          id: entity_node
+          table: views
+          field: entity_node
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: true
+          target: '{{ raw_arguments.field_ancestors }}'
+          view_mode: collection_browse_teaser
+          bypass_access: false
+          plugin_id: entity
         result:
           id: result
           table: views
@@ -659,7 +682,6 @@ display:
           empty: false
           content: 'Displaying @start - @end of @total'
           plugin_id: result
-      display_description: ''
     cache_metadata:
       max-age: -1
       contexts:
