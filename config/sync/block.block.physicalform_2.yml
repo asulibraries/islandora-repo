@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.physical_form
+  module:
+    - facets
+    - system
+  theme:
+    - asulib
+id: physicalform_2
+theme: asulib
+region: sidebar_second
+weight: -6
+provider: null
+plugin: 'facet_block:physical_form'
+settings:
+  id: 'facet_block:physical_form'
+  label: 'Physical Form'
+  provider: facets
+  label_display: visible
+  block_id: physicalform_2
+visibility:
+  request_path:
+    id: request_path
+    pages: '/search*'
+    negate: false
+    context_mapping: {  }
