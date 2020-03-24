@@ -2,6 +2,8 @@ langcode: en
 status: true
 dependencies:
   config:
+    - search_api_solr.solr_field_type.text_en_7_0_0
+    - search_api_solr.solr_field_type.text_phonetic_en_7_0_0
     - search_api_solr.solr_field_type.text_phonetic_und_7_0_0
     - search_api_solr.solr_field_type.text_und_7_0_0
   module:
@@ -15,8 +17,8 @@ backend_config:
   connector_config:
     scheme: http
     host: 127.0.0.1
-    port: '8983'
-    path: /solr
+    port: 8983
+    path: ''
     core: ISLANDORA
     timeout: 5
     index_timeout: 10
@@ -26,9 +28,17 @@ backend_config:
     solr_version: ''
     http_method: AUTO
     jmx: false
+    solr_install_dir: ''
+  disabled_field_types: {  }
+  disabled_caches: {  }
+  disabled_request_handlers: {  }
+  disabled_request_dispatchers: {  }
+  rows: 10
   retrieve_data: false
   highlight_data: false
   skip_schema_check: false
-  domain: generic
-  site_hash: true
   server_prefix: ''
+  domain: generic
+  environment: default
+  optimize: false
+  site_hash: true
