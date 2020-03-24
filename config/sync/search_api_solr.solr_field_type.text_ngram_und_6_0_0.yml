@@ -1,31 +1,35 @@
 langcode: en
 status: true
 dependencies: {  }
-id: text_phonetic_en_7_0_0
-label: 'Fulltext Phonetic English'
-minimum_solr_version: 7.0.0
-custom_code: phonetic
-field_type_language_code: en
+id: text_ngram_und_6_0_0
+label: 'NGram Text Field'
+minimum_solr_version: 6.0.0
+custom_code: ngram
+field_type_language_code: und
 domains: {  }
 field_type:
-  name: text_phonetic_en
+  name: text_ngram
   class: solr.TextField
   positionIncrementGap: 100
   analyzers:
     -
       type: index
+      charFilters:
+        -
+          class: solr.MappingCharFilterFactory
+          mapping: accents_und.txt
       tokenizer:
         class: solr.WhitespaceTokenizerFactory
       filters:
         -
           class: solr.StopFilterFactory
           ignoreCase: true
-          words: stopwords_en.txt
+          words: stopwords_und.txt
         -
-          class: solr.WordDelimiterGraphFilterFactory
+          class: solr.WordDelimiterFilterFactory
           catenateNumbers: 1
           generateNumberParts: 1
-          protected: protwords_en.txt
+          protected: protwords_und.txt
           splitOnCaseChange: 0
           generateWordParts: 1
           preserveOriginal: 1
@@ -38,44 +42,26 @@ field_type:
         -
           class: solr.LowerCaseFilterFactory
         -
-          class: solr.BeiderMorseFilterFactory
-          languageSet: english
-          nameType: GENERIC
-          ruleType: APPROX
-          concat: true
-        -
           class: solr.RemoveDuplicatesTokenFilterFactory
+        -
+          class: solr.NGramFilterFactory
+          minGramSize: 2
+          maxGramSize: 25
     -
       type: query
+      charFilters:
+        -
+          class: solr.MappingCharFilterFactory
+          mapping: accents_und.txt
       tokenizer:
         class: solr.WhitespaceTokenizerFactory
       filters:
-        -
-          class: solr.StopFilterFactory
-          ignoreCase: true
-          words: stopwords_en.txt
-        -
-          class: solr.WordDelimiterGraphFilterFactory
-          catenateNumbers: 0
-          generateNumberParts: 1
-          protected: protwords_en.txt
-          splitOnCaseChange: 0
-          generateWordParts: 1
-          preserveOriginal: 1
-          catenateAll: 0
-          catenateWords: 0
         -
           class: solr.LengthFilterFactory
           min: 2
           max: 100
         -
           class: solr.LowerCaseFilterFactory
-        -
-          class: solr.BeiderMorseFilterFactory
-          languageSet: english
-          nameType: GENERIC
-          ruleType: APPROX
-          concat: true
         -
           class: solr.RemoveDuplicatesTokenFilterFactory
 unstemmed_field_type: null

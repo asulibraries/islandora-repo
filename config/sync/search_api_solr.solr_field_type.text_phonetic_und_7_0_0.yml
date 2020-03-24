@@ -20,12 +20,12 @@ field_type:
         -
           class: solr.StopFilterFactory
           ignoreCase: true
-          words: stopwords_phonetic_und.txt
+          words: stopwords_und.txt
         -
           class: solr.WordDelimiterGraphFilterFactory
           catenateNumbers: 1
           generateNumberParts: 1
-          protected: protwords_phonetic_und.txt
+          protected: protwords_und.txt
           splitOnCaseChange: 0
           generateWordParts: 1
           preserveOriginal: 1
@@ -53,12 +53,12 @@ field_type:
         -
           class: solr.StopFilterFactory
           ignoreCase: true
-          words: stopwords_phonetic_und.txt
+          words: stopwords_und.txt
         -
           class: solr.WordDelimiterGraphFilterFactory
           catenateNumbers: 0
           generateNumberParts: 1
-          protected: protwords_phonetic_und.txt
+          protected: protwords_und.txt
           splitOnCaseChange: 0
           generateWordParts: 1
           preserveOriginal: 1
@@ -82,6 +82,4 @@ unstemmed_field_type: null
 spellcheck_field_type: null
 collated_field_type: null
 solr_configs: {  }
-text_files:
-  stopwords: "a\nan\nand\nare\nas\nat\nbe\nbut\nby\nfor\nif\nin\ninto\nis\nit\nno\nnot\nof\non\nor\ns\nsuch\nt\nthat\nthe\ntheir\nthen\nthere\nthese\nthey\nthis\nto\nwas\nwill\nwith\n"
-  protwords: ''
+text_files: {  }
