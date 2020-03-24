@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.solr_search_content
+  module:
+    - system
+    - views
+  theme:
+    - asulib
+id: exposedformsolr_search_contentpage_2
+theme: asulib
+region: sidebar_first
+weight: 0
+provider: null
+plugin: 'views_exposed_filter_block:solr_search_content-page_2'
+settings:
+  id: 'views_exposed_filter_block:solr_search_content-page_2'
+  label: ''
+  provider: views
+  label_display: visible
+  views_label: ''
+visibility:
+  request_path:
+    id: request_path
+    pages: '/search-collection/*'
+    negate: false
+    context_mapping: {  }

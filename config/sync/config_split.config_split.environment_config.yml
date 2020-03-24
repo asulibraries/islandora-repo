@@ -9,7 +9,6 @@ module:
   jwt: 0
 theme: {  }
 blacklist:
-  - clamav.settings
   - context.context.openseadragon_block
   - context.context.open_seadragon
   - islandora.settings
@@ -17,11 +16,12 @@ blacklist:
   - islandora_iiif.settings
   - islandora_riprap.settings
   - matomo.settings
+  - clamav.settings
 graylist:
   - islandora.settings
   - jwt.config
   - key.key.islandora_rsa_key
-  - search_api_solr.settings
+  - search_api.server.default_solr_server
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 0

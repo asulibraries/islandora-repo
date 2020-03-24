@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.media.fits_technical_metadata
     - field.field.media.fits_technical_metadata.field_complete
     - field.field.media.fits_technical_metadata.field_file_size
     - field.field.media.fits_technical_metadata.field_media_file
@@ -9,54 +10,60 @@ dependencies:
     - field.field.media.fits_technical_metadata.field_media_use
     - field.field.media.fits_technical_metadata.field_mime_type
     - field.field.media.fits_technical_metadata.fits_ois_file_information_md5che
+    - image.style.thumbnail
     - media.type.fits_technical_metadata
   enforced:
     module:
       - islandora_fits
   module:
+    - image
     - islandora_fits
-id: media.fits_technical_metadata.default
+    - user
+id: media.fits_technical_metadata.fits_technical_metadata
 targetEntityType: media
 bundle: fits_technical_metadata
-mode: default
+mode: fits_technical_metadata
 content:
-  field_media_file:
-    weight: 0
+  created:
     label: hidden
+    type: timestamp
+    weight: 0
+    region: content
+    settings:
+      date_format: medium
+      custom_date_format: ''
+      timezone: ''
+    third_party_settings: {  }
+  field_media_file:
+    weight: 6
+    label: above
     settings: {  }
     third_party_settings: {  }
     type: fits_formatter
     region: content
-  field_media_of:
-    weight: 1
-    label: above
+  thumbnail:
+    type: image
+    weight: 5
+    label: hidden
     settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
+      image_style: thumbnail
+      image_link: ''
     region: content
-  field_media_use:
-    weight: 3
-    label: above
-    settings:
-      link: true
     third_party_settings: {  }
-    type: entity_reference_label
+  uid:
+    label: hidden
+    type: author
+    weight: 0
     region: content
-  field_mime_type:
-    weight: 2
-    label: above
-    settings:
-      link_to_entity: false
+    settings: {  }
     third_party_settings: {  }
-    type: string
-    region: content
 hidden:
-  created: true
   field_complete: true
   field_file_size: true
+  field_media_of: true
+  field_media_use: true
+  field_mime_type: true
   fits_ois_file_information_md5che: true
   langcode: true
   name: true
-  thumbnail: true
-  uid: true
+

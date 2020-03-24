@@ -1,15 +1,13 @@
-uuid: 8809ad99-e89a-42cb-a4f5-1b4b19f580bd
+uuid: 40146235-267a-4768-bc80-a9e1dc57efe2
 langcode: en
 status: true
 dependencies:
   module:
     - islandora
-_core:
-  default_config_hash: w5VVkksrSiRj-vjiOtzC4KYLPKUt0EewRkkjM6V4nGo
 name: openseadragon_block
-label: 'Openseadragon Block'
-group: Islandora
-description: 'A context for determining when and where to place the openseadragon block.'
+label: 'Paged Content - Openseadragon'
+group: Display
+description: 'Display a block for Paged Content'
 requireAllConditions: false
 disabled: false
 conditions:
@@ -20,6 +18,7 @@ conditions:
     uri: 'https://schema.org/Book'
     context_mapping:
       node: '@node.node_route_context:node'
+    logic: and
 reactions:
   blocks:
     blocks:
@@ -55,4 +54,4 @@ reactions:
     saved: false
     uuid: 50b9b25e-0836-4531-8a78-9698d71d81de
     include_default_blocks: 1
-weight: 0
+weight: -1
