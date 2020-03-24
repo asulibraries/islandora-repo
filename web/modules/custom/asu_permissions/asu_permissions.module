@@ -8,40 +8,131 @@
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\group\Entity\Group;
+use Drupal\group\Entity\GroupContent;
+use Drupal\node\NodeInterface;
 
 /**
- * Implements hook_entity_insert().
+ * Implements hook_node_insert().
  *
  * Alternatively could trigger this with a context reaction.
  */
-function asu_permissions_entity_insert(EntityInterface $entity) {
-  $ettype = $entity->getEntityTypeId();
-  if ($ettype == "node") {
-    \Drupal::logger('asu_permissions')->info("its a node");
-    \Drupal::logger('asu_permissions')->info("bundle is " . $entity->bundle());
-    if ($entity->bundle() == "collection") {
-      // create a new group for the collection
-      $pluginId = 'group_node:' . $entity->bundle();
-      $col_group = Group::create(['type' => 'administrators', 'label' => 'Collection ' . $entity->id()]);
-      $col_group->save();
-      // $col_group->addMember($account);
-      $col_group->addContent($entity, $pluginId);
-      $col_group->save();
+function asu_permissions_node_insert(NodeInterface $node) {
+  if ($node->bundle() == "collection") {
+    // create a new group for the collection
+    $pluginId = 'group_node:' . $node->bundle();
+    $col_group = Group::create(['type' => 'collection_group', 'label' => 'Collection ' . $node->id() . ' Group']);
+    $col_group->save();
+    $col_group->addContent($node, $pluginId);
+    $col_group->save();
+  } elseif ($node->bundle() == 'asu_repository_item'){
+    // add the asu_repository_item to the parent collection's group
+    // we are assumming here one member_of relationship
+    $parent = _get_collection_parent($node);
+    $pluginId = 'group_node:' . $node->bundle();
+    $group_contents = _get_group($parent);
+    if (!empty($group_contents)){
+      foreach ($group_contents as $group_content) {
+        /** @var \Drupal\group\Entity\GroupContentInterface $group_content */
+        $group = $group_content->getGroup();
+        $group->addContent($node, $pluginId);
+      }
     }
   }
 }
 
 /**
- * Implements hook_node_view().
- *
- * Could also be done in the template.
+ * Gets the collection parent of an entity.
  */
-function asu_permissions_node_view(array &$build, EntityInterface $entity, EntityViewDisplayInterface $display, $view_mode) {
-  if ($entity->bundle() == "collection" || $entity->bundle() == "islandora_object") {
-    $build['developer_addition_markup'] = array(
-      '#markup' => '<a target="_blank" href="/form/feedback?source_entity_type=node&source_entity_id=' . $entity->id() . '&item=' . $entity->id() . '">Feedback</a>',
-      '#prefix' => '<div class="feedback-buttons">',
-      '#suffix' => '</div>'
-    );
+function _get_collection_parent($entity){
+  $parent = $entity->field_member_of->entity;
+  if ($parent->bundle() != "collection"){
+    $parent = _get_collection_parent($parent);
+  }
+  return $parent;
+}
+
+/**
+ * Gets the groups that an entity belongs to.
+ */
+function _get_group($entity){
+  $group_contents = \Drupal::entityTypeManager()
+      ->getStorage('group_content')
+      ->loadByEntity($entity);
+  return $group_contents;
+}
+
+/**
+ * Removes an entity from a collection group.
+ */
+function _remove_object_from_parent_group($entity, $parent){
+  $group_contents = _get_group($entity);
+  if (empty($group_contents)) {
+    return;
+  }
+  foreach ($group_contents as $group_content) {
+    /** @var \Drupal\group\Entity\GroupContentInterface $group_content */
+    $group = $group_content->getGroup();
+    if ($group->label() == 'Collection ' . $parent->id() . ' Group'){
+      $group_content->delete();
+    }
+  }
+}
+
+/**
+ * Implements hook_node_delete().
+ * 
+ */
+function asu_permissions_node_delete(NodeInterface $node){
+  if ($node->bundle() == "collection") {
+    // delete the collection group
+    $group_contents = _get_group($node);
+    if (empty($group_contents)) {
+      return;
+    }
+    foreach ($group_contents as $group_content) {
+      /** @var \Drupal\group\Entity\GroupContentInterface $group_content */
+      $group = $group_content->getGroup();
+      $group->delete();
+    }
+  } elseif ($node->bundle() == 'asu_repository_item'){
+    $parent = _get_collection_parent($node);
+    _remove_object_from_parent_group($node, $parent);
+  }
+}
+
+
+/**
+ * Implements hook_node_update().
+ */
+function asu_permissions_node_update(NodeInterface $node){
+  if ($node->bundle() == 'asu_repository_item'){
+    $utils = \Drupal::service('islandora.utils');
+    if (!$utils->haveFieldsChanged($node, $node->original)) {
+      return;
+    }
+    if ($node->get('field_member_of')->entity->id() != $node->original->get('field_member_of')->entity->id()) {
+      _remove_object_from_parent_group($node, $node->original->get('field_member_of')->entity);
+      $pluginId = 'group_node:' . $node->bundle();
+      $group_contents = _get_group($node->get('field_member_of')->entity);
+
+      // check if the node is already in the group
+      $node_group_contents = _get_group($node);
+      if (!empty($node_group_contents)) {
+        foreach ($node_group_contents as $gc) { 
+          $group = $gc->getGroup();
+          if ($group->label() == 'Collection ' . $node->get('field_member_of')->entity->id() . ' Group'){
+            return;
+          }
+        }
+      }
+
+      if (!empty($group_contents)){
+        foreach ($group_contents as $group_content) {
+          /** @var \Drupal\group\Entity\GroupContentInterface $group_content */
+          $group = $group_content->getGroup();
+          $group->addContent($node, $pluginId);
+        }
+      }
+    }
   }
 }
