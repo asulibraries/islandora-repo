@@ -32,6 +32,18 @@ source:
     in_copyright_tid: '35'
     rights_tid: '68'
 
+# Subjects,Personal Contributors,Institutional Contributors,Language,Identifiers,Series,Resource Types,Citation,Notes,Visibility,Embargo Date
+# created:
+# field_linked_agent: (typed_relation)
+# field_edtf_date_created:
+# field_display_hints: (taxo)
+# field_language: (taxo)
+# field_resource_type: (taxo)
+# Embargo - will this go on the media?
+# Actual files
+# public/private status
+# download status on deriv media
+# download status on master/original media
 # Set fields using values from the CSV
 process:
   field_extent:
@@ -143,18 +155,6 @@ process:
       value_key: tid
       bundle: reuse_permissions
 
-
-  # created:
-  # field_linked_agent: (typed_relation)
-  # field_edtf_date_created:
-  # field_display_hints: (taxo)
-  # field_language: (taxo)
-  # field_resource_type: (taxo)
-  # Embargo - will this go on the media?
-  # Actual files
-  # public/private status
-  # download status on deriv media
-  # download status on master/original media
   field_member_of:
     source: constants/cid
     plugin: entity_lookup
