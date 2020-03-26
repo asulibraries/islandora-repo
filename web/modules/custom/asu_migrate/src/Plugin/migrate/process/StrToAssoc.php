@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\migrate_islandora_csv\Plugin\migrate\process;
+namespace Drupal\asu_migrate\Plugin\migrate\process;
 
 use Drupal\migrate\ProcessPluginBase;
 use Drupal\migrate\MigrateException;

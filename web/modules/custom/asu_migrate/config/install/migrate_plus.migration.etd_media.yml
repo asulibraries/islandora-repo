@@ -2,7 +2,7 @@
 dependencies:
   enforced:
     module:
-      - migrate_islandora_csv
+      - asu_migrate
 
 id: etd_media
 label: Import ETD Media from CSV
@@ -10,7 +10,7 @@ migration_group: migrate_etd_csv
 
 source:
   plugin: csv
-  path: modules/custom/migrate_islandora_csv/data/migration.csv
+  path: modules/custom/asu_migrate/data/migration.csv
 
   # 1 means you have a header row, 0 means you don't
   header_row_count: 1
