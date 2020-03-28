@@ -28,13 +28,15 @@ function asu_permissions_node_insert(NodeInterface $node) {
     // add the asu_repository_item to the parent collection's group
     // we are assumming here one member_of relationship
     $parent = _get_collection_parent($node);
-    $pluginId = 'group_node:' . $node->bundle();
-    $group_contents = _get_group($parent);
-    if (!empty($group_contents)){
-      foreach ($group_contents as $group_content) {
-        /** @var \Drupal\group\Entity\GroupContentInterface $group_content */
-        $group = $group_content->getGroup();
-        $group->addContent($node, $pluginId);
+    if ($parent){
+      $pluginId = 'group_node:' . $node->bundle();
+      $group_contents = _get_group($parent);
+      if (!empty($group_contents)){
+        foreach ($group_contents as $group_content) {
+          /** @var \Drupal\group\Entity\GroupContentInterface $group_content */
+          $group = $group_content->getGroup();
+          $group->addContent($node, $pluginId);
+        }
       }
     }
   }
@@ -45,10 +47,12 @@ function asu_permissions_node_insert(NodeInterface $node) {
  */
 function _get_collection_parent($entity){
   $parent = $entity->field_member_of->entity;
-  if ($parent->bundle() != "collection"){
-    $parent = _get_collection_parent($parent);
+  if ($parent){
+    if ($parent->bundle() != "collection"){
+      $parent = _get_collection_parent($parent);
+    }
+    return $parent;
   }
-  return $parent;
 }
 
 /**
@@ -96,10 +100,35 @@ function asu_permissions_node_delete(NodeInterface $node){
     }
   } elseif ($node->bundle() == 'asu_repository_item'){
     $parent = _get_collection_parent($node);
-    _remove_object_from_parent_group($node, $parent);
+    if ($parent){
+      _remove_object_from_parent_group($node, $parent);
+    }
   }
 }
 
+function _add_object_to_parent_group($node){
+  $pluginId = 'group_node:' . $node->bundle();
+  $group_contents = _get_group($node->get('field_member_of')->entity);
+
+  // check if the node is already in the group
+  $node_group_contents = _get_group($node);
+  if (!empty($node_group_contents)) {
+    foreach ($node_group_contents as $gc) { 
+      $group = $gc->getGroup();
+      if ($group->label() == 'Collection ' . $node->get('field_member_of')->entity->id() . ' Group'){
+        return;
+      }
+    }
+  }
+
+  if (!empty($group_contents)){
+    foreach ($group_contents as $group_content) {
+      /** @var \Drupal\group\Entity\GroupContentInterface $group_content */
+      $group = $group_content->getGroup();
+      $group->addContent($node, $pluginId);
+    }
+  }
+}
 
 /**
  * Implements hook_node_update().
@@ -110,29 +139,16 @@ function asu_permissions_node_update(NodeInterface $node){
     if (!$utils->haveFieldsChanged($node, $node->original)) {
       return;
     }
-    if ($node->get('field_member_of')->entity->id() != $node->original->get('field_member_of')->entity->id()) {
+    if ($node->get('field_member_of')->entity && $node->original->get('field_member_of')->entity){
+      if ($node->get('field_member_of')->entity->id() != $node->original->get('field_member_of')->entity->id()) {
+        _remove_object_from_parent_group($node, $node->original->get('field_member_of')->entity);
+        _add_object_to_parent_group($node);
+      }
+    } else if (!$node->get('field_member_of')->entity && $node->original->get('field_member_of')->entity){
       _remove_object_from_parent_group($node, $node->original->get('field_member_of')->entity);
-      $pluginId = 'group_node:' . $node->bundle();
-      $group_contents = _get_group($node->get('field_member_of')->entity);
-
-      // check if the node is already in the group
-      $node_group_contents = _get_group($node);
-      if (!empty($node_group_contents)) {
-        foreach ($node_group_contents as $gc) { 
-          $group = $gc->getGroup();
-          if ($group->label() == 'Collection ' . $node->get('field_member_of')->entity->id() . ' Group'){
-            return;
-          }
-        }
-      }
-
-      if (!empty($group_contents)){
-        foreach ($group_contents as $group_content) {
-          /** @var \Drupal\group\Entity\GroupContentInterface $group_content */
-          $group = $group_content->getGroup();
-          $group->addContent($node, $pluginId);
-        }
-      }
+    } else if ($node->get('field_member_of')->entity && !$node->original->get('field_member_of')->entity){
+      _add_object_to_parent_group($node);
     }
   }
 }
+
