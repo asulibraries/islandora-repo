@@ -9,6 +9,7 @@ dependencies:
     - field.field.node.collection.field_member_of
     - field.field.node.collection.field_model
     - field.field.node.collection.field_oai_set
+    - field.field.node.collection.field_primary_contact
     - field.field.node.collection.field_title
     - node.type.collection
   module:
@@ -96,6 +97,13 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
+  field_primary_contact:
+    weight: 113
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
     region: content
   field_title:
     weight: 112
