@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - node.type.asu_repository_item
     - node.type.islandora_object
   module:
     - node
@@ -673,7 +674,7 @@ display:
             alter_text: true
             text: Differences
             make_link: true
-            path: '/node/{{ nid }}/revisions/view/{{ vid_1 }}/{{ vid }}/visual_inline'
+            path: '/node/{{ nid }}/revisions/view/{{ vid_1 }}/{{ vid }}/unified_fields'
             absolute: true
             external: false
             replace_spaces: false
@@ -851,14 +852,44 @@ display:
           table: node_field_data
           field: type
           relationship: nid
+          group_type: group
+          admin_label: ''
+          operator: in
           value:
+            asu_repository_item: asu_repository_item
             islandora_object: islandora_object
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
           entity_type: node
           entity_field: type
           plugin_id: bundle
-          expose:
-            operator_limit_selection: false
-            operator_list: {  }
       defaults:
         filters: false
         filter_groups: false
@@ -902,14 +933,44 @@ display:
           table: node_field_data
           field: type
           relationship: nid
+          group_type: group
+          admin_label: ''
+          operator: in
           value:
+            asu_repository_item: asu_repository_item
             islandora_object: islandora_object
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
           entity_type: node
           entity_field: type
           plugin_id: bundle
-          expose:
-            operator_limit_selection: false
-            operator_list: {  }
         changed:
           id: changed
           table: node_field_revision

@@ -1,0 +1,99 @@
+<?php
+
+/**
+ * 
+ * 1. respond to CRON that runs daily
+ * 2. call view code to get that content... log some of that in watchdog.
+ * 3. call code that will ultimately generate the emailing.
+ */
+function asu_content_change_digest_cron() {
+  // We access our configuration.
+  $cron_config = \Drupal::config('asu_content_change_digest.settings');
+  $request_time = \Drupal::time()
+    ->getRequestTime();
+  
+  // Default to a 24 hour interval. Of course, cron has to be running at least
+  // each day for this to work.
+  $interval = $cron_config
+    ->get('interval', 86400);
+
+  // We usually don't want to act every time cron runs (which could be every
+  // minute) so keep a time for the next run in the site state.
+  $next_execution = \Drupal::state()
+    ->get('asu_content_change_digest.next_execution', 0);
+  
+  // MAKE it run.  TAKE THIS OUT AFTER CRON TESTS ARE NO LONGER NEEDED.
+  $next_execution = 0;
+
+  if ($request_time >= $next_execution) {
+    asu_content_change_digest_perform_daily_digest();
+
+    $it_ran_message = t('asu_content_change_digest executed at %time', [
+      '%time' => date('c'),
+    ]);
+    \Drupal::state()
+      ->set('asu_content_change_digest.next_execution', $request_time + $interval);
+  }
+  else {
+    \Drupal::logger('asu_content_change_digest')->notice('Did not perform any ' .
+      'digest logic because the next_execution time has still not passed.');      
+  }
+}
+
+/**
+ * 
+ */
+function asu_content_change_digest_perform_daily_digest() {
+  // Get a list of recipients for the emailing.
+  $email_recipients = asu_content_change_digest_get_recipients();
+  
+  // Get the view query results and theme it using twig and deliver to recipients.
+  // maybe need a web http client
+  $differences_view_html = asu_content_change_digest_get_view_html();  
+  foreach ($email_recipients as $account) {
+    $params = array(
+      'account' => $account,
+      'body' => $differences_view_html,
+      'langcode' => 'en',
+    );
+    
+//    die(print_r($account, true));
+    // example_mail() will be called based on the first
+    // MailManagerInterface->mail() parameter.
+    \Drupal::service('plugin.manager.mail')
+      ->mail('asu_content_change_digest', 'notice', $account->getEmail(), $params['langcode'], $params, 'willow.gillingham@gmail.com');
+  }
+  
+  // Add a watchdog message that this step has been performed.
+  \Drupal::logger('asu_content_change_digest')->notice(t('asu_content_change_digest ' .
+    'asu_content_change_digest_perform_daily_digest executed at %time',
+    ['%time' => date('c'),]));
+}
+
+function asu_content_change_digest_get_recipients() {
+  // hard-coded for now...
+  $user = \Drupal::currentUser();
+  // loading the users must be with the Entity user load method such as
+  // $bob = \Drupal\user\Entity\User::load(4);
+
+  return array($user);
+}
+
+function asu_content_change_digest_get_view_html() {
+  // fetch the html for the view.
+  \Drupal::logger('asu_content_change_digest')
+    ->notice('in asu_content_change_digest_mail');    
+  return "this is the emailing body.";
+}
+
+function asu_content_change_digest_mail($key, &$message, $params) {
+  $data['user'] = $params['account'];
+  $options['langcode'] = $message['langcode'];
+  user_mail_tokens($variables, $data, $options);
+  switch ($key) {
+    case 'notice':
+      $message['subject'] = t('Notification from @site', $variables, $options);
+      $message['body'] = array($params['body']);
+      break;
+  }
+}
