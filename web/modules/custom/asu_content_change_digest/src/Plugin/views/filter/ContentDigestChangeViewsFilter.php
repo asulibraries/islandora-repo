@@ -1,8 +1,9 @@
 <?php
 
-namespace Drupal\custom_module\Plugin\views\filter;
+namespace Drupal\asu_content_change_digest\Plugin\views\filter;
 
 use Drupal\views\Plugin\views\display\DisplayPluginBase;
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\views\Plugin\views\filter\FilterPluginBase;
 
 // use Drupal\views\Plugin\views\filter\Equality;
@@ -14,26 +15,22 @@ use Drupal\views\Views;
  *
  * @ingroup views_filter_handlers
  *
- * @ViewsFilter("content_digest_change_views_filter")
+ * @ViewsFilter("asu_content_change_digest_content_digest_change_views_filter")
  */
 class ContentDigestChangeViewsFilter extends FilterPluginBase {
-  /**
-   * The current display.
-   *
-   * @var string
-   *   The current display of the view.
-   */
-  protected $currentDisplay;
+
+  public $no_operator = TRUE;
+
 
   /**
    * {@inheritdoc}
    */
-  public function init(ViewExecutable $view, DisplayPluginBase $display, array &$options = NULL) {
-    parent::init($view, $display, $options);
-    $this->valueTitle = t('Filter by revision not being same as initial content creation revision.');
-//    $this->definition['options callback'] = [$this, 'generateOptions'];
-    $this->currentDisplay = $view->current_display;
-  }
+  // public function init(ViewExecutable $view, DisplayPluginBase $display, array &$options = NULL) {
+//     parent::init($view, $display, $options);
+//     $this->valueTitle = t('Filter by revision not being same as initial content creation revision.');
+// //    $this->definition['options callback'] = [$this, 'generateOptions'];
+//     $this->currentDisplay = $view->current_display;
+//   }
 
   /**
    * Helper function that generates the options.
