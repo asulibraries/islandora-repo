@@ -1,5 +1,8 @@
 <?php
 
+use Drupal\views\Views;
+
+
 /**
  * 
  * 1. respond to CRON that runs daily
@@ -45,24 +48,27 @@ function asu_content_change_digest_cron() {
  */
 function asu_content_change_digest_perform_daily_digest() {
   // Get a list of recipients for the emailing.
+  \Drupal::logger('asu_content_change_digest')->notice('asu_content_change_digest_perform_daily_digest');      
   $email_recipients = asu_content_change_digest_get_recipients();
   
   // Get the view query results and theme it using twig and deliver to recipients.
   // maybe need a web http client
-  $differences_view_html = asu_content_change_digest_get_view_html();  
+  $differences_view_html = asu_content_change_digest_get_view_html();
+  $output = array();
   foreach ($email_recipients as $account) {
     $params = array(
       'account' => $account,
       'body' => $differences_view_html,
       'langcode' => 'en',
     );
+    $output[] = '<b>To:</b> ' . $account->getEmail();
+    $output[] = '<blockquote>' . $params['body'] . '</blockquote>';
     
-//    die(print_r($account, true));
-    // example_mail() will be called based on the first
-    // MailManagerInterface->mail() parameter.
-    \Drupal::service('plugin.manager.mail')
-      ->mail('asu_content_change_digest', 'notice', $account->getEmail(), $params['langcode'], $params, 'willow.gillingham@gmail.com');
+ 
+//    \Drupal::service('plugin.manager.mail')
+//      ->mail('asu_content_change_digest', 'notice', $account->getEmail(), $params['langcode'], $params);
   }
+  // die(implode('<br />', $output));
   
   // Add a watchdog message that this step has been performed.
   \Drupal::logger('asu_content_change_digest')->notice(t('asu_content_change_digest ' .
@@ -72,18 +78,27 @@ function asu_content_change_digest_perform_daily_digest() {
 
 function asu_content_change_digest_get_recipients() {
   // hard-coded for now...
-  $user = \Drupal::currentUser();
-  // loading the users must be with the Entity user load method such as
-  // $bob = \Drupal\user\Entity\User::load(4);
-
-  return array($user);
+  $user_ids = array(1, 4);
+  $accounts = array();
+  foreach ($user_ids as $user_id) {
+    // loading the users must be with the Entity user load method such as
+    $accounts[] = \Drupal\user\Entity\User::load($user_id);
+  }
+  return $accounts;
 }
 
 function asu_content_change_digest_get_view_html() {
   // fetch the html for the view.
   \Drupal::logger('asu_content_change_digest')
-    ->notice('in asu_content_change_digest_mail');    
-  return "this is the emailing body.";
+    ->notice('in asu_content_change_digest_mail');
+  
+  $view = Views::getView('differences');
+  if (is_object($view)) {
+    $view->setDisplay('page_1');
+    $view->execute();
+    $render_view = \Drupal::service('renderer')->render($view->render());
+    return $render_view;
+  }
 }
 
 function asu_content_change_digest_mail($key, &$message, $params) {
