@@ -50,18 +50,16 @@ class ContentDigestChangeViewsFilter extends FilterPluginBase {
   public function query() {
      \Drupal::logger('asu_content_change_digest')->notice('in the query method for the plugin');
 
-    if (!empty($this->value)) {
-      $configuration = [
-        'table' => 'node_field_revision',
-        'field' => 'vid',
-        'left_table' => 'node',
-        'left_field' => 'vid',
-        'operator' => '!=',
-      ];
-      $join = Views::pluginManager('join')->createInstance('standard', $configuration);
-      $this->query->addRelationship('node_field_revision', $join, 'node');
-    //  $this->query->addWhere('AND', 'node.field_phase_value', $this->value, 'IN');
-    }
+    $configuration = [
+      'table' => 'node_field_data',
+      'field' => 'nid',
+      'left_table' => 'node_field_revision',
+      'left_field' => 'nid',
+      'operator' => '=',
+    ];
+    $join = Views::pluginManager('join')->createInstance('standard', $configuration);
+    $this->query->addRelationship('node_field_data_ne', $join, 'node_field_revision');
+    $this->query->addWhereExpression($this->options['group'], 'node_field_data_ne.changed != node_field_revision.changed');
   }
 
 }
