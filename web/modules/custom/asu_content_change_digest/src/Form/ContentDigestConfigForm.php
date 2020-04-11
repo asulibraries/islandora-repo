@@ -1,8 +1,9 @@
-<?php  
-/**  
- * @file  
- * Contains Drupal\asu_content_change_digest\Form\ContentDigestConfigForm.  
- */  
+<?php
+
+/**
+ * @file
+ * Contains Drupal\asu_content_change_digest\Form\ContentDigestConfigForm.
+ */
 namespace Drupal\asu_content_change_digest\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
@@ -39,7 +40,7 @@ class ContentDigestConfigForm extends ConfigFormBase {
       '#description' => 'Individual users may opt out of the emailing by visiting their user edit page <code>user/{uid}/edit</code>'
     ];
     $form['fieldset_wrapper']['description_item'] = [
-      '#type' => 'item',  
+      '#type' => 'item',
       '#description' => t('Select Roles and individual Users that should get the Content Changed Digest emailings.'),
     ];
     $form['fieldset_wrapper']['asu_content_change_digest_roles'] = [
@@ -77,13 +78,13 @@ class ContentDigestConfigForm extends ConfigFormBase {
   }
 
   /**
-   * 
+   *
    */
   function get_roles() {
     $roles = array_map(['\Drupal\Component\Utility\Html', 'escape'], user_role_names(TRUE));
     return $roles;
   }
-  
+
   function get_users() {
     $ids = \Drupal::entityQuery('user')
       ->condition('status', 1)
