@@ -131,27 +131,26 @@ function asu_content_change_digest_form_alter(&$form, &$form_state, $form_id) {
       ->notice(' $config_roles = ' . print_r($config_roles, true));
     \Drupal::logger('asu_content_change_digest')
       ->notice(' $config_users = ' . print_r($config_users, true));
- 
-    \Drupal::logger('asu_content_change_digest')
-      ->notice(' $uID = ' . \Drupal::currentUser()->id());
-    $this_user_id = \Drupal::currentUser()->id();
-    $this_user_roles = \Drupal\user\Entity\User::load($this_user_id)->getRoles();
-
-    $hide = TRUE;
-    foreach ($config_roles as $config_role) {
-      \Drupal::logger('asu_content_change_digest')
-        ->notice(' checking = ' . $config_role);      
-      $hide &= (!array_search($config_role, $this_user_roles) === FALSE);
-      \Drupal::logger('asu_content_change_digest')
-        ->notice(' hide = ' . ($hide ? 'YES' : 'NO'));      
+    if (asu_content_change_digest_should_hide_opt_out()) {
+      $form['field_opt_out_of_content_changed'] = array();    
     }
-
-//    $username = AccountInterface::getAccountName($user);
-//    \Drupal::logger('asu_content_change_digest')
-//      ->notice(' $user->username = ' . $username);   
-//    // 
-    // $form['field_opt_out_of_content_changed'] = array();
-    
   }
   // $form['field_album']['widget'][0]['target_id']['#attributes']['disabled'] = 'disabled';
+}
+
+function asu_content_change_digest_should_hide_opt_out() {
+  \Drupal::logger('asu_content_change_digest')
+    ->notice(' $uID = ' . \Drupal::currentUser()->id());
+  $this_user_id = \Drupal::currentUser()->id();
+  $this_user_roles = \Drupal\user\Entity\User::load($this_user_id)->getRoles();
+  
+  $hide = TRUE;
+  foreach ($config_roles as $config_role) {
+    \Drupal::logger('asu_content_change_digest')
+      ->notice(' checking = ' . $config_role);      
+    $hide &= (!array_search($config_role, $this_user_roles) === FALSE);
+    \Drupal::logger('asu_content_change_digest')
+      ->notice(' hide = ' . ($hide ? 'YES' : 'NO'));      
+  }
+  return $hide;
 }
