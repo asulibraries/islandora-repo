@@ -47,7 +47,6 @@ function asu_content_change_digest_cron() {
  */
 function asu_content_change_digest_perform_daily_digest() {
   // Get a list of recipients for the emailing.
-  \Drupal::logger('asu_content_change_digest')->notice('asu_content_change_digest_perform_daily_digest');      
   $email_recipients = asu_content_change_digest_get_recipients();
   
   // Get the view query results and theme it using twig and deliver to recipients.
@@ -88,8 +87,8 @@ function asu_content_change_digest_get_recipients() {
 
 function asu_content_change_digest_get_view_html() {
   // fetch the html for the view.
-  \Drupal::logger('asu_content_change_digest')
-    ->notice('in asu_content_change_digest_mail');
+//  \Drupal::logger('asu_content_change_digest')
+//    ->notice('in asu_content_change_digest_mail');
   
   $view = Views::getView('differences');
   if (is_object($view)) {
@@ -127,30 +126,29 @@ function asu_content_change_digest_form_alter(&$form, &$form_state, $form_id) {
     $config_roles = $config->get('asu_content_change_digest_roles');
     $config_users = $config->get('asu_content_change_digest_users');
     
-    \Drupal::logger('asu_content_change_digest')
-      ->notice(' $config_roles = ' . print_r($config_roles, true));
-    \Drupal::logger('asu_content_change_digest')
-      ->notice(' $config_users = ' . print_r($config_users, true));
+//    \Drupal::logger('asu_content_change_digest')
+//      ->notice(' $config_roles = ' . print_r($config_roles, true));
+//    \Drupal::logger('asu_content_change_digest')
+//      ->notice(' $config_users = ' . print_r($config_users, true));
     if (asu_content_change_digest_should_hide_opt_out()) {
       $form['field_opt_out_of_content_changed'] = array();    
     }
   }
-  // $form['field_album']['widget'][0]['target_id']['#attributes']['disabled'] = 'disabled';
 }
 
 function asu_content_change_digest_should_hide_opt_out() {
-  \Drupal::logger('asu_content_change_digest')
-    ->notice(' $uID = ' . \Drupal::currentUser()->id());
+//  \Drupal::logger('asu_content_change_digest')
+//    ->notice(' $uID = ' . \Drupal::currentUser()->id());
   $this_user_id = \Drupal::currentUser()->id();
   $this_user_roles = \Drupal\user\Entity\User::load($this_user_id)->getRoles();
   
   $hide = TRUE;
   foreach ($config_roles as $config_role) {
-    \Drupal::logger('asu_content_change_digest')
-      ->notice(' checking = ' . $config_role);      
+//    \Drupal::logger('asu_content_change_digest')
+//      ->notice(' checking = ' . $config_role);      
     $hide &= (!array_search($config_role, $this_user_roles) === FALSE);
-    \Drupal::logger('asu_content_change_digest')
-      ->notice(' hide = ' . ($hide ? 'YES' : 'NO'));      
+//    \Drupal::logger('asu_content_change_digest')
+//      ->notice(' hide = ' . ($hide ? 'YES' : 'NO'));      
   }
   return $hide;
 }
