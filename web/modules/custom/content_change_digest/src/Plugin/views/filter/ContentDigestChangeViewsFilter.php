@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\asu_content_change_digest\Plugin\views\filter;
+namespace Drupal\content_change_digest\Plugin\views\filter;
 
 use Drupal\views\Plugin\views\display\DisplayPluginBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -15,7 +15,7 @@ use Drupal\views\Views;
  *
  * @ingroup views_filter_handlers
  *
- * @ViewsFilter("asu_content_change_digest_content_digest_change_views_filter")
+ * @ViewsFilter("content_change_digest_content_digest_change_views_filter")
  */
 class ContentDigestChangeViewsFilter extends FilterPluginBase {
 
@@ -48,7 +48,7 @@ class ContentDigestChangeViewsFilter extends FilterPluginBase {
    * Helper function that builds the query.
    */
   public function query() {
-     \Drupal::logger('asu_content_change_digest')->notice('in the query method for the plugin');
+     \Drupal::logger('content_change_digest')->notice('in the query method for the plugin');
 
     $configuration = [
       'table' => 'node_field_data',

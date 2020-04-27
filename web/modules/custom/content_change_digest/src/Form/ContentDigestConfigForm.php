@@ -2,9 +2,9 @@
 
 /**
  * @file
- * Contains Drupal\asu_content_change_digest\Form\ContentDigestConfigForm.
+ * Contains Drupal\content_change_digest\Form\ContentDigestConfigForm.
  */
-namespace Drupal\asu_content_change_digest\Form;
+namespace Drupal\content_change_digest\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
@@ -17,7 +17,7 @@ class ContentDigestConfigForm extends ConfigFormBase {
    */
   protected function getEditableConfigNames() {
     return [
-      'asu_content_change_digest.adminsettings',
+      'content_change_digest.adminsettings',
     ];
   }
 
@@ -25,14 +25,14 @@ class ContentDigestConfigForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function getFormId() {
-    return 'asu_content_change_digest';
+    return 'content_change_digest';
   }
 
   /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $config = $this->config('asu_content_change_digest.adminsettings');
+    $config = $this->config('content_change_digest.adminsettings');
 
     $form['fieldset_wrapper'] = [
       '#type' => 'fieldset',
@@ -43,23 +43,23 @@ class ContentDigestConfigForm extends ConfigFormBase {
       '#type' => 'item',
       '#description' => t('Select Roles and individual Users that should get the Content Changed Digest emailings.'),
     ];
-    $form['fieldset_wrapper']['asu_content_change_digest_roles'] = [
+    $form['fieldset_wrapper']['content_change_digest_roles'] = [
       '#type' => 'select',
       '#multiple' => true,
       '#size' => 8,
       '#title' => $this->t('Roles'),
       '#description' => $this->t('Select roles'),
       '#options' => $this-> get_roles(),
-      '#default_value' => $config->get('asu_content_change_digest_roles'),
+      '#default_value' => $config->get('content_change_digest_roles'),
     ];
-    $form['fieldset_wrapper']['asu_content_change_digest_users'] = [
+    $form['fieldset_wrapper']['content_change_digest_users'] = [
       '#type' => 'select',
       '#multiple' => true,
       '#size' => 14,
       '#title' => $this->t('Users'),
       '#description' => $this->t('Select individual users'),
       '#options' => $this-> get_users(),
-      '#default_value' => $config->get('asu_content_change_digest_users'),
+      '#default_value' => $config->get('content_change_digest_users'),
     ];
 
     return parent::buildForm($form, $form_state);
@@ -71,9 +71,9 @@ class ContentDigestConfigForm extends ConfigFormBase {
   public function submitForm(array &$form, FormStateInterface $form_state) {
     parent::submitForm($form, $form_state);
 
-    $this->config('asu_content_change_digest.adminsettings')
-      ->set('asu_content_change_digest_roles', $form_state->getValue('asu_content_change_digest_roles'))
-      ->set('asu_content_change_digest_users', $form_state->getValue('asu_content_change_digest_users'))
+    $this->config('content_change_digest.adminsettings')
+      ->set('content_change_digest_roles', $form_state->getValue('content_change_digest_roles'))
+      ->set('content_change_digest_users', $form_state->getValue('content_change_digest_users'))
       ->save();
   }
 

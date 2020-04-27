@@ -8,9 +8,9 @@ use Drupal\views\Views;
  * 2. call view code to get that content... log some of that in watchdog.
  * 3. call code that will ultimately generate the emailing.
  */
-function asu_content_change_digest_cron() {
+function content_change_digest_cron() {
   // We access our configuration.
-  $cron_config = \Drupal::config('asu_content_change_digest.settings');
+  $cron_config = \Drupal::config('content_change_digest.settings');
   $request_time = \Drupal::time()
     ->getRequestTime();
   
@@ -22,22 +22,22 @@ function asu_content_change_digest_cron() {
   // We usually don't want to act every time cron runs (which could be every
   // minute) so keep a time for the next run in the site state.
   $next_execution = \Drupal::state()
-    ->get('asu_content_change_digest.next_execution', 0);
+    ->get('content_change_digest.next_execution', 0);
   
   // MAKE it run.  TAKE THIS OUT AFTER CRON TESTS ARE NO LONGER NEEDED.
   $next_execution = 0;
 
   if ($request_time >= $next_execution) {
-    asu_content_change_digest_perform_daily_digest();
+    content_change_digest_perform_daily_digest();
 
-    $it_ran_message = t('asu_content_change_digest executed at %time', [
+    $it_ran_message = t('content_change_digest executed at %time', [
       '%time' => date('c'),
     ]);
     \Drupal::state()
-      ->set('asu_content_change_digest.next_execution', $request_time + $interval);
+      ->set('content_change_digest.next_execution', $request_time + $interval);
   }
   else {
-    \Drupal::logger('asu_content_change_digest')->notice('Did not perform any ' .
+    \Drupal::logger('content_change_digest')->notice('Did not perform any ' .
       'digest logic because the next_execution time has still not passed.');      
   }
 }
@@ -45,13 +45,13 @@ function asu_content_change_digest_cron() {
 /**
  * 
  */
-function asu_content_change_digest_perform_daily_digest() {
+function content_change_digest_perform_daily_digest() {
   // Get a list of recipients for the emailing.
-  $email_recipients = asu_content_change_digest_get_recipients();
+  $email_recipients = content_change_digest_get_recipients();
   
   // Get the view query results and theme it using twig and deliver to recipients.
   // maybe need a web http client
-  $differences_view_html = asu_content_change_digest_get_view_html();
+  $differences_view_html = content_change_digest_get_view_html();
   $output = array();
   foreach ($email_recipients as $account) {
     $params = array(
@@ -64,17 +64,17 @@ function asu_content_change_digest_perform_daily_digest() {
     
  
 //    \Drupal::service('plugin.manager.mail')
-//      ->mail('asu_content_change_digest', 'notice', $account->getEmail(), $params['langcode'], $params);
+//      ->mail('content_change_digest', 'notice', $account->getEmail(), $params['langcode'], $params);
   }
   // die(implode('<br />', $output));
   
   // Add a watchdog message that this step has been performed.
-  \Drupal::logger('asu_content_change_digest')->notice(t('asu_content_change_digest ' .
-    'asu_content_change_digest_perform_daily_digest executed at %time',
+  \Drupal::logger('content_change_digest')->notice(t('content_change_digest ' .
+    'content_change_digest_perform_daily_digest executed at %time',
     ['%time' => date('c'),]));
 }
 
-function asu_content_change_digest_get_recipients() {
+function content_change_digest_get_recipients() {
   // hard-coded for now...
   $user_ids = array(1, 4);
   $accounts = array();
@@ -85,10 +85,10 @@ function asu_content_change_digest_get_recipients() {
   return $accounts;
 }
 
-function asu_content_change_digest_get_view_html() {
+function content_change_digest_get_view_html() {
   // fetch the html for the view.
-//  \Drupal::logger('asu_content_change_digest')
-//    ->notice('in asu_content_change_digest_mail');
+//  \Drupal::logger('content_change_digest')
+//    ->notice('in content_change_digest_mail');
   
   $view = Views::getView('differences');
   if (is_object($view)) {
@@ -99,7 +99,7 @@ function asu_content_change_digest_get_view_html() {
   }
 }
 
-function asu_content_change_digest_mail($key, &$message, $params) {
+function content_change_digest_mail($key, &$message, $params) {
   $data['user'] = $params['account'];
   $options['langcode'] = $message['langcode'];
   user_mail_tokens($variables, $data, $options);
@@ -117,37 +117,37 @@ function asu_content_change_digest_mail($key, &$message, $params) {
  * Hide the "Opt out of emailing" checkbox for users who are not selected by the
  * configuration to even get the emailings.
  */
-function asu_content_change_digest_form_alter(&$form, &$form_state, $form_id) {
+function content_change_digest_form_alter(&$form, &$form_state, $form_id) {
   if ($form_id == 'user_form') {
-    $config = \Drupal::config('asu_content_change_digest.adminsettings');
+    $config = \Drupal::config('content_change_digest.adminsettings');
 
     // Check that the current user is outside of the configuration for this option
     // and hide the checkbox if they are.
-    $config_roles = $config->get('asu_content_change_digest_roles');
-    $config_users = $config->get('asu_content_change_digest_users');
+    $config_roles = $config->get('content_change_digest_roles');
+    $config_users = $config->get('content_change_digest_users');
     
-//    \Drupal::logger('asu_content_change_digest')
+//    \Drupal::logger('content_change_digest')
 //      ->notice(' $config_roles = ' . print_r($config_roles, true));
-//    \Drupal::logger('asu_content_change_digest')
+//    \Drupal::logger('content_change_digest')
 //      ->notice(' $config_users = ' . print_r($config_users, true));
-    if (asu_content_change_digest_should_hide_opt_out()) {
+    if (content_change_digest_should_hide_opt_out()) {
       $form['field_opt_out_of_content_changed'] = array();    
     }
   }
 }
 
-function asu_content_change_digest_should_hide_opt_out() {
-//  \Drupal::logger('asu_content_change_digest')
+function content_change_digest_should_hide_opt_out() {
+//  \Drupal::logger('content_change_digest')
 //    ->notice(' $uID = ' . \Drupal::currentUser()->id());
   $this_user_id = \Drupal::currentUser()->id();
   $this_user_roles = \Drupal\user\Entity\User::load($this_user_id)->getRoles();
   
   $hide = TRUE;
   foreach ($config_roles as $config_role) {
-//    \Drupal::logger('asu_content_change_digest')
+//    \Drupal::logger('content_change_digest')
 //      ->notice(' checking = ' . $config_role);      
     $hide &= (!array_search($config_role, $this_user_roles) === FALSE);
-//    \Drupal::logger('asu_content_change_digest')
+//    \Drupal::logger('content_change_digest')
 //      ->notice(' hide = ' . ($hide ? 'YES' : 'NO'));      
   }
   return $hide;
