@@ -1,7 +1,8 @@
 <?php
 
 use Drupal\views\Views;
-    
+use Drupal\user\Entity\User;
+
 /**
  * 
  * 1. respond to CRON that runs daily
@@ -61,27 +62,58 @@ function content_change_digest_perform_daily_digest() {
     );
     $output[] = '<b>To:</b> ' . $account->getEmail();
     $output[] = '<blockquote>' . $params['body'] . '</blockquote>';
-    
- 
-//    \Drupal::service('plugin.manager.mail')
-//      ->mail('content_change_digest', 'notice', $account->getEmail(), $params['langcode'], $params);
   }
-  // die(implode('<br />', $output));
   
   // Add a watchdog message that this step has been performed.
   \Drupal::logger('content_change_digest')->notice(t('content_change_digest ' .
     'content_change_digest_perform_daily_digest executed at %time',
     ['%time' => date('c'),]));
+  \Drupal::logger('content_change_digest')->notice(t('content_change_digest ' .
+    'content_change_digest_perform_daily_digest emailing output %email_output',
+    ['%email_output' => implode('<br />', $output),]));
 }
 
 function content_change_digest_get_recipients() {
-  // hard-coded for now...
-  $user_ids = array(1, 4);
   $accounts = array();
-  foreach ($user_ids as $user_id) {
+  $config = \Drupal::config('content_change_digest.adminsettings');
+  $config_roles = $config->get('content_change_digest_roles');
+  $config_users_ids = $config->get('content_change_digest_users');
+
+  $userlist = array();
+  foreach ($config_roles as $config_role) {
+    // @TODO: it should be possible to have a condition in the query
+    // on the field_opt_out_of_content_changed value of users.
+    $ids = \Drupal::entityQuery('user')
+    ->condition('status', 1)
+    ->condition('roles', $config_role)
+    ->execute();
+    $users = User::loadMultiple($ids);
+    foreach($users as $user){
+      // Since the query above does not seem to allow a condition on the
+      // field_opt_out_of_content_changed field, filter those out here.
+      if (!$user->field_opt_out_of_content_changed->value) {
+        $userlist[$user->get('uid')->value] = $user->get('name')->value;
+      }
+    }
+  }
+  foreach ($config_users_ids as $config_user_id) {
+    $user = User::load($config_user_id);
+    if (!$user->field_opt_out_of_content_changed->value) {
+      $userlist[$user->get('uid')->value] = $user->get('name')->value;
+    }
+  }
+
+  \Drupal::logger('content_change_digest')
+    ->notice('roles = ' . print_r($config_roles, true));
+  \Drupal::logger('content_change_digest')
+    ->notice('users = ' . print_r($config_users_ids, true));
+  \Drupal::logger('content_change_digest')
+    ->notice('userlist = ' . print_r($userlist, true));
+  foreach ($userlist as $user_id => $user_name) {
     // loading the users must be with the Entity user load method such as
     $accounts[] = \Drupal\user\Entity\User::load($user_id);
   }
+ 
   return $accounts;
 }
 
@@ -119,36 +151,29 @@ function content_change_digest_mail($key, &$message, $params) {
  */
 function content_change_digest_form_alter(&$form, &$form_state, $form_id) {
   if ($form_id == 'user_form') {
-    $config = \Drupal::config('content_change_digest.adminsettings');
-
-    // Check that the current user is outside of the configuration for this option
-    // and hide the checkbox if they are.
-    $config_roles = $config->get('content_change_digest_roles');
-    $config_users = $config->get('content_change_digest_users');
-    
-//    \Drupal::logger('content_change_digest')
-//      ->notice(' $config_roles = ' . print_r($config_roles, true));
-//    \Drupal::logger('content_change_digest')
-//      ->notice(' $config_users = ' . print_r($config_users, true));
     if (content_change_digest_should_hide_opt_out()) {
-      $form['field_opt_out_of_content_changed'] = array();    
+       $form['field_opt_out_of_content_changed']['#required'] = FALSE;
+       $form['field_opt_out_of_content_changed']['#access'] = FALSE;
     }
   }
 }
 
 function content_change_digest_should_hide_opt_out() {
-//  \Drupal::logger('content_change_digest')
-//    ->notice(' $uID = ' . \Drupal::currentUser()->id());
+  $config = \Drupal::config('content_change_digest.adminsettings');
+  $config_roles = $config->get('content_change_digest_roles');
+  $config_users_ids = $config->get('content_change_digest_users');
+
   $this_user_id = \Drupal::currentUser()->id();
-  $this_user_roles = \Drupal\user\Entity\User::load($this_user_id)->getRoles();
-  
-  $hide = TRUE;
+  $this_user = \Drupal\user\Entity\User::load($this_user_id);
+  $this_user_roles = $this_user->getRoles();
+  $show = FALSE;
   foreach ($config_roles as $config_role) {
-//    \Drupal::logger('content_change_digest')
-//      ->notice(' checking = ' . $config_role);      
-    $hide &= (!array_search($config_role, $this_user_roles) === FALSE);
-//    \Drupal::logger('content_change_digest')
-//      ->notice(' hide = ' . ($hide ? 'YES' : 'NO'));      
+    $show |= (!(array_search($config_role, $this_user_roles) === FALSE));
   }
-  return $hide;
+  if (!$show) {
+    // Check whether or not the user was added individually instead of
+    // by roles.
+    $show = array_key_exists($this_user_id, $config_users_ids);
+  }
+  return !$show;
 }
