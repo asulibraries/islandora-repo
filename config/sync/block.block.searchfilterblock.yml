@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - asu_search
+    - system
+  theme:
+    - asulib
+id: searchfilterblock
+theme: asulib
+region: sidebar_first
+weight: 0
+provider: null
+plugin: search_filter_block
+settings:
+  id: search_filter_block
+  label: 'Search Filter block'
+  provider: asu_search
+  label_display: visible
+visibility:
+  request_path:
+    id: request_path
+    pages: '/search*'
+    negate: false
+    context_mapping: {  }

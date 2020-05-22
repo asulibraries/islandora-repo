@@ -1,0 +1,29 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - asu_search
+    - node
+  theme:
+    - asulib
+id: explorethisitem
+theme: asulib
+region: sidebar_first
+weight: 0
+provider: null
+plugin: explore_this_item_block
+settings:
+  id: explore_this_item_block
+  label: 'Explore this item'
+  provider: asu_search
+  label_display: visible
+visibility:
+  node_type:
+    id: node_type
+    bundles:
+      asu_repository_item: asu_repository_item
+      collection: collection
+      islandora_object: islandora_object
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
