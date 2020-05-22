@@ -49,6 +49,6 @@ class FullMetadataController extends ControllerBase {
    *   The render array.
    */
   public function buildContent(UserInterface $user = NULL) {
-    
+    return array('a' => 'boo');
   }
 }
