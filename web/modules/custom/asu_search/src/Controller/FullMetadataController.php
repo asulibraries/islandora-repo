@@ -49,6 +49,12 @@ class FullMetadataController extends ControllerBase {
    *   The render array.
    */
   public function buildContent(UserInterface $user = NULL) {
-    return array('a' => 'boo');
+    $nid = \Drupal::routeMatch()->getParameter('node');
+    if ($nid) {
+      $node = \Drupal\node\Entity\Node::load($nid);
+      return node_view($node, 'full_metadata');
+    } else {
+      return array();
+    }
   }
 }

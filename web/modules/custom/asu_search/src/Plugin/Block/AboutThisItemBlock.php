@@ -44,7 +44,6 @@ class AboutThisItemBlock extends BlockBase {
     $variables['nodeid'] = $nid;
     $url = Url::fromRoute('<current>', array());
     $link = Link::fromTextAndUrl(t('Overview'), $url);
-    dpm($url);
     $link = $link->toRenderable();
     $output_links[] = render($link);
     // Add a link to the "View full metadata" anchor for this node.
