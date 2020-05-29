@@ -1,0 +1,916 @@
+<?php
+
+/**
+ * ASU Brand module.
+ *
+ * Author: Marcus Anthony (marcus.anthony@asu.edu)
+ * Created: 2011-09-21
+ */
+
+/*********************************************************************
+ CONFIG
+*********************************************************************/
+
+define('ASU_BRAND_HEADER_VERSION_XML_URL', 'http://asu.edu/asuthemes/headers.xml');
+define('ASU_BRAND_HEADER_VERSION_DEFAULT', 'stable');
+define('ASU_BRAND_HEADER_BASEPATH_DEFAULT', 'http://www.asu.edu/asuthemes');
+define('ASU_BRAND_HEADER_TEMPLATE_DEFAULT', 'default');
+define('ASU_BRAND_FOOTER_COLOR_DEFAULT', '');
+define('ASU_BRAND_CACHE_LIFETIME', 172800); // 48 Hours ( 60 x 60 x 48 )
+define('ASU_BRAND_PREVIEW_PAGES_DEFAULT', "system/ajax/*\npanels/ajax/*");
+define('ASU_BRAND_DO_NOT_OVERRIDE', \Drupal::config('asu_headers.settings')->get('asu_brand_do_not_override') ?: '["www.asu.edu"]');
+// legacy call: define('ASU_BRAND_DO_NOT_OVERRIDE', variable_get('asu_brand_do_not_override', '["www.asu.edu"]'));
+
+/**
+ * Delta of ASU Header block (declared in asu_brand.module)
+ * @var string
+ */
+define('ASU_BRAND_HEADER_DELTA', 'asu_brand_header');
+
+/**
+ * Default machine name of site menu to inject into the responsive header menu
+ * @var string
+ */
+define('ASU_BRAND_SITE_MENU_NAME_DEFAULT', 'main-menu');
+
+
+/**
+ * Implements: hook_page_attachments().
+ *
+ * // legacy code: Implements hook_init().
+ */
+// In Drupal 8, there is no longer hook_init(), but to use hook_page_attachments
+// instead.
+function asu_brand_page_attachments(array &$attachments) {
+  // function asu_brand_init() {
+  
+  if (\Drupal::config('asu_headers.settings')->get('asu_brand_sitemenu_injection_flag') ?: 1) {
+    // legacy call: if (variable_get('asu_brand_sitemenu_injection_flag', 1)) {
+    $menu_array = asu_brand_get_site_menu_array();
+    \Drupal::moduleHandler()->alter('asu_brand_sitemenu', $menu_array); // Invoke alter
+    // legacy call: drupal_alter('asu_brand_sitemenu', $menu_array); // Invoke alter
+    
+    $site_name = asu_brand_get_site_name();
+    \Drupal::moduleHandler()->alter('asu_brand_sitename', $site_name); // Invoke alter
+    // legacy call: drupal_alter('asu_brand_sitename', $site_name); // Invoke alter
+
+    $site_url = \Drupal::config('asu_headers.settings')->get('asu_brand_override_url') ?: '/';
+    // legacy call: $site_url = variable_get('asu_brand_override_url', '/');
+
+    if (empty($site_url)) {
+      $site_url = '/';
+    }
+    \Drupal::moduleHandler()->alter('asu_brand_site_url', $site_url); // Invoke alter
+    // legacy call: drupal_alter('asu_brand_site_url', $site_url); // Invoke alter
+
+    $parent_org_title = \Drupal::config('asu_headers.settings')->get('asu_brand_parent_org_title') ?: '';
+    // legacy call: $parent_org_title = variable_get('asu_brand_parent_org_title', '');
+
+    $parent_org_url = \Drupal::config('asu_headers.settings')->get('asu_brand_parent_org_url') ?: '';
+    // legacy call: $parent_org_url = variable_get('asu_brand_parent_org_url', '');
+
+    $site_title_array = array(
+      'title' => $site_name,
+      'site_url' => $site_url
+    );
+
+    if (!empty($parent_org_title)) {
+      $site_title_array['parent_org'] = $parent_org_title;
+    }
+
+    if (!empty($parent_org_url)) {
+      $site_title_array['parent_org_url'] = $parent_org_url;
+    }
+
+    //ASUHeader.site_title = {title: "Name of Site", parent_org: "Name of Parent Organization"};
+    
+    $js = 'window.ASUHeader = window.ASUHeader || {};';
+    $js .= 'ASUHeader.site_menu = ASUHeader.site_menu || {};';
+    $js .= 'ASUHeader.site_menu.json = \''.json_encode($menu_array, JSON_HEX_APOS).'\';';
+    $js .= 'ASUHeader.site_menu.site_name = '.json_encode($site_name, JSON_HEX_APOS).';';
+    $js .= 'ASUHeader.site_title = '.json_encode($site_title_array, JSON_HEX_APOS).';';
+    
+    $attachments['#attached']['js'][] = array(
+      'data' => $js,
+      'scope' => 'header',
+      'type' => 'inline',
+    );
+    // legacy code: drupal_add_js($js, array('type' => 'inline', 'scope' => 'header', 'group' => JS_THEME, 'weight' => -10));
+  }
+}
+
+/**
+ * Implements hook_cron().
+ */
+function asu_brand_cron() {
+  // Reset CI testing bypass of GTM code back to 0, just in case testing failed
+  // to complete and left on filtering
+  \Drupal::config('asu_headers.settings')
+      ->set('asu_brand_ci_testing', 0)
+      ->save();
+  // legacy call: variable_set('asu_brand_ci_testing', 0);
+}
+
+/**
+ * Implements hook_block_info().
+ */
+function asu_brand_block_info() {
+  // Never cache the header with Drupal's caching system because the contents of
+  // the block changes based on if the user is logged in. The included header files
+  // are cached manually when then block is viewed in _asu_brand_block_header().
+  $blocks[ASU_BRAND_HEADER_DELTA] = array(
+    'info' => t('ASU Brand: header'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  $blocks['asu_brand_footer'] = array(
+    'info' => t('ASU Brand: footer'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  $blocks['asu_brand_students_footer'] = array(
+    'info' => t('ASU Brand: students footer'),
+    'cache' => DRUPAL_NO_CACHE,
+  );
+  return $blocks;
+}
+
+/**
+ * Implements hook_block_configure().
+ */
+function asu_brand_block_configure($delta = '') {
+  $form = array();
+  switch ($delta) {
+    case ASU_BRAND_HEADER_DELTA:
+    case 'asu_brand_footer':
+    case 'asu_brand_students_footer':
+      module_load_include('inc', 'asu_brand', 'asu_brand.admin');
+      $form = asu_brand_get_block_configure_form($delta);
+      break;
+  }
+  return $form;
+}
+
+/**
+ * Implements hook_block_save().
+ */
+
+function asu_brand_block_save($delta = '', $edit = array()) {
+  switch ($delta) {
+    case 'asu_brand_header':
+      \Drupal::config('asu_headers.settings')
+        ->set('asu_brand_header_version', $edit['asu_brand_header_version'])
+        ->set('asu_brand_header_basepath', $edit['asu_brand_header_basepath'])
+        ->set('asu_brand_header_template', $edit['asu_brand_header_template'])
+        ->set('asu_brand_preview_pages', $edit['asu_brand_preview_pages'])
+        ->set('asu_brand_gtm_override', $edit['asu_brand_gtm_override'])
+        ->set('asu_brand_sitemenu_injection_flag', $edit['asu_brand_sitemenu_injection_flag'])
+        ->set('asu_brand_sitemenu_name', $edit['asu_brand_sitemenu_name'])
+        ->save();
+      // legacy calls: 
+      //  variable_set('asu_brand_header_version', $edit['asu_brand_header_version']);
+      //  variable_set('asu_brand_header_basepath', $edit['asu_brand_header_basepath']);
+      //  variable_set('asu_brand_header_template', $edit['asu_brand_header_template']);
+      //  variable_set('asu_brand_preview_pages', $edit['asu_brand_preview_pages']);
+      //  variable_set('asu_brand_gtm_override', $edit['asu_brand_gtm_override']);
+      //  variable_set('asu_brand_sitemenu_injection_flag', $edit['asu_brand_sitemenu_injection_flag']);
+      //  variable_set('asu_brand_sitemenu_name', $edit['asu_brand_sitemenu_name']);
+
+      if (isset($edit['asu_brand_do_not_override'])) {
+
+        // explode and trim input on commas, then check for plain non-empty input
+        $overrides = array_map('trim', explode(',', $edit['asu_brand_do_not_override']));
+
+        $overrides = array_filter($overrides, function($val) {
+
+          $val = check_plain($val);
+
+          return !empty($val);
+        });
+      \Drupal::config('asu_headers.settings')
+        ->set('asu_brand_do_not_override', drupal_json_encode($overrides))
+        ->save();
+      // legacy call: variable_set('asu_brand_do_not_override', drupal_json_encode($overrides));
+      }
+      \Drupal::config('asu_headers.settings')
+        ->set('asu_brand_parent_org_title', $edit['asu_brand_parent_org_title'])
+        ->set('asu_brand_parent_org_url', $edit['asu_brand_parent_org_url'])
+        ->set('asu_brand_override_url', $edit['asu_brand_override_url'])
+        ->save();
+      // legacy calls: 
+      // variable_set('asu_brand_parent_org_title', $edit['asu_brand_parent_org_title']);
+      // variable_set('asu_brand_parent_org_url', $edit['asu_brand_parent_org_url']);
+      // variable_set('asu_brand_override_url', $edit['asu_brand_override_url']);
+
+      asu_brand_cache_clear();
+      break;
+    
+    case 'asu_brand_footer':
+      \Drupal::config('asu_headers.settings')
+        ->set('asu_brand_header_version', $edit['asu_brand_header_basepath'])
+        ->set('asu_brand_header_basepath', $edit['asu_brand_header_basepath'])
+        ->set('asu_brand_preview_pages', $edit['asu_brand_preview_pages'])
+        ->save();
+      // legacy calls: 
+      // variable_set('asu_brand_header_version', $edit['asu_brand_header_version']);
+      // variable_set('asu_brand_header_basepath', $edit['asu_brand_header_basepath']);
+      // // No color options on footer anymore
+      // //variable_set('asu_brand_footer_color', $edit['asu_brand_footer_color']);
+      // variable_set('asu_brand_preview_pages', $edit['asu_brand_preview_pages']);
+      asu_brand_cache_clear();
+      break;
+    
+    case 'asu_brand_students_footer':
+      \Drupal::config('asu_headers.settings')
+        ->set('asu_brand_header_version', $edit['asu_brand_header_basepath'])
+        ->set('asu_brand_header_basepath', $edit['asu_brand_header_basepath'])
+        ->set('asu_brand_preview_pages', $edit['asu_brand_preview_pages'])
+        ->save();
+      // legacy calls: 
+      // variable_set('asu_brand_header_version', $edit['asu_brand_header_version']);
+      // variable_set('asu_brand_header_basepath', $edit['asu_brand_header_basepath']);
+      // variable_set('asu_brand_preview_pages', $edit['asu_brand_preview_pages']);
+      asu_brand_cache_clear();
+      break;
+  }
+}
+
+/**
+ * Implements hook_block_view().
+ */
+function asu_brand_block_view($delta = '') {
+  $block = array();
+  $is_preview_path = asu_brand_is_preview_path();
+  $preview_text = t('No preview available');
+  
+  switch ($delta) {
+    case 'asu_brand_header':
+      $block['subject'] = NULL;
+      if ($is_preview_path) {
+        $block['content'] = $preview_text;
+      }
+      else {
+        module_load_include('inc', 'asu_brand', 'asu_brand.block');
+        $block['content'] = asu_brand_get_block_header();
+      }
+      break;
+
+    case 'asu_brand_footer':
+      $block['subject'] = NULL;
+      if ($is_preview_path) {
+        $block['content'] = $preview_text;
+      }
+      else {
+        module_load_include('inc', 'asu_brand', 'asu_brand.block');
+        $block['content'] = asu_brand_get_block_footer();
+      }
+      break;
+    
+    case 'asu_brand_students_footer':
+      $block['subject'] = NULL;
+      if ($is_preview_path) {
+        $block['content'] = $preview_text;
+      }
+      else {
+        module_load_include('inc', 'asu_brand', 'asu_brand.block');
+        $block['content'] = asu_brand_get_block_students_footer();
+      }
+      break;
+  }
+  return $block;
+}
+
+/**
+ * Implements hook_page_alter().
+ * Adds a post_render callback and loads the include file.
+ * @see drupal_render_page()
+ */
+function asu_brand_page_alter(&$page) {
+  // Call sequence:
+  // - drupal_render_page()
+  //   - hook_page_alter()
+  //   - drupal_render()
+  // - drupal_render()
+  //   - callbacks in $elements['#theme_wrappers']
+  //     - hook_preprocess_html(): 'html' is the wrapper for page
+  //     - templates may add tags after body tag
+  //   - callbacks in $elements['#post_render']
+  //     - asu_brand_page_process(): callback set here
+
+  // Add callback routine.
+  $page['#post_render'][] = 'asu_brand_page_process';
+  // Load include file.
+  module_load_include('inc', 'asu_brand', 'asu_brand.gtm');
+}
+
+/**
+ * Clear block caches.
+ * 
+ * If called without arguments, clears all asu_brand related items. $cid can be
+ * any asu_brand item (without the 'asu_brand:' part.
+ */
+function asu_brand_cache_clear($cid = '', $wildcard = TRUE) {
+  cache_clear_all('asu_brand:' . $cid, 'cache', $wildcard);
+}
+
+/**
+ * Get list of cache IDs.
+ */
+function asu_brand_get_cache_ids($reset = FALSE) {
+  $cache_ids = &drupal_static(__FUNCTION__);
+  if ($reset || !isset($cache_ids)) {
+    $cache_ids = array('asu_brand:head', 'asu_brand:header', 'asu_brand:footer', 'asu_brand:students_footer', 'asu_brand:gtm');
+  }
+  return $cache_ids;
+}
+
+/**
+ * Determine if path is generating a preview.
+ */
+function asu_brand_is_preview_path($reset = FALSE) {
+  $page_match = &drupal_static(__FUNCTION__);
+  if ($reset || !isset($page_match)) {
+    $pages = \Drupal::config('asu_headers.settings')->get('asu_brand_preview_pages') ?: ASU_BRAND_PREVIEW_PAGES_DEFAULT;
+    // legacy call: $pages = variable_get('asu_brand_preview_pages', ASU_BRAND_PREVIEW_PAGES_DEFAULT);
+    // Convert the Drupal path to lowercase.
+    $path = \Drupal::service('path.alias_manager')->getAliasByPath(drupal_strtolower($_GET['q']));
+    // legacy call: $path = drupal_strtolower(drupal_get_path_alias($_GET['q']));
+    // Compare the lowercase internal and lowercase path alias (if any).
+    $page_match = drupal_match_path($path, $pages);
+    if ($path != $_GET['q']) {
+      $page_match = $page_match || drupal_match_path($_GET['q'], $pages);
+    }
+  }
+  return $page_match;
+}
+
+
+/**
+ * Get site name displayed in mobile menu
+ * @return String
+ */
+function asu_brand_get_site_name() {
+  $site_name = \Drupal::config('asu_headers.settings')->get('site_name') ?: '';
+  // legacy call: $site_name = variable_get('site_name', '');
+  return $site_name;
+}
+
+/**
+ * Returns site menu array
+ */
+function asu_brand_get_site_menu_array() {
+  $menu_tree = menu_tree_all_data(\Drupal::config('asu_headers.settings')->get('asu_brand_sitemenu_name') ?: ASU_BRAND_SITE_MENU_NAME_DEFAULT);
+  // legacy call: variable_get('asu_brand_sitemenu_name', ASU_BRAND_SITE_MENU_NAME_DEFAULT));
+  $menu_array = array();
+  $i=0;
+  foreach ($menu_tree as $item) {
+    if (isset($item['link']) && $item['link']['access'] && !$item['link']['hidden']) {
+      if ($menu_item = asu_brand_get_menu_item($item['link']['title'], $item['link']['link_path'], $item['link']['options'])) {
+        $menu_array[$i] = array_map('trim', $menu_item);
+      } else {
+        $i--;
+      }
+      // Render child items.
+      if (asu_brand_menuitem_has_active_children($item)) {
+        $j=0;
+        foreach ($item['below'] as $child) {
+          if (isset($child['link']) && !$child['link']['hidden']) {
+            if ($menu_item = asu_brand_get_menu_item($child['link']['title'], $child['link']['link_path'], $child['link']['options'])) {
+              $menu_array[$i]['children'][$j] = array_map('trim', $menu_item);
+            } else {
+              $j--;
+            }
+            // Render grandchild items.
+            if (asu_brand_menuitem_has_active_children($child)) {
+              $k=0;
+              foreach ($child['below'] as $grandchild) {
+                if (isset($grandchild['link']) && !$grandchild['link']['hidden']) {
+                  if ($menu_item = asu_brand_get_menu_item($grandchild['link']['title'], $grandchild['link']['link_path'], $grandchild['link']['options'])) {
+                    $menu_array[$i]['children'][$j]['children'][$k] = array_map('trim', $menu_item);
+                  } else {
+                    $k--;
+                  }
+                  $k++;
+                }
+              }
+            }
+            $j++;
+          }
+        }
+      }
+      $i++;
+    }
+  }
+  return $menu_array;
+}
+
+/**
+ * Compose and return menu item
+ *   Special handling for 'Special menu items' module
+ *   Return NULL for path if <nolink>
+ *   Return empty array if <separator>
+ * @param atring $title
+ * @param atring $path
+ * @param assoc array $options
+ * @return assoc array>
+ */
+function asu_brand_get_menu_item($title, $path, $options = array()) {
+  // @TODO: may need to determine if path is relative or includes http://
+  // $is_relative = (!($path, 'http'));
+  
+  // default
+  $menu_item = array(
+        'title' => t(strip_tags(htmlspecialchars_decode($title))),
+        'path'  => url_d7($path, $options),
+        // legacy call: 'path' => url($path, $options)
+      );
+  // special handling for 'Special menu items' module
+  if (\Drupal::moduleHandler()->moduleExists('special_menu_items')) {
+    switch ($path) {
+      case '<nolink>':
+        $menu_item['path'] = NULL;
+        break;
+      case '<separator>':
+        return array(); // return empty array if separator
+        break;
+    }
+  }
+  return $menu_item;
+}
+
+
+/**
+ * Parses menuitem and returns true if there are active child menu items.
+ * @param array $menuitem
+ * @return boolean
+ */
+function asu_brand_menuitem_has_active_children($menuitem) {
+  if (is_array($menuitem) && isset($menuitem['below']) && !empty($menuitem['below'])) {
+    foreach ($menuitem['below'] as $child) {
+      if (isset($child['link']) && $child['link']['access'] && ($child['link']['hidden'] == 0)) return true;
+    }
+  }
+  return false;
+}
+
+/**
+ * @file
+ * Contains the GTM snippet insertion code.
+ *
+ * @author Chandi Cumaranatunge
+ */
+
+
+/*********************************************************************
+ DRUPAL HOOKS
+*********************************************************************/
+
+/**
+ * Implements callback_post_render().
+ *
+ * Inserts GTM snippet as immediate child of the opening body tag.
+ */
+function asu_brand_page_process(&$children, $elements) {
+  if (asu_brand_is_header_visible($elements)) {
+    // Added check for testing - Hide GTM code during testing
+    if ((\Drupal::config('asu_headers.settings')->get('asu_brand_ci_testing') ?: 0) != 1) {
+      // legacy call: if (variable_get('asu_brand_ci_testing', 0) != 1 ) {
+      $custom_gtm = \Drupal::config('asu_headers.settings')->get('asu_brand_gtm_override') ?: '';
+      // legacy call: $custom_gtm = variable_get('asu_brand_gtm_override', '');
+      $gtm = (trim($custom_gtm) != '') ? $custom_gtm : asu_brand_get_gtm_snippet();
+     }
+     else {
+       $gtm = '<!--GTM Code removed for testing -->';
+     }
+    // Insert snippet after the opening body tag.
+     if ($gtm) {
+       $children = preg_replace('@<body[^>]*>@', '$0' . $gtm, $children, 1);
+     }
+  }
+  return $children;
+}
+
+/*********************************************************************
+ INTERNAL - helper functions for the various hooks code.
+*********************************************************************/
+
+/**
+ * Checks if ASU Brand header is visible on current page
+ * @param array $elements
+ *   Render array of page elements
+ */
+function asu_brand_is_header_visible($elements) {
+  $module_name = basename(__FILE__, '.gtm.inc');
+  foreach ($elements as $region_key => $region) {
+  if (($region_key[0] != '#') && is_array($region)) {
+      foreach ($region as $block_key => $block) {
+        if ($block_key == $module_name.'_'.ASU_BRAND_HEADER_DELTA) {
+          return TRUE;
+        }
+      }
+    }
+  }
+  return false;
+}
+
+/**
+ * Get GTM snippet from header assets
+ */
+function asu_brand_get_gtm_snippet() {
+  $settings = asu_brand_get_block_settings();
+  $cache_id = 'asu_brand:gtm';
+
+  return asu_brand_get_cached_content($cache_id, $settings->gtm_path);
+}
+
+
+/**
+ * ASU Brand block generating functions.
+ */
+
+/**
+ * Get ASU brand block settings.
+ */
+function asu_brand_get_block_settings($reset = FALSE) {
+  $settings = &drupal_static(__FUNCTION__);
+
+  if ($reset || !isset($settings)) {
+
+    $settings = new StdClass;
+    $settings->header_version = \Drupal::config('asu_headers.settings')->get('asu_brand_header_version') ?: ASU_BRAND_HEADER_VERSION_DEFAULT;
+    // legacy call: $settings->header_version = variable_get('asu_brand_header_version', ASU_BRAND_HEADER_VERSION_DEFAULT);
+    $settings->header_basebath = \Drupal::config('asu_headers.settings')->get('asu_brand_header_basepath') ?: ASU_BRAND_HEADER_BASEPATH_DEFAULT;
+    // legacy call: $settings->header_basebath = variable_get('asu_brand_header_basepath', ASU_BRAND_HEADER_BASEPATH_DEFAULT);
+    $settings->header_template = \Drupal::config('asu_headers.settings')->get('asu_brand_header_template') ?: ASU_BRAND_HEADER_TEMPLATE_DEFAULT;
+    // legacy call: $settings->header_template = variable_get('asu_brand_header_template', ASU_BRAND_HEADER_TEMPLATE_DEFAULT);
+    $settings->footer_color = \Drupal::config('asu_headers.settings')->get('asu_brand_footer_color') ?: ASU_BRAND_FOOTER_COLOR_DEFAULT;
+    // legacy call: $settings->footer_color = variable_get('asu_brand_footer_color', ASU_BRAND_FOOTER_COLOR_DEFAULT);
+    $settings->head_path = $settings->header_basebath . '/' . $settings->header_version . '/heads/' . $settings->header_template . '.shtml';
+    $settings->header_path = $settings->header_basebath . '/' . $settings->header_version . '/headers/' . $settings->header_template . '.shtml';
+    $settings->footer_path = $settings->header_basebath . '/' . $settings->header_version . '/includes/footer' . $settings->footer_color . '.shtml';
+    $settings->gtm_path = $settings->header_basebath . '/' . $settings->header_version . '/includes/gtm.shtml';
+    $settings->students_footer_path = $settings->header_basebath . '/' . $settings->header_version . '/includes/students_footer.shtml';
+
+    // !(\Drupal::currentUser()->isAnonymous()) replaces user_is_logged_in()
+    // Set javascript settings.
+    $js_settings = array(
+      'asu_sso_signedin' => (!(\Drupal::currentUser()->isAnonymous()) ? 'true' : 'false'),
+      // legacy call: 'asu_sso_signedin' => (user_is_logged_in() ? 'true' : 'false'),
+      'asu_sso_signinurl' => '',
+      'asu_sso_signouturl' => '',
+    );
+
+    // Alter the signin/signout URL if cas in enabled.
+    if (\Drupal::moduleHandler()->moduleExists('cas')) {
+      $js_settings['asu_sso_signinurl'] = url_d7('cas', array(
+        'https' => TRUE,
+        'query' => drupal_get_destination()
+      ));
+      // legacy call: 
+      // $js_settings['asu_sso_signinurl'] = url('cas', array(
+      //   'https' => TRUE,
+      //   'query' => drupal_get_destination()
+      // ));
+      $js_settings['asu_sso_signouturl'] = url_d7('caslogout', array('https' => TRUE));
+      // legacy call: $js_settings['asu_sso_signouturl'] = url('caslogout', array('https' => TRUE));
+    }
+    else {
+      $js_settings['asu_sso_signinurl'] = url_d7('/user/login', array('query' => user_login_destination_d7()));
+      $js_settings['asu_sso_signouturl'] = url_d7('/user/logout');
+      // legacy code: 
+      //  $js_settings['asu_sso_signinurl'] = url('user/login', array('query' => user_login_destination()));
+      //  $js_settings['asu_sso_signouturl'] = url('user/logout');
+    }
+
+    $settings->js_settings = $js_settings;
+
+    // Get cached data.
+    $cache_ids = asu_brand_get_cache_ids();
+    $settings->cache = cache_get_multiple_d7($cache_ids);
+    $settings->long_term_cache = array();
+    foreach ($cache_ids as $cache_id) {
+      $settings->long_term_cache[$cache_id] = \Drupal::config('asu_headers.settings')->get($cache_id) ?: NULL;
+      // legacy call: $settings->long_term_cache[$cache_id] = variable_get($cache_id, NULL);
+    }
+  }
+  
+  return $settings;
+}
+
+/**
+ * Get a block's content in this order as they are available:
+ * 1. Regular Drupal cache.
+ * 2. Off-site resource file.
+ * 3. Long-cache stored in variable table (this is updated if #2 is performed).
+ *
+ * If $reset == TRUE, then skip #1.
+ */
+function asu_brand_get_cached_content($cache_id, $file_path, $reset = FALSE) {
+
+  if($output = cache_get_d7($cache_id)) {
+    $output = $output->data;
+  }
+
+  if ($reset || $output==NULL || !isset($output)) {
+
+    // set timeout to 1.5 seconds.  if it takes too long, fall back
+    // to long term caching
+    $client = \Drupal::httpClient();
+    $request = $client->request('GET', $file_path, ['timeout' => 1.5]);
+
+    try {
+      $response = $client->get($file_path, []);
+      // Expected result.
+      // getBody() returns an instance of Psr\Http\Message\StreamInterface.
+      // @see http://docs.guzzlephp.org/en/latest/psr7.html#body
+      $output = $response->getBody();
+    }
+    catch (RequestException $e) {
+      watchdog_exception('asu_brand', $e);
+    }
+    // legacy call:
+    /*
+
+    $output = drupal_http_request($file_path, $options);
+
+    //if ($output = drupal_http_request($file_path)) {//$output = file_get_contents($file_path)) {
+    if ($output->code == 200) {
+      $output = $output->data;
+
+      cache_set($cache_id, $output, 'cache', time() + ASU_BRAND_CACHE_LIFETIME);
+      \Drupal::config('asu_headers.settings')
+        ->set('$cache_id', $output)
+        ->save();
+      // legacy call: variable_set($cache_id, $output);
+    } else {
+      // File resource is not available; use long term cache and cache it for 1 hour.
+      $output = \Drupal::config('asu_headers.settings')->get($cache_id) ?: NULL;
+      // legacy call: $output = variable_get($cache_id, NULL);
+      cache_set($cache_id, $output, 'cache', time() + 3600);
+      watchdog('asu_brand', 'Unable to load @path to the cache; using long term cache.', array('@path' => $file_path), WATCHDOG_ERROR);
+    } 
+     */
+  }
+  
+  return $output;
+}
+
+function url_d7($path = NULL, array $options = array()) {
+
+  // Merge in defaults.
+  $options += array(
+    'fragment' => '',
+    'query' => array(),
+    'absolute' => FALSE,
+    'alias' => FALSE,
+    'prefix' => '',
+  );
+
+  // Determine whether this is an external link, but ensure that the current
+  // path is always treated as internal by default (to prevent external link
+  // injection vulnerabilities).
+  if (!isset($options['external'])) {
+    $options['external'] = $path === $_GET['q'] ? FALSE : url_is_external_d7($path);
+  }
+
+  // Preserve the original path before altering or aliasing.
+  $original_path = $path;
+
+  // Allow other modules to alter the outbound URL and options.
+  \Drupal::moduleHandler()->alter('url_outbound', $path, $options, $original_path);
+  // legacy call: drupal_alter('url_outbound', $path, $options, $original_path);
+  if (isset($options['fragment']) && $options['fragment'] !== '') {
+    $options['fragment'] = '#' . $options['fragment'];
+  }
+  if ($options['external']) {
+
+    // Split off the fragment.
+    if (strpos($path, '#') !== FALSE) {
+      list($path, $old_fragment) = explode('#', $path, 2);
+
+      // If $options contains no fragment, take it over from the path.
+      if (isset($old_fragment) && !$options['fragment']) {
+        $options['fragment'] = '#' . $old_fragment;
+      }
+    }
+
+    // Append the query.
+    if ($options['query']) {
+      $path .= (strpos($path, '?') !== FALSE ? '&' : '?') . drupal_http_build_query_d7($options['query']);
+    }
+    if (isset($options['https']) && (\Drupal::config('asu_headers.settings')->get('https') ?: FALSE)) {
+      // legacy call: if (isset($options['https']) && variable_get('https', FALSE)) {
+      if ($options['https'] === TRUE) {
+        $path = str_replace('http://', 'https://', $path);
+      }
+      elseif ($options['https'] === FALSE) {
+        $path = str_replace('https://', 'http://', $path);
+      }
+    }
+
+    // Reassemble.
+    return $path . $options['fragment'];
+  }
+
+  // Strip leading slashes from internal paths to prevent them becoming external
+  // URLs without protocol. /example.com should not be turned into
+  // //example.com.
+  $path = ltrim($path, '/');
+  global $base_url, $base_secure_url, $base_insecure_url;
+
+  // The base_url might be rewritten from the language rewrite in domain mode.
+  if (!isset($options['base_url'])) {
+    if (isset($options['https']) && (\Drupal::config('asu_headers.settings')->get('https') ?: FALSE)) {
+      // legacy call: if (isset($options['https']) && variable_get('https', FALSE)) {
+      if ($options['https'] === TRUE) {
+        $options['base_url'] = $base_secure_url;
+        $options['absolute'] = TRUE;
+      }
+      elseif ($options['https'] === FALSE) {
+        $options['base_url'] = $base_insecure_url;
+        $options['absolute'] = TRUE;
+      }
+    }
+    else {
+      $options['base_url'] = $base_url;
+    }
+  }
+
+  // The special path '<front>' links to the default front page.
+  if ($path == '<front>') {
+    $path = '';
+  }
+  elseif (!empty($path) && !$options['alias']) {
+    $language = isset($options['language']) && isset($options['language']->language) ? $options['language']->language : '';
+    $alias = \Drupal::service('path.alias_manager')->getAliasByPath($original_path, $language);
+    // legacy call: $alias = drupal_get_path_alias($original_path, $language);
+    if ($alias != $original_path) {
+
+      // Strip leading slashes from internal path aliases to prevent them
+      // becoming external URLs without protocol. /example.com should not be
+      // turned into //example.com.
+      $path = ltrim($alias, '/');
+    }
+  }
+  $base = $options['absolute'] ? $options['base_url'] . '/' : base_path();
+  $prefix = empty($path) ? rtrim($options['prefix'], '/') : $options['prefix'];
+
+  // With Clean URLs.
+  if (!empty($GLOBALS['conf']['clean_url'])) {
+    $path = drupal_encode_path($prefix . $path);
+    if ($options['query']) {
+      return $base . $path . '?' . drupal_http_build_query_d7($options['query']) . $options['fragment'];
+    }
+    else {
+      return $base . $path . $options['fragment'];
+    }
+  }
+  else {
+    $path = $prefix . $path;
+    $query = array();
+    if (!empty($path)) {
+      $query['q'] = $path;
+    }
+    if ($options['query']) {
+
+      // We do not use array_merge() here to prevent overriding $path via query
+      // parameters.
+      $query += $options['query'];
+    }
+    $query = $query ? '?' . drupal_http_build_query_d7($query) : '';
+    $script = isset($options['script']) ? $options['script'] : '';
+    return $base . $script . $query . $options['fragment'];
+  }
+}
+
+function url_is_external_d7($path) {
+  $colonpos = strpos($path, ':');
+
+  // Some browsers treat \ as / so normalize to forward slashes.
+  $path = str_replace('\\', '/', $path);
+
+  // If the path starts with 2 slashes then it is always considered an external
+  // URL without an explicit protocol part.
+  return strpos($path, '//') === 0 || preg_match('/^\\p{C}/u', $path) !== 0 || $colonpos !== FALSE && !preg_match('![/?#]!', substr($path, 0, $colonpos)) && drupal_strip_dangerous_protocols($path) == $path;
+}
+
+function user_login_destination_d7() {
+  $destination = drupal_get_destination_d7();
+  if ($destination['destination'] == '/user/login') {
+    $destination['destination'] = '/user';
+  }
+  return $destination;
+}
+
+function drupal_get_destination_d7() {
+  $destination =& drupal_static(__FUNCTION__);
+  if (isset($destination)) {
+    return $destination;
+  }
+  if (isset($_GET['destination'])) {
+    $destination = array(
+      'destination' => $_GET['destination'],
+    );
+  }
+  else {
+    $path = $_GET['q'];
+    $query = drupal_http_build_query_d7(drupal_get_query_parameters_d7());
+    if ($query != '') {
+      $path .= '?' . $query;
+    }
+    $destination = array(
+      'destination' => $path,
+    );
+  }
+  return $destination;
+}
+
+function drupal_http_build_query_d7(array $query, $parent = '') {
+  $params = array();
+  foreach ($query as $key => $value) {
+    $key = $parent ? $parent . rawurlencode('[' . $key . ']') : rawurlencode($key);
+
+    // Recurse into children.
+    if (is_array($value)) {
+      $params[] = drupal_http_build_query_d7($value, $key);
+    }
+    elseif (!isset($value)) {
+      $params[] = $key;
+    }
+    else {
+
+      // For better readability of paths in query strings, we decode slashes.
+      $params[] = $key . '=' . str_replace('%2F', '/', rawurlencode($value));
+    }
+  }
+  return implode('&', $params);
+}
+
+function drupal_get_query_parameters_d7(array $query = NULL, array $exclude = array(
+  'q',
+), $parent = '') {
+
+  // Set defaults, if none given.
+  if (!isset($query)) {
+    $query = $_GET;
+  }
+
+  // If $exclude is empty, there is nothing to filter.
+  if (empty($exclude)) {
+    return $query;
+  }
+  elseif (!$parent) {
+    $exclude = array_flip($exclude);
+  }
+  $params = array();
+  foreach ($query as $key => $value) {
+    $string_key = $parent ? $parent . '[' . $key . ']' : $key;
+    if (isset($exclude[$string_key])) {
+      continue;
+    }
+    if (is_array($value)) {
+      $params[$key] = drupal_get_query_parameters_d7($value, $exclude, $string_key);
+    }
+    else {
+      $params[$key] = $value;
+    }
+  }
+  return $params;
+}
+
+function cache_get_d7($cid, $bin = 'cache') {
+  $cache_object = _cache_get_object_d7($bin);
+  if (!is_null($cache_object)) {
+    return $cache_object->get($cid);
+  }
+  else {
+    return '';
+  }
+}
+
+function cache_get_multiple_d7(array &$cids, $bin = 'cache') {
+  $cache_object = _cache_get_object_d7($bin);
+  if (!is_null($cache_object)) {
+    return $cache_object->getMultiple($cids);
+  }
+  else {
+    return '';
+  }
+}
+
+function _cache_get_object_d7($bin) {
+  // We do not use drupal_static() here because we do not want to change the
+  // storage of a cache bin mid-request.
+  static $cache_objects;
+  if (!isset($cache_objects[$bin])) {
+    $class = \Drupal::config('asu_headers.settings')->get('cache_class_' . $bin) ?: '';
+    // legacy call: $class = variable_get('cache_class_' . $bin);
+    if (!isset($class)) {
+      $class = \Drupal::config('asu_headers.settings')->get('cache_default_class') ?: '';
+      // legacy call: $class = variable_get('cache_default_class', 'DrupalDatabaseCache');
+    }
+    if (!$class) {
+      return NULL;
+    }
+    $cache_objects[$bin] = new $class($bin);
+  }
+  return $cache_objects[$bin];
+}
