@@ -46,20 +46,23 @@ class AboutThisItemBlock extends BlockBase {
     $link = Link::fromTextAndUrl(t('Overview'), $url);
     $link = $link->toRenderable();
     $output_links[] = render($link);
-    // Add a link to the "View full metadata" anchor for this node.
-    $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/node/' . $nid . '/full-metadata');
-    $link = Link::fromTextAndUrl(t('View full metadata'), $url);
-    $link = $link->toRenderable();
-    $output_links[] = render($link);
+    // The link to "Full metadata" has been taken out of this block and moved
+    // to the bottom of the page - and as long as there are tabs for nodes to
+    // "View" and "Full metadata", the link in this block is extra.
+    //    // Add a link to the "View full metadata" anchor for this node.
+    //    $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/node/' . $nid . '/full-metadata');
+    //    $link = Link::fromTextAndUrl(t('View full metadata'), $url);
+    //    $link = $link->toRenderable();
+    //    $output_links[] = render($link);
     // Add a link to get the Permalink for this node. Could this be a javascript
     // event that will send the current node's URL to the copy buffer?
-    $url = Url::fromRoute('<current>', array(), array('fragment' => 'permalink'));
+    $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/node/' . $nid);
     $link = Link::fromTextAndUrl(t('Permalink'), $url);
     $link = $link->toRenderable();
     $output_links[] = render($link);
     return [
-      '#markup' => 
-        (count($output_links) > 0) ? 
+      '#markup' =>
+        (count($output_links) > 0) ?
         "<ul class=''><li>" . implode("</li><li>", $output_links) . "</li></ul>" :
         "",
     ];

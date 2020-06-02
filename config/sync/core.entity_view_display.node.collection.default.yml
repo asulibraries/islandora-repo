@@ -13,7 +13,6 @@ dependencies:
     - field.field.node.collection.field_title
     - node.type.collection
   module:
-    - entity_reference_revisions
     - link
     - user
 id: node.collection.default
@@ -22,12 +21,12 @@ bundle: collection
 mode: default
 content:
   display_media_service_file:
-    weight: 10
+    weight: 0
     region: content
     settings: {  }
     third_party_settings: {  }
   field_collaborating_institutions:
-    weight: 111
+    weight: 7
     label: above
     settings:
       link: true
@@ -43,14 +42,14 @@ content:
     type: entity_reference_label
     region: content
   field_description:
-    weight: 102
+    weight: 1
     label: above
     settings: {  }
     third_party_settings: {  }
     type: basic_string
     region: content
   field_external_links:
-    weight: 109
+    weight: 6
     label: above
     settings:
       trim_length: 80
@@ -67,7 +66,7 @@ content:
     third_party_settings: {  }
     region: content
   field_handle:
-    weight: 106
+    weight: 5
     label: above
     settings:
       link_to_entity: false
@@ -75,15 +74,7 @@ content:
     type: string
     region: content
   field_member_of:
-    weight: 105
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_model:
-    weight: 107
+    weight: 4
     label: above
     settings:
       link: true
@@ -91,7 +82,7 @@ content:
     type: entity_reference_label
     region: content
   field_oai_set:
-    weight: 104
+    weight: 3
     label: above
     settings:
       link: true
@@ -99,20 +90,11 @@ content:
     type: entity_reference_label
     region: content
   field_primary_contact:
-    weight: 113
+    weight: 8
     label: above
     settings: {  }
     third_party_settings: {  }
     type: basic_string
-    region: content
-  field_title:
-    weight: 112
-    label: above
-    settings:
-      view_mode: default
-      link: ''
-    third_party_settings: {  }
-    type: entity_reference_revisions_entity_view
     region: content
   flag_email_node:
     weight: 10
@@ -124,13 +106,8 @@ content:
     settings: {  }
     third_party_settings: {  }
     region: content
-  islandora_fits_checksum:
-    weight: 100
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   links:
-    weight: 100
+    weight: 2
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -138,6 +115,9 @@ hidden:
   display_media_entity_view_1: true
   display_media_entity_view_2: true
   display_media_thumbnail: true
+  field_model: true
+  field_title: true
+  islandora_fits_checksum: true
   langcode: true
   openseadragon_media_evas_entity_view_1: true
   openseadragon_media_evas_entity_view_2: true

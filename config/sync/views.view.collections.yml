@@ -4,6 +4,7 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - node.type.collection
+    - system.menu.main
   module:
     - node
     - user
@@ -214,6 +215,15 @@ display:
     display_options:
       display_extenders: {  }
       path: collections
+      menu:
+        type: normal
+        title: 'Browse Collections'
+        description: 'Browse all of our digital collections'
+        expanded: false
+        parent: ''
+        weight: 10
+        context: '0'
+        menu_name: main
     cache_metadata:
       max-age: -1
       contexts:

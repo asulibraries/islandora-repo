@@ -21,13 +21,13 @@ bundle: collection
 mode: teaser
 content:
   display_media_thumbnail:
-    weight: 10
+    weight: 0
     region: content
     settings: {  }
     third_party_settings: {  }
   field_collaborating_institutions:
     type: entity_reference_label
-    weight: 0
+    weight: 2
     region: content
     label: above
     settings:
@@ -35,7 +35,7 @@ content:
     third_party_settings: {  }
   field_description:
     type: basic_string
-    weight: 0
+    weight: 1
     region: content
     label: above
     settings: {  }
@@ -55,17 +55,8 @@ content:
     settings: {  }
     third_party_settings: {  }
     region: content
-  langcode:
-    type: language
-    weight: 0
-    region: content
-    label: above
-    settings:
-      link_to_entity: false
-      native_language: false
-    third_party_settings: {  }
   links:
-    weight: 100
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -82,6 +73,7 @@ hidden:
   field_primary_contact: true
   field_title: true
   islandora_fits_checksum: true
+  langcode: true
   openseadragon_media_evas_entity_view_1: true
   openseadragon_media_evas_entity_view_2: true
   openseadragon_media_evas_service_file: true

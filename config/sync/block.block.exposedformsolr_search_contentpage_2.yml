@@ -4,6 +4,7 @@ dependencies:
   config:
     - views.view.solr_search_content
   module:
+    - node
     - system
     - views
   theme:
@@ -26,3 +27,10 @@ visibility:
     pages: '/search-collection/*'
     negate: false
     context_mapping: {  }
+  node_type:
+    id: node_type
+    bundles:
+      collection: collection
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'

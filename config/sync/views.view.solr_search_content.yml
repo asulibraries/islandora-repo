@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.storage.node.field_description
     - search_api.index.default_solr_index
   module:
     - node
@@ -66,12 +67,34 @@ display:
           default_row_class: true
           uses_fields: false
       row:
-        type: fields
+        type: search_api
         options:
-          default_field_elements: true
-          inline: {  }
-          separator: ''
-          hide_empty: false
+          view_modes:
+            'entity:node':
+              article: default
+              asu_repository_item: search_result
+              collection: default
+              institution: default
+              islandora_object: default
+              page: default
+            'entity:taxonomy_term':
+              copyright_statements: default
+              corporate_body: default
+              family: default
+              genre: default
+              geo_location: default
+              identifier_types: default
+              language: default
+              note_types: default
+              oai_sets: default
+              person: default
+              physical_form: default
+              preservation_states: default
+              resource_types: default
+              reuse_permissions: default
+              subject: default
+              tags: default
+              temporal: default
       filters:
         type:
           id: type
@@ -358,6 +381,76 @@ display:
           multi_type: separator
           multi_separator: ', '
           plugin_id: search_api
+        field_description:
+          id: field_description
+          table: search_api_datasource_default_solr_index_entity_node
+          field: field_description
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: basic_string
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          field_rendering: true
+          fallback_handler: search_api
+          fallback_options:
+            link_to_item: false
+            use_highlighting: false
+            multi_type: separator
+            multi_separator: ', '
+          entity_type: node
+          plugin_id: search_api_field
     cache_metadata:
       contexts:
         - 'languages:language_content'
@@ -366,7 +459,8 @@ display:
         - url.query_args
       cacheable: false
       max-age: -1
-      tags: {  }
+      tags:
+        - 'config:field.storage.node.field_description'
   block_1:
     display_plugin: block
     id: block_1
@@ -474,12 +568,34 @@ display:
           row_class_default: true
           row_class_custom: ''
       row:
-        type: fields
+        type: search_api
         options:
-          default_field_elements: true
-          inline: {  }
-          separator: ''
-          hide_empty: false
+          view_modes:
+            'entity:node':
+              article: default
+              asu_repository_item: search_result
+              collection: default
+              institution: default
+              islandora_object: default
+              page: default
+            'entity:taxonomy_term':
+              copyright_statements: default
+              corporate_body: default
+              family: default
+              genre: default
+              geo_location: default
+              identifier_types: default
+              language: default
+              note_types: default
+              oai_sets: default
+              person: default
+              physical_form: default
+              preservation_states: default
+              resource_types: default
+              reuse_permissions: default
+              subject: default
+              tags: default
+              temporal: default
       use_more: true
       use_more_always: false
       use_more_text: more
@@ -491,7 +607,8 @@ display:
         - url.query_args
       cacheable: false
       max-age: -1
-      tags: {  }
+      tags:
+        - 'config:field.storage.node.field_description'
   page_1:
     display_plugin: page
     id: page_1
@@ -611,7 +728,8 @@ display:
         - url.query_args
       cacheable: false
       max-age: -1
-      tags: {  }
+      tags:
+        - 'config:field.storage.node.field_description'
   page_2:
     display_plugin: page
     id: page_2
@@ -624,7 +742,7 @@ display:
         title: false
         filters: false
         filter_groups: false
-        relationships: false
+        relationships: true
         arguments: false
         header: false
       path: search-collection/%
@@ -725,7 +843,6 @@ display:
         operator: AND
         groups:
           1: AND
-      relationships: {  }
       menu:
         type: none
         title: Search
@@ -804,4 +921,5 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-      tags: {  }
+      tags:
+        - 'config:field.storage.node.field_description'

@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.node.collection_browse_teaser
+    - core.entity_view_mode.node.search_result
     - field.field.node.collection.field_collaborating_institutions
     - field.field.node.collection.field_description
     - field.field.node.collection.field_external_links
@@ -15,10 +15,10 @@ dependencies:
     - node.type.collection
   module:
     - user
-id: node.collection.collection_browse_teaser
+id: node.collection.search_result
 targetEntityType: node
 bundle: collection
-mode: collection_browse_teaser
+mode: search_result
 content:
   display_media_thumbnail:
     weight: 0
@@ -34,8 +34,8 @@ content:
     type: entity_reference_label
     region: content
   field_description:
-    weight: 1
-    label: hidden
+    weight: 2
+    label: above
     settings: {  }
     third_party_settings: {  }
     type: basic_string
@@ -44,6 +44,13 @@ content:
     weight: 100
     settings: {  }
     third_party_settings: {  }
+    region: content
+  field_primary_contact:
+    weight: 3
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
     region: content
   flag_email_node:
     weight: 10
@@ -56,7 +63,7 @@ content:
     third_party_settings: {  }
     region: content
   search_api_excerpt:
-    weight: 2
+    weight: 1
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -70,7 +77,6 @@ hidden:
   field_member_of: true
   field_model: true
   field_oai_set: true
-  field_primary_contact: true
   field_title: true
   islandora_fits_checksum: true
   langcode: true
