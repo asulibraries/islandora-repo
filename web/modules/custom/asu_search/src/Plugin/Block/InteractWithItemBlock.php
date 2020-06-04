@@ -57,56 +57,76 @@ class InteractWithItemBlock extends BlockBase {
     // Add a link to get the Permalink for this node. Could this be a javascript
     // event that will send the current node's URL to the copy buffer?
     $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/node/' . $nid);
-    $link = Link::fromTextAndUrl(t('Permalink'), $url);
-    $link = $link->toRenderable();
-    $output_links[] = render($link);
+    $output_links[] = 'Permalink <span class="copy_permalink_link"><img src="' .
+          \Drupal::request()->getSchemeAndHttpHost() . "/" .
+            drupal_get_path("module", "asu_search") .
+            '/images/permalink_glyph.png" class="link_cursor" width="18" height="18" /></span>';
     $iiif_section = $this->get_IIIF_section($node_url);
-    $citations_section = $this->get_citations_section($node_url);
+    $citations_section = $this->get_citations_section($node_url, $node);
     $print_and_share_section = $this->get_print_and_share_section($node_url);
     return [
-        'unordered-list' => [
-          '#type' => 'item',
-          '#markup' =>
-            ((count($output_links) > 0) ?
-              "<ul class=''><li>" . implode("</li><li>", $output_links) . "</li></ul>" :
-              "")
+      'unordered-list' => [
+        '#type' => 'item',
+        '#attached' => [
+          'library' => [
+            'asu_search/interact',
+          ],
         ],
-        $citations_section,
-        $print_and_share_section,
-        'iiif-section' => [
-          '#type' => 'container',
-          $iiif_section
-        ]
-      ];
+        '#markup' =>
+          ((count($output_links) > 0) ?
+            "<ul class=''><li>" . implode("</li><li>", $output_links) . "</li></ul>" :
+            ""),
+        'permalink' => [
+          '#type' => 'textfield',
+          '#id' => 'permalink_interact_editbox',
+          '#attributes' => [
+            'class' => array('disabled_small_prompt'),
+            'readonly' => TRUE,
+          ],
+          '#value' => $url->toString(),
+        ],
+      ],
+      $citations_section,
+      $print_and_share_section,
+      'iiif-section' => [
+        '#type' => 'container',
+        $iiif_section
+      ]
+    ];
   }
 
   private function get_IIIF_section($url) {
     return [
       'iiif-container' => [
         '#type' => 'item',
-        '#title' => 'International Image Interoperability Framework',
+        '#title' => t('International Image Interoperability Framework'),
+        '#prefix' => '<br class="clearfloat" />',
+        '#id' => 'iiif_box',
         'container' => [
           '#type' => 'container',
           'left-block' => [
             '#type' => 'item',
-            '#markup' => '          <div class="float_l_18 image">
-              <a href="https://iiif.io/technical-details/" target="_blank">
+            '#prefix' => '<div class="float_l_18">',
+            '#suffix' => '</div>',
+            '#markup' => '            <a href="https://iiif.io/technical-details/" target="_blank">
                 <img class="img " src="' .
                 \Drupal::request()->getSchemeAndHttpHost() . "/" .
                 drupal_get_path("module", "asu_search") . '/images/iiif_logo.png">
-              </a>
-            </div>',
+              </a>',
           ],
+          // Why does drupal make everything so difficult anymore... QUIT STRIPPING
+          // out my inline javascript onclick events!
           'right-block' => [
             '#type' => 'item',
             'input-box' => [
               '#type' => 'textfield',
-              '#value' => \Drupal::request()->getSchemeAndHttpHost() . '/' . $url->toString() . '/manifest',
+              '#id' => 'iiif_editbox',
+              '#value' => \Drupal::request()->getSchemeAndHttpHost() . $url->toString() . '/manifest',
             ],
             '#prefix' => '<div class="float_l_80"><p><span>We support the </span><a href="https://iiif.io/technical-details/" target="_blank">IIIF</a><span> Presentation API</span></p>',
             '#suffix' => '<!-- Unnamed (Rectangle) -->
             <div>
-              <span class="copy_button">Copy link</span>
+              <a id="copy_manifest_link" class="copy_button">Copy link</a>
             </div>
           </div>',
           ],
@@ -115,7 +135,12 @@ class InteractWithItemBlock extends BlockBase {
     ];
   }
 
-  private function get_citations_section($url) {
+  private function get_citations_section($url, $node) {
+    // To get the node's custom field value...
+    //    $citation = (is_object($node)) ?
+    //      $node->get("field_preferred_citation")->getValue() : "";
+    //    $citation_string = (is_array($citation)) ?
+    //      $citation[0]['value'] : "";
     $links = array();
     $links[] = [
         '#markup' => 'Citing this image',
@@ -140,10 +165,10 @@ class InteractWithItemBlock extends BlockBase {
     return [
       'citations-container' => [
         '#type' => 'item',
-        '#title' => 'Citations, Rights and Reuse',
-        '#attributes' => [
-          'class' => array('float_l_49'),
-        ],
+        '#title' => t('Citations, Rights and Reuse'),
+        '#id' => 'citations_box',
+        '#prefix' => /* $citation_string . */ '<div class="float_l_49">',
+        '#suffix' => '</div>',
         'container' => [
           '#type' => 'container',
           'the-items' => [
@@ -156,10 +181,10 @@ class InteractWithItemBlock extends BlockBase {
     return [
       'print-container' => [
         '#type' => 'item',
-        '#title' => 'Print and share',
-        '#attributes' => [
-          'class' => array('float_l_49'),
-        ],
+        '#title' => t('Print and share'),
+        '#id' => 'print_and_share_box',
+        '#prefix' => '<div class="float_l_49">',
+        '#suffix' => '</div>',
         'container' => [
           '#type' => 'container',
           'sharelinks' => [

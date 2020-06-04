@@ -39,7 +39,7 @@ class AgentByRole extends ProcessorPluginBase {
         'processor_id' => $this->getPluginId(),
       ];
       $properties['asu_agent_aut'] = new ProcessorProperty($definition);
-      $properties['asu_agent_ths'] = new ProcessorProperty($definition); 
+      $properties['asu_agent_ths'] = new ProcessorProperty($definition);
       // thesis advisor
     }
 

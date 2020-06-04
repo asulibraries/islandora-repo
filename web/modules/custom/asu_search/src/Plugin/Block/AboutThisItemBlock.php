@@ -57,14 +57,24 @@ class AboutThisItemBlock extends BlockBase {
     // Add a link to get the Permalink for this node. Could this be a javascript
     // event that will send the current node's URL to the copy buffer?
     $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/node/' . $nid);
-    $link = Link::fromTextAndUrl(t('Permalink'), $url);
-    $link = $link->toRenderable();
-    $output_links[] = render($link);
+    $output_links[] = 'Permalink <span class="copy_permalink_link"><img src="' .
+          \Drupal::request()->getSchemeAndHttpHost() . "/" .
+            drupal_get_path("module", "asu_search") .
+            '/images/permalink_glyph.png" class="link_cursor" width="18" height="18" /></span>';
     return [
       '#markup' =>
         (count($output_links) > 0) ?
         "<ul class=''><li>" . implode("</li><li>", $output_links) . "</li></ul>" :
         "",
+      'permalink' => [
+        '#type' => 'textfield',
+        '#id' => 'permalink_about_editbox',
+        '#attributes' => [
+          'class' => array('disabled_small_prompt'),
+        ],
+        'readonly' => TRUE,
+        '#value' => $url->toString(),
+      ],
     ];
   }
 
