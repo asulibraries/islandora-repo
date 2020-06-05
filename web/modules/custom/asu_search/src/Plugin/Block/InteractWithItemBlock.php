@@ -135,33 +135,38 @@ class InteractWithItemBlock extends BlockBase {
     ];
   }
 
-  private function get_citations_section($url, $node) {
+  private function get_citations_section($node_url, $node) {
     // To get the node's custom field value...
     //    $citation = (is_object($node)) ?
     //      $node->get("field_preferred_citation")->getValue() : "";
     //    $citation_string = (is_array($citation)) ?
     //      $citation[0]['value'] : "";
-    $links = array();
-    $links[] = [
-        '#markup' => 'Citing this image',
-      ];
-    $links[] = [
-        '#markup' => 'Responsibilities of use',
-      ];
-    $links[] = [
-        '#markup' => 'Licensing and Permissions',
-      ];
-    $links[] = [
-        '#markup' => 'Linking and Embedding',
-      ];
-    $links[] = [
-        '#markup' => 'Copies and Reproductions',
-      ];
+    $url_string = \Drupal::request()->getSchemeAndHttpHost() . $node_url->toString();
+    $output_links = array();
+    $url = Url::fromUri($url_string . '/citation/#citing');
+    $link = Link::fromTextAndUrl(t('Citing this image'), $url)->toRenderable();
+    $output_links[] = render($link);
+    $url = Url::fromUri($url_string . '/citation/#responsibilities');
+    $link = Link::fromTextAndUrl(t('Responsibilities of use'), $url)->toRenderable();
+    $output_links[] = render($link);
+    $url = Url::fromUri($url_string . '/citation/#licensing');
+    $link = Link::fromTextAndUrl(t('Licensing and Permissions'), $url)->toRenderable();
+    $output_links[] = render($link);
+    $url = Url::fromUri($url_string . '/citation/#linking');
+    $link = Link::fromTextAndUrl(t('Linking and Embedding'), $url)->toRenderable();
+    $output_links[] = render($link);
+    $url = Url::fromUri($url_string . '/citation/#copies');
+    $link = Link::fromTextAndUrl(t('Copies and Reproductions'), $url)->toRenderable();
+    $output_links[] = render($link);
     $render_this = [
-      '#theme' => 'item_list',
-      '#items' => $links,
+      '#markup' =>
+        ((count($output_links) > 0) ?
+          "<ul class=''><li>" . implode("</li><li>", $output_links) . "</li></ul>" :
+          ""),
+//      '#theme' => 'item_list',
+//      '#items' => $links,
     ];
-    $rendered_list = render($render_this);
+//    $rendered_list = render($render_this);
     return [
       'citations-container' => [
         '#type' => 'item',
@@ -173,7 +178,7 @@ class InteractWithItemBlock extends BlockBase {
           '#type' => 'container',
           'the-items' => [
             '#type' => 'item',
-            '#markup' => $rendered_list,
+            $render_this
           ]]]];
   }
 
