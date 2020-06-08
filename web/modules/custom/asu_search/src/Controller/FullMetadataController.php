@@ -52,7 +52,8 @@ class FullMetadataController extends ControllerBase {
     $nid = \Drupal::routeMatch()->getParameter('node');
     if ($nid) {
       $node = \Drupal\node\Entity\Node::load($nid);
-      return node_view($node, 'full_metadata');
+      $content_type = $node->getType();
+      return ($content_type == 'asu_repository_item') ? node_view($node, 'full_metadata') : array();
     } else {
       return array();
     }
