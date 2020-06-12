@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.node.open_seadragon
     - field.storage.node.field_copyright_date
     - field.storage.node.field_copyright_statement
     - field.storage.node.field_preferred_citation
@@ -10,13 +11,14 @@ dependencies:
     - node.type.asu_repository_item
   module:
     - datetime
+    - media
     - node
     - text
     - user
 id: citations_rights_reuse
-label: 'Citations Rights Reuse'
+label: 'ASU Repo Item Views'
 module: views
-description: ''
+description: 'these are individual views of a single item (node).'
 tag: ''
 base_table: node_field_data
 base_field: nid
@@ -744,6 +746,59 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
+        view_media:
+          id: view_media
+          table: media
+          field: view_media
+          relationship: reverse__media__field_media_of
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          text: view
+          output_url_as_text: false
+          absolute: false
+          entity_type: media
+          plugin_id: entity_link
       filters:
         status:
           value: '1'
@@ -801,11 +856,17 @@ display:
           entity_field: type
           plugin_id: bundle
       sorts: {  }
-      title: 'Citations Rights Reuse'
+      title: 'View Image'
       header: {  }
       footer: {  }
       empty: {  }
-      relationships: {  }
+      relationships:
+        reverse__media__field_media_of:
+          id: reverse__media__field_media_of
+          table: node_field_data
+          field: reverse__media__field_media_of
+          entity_type: node
+          plugin_id: entity_reverse
       arguments:
         nid:
           id: nid
@@ -873,6 +934,51 @@ display:
         weight: 10
         context: '0'
         menu_name: main
+      title: 'Citations, Rights & Reuse'
+      defaults:
+        title: false
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
+        - 'user.node_grants:view'
+        - user.permissions
+      tags:
+        - 'config:field.storage.node.field_copyright_date'
+        - 'config:field.storage.node.field_copyright_statement'
+        - 'config:field.storage.node.field_preferred_citation'
+        - 'config:field.storage.node.field_reuse_permissions'
+        - 'config:field.storage.node.field_rights'
+  page_2:
+    display_plugin: page
+    id: page_2
+    display_title: Page
+    position: 1
+    display_options:
+      display_extenders: {  }
+      path: node/%node/openseadragon_view
+      menu:
+        type: none
+        title: 'Citation, Rights, Re-Use'
+        description: ''
+        expanded: false
+        parent: standard.front_page
+        weight: 10
+        context: '0'
+        menu_name: main
+      style:
+        type: default
+        options: {  }
+      defaults:
+        style: false
+        row: false
+      row:
+        type: 'entity:node'
+        options:
+          relationship: none
+          view_mode: open_seadragon
     cache_metadata:
       max-age: -1
       contexts:
