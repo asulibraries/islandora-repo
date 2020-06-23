@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\asu_search\Plugin\Block;
+namespace Drupal\asu_item_extras\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Url;
@@ -21,7 +21,6 @@ class ExploreThisItemBlock extends BlockBase {
    * {@inheritdoc}
    */
   public function build() {
-    
     // depending on what the islandora_object model is, the links will differ.
     $node = \Drupal::routeMatch()->getParameter('node');
     if ($node) {
@@ -30,8 +29,6 @@ class ExploreThisItemBlock extends BlockBase {
       $nid = 0;
     }
 
-//    $field_model = (!empty($node) && $node->hasField('field_model')) ?
-//      $node->get('field_islandora_model')->getString() : '';
     $field_model_tid = $node->get('field_model')->getString();
     $field_model_mappings = array(
         '22' => 'Audio',
@@ -52,7 +49,8 @@ class ExploreThisItemBlock extends BlockBase {
       // get the node's service file information from the node - just use the openseadragon view
       $link = $link->toRenderable();
       $output_links[] = render($link);
-    } elseif ($field_model == 'Paged Content' || $field_model == 'Page') {
+    } elseif ($field_model == 'Paged Content' || $field_model == 'Page' ||
+      $field_model == 'Digital Document') {
       // "Start reading" and "Show all pages" links as well as a search box.
       // get the node's openseadragon viewer url.
       $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/node/' . $nid . '/openseadragon_view');
@@ -63,14 +61,13 @@ class ExploreThisItemBlock extends BlockBase {
       $link = Link::fromTextAndUrl(t('Show all pages'), $url);
       $link = $link->toRenderable();
       $output_links[] = render($link);
-
     }
     $return = [
       '#cache' => ['max-age' => 0],
       '#markup' =>
         ((count($output_links) > 0) ?
         "<ul class=''><li>" . implode("</li><li>", $output_links) . "</li></ul>" :
-        "") . '[' .$field_model_tid . ', ' . $nid . ']' . "<pre>" . $field_model . "</pre>",
+        ""),
     ];
     if ($field_model == 'Paged Content') {
       $return['permalink'] = [
@@ -78,8 +75,8 @@ class ExploreThisItemBlock extends BlockBase {
           '#id' => 'permalink_about_editbox',
           '#attributes' => [
             'class' => array('disabled_small_prompt'),
+            'readonly' => TRUE,
           ],
-          'readonly' => TRUE,
           '#value' => $url->toString(),
         ];
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\asu_search\Controller;
+namespace Drupal\asu_item_extras\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\user\UserInterface;
@@ -27,7 +27,7 @@ class FullMetadataController extends ControllerBase {
   }
 
   /**
-   * Title callback for the asu_search.user_tab route.
+   * Title callback for the asu_item_extras.user_tab route.
    *
    * @param \Drupal\user\UserInterface $user
    *   The user.
@@ -40,7 +40,7 @@ class FullMetadataController extends ControllerBase {
   }
 
   /**
-   * Builds content for the asu_search controllers.
+   * Builds content for the asu_item_extras controllers.
    *
    * @param \Drupal\user\UserInterface|null $user
    *   (optional) The user account.

@@ -1,5 +1,5 @@
 langcode: en
-status: true
+status: false
 dependencies:
   module:
     - asu_item_extras
@@ -7,17 +7,17 @@ dependencies:
     - system
   theme:
     - asulib
-id: explorethisitem
+id: itemtopsection
 theme: asulib
-region: sidebar_first
+region: leaderboard
 weight: 0
 provider: null
-plugin: explore_this_item_block
+plugin: asu_item_top_section
 settings:
-  id: explore_this_item_block
-  label: 'Explore this item'
+  id: asu_item_top_section
+  label: 'Item top section'
   provider: asu_item_extras
-  label_display: visible
+  label_display: '0'
 visibility:
   node_type:
     id: node_type

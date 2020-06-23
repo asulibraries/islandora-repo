@@ -1,0 +1,7 @@
+asu_item_extras.full_metadata_view:
+  path: '/node/{node}/full-metadata'
+  defaults:
+    _controller: '\Drupal\asu_item_extras\Controller\FullMetadataController::buildContent'
+    _title: 'Full metadata'
+  requirements:
+    _permission: 'access content'

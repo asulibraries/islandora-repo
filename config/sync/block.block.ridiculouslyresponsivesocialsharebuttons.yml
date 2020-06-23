@@ -2,27 +2,33 @@ langcode: en
 status: true
 dependencies:
   module:
-    - asu_search
     - node
+    - rrssb
+    - system
   theme:
     - asulib
-id: interactwiththisitem
+id: ridiculouslyresponsivesocialsharebuttons
 theme: asulib
-region: content
-weight: -7
+region: sidebar_first
+weight: 0
 provider: null
-plugin: interact_with_item_block
+plugin: rrssb_block
 settings:
-  id: interact_with_item_block
-  label: 'Interact with this item'
-  provider: asu_search
+  id: rrssb_block
+  label: 'Share this content'
+  provider: rrssb
   label_display: visible
+  button_set: default
 visibility:
   node_type:
     id: node_type
     bundles:
       asu_repository_item: asu_repository_item
-      islandora_object: islandora_object
     negate: false
     context_mapping:
       node: '@node.node_route_context:node'
+  request_path:
+    id: request_path
+    pages: '/node/*'
+    negate: false
+    context_mapping: {  }

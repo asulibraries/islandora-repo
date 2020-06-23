@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\asu_search\Plugin\Block;
+namespace Drupal\asu_item_extras\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Url;
@@ -56,23 +56,30 @@ class AboutThisItemBlock extends BlockBase {
     //    $output_links[] = render($link);
     // Add a link to get the Permalink for this node. Could this be a javascript
     // event that will send the current node's URL to the copy buffer?
-    $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/node/' . $nid);
-    $output_links[] = 'Permalink <span class="copy_permalink_link"><img src="' .
+    $url_str = \Drupal::request()->getSchemeAndHttpHost() . '/node/' . $nid;
+    $url = Url::fromUri($url_str);
+    $output_links[] = 'Permalink <span class="copy_permalink_link" title="' . $url_str .
+          '"><img src="' .
           \Drupal::request()->getSchemeAndHttpHost() . "/" .
-            drupal_get_path("module", "asu_search") .
-            '/images/permalink_glyph.png" class="link_cursor" width="18" height="18" /></span>';
+            drupal_get_path("module", "asu_item_extras") .
+            '/images/link.svg" class="link_cursor" width="18" height="18" /></span>';
     return [
       '#markup' =>
         (count($output_links) > 0) ?
         "<ul class=''><li>" . implode("</li><li>", $output_links) . "</li></ul>" :
         "",
       'permalink' => [
-        '#type' => 'textfield',
+        '#type' => 'hidden',
         '#id' => 'permalink_about_editbox',
+        '#attached' => [
+          'library' => [
+            'asu_item_extras/interact',
+          ],
+        ],
         '#attributes' => [
           'class' => array('disabled_small_prompt'),
+            'readonly' => TRUE,
         ],
-        'readonly' => TRUE,
         '#value' => $url->toString(),
       ],
     ];

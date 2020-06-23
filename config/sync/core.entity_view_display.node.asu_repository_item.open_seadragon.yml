@@ -44,7 +44,6 @@ dependencies:
     - field.field.node.asu_repository_item.field_weight
     - node.type.asu_repository_item
   module:
-    - entity_reference_revisions
     - user
 id: node.asu_repository_item.open_seadragon
 targetEntityType: node
@@ -52,20 +51,11 @@ bundle: asu_repository_item
 mode: open_seadragon
 content:
   field_description:
-    weight: 2
+    weight: 1
     label: above
     settings: {  }
     third_party_settings: {  }
     type: basic_string
-    region: content
-  field_title:
-    type: entity_reference_revisions_entity_view
-    weight: 1
-    label: above
-    settings:
-      view_mode: default
-      link: ''
-    third_party_settings: {  }
     region: content
   openseadragon_media_evas_entity_view_1:
     weight: 0
@@ -113,6 +103,7 @@ hidden:
   field_subjects_name: true
   field_table_of_contents: true
   field_temporal_subject: true
+  field_title: true
   field_typed_identifier: true
   field_weight: true
   islandora_fits_checksum: true

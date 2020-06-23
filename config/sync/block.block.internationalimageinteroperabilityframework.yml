@@ -1,29 +1,28 @@
 langcode: en
-status: true
+status: false
 dependencies:
   module:
-    - asu_search
+    - asu_item_extras
     - node
     - system
   theme:
     - asulib
-id: printandshareblock
+id: internationalimageinteroperabilityframework
 theme: asulib
-region: sidebar_first
+region: leaderboard
 weight: 0
 provider: null
-plugin: print_and_share_item_block
+plugin: asu_item_iiif
 settings:
-  id: print_and_share_item_block
-  label: 'Print and share block'
-  provider: asu_search
+  id: asu_item_iiif
+  label: 'International Image Interoperability Framework'
+  provider: asu_item_extras
   label_display: visible
 visibility:
   node_type:
     id: node_type
     bundles:
       asu_repository_item: asu_repository_item
-      islandora_object: islandora_object
     negate: false
     context_mapping:
       node: '@node.node_route_context:node'

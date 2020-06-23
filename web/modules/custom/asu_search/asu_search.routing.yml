@@ -7,11 +7,3 @@ asu_search.admin_settings_form:
     _permission: 'access administration pages'
   options:
     _admin_route: TRUE
-
-asu_search.full_metadata_view:
-  path: '/node/{node}/full-metadata'
-  defaults:
-    _controller: '\Drupal\asu_search\Controller\FullMetadataController::buildContent'
-    _title: 'Full metadata'
-  requirements:
-    _permission: 'access content'
