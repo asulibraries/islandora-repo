@@ -98,7 +98,7 @@ function content_change_digest_get_recipients() {
   }
   foreach ($config_users_ids as $config_user_id) {
     $user = User::load($config_user_id);
-    if (!$user->field_opt_out_of_content_changed->value) {
+    if (is_object($user) && !$user->field_opt_out_of_content_changed->value) {
       $userlist[$user->get('uid')->value] = $user->get('name')->value;
     }
   }
