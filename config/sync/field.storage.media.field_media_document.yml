@@ -3,7 +3,7 @@ status: true
 dependencies:
   enforced:
     module:
-      - media
+      - islandora_core_feature
   module:
     - file
     - media
@@ -12,10 +12,10 @@ field_name: field_media_document
 entity_type: media
 type: file
 settings:
-  uri_scheme: public
-  target_type: file
   display_field: false
   display_default: false
+  uri_scheme: fedora
+  target_type: file
 module: file
 locked: false
 cardinality: 1

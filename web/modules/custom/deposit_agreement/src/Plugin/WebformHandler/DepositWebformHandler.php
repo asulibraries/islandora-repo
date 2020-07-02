@@ -13,6 +13,7 @@ use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\webform\WebformSubmissionConditionsValidatorInterface;
 use Drupal\webform\WebformTokenManagerInterface;
+use Drupal\user\Entity\User;
 
 /**
  * Deposit webform Handler.

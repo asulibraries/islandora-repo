@@ -1,0 +1,341 @@
+# Uninstall this config when the feature is uninstalled
+dependencies:
+  enforced:
+    module:
+      - asu_migrate
+
+id: etd_node
+label: Import ETD Nodes from CSV
+migration_group: migrate_etd_csv
+
+source:
+  plugin: csv
+  path: modules/custom/asu_migrate/data/collection_7_items_decoded.csv
+
+  # 1 means you have a header row, 0 means you don't
+  header_row_count: 1
+
+  # Each migration needs a unique key per row in the csv.  Here we're using the file path.
+  keys:
+    - Item ID
+
+  # You can't enter string literals into a process plugin, but you can give it a constant as a 'source'.
+  constants:
+    # We're tagging our nodes as Images
+    model: Digital Document
+
+    # Everything gets created as admin
+    uid: 1
+    cid: 'Electronic Thesis and Dissertations'
+    pres_state: '558' # Not Preserved
+    handle: "https://hdl.handle.net/2286/R.I."
+    in_copyright_tid: '516' #In Copyright
+    rights_tid: '568' #All Rights Reserved
+
+# Personal Contributors,Identifiers,Resource Types,
+# field_display_hints: (taxo)
+# field_resource_type: (taxo)
+# field_model (taxo)
+# field_genre (taxo)
+# Embargo Date - will this go on the media?
+# Actual files
+# public/private status
+# download status on deriv media
+# download status on master/original media
+# Set fields using values from the CSV
+# collaborating institutions
+process:
+  field_extent:
+    plugin: skip_on_empty
+    source: Extent
+    method: process
+
+  field_edtf_date_created:
+    plugin: skip_on_empty
+    source: Date Created
+    method: process
+
+  # Make the object an 'Digital Document'
+  # if it only has 1 attachment
+  # otherwise make it a Paged Content object
+  field_model:
+    -
+      plugin: str_replace
+      source: Attachment Count
+      search: 1
+      replace: 'Digital Document'
+    -
+      plugin: str_replace
+      search: "/[2-9]/"
+      regex: true
+      replace: 'Paged Content'
+    - 
+      plugin: entity_lookup
+      entity_type: taxonomy_term
+      value_key: name
+      bundle_key: vid
+      bundle: islandora_models
+
+  # set the display hint based on if the ETD has one object or not, assuming its a PDF
+  field_display_hints:
+    -
+      plugin: str_replace
+      source: Attachment Count
+      search: 1
+      replace: PDFjs
+    - 
+      plugin: entity_lookup
+      entity_type: taxonomy_term
+      value_key: name
+      bundle_key: vid
+      bundle: islandora_models
+
+  field_description:
+    plugin: skip_on_empty
+    source: Description
+    method: process
+
+  field_copyright_date:
+    plugin: skip_on_empty
+    source: Date Created
+    method: process
+  
+  field_series:
+    plugin: skip_on_empty
+    source: Series
+    method: process
+
+  field_preferred_citation:
+    plugin: skip_on_empty
+    source: Citation
+    method: process
+
+  field_title/target_id:
+    -
+      plugin: migration
+      migration: etd_complex_titles
+      no_stub: true
+      source: Item ID
+    -
+      plugin: extract
+      index:
+        - '0'
+  field_title/target_revision_id:
+    -
+      plugin: migration
+      migration: etd_complex_titles
+      no_stub: true
+      source: Item ID
+    -
+      plugin: extract
+      index:
+        - 1
+
+  title: Item Title
+  uid: constants/uid
+  field_pid: Item ID
+
+  field_preservation_state:
+    plugin: entity_lookup
+    source: constants/pres_state
+    entity_type: taxonomy_term
+    bundle_key: vid
+    value_key: tid
+    bundle: preservation_states
+  
+  field_language:
+    plugin: entity_lookup
+    source: Language
+    entity_type: taxonomy_term
+    value_key: name
+    bundle_key: vid
+    bundle: language
+
+  field_handle:
+    plugin: concat
+    source:
+      - constants/handle
+      - Item ID
+
+  moderation_state:
+    plugin: static_map
+    source: Visibility
+    map:
+      Private: draft
+      Public: published
+
+  pseudo_notes:
+    plugin: migration_lookup
+    migration: etd_notes
+    source: 'Item ID'
+  field_note_para:
+    plugin: sub_process
+    source:
+      - '@pseudo_notes'
+    process:
+      target_id: '0'
+      target_revision_id: '1'
+    
+
+  field_copyright_statement:
+    plugin: entity_lookup
+    source: constants/in_copyright_tid
+    # source: Copyright
+    entity_type: taxonomy_term
+    bundle_key: vid
+    value_key: tid
+    # value_key: field_source
+    bundle: copyright_statements
+
+  field_reuse_permissions:
+    # -
+    #   plugin: skip_on_empty
+    #   method: process
+    #   source: Reuse
+    -
+      plugin: entity_lookup
+      source: constants/rights_tid
+      # source: Reuse
+      entity_type: taxonomy_term
+      bundle_key: vid
+      value_key: tid
+      # value_key: name
+      bundle: reuse_permissions
+
+  field_member_of:
+    source: constants/cid
+    plugin: entity_lookup
+    entity_type: node
+    access_check: 0
+    bundle_key: type
+    bundle: collection
+    value_key: title
+  
+  # assuming all topical subjects right now, would have to add URIs later i guess
+  field_subject:
+    -
+      plugin: skip_on_empty
+      source: Subjects 
+      method: process
+    -
+      plugin: explode
+      delimiter: ' || '
+    -
+      plugin: entity_lookup
+      entity_type: taxonomy_term
+      value_key: name
+      bundle_key: vid
+      bundle: subject
+
+  inst_conts:
+    - 
+      plugin: skip_on_empty
+      source: Institutional Contributors
+      method: process
+    - 
+      plugin: explode
+      delimiter: " || "
+    -
+      plugin: str_replace
+      search: " (Publisher)"
+      case_insensitive: true
+      replace: ""
+    -
+      plugin: str_to_assoc
+      key: 'name'
+  
+  linked_agent_pub:
+    plugin: sub_process
+    source: '@inst_conts'
+    process:
+      target_id:
+        plugin: entity_generate
+        source: name
+        entity_type: taxonomy_term
+        value_key: name
+        bundle_key: vid
+        bundle: corporate_body
+      rel_type:
+        plugin: default_value
+        default_value: 'relators:pbl'
+
+  aut_conts:
+    - 
+      plugin: skip_on_empty
+      source: Authors
+      method: process
+    - 
+      plugin: explode
+      delimiter: " || "
+    -
+      plugin: str_replace
+      search: " (Author)"
+      case_insensitive: true
+      replace: ""
+    -
+      plugin: str_to_assoc
+      key: 'name'
+  
+  linked_agent_aut:
+    plugin: sub_process
+    source: '@aut_conts'
+    process:
+      target_id:
+        plugin: entity_generate
+        source: name
+        entity_type: taxonomy_term
+        value_key: name
+        bundle_key: vid
+        bundle: person
+      rel_type:
+        plugin: default_value
+        default_value: 'relators:aut'
+
+  adv_conts:
+    - 
+      plugin: skip_on_empty
+      source: Advisors
+      method: process
+    - 
+      plugin: explode
+      delimiter: " || "
+    -
+      plugin: str_replace
+      search: '/\s\([a-zA-Z\s]*\)/'
+      regex: true
+      replace: ""
+    -
+      plugin: str_to_assoc
+      key: 'name'
+  
+  linked_agent_adv:
+    plugin: sub_process
+    source: '@adv_conts'
+    process:
+      target_id:
+        plugin: entity_generate
+        source: name
+        entity_type: taxonomy_term
+        value_key: name
+        bundle_key: vid
+        bundle: person
+      rel_type:
+        plugin: default_value
+        default_value: 'relators:ths'
+
+  field_linked_agent:
+    plugin: merge
+    source:
+      - '@linked_agent_aut'
+      - '@linked_agent_adv'
+      - '@linked_agent_pub'
+
+# We're making nodes
+destination:
+  plugin: 'entity:node'
+  default_bundle: asu_repository_item
+migration_dependencies:
+  optional:
+    - etd_complex_titles
+    - etd_notes
+    # - etd_identifiers

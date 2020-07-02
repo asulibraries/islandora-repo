@@ -16,16 +16,16 @@ It will also include ansible scripts for provisioning and deploying to additiona
 2. Clone ASU claw-playbook
 3. cd into claw-playbook
 4. Make a file called in your user root called .asurepo_vault_pass and get it from the lastpass. (this is the password for decrypting ansible vault stuff which will allow you to deploy to create and encrypt files)
-5. Run vagrant up (from within the claw-playbook root)
+5. Run ISLANDORA_DISTRO="ubuntu/bionic64" vagrant up (from within the claw-playbook root)
 6. This repo will be available inside the vagrant VM as `/var/www/html/drupal`
 7. If you want the ASU specific config, cd into `/var/www/html/drupal` and run `drupal config:import --directory /var/www/html/drupal/config/sync`
 
 # Ansible
-If you've already provisioned your vagrant environment and need to re-run the ASU specific provisioning, you can do so with `ansible-playbook asu-install.yml -i inventory/vagrant -l all -e ansible_ssh_user=$vagrantUser -e islandora_distro=ubuntu/xenial64` Your $vagrantUser will either be ubuntu or vagrant. Check to see what user you become when you `vagrant ssh`.
+If you've already provisioned your vagrant environment and need to re-run the ASU specific provisioning, you can do so with `ansible-playbook asu-install.yml -i inventory/vagrant -l all -e ansible_ssh_user=$vagrantUser -e islandora_distro=ubuntu/xenial64` Your $vagrantUser will either be ubuntu or vagrant. Check to see what user you become when you `vagrant ssh`. Because the default islandora-playbook now uses a prebuilt base box (called islandora/8), we need to specify that our VM requires the ubuntu base box instead so we can customize. We do this by prefixing the `ISLANDORA_DISTRO="ubuntu/bionic64"` to the front of `vagrant up` and `vagrant provision` calls.
 
 
 # Helpful Hints
-If you need to update your ansible roles (to get updated versions of the packages), you mine as well `rm -rf roles/external` and `vagrant provision` to fix that. This will take some time.
+If you need to update your ansible roles (to get updated versions of the packages), you mine as well `rm -rf roles/external` and `ISLANDORA_DISTRO="ubuntu/bionic64" vagrant provision` to fix that. This will take some time.
 
 Understanding how drupal entities relate to fedora objects - https://drive.google.com/file/d/1Ra64mFAsHkPtAf-2BWjdYKDv1Fc2uJSU/view
 

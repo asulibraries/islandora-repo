@@ -9,6 +9,7 @@ dependencies:
     - field.field.node.collection.field_member_of
     - field.field.node.collection.field_model
     - field.field.node.collection.field_oai_set
+    - field.field.node.collection.field_primary_contact
     - field.field.node.collection.field_title
     - node.type.collection
   module:
@@ -99,6 +100,14 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+    region: content
+  field_primary_contact:
+    weight: 124
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: email_default
     region: content
   field_title:
     weight: 1

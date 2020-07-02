@@ -1,0 +1,67 @@
+# Uninstall this config when the feature is uninstalled
+dependencies:
+  enforced:
+    module:
+      - asu_migrate
+
+id: etd_media
+label: Import ETD Media from CSV
+migration_group: migrate_etd_csv
+
+source:
+  plugin: csv
+  path: 'modules/custom/asu_migrate/data/att_file_ETD.csv'
+
+  # 1 means you have a header row, 0 means you don't
+  header_row_count: 1
+
+  # Each migration needs a unique key per row in the csv.  Here we're using the file path.
+  keys:
+    - file
+
+  # You can't enter string literals into a process plugin, but you can give it a constant as a 'source'.
+  constants:
+    # We're tagging our media as Original Files
+    use: Original File
+
+    # Everything gets created as admin
+    uid: 1
+
+process:
+
+  name: title
+  uid: constants/uid
+
+  # Make the media an 'Original File'
+  field_media_use:
+    plugin: entity_lookup
+    source: constants/use
+    entity_type: taxonomy_term
+    value_key: name
+    bundle_key: vid
+    bundle: islandora_media_use
+
+  # Lookup the migrated file in the file migration.
+  field_media_image:
+    plugin: migration_lookup
+    source: file
+    migration: file
+    no_stub: true
+
+  # Lookup the migrated node in the node migration
+  field_media_of:
+    plugin: migration_lookup
+    source: file
+    migration: node
+    no_stub: true
+
+destination:
+  # These are 'image' media we're making.
+  plugin: 'entity:media'
+  default_bundle: image
+
+migration_dependencies:
+  required:
+    - migrate_plus.migration.file
+    - migrate_plus.migration.node
+  optional: {  }
