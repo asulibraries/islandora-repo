@@ -20,6 +20,28 @@ It will also include ansible scripts for provisioning and deploying to additiona
 6. This repo will be available inside the vagrant VM as `/var/www/html/drupal`
 7. If you want the ASU specific config, cd into `/var/www/html/drupal` and run `drupal config:import --directory /var/www/html/drupal/config/sync`
 
+# Local theme development
+Note: I only have gotten this working on my local machine, not the vagrant environment yet.-dlf
+
+Requirements:
+* node.js
+
+1. cd into `/web/themes/custom/asulib_barrio`
+2. Install gulp with `npm install --global gulp-cli`
+3. Install dependencies including Bootstrap latest version: `npm install`
+4. Update `gulpfile.js` with your local URL
+
+Example:
+
+    browserSync.init({
+        proxy: 'http://localhost:8000/',
+    })
+5). Run `gulp`
+
+"This will generate a style.css file with mappings for debugging and a style.min.css file for production. You will need to change the reference to the file manually on your SUBTHEME.libraries.yml file."
+
+Instructions are from https://www.drupal.org/docs/8/themes/bootstrap-4-sass-barrio-starter-kit/installation 
+
 # Ansible
 If you've already provisioned your vagrant environment and need to re-run the ASU specific provisioning, you can do so with `ansible-playbook asu-install.yml -i inventory/vagrant -l all -e ansible_ssh_user=$vagrantUser -e islandora_distro=ubuntu/xenial64` Your $vagrantUser will either be ubuntu or vagrant. Check to see what user you become when you `vagrant ssh`. Because the default islandora-playbook now uses a prebuilt base box (called islandora/8), we need to specify that our VM requires the ubuntu base box instead so we can customize. We do this by prefixing the `ISLANDORA_DISTRO="ubuntu/bionic64"` to the front of `vagrant up` and `vagrant provision` calls.
 
