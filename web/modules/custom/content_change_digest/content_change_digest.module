@@ -124,7 +124,7 @@ function content_change_digest_get_view_html() {
   
   $view = Views::getView('differences');
   if (is_object($view)) {
-    $view->setDisplay('page_1');
+    $view->setDisplay('page_2');
     $view->execute();
     $render_view = \Drupal::service('renderer')->render($view->render());
     return $render_view;
