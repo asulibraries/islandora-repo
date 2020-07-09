@@ -16,12 +16,12 @@ It will also include ansible scripts for provisioning and deploying to additiona
 2. Clone ASU claw-playbook
 3. cd into claw-playbook
 4. Make a file called in your user root called .asurepo_vault_pass and get it from the lastpass. (this is the password for decrypting ansible vault stuff which will allow you to deploy to create and encrypt files)
-5. Run ISLANDORA_DISTRO="ubuntu/bionic64" vagrant up (from within the claw-playbook root)
+5. Run `vagrant up` (from within the claw-playbook root) - it will default to using the asurepo basebox (modelled after the islandora/8 base box idea). If you want to run the build explicitly (via ansible), change the ISLANDORA_DISTRO like `ISLANDORA_DISTRO="ubuntu/bionic64" vagrant up`
 6. This repo will be available inside the vagrant VM as `/var/www/html/drupal`
 7. If you want the ASU specific config, cd into `/var/www/html/drupal` and run `drupal config:import --directory /var/www/html/drupal/config/sync`
 
 # Ansible
-If you've already provisioned your vagrant environment and need to re-run the ASU specific provisioning, you can do so with `ansible-playbook asu-install.yml -i inventory/vagrant -l all -e ansible_ssh_user=$vagrantUser -e islandora_distro=ubuntu/xenial64` Your $vagrantUser will either be ubuntu or vagrant. Check to see what user you become when you `vagrant ssh`. Because the default islandora-playbook now uses a prebuilt base box (called islandora/8), we need to specify that our VM requires the ubuntu base box instead so we can customize. We do this by prefixing the `ISLANDORA_DISTRO="ubuntu/bionic64"` to the front of `vagrant up` and `vagrant provision` calls.
+If you've already provisioned your vagrant environment and need to re-run the ASU specific provisioning, you can do so with `ansible-playbook asu-install.yml -i inventory/vagrant -l all -e ansible_ssh_user=$vagrantUser -e islandora_distro=elizoller/asurepo` Your $vagrantUser will either be ubuntu or vagrant. Check to see what user you become when you `vagrant ssh`. The default playbook now uses a prebuilt base box (called elizoller/asurepo). If we want to build explicitly, we need to specify that our VM requires the ubuntu base box instead so we can customize. We do this by prefixing the `ISLANDORA_DISTRO="ubuntu/bionic64"` to the front of `vagrant up` and `vagrant provision` calls.
 
 
 # Helpful Hints
@@ -76,7 +76,7 @@ Common Commands
 1. `pip install boto boto3`
 2. run `ansible-playbook aws_create_multiple_ec2.yml`
 3. locally run `ansible-galaxy install -r requirements.yml`
-4. locally run `ansible-playbook -i inventory/stage playbook.yml -e "islandora_distro=ubuntu/xenial64" -e @inventory/stage/group_vars/all/passwords.yml -e @aws_keys.yml`
+4. locally run `ansible-playbook -i inventory/stage playbook.yml -e "islandora_distro=ubuntu/bionic64" -e @inventory/stage/group_vars/all/passwords.yml -e @aws_keys.yml`
 <!-- must have an IAM role and key with privileges to administer EC2 -->
 - The approach I've taken thus far is to create 2 EC2 instances in the following breakdown:
   - webserver - for the actual drupal site, cantaloupe
