@@ -145,6 +145,8 @@ function content_change_digest_mail($key, &$message, $params) {
   //user_mail_tokens($variables, $data, $options);
   switch ($key) {
     case 'notice':
+      $message['headers']['MIME-Version'] = '1.0';
+      $message['headers']['Content-Type'] = 'text/html; charset=UTF-8';
       $message['subject'] = t('Notification from @site', $options);
       $message['body'] = array($params['message']);
       $message['from'] = \Drupal::config('system.site')->get('mail');
