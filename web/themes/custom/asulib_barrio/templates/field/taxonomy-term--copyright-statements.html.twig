@@ -1,0 +1,63 @@
+{#
+/**
+ * @file
+ * Theme override to display a taxonomy term.
+ *
+ * Available variables:
+ * - url: URL of the current term.
+ * - name: Name of the current term.
+ * - content: Items for the content of the term (fields and description).
+ *   Use 'content' to print them all, or print a subset such as
+ *   'content.description'. Use the following code to exclude the
+ *   printing of a given child element:
+ *   @code
+ *   {{ content|without('description') }}
+ *   @endcode
+ * - attributes: HTML attributes for the wrapper.
+ * - page: Flag for the full page state.
+ * - term: The taxonomy term entity, including:
+ *   - id: The ID of the taxonomy term.
+ *   - bundle: Machine name of the current vocabulary.
+ * - view_mode: View mode, e.g. 'full', 'teaser', etc.
+ *
+ * @see template_preprocess_taxonomy_term()
+ */
+#}
+{%
+  set classes = [
+    'taxonomy-term',
+    view_mode ? 'taxonomy-term--view-mode-' ~ view_mode|clean_class,
+    'vocabulary-' ~ term.bundle|clean_class,
+  ]
+%}
+{% if view_mode == 'default' %}
+	{% set html_element = 'article' %}
+{% else %}
+	{% set html_element = 'section' %}
+{% endif %}
+<{{html_element}}{{attributes.setAttribute('id','taxonomy-term-'~term.id).addClass(classes)}}>
+
+	{{ title_prefix }}
+	{% if not page %}
+    {% if view_mode != "image_as_link" %}
+      <h2 class="taxonomy-term__title">
+        <a href="{{ url }}">{{ name }}</a>
+      </h2>
+    {% endif %}
+	{% endif %}
+	{{ title_suffix }}
+
+	{% set content_rendered %}
+	{{ content }}
+	{% endset %}
+	{% if content_rendered|trim is not empty %}
+    {% if view_mode != "image_as_link" %}
+      <div class="taxonomy-term__content">
+        {{ content_rendered }}
+      </div>
+    {% else %}
+      <a href="{{content.field_source[0]}}" target="_blank"><img class="copyright-logo" src="{{content.field_copyright_logo[0]}}"/></a>
+    {% endif %}
+	{% endif %}
+
+</{{html_element}}>

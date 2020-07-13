@@ -1,6 +1,9 @@
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  enforced:
+    module:
+      - islandora_core_feature
 id: document
 label: Document
 description: 'An uploaded file or document, such as a PDF.'
@@ -11,3 +14,5 @@ source_configuration:
   source_field: field_media_document
 field_map:
   name: name
+  mimetype: field_mime_type
+  filesize: field_file_size

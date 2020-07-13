@@ -1,0 +1,190 @@
+<?php
+
+use Drupal\views\Views;
+use Drupal\user\Entity\User;
+
+/**
+ * 
+ * 1. respond to CRON that runs daily
+ * 2. call view code to get that content... log some of that in watchdog.
+ * 3. call code that will ultimately generate the emailing.
+ */
+function content_change_digest_cron() {
+  // We access our configuration.
+  $cron_config = \Drupal::config('content_change_digest.settings');
+  $request_time = \Drupal::time()
+    ->getRequestTime();
+  
+  // Default to a 24 hour interval. Of course, cron has to be running at least
+  // each day for this to work.
+  $interval = $cron_config
+    ->get('interval', 86400);
+
+  // We usually don't want to act every time cron runs (which could be every
+  // minute) so keep a time for the next run in the site state.
+  $next_execution = \Drupal::state()
+    ->get('content_change_digest.next_execution', 0);
+  
+  // MAKE it run.  TAKE THIS OUT AFTER CRON TESTS ARE NO LONGER NEEDED.
+  $next_execution = 0;
+
+  if ($request_time >= $next_execution) {
+    content_change_digest_perform_daily_digest();
+
+    $it_ran_message = t('content_change_digest executed at %time', [
+      '%time' => date('c'),
+    ]);
+    \Drupal::state()
+      ->set('content_change_digest.next_execution', $request_time + $interval);
+  }
+  else {
+    \Drupal::logger('content_change_digest')->notice('Did not perform any ' .
+      'digest logic because the next_execution time has still not passed.');      
+  }
+}
+
+/**
+ * 
+ */
+function content_change_digest_perform_daily_digest() {
+  // Get a list of recipients for the emailing.
+  $email_recipients = content_change_digest_get_recipients();
+  
+  // Get the view query results and theme it using twig and deliver to recipients.
+  // maybe need a web http client
+  $differences_view_html = content_change_digest_get_view_html();
+  $output = array();
+  $mailManager = \Drupal::service('plugin.manager.mail');
+  foreach ($email_recipients as $account) {
+    $output[] = '<b>To:</b> ' . $account->getEmail();
+    $to = $account->getEmail();
+    $output[] = '<blockquote>' . $differences_view_html . '</blockquote>';
+    $params['message'] = $differences_view_html;
+    $params['account'] = $to;
+    $result = $mailManager->mail('content_change_digest', 'notice', $to, 'en', $params, NULL, true);
+    if ($result['result'] !== true){
+      \Drupal::logger('content_change_digest')->error('problem sending content change digest mail to ' . $to);
+    } else {
+      \Drupal::logger('content_change_digest')->notice('content change digest sent to ' . $to);
+    }	    
+  }
+  
+  // Add a watchdog message that this step has been performed.
+  \Drupal::logger('content_change_digest')->notice(t('content_change_digest ' .
+    'content_change_digest_perform_daily_digest executed at %time',
+    ['%time' => date('c'),]));
+  \Drupal::logger('content_change_digest')->notice(t('content_change_digest ' .
+    'content_change_digest_perform_daily_digest emailing output %email_output',
+    ['%email_output' => implode('<br />', $output),]));
+}
+
+function content_change_digest_get_recipients() {
+  $accounts = array();
+  $config = \Drupal::config('content_change_digest.adminsettings');
+  $config_roles = $config->get('content_change_digest_roles');
+  $config_users_ids = $config->get('content_change_digest_users');
+
+  $userlist = array();
+  foreach ($config_roles as $config_role) {
+    // @TODO: it should be possible to have a condition in the query
+    // on the field_opt_out_of_content_changed value of users.
+    $ids = \Drupal::entityQuery('user')
+    ->condition('status', 1)
+    ->condition('roles', $config_role)
+    ->execute();
+    $users = User::loadMultiple($ids);
+    foreach($users as $user){
+      // Since the query above does not seem to allow a condition on the
+      // field_opt_out_of_content_changed field, filter those out here.
+      if (!$user->field_opt_out_of_content_changed->value) {
+        $userlist[$user->get('uid')->value] = $user->get('name')->value;
+      }
+    }
+  }
+  foreach ($config_users_ids as $config_user_id) {
+    $user = User::load($config_user_id);
+    if (is_object($user) && !$user->field_opt_out_of_content_changed->value) {
+      $userlist[$user->get('uid')->value] = $user->get('name')->value;
+    }
+  }
+
+  \Drupal::logger('content_change_digest')
+    ->notice('roles = ' . print_r($config_roles, true));
+  \Drupal::logger('content_change_digest')
+    ->notice('users = ' . print_r($config_users_ids, true));
+  \Drupal::logger('content_change_digest')
+    ->notice('userlist = ' . print_r($userlist, true));
+  foreach ($userlist as $user_id => $user_name) {
+    // loading the users must be with the Entity user load method such as
+    $temp_account = \Drupal\user\Entity\User::load($user_id);
+    if ($temp_account->getEmail() != ""){
+      $accounts[] = $temp_account;
+    }
+  }
+ 
+  return $accounts;
+}
+
+function content_change_digest_get_view_html() {
+  // fetch the html for the view.
+//  \Drupal::logger('content_change_digest')
+//    ->notice('in content_change_digest_mail');
+  
+  $view = Views::getView('differences');
+  if (is_object($view)) {
+    $view->setDisplay('page_2');
+    $view->execute();
+    $render_view = \Drupal::service('renderer')->render($view->render());
+    return $render_view;
+  }
+}
+
+function content_change_digest_mail($key, &$message, $params) {
+  $data['user'] = $params['account'];
+  $options['langcode'] = $message['langcode'];
+  //user_mail_tokens($variables, $data, $options);
+  switch ($key) {
+    case 'notice':
+      $message['headers']['MIME-Version'] = '1.0';
+      $message['headers']['Content-Type'] = 'text/html; charset=UTF-8';
+      $message['subject'] = t('Notification from @site', $options);
+      $message['body'] = array($params['message']);
+      $message['from'] = \Drupal::config('system.site')->get('mail');
+      break;
+  }
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ * 
+ * Hide the "Opt out of emailing" checkbox for users who are not selected by the
+ * configuration to even get the emailings.
+ */
+function content_change_digest_form_alter(&$form, &$form_state, $form_id) {
+  if ($form_id == 'user_form') {
+    if (content_change_digest_should_hide_opt_out()) {
+       $form['field_opt_out_of_content_changed']['#required'] = FALSE;
+       $form['field_opt_out_of_content_changed']['#access'] = FALSE;
+    }
+  }
+}
+
+function content_change_digest_should_hide_opt_out() {
+  $config = \Drupal::config('content_change_digest.adminsettings');
+  $config_roles = $config->get('content_change_digest_roles');
+  $config_users_ids = $config->get('content_change_digest_users');
+
+  $this_user_id = \Drupal::currentUser()->id();
+  $this_user = \Drupal\user\Entity\User::load($this_user_id);
+  $this_user_roles = $this_user->getRoles();
+  $show = FALSE;
+  foreach ($config_roles as $config_role) {
+    $show |= (!(array_search($config_role, $this_user_roles) === FALSE));
+  }
+  if (!$show) {
+    // Check whether or not the user was added individually instead of
+    // by roles.
+    $show = array_key_exists($this_user_id, $config_users_ids);
+  }
+  return !$show;
+}

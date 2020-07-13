@@ -18,6 +18,15 @@ fieldMappings:
     properties:
       - 'dcterms:identifier'
       - 'mods:identifier'
+  field_coordinates:
+    properties:
+      - 'dcterms:coverage'
+  field_date_digitized:
+    properties:
+      - 'premis:dateCreatedByApplication'
+  field_collaborating_institutions:
+    properties:
+      - 'dcterms:contributor'
   field_pid:
     properties:
       - 'dcterms:identifier'
@@ -109,12 +118,15 @@ fieldMappings:
       callable: 'Drupal\rdf\CommonDataConverter::dateIso8601Value'
   uid:
     properties:
-      - 'schema:author'
+      - 'relators:dtc'
     mapping_type: rel
   field_handle:
     properties:
       - 'dcterms:identifier'
       - 'mods:identifier'
+  field_open_access:
+    properties:
+      - 'dcterms:accessRights'
   field_subjects_name:
     properties:
       - 'dcterms:subject'

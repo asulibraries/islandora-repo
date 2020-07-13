@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.user.compact
+    - field.field.user.user.field_opt_out_of_content_changed
     - field.field.user.user.field_orcid_id
     - field.field.user.user.user_picture
     - image.style.thumbnail
@@ -24,6 +25,7 @@ content:
     third_party_settings: {  }
     label: hidden
 hidden:
+  field_opt_out_of_content_changed: true
   field_orcid_id: true
   langcode: true
   member_for: true
