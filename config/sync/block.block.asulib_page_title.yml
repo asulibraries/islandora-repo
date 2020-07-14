@@ -4,9 +4,9 @@ dependencies:
   module:
     - system
   theme:
-    - asulib
+    - asulib_barrio
 id: asulib_page_title
-theme: asulib
+theme: asulib_barrio
 region: content
 weight: -15
 provider: null
@@ -19,6 +19,6 @@ settings:
 visibility:
   request_path:
     id: request_path
-    pages: "/node/*\r\n/user/*\r\n<front>\r\n/search*"
+    pages: "/user/*\r\n<front>\r\n/search*"
     negate: true
     context_mapping: {  }
