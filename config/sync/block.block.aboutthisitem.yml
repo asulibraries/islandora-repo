@@ -1,15 +1,15 @@
 langcode: en
-status: true
+status: false
 dependencies:
   module:
     - asu_item_extras
     - node
     - system
   theme:
-    - asulib
+    - asulib_barrio
 id: aboutthisitem
-theme: asulib
-region: sidebar_first
+theme: asulib_barrio
+region: ''
 weight: 0
 provider: null
 plugin: about_this_item_block
@@ -26,8 +26,3 @@ visibility:
     negate: false
     context_mapping:
       node: '@node.node_route_context:node'
-  request_path:
-    id: request_path
-    pages: '/node/*'
-    negate: false
-    context_mapping: {  }
