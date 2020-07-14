@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - asu_item_extras
+    - node
+  theme:
+    - asulib_barrio
+id: feedbackbutton
+theme: asulib_barrio
+region: sidebar_first
+weight: 0
+provider: null
+plugin: asu_feedback_button
+settings:
+  id: asu_feedback_button
+  label: 'Feedback Button'
+  provider: asu_item_extras
+  label_display: '0'
+visibility:
+  node_type:
+    id: node_type
+    bundles:
+      asu_repository_item: asu_repository_item
+      collection: collection
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
