@@ -60,6 +60,11 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  display_media_entity_view_2:
+    weight: 43
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_additional_memberships:
     weight: 34
     label: above
@@ -154,6 +159,11 @@ content:
     third_party_settings: {  }
     type: list_default
     region: content
+  field_gemini_uri:
+    weight: 40
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_genre:
     weight: 3
     label: above
@@ -375,23 +385,38 @@ content:
     third_party_settings: {  }
     type: number_integer
     region: content
+  langcode:
+    type: language
+    weight: 41
+    region: content
+    label: above
+    settings:
+      link_to_entity: false
+      native_language: false
+    third_party_settings: {  }
   links:
     weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
+  openseadragon_media_evas_entity_view_1:
+    weight: 44
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  pdfjs_media_evas_entity_view_1:
+    weight: 42
+    region: content
+    settings: {  }
+    third_party_settings: {  }
 hidden:
   display_media_entity_view_1: true
-  display_media_entity_view_2: true
   display_media_service_file: true
   display_media_thumbnail: true
   field_display_hints: true
   islandora_fits_checksum: true
-  langcode: true
-  openseadragon_media_evas_entity_view_1: true
   openseadragon_media_evas_entity_view_2: true
   openseadragon_media_evas_service_file: true
-  pdfjs_media_evas_entity_view_1: true
   pdfjs_media_evas_entity_view_2: true
   pdfjs_media_evas_service_file: true
   search_api_excerpt: true
