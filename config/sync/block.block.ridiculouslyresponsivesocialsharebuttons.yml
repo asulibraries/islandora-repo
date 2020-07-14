@@ -4,13 +4,12 @@ dependencies:
   module:
     - node
     - rrssb
-    - system
   theme:
-    - asulib
+    - asulib_barrio
 id: ridiculouslyresponsivesocialsharebuttons
-theme: asulib
+theme: asulib_barrio
 region: sidebar_first
-weight: 0
+weight: -8
 provider: null
 plugin: rrssb_block
 settings:
@@ -27,8 +26,3 @@ visibility:
     negate: false
     context_mapping:
       node: '@node.node_route_context:node'
-  request_path:
-    id: request_path
-    pages: '/node/*'
-    negate: false
-    context_mapping: {  }
