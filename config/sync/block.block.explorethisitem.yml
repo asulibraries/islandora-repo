@@ -4,11 +4,10 @@ dependencies:
   module:
     - asu_item_extras
     - node
-    - system
   theme:
-    - asulib
+    - asulib_barrio
 id: explorethisitem
-theme: asulib
+theme: asulib_barrio
 region: sidebar_first
 weight: 0
 provider: null
@@ -26,8 +25,3 @@ visibility:
     negate: false
     context_mapping:
       node: '@node.node_route_context:node'
-  request_path:
-    id: request_path
-    pages: '/node/*'
-    negate: false
-    context_mapping: {  }
