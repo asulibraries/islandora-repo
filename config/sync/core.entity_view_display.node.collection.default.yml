@@ -4,6 +4,7 @@ dependencies:
   config:
     - field.field.node.collection.field_collaborating_institutions
     - field.field.node.collection.field_description
+    - field.field.node.collection.field_enabled
     - field.field.node.collection.field_external_links
     - field.field.node.collection.field_handle
     - field.field.node.collection.field_member_of
@@ -47,6 +48,16 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: basic_string
+    region: content
+  field_enabled:
+    weight: 104
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
     region: content
   field_external_links:
     weight: 6
