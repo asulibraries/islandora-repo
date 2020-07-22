@@ -12,6 +12,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_display_hints
     - field.field.node.asu_repository_item.field_edition
     - field.field.node.asu_repository_item.field_edtf_date_created
+    - field.field.node.asu_repository_item.field_embargo_release_date
     - field.field.node.asu_repository_item.field_extent
     - field.field.node.asu_repository_item.field_frequency
     - field.field.node.asu_repository_item.field_genre
@@ -39,6 +40,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_table_of_contents
     - field.field.node.asu_repository_item.field_temporal_subject
     - field.field.node.asu_repository_item.field_title
+    - field.field.node.asu_repository_item.field_title_subject
     - field.field.node.asu_repository_item.field_typed_identifier
     - field.field.node.asu_repository_item.field_weight
     - node.type.asu_repository_item
@@ -46,10 +48,44 @@ dependencies:
     - controlled_access_terms
     - datetime
     - entity_reference_revisions
+    - field_group
     - geolocation
+    - layout_builder
     - options
     - text
     - user
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: false
+  field_group:
+    group_sidebar:
+      children: {  }
+      parent_name: ''
+      weight: 20
+      format_type: details_sidebar
+      region: hidden
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+        open: false
+        weight: 0
+        required_fields: false
+      label: Sidebar
+    group_details:
+      children: {  }
+      parent_name: ''
+      weight: 20
+      format_type: details
+      region: hidden
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+        open: false
+        required_fields: false
+      label: Details
 id: node.asu_repository_item.default
 targetEntityType: node
 bundle: asu_repository_item
@@ -143,6 +179,15 @@ content:
       day_format: dd
     third_party_settings: {  }
     type: edtf_default
+    region: content
+  field_embargo_release_date:
+    weight: 46
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
+    type: datetime_default
     region: content
   field_extent:
     weight: 9
@@ -366,6 +411,14 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
+    region: content
+  field_title_subject:
+    weight: 45
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
     region: content
   field_typed_identifier:
     type: entity_reference_revisions_entity_view

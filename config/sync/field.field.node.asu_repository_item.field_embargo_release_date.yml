@@ -1,0 +1,23 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_embargo_release_date
+    - node.type.asu_repository_item
+  module:
+    - datetime
+id: node.asu_repository_item.field_embargo_release_date
+field_name: field_embargo_release_date
+entity_type: node
+bundle: asu_repository_item
+label: 'Embargo Release Date'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    default_date_type: relative
+    default_date: '+2 years'
+default_value_callback: ''
+settings: {  }
+field_type: datetime

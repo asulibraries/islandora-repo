@@ -13,6 +13,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_display_hints
     - field.field.node.asu_repository_item.field_edition
     - field.field.node.asu_repository_item.field_edtf_date_created
+    - field.field.node.asu_repository_item.field_embargo_release_date
     - field.field.node.asu_repository_item.field_extent
     - field.field.node.asu_repository_item.field_frequency
     - field.field.node.asu_repository_item.field_genre
@@ -40,6 +41,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_table_of_contents
     - field.field.node.asu_repository_item.field_temporal_subject
     - field.field.node.asu_repository_item.field_title
+    - field.field.node.asu_repository_item.field_title_subject
     - field.field.node.asu_repository_item.field_typed_identifier
     - field.field.node.asu_repository_item.field_weight
     - node.type.asu_repository_item
@@ -79,6 +81,11 @@ content:
       month_format: mm
       day_format: dd
     third_party_settings: {  }
+  field_gemini_uri:
+    weight: 100
+    settings: {  }
+    third_party_settings: {  }
+    region: content
   field_linked_agent:
     type: typed_relation_default
     weight: 4
@@ -104,6 +111,7 @@ hidden:
   field_date_digitized: true
   field_display_hints: true
   field_edition: true
+  field_embargo_release_date: true
   field_extent: true
   field_frequency: true
   field_genre: true
@@ -130,6 +138,7 @@ hidden:
   field_table_of_contents: true
   field_temporal_subject: true
   field_title: true
+  field_title_subject: true
   field_typed_identifier: true
   field_weight: true
   islandora_fits_checksum: true
