@@ -14,13 +14,14 @@ bundle: asu_repository_item
 types:
   - 'pcdm:Object'
 fieldMappings:
-  id:
+  nid:
     properties:
       - 'dcterms:identifier'
       - 'mods:identifier'
   field_coordinates:
     properties:
-      - 'dcterms:coverage'
+      - 'dcterms:spatial'
+      - 'mods:cartographicsCoordinates'
   field_date_digitized:
     properties:
       - 'premis:dateCreatedByApplication'
@@ -34,30 +35,33 @@ fieldMappings:
   field_edtf_date_created:
     properties:
       - 'dcterms:created'
+      - 'mods:dateCreated'
     datatype_callback:
       callable: 'Drupal\controlled_access_terms\EDTFConverter::dateIso8601Value'
   field_copyright_date:
     properties:
       - 'dcterms:dateCopyrighted'
+      - 'mods:dateOfCopyright'
     datatype_callback:
       callable: 'Drupal\rdf\CommonDataConverter::dateIso8601Value'
   field_preferred_citation:
     properties:
-      - 'mods:bibliographicCitation'
       - 'dcterms:bibliographicCitation'
   field_issuance:
     properties:
-      - 'rdau:modeOfIssuance'
+      - 'rdau:P60051'
+      - 'mods:issuance'
   field_frequency:
     properties:
       - 'mods:frequency'
+      - 'rdau:P60538'
   field_resource_type:
     properties:
-      - 'dc:type'
-      - 'mods:typeOfResource'
+      - 'dcterms:type'
+      - 'mods:genre'
   field_genre:
     properties:
-      - 'dc:type'
+      - 'dcterms:type'
       - 'mods:genre'
   field_statement_responsibility:
     properties:
@@ -67,14 +71,14 @@ fieldMappings:
       - 'dcterms:rights'
   field_reuse_permissions:
     properties:
-      - 'dcterms:rights'
+      - 'dcterms:license'
   field_description:
     properties:
       - 'dcterms:description'
-      - 'schema:description'
   field_extent:
     properties:
       - 'dcterms:extent'
+      - 'mods:physicalExtent'
   field_member_of:
     properties:
       - 'pcdm:memberOf'
@@ -86,9 +90,11 @@ fieldMappings:
   field_language:
     properties:
       - 'dcterms:language'
+      - 'mods:languageOfResource'
   field_edition:
     properties:
       - 'rdau:P60329'
+      - 'mods:edition'
   field_place_published:
     properties:
       - 'mods:placeOfOrigin'
@@ -98,7 +104,8 @@ fieldMappings:
       - 'mods:tableOfContents'
   field_note_text:
     properties:
-      - 'skos:note'
+      - 'modsrdf:note'
+      - 'dcterms:description'
     mapping_type: par
   field_weight:
     properties:
@@ -106,14 +113,15 @@ fieldMappings:
   title:
     properties:
       - 'dcterms:title'
+      - 'mods:title'
   created:
     properties:
-      - 'schema:dateCreated'
+      - 'bf:creationDate'
     datatype_callback:
       callable: 'Drupal\rdf\CommonDataConverter::dateIso8601Value'
   changed:
     properties:
-      - 'schema:dateModified'
+      - 'bf:changeDate'
     datatype_callback:
       callable: 'Drupal\rdf\CommonDataConverter::dateIso8601Value'
   uid:
@@ -123,7 +131,7 @@ fieldMappings:
   field_handle:
     properties:
       - 'dcterms:identifier'
-      - 'mods:identifier'
+      - 'mods:identifier:hdl'
   field_open_access:
     properties:
       - 'dcterms:accessRights'
@@ -143,3 +151,23 @@ fieldMappings:
     properties:
       - 'dcterms:subject'
       - 'mods:subjectTopic'
+  field_title_subject:
+    properties:
+      - 'dcterms:subject'
+      - 'mods:subjectTitle'
+  status:
+    properties:
+      - 'asu:visibility'
+  field_peer_reviewed:
+    properties:
+      - 'dcterms:type'
+      - 'mods:genre'
+  field_open_access:
+    properties:
+      - 'dcterms:accessRights'
+  field_series:
+    properties:
+      - 'mods:relatedSeries'
+  field_embargo_release_date:
+    properties:
+      - 'dcterms:available'
