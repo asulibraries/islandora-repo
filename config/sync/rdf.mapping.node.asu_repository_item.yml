@@ -117,17 +117,21 @@ fieldMappings:
   created:
     properties:
       - 'bf:creationDate'
+      - 'schema:dateCreated'
     datatype_callback:
       callable: 'Drupal\rdf\CommonDataConverter::dateIso8601Value'
   changed:
     properties:
       - 'bf:changeDate'
+      - 'schema:dateModified'
     datatype_callback:
       callable: 'Drupal\rdf\CommonDataConverter::dateIso8601Value'
   uid:
     properties:
       - 'relators:dtc'
-    mapping_type: rel
+    mapping_type: property
+    datatype_callback:
+      callable: 'Drupal\asu_custom_rdf\UidLookup::username'
   field_handle:
     properties:
       - 'dcterms:identifier'
@@ -162,9 +166,6 @@ fieldMappings:
     properties:
       - 'dcterms:type'
       - 'mods:genre'
-  field_open_access:
-    properties:
-      - 'dcterms:accessRights'
   field_series:
     properties:
       - 'mods:relatedSeries'

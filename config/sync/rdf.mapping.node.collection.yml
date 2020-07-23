@@ -28,7 +28,6 @@ fieldMappings:
   field_member_of:
     properties:
       - 'pcdm:memberOf'
-    mapping_type: rel
   title:
     properties:
       - 'dcterms:title'
@@ -46,10 +45,9 @@ fieldMappings:
   uid:
     properties:
       - 'relators:dtc'
-    mapping_type: rel
+    mapping_type: property
+    datatype_callback:
+      callable: 'Drupal\asu_custom_rdf\UidLookup::username'
   status:
     properties:
       - 'asu:visibility'
-  field_member_of:
-    properties:
-      - 'pcdm:memberOf'
