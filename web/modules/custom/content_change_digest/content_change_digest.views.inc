@@ -25,7 +25,7 @@ use Drupal\views\Views;
  * Implements hook_views_data().
  */
 function content_change_digest_views_data(){
-  \Drupal::logger('content_change_digest')->info('in views_data hook');
+  // \Drupal::logger('content_change_digest')->info('in views_data hook');
   $data = [];
   /** @var \Drupal\Core\Entity\EntityTypeInterface $entity_type */
   foreach (\Drupal::entityTypeManager()->getDefinitions() as $entity_type) {
@@ -41,7 +41,7 @@ function content_change_digest_views_data(){
           'id' => 'content_change_digest_content_digest_change_views_filter',
         ],
       ];
-      \Drupal::logger('content_change_digest')->notice(print_r($data[$revision_base_table]['content_digest_change_filter'],true));
+      // \Drupal::logger('content_change_digest')->notice(print_r($data[$revision_base_table]['content_digest_change_filter'],true));
     }
   }
 
