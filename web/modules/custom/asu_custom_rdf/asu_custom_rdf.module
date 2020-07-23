@@ -9,7 +9,9 @@ use Drupal\paragraphs\Entity\Paragraph;
 function asu_custom_rdf_rdf_namespaces() {
   return [
     'mods' => 'http://www.loc.gov/mods/modsrdf/v1#',
-    'rdau' => 'http://www.rdaregistry.info/Elements/u/',
+    'rdau' => 'http://www.rdaregistry.info/Elements/u#',
+    'asu' => 'http://repository.asu.edu/rdf/',
+    'bf' => 'http://id.loc.gov/ontologies/bibframe/',
   ];
 }
 
@@ -17,7 +19,19 @@ function asu_custom_rdf_rdf_namespaces() {
  * Implements hook_jsonld_alter_normalized_array().
  */
 function asu_custom_rdf_jsonld_alter_normalized_array(EntityInterface $entity, array &$normalized, array $context) {
-  // if (isset($normalized['@graph']) && is_array($normalized['@graph'])) {
+  if (isset($normalized['@graph']) && is_array($normalized['@graph'])) {
+    foreach ($normalized['@graph'][0] as $gk => $gv) {
+      if ($gk === 'http://id.loc.gov/vocabulary/relators/dtc') {
+        foreach ($gv as $k => $id) {
+          if (array_key_exists('@value', $id) && array_key_exists('@id', $id) && (strpos($id['@id'], 'user') !== FALSE)) {
+            unset($id['@id']);
+            $gv[$k] = $id;
+          }
+        }
+        $normalized['@graph'][0][$gk] = $gv;
+      }
+
+    }
   //   foreach ($entity->getFieldDefinitions() as $field => $field_definition) {
   //     if (!empty($entity->get($field)->getValue())) {
   //       // \Drupal::logger('')
@@ -62,5 +76,5 @@ function asu_custom_rdf_jsonld_alter_normalized_array(EntityInterface $entity, a
   //       }
   //     }
   //   }
-  // }
+  }
 }
