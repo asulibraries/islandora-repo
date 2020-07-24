@@ -1,0 +1,9 @@
+asu_soft_delete.admin_settings_form:
+  path: '/admin/config/asu_soft_delete/adminsettings'
+  defaults:
+    _form: '\Drupal\asu_soft_delete\Form\ASUSoftDeleteForm'
+    _title: 'ASU Soft Delete Configuration'
+  requirements:
+    _permission: 'access administration pages'
+  options:
+    _admin_route: TRUE

@@ -1,0 +1,65 @@
+<?php
+
+/**
+ * @file
+ * This module will provides a button to "delete" and handle clicking on that
+ * so that nodes are never deleted, but archived. It will also hide the TRUE
+ * core node_delete button.
+ */
+
+/**
+ * Implements hook_form_alter().
+ */
+function asu_soft_delete_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  // ???
+  // check the configuration to see which form_id (which is based on the content type) is being displayed,
+  // override the submit function if the content type is configured.
+  $config = \Drupal::config('asu_soft_delete.adminsettings');
+  $configured_types = $config->get('asu_soft_delete_content_types');
+  if (array_key_exists($form_id, $configured_types) && ($configured_types[$form_id] === $form_id)) {
+    $messenger = \Drupal::messenger();
+    $messenger->addMessage(t("Providing override for the node delete handler on @form_id",
+        array('@form_id' => $form_id)), $messenger::TYPE_WARNING);
+    \Drupal::logger('asu_soft_delete')->notice(t("Providing override for the node delete handler on @form_id",
+        array('@form_id' => $form_id)));
+    foreach (array_keys($form['actions']) as $action) {
+      if ($action != 'preview' && isset($form['actions'][$action]['#type']) && $form['actions'][$action]['#type'] === 'submit') {
+        $form['actions'][$action]['#submit'] = ['asu_soft_delete_delete_handler'];
+        // add a "Really delete this item?" checkbox.
+      }
+    }
+  }
+}
+
+function asu_soft_delete_delete_handler(&$form, \Drupal\Core\Form\FormStateInterface $form_state) {
+  // check the value of the "Really delete this item?" checkbox - depending on
+  // this value, either set the moderation_state or really delete the node.
+  // Get the current node object and check the value of the Publication Status
+  // (moderation_state)....
+  $messenger = \Drupal::messenger();
+  $messenger->addMessage(t('Node has not been deleted'), $messenger::TYPE_WARNING);
+  // redirect to the node view page for this object.
+  $entity = $form_state->getFormObject()->getEntity();
+  $entity->set('moderation_state', 'published');
+  $entity->save();
+  return;
+
+  $node = \Drupal::routeMatch()->getParameter('node');
+  if ($node instanceof \Drupal\node\NodeInterface) {
+    // You can get nid and anything else you need from the node object.
+    $nid = $node->id();
+    $node_vid = \Drupal::entityManager()->getStorage('node')->revisionIds($node);
+    $latest_revision_id = array_pop((array_slice($node_vid, -1)));
+    $current_state = node_revision_load($latest_revision_id)->get('moderation_state')->getValue()[0]['value'];
+  }
+}
+
+/**
+ * Implements hook_ENTITY_TYPE_delete().
+ */
+function asu_soft_delete_node_delete() {
+  // This bit of code looks to see if the configuration does NOT include
+  // this content type and prompt the user before deletion if they truly want
+  // to delete the node or should this content type be configured for archiving
+  // as well?
+}
