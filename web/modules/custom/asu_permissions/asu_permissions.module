@@ -5,11 +5,15 @@
  * Contains asu_permissions.module.
  */
 
+use Drupal\Core\Access\AccessResultNeutral;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\group\Entity\Group;
 use Drupal\group\Entity\GroupContent;
 use Drupal\node\NodeInterface;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Messenger\MessengerInterface;
+use Drupal\Core\Access\AccessResult;
 
 /**
  * Implements hook_node_insert().
@@ -18,20 +22,21 @@ use Drupal\node\NodeInterface;
  */
 function asu_permissions_node_insert(NodeInterface $node) {
   if ($node->bundle() == "collection") {
-    // create a new group for the collection
+    // Create a new group for the collection.
     $pluginId = 'group_node:' . $node->bundle();
     $col_group = Group::create(['type' => 'collection_group', 'label' => 'Collection ' . $node->id() . ' Group']);
     $col_group->save();
     $col_group->addContent($node, $pluginId);
     $col_group->save();
-  } elseif ($node->bundle() == 'asu_repository_item'){
-    // add the asu_repository_item to the parent collection's group
-    // we are assumming here one member_of relationship
+  }
+  elseif ($node->bundle() == 'asu_repository_item') {
+    // Add the asu_repository_item to the parent collection's group.
+    // We are assumming here one member_of relationship.
     $parent = _get_collection_parent($node);
-    if ($parent){
+    if ($parent) {
       $pluginId = 'group_node:' . $node->bundle();
       $group_contents = _get_group($parent);
-      if (!empty($group_contents)){
+      if (!empty($group_contents)) {
         foreach ($group_contents as $group_content) {
           /** @var \Drupal\group\Entity\GroupContentInterface $group_content */
           $group = $group_content->getGroup();
@@ -45,10 +50,10 @@ function asu_permissions_node_insert(NodeInterface $node) {
 /**
  * Gets the collection parent of an entity.
  */
-function _get_collection_parent($entity){
+function _get_collection_parent($entity) {
   $parent = $entity->field_member_of->entity;
-  if ($parent){
-    if ($parent->bundle() != "collection"){
+  if ($parent) {
+    if ($parent->bundle() != "collection") {
       $parent = _get_collection_parent($parent);
     }
     return $parent;
@@ -58,17 +63,17 @@ function _get_collection_parent($entity){
 /**
  * Gets the groups that an entity belongs to.
  */
-function _get_group($entity){
+function _get_group($entity) {
   $group_contents = \Drupal::entityTypeManager()
-      ->getStorage('group_content')
-      ->loadByEntity($entity);
+    ->getStorage('group_content')
+    ->loadByEntity($entity);
   return $group_contents;
 }
 
 /**
  * Removes an entity from a collection group.
  */
-function _remove_object_from_parent_group($entity, $parent){
+function _remove_object_from_parent_group($entity, $parent) {
   $group_contents = _get_group($entity);
   if (empty($group_contents)) {
     return;
@@ -76,7 +81,7 @@ function _remove_object_from_parent_group($entity, $parent){
   foreach ($group_contents as $group_content) {
     /** @var \Drupal\group\Entity\GroupContentInterface $group_content */
     $group = $group_content->getGroup();
-    if ($group->label() == 'Collection ' . $parent->id() . ' Group'){
+    if ($group->label() == 'Collection ' . $parent->id() . ' Group') {
       $group_content->delete();
     }
   }
@@ -84,11 +89,10 @@ function _remove_object_from_parent_group($entity, $parent){
 
 /**
  * Implements hook_node_delete().
- * 
  */
-function asu_permissions_node_delete(NodeInterface $node){
+function asu_permissions_node_delete(NodeInterface $node) {
   if ($node->bundle() == "collection") {
-    // delete the collection group
+    // Delete the collection group.
     $group_contents = _get_group($node);
     if (empty($group_contents)) {
       return;
@@ -98,30 +102,34 @@ function asu_permissions_node_delete(NodeInterface $node){
       $group = $group_content->getGroup();
       $group->delete();
     }
-  } elseif ($node->bundle() == 'asu_repository_item'){
+  }
+  elseif ($node->bundle() == 'asu_repository_item') {
     $parent = _get_collection_parent($node);
-    if ($parent){
+    if ($parent) {
       _remove_object_from_parent_group($node, $parent);
     }
   }
 }
 
-function _add_object_to_parent_group($node){
+/**
+ * Add object to group.
+ */
+function _add_object_to_parent_group($node) {
   $pluginId = 'group_node:' . $node->bundle();
   $group_contents = _get_group($node->get('field_member_of')->entity);
 
-  // check if the node is already in the group
+  // Check if the node is already in the group.
   $node_group_contents = _get_group($node);
   if (!empty($node_group_contents)) {
-    foreach ($node_group_contents as $gc) { 
+    foreach ($node_group_contents as $gc) {
       $group = $gc->getGroup();
-      if ($group->label() == 'Collection ' . $node->get('field_member_of')->entity->id() . ' Group'){
+      if ($group->label() == 'Collection ' . $node->get('field_member_of')->entity->id() . ' Group') {
         return;
       }
     }
   }
 
-  if (!empty($group_contents)){
+  if (!empty($group_contents)) {
     foreach ($group_contents as $group_content) {
       /** @var \Drupal\group\Entity\GroupContentInterface $group_content */
       $group = $group_content->getGroup();
@@ -133,22 +141,173 @@ function _add_object_to_parent_group($node){
 /**
  * Implements hook_node_update().
  */
-function asu_permissions_node_update(NodeInterface $node){
-  if ($node->bundle() == 'asu_repository_item'){
+function asu_permissions_node_update(NodeInterface $node) {
+  if ($node->bundle() == 'asu_repository_item') {
     $utils = \Drupal::service('islandora.utils');
     if (!$utils->haveFieldsChanged($node, $node->original)) {
       return;
     }
-    if ($node->get('field_member_of')->entity && $node->original->get('field_member_of')->entity){
+    if ($node->get('field_member_of')->entity && $node->original->get('field_member_of')->entity) {
       if ($node->get('field_member_of')->entity->id() != $node->original->get('field_member_of')->entity->id()) {
         _remove_object_from_parent_group($node, $node->original->get('field_member_of')->entity);
         _add_object_to_parent_group($node);
       }
-    } else if (!$node->get('field_member_of')->entity && $node->original->get('field_member_of')->entity){
+    }
+    elseif (!$node->get('field_member_of')->entity && $node->original->get('field_member_of')->entity) {
       _remove_object_from_parent_group($node, $node->original->get('field_member_of')->entity);
-    } else if ($node->get('field_member_of')->entity && !$node->original->get('field_member_of')->entity){
+    }
+    elseif ($node->get('field_member_of')->entity && !$node->original->get('field_member_of')->entity) {
       _add_object_to_parent_group($node);
     }
   }
 }
 
+/**
+ * Implements hook_media_access().
+ *
+ * Which is also hook_entity_type_access().
+ */
+function asu_permissions_media_access(EntityInterface $entity, $operation, AccountInterface $account) {
+  $item = $entity->get('field_media_of')->entity;
+  if (!$item) {
+    // Return neutral because it isn't an Islandora media - it isn't attached to an item.
+    return new AccessResultNeutral();
+  }
+  if ($account->isAuthenticated() && in_array("administrator", $account->getRoles())) {
+    // Allow if admin.
+    // TODO potentially do a lookup here for additional all-seeing roles.
+    return AccessResult::allowed();
+  }
+
+  if ($entity->hasField('field_access_terms') && $entity->get('field_access_terms')->entity) {
+    \Drupal::messenger()->addMessage("has islandora access set");
+    $access_term = $entity->get('field_access_terms')->entity->getName();
+  }
+  else {
+    // Assume its public if not access is set.
+    $access_term = "Public";
+  }
+
+  $item_status = $item->isPublished();
+  $collection = $item->get('field_member_of')->entity;
+  if (!$collection) {
+    $collection_status = $item_status;
+  }
+  else {
+    $collection_status = $collection->isPublished();
+  }
+  $collection_enabled = $collection->get('field_enabled')->value;
+  \Drupal::logger('asu permissions')->info("collection enabled is " . $collection_enabled);
+  \Drupal::logger('asu permissions')->info("item status is " . $item_status);
+  if ($collection_enabled == 0 || $collection_enabled == NULL) {
+    return AccessResult::forbidden();
+  }
+
+  if (!$account->isAuthenticated()) {
+    // Anonymous.
+    \Drupal::messenger()->addMessage("anonymous user " . $access_term);
+    if ($access_term == 'Private' || $access_term == 'ASU Only' || $item_status == 0 || $collection_status == 0) {
+      // Deny access.
+      return AccessResult::forbidden();
+    }
+    if ($access_term == 'Public' && $item_status == 1 && $collection_status == 1) {
+      return AccessResult::allowed();
+    }
+  }
+  else {
+    // User is logged in.
+    // Get collection group.
+    $group_contents = _get_group($collection);
+    if (!empty($group_contents)) {
+      foreach ($group_contents as $group_content) {
+        $group = $group_content->getGroup();
+        if ($group->getMember($account)) {
+          $col_member = TRUE;
+        }
+      }
+    }
+    else {
+      $col_member = FALSE;
+    }
+    if ($col_member) {
+      return AccessResult::allowed();
+    }
+    else {
+      if ($item_status == 0) {
+        return AccessResult::forbidden();
+      }
+      else {
+        if ($collection_status == 0) {
+          return AccessResult::forbidden();
+        }
+        else {
+          if ($access_term == "Private") {
+            return AccessResult::forbidden();
+          }
+          else {
+            return AccessResult::allowed();
+          }
+        }
+      }
+    }
+  }
+  return new AccessResultNeutral();
+}
+
+/**
+ * Helper function to check parent status - if there is a parent.
+ *
+ * @var $parent_status boolean.
+ *
+ * @return AccessInterface
+ *   access interface.
+ */
+function _process_status($parent_status) {
+  if ($parent_status && $parent_status == TRUE) {
+    // If item is publish - allow.
+    return AccessResult::allowed();
+  }
+  elseif ($parent_status == FALSE) {
+    // If item is not published - deny.
+    return AccessResult::forbidden();
+  }
+  else {
+    // Parent_status not set - neutral.
+    return new AccessResultNeutral();
+  }
+}
+
+/**
+ * Implements hook_node_access().
+ *
+ * Which is also hook_entity_type_access().
+ */
+function asu_permissions_node_access(EntityInterface $entity, $operation, AccountInterface $account) {
+  // TODO finish implementation
+  // If user is admin -> allow.
+  if (in_array("administrator", $account->getRoles())) {
+    return AccessResult::allowed();
+  }
+
+  // If its a collection.
+  if ($entity->bundle() == "collection") {
+    // if user is anon or not admin
+      // if disabled -> deny
+    // check for parent collection permissions
+  }
+  else if ($entity->bundle() == "asu_repository_item") {
+    // If its an item.
+      // if parent collection is disabled
+        // deny
+      // if parent collection is private
+        // if user is anon or not admin
+          // deny
+        // else if user is collection member
+          // allow
+    // be aware that the immediate parent might be an item, not a collection and you could have to traverse up many layers of member of relationships
+
+  }
+  return new AccessResultNeutral();
+}
+
+// TODO implement hook_file_download.
