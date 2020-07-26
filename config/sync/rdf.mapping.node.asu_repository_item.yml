@@ -139,6 +139,10 @@ fieldMappings:
   field_open_access:
     properties:
       - 'dcterms:accessRights'
+    datatype_callback:
+      callable: 'Drupal\asu_custom_rdf\ParseBoolean::tostring'
+      arguments:
+        1: 'open access'
   field_subjects_name:
     properties:
       - 'dcterms:subject'
@@ -165,8 +169,8 @@ fieldMappings:
     datatype_callback:
       callable: 'Drupal\asu_custom_rdf\ParseBoolean::tostring'
       arguments:
-        0: unpublished
-        1: published
+        - unpublished
+        - published
   field_peer_reviewed:
     properties:
       - 'dcterms:type'
