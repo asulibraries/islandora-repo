@@ -20,8 +20,13 @@ function asu_custom_rdf_rdf_namespaces() {
  */
 function asu_custom_rdf_jsonld_alter_normalized_array(EntityInterface $entity, array &$normalized, array $context) {
   if (isset($normalized['@graph']) && is_array($normalized['@graph'])) {
+    $current_rdf_mapping = $context['current_entity_rdf_mapping']->get('fieldMappings');
+    \Drupal::logger('asu custom')->info(print_r($current_rdf_mapping, TRUE));
     foreach ($normalized['@graph'][0] as $gk => $gv) {
-      if ($gk === 'http://id.loc.gov/vocabulary/relators/dtc') {
+      // Clean up the UID.
+      $predicate = $current_rdf_mapping['uid']['properties'][0];
+      $predicate_normalized = NormalizerBase::escapePrefix($predicate, $context['namespaces']);
+      if ($gk === $predicate_normalized) {
         foreach ($gv as $k => $id) {
           if (array_key_exists('@value', $id) && array_key_exists('@id', $id) && (strpos($id['@id'], 'user') !== FALSE)) {
             unset($id['@id']);
@@ -37,10 +42,10 @@ function asu_custom_rdf_jsonld_alter_normalized_array(EntityInterface $entity, a
         // Its a paragraph - get RDF mapping and apply custom transformations.
         foreach ($entity->get($field)->getValue() as $value) {
           $paragraph = Paragraph::load($value['target_id']);
-          // \Drupal::logger('asu custom')->info(print_r($context['current_entity_rdf_mapping']->get('fieldMappings'), TRUE));
-          if (array_key_exists($field, $context['current_entity_rdf_mapping']->get('fieldMappings'))) {
+          // \Drupal::logger('asu custom')->info(print_r($current_rdf_mapping, TRUE));
+          if (array_key_exists($field, $current_rdf_mapping)) {
             // \Drupal::logger('asu custom')->info($field);
-            $mapping = $context['current_entity_rdf_mapping']->get('fieldMappings')[$field];
+            $mapping = $current_rdf_mapping[$field];
             foreach ($mapping['properties'] as $predicate) {
               // \Drupal::logger('asu custom')->info(print_r($mapping, TRUE));
               // \Drupal::logger('asu custom')->info($field . " has an RDF mapping of " . $predicate);
@@ -51,31 +56,16 @@ function asu_custom_rdf_jsonld_alter_normalized_array(EntityInterface $entity, a
                 '@language' => 'en',
               ],
               ];
-  //               \Drupal::logger('asu custom')->info('paragraph type is ' . $paragraph->getType());
-  //               // \Drupal::logger('asu custom')->info('sub field value is ' . $paragraph->);
-  //               // \Drupal::logger('asu custom')->info();
-  //               foreach ($paragraph->getFieldDefinitions() as $parfield => $parfield_definition) {
-  //                   \Drupal::logger('asu custom')->info('field ' . $parfield_definition->getName());
-  //                   \Drupal::logger('asu custom')->info(print_r($context['current_entity_rdf_mapping']->get('fieldMappings'), TRUE));
-  //                   // \Drupal::logger('asu custom')->info($context['current_entity_rdf_mapping']->get('fieldMappings')[$complex_name]['properties']);
-  //                   if ($context['current_entity_rdf_mapping']->get('fieldMappings')[$parfield_definition->getName()]){
-  //                       foreach ($context['current_entity_rdf_mapping']->get('fieldMappings')[$parfield_definition->getName()]['properties'] as $predicate) {
-  //                           // if has mapping type par
-  //                           \Drupal::logger('asu custom')->info($parfield_definition->getName() . " has an RDF mapping of " . $predicate);
-
-  //                       //     $predicate_normalized = NormalizerBase::escapePrefix($predicate, $context['namespaces']);
-  //                           // \Drupal::logger('asu custom')->info('field value is ' . $paragraph->get('field_note_text'));
-  //                           // may be an existing array in the normalized content already, here i'm making an assumption that the array doesn't already exist.
-  //                           // $normalized['@graph'][0][$predicate_normalized][] = [
-  //                           //     '@value' => $paragraph->get($parfield_definition->getName()),
-  //                           //     '@language' => 'en'
-  //                           // ];
-  //                           // would have to handle different kinds of fields here like strings or a taxo reference or what not
-  //                       }
-  //                   }
-
             }
           }
+        }
+      }
+    }
+    // Remove empty IDs created by the paragraph entities
+    if (count($normalized['@graph']) > 1) {
+      foreach ($normalized['@graph'] as $key => $grph) {
+        if ($key > 0 && $grph['@id'] === "") {
+          unset($normalized['@graph'][$key]);
         }
       }
     }
