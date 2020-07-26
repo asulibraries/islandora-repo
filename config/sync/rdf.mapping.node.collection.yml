@@ -51,3 +51,13 @@ fieldMappings:
   status:
     properties:
       - 'asu:visibility'
+  field_title:
+    properties:
+      - 'dcterms:title'
+      - 'mods:title'
+    datatype_callback:
+      callable: 'Drupal\asu_custom_rdf\TitlePartMerge::merge'
+      arguments:
+        nonsort: field_nonsort
+        main: field_rest_of_title
+        subtitle: field_subtitle
