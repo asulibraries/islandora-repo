@@ -32,22 +32,25 @@ function asu_custom_rdf_jsonld_alter_normalized_array(EntityInterface $entity, a
       }
 
     }
-  //   foreach ($entity->getFieldDefinitions() as $field => $field_definition) {
-  //     if (!empty($entity->get($field)->getValue())) {
-  //       // \Drupal::logger('')
-
-  //       if ($field_definition->getType() == 'typed_relation') {
-
-  //       }
-  //       elseif ($field_definition->getType() == 'edtf') {
-
-  //       }
-  //       elseif ($field_definition->getType() == 'entity_reference_revisions'){
-  //           // \Drupal::logger('asu custom RDF module')->info('this should be a paragraph aka ' . $field_definition->getType());
-  //           // \Drupal::logger('asu custom')->info('field value comes next');
-  //           // \Drupal::logger('asu custom')->info(print_r($entity->get($field)->getValue(), TRUE));
-  //           foreach ($entity->get($field)->getValue() as $value) {
-  //               $paragraph = Paragraph::load($value['target_id']);
+    foreach ($entity->getFieldDefinitions() as $field => $field_definition) {
+      if ($field_definition->getType() == 'entity_reference_revisions') {
+        // Its a paragraph - get RDF mapping and apply custom transformations.
+        foreach ($entity->get($field)->getValue() as $value) {
+          $paragraph = Paragraph::load($value['target_id']);
+          // \Drupal::logger('asu custom')->info(print_r($context['current_entity_rdf_mapping']->get('fieldMappings'), TRUE));
+          if (array_key_exists($field, $context['current_entity_rdf_mapping']->get('fieldMappings'))) {
+            // \Drupal::logger('asu custom')->info($field);
+            $mapping = $context['current_entity_rdf_mapping']->get('fieldMappings')[$field];
+            foreach ($mapping['properties'] as $predicate) {
+              // \Drupal::logger('asu custom')->info(print_r($mapping, TRUE));
+              // \Drupal::logger('asu custom')->info($field . " has an RDF mapping of " . $predicate);
+              $predicate_normalized = NormalizerBase::escapePrefix($predicate, $context['namespaces']);
+              // Replace existing values.
+              $normalized['@graph'][0][$predicate_normalized] = [[
+                '@value' => call_user_func($mapping['datatype_callback']['callable'], $paragraph, $mapping['datatype_callback']['arguments']),
+                '@language' => 'en',
+              ],
+              ];
   //               \Drupal::logger('asu custom')->info('paragraph type is ' . $paragraph->getType());
   //               // \Drupal::logger('asu custom')->info('sub field value is ' . $paragraph->);
   //               // \Drupal::logger('asu custom')->info();
@@ -71,10 +74,10 @@ function asu_custom_rdf_jsonld_alter_normalized_array(EntityInterface $entity, a
   //                       }
   //                   }
 
-  //               }
-  //           }
-  //       }
-  //     }
-  //   }
+            }
+          }
+        }
+      }
+    }
   }
 }

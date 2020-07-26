@@ -172,3 +172,13 @@ fieldMappings:
   field_embargo_release_date:
     properties:
       - 'dcterms:available'
+  field_title:
+    properties:
+      - 'dcterms:title'
+      - 'mods:title'
+    datatype_callback:
+      callable: 'Drupal\asu_custom_rdf\TitlePartMerge::merge'
+      arguments:
+        nonsort: field_nonsort
+        main: field_rest_of_title
+        subtitle: field_subtitle
