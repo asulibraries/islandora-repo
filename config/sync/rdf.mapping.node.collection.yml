@@ -51,6 +51,11 @@ fieldMappings:
   status:
     properties:
       - 'asu:visibility'
+    datatype_callback:
+      callable: 'Drupal\asu_custom_rdf\ParseBoolean::tostring'
+      arguments:
+        - unpublished
+        - published
   field_title:
     properties:
       - 'dcterms:title'
