@@ -102,11 +102,14 @@ fieldMappings:
     properties:
       - 'dcterms:tableOfContents'
       - 'mods:tableOfContents'
-  field_note_text:
+  field_note_para:
     properties:
-      - 'modsrdf:note'
+      - 'mods:note'
       - 'dcterms:description'
-    mapping_type: par
+    datatype_callback:
+      callable: 'Drupal\asu_custom_rdf\ParagraphMapping::singlefield'
+      arguments:
+        - field_note_text
   field_weight:
     properties:
       - 'co:index'
@@ -186,7 +189,7 @@ fieldMappings:
       - 'dcterms:title'
       - 'mods:title'
     datatype_callback:
-      callable: 'Drupal\asu_custom_rdf\TitlePartMerge::merge'
+      callable: 'Drupal\asu_custom_rdf\ParagraphMapping::titlepartmerge'
       arguments:
         nonsort: field_nonsort
         main: field_rest_of_title

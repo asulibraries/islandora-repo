@@ -61,7 +61,7 @@ fieldMappings:
       - 'dcterms:title'
       - 'mods:title'
     datatype_callback:
-      callable: 'Drupal\asu_custom_rdf\TitlePartMerge::merge'
+      callable: 'Drupal\asu_custom_rdf\ParagraphMapping::titlepartmerge'
       arguments:
         nonsort: field_nonsort
         main: field_rest_of_title
