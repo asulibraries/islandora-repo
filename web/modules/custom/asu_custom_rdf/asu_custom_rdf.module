@@ -36,35 +36,39 @@ function asu_custom_rdf_jsonld_alter_normalized_array(EntityInterface $entity, a
         $normalized['@graph'][0][$gk] = $gv;
       }
 
-    }
-    foreach ($entity->getFieldDefinitions() as $field => $field_definition) {
-      if ($field_definition->getType() == 'entity_reference_revisions') {
-        // Its a paragraph - get RDF mapping and apply custom transformations.
-        foreach ($entity->get($field)->getValue() as $value) {
-          $paragraph = Paragraph::load($value['target_id']);
-          // \Drupal::logger('asu custom')->info(print_r($current_rdf_mapping, TRUE));
-          if (array_key_exists($field, $current_rdf_mapping)) {
-            // \Drupal::logger('asu custom')->info($field);
-            $mapping = $current_rdf_mapping[$field];
-            foreach ($mapping['properties'] as $predicate) {
-              // \Drupal::logger('asu custom')->info(print_r($mapping, TRUE));
-              // \Drupal::logger('asu custom')->info($field . " has an RDF mapping of " . $predicate);
-              $predicate_normalized = NormalizerBase::escapePrefix($predicate, $context['namespaces']);
-              // Replace existing values.
-              $normalized['@graph'][0][$predicate_normalized] = [[
-                '@value' => call_user_func($mapping['datatype_callback']['callable'], $paragraph, $mapping['datatype_callback']['arguments']),
-                '@language' => 'en',
-              ],
-              ];
+      // Clean up empty boolean values.
+      if (array_key_exists('field_open_access', $current_rdf_mapping)) {
+        $predicate = $current_rdf_mapping['field_open_access']['properties'][0];
+        $predicate_normalized = NormalizerBase::escapePrefix($predicate, $context['namespaces']);
+        if ($gk === $predicate_normalized) {
+          \Drupal::logger('asu custom rdf')->info($predicate_normalized);
+          \Drupal::logger('asu custom rdf')->info($gk);
+          foreach ($gv[0] as $k => $v) {
+            if ($k === "@value" && $v === "") {
+              unset($normalized['@graph'][0][$gk]);
             }
           }
         }
       }
+
+      // Make sure paragraph mappings don't leave behind empty ids.
+      foreach ($gv as $key => $val) {
+        foreach ($val as $kgv => $vgv) {
+          \Drupal::logger('asu custom rdf')->info($kgv);
+          \Drupal::logger('asu custom rdf')->info($vgv);
+          if ($kgv === "@id" && $vgv === "") {
+            unset($gv[$key][$kgv]);
+            $gv[$key]['@language'] = \Drupal::languageManager()->getCurrentLanguage()->getId();
+            $normalized['@graph'][0][$gk] = $gv;
+          }
+        }
+      }
+
     }
-    // Remove empty IDs created by the paragraph entities
+    // Remove empty IDs created by the paragraph entities.
     if (count($normalized['@graph']) > 1) {
       foreach ($normalized['@graph'] as $key => $grph) {
-        if ($key > 0 && $grph['@id'] === "") {
+        if ($key > 0 && ($grph['@id'] === "") || in_array("", $grph['@id'])) {
           unset($normalized['@graph'][$key]);
         }
       }

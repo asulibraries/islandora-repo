@@ -23,14 +23,11 @@ class ParseBoolean extends CommonDataConverter {
    */
   public static function tostring($data, $arguments) {
     if (is_array($data)) {
-      \Drupal::logger('asu parse boolean')->info(print_r($data, TRUE));
       $value = $data['value'];
     }
     else {
-      \Drupal::logger('asu parse boolean')->info("not a boolean");
-      // $paragraph = $data;
+      // \Drupal::logger('asu parse boolean')->info("not a boolean");
     }
-    \Drupal::logger('asu parse boolean')->info(print_r($arguments, TRUE));
     $string = "";
     foreach ($arguments as $key => $val) {
       $value = intval($value);
