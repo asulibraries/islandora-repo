@@ -31,18 +31,24 @@ class ParagraphMapping extends CommonDataConverter {
     $nonsort = $arguments['nonsort'];
     $rest_of_title = $arguments['main'];
     $subtitle = $arguments['subtitle'];
-    $nonsort_val = $paragraph->$nonsort->value;
-    $rest_of_title_val = $paragraph->$rest_of_title->value;
-    $subtitle_val = $paragraph->$subtitle->value;
+    $nonsort_val = $paragraph->$nonsort->getValue();
+    $rest_of_title_val = $paragraph->$rest_of_title->getValue();
+    $subtitle_val = $paragraph->$subtitle->getValue();
     $string = "";
     if ($nonsort_val) {
-      $string .= $nonsort_val;
+      foreach ($nonsort_val[0] as $val) {
+        $string .= $val . " ";
+      }
     }
     if ($rest_of_title_val) {
-      $string .= " " . $rest_of_title_val;
+      foreach ($rest_of_title_val[0] as $val) {
+        $string .= $val;
+      }
     }
     if ($subtitle_val) {
-      $string .= ": " . $subtitle_val;
+      foreach ($subtitle_val[0] as $val) {
+        $string .= ": " . $val;
+      }
     }
     return $string;
   }
@@ -67,7 +73,12 @@ class ParagraphMapping extends CommonDataConverter {
     }
     $string = "";
     foreach ($arguments as $field) {
-      $string .= $paragraph->$field->value;
+      $value = $paragraph->$field->getValue();
+      if (count($value) > 0) {
+        foreach ($value[0] as $val) {
+          $string .= $val;
+        }
+      }
     }
     return $string;
   }
@@ -91,7 +102,11 @@ class ParagraphMapping extends CommonDataConverter {
       $paragraph = $data;
     }
     $string = "";
-    $string .= $paragraph->$arguments['value_field']->value;
+    $field = $paragraph->get($arguments['value_field'])->getValue();
+
+    foreach ($field[0] as $val) {
+      $string .= $val;
+    }
     return $string;
   }
 

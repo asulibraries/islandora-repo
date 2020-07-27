@@ -23,7 +23,7 @@ function asu_custom_rdf_jsonld_alter_normalized_array(EntityInterface $entity, a
   if (isset($normalized['@graph']) && is_array($normalized['@graph'])) {
     $current_rdf_mapping = $context['current_entity_rdf_mapping']->get('fieldMappings');
     $lang = \Drupal::languageManager()->getCurrentLanguage()->getId();
-    \Drupal::logger('asu custom')->info(print_r($current_rdf_mapping, TRUE));
+    // \Drupal::logger('asu custom')->info(print_r($current_rdf_mapping, TRUE));
     foreach ($normalized['@graph'][0] as $gk => $gv) {
       // Clean up the UID.
       $predicate = $current_rdf_mapping['uid']['properties'][0];
@@ -43,8 +43,8 @@ function asu_custom_rdf_jsonld_alter_normalized_array(EntityInterface $entity, a
         $predicate = $current_rdf_mapping['field_open_access']['properties'][0];
         $predicate_normalized = NormalizerBase::escapePrefix($predicate, $context['namespaces']);
         if ($gk === $predicate_normalized) {
-          \Drupal::logger('asu custom rdf')->info($predicate_normalized);
-          \Drupal::logger('asu custom rdf')->info($gk);
+          // \Drupal::logger('asu custom rdf')->info($predicate_normalized);
+          // \Drupal::logger('asu custom rdf')->info($gk);
           foreach ($gv[0] as $k => $v) {
             if ($k === "@value" && $v === "") {
               unset($normalized['@graph'][0][$gk]);
@@ -54,15 +54,19 @@ function asu_custom_rdf_jsonld_alter_normalized_array(EntityInterface $entity, a
       }
 
       // Make sure paragraph mappings don't leave behind empty ids.
-      foreach ($gv as $key => $val) {
-        foreach ($val as $kgv => $vgv) {
-          // \Drupal::logger('asu custom rdf')->info($kgv);
-          // \Drupal::logger('asu custom rdf')->info($vgv);
-          if ($kgv === "@id" && $vgv === "") {
-            unset($gv[$key][$kgv]);
-            // TODO change current language to field language.
-            $gv[$key]['@language'] = $lang;
-            $normalized['@graph'][0][$gk] = $gv;
+      if (is_array($gv)) {
+        foreach ($gv as $key => $val) {
+          if (is_array($val)) {
+            foreach ($val as $kgv => $vgv) {
+              // \Drupal::logger('asu custom rdf')->info($kgv);
+              // \Drupal::logger('asu custom rdf')->info($vgv);
+              if ($kgv === "@id" && $vgv === "") {
+                unset($gv[$key][$kgv]);
+                // TODO change current language to field language.
+                $gv[$key]['@language'] = $lang;
+                $normalized['@graph'][0][$gk] = $gv;
+              }
+            }
           }
         }
       }
@@ -80,18 +84,23 @@ function asu_custom_rdf_jsonld_alter_normalized_array(EntityInterface $entity, a
             $value = $paragraph->get($args['value_field'])->getValue()[0]['value'];
             // Get the type from the $args['type_field'].
             if (array_key_exists('type_taxonomy_field', $args)) {
-              $type = $paragraph->get($args['type_field'])->referencedEntities()[0]->get($args['type_taxonomy_field'])->getValue()[0]['value'];
+              $taxo_entities = $paragraph->get($args['type_field'])->referencedEntities();
+              if (count($taxo_entities) > 0) {
+                $type = $taxo_entities[0]->get($args['type_taxonomy_field'])->getValue()[0]['value'];
+              }
             }
             else {
-              $type = $paragraph->get($args['type_field'])->getValue();
+              $type = $paragraph->get($args['type_field'])->getValue()[0]['value'];
             }
-            $predicate = $args['predicate'] . ":" . $type;
-            $predicate_normalized =
-            NormalizerBase::escapePrefix($predicate, $context['namespaces']);
-            $normalized['@graph'][0][$predicate_normalized][] = [
-              '@value' => $value,
-              '@language' => $lang,
-            ];
+            if ($type) {
+              $predicate = $args['predicate'] . ":" . $type;
+              $predicate_normalized =
+                NormalizerBase::escapePrefix($predicate, $context['namespaces']);
+              $normalized['@graph'][0][$predicate_normalized][] = [
+                '@value' => $value,
+                '@language' => $lang,
+              ];
+            }
           }
         }
       }
@@ -101,7 +110,7 @@ function asu_custom_rdf_jsonld_alter_normalized_array(EntityInterface $entity, a
     // Remove empty IDs created by the paragraph entities.
     if (count($normalized['@graph']) > 1) {
       foreach ($normalized['@graph'] as $key => $grph) {
-        if ($key > 0 && ($grph['@id'] === "") || in_array("", $grph['@id'])) {
+        if ($key > 0 && ($grph['@id'] === "") || (is_array($grph['@id']) && in_array("", $grph['@id']))) {
           unset($normalized['@graph'][$key]);
         }
       }
