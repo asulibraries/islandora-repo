@@ -12,6 +12,7 @@ function asu_custom_rdf_rdf_namespaces() {
     'rdau' => 'http://www.rdaregistry.info/Elements/u#',
     'asu' => 'http://repository.asu.edu/rdf/',
     'bf' => 'http://id.loc.gov/ontologies/bibframe/',
+    'identifiers' => 'http://id.loc.gov/vocabulary/identifiers/',
   ];
 }
 
@@ -21,6 +22,7 @@ function asu_custom_rdf_rdf_namespaces() {
 function asu_custom_rdf_jsonld_alter_normalized_array(EntityInterface $entity, array &$normalized, array $context) {
   if (isset($normalized['@graph']) && is_array($normalized['@graph'])) {
     $current_rdf_mapping = $context['current_entity_rdf_mapping']->get('fieldMappings');
+    $lang = \Drupal::languageManager()->getCurrentLanguage()->getId();
     \Drupal::logger('asu custom')->info(print_r($current_rdf_mapping, TRUE));
     foreach ($normalized['@graph'][0] as $gk => $gv) {
       // Clean up the UID.
@@ -54,17 +56,48 @@ function asu_custom_rdf_jsonld_alter_normalized_array(EntityInterface $entity, a
       // Make sure paragraph mappings don't leave behind empty ids.
       foreach ($gv as $key => $val) {
         foreach ($val as $kgv => $vgv) {
-          \Drupal::logger('asu custom rdf')->info($kgv);
-          \Drupal::logger('asu custom rdf')->info($vgv);
+          // \Drupal::logger('asu custom rdf')->info($kgv);
+          // \Drupal::logger('asu custom rdf')->info($vgv);
           if ($kgv === "@id" && $vgv === "") {
             unset($gv[$key][$kgv]);
-            $gv[$key]['@language'] = \Drupal::languageManager()->getCurrentLanguage()->getId();
+            // TODO change current language to field language.
+            $gv[$key]['@language'] = $lang;
             $normalized['@graph'][0][$gk] = $gv;
           }
         }
       }
 
     }
+
+    // Handle typedmap.
+    foreach ($current_rdf_mapping as $kmap => $vmap) {
+      if (array_key_exists('datatype_callback', $vmap)) {
+        $callback = $vmap['datatype_callback'];
+        if ($callback['callable'] == 'Drupal\asu_custom_rdf\ParagraphMapping::typedmap') {
+          $args = $callback['arguments'];
+          // Get field value from $args['value_field'].
+          foreach ($entity->get($kmap)->referencedEntities() as $paragraph) {
+            $value = $paragraph->get($args['value_field'])->getValue()[0]['value'];
+            // Get the type from the $args['type_field'].
+            if (array_key_exists('type_taxonomy_field', $args)) {
+              $type = $paragraph->get($args['type_field'])->referencedEntities()[0]->get($args['type_taxonomy_field'])->getValue()[0]['value'];
+            }
+            else {
+              $type = $paragraph->get($args['type_field'])->getValue();
+            }
+            $predicate = $args['predicate'] . ":" . $type;
+            $predicate_normalized =
+            NormalizerBase::escapePrefix($predicate, $context['namespaces']);
+            $normalized['@graph'][0][$predicate_normalized][] = [
+              '@value' => $value,
+              '@language' => $lang,
+            ];
+          }
+        }
+      }
+    }
+
+
     // Remove empty IDs created by the paragraph entities.
     if (count($normalized['@graph']) > 1) {
       foreach ($normalized['@graph'] as $key => $grph) {

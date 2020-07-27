@@ -72,4 +72,27 @@ class ParagraphMapping extends CommonDataConverter {
     return $string;
   }
 
+  /**
+   * Outputs a value, but allows additional customization in json_alter_hook.
+   *
+   * @param mixed $data
+   *   The array containing the 'target_id' element.
+   * @param mixed $arguments
+   *   The array containing the arguments.
+   *
+   * @return string
+   *   Returns the string.
+   */
+  public static function typedmap($data, $arguments) {
+    if (is_array($data)) {
+      $paragraph = Paragraph::load($data['target_id']);
+    }
+    else {
+      $paragraph = $data;
+    }
+    $string = "";
+    $string .= $paragraph->$arguments['value_field']->value;
+    return $string;
+  }
+
 }
