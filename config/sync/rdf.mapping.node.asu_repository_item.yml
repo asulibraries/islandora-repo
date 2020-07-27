@@ -138,7 +138,8 @@ fieldMappings:
   field_handle:
     properties:
       - 'dcterms:identifier'
-      - 'mods:identifier:hdl'
+      - 'mods:identifier'
+      - 'identifiers:hdl'
   field_open_access:
     properties:
       - 'dcterms:accessRights'
@@ -194,3 +195,15 @@ fieldMappings:
         nonsort: field_nonsort
         main: field_rest_of_title
         subtitle: field_subtitle
+  field_typed_identifier:
+    properties:
+      - 'dcterms:identifier'
+      - 'mods:identifier'
+    mapping_type: par
+    datatype_callback:
+      callable: 'Drupal\asu_custom_rdf\ParagraphMapping::typedmap'
+      arguments:
+        type_field: field_identifier_type
+        type_taxonomy_field: field_identifier_predicate
+        value_field: field_identifier_value
+        predicate: identifiers
