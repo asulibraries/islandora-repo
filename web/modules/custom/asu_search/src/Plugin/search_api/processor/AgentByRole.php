@@ -60,11 +60,11 @@ class AgentByRole extends ProcessorPluginBase {
         // target_id
         $taxo_term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($element['target_id']);
         $taxo_name = $taxo_term->name->value;
-        \Drupal::logger('asu search')->info('taxo name is ' . $taxo_name);
+        // \Drupal::logger('asu search')->info('taxo name is ' . $taxo_name);
         $rel_type = $element['rel_type'];
         $mac_rel = strtolower($rel_type);
         $mac_rel = str_replace('relators:', '', $mac_rel);
-        \Drupal::logger('asu search')->info('rel type is ' . $rel_type);
+        // \Drupal::logger('asu search')->info('rel type is ' . $rel_type);
         $fields = $this->getFieldsHelper()
           ->filterForPropertyPath($fields, NULL, 'asu_agent_' . $mac_rel);
         foreach ($fields as $field) {
