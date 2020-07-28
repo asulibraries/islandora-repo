@@ -26,6 +26,12 @@ function asu_soft_delete_form_alter(&$form, \Drupal\Core\Form\FormStateInterface
       if ($action != 'preview' && isset($form['actions'][$action]['#type']) && $form['actions'][$action]['#type'] === 'submit') {
         $form['actions'][$action]['#submit'] = ['asu_soft_delete_delete_handler'];
         // add a "Really delete this item?" checkbox.
+        $form['tos'] = [
+          '#type'          => 'checkbox',
+          '#title'         => t('Terms and Conditions'),
+          '#required'      => TRUE,
+          '#default_value' => TRUE,
+        ];
       }
     }
   }
@@ -46,8 +52,6 @@ function asu_soft_delete_delete_handler(&$form, \Drupal\Core\Form\FormStateInter
 
   $node = \Drupal::routeMatch()->getParameter('node');
   if ($node instanceof \Drupal\node\NodeInterface) {
-    // You can get nid and anything else you need from the node object.
-    $nid = $node->id();
     $node_vid = \Drupal::entityManager()->getStorage('node')->revisionIds($node);
     $latest_revision_id = array_pop((array_slice($node_vid, -1)));
     $current_state = node_revision_load($latest_revision_id)->get('moderation_state')->getValue()[0]['value'];
