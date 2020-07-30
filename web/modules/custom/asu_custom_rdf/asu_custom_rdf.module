@@ -92,7 +92,7 @@ function asu_custom_rdf_jsonld_alter_normalized_array(EntityInterface $entity, a
             else {
               $type = $paragraph->get($args['type_field'])->getValue()[0]['value'];
             }
-            if ($type) {
+            if (isset($type)) {
               $predicate = $args['predicate'] . ":" . $type;
               $predicate_normalized =
                 NormalizerBase::escapePrefix($predicate, $context['namespaces']);
