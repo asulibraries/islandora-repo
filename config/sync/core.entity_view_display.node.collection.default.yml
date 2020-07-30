@@ -3,18 +3,20 @@ status: true
 dependencies:
   config:
     - field.field.node.collection.field_collaborating_institutions
-    - field.field.node.collection.field_description
     - field.field.node.collection.field_enabled
     - field.field.node.collection.field_external_links
     - field.field.node.collection.field_handle
     - field.field.node.collection.field_member_of
     - field.field.node.collection.field_model
     - field.field.node.collection.field_oai_set
+    - field.field.node.collection.field_preferred_citation
     - field.field.node.collection.field_primary_contact
+    - field.field.node.collection.field_rich_description
     - field.field.node.collection.field_title
     - node.type.collection
   module:
     - link
+    - text
     - user
 id: node.collection.default
 targetEntityType: node
@@ -41,13 +43,6 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
-    region: content
-  field_description:
-    weight: 1
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: basic_string
     region: content
   field_enabled:
     weight: 104
@@ -100,12 +95,26 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
     region: content
+  field_preferred_citation:
+    weight: 106
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
   field_primary_contact:
     weight: 8
     label: above
     settings: {  }
     third_party_settings: {  }
     type: basic_string
+    region: content
+  field_rich_description:
+    weight: 105
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
     region: content
   flag_email_node:
     weight: 10
