@@ -53,6 +53,11 @@ targetEntityType: node
 bundle: asu_repository_item
 mode: search_result
 content:
+  display_media_entity_view_3:
+    weight: 20
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   display_media_thumbnail:
     weight: 0
     region: content
@@ -77,10 +82,10 @@ content:
     type: edtf_default
     region: content
   field_gemini_uri:
-    weight: 100
+    weight: 5
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
   field_linked_agent:
     type: typed_relation_default
     weight: 4
