@@ -57,16 +57,10 @@
         {{ content_rendered }}
       </div>
     {% else %}
-      {% set copyright_logo %}
-      {{ content.field_copyright_logo[0] }}
-      {% endset %}
-      {% set source %}
-      {{ content.field_source[0] }}
-      {% endset %}
-      {% if copyright_logo is not empty %}
-        <a href="{{source}}" target="_blank"><img class="copyright-logo" src="{{copyright_logo}}"/></a>
-      {% elseif source is not empty %}
-        <a href="{{source}}" target="_blank">{{ name }}</a>
+      {% if content.field_copyright_logo[0] is not empty %}
+        <a href="{{content.field_source[0]}}" target="_blank"><img class="copyright-logo" src="{{content.field_copyright_logo[0]}}"/></a>
+      {% elseif content.field_source[0] is not empty %}
+        <a href="{{content.field_source[0]}}" target="_blank">{{ name }}</a>
       {% else %}
         {{ name }}
       {% endif %}
