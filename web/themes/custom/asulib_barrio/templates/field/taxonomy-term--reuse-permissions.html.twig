@@ -58,7 +58,7 @@
       </div>
     {% else %}
       {% if content.field_copyright_logo[0] is not empty %}
-        <a href="{{content.field_source[0]}}" target="_blank"><img class="copyright-logo" src="{{content.field_copyright_logo[0]}}"/></a>
+        <a href="{{content.field_source[0]}}" target="_blank"><img class="reuse-logo" src="{{content.field_copyright_logo[0]}}"/></a>
       {% elseif content.field_source[0] is not empty %}
         <a href="{{content.field_source[0]}}" target="_blank">{{ name }}</a>
       {% else %}
