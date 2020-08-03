@@ -1,0 +1,21 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: items_nids
+label: 'Items Nids'
+type: 'canonical_entities:node'
+pattern: '/items/[node:nid]'
+selection_criteria:
+  0cf7f18b-57d1-4589-8922-dc56561518cd:
+    id: node_type
+    bundles:
+      asu_repository_item: asu_repository_item
+    negate: false
+    context_mapping:
+      node: node
+    uuid: 0cf7f18b-57d1-4589-8922-dc56561518cd
+selection_logic: and
+weight: -5
+relationships: {  }
