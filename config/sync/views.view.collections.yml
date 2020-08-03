@@ -6,8 +6,8 @@ dependencies:
     - node.type.collection
     - system.menu.main
   module:
+    - group
     - node
-    - user
 id: collections
 label: Collections
 module: views
@@ -23,9 +23,8 @@ display:
     position: 0
     display_options:
       access:
-        type: perm
-        options:
-          perm: 'access content'
+        type: none
+        options: {  }
       cache:
         type: tag
         options: {  }
@@ -120,19 +119,6 @@ display:
           separator: ', '
           field_api_classes: false
       filters:
-        status:
-          value: '1'
-          table: node_field_data
-          field: status
-          plugin_id: boolean
-          entity_type: node
-          entity_field: status
-          id: status
-          expose:
-            operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
-          group: 1
         type:
           id: type
           table: node_field_data
@@ -195,7 +181,24 @@ display:
       header: {  }
       footer: {  }
       empty: {  }
-      relationships: {  }
+      relationships:
+        group_content:
+          id: group_content
+          table: node_field_data
+          field: group_content
+          relationship: none
+          group_type: group
+          admin_label: 'Content group content'
+          required: false
+          group_content_plugins:
+            'group_node:collection': 'group_node:collection'
+            'group_node:article': '0'
+            'group_node:asu_repository_item': '0'
+            'group_node:institution': '0'
+            'group_node:islandora_object': '0'
+            'group_node:page': '0'
+          entity_type: node
+          plugin_id: group_content_to_entity_reverse
       arguments: {  }
       display_extenders: {  }
     cache_metadata:
@@ -205,7 +208,6 @@ display:
         - 'languages:language_interface'
         - url.query_args
         - 'user.node_grants:view'
-        - user.permissions
       tags: {  }
   page_1:
     display_plugin: page
@@ -231,5 +233,4 @@ display:
         - 'languages:language_interface'
         - url.query_args
         - 'user.node_grants:view'
-        - user.permissions
       tags: {  }
