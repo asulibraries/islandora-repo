@@ -19,8 +19,19 @@ This module requires the following modules:
 
 Optionally, flush the cache (`drush cr`), so the migrations become visible in the GUI at Manage > Structure > Migrations > asu_migrate (http://localhost:8000/admin/structure/migrate/manage/asu_migrate/migrations)
 
+## Usage
+- run node migration first, then file, then media
+- you can migrate with drush like `drush migrate:import migration_id`
+- you can also `rollback` and `reset` via drush
+- when manipulating files in fedora, you MUST pass a userid that has permission fedoraAdmin like `--userid 1`
 
 ## Configuration
 
 No configuration page is provided.
+
+
+## Debugging tips
+- run migrate drush commands with `--debug` flag
+- run `drush migrate:messages migration_id` to see messges
+- install migrate_devel module and run drush migrate command with `--migrate-debug` or `--migrate-debug-pre`
 

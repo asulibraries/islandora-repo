@@ -4,20 +4,20 @@ dependencies:
     module:
       - asu_migrate
 
-id: islandora_media
-label: Import Media from CSV
-migration_group: asu_migrate
+id: c5_media
+label: Import Collection 5 Media from CSV
+migration_group: migrate_c5_csv
 
 source:
   plugin: csv
-  path: modules/custom/asu_migrate/data/migration.csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/data/att_file_c5.csv
 
   # 1 means you have a header row, 0 means you don't
   header_row_count: 1
 
   # Each migration needs a unique key per row in the csv.  Here we're using the file path.
   keys:
-    - file
+    - file id
 
   # You can't enter string literals into a process plugin, but you can give it a constant as a 'source'.
   constants:
@@ -31,6 +31,7 @@ process:
 
   name: title
   uid: constants/uid
+  # todo set to asurite
 
   # Make the media an 'Original File'
   field_media_use:
@@ -42,26 +43,50 @@ process:
     bundle: islandora_media_use
 
   # Lookup the migrated file in the file migration.
-  field_media_image:
+  field_media_document:
     plugin: migration_lookup
-    source: file
-    migration: file
+    source: file id
+    migration: c5_file
     no_stub: true
 
   # Lookup the migrated node in the node migration
   field_media_of:
     plugin: migration_lookup
-    source: file
-    migration: node
+    source: item id
+    migration: c5_node
     no_stub: true
 
+  created:
+    plugin: format_date
+    source: attachment date
+    from_format: 'Y-m-d G:i:s.uP'
+    to_format: 'U'
+    from_timezone: 'UTC'
+    to_timezone: 'UTC'
+
+  field_access_terms:
+    -
+      plugin: static_map
+      source: attachment file access
+      map:
+        1: "Public" #OpenAccess
+        2: "ASU Only" #ASU
+        3: "Private" #Closed
+    -
+      plugin: entity_lookup
+      bundle: islandora_access
+      bundle_key: vid
+      entity_type: taxonomy_term
+      value_key: name
+
 destination:
-  # These are 'image' media we're making.
+  # These are 'document' media we're making. - could this be dynamic?
+  # perhaps even just a static map lookup by the mime type
   plugin: 'entity:media'
-  default_bundle: image
+  default_bundle: document
 
 migration_dependencies:
   required:
-    - migrate_plus.migration.islandora_file
-    - migrate_plus.migration.islandora_node
+    - migrate_plus.migration.c5_file
+    - migrate_plus.migration.c5_node
   optional: {  }
