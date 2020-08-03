@@ -49,15 +49,15 @@ class AgentByRole extends ProcessorPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function addFieldValues(ItemInterface $item)
-  {
+  public function addFieldValues(ItemInterface $item) {
     $node = $item->getOriginalObject()->getValue();
     if ($node->hasField('field_linked_agent') && !$node->get('field_linked_agent')->isEmpty()) {
       $vals = $node->field_linked_agent->getValue();
       // \Drupal::logger('asu search')->info(print_r($vals, TRUE));
       foreach ($vals as $element) {
         $fields = $item->getFields(FALSE);
-        $taxo_term = \Drupal::entityManager()->getStorage('taxonomy_term')->load($element['target_id']);
+        $tid = $element['target_id'];
+        $taxo_term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($tid);
         if ($taxo_term) {
           // \Drupal::logger('asu search')->info(print_r($taxo_term, TRUE));
           $taxo_name = $taxo_term->name->value;
@@ -75,4 +75,5 @@ class AgentByRole extends ProcessorPluginBase {
       }
     }
   }
+
 }
