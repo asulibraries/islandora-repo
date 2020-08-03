@@ -2,9 +2,11 @@ langcode: en
 status: true
 dependencies:
   config:
-    - node.type.islandora_object
+    - node.type.asu_repository_item
     - taxonomy.vocabulary.islandora_media_use
     - user.role.administrator
+  content:
+    - 'taxonomy_term:islandora_media_use:c1075525-748e-466a-955c-c816e4391aa0'
   module:
     - file
     - media
@@ -283,7 +285,7 @@ display:
           admin_label: ''
           operator: in
           value:
-            islandora_object: islandora_object
+            asu_repository_item: asu_repository_item
           group: 1
           exposed: false
           expose:
