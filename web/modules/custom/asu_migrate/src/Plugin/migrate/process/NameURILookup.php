@@ -50,7 +50,7 @@ class NameURILookup extends ProcessPluginBase {
     if (!empty($uri) && !empty($field)) {
       $properties[$field] = $uri;
     }
-    $terms = \Drupal::entityManager()->getStorage('taxonomy_term')->loadByProperties($properties);
+    $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties($properties);
     $term = reset($terms);
     return !empty($term) ? $term->id() : 0;
   }
@@ -62,7 +62,7 @@ class NameURILookup extends ProcessPluginBase {
     if (!empty($name)) {
       $properties['name'] = $name;
     }
-    $terms = \Drupal::entityManager()->getStorage('taxonomy_term')->loadByProperties($properties);
+    $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties($properties);
     $term = reset($terms);
     return !empty($term) ? $term->id() : 0;
   }

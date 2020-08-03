@@ -87,7 +87,7 @@ class ParagraphGenerate extends ProcessPluginBase {
     if (!empty($value) && !empty($field)) {
       $properties[$field] = $value;
     }
-    $terms = \Drupal::entityManager()->getStorage('taxonomy_term')->loadByProperties($properties);
+    $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties($properties);
     $term = reset($terms);
     return !empty($term) ? $term->id() : 0;
   }

@@ -25,7 +25,7 @@ use Drupal\taxonomy\Entity\Term;
  *      field_subtitle: ""
  */
 class ParagraphTitleGenerate extends ParagraphGenerate {
-  // TODO would be great to pull these from a config.
+  // @todo would be great to pull these from a config.
   protected $nonsorts = [
       'the', 'an', 'a'
   ];
