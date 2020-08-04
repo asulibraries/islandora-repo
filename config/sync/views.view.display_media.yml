@@ -718,8 +718,8 @@ display:
           label: ''
           exclude: true
           alter:
-            alter_text: false
-            text: ''
+            alter_text: true
+            text: ' ({{ field_width }} x {{ field_height }}px)'
             make_link: false
             path: ''
             absolute: false
@@ -845,8 +845,8 @@ display:
           label: ''
           exclude: true
           alter:
-            alter_text: false
-            text: ''
+            alter_text: true
+            text: '<a class="dropdown-item" href="{{ field_media_audio_file }}">Original file</a>'
             make_link: false
             path: ''
             absolute: false
@@ -884,9 +884,8 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: file_default
-          settings:
-            use_description_as_link_text: true
+          type: file_url_plain
+          settings: {  }
           group_column: ''
           group_columns: {  }
           group_rows: true
@@ -973,8 +972,8 @@ display:
           label: ''
           exclude: true
           alter:
-            alter_text: false
-            text: ''
+            alter_text: true
+            text: '<a class="dropdown-item" href="{{ field_media_document }}">Original file</a>'
             make_link: false
             path: ''
             absolute: false
@@ -1012,9 +1011,8 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: file_default
-          settings:
-            use_description_as_link_text: true
+          type: file_url_plain
+          settings: {  }
           group_column: ''
           group_columns: {  }
           group_rows: true
@@ -1036,8 +1034,8 @@ display:
           label: ''
           exclude: true
           alter:
-            alter_text: false
-            text: ''
+            alter_text: true
+            text: '<a class="dropdown-item" href="{{ field_media_video_file }}">Original file</a>'
             make_link: false
             path: ''
             absolute: false
@@ -1075,9 +1073,8 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: file_default
-          settings:
-            use_description_as_link_text: true
+          type: file_url_plain
+          settings: {  }
           group_column: ''
           group_columns: {  }
           group_rows: true
@@ -1100,7 +1097,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: '{{ field_file_size }} {{ field_mime_type }} ({{ field_width }} x {{ field_height }}px)'
+            text: '{{ field_file_size }} {{ field_mime_type }}{{ field_height }}'
             make_link: false
             path: ''
             absolute: false
@@ -1198,7 +1195,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "{{ nothing_2 }}\r\n{{ field_media_image }}\r\n{{ field_media_document }}\r\n{{ field_media_file }}"
+            text: "{{ nothing_2 }}\r\n{{ field_media_image }}\r\n{{ field_media_document }}\r\n{{ field_media_file }}\r\n{{ field_media_video_file }}\r\n{{ field_media_audio_file }}"
             make_link: false
             path: ''
             absolute: false
@@ -1425,7 +1422,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: '<a class="dropdown-item" href="{{ field_media_image }}">Service file {{ field_width }}px</a>'
+            text: "<a class=\"dropdown-item\" href=\"{{ field_media_image }}\">Service file {{ field_width }}px</a>\r\n"
             make_link: false
             path: ''
             absolute: false
