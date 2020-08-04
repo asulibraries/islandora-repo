@@ -80,8 +80,13 @@ def main(argv):
     merge_df['Contributors-Person'] = contribs.apply(lambda row: sjoin(row), axis=1)
     merge_df['Geographic Subject'] = merge_df['Geographic Subject'].apply(
         lambda row: loc_lookup("subjects", row))
+    # for col in merge_df.columns:
+        # print(col)
+    del merge_df["History"] # temp remove history until we decide what to do with it
+    # for col in merge_df.columns:
+        # print(col)
 
-    print(merge_df.iloc[0])
+    # print(merge_df.iloc[0])
 
     merge_df.to_csv('c' + str(merge_df.iloc[0]['Collection ID']) + '_merged.csv')
 
