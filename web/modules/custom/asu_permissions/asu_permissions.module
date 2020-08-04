@@ -163,6 +163,66 @@ function asu_permissions_node_update(NodeInterface $node) {
 }
 
 /**
+ * Implements hook_node_access().
+ */
+function asu_permissions_node_access(NodeInterface $node, $op, AccountInterface $account) {
+  // \Drupal::logger('asu permissions')->info("access check for " . $node->id());
+  if ($node->bundle() == "collection" || $node->bundle() == "asu_repository_item") {
+    $plugin_id = 'group_node:' . $node->bundle();
+
+    $groups = _get_groups_from_node($node);
+    // If the node does not belong to any group, we have nothing to say.
+    if (empty($groups)) {
+      $access_result = AccessResult::neutral();
+    }
+
+    // From this point on you need group to allow you to perform the operation.
+    switch ($op) {
+      case 'view':
+        foreach ($groups as $group) {
+          if ($node->isPublished()) {
+            // \Drupal::logger('asu permissions')->info("parent access: " . $taccess);
+            if ($group->hasPermission("view $plugin_id entity", $account)) {
+              $parents = _walk_membership($node, []);
+              // \Drupal::logger('asu permissions')->info("parents count: " . count($parents));
+              if (count($parents) > 0) {
+                foreach ($parents as $par) {
+                  if ($par->uuid() != $node->uuid()) {
+                    // This line enforces if you can't view a parent then you can't view child.
+                    $taccess = $par->access('view', $account);
+                    // \Drupal::logger('asu permissions')->info("parent access: " . $taccess);
+                    $access_result = AccessResult::forbiddenIf($taccess == FALSE);
+                  }
+                }
+              }
+              else {
+                $access_result = AccessResult::allowed();
+              }
+            }
+          }
+          elseif ($group->hasPermission("view unpublished $plugin_id entity", $account)) {
+            // This is what gives metadata managers and admins their power.
+            $access_result = AccessResult::allowed();
+          }
+          else {
+            // Forbid if not explictly allowed by group. This is powerful.
+            $access_result = AccessResult::forbidden();
+          }
+        }
+        break;
+    }
+  }
+  if (isset($access_result)) {
+    $access_result->addCacheableDependency($node);
+    $access_result->addCacheContexts(['theme']);
+    return $access_result;
+  }
+  else {
+    return AccessResult::neutral();
+  }
+}
+
+/**
  * Implements hook_media_access().
  *
  * Which is also hook_entity_type_access().
@@ -176,7 +236,7 @@ function asu_permissions_media_access(EntityInterface $entity, $operation, Accou
   if ($account->isAuthenticated() && in_array("administrator", $account->getRoles())) {
     // Allow if admin.
     // TODO potentially do a lookup here for additional all-seeing roles.
-    return AccessResult::allowed();
+    $access_result = AccessResult::allowed();
   }
 
   if ($entity->hasField('field_access_terms') && $entity->get('field_access_terms')->entity) {
@@ -188,126 +248,88 @@ function asu_permissions_media_access(EntityInterface $entity, $operation, Accou
     $access_term = "Public";
   }
 
-  $item_status = $item->isPublished();
-  $collection = $item->get('field_member_of')->entity;
-  if (!$collection) {
-    $collection_status = $item_status;
-  }
-  else {
-    $collection_status = $collection->isPublished();
-  }
-  $collection_enabled = $collection->get('field_enabled')->value;
-  \Drupal::logger('asu permissions')->info("collection enabled is " . $collection_enabled);
-  \Drupal::logger('asu permissions')->info("item status is " . $item_status);
-  if ($collection_enabled == 0 || $collection_enabled == NULL) {
-    return AccessResult::forbidden();
+  if (!$account->isAuthenticated() && $access_term != "Public") {
+    $access_result = AccessResult::forbidden();
   }
 
-  if (!$account->isAuthenticated()) {
-    // Anonymous.
-    \Drupal::messenger()->addMessage("anonymous user " . $access_term);
-    if ($access_term == 'Private' || $access_term == 'ASU Only' || $item_status == 0 || $collection_status == 0) {
-      // Deny access.
-      return AccessResult::forbidden();
-    }
-    if ($access_term == 'Public' && $item_status == 1 && $collection_status == 1) {
-      return AccessResult::allowed();
-    }
-  }
-  else {
-    // User is logged in.
-    // Get collection group.
-    $group_contents = _get_group($collection);
-    if (!empty($group_contents)) {
-      foreach ($group_contents as $group_content) {
-        $group = $group_content->getGroup();
-        if ($group->getMember($account)) {
-          $col_member = TRUE;
+  if (!isset($access_result)) {
+    // Depend on the permission of the parent item
+    $taccess = $item->access('view', $account);
+    \Drupal::logger('asu permissions')->info("parent access: " . $taccess);
+    if ($taccess) {
+
+      if ($account->isAuthenticated() && $access_term == "Private") {
+        $groups = _get_groups_from_node($entity);
+        foreach ($groups as $g) {
+          if ($g->getMember($account)) {
+            $access_result = AccessResult::allowed();
+          }
         }
-      }
-    }
-    else {
-      $col_member = FALSE;
-    }
-    if ($col_member) {
-      return AccessResult::allowed();
-    }
-    else {
-      if ($item_status == 0) {
-        return AccessResult::forbidden();
       }
       else {
-        if ($collection_status == 0) {
-          return AccessResult::forbidden();
-        }
-        else {
-          if ($access_term == "Private") {
-            return AccessResult::forbidden();
-          }
-          else {
-            return AccessResult::allowed();
-          }
-        }
+        $access_result = AccessResult::forbidden();
       }
     }
-  }
-  return new AccessResultNeutral();
-}
+    else {
+      $access_result = AccessResult::forbiddenIf($taccess == FALSE);
+    }
 
-/**
- * Helper function to check parent status - if there is a parent.
- *
- * @var $parent_status boolean.
- *
- * @return AccessInterface
- *   access interface.
- */
-function _process_status($parent_status) {
-  if ($parent_status && $parent_status == TRUE) {
-    // If item is publish - allow.
-    return AccessResult::allowed();
   }
-  elseif ($parent_status == FALSE) {
-    // If item is not published - deny.
-    return AccessResult::forbidden();
+  if (isset($access_result)) {
+    $access_result->addCacheableDependency($entity);
+    $access_result->addCacheContexts(['theme']);
+    return $access_result;
   }
   else {
-    // Parent_status not set - neutral.
-    return new AccessResultNeutral();
+    return AccessResult::neutral();
+  }
+
+}
+
+/**
+ * Follows chain of field_member_of links.
+ */
+function _walk_membership(NodeInterface $entity, $parents) {
+  $enarr = [];
+  $enarr[] = $entity;
+
+  // Find the next in the chain, if there are any.
+  if ($entity->hasField('field_member_of') &&
+    !$entity->get('field_member_of')->isEmpty()) {
+    $newent = $entity->get('field_member_of')->referencedEntities()[0];
+    $new_pars = _walk_membership($newent, $parents);
+  }
+  if (isset($new_pars)) {
+    return array_merge($parents, $new_pars);
+  }
+  else {
+    $newarr = array_merge($parents, $enarr);
+    return $newarr;
   }
 }
 
 /**
- * Implements hook_node_access().
- *
- * Which is also hook_entity_type_access().
+ * Implements hook_file_download.
  */
-function asu_permissions_node_access(EntityInterface $entity, $operation, AccountInterface $account) {
-  // TODO finish implementation
-  // If user is admin -> allow.
-  if (in_array("administrator", $account->getRoles())) {
-    return AccessResult::allowed();
-  }
-
-  // If its a collection.
-  if ($entity->bundle() == "collection") {
-    // if user is anon or not admin
-      // if disabled -> deny
-    // check for parent collection permissions
-  }
-  else if ($entity->bundle() == "asu_repository_item") {
-    // If its an item.
-      // if parent collection is disabled
-        // deny
-      // if parent collection is private
-        // if user is anon or not admin
-          // deny
-        // else if user is collection member
-          // allow
-    // be aware that the immediate parent might be an item, not a collection and you could have to traverse up many layers of member of relationships
-
-  }
-  return new AccessResultNeutral();
+function asu_permissions_file_download($uri) {
+  // @todo
 }
 
-// TODO implement hook_file_download.
+/**
+ * Get the groups for a node.
+ */
+function _get_groups_from_node(EntityInterface $node) {
+  // Load all of the group content for this node.
+  $group_contents = \Drupal::entityTypeManager()
+    ->getStorage('group_content')
+    ->loadByEntity($node);
+
+  /** @var \Drupal\group\Entity\GroupInterface[] $groups */
+  $groups = [];
+  foreach ($group_contents as $group_content) {
+    /** @var \Drupal\group\Entity\GroupContentInterface $group_content */
+    $group = $group_content->getGroup();
+    $groups[$group->id()] = $group;
+  }
+  return $groups;
+}
