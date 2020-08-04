@@ -259,10 +259,12 @@ function asu_permissions_media_access(EntityInterface $entity, $operation, Accou
     if ($taccess) {
 
       if ($account->isAuthenticated() && $access_term == "Private") {
-        $groups = _get_groups_from_node($entity);
+        $access_result = AccessResult::forbidden();
+        $groups = _get_groups_from_node($item);
         foreach ($groups as $g) {
           if ($g->getMember($account)) {
             $access_result = AccessResult::allowed();
+            break;
           }
         }
       }
@@ -313,6 +315,26 @@ function _walk_membership(NodeInterface $entity, $parents) {
  */
 function asu_permissions_file_download($uri) {
   // @todo
+  /* @var \Drupal\file\FileInterface[] $files */
+  $files = \Drupal::entityTypeManager()
+    ->getStorage('file')
+    ->loadByProperties(['uri' => $uri]);
+  foreach ($files as $f) {
+    $utils = \Drupal::service('islandora.utils');
+    $medias = $utils->getReferencingMedia($f->id());
+    if (count($medias) == 0) {
+      return NULL;
+    }
+    foreach ($medias as $mid => $media) {
+      // $node = $utils->getParentNode($media);
+      if (!$media->access('view')) {
+        // if (!$node->access('view')) {
+        // If the user isn't allowed to view the media, return -1 to tell
+        // Drupal to block access to the file currently being requested.
+        return -1;
+      }
+    }
+  }
 }
 
 /**
