@@ -17,6 +17,14 @@ use Drupal\Core\Link;
  */
 class ASUItemTopSection extends BlockBase {
 
+  // TODO -- rewrite to display the page title using the node's Paragraph fields
+  // make a block that shows the fields as formatted by the logic to display a 
+  // paragraph or two 
+  
+  
+  // make a format that could be called to display the field as formatted for 
+  // the paragraph view for the 
+  
   /**
    * {@inheritdoc}
    */
@@ -38,16 +46,17 @@ class ASUItemTopSection extends BlockBase {
     } else {
       $nid = 0;
     }
-    $node_url = Url::fromRoute('<current>', array());
-    $url_string = \Drupal::request()->getSchemeAndHttpHost() . $node_url->toString();
-    $output_links = array();
-    $url = Url::fromUri($url_string . '/citation/#citing');
-    $link = Link::fromTextAndUrl(t('Citing this image'), $url)->toRenderable();
-    $output_links[] = render($link);
-    $islandora_utils = \Drupal::service('islandora.utils');
-    $servicefile_term = $islandora_utils->getTermForUri('http://pcdm.org/use#ServiceFile');
-    $servicefile_media = $islandora_utils->getMediaWithTerm($node, $servicefile_term);
-    $servicefile = \Drupal::entityTypeManager()->getViewBuilder('media')->view($servicefile_media, 'source');
+    $servicefile = "";
+//    $node_url = Url::fromRoute('<current>', array());
+//    $url_string = \Drupal::request()->getSchemeAndHttpHost() . $node_url->toString();
+//    $output_links = array();
+//    $url = Url::fromUri($url_string . '/citation/#citing');
+//    $link = Link::fromTextAndUrl(t('Citing this image'), $url)->toRenderable();
+//    $output_links[] = render($link);
+//    $islandora_utils = \Drupal::service('islandora.utils');
+//    $servicefile_term = $islandora_utils->getTermForUri('http://pcdm.org/use#ServiceFile');
+//    $servicefile_media = $islandora_utils->getMediaWithTerm($node, $servicefile_term);
+//    $servicefile = \Drupal::entityTypeManager()->getViewBuilder('media')->view($servicefile_media, 'source');
     return [
       'top-container' => [
         '#type' => 'item',
@@ -61,9 +70,6 @@ class ASUItemTopSection extends BlockBase {
             '#suffix' => '</div>',
             'servicefile' => [
               '#type' => 'item',
-              '#prefix' => '<div class="image_view_overlay">',
-                // <a href="/node/' . $nid . '/openseadragon_view">
-              '#suffix' => '<a href="/node/' . $nid . '/openseadragon_view"><span class="expand_grip">&nbsp;</span><span class="expand"></span></a></div>',
               $servicefile,
             ],
           ],
