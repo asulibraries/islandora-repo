@@ -58,11 +58,8 @@ class AboutThisItemBlock extends BlockBase {
     // event that will send the current node's URL to the copy buffer?
     $url_str = \Drupal::request()->getSchemeAndHttpHost() . '/node/' . $nid;
     $url = Url::fromUri($url_str);
-    $output_links[] = 'Permalink <span class="copy_permalink_link" title="' . $url_str .
-          '"><img src="' .
-          \Drupal::request()->getSchemeAndHttpHost() . "/" .
-            drupal_get_path("module", "asu_item_extras") .
-            '/images/link.svg" class="link_cursor" width="18" height="18" /></span>';
+    $output_links[] = '<a href="' . $url_str . '">Permalink</a> <span class="fa fa-link copy_permalink_link" title="' . $url_str .
+          '">&nbsp;</span>';
     return [
       '#markup' =>
         (count($output_links) > 0) ?

@@ -1,0 +1,32 @@
+{% set class_2_fa = {
+  'email': {
+    'fa-class': 'fa fa-envelope',
+  },
+  'facebook': {
+    'fa-class': 'fab fa-facebook-square',
+  },
+  'twitter': {
+    'fa-class': 'fab fa-twitter-square',
+  },
+  'print': {
+    'fa-class': 'fa fa-print',
+  }
+}
+%}
+
+<div {{ attributes.addClass('rrssb').addClass("rrssb-bs-#{button_set}") }}>
+  {% if prefix_text %}
+    <div class="rrssb-prefix">{{ prefix_text }}</div>
+  {% endif %}
+  <ul class="rrssb-buttons">
+    {% for button in buttons %}
+      <li class="rrssb-{{ button.name }}">
+        <a href="{{ button.link }}" {{ button.class | raw }}>
+          <span class="{{ class_2_fa[button.name]['fa-class'] }} fa-lg"></span>
+          <span class="rrssb-text">{{ button.text }}</span>
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+</div>
+
