@@ -19,6 +19,7 @@ It will also include ansible scripts for provisioning and deploying to additiona
 5. Run `vagrant up` (from within the claw-playbook root) - it will default to using the asurepo basebox (modelled after the islandora/8 base box idea). If you want to run the build explicitly (via ansible), change the ISLANDORA_DISTRO like `ISLANDORA_DISTRO="ubuntu/bionic64" vagrant up`
 6. This repo will be available inside the vagrant VM as `/var/www/html/drupal`
 7. If you want the ASU specific config, cd into `/var/www/html/drupal` and run `drupal config:import --directory /var/www/html/drupal/config/sync`
+8. Depending on the environment - do a config import of that environment like `drush config:import --partial --source /var/www/html/drupal/config/dev`
 
 # Local theme development
 Note: I only have gotten this working on my local machine, not the vagrant environment yet.-dlf
@@ -109,6 +110,7 @@ Common Commands
 - All EC2 instances have static Elastic Block volumes associated with them (8GB each)
 - The webserver also has a related S3 bucket (asulibdev-islandora-bucket) which is currently being used for islandora_bagger to send preservation bags. It has a automatic rule to push to Glacier after 30 days of inactivity.
 - An RDS MYSQL instance has also been provisioned and connection is allowed to the webserver for the purpose of hosting the drupal database. In the future, additional RDS instances can be created for the gemini database, matomo database. (The Riprap database is currently being integrated with the Drupal database). You can connect to the RDS instance from the webserver EC2 instance manually like `mysql -u drupal8 -p -h islandora-drupal.cvznsvixsvec.us-west-2.rds.amazonaws.com --port 3306`
+- If configuration changes have been made, you'll need to import config/sync and then do a partial import on the config for that env
 
 # Updating existing components
 ## Islandora modules
