@@ -53,6 +53,19 @@ function asu_custom_rdf_jsonld_alter_normalized_array(EntityInterface $entity, a
         }
       }
 
+      // Change boolean type to language en.
+      if (array_key_exists('status', $current_rdf_mapping)) {
+        $predicate = $current_rdf_mapping['status']['properties'][0];
+        $predicate_normalized = NormalizerBase::escapePrefix($predicate, $context['namespaces']);
+        if ($gk === $predicate_normalized) {
+          foreach ($gv[0] as $k => $v) {
+            if ($k === "@type") {
+              $normalized['@graph'][0][$gk][0]["@language"] = "en";
+            }
+          }
+        }
+      }
+
       // Make sure paragraph mappings don't leave behind empty ids.
       if (is_array($gv)) {
         foreach ($gv as $key => $val) {
