@@ -1,0 +1,22 @@
+uuid: 07eb9714-beab-4d88-bf83-dff05eb3e645
+langcode: en
+status: true
+dependencies: {  }
+id: dev_config
+label: 'Development Config'
+description: 'Settings that are specific for the dev environment'
+folder: ../config/dev
+module:
+  devel: 0
+  devel_generate: 0
+  migrate_devel: 0
+  upgrade_status: 0
+theme: {  }
+blacklist:
+  - devel.settings
+  - devel.toolbar.settings
+  - upgrade_status.settings
+graylist: {  }
+graylist_dependents: true
+graylist_skip_equal: true
+weight: 0

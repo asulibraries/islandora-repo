@@ -1,15 +1,21 @@
-uuid: 8a65209b-1bf1-447d-8767-8acd8e902382
+uuid: 98d68eaf-a53c-4588-94ec-a3bf76ce0aef
 langcode: en
-status: false
+status: true
 dependencies: {  }
-id: environment_config
-label: 'Environment Config'
-description: 'Settings that are specific per environment'
-folder: ../config/env
+id: staging
+label: 'Staging Config'
+description: 'Staging Settings that are specific per environment'
+folder: ../config/staging
 module:
-  jwt: 0
+  clamav: 0
 theme: {  }
 blacklist:
+  - clamav.settings
+graylist:
+  - islandora.settings
+  - jwt.config
+  - key.key.islandora_rsa_key
+  - search_api.server.default_solr_server
   - context.context.openseadragon_block
   - context.context.open_seadragon
   - islandora.settings
@@ -17,12 +23,6 @@ blacklist:
   - islandora_iiif.settings
   - islandora_riprap.settings
   - matomo.settings
-  - clamav.settings
-graylist:
-  - islandora.settings
-  - jwt.config
-  - key.key.islandora_rsa_key
-  - search_api.server.default_solr_server
 graylist_dependents: true
 graylist_skip_equal: true
 weight: 0
