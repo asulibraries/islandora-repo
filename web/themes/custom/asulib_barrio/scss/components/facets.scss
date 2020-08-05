@@ -1,0 +1,26 @@
+.sidebar .block.block-facets, .block-facets.accordion {
+	border: none;
+	 h2 {
+		border-bottom: none;
+		margin: 0;
+		padding-bottom: 0;
+	}
+	.card-header h2 .btn:after {
+                font-family: "Font Awesome 5 Free";
+                content: "\f0d7";
+                float: right;
+                font-weight: 900;
+        }
+	.card-header h2 .btn.collapsed:after {
+    		/* symbol for "collapsed" panels */
+    		content: "\f0da";
+	}
+	ul {
+		list-style: none;
+    		padding-inline-start: 0;
+    	}
+	.facet-item__count {
+		float: right;
+	}
+}
+
