@@ -61,7 +61,7 @@ function asu_custom_rdf_jsonld_alter_normalized_array(EntityInterface $entity, a
           foreach ($gv[0] as $k => $v) {
             if ($k === "@type") {
               $normalized['@graph'][0][$gk][0]["@language"] = "en";
-              unset($normalized['@graph'][0][$gk]["@type"]);
+              unset($normalized['@graph'][0][$gk][0]["@type"]);
             }
           }
         }
