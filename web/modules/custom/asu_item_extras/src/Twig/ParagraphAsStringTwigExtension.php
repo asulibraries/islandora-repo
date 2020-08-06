@@ -20,17 +20,15 @@ class ParagraphAsStringTwigExtension extends \Twig_Extension {
   }
 
   function paragraphAsString($complex_title) {
-    $paragraphAsStringArr = [];
+    \Drupal::messenger()->addMessage("in the custom paragraph title formatter");
+    // @todo - this might not handle well if the values are blank but this works if they are present
 
-    $paragraph = $complex_title['#paragraph'];
-
-    $nonsort = $paragraph->get('field_nonsort')->getString();
-    $rest_of_title = $paragraph->get('field_rest_of_title')->getString();
-    $subtitle = $paragraph->get('field_subtitle')->getString();
-    $supplied = $paragraph->get('field_supplied')->getString();
-    $paragraphAsStringArr[] = ($nonsort ? $nonsort . " " : "") .
+    $nonsort = $complex_title['field_nonsort']['#items'][0]->getValue()['value'];
+    $rest_of_title = $complex_title['field_rest_of_title']['#items'][0]->getValue()['value'];
+    $subtitle = $complex_title['field_subtitle']['#items'][0]->getValue()['value'];
+    $supplied = $complex_title['field_supplied']['#items'][0]->getValue()['value'];
+    return ($nonsort ? $nonsort . " " : "") .
       ($rest_of_title ? $rest_of_title : "[untitled]") .
       ($subtitle ? ": " . $subtitle : "");
-    return implode("\n" , $paragraphAsStringArr);
   }
 }
