@@ -1,0 +1,34 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - asu_item_extras
+    - context
+    - ctools
+  theme:
+    - asulib_barrio
+id: thecomplextitle
+theme: asulib_barrio
+region: breadcrumb
+weight: 0
+provider: null
+plugin: asu_complex_title
+settings:
+  id: asu_complex_title
+  label: 'The complex title'
+  provider: asu_item_extras
+  label_display: '0'
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    pages: ''
+    negate: null
+    context_mapping: {  }
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    bundles:
+      asu_repository_item: asu_repository_item
+      collection: collection
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
