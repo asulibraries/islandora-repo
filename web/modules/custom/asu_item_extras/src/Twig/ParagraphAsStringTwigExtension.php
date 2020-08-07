@@ -20,11 +20,22 @@ class ParagraphAsStringTwigExtension extends \Twig_Extension {
   }
 
   function paragraphAsString($complex_title) {
-    // @todo - this might not handle well if the values are blank but this works if they are present
-    $nonsort = $complex_title['field_nonsort']['#items'][0]->getValue()['value'];
-    $rest_of_title = $complex_title['field_rest_of_title']['#items'][0]->getValue()['value'];
-    $subtitle = $complex_title['field_subtitle']['#items'][0]->getValue()['value'];
-    $supplied = $complex_title['field_supplied']['#items'][0]->getValue()['value'];
+    $sn = $complex_title['field_nonsort'];
+    if (array_key_exists('#items', $sn)) {
+      $nonsort = $sn['#items'][0]->getValue()['value'];
+    }
+    $sr = $complex_title['field_rest_of_title'];
+    if (array_key_exists('#items', $sr)) {
+      $rest_of_title = $sr['#items'][0]->getValue()['value'];
+    }
+    $ss = $complex_title['field_subtitle'];
+    if (array_key_exists('#items', $ss)) {
+      $subtitle = $ss['#items'][0]->getValue()['value'];
+    }
+    $st = $complex_title['field_supplied'];
+    if (array_key_exists('#items', $st)) {
+      $supplied = $st['#items'][0]->getValue()['value'];
+    }
     return ($nonsort ? $nonsort . " " : "") .
       ($rest_of_title ? $rest_of_title : "[untitled]") .
       ($subtitle ? ": " . $subtitle : "");
