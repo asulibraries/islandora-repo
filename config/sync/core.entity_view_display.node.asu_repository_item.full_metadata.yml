@@ -59,11 +59,6 @@ targetEntityType: node
 bundle: asu_repository_item
 mode: full_metadata
 content:
-  display_media_entity_view_3:
-    weight: 47
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   field_additional_memberships:
     type: entity_reference_label
     weight: 9
@@ -104,6 +99,17 @@ content:
     settings:
       link: true
     third_party_settings: {  }
+  field_date_digitized:
+    type: edtf_default
+    weight: 44
+    region: content
+    label: above
+    settings:
+      date_separator: dash
+      date_order: big_endian
+      month_format: mm
+      day_format: dd
+    third_party_settings: {  }
   field_description:
     type: basic_string
     weight: 1
@@ -113,7 +119,7 @@ content:
     third_party_settings: {  }
   field_display_hints:
     type: entity_reference_rss_category
-    weight: 41
+    weight: 42
     region: content
     label: above
     settings: {  }
@@ -137,6 +143,15 @@ content:
       month_format: mm
       day_format: dd
     third_party_settings: {  }
+  field_embargo_release_date:
+    type: datetime_default
+    weight: 45
+    region: content
+    label: above
+    settings:
+      format_type: medium
+      timezone_override: ''
+    third_party_settings: {  }
   field_extent:
     type: string
     weight: 35
@@ -153,7 +168,7 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_gemini_uri:
-    weight: 42
+    weight: 43
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -175,7 +190,7 @@ content:
     third_party_settings: {  }
   field_handle:
     type: string
-    weight: 36
+    weight: 37
     region: content
     label: above
     settings:
@@ -190,7 +205,7 @@ content:
     third_party_settings: {  }
   field_language:
     type: entity_reference_label
-    weight: 38
+    weight: 39
     region: content
     label: above
     settings:
@@ -259,7 +274,7 @@ content:
     third_party_settings: {  }
   field_place_published:
     type: string
-    weight: 37
+    weight: 38
     region: content
     label: above
     settings:
@@ -359,6 +374,14 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
+  field_title_subject:
+    type: entity_reference_label
+    weight: 36
+    region: content
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
   field_typed_identifier:
     type: entity_reference_revisions_entity_view
     weight: 25
@@ -378,13 +401,13 @@ content:
       prefix_suffix: true
     third_party_settings: {  }
   islandora_fits_checksum:
-    weight: 39
+    weight: 40
     region: content
     settings: {  }
     third_party_settings: {  }
   langcode:
     type: language
-    weight: 40
+    weight: 41
     region: content
     label: above
     settings:
@@ -405,11 +428,10 @@ hidden:
   content_moderation_control: true
   display_media_entity_view_1: true
   display_media_entity_view_2: true
+  display_media_entity_view_3: true
+  display_media_entity_view_4: true
   display_media_service_file: true
   display_media_thumbnail: true
-  field_date_digitized: true
-  field_embargo_release_date: true
-  field_title_subject: true
   openseadragon_media_evas_entity_view_1: true
   openseadragon_media_evas_entity_view_2: true
   openseadragon_media_evas_service_file: true
