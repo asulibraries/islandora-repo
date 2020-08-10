@@ -47,31 +47,27 @@ dependencies:
     - node.type.asu_repository_item
   module:
     - controlled_access_terms
+    - entity_reference_revisions
     - user
 id: node.asu_repository_item.search_result
 targetEntityType: node
 bundle: asu_repository_item
 mode: search_result
 content:
-  display_media_entity_view_3:
-    weight: 20
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   display_media_thumbnail:
     weight: 0
     region: content
     settings: {  }
     third_party_settings: {  }
   field_description:
-    weight: 2
+    weight: 3
     label: hidden
     settings: {  }
     third_party_settings: {  }
     type: basic_string
     region: content
   field_edtf_date_created:
-    weight: 3
+    weight: 4
     label: above
     settings:
       date_separator: dash
@@ -81,18 +77,14 @@ content:
     third_party_settings: {  }
     type: edtf_default
     region: content
-  field_gemini_uri:
-    weight: 5
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  field_linked_agent:
-    type: typed_relation_default
-    weight: 4
+  field_title:
+    type: entity_reference_revisions_entity_view
+    weight: 2
     region: content
     label: above
     settings:
-      link: '1'
+      view_mode: default
+      link: ''
     third_party_settings: {  }
   search_api_excerpt:
     weight: 1
@@ -103,6 +95,8 @@ hidden:
   content_moderation_control: true
   display_media_entity_view_1: true
   display_media_entity_view_2: true
+  display_media_entity_view_3: true
+  display_media_entity_view_4: true
   display_media_service_file: true
   field_additional_memberships: true
   field_collaborating_institutions: true
@@ -115,11 +109,13 @@ hidden:
   field_embargo_release_date: true
   field_extent: true
   field_frequency: true
+  field_gemini_uri: true
   field_genre: true
   field_geographic_subject: true
   field_handle: true
   field_issuance: true
   field_language: true
+  field_linked_agent: true
   field_member_of: true
   field_model: true
   field_note_para: true
@@ -138,7 +134,6 @@ hidden:
   field_subjects_name: true
   field_table_of_contents: true
   field_temporal_subject: true
-  field_title: true
   field_title_subject: true
   field_typed_identifier: true
   field_weight: true
