@@ -6,20 +6,15 @@ dependencies:
     - node
     - user
     - taxonomy
+    - paragraphs
     - search_api
     - asu_search
   config:
-    - field.storage.taxonomy_term.field_person_alternate_names
     - field.storage.node.field_member_of
-    - field.storage.taxonomy_term.field_cat_date_begin
-    - field.storage.taxonomy_term.field_cat_date_end
-    - field.storage.taxonomy_term.field_corp_alt_name
-    - field.storage.node.field_description
     - field.storage.node.field_edtf_date
     - field.storage.node.field_edtf_date_created
     - field.storage.node.field_edtf_date_issued
     - field.storage.node.field_description
-    - field.storage.taxonomy_term.field_geo_alt_name
     - field.storage.node.field_identifier
     - field.storage.node.field_linked_agent
     - field.storage.node.field_local_identifier
@@ -30,6 +25,8 @@ dependencies:
     - field.storage.node.field_table_of_contents
     - field.storage.node.field_tags
     - field.storage.node.field_temporal_subject
+    - field.storage.node.field_title
+    - field.storage.paragraph.field_rest_of_title
     - field.storage.taxonomy_term.field_geo_alt_name
     - field.storage.taxonomy_term.field_corp_alt_name
     - field.storage.taxonomy_term.field_cat_date_end
@@ -120,7 +117,6 @@ field_settings:
     dependencies:
       module:
         - node
-        - user
         - user
   changed:
     label: Changed
@@ -241,7 +237,6 @@ field_settings:
         - field.storage.node.field_linked_agent
       module:
         - taxonomy
-        - taxonomy
   field_local_identifier:
     label: 'Local Identifier'
     datasource_id: 'entity:node'
@@ -276,7 +271,17 @@ field_settings:
         - field.storage.node.field_physical_form
       module:
         - taxonomy
-        - taxonomy
+  field_rest_of_title:
+    label: 'Title for Sorting'
+    datasource_id: 'entity:node'
+    property_path: 'field_title:entity:field_rest_of_title'
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_title
+        - field.storage.paragraph.field_rest_of_title
+      module:
+        - paragraphs
   field_subject:
     label: Subject
     datasource_id: 'entity:node'
@@ -287,7 +292,6 @@ field_settings:
         - field.storage.node.field_subject
       module:
         - taxonomy
-        - taxonomy
   field_subjects_name:
     label: 'Subject (name)'
     datasource_id: 'entity:node'
@@ -297,7 +301,6 @@ field_settings:
       config:
         - field.storage.node.field_subjects_name
       module:
-        - taxonomy
         - taxonomy
   field_table_of_contents:
     label: 'Table of Contents'
@@ -324,7 +327,6 @@ field_settings:
       config:
         - field.storage.node.field_temporal_subject
       module:
-        - taxonomy
         - taxonomy
   name:
     label: Name
