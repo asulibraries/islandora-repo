@@ -9,6 +9,7 @@ namespace Drupal\soft_delete\Form;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Entity\EntityTypeInterface;
+use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
 use Drupal\content_moderation\ModerationInformationInterface;
 
 class SoftDeleteForm extends ConfigFormBase {
@@ -42,24 +43,10 @@ class SoftDeleteForm extends ConfigFormBase {
       ->loadMultiple();
 
     $content_types = $content_type_publication_statuses = $selected_bundles = [];
-    /*
-     * taken from the buildForm() of EntityModerationForm.php
-     *
-     * @var \Drupal\workflows\Transition[] $transitions
-     * $transitions = $this->validation->getValidTransitions($entity, $this->currentUser());
 
-     * // Exclude self-transitions.
-     * $transitions = array_filter($transitions, function (Transition $transition) use ($current_state) {
-     *   return $transition->to()->id() != $current_state;
-     * });
-     * ..... or ....
-     * $workflow = $this->moderationInfo->getWorkflowForEntity($entity);
-     */
-    // @todo - disable any of the content types that are not assigned to a workflow
-    // because they cannot be set into another state when the delete is done. In
-    // those cases, these should just be deleted when the delete button is clicked.
     $disabled = array();
     $bundle_info_service = \Drupal::service('entity_type.bundle.info');
+    $allBundleInfo = $bundle_info_service->getAllBundleInfo();
     foreach ($node_types as $key => $entity_type) {
       // adjust the content type to the $form_id value for these within their "delete node" page.
       $form_id = 'node_' . str_replace(
@@ -67,16 +54,22 @@ class SoftDeleteForm extends ConfigFormBase {
         array("_"),
         strtolower($key)) . '_delete_form';
       $content_types[$form_id] = $node_types[$key]->label();
-      $disabled[$form_id] = (rand(0,9) >= 5) ? TRUE : FALSE;
-// TODO - this does not do what it seems it should do...
-
-      /// crap -- this may need to loop through all possible workflows and check to find the
-      /// workflow that has a workflow state that applies to the current content type.
-      // do this by a (Workflow::loadMultipleByType('content_moderation') as $workflow) loop
-      foreach ($bundle_info_service->getBundleInfo('node_type') as $bundle_id => $bundle) {
-    ///    if ($this->workflowType->appliesToEntityTypeAndBundle($entity_type->id(), $bundle_id)) {
-          $content_type_publication_statuses[$key][$bundle_id] = $bundle['label'];
-    ///    }
+      $disabled[$form_id] = FALSE;
+      $entity_workflow = array_key_exists('workflow', $allBundleInfo['node'][$key]) ? 
+        $allBundleInfo['node'][$key]['workflow'] : FALSE;
+      if ($entity_workflow) {
+        // Add the workflow to each listing for reference:
+        $content_types[$form_id] .= ' ("' . $entity_workflow . '" workflow)';
+        // load the workflow that applies to this node content_type - and list
+        // the workflow states that are related to it.
+        $content_type_publication_statuses[$key][$bundle_id] = array(
+          'draft' => 'Draft',
+          'archived' => 'Archived',
+          'published' => 'Published',
+        );
+      }
+      else {
+        $disabled[$form_id] = TRUE;
       }
     }
 
@@ -97,14 +90,14 @@ class SoftDeleteForm extends ConfigFormBase {
       }
     }
     foreach ($content_type_publication_statuses as $key => $bundle_state_labels) {
-//      $workflow = $moderation_info->getWorkflowForEntity($node_types[$key]);
-//dpm($workflow);
-      $form['soft_delete_' . $key . '_deleteto_workflow_state'] = [
-        '#type' => 'select',
-        '#title' => $this->t('"' . $key . '" soft deletion in workflow state'),
-        '#options' => $bundle_state_labels,
-        '#default_value' => [],
-      ];
+      if (count($bundle_state_labels) > 0) {
+        $form['soft_delete_' . $key . '_deleteto_workflow_state'] = [
+          '#type' => 'select',
+          '#title' => $this->t('"' . $key . '" soft deletion in workflow state'),
+          '#options' => $bundle_state_labels,
+          '#default_value' => [],
+        ];
+      }
     }
 
     $default_value = (null !== ($config->get('soft_delete_override_delete_default'))) ?
@@ -117,7 +110,6 @@ class SoftDeleteForm extends ConfigFormBase {
           1 => "TRUE"),
       '#default_value' => $default_value,
     ];
-
     return parent::buildForm($form, $form_state);
   }
 
