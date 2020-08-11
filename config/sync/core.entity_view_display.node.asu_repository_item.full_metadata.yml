@@ -28,6 +28,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_open_access
     - field.field.node.asu_repository_item.field_peer_reviewed
     - field.field.node.asu_repository_item.field_pid
+    - field.field.node.asu_repository_item.field_place_of_publication_code
     - field.field.node.asu_repository_item.field_place_published
     - field.field.node.asu_repository_item.field_preferred_citation
     - field.field.node.asu_repository_item.field_preservation_state
@@ -46,6 +47,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_weight
     - node.type.asu_repository_item
   module:
+    - asu_item_extras
     - controlled_access_terms
     - datetime
     - entity_reference_revisions
@@ -366,12 +368,11 @@ content:
       link: true
     third_party_settings: {  }
   field_title:
-    type: entity_reference_revisions_entity_view
+    type: complex_title_formatter
     weight: 0
     region: content
     label: above
     settings:
-      view_mode: default
       link: ''
     third_party_settings: {  }
   field_title_subject:
@@ -432,6 +433,7 @@ hidden:
   display_media_entity_view_4: true
   display_media_service_file: true
   display_media_thumbnail: true
+  field_place_of_publication_code: true
   openseadragon_media_evas_entity_view_1: true
   openseadragon_media_evas_entity_view_2: true
   openseadragon_media_evas_service_file: true
