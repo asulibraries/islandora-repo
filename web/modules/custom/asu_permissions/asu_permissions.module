@@ -251,7 +251,7 @@ function asu_permissions_media_access(EntityInterface $entity, $operation, Accou
   if (!$account->isAuthenticated() && $access_term != "Public") {
     $access_result = AccessResult::forbidden();
   }
-  \Drupal::logger('asu permissions')->info('access results' . $access_result);
+  // \Drupal::logger('asu permissions')->info('access results' . $access_result);
   if (!isset($access_result)) {
     // Depend on the permission of the parent item
     $taccess = $item->access('view', $account);
@@ -269,10 +269,10 @@ function asu_permissions_media_access(EntityInterface $entity, $operation, Accou
         }
       }
       else {
-	\Drupal::logger('asu permissions')->info("not authenticated");
-	if ($access_term == "Public") {
+        \Drupal::logger('asu permissions')->info("not authenticated");
+        if ($access_term == "Public") {
           $access_result = AccessResult::forbiddenIf($taccess == 0);
-	}
+        }
       }
     }
     else {
