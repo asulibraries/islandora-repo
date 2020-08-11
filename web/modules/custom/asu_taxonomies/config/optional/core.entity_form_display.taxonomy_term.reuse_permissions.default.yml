@@ -8,39 +8,48 @@ dependencies:
   module:
     - file
     - link
-    - text
+    - path
 id: taxonomy_term.reuse_permissions.default
 targetEntityType: taxonomy_term
 bundle: reuse_permissions
 mode: default
 content:
-  description:
-    label: hidden
-    type: text_default
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   field_copyright_logo:
     weight: 2
-    label: above
     settings:
-      use_description_as_link_text: true
+      progress_indicator: throbber
     third_party_settings: {  }
-    type: file_default
+    type: file_generic
     region: content
   field_source:
     weight: 1
-    label: above
     settings:
-      trim_length: 80
-      url_only: false
-      url_plain: false
-      rel: ''
-      target: ''
+      placeholder_url: ''
+      placeholder_title: ''
     third_party_settings: {  }
-    type: link
+    type: link_default
     region: content
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    settings:
+      display_label: true
+    weight: 4
+    region: content
+    third_party_settings: {  }
 hidden:
+  description: true
   langcode: true
-  search_api_excerpt: true
