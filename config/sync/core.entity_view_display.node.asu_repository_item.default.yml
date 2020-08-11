@@ -27,6 +27,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_open_access
     - field.field.node.asu_repository_item.field_peer_reviewed
     - field.field.node.asu_repository_item.field_pid
+    - field.field.node.asu_repository_item.field_place_of_publication_code
     - field.field.node.asu_repository_item.field_place_published
     - field.field.node.asu_repository_item.field_preferred_citation
     - field.field.node.asu_repository_item.field_preservation_state
@@ -314,6 +315,14 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
+  field_place_of_publication_code:
+    weight: 47
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
     region: content
   field_place_published:
     weight: 13
