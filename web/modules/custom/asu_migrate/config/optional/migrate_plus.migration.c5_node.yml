@@ -303,6 +303,14 @@ process:
       - '@authors'
       - '@contributors'
 
+  field_history:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: History JSON
+    -
+      plugin: string_to_json
+
 
 # We're making nodes
 destination:
