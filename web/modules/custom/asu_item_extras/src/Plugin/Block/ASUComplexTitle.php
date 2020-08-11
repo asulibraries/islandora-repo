@@ -33,20 +33,22 @@ class ASUComplexTitle extends BlockBase {
     $node = \Drupal::routeMatch()->getParameter('node');
     if ($node) {
       $nid = $node->id();
-    } else {
+    }
+    else {
       $nid = 0;
     }
-    $x = $node->field_title->get(0)->entity;
-    $view_builder = \Drupal::entityTypeManager()
-        ->getViewBuilder($x->getEntityTypeId());
-    $para_render = render($view_builder->view($x, 'default'));
+
+    $first_title = $node->field_title[0];
+    $view = ['type' => 'complex_title_formatter'];
+    $para_render = \Drupal::service('renderer')->render($first_title->view($view));
     return [
       'complex_title' => [
         '#type' => 'item',
         '#prefix' => '<h1 class="title">',
         '#suffix' => '</h1>',
         '#markup' => $para_render,
-      ]];
+      ]
+    ];
   }
 
   public function getCacheMaxAge() {
