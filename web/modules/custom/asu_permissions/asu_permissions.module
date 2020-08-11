@@ -254,7 +254,7 @@ function asu_permissions_media_access(EntityInterface $entity, $operation, Accou
   // \Drupal::logger('asu permissions')->info('access results' . $access_result);
   if (!isset($access_result)) {
     // Depend on the permission of the parent item
-    $taccess = $item->access('view', $account);
+    $taccess = $item->access($operation, $account);
     \Drupal::logger('asu permissions')->info("parent access: " . $taccess);
     if ($taccess == 1) {
 
