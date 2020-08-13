@@ -12,16 +12,19 @@
  * Implements hook_form_alter().
  */
 function soft_delete_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
-  // ???
   // check the configuration to see which form_id (which is based on the content type) is being displayed,
   // override the submit function if the content type is configured.
   $config = \Drupal::config('soft_delete.adminsettings');
-  $configured_types = $config->get('soft_delete_content_types');
-  $override_setting = $config->get('soft_delete_override_delete_default');
-  if (array_key_exists($form_id, $configured_types) && ($configured_types[$form_id] === $form_id)) {
+  $configured_types = $config->get('content_types');
+  $override_setting = $config->get('override_delete_default');
+
+  $ends_with_delete_form = (substr( $form_id, -12 ) === '_delete_form');
+  // take the value from the middle of the form name to get the "content_type" key.
+  $key_from_form_id = (strpos($form_id, 'node_') == 0 && $ends_with_delete_form) ? substr($form_id, 5, strlen($form_id) - 5 - 12) : '';
+  if (array_key_exists($key_from_form_id, $configured_types) && ($configured_types[$key_from_form_id] === $key_from_form_id)) {
     $messenger = \Drupal::messenger();
-    $messenger->addMessage(t("Providing override for the node delete handler on @form_id",
-        array('@form_id' => $form_id)), $messenger::TYPE_WARNING);
+    $messenger->addMessage(t("Providing override for the node delete handler for @form_id",
+        array('@form_id' => $key_from_form_id)), $messenger::TYPE_WARNING);
     foreach (array_keys($form['actions']) as $action) {
       if ($action != 'preview' && isset($form['actions'][$action]['#type']) && $form['actions'][$action]['#type'] === 'submit') {
         $form['actions'][$action]['#submit'] = ['soft_delete_delete_handler'];
@@ -37,7 +40,10 @@ function soft_delete_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $fo
           if ($node instanceof \Drupal\node\NodeInterface) {
             $node_vid = \Drupal::entityManager()->getStorage('node')->revisionIds($node);
             $latest_revision_id = array_pop((array_slice($node_vid, -1)));
-            $node_label = node_revision_load($latest_revision_id)->get('title')->getValue()[0]['value'];
+            $node_revision = node_revision_load($latest_revision_id);
+            $node_label = $node_revision->get('title')->getValue()[0]['value'];
+            $key = $node_revision->get('type');
+           // $x = $config->get($key . '_deleteto_workflow_state');
           }
           else {
             $node_label = "untitled";
@@ -80,6 +86,7 @@ function soft_delete_delete_handler(&$form, \Drupal\Core\Form\FormStateInterface
     $node_vid = \Drupal::entityManager()->getStorage('node')->revisionIds($node);
     $latest_revision_id = array_pop((array_slice($node_vid, -1)));
     $current_state = node_revision_load($latest_revision_id)->get('moderation_state')->getValue()[0]['value'];
+    // NEED TO REDIRECT
   }
 }
 
