@@ -12,6 +12,7 @@
  * - site_slogan: Slogan for site as defined in Site information settings.
  */
 #}
+<div id="site-name">
 {% set attributes = attributes.addClass('site-branding') %}
   {% if site_logo or site_name %}
     <a href="{{ path('<front>') }}" title="{{ 'Home'|t }}" rel="home" class="navbar-brand">
@@ -23,6 +24,7 @@
   {% endif %}
   {% if site_slogan %}
     <div class="ml-2 d-none d-inline-block align-top site-name-slogan">
-      {{ site_slogan }}
+      | {{ site_slogan }}
     </div>
   {% endif %}
+</div>
