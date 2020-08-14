@@ -103,9 +103,10 @@ class ParagraphMapping extends CommonDataConverter {
     }
     $string = "";
     $field = $paragraph->get($arguments['value_field'])->getValue();
-
-    foreach ($field[0] as $val) {
-      $string .= $val;
+    if (count($field) > 0) {
+      foreach ($field[0] as $val) {
+        $string .= $val;
+      }
     }
     return $string;
   }
