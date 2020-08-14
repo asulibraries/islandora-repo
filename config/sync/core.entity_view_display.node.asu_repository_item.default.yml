@@ -18,6 +18,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_genre
     - field.field.node.asu_repository_item.field_geographic_subject
     - field.field.node.asu_repository_item.field_handle
+    - field.field.node.asu_repository_item.field_history
     - field.field.node.asu_repository_item.field_issuance
     - field.field.node.asu_repository_item.field_language
     - field.field.node.asu_repository_item.field_linked_agent
@@ -51,6 +52,7 @@ dependencies:
     - entity_reference_revisions
     - field_group
     - geolocation
+    - jsonb
     - options
     - text
     - user
@@ -239,6 +241,13 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     type: string
+    region: content
+  field_history:
+    weight: 48
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: jsonb_default
     region: content
   field_issuance:
     weight: 24
