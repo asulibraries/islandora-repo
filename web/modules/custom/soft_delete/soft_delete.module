@@ -1,5 +1,7 @@
 <?php
 
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
 /**
  * @file
  * This module will provides a button to "delete" and handle clicking on that
@@ -22,9 +24,6 @@ function soft_delete_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $fo
   // take the value from the middle of the form name to get the "content_type" key.
   $key_from_form_id = (strpos($form_id, 'node_') == 0 && $ends_with_delete_form) ? substr($form_id, 5, strlen($form_id) - 5 - 12) : '';
   if (array_key_exists($key_from_form_id, $configured_types) && ($configured_types[$key_from_form_id] === $key_from_form_id)) {
-    $messenger = \Drupal::messenger();
-    $messenger->addMessage(t("Providing override for the node delete handler for @form_id",
-        array('@form_id' => $key_from_form_id)), $messenger::TYPE_WARNING);
     foreach (array_keys($form['actions']) as $action) {
       if ($action != 'preview' && isset($form['actions'][$action]['#type']) && $form['actions'][$action]['#type'] === 'submit') {
         $form['actions'][$action]['#submit'] = ['soft_delete_delete_handler'];
@@ -39,14 +38,15 @@ function soft_delete_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $fo
           $node = \Drupal::routeMatch()->getParameter('node');
           if ($node instanceof \Drupal\node\NodeInterface) {
             $node_vid = \Drupal::entityManager()->getStorage('node')->revisionIds($node);
-            $latest_revision_id = array_pop((array_slice($node_vid, -1)));
+            $rev = array_slice($node_vid, -1);
+            $latest_revision_id = array_pop($rev);
             $node_revision = node_revision_load($latest_revision_id);
             $node_label = $node_revision->get('title')->getValue()[0]['value'];
-            $key = $node_revision->get('type');
-           // $x = $config->get($key . '_deleteto_workflow_state');
+            $node_type = $node_revision->bundle();
           }
           else {
             $node_label = "untitled";
+            $node_type = "";
           }
           $form['fieldset_wrapper'] = [
             '#type' => 'fieldset',
@@ -57,45 +57,61 @@ function soft_delete_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $fo
               '#description' => t('Checking this will override "Soft Delete" ' .
                     'handling. The default action will only change the publication ' .
                     'status of the content so that it no longer appears as Published.'),
-                '#required'      => TRUE,
                 // The default_value here should be read from the configuration
                 '#default_value' => $override_setting,
-              ]
-            ];
+            ],
+            'node_type' => [
+              '#type' => 'hidden',
+              '#default_value' => $node_type,
+            ]
+          ];
         }
       }
     }
   }
 }
 
-function soft_delete_delete_handler(&$form, \Drupal\Core\Form\FormStateInterface $form_state) {
+function soft_delete_delete_handler(&$form, Drupal\Core\Form\FormState $form_state) {
   // check the value of the "Really delete this item?" checkbox - depending on
   // this value, either set the moderation_state or really delete the node.
   // Get the current node object and check the value of the Publication Status
   // (moderation_state)....
+
+  $content_type = $form_state->getValue('node_type');
+  $override_softdelete = $form_state->getValue('override_softdelete');
   $messenger = \Drupal::messenger();
-  $messenger->addMessage(t('Node has not been deleted'), $messenger::TYPE_WARNING);
-  // redirect to the node view page for this object.
-  $entity = $form_state->getFormObject()->getEntity();
-  $entity->set('moderation_state', 'published');
-  $entity->save();
-  return;
 
-  $node = \Drupal::routeMatch()->getParameter('node');
-  if ($node instanceof \Drupal\node\NodeInterface) {
-    $node_vid = \Drupal::entityManager()->getStorage('node')->revisionIds($node);
-    $latest_revision_id = array_pop((array_slice($node_vid, -1)));
-    $current_state = node_revision_load($latest_revision_id)->get('moderation_state')->getValue()[0]['value'];
-    // NEED TO REDIRECT
+  if ($override_softdelete) {
+    // Actually delete the node
+    $entity = $form_state->getFormObject()->getEntity();
+    $node_title = $entity->get('title')->getValue()[0]['value'];
+    $entity->delete();
+    // Should this redirect anywhere specific?
+    $message = t('Soft Delete for node "@node_title" of type ' .
+      '@content_type has been overridden.',
+      array(
+        '@node_title' => $node_title,
+        '@content_type' => $content_type,
+    ));
+    \Drupal::logger('soft delete')->info($message);
+    $messenger->addMessage($message, $messenger::TYPE_STATUS);
   }
-}
-
-/**
- * Implements hook_ENTITY_TYPE_delete().
- */
-function soft_delete_node_delete() {
-  // This bit of code looks to see if the configuration does NOT include
-  // this content type and prompt the user before deletion if they truly want
-  // to delete the node or should this content type be configured for archiving
-  // as well?
+  elseif ($content_type) {
+    $config = \Drupal::config('soft_delete.adminsettings');
+    $set_to_workflow_state = $config->get($content_type . '_deleteto_workflow_state');
+    $entity = $form_state->getFormObject()->getEntity();
+    $entity->set('moderation_state', $set_to_workflow_state);
+    $entity->save();
+    $message = t('Node has not been deleted, but according to the ' .
+      'Soft Delete configuration, it has been set to the "@set_to_workflow_state" ' .
+      'workflow state.',
+      array(
+        '@set_to_workflow_state' => $set_to_workflow_state
+    ));
+    \Drupal::logger('soft delete')->info($message);
+    $messenger->addMessage($message, $messenger::TYPE_STATUS);
+    // redirect to the node's view page.
+    $response = new RedirectResponse($entity->toUrl()->toString());
+    return $response->send();
+  }
 }

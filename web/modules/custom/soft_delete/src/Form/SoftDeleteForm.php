@@ -30,24 +30,18 @@ class SoftDeleteForm extends ConfigFormBase {
   public function getFormId() {
     return 'soft_delete';
   }
-public function ag($in) {
-  //
-}
+
   /**
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $content_types = $content_type_publication_statuses = $workflow_configs = $disabled = [];
-    $database = \Drupal::database();
-    $workflow_config_results = $database->query("SELECT name FROM config WHERE name like 'workflows.workflow.%'");
-    if ($workflow_config_results) {
-      while ($row = $workflow_config_results->fetchAssoc()) {
-        $config = \Drupal::config($row['name']);
-        $workflow_key = str_replace('workflows.workflow.', '', $row['name']);
-        $workflow_configs[$workflow_key] = $config->get('type_settings');
-      }
+    $workflow_keys = \Drupal::service('config.factory')
+      ->listAll("workflows.workflow");
+    foreach ($workflow_keys as $key) {
+      $config = \Drupal::config($key);
+      $workflow_configs[$key] = $config->get('type_settings');
     }
-    $this->ag($workflow_configs);
     $config = $this->config('soft_delete.adminsettings');
     $configured_types = $config->get('content_types');
     $bundle_info_service = \Drupal::service('entity_type.bundle.info');
@@ -60,32 +54,28 @@ public function ag($in) {
       '#type' => 'fieldset',
       '#title' => t('Soft Delete Options'),
     ];
-    foreach ($node_types as $key => $entity_type) {
+    foreach ($node_types as $node_type => $entity_type) {
       // adjust the content type to the $form_id value for these within their "delete node" page.
-      $form_id = 'node_' . str_replace(
-        array("-"),
-        array("_"),
-        strtolower($key)) . '_delete_form';
-      $content_types[$key] = $node_types[$key]->label();
-      $disabled[$key] = FALSE;
-      $entity_workflow = array_key_exists('workflow', $allBundleInfo['node'][$key]) ?
-        $allBundleInfo['node'][$key]['workflow'] : FALSE;
+      $form_id = 'node_' . $node_type . '_delete_form';
+      $content_types[$node_type] = $node_types[$node_type]->label();
+      $disabled[$node_type] = FALSE;
+      $entity_workflow = array_key_exists('workflow', $allBundleInfo['node'][$node_type]) ?
+        $allBundleInfo['node'][$node_type]['workflow'] : FALSE;
       if ($entity_workflow) {
         // Add the workflow to each listing for reference:
-        $content_types[$key] .= ' ("' . $entity_workflow . '" workflow)';
+        $content_types[$node_type] .= ' ("' . $entity_workflow . '" workflow)';
         // load the workflow that applies to this node content_type - and list
         // the workflow states that are related to it.
-//        $workflow_configs[$entity_workflow]
-        $states = $workflow_configs[$entity_workflow]['states'];
+        $states = $workflow_configs['workflows.workflow.' . $entity_workflow]['states'];
         // Soft Deleting an item should never allow for setting it as Published.
         unset($states['published']);
         foreach ($states as $state_key => $state) {
           $states[$state_key] = $state['label'];
         }
-        $content_type_publication_statuses[$key] = $states;
+        $content_type_publication_statuses[$node_type] = $states;
       }
       else {
-        $disabled[$key] = TRUE;
+        $disabled[$node_type] = TRUE;
       }
     }
 
@@ -96,19 +86,19 @@ public function ag($in) {
       '#options' => $content_types,
       '#default_value' => $configured_types,
     ];
-    foreach ($disabled as $key => $disable) {
+    foreach ($disabled as $node_type => $disable) {
       if ($disable === TRUE) {
-        $form['fieldset_wrapper']['content_types'][$key] = [
+        $form['fieldset_wrapper']['content_types'][$node_type] = [
             '#disabled' => TRUE];
       }
     }
-    foreach ($content_type_publication_statuses as $key => $bundle_state_labels) {
+    foreach ($content_type_publication_statuses as $node_type => $bundle_state_labels) {
       if (count($bundle_state_labels) > 0) {
-        $form[$key . '_deleteto_workflow_state'] = [
+        $form[$node_type . '_deleteto_workflow_state'] = [
           '#type' => 'select',
-          '#title' => $this->t('"' . $key . '" soft deletion in workflow state'),
+          '#title' => $this->t('"' . $node_type . '" soft deletion in workflow state'),
           '#options' => $bundle_state_labels,
-          '#default_value' => $config->get($key . '_deleteto_workflow_state'),
+          '#default_value' => $config->get($node_type . '_deleteto_workflow_state'),
         ];
       }
     }
@@ -139,9 +129,9 @@ public function ag($in) {
       ->set('override_delete_default', $form_state->getValue('override_delete_default'))
       ->save();
     // loop through the content types to get the states for the enabled items.
-    foreach ($form_state->getValue('content_types') as $key => $val) {
+    foreach ($form_state->getValue('content_types') as $node_type => $val) {
       if ($val) {
-        $deleteto_form_id = $key . '_deleteto_workflow_state';
+        $deleteto_form_id = $node_type . '_deleteto_workflow_state';
         $this->config('soft_delete.adminsettings')
           ->set($deleteto_form_id, $form_state->getValue($deleteto_form_id))
           ->save();
