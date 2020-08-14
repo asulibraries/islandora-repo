@@ -4,26 +4,27 @@ dependencies:
   config:
     - system.menu.main
   module:
+    - context
     - superfish
   theme:
-    - carapace
+    - asulib_barrio
 id: mainnavigation
-theme: carapace
-region: navbar
-weight: 0
+theme: asulib_barrio
+region: header
+weight: -14
 provider: null
 plugin: 'superfish:main'
 settings:
   id: 'superfish:main'
-  label: '<none>'
+  label: 'Main navigation'
   provider: superfish
   label_display: '0'
   level: '1'
   depth: '0'
   expand_all_items: false
   menu_type: horizontal
-  style: black
-  arrow: 0
+  style: none
+  arrow: 1
   shadow: 1
   speed: fast
   delay: '800'
@@ -67,4 +68,9 @@ settings:
   custom_list_class: ''
   custom_item_class: ''
   custom_link_class: ''
-visibility: {  }
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    pages: ''
+    negate: null
+    context_mapping: {  }

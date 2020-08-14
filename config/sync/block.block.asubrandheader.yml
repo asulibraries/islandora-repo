@@ -2,21 +2,26 @@ langcode: en
 status: true
 dependencies:
   module:
+    - asu_brand
     - context
-    - system
   theme:
     - asulib_barrio
-id: messages
+id: asubrandheader
 theme: asulib_barrio
-region: highlighted
-weight: -12
+region: top_header
+weight: -14
 provider: null
-plugin: system_messages_block
+plugin: asu_brand_header
 settings:
-  id: system_messages_block
-  label: Messages
-  provider: system
+  id: asu_brand_header
+  label: 'ASU Brand: Header'
+  provider: asu_brand
   label_display: '0'
+  menu_injection_flag: 1
+  menu_name: main
+  asu_gtm: 0
+  custom_gtm: 0
+  custom_gtm_id: ''
 visibility:
   request_path_exclusion:
     id: request_path_exclusion

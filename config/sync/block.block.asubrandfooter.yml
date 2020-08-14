@@ -2,20 +2,20 @@ langcode: en
 status: true
 dependencies:
   module:
+    - asu_brand
     - context
-    - system
   theme:
     - asulib_barrio
-id: messages
+id: asubrandfooter
 theme: asulib_barrio
-region: highlighted
-weight: -12
+region: footer_fifth
+weight: -14
 provider: null
-plugin: system_messages_block
+plugin: asu_brand_footer
 settings:
-  id: system_messages_block
-  label: Messages
-  provider: system
+  id: asu_brand_footer
+  label: 'ASU Brand: Footer'
+  provider: asu_brand
   label_display: '0'
 visibility:
   request_path_exclusion:
