@@ -4,6 +4,7 @@ dependencies:
   config:
     - core.entity_view_mode.node.teaser
     - field.field.node.collection.field_collaborating_institutions
+    - field.field.node.collection.field_collection_thumbnail
     - field.field.node.collection.field_enabled
     - field.field.node.collection.field_external_links
     - field.field.node.collection.field_handle
@@ -14,32 +15,39 @@ dependencies:
     - field.field.node.collection.field_primary_contact
     - field.field.node.collection.field_rich_description
     - field.field.node.collection.field_title
+    - image.style.thumbnail
     - node.type.collection
   module:
+    - asu_item_extras
+    - media
     - user
 id: node.collection.teaser
 targetEntityType: node
 bundle: collection
 mode: teaser
 content:
-  display_media_thumbnail:
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  field_collaborating_institutions:
-    type: entity_reference_label
+  field_collection_thumbnail:
+    type: media_thumbnail
     weight: 1
     region: content
-    label: above
+    label: visually_hidden
     settings:
-      link: true
+      image_style: thumbnail
+      image_link: content
     third_party_settings: {  }
   field_gemini_uri:
     weight: 100
     settings: {  }
     third_party_settings: {  }
     region: content
+  field_title:
+    type: complex_title_formatter
+    weight: 0
+    region: content
+    label: visually_hidden
+    settings:
+      link: ''
+    third_party_settings: {  }
   flag_email_node:
     weight: 10
     settings: {  }
@@ -58,7 +66,10 @@ content:
 hidden:
   display_media_entity_view_1: true
   display_media_entity_view_2: true
+  display_media_entity_view_4: true
   display_media_service_file: true
+  display_media_thumbnail: true
+  field_collaborating_institutions: true
   field_def: true
   field_enabled: true
   field_external_links: true
@@ -69,7 +80,6 @@ hidden:
   field_preferred_citation: true
   field_primary_contact: true
   field_rich_description: true
-  field_title: true
   islandora_fits_checksum: true
   langcode: true
   openseadragon_media_evas_entity_view_1: true
