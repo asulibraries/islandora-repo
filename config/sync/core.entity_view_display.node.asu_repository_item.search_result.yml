@@ -48,8 +48,8 @@ dependencies:
     - field.field.node.asu_repository_item.field_weight
     - node.type.asu_repository_item
   module:
+    - asu_item_extras
     - controlled_access_terms
-    - entity_reference_revisions
     - user
 id: node.asu_repository_item.search_result
 targetEntityType: node
@@ -63,14 +63,14 @@ content:
     third_party_settings: {  }
   field_description:
     weight: 3
-    label: hidden
+    label: visually_hidden
     settings: {  }
     third_party_settings: {  }
     type: basic_string
     region: content
   field_edtf_date_created:
     weight: 4
-    label: above
+    label: visually_hidden
     settings:
       date_separator: dash
       date_order: big_endian
@@ -80,12 +80,11 @@ content:
     type: edtf_default
     region: content
   field_title:
-    type: entity_reference_revisions_entity_view
+    type: complex_title_formatter
     weight: 2
     region: content
-    label: above
+    label: visually_hidden
     settings:
-      view_mode: default
       link: ''
     third_party_settings: {  }
   search_api_excerpt:
