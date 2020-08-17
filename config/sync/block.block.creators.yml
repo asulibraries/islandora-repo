@@ -2,25 +2,31 @@ langcode: en
 status: true
 dependencies:
   config:
-    - facets.facet.temporal_subject
+    - facets.facet.linked_agents
   module:
+    - context
     - facets
     - system
   theme:
     - asulib_barrio
-id: temporalsubject_2
+id: creators
 theme: asulib_barrio
 region: sidebar_first
-weight: -8
+weight: -7
 provider: null
-plugin: 'facet_block:temporal_subject'
+plugin: 'facet_block:linked_agents'
 settings:
-  id: 'facet_block:temporal_subject'
-  label: 'Temporal Subject'
+  id: 'facet_block:linked_agents'
+  label: Creators
   provider: facets
   label_display: visible
-  block_id: temporalsubject_2
+  block_id: creators
 visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    pages: ''
+    negate: null
+    context_mapping: {  }
   request_path:
     id: request_path
     pages: '/search*'

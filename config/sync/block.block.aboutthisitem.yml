@@ -3,13 +3,15 @@ status: true
 dependencies:
   module:
     - asu_item_extras
+    - context
     - node
+    - system
   theme:
     - asulib_barrio
 id: aboutthisitem
 theme: asulib_barrio
 region: sidebar_first
-weight: -9
+weight: -12
 provider: null
 plugin: about_this_item_block
 settings:
@@ -25,3 +27,13 @@ visibility:
     negate: false
     context_mapping:
       node: '@node.node_route_context:node'
+  request_path_exclusion:
+    id: request_path_exclusion
+    pages: ''
+    negate: null
+    context_mapping: {  }
+  request_path:
+    id: request_path
+    pages: /node/add/asu_repository_item
+    negate: true
+    context_mapping: {  }
