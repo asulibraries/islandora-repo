@@ -11,20 +11,17 @@ dependencies:
     - asu_search
   config:
     - field.storage.node.field_member_of
+    - field.storage.node.field_linked_agent
     - field.storage.node.field_edtf_date
     - field.storage.node.field_edtf_date_created
     - field.storage.node.field_edtf_date_issued
     - field.storage.node.field_description
     - field.storage.node.field_identifier
-    - field.storage.node.field_linked_agent
+    - field.storage.node.field_language
     - field.storage.node.field_local_identifier
     - field.storage.node.field_note
-    - field.storage.node.field_physical_form
-    - field.storage.node.field_subject
-    - field.storage.node.field_subjects_name
     - field.storage.node.field_table_of_contents
     - field.storage.node.field_tags
-    - field.storage.node.field_temporal_subject
     - field.storage.node.field_title
     - field.storage.paragraph.field_rest_of_title
     - field.storage.taxonomy_term.field_geo_alt_name
@@ -34,7 +31,6 @@ dependencies:
     - field.storage.taxonomy_term.field_person_alternate_names
     - field.storage.taxonomy_term.field_person_preferred_name
     - search_api.server.default_solr_server
-    - core.entity_view_mode.node.search_index
 third_party_settings:
   search_api_solr:
     finalize: false
@@ -62,13 +58,18 @@ name: 'Default Solr content index'
 description: 'Default content index created by the Solr Search Defaults module'
 read_only: false
 field_settings:
-  aggregated_field:
-    label: 'Aggregated field'
+  all_subjects:
+    label: 'All Subjects'
     property_path: aggregated_field
     type: string
     configuration:
       type: union
-      fields: {  }
+      fields:
+        - 'entity:node/field_geographic_subject'
+        - 'entity:node/field_subject'
+        - 'entity:node/field_subjects_name'
+        - 'entity:node/field_temporal_subject'
+        - 'entity:node/field_title_subject'
   alternate_family_name:
     label: 'Person Alternate Family Name'
     datasource_id: 'entity:taxonomy_term'
@@ -166,6 +167,15 @@ field_settings:
     dependencies:
       config:
         - field.storage.taxonomy_term.field_cat_date_end
+  field_combined_member_of:
+    label: 'Member Of (Primary and Additional)'
+    property_path: aggregated_field
+    type: string
+    configuration:
+      type: union
+      fields:
+        - 'entity:node/field_additional_memberships'
+        - 'entity:node/field_member_of'
   field_corp_alt_name:
     label: 'Corporate Body Alternate Name'
     datasource_id: 'entity:taxonomy_term'
@@ -227,8 +237,18 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_identifier
+  field_language_description_1:
+    label: 'Language » Taxonomy term » Description'
+    datasource_id: 'entity:node'
+    property_path: 'field_language:entity:description'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_language
+      module:
+        - taxonomy
   field_linked_agent:
-    label: 'Linked Agent'
+    label: Creators
     datasource_id: 'entity:node'
     property_path: 'field_linked_agent:entity:name'
     type: string
@@ -261,16 +281,6 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_note
-  field_physical_form:
-    label: 'Physical Form'
-    datasource_id: 'entity:node'
-    property_path: 'field_physical_form:entity:name'
-    type: string
-    dependencies:
-      config:
-        - field.storage.node.field_physical_form
-      module:
-        - taxonomy
   field_rest_of_title:
     label: 'Title for Sorting'
     datasource_id: 'entity:node'
@@ -282,26 +292,6 @@ field_settings:
         - field.storage.paragraph.field_rest_of_title
       module:
         - paragraphs
-  field_subject:
-    label: Subject
-    datasource_id: 'entity:node'
-    property_path: 'field_subject:entity:name'
-    type: string
-    dependencies:
-      config:
-        - field.storage.node.field_subject
-      module:
-        - taxonomy
-  field_subjects_name:
-    label: 'Subject (name)'
-    datasource_id: 'entity:node'
-    property_path: 'field_subjects_name:entity:name'
-    type: string
-    dependencies:
-      config:
-        - field.storage.node.field_subjects_name
-      module:
-        - taxonomy
   field_table_of_contents:
     label: 'Table of Contents'
     datasource_id: 'entity:node'
@@ -318,16 +308,6 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_tags
-  field_temporal_subject:
-    label: 'Temporal Subject'
-    datasource_id: 'entity:node'
-    property_path: 'field_temporal_subject:entity:name'
-    type: string
-    dependencies:
-      config:
-        - field.storage.node.field_temporal_subject
-      module:
-        - taxonomy
   name:
     label: Name
     datasource_id: 'entity:taxonomy_term'
@@ -368,72 +348,6 @@ field_settings:
     dependencies:
       config:
         - field.storage.taxonomy_term.field_person_preferred_name
-  rendered_item:
-    label: 'Rendered HTML output'
-    property_path: rendered_item
-    type: text
-    configuration:
-      roles:
-        anonymous: anonymous
-      view_mode:
-        'entity:node':
-          article: ''
-          asu_repository_item: search_index
-          collection: ''
-          islandora_object: search_index
-          page: ''
-        'entity:taxonomy_term':
-          copyright_statements: ''
-          corporate_body: ''
-          family: ''
-          genre: ''
-          geo_location: ''
-          identifier_types: ''
-          institution: ''
-          language: ''
-          note_types: ''
-          oai_sets: ''
-          person: ''
-          physical_form: ''
-          preservation_states: ''
-          resource_types: ''
-          reuse_permissions: ''
-          subject: ''
-          tags: ''
-          temporal: ''
-  repo_item_search_index:
-    label: 'Repo Item Search Index'
-    property_path: rendered_item
-    type: text
-    configuration:
-      roles:
-        anonymous: anonymous
-      view_mode:
-        'entity:node':
-          article: ''
-          asu_repository_item: ''
-          collection: ''
-          islandora_object: search_index
-          page: ''
-        'entity:taxonomy_term':
-          copyright_statements: ''
-          corporate_body: ''
-          family: ''
-          genre: ''
-          geo_location: ''
-          identifier_types: ''
-          institution: ''
-          language: ''
-          note_types: ''
-          oai_sets: ''
-          person: ''
-          physical_form: ''
-          preservation_states: ''
-          resource_types: ''
-          reuse_permissions: ''
-          subject: ''
-          tags: ''
-          temporal: ''
   status:
     label: 'Publishing status'
     datasource_id: 'entity:node'
@@ -510,9 +424,6 @@ processor_settings:
     weights:
       preprocess_index: -6
       preprocess_query: -4
-  entity_status:
-    weights:
-      preprocess_index: -10
   hierarchy:
     fields:
       field_ancestors: node-field_member_of
@@ -524,16 +435,14 @@ processor_settings:
     highlight_partial: true
     excerpt: true
     excerpt_length: 256
-    exclude_fields:
-      - rendered_item
+    exclude_fields: {  }
     prefix: '<strong>'
     suffix: '</strong>'
     weights:
       postprocess_query: 0
   html_filter:
     all_fields: false
-    fields:
-      - rendered_item
+    fields: {  }
     title: true
     alt: true
     tags:
