@@ -1,9 +1,14 @@
 .sidebar .block.block-facets, .block-facets.accordion {
 	border: none;
+	padding: 0;
+    margin: 0;
 	 h2 {
 		border-bottom: none;
 		margin: 0;
 		padding-bottom: 0;
+		.btn {
+			color: #000;
+		}
 	}
 	.card-header h2 .btn:after {
                 font-family: "Font Awesome 5 Free";
@@ -18,9 +23,20 @@
 	ul {
 		list-style: none;
     		padding-inline-start: 0;
-    	}
+		}
+	.facet-item {
+		padding-top: 5px;
+    	padding-bottom: 5px;
+	}
 	.facet-item__count {
 		float: right;
+		color: $brand-primary;
+	}
+	.facet-item__value {
+		color: #000;
+	}
+	.card {
+		border-radius: 0;
 	}
 }
 
