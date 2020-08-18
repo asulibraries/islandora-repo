@@ -1,0 +1,46 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.paragraph.token
+    - field.field.paragraph.complex_title.field_nonsort
+    - field.field.paragraph.complex_title.field_rest_of_title
+    - field.field.paragraph.complex_title.field_subtitle
+    - field.field.paragraph.complex_title.field_supplied
+    - paragraphs.paragraphs_type.complex_title
+  module:
+    - layout_builder
+third_party_settings:
+  layout_builder:
+    allow_custom: false
+    enabled: false
+id: paragraph.complex_title.token
+targetEntityType: paragraph
+bundle: complex_title
+mode: token
+content:
+  field_nonsort:
+    weight: 0
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    type: string
+    region: content
+  field_rest_of_title:
+    weight: 1
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_subtitle:
+    weight: 2
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+hidden:
+  field_supplied: true
+  search_api_excerpt: true

@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - field.field.node.collection.field_collaborating_institutions
+    - field.field.node.collection.field_collection_thumbnail
     - field.field.node.collection.field_enabled
     - field.field.node.collection.field_external_links
     - field.field.node.collection.field_handle
@@ -33,6 +34,16 @@ content:
     third_party_settings: {  }
   field_collaborating_institutions:
     weight: 15
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_collection_thumbnail:
+    weight: 128
     settings:
       match_operator: CONTAINS
       match_limit: 10

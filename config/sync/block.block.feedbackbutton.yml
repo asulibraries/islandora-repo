@@ -3,13 +3,15 @@ status: true
 dependencies:
   module:
     - asu_item_extras
+    - context
     - node
+    - system
   theme:
     - asulib_barrio
 id: feedbackbutton
 theme: asulib_barrio
 region: sidebar_first
-weight: 0
+weight: -9
 provider: null
 plugin: asu_feedback_button
 settings:
@@ -26,3 +28,13 @@ visibility:
     negate: false
     context_mapping:
       node: '@node.node_route_context:node'
+  request_path_exclusion:
+    id: request_path_exclusion
+    pages: ''
+    negate: null
+    context_mapping: {  }
+  request_path:
+    id: request_path
+    pages: '/node/add/*'
+    negate: true
+    context_mapping: {  }

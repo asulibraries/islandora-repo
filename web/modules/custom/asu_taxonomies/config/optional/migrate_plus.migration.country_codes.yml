@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - asu_taxonomies
+id: country_codes
+migration_group: asu_taxonomies
+label: 'Country Codes for ASU Taxonomies'
+source:
+  plugin: 'csv'
+  path: modules/custom/asu_taxonomies/migrate/country_codes.csv
+  header_row_count: 1
+  keys:
+    - code
+process:
+  name: name
+  vid: vid
+  description: code
+  field_country_code: code
+  field_external_authority_link/uri:
+    plugin: skip_on_empty
+    source: uri
+    method: process
+
+destination:
+  plugin: 'entity:taxonomy_term'
+  default_bundle: country_codes

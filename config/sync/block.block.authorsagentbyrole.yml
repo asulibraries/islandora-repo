@@ -4,6 +4,8 @@ dependencies:
   config:
     - facets.facet.authors_agent_by_role_
   module:
+    - asu_permissions
+    - context
     - facets
     - system
   theme:
@@ -11,7 +13,7 @@ dependencies:
 id: authorsagentbyrole
 theme: asulib_barrio
 region: sidebar_first
-weight: -7
+weight: -4
 provider: null
 plugin: 'facet_block:authors_agent_by_role_'
 settings:
@@ -25,4 +27,49 @@ visibility:
     id: request_path
     pages: '/search*'
     negate: false
+    context_mapping: {  }
+  'entity_field:group':
+    id: 'entity_field:group'
+    field_name: changed
+    field_state: filled
+    field_value: ''
+    context_mapping:
+      group: '@group.group_route_context:group'
+    negate: false
+  'entity_field:media':
+    id: 'entity_field:media'
+    field_name: bundle
+    field_state: filled
+    field_value: ''
+    context_mapping:
+      media: '@islandora.media_route_context_provider:media'
+    negate: false
+  'entity_field:node':
+    id: 'entity_field:node'
+    field_name: body
+    field_state: filled
+    field_value: ''
+    context_mapping:
+      node: '@node.node_route_context:node'
+    negate: false
+  'entity_field:taxonomy_term':
+    id: 'entity_field:taxonomy_term'
+    field_name: changed
+    field_state: filled
+    field_value: ''
+    context_mapping:
+      taxonomy_term: '@islandora.taxonomy_term_route_context_provider:taxonomy_term'
+    negate: false
+  'entity_field:webform_submission':
+    id: 'entity_field:webform_submission'
+    field_name: changed
+    field_state: filled
+    field_value: ''
+    context_mapping:
+      webform_submission: '@webform.webform_submission_route_context:webform_submission'
+    negate: false
+  request_path_exclusion:
+    id: request_path_exclusion
+    pages: ''
+    negate: null
     context_mapping: {  }

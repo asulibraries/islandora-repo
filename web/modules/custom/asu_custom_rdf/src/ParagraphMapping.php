@@ -35,19 +35,40 @@ class ParagraphMapping extends CommonDataConverter {
     $rest_of_title_val = $paragraph->$rest_of_title->getValue();
     $subtitle_val = $paragraph->$subtitle->getValue();
     $string = "";
-    if ($nonsort_val) {
+    if ($nonsort_val && !empty($nonsort_val)) {
       foreach ($nonsort_val[0] as $val) {
-        $string .= $val . " ";
+        if (is_array($val)) {
+          if (!empty($val)) {
+            $string .= $val[0] . " ";
+          }
+        }
+        else {
+          $string .= $val . " ";
+        }
       }
     }
-    if ($rest_of_title_val) {
+    if ($rest_of_title_val && !empty($rest_of_title_val)) {
       foreach ($rest_of_title_val[0] as $val) {
-        $string .= $val;
+        if (is_array($val)) {
+          if (!empty($val)) {
+            $string .= $val[0];
+          }
+        }
+        else {
+          $string .= $val;
+        }
       }
     }
-    if ($subtitle_val) {
+    if ($subtitle_val && !empty($subtitle_val)) {
       foreach ($subtitle_val[0] as $val) {
-        $string .= ": " . $val;
+        if (is_array($val)) {
+          if (!empty($val)) {
+            $string .= ": " . $val[0];
+          }
+        }
+        else {
+          $string .= ": " . $val;
+        }
       }
     }
     return $string;
@@ -76,7 +97,14 @@ class ParagraphMapping extends CommonDataConverter {
       $value = $paragraph->$field->getValue();
       if (count($value) > 0) {
         foreach ($value[0] as $val) {
-          $string .= $val;
+          if (is_array($val)) {
+            if (!empty($val)) {
+              $string .= $val[0];
+            }
+          }
+          else {
+            $string .= $val;
+          }
         }
       }
     }
@@ -103,9 +131,10 @@ class ParagraphMapping extends CommonDataConverter {
     }
     $string = "";
     $field = $paragraph->get($arguments['value_field'])->getValue();
-
-    foreach ($field[0] as $val) {
-      $string .= $val;
+    if (count($field) > 0) {
+      foreach ($field[0] as $val) {
+        $string .= $val;
+      }
     }
     return $string;
   }

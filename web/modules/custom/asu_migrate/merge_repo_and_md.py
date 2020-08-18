@@ -82,6 +82,7 @@ def main(argv):
         lambda row: loc_lookup("subjects", row))
     # for col in merge_df.columns:
         # print(col)
+    merge_df['History JSON'] = merge_df["History"]
     del merge_df["History"] # temp remove history until we decide what to do with it
     # for col in merge_df.columns:
         # print(col)

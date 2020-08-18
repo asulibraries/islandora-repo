@@ -2,13 +2,15 @@ langcode: en
 status: true
 dependencies:
   module:
+    - context
+    - ctools
     - system
   theme:
     - asulib_barrio
 id: asulib_page_title
 theme: asulib_barrio
-region: content
-weight: -11
+region: breadcrumb
+weight: -12
 provider: null
 plugin: page_title_block
 settings:
@@ -22,3 +24,16 @@ visibility:
     pages: "/user/*\r\n<front>\r\n/search*"
     negate: true
     context_mapping: {  }
+  request_path_exclusion:
+    id: request_path_exclusion
+    pages: ''
+    negate: null
+    context_mapping: {  }
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    bundles:
+      asu_repository_item: asu_repository_item
+      collection: collection
+    negate: true
+    context_mapping:
+      node: '@node.node_route_context:node'

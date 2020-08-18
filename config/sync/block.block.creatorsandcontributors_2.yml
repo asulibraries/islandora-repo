@@ -1,9 +1,10 @@
 langcode: en
-status: true
+status: false
 dependencies:
   config:
     - facets.facet.creators_and_contributors
   module:
+    - context
     - facets
     - system
   theme:
@@ -11,7 +12,7 @@ dependencies:
 id: creatorsandcontributors_2
 theme: asulib_barrio
 region: sidebar_first
-weight: -13
+weight: -3
 provider: null
 plugin: 'facet_block:creators_and_contributors'
 settings:
@@ -25,4 +26,9 @@ visibility:
     id: request_path
     pages: '/search*'
     negate: false
+    context_mapping: {  }
+  request_path_exclusion:
+    id: request_path_exclusion
+    pages: ''
+    negate: null
     context_mapping: {  }

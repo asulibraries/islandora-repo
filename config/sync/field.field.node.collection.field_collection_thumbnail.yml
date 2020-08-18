@@ -1,0 +1,27 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_collection_thumbnail
+    - media.type.image
+    - node.type.collection
+id: node.collection.field_collection_thumbnail
+field_name: field_collection_thumbnail
+entity_type: node
+bundle: collection
+label: 'Collection Thumbnail'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      image: image
+    sort:
+      field: _none
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

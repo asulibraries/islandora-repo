@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - context
+    - system
+  theme:
+    - asulib_barrio
+id: sitebranding
+theme: asulib_barrio
+region: top_header
+weight: -13
+provider: null
+plugin: system_branding_block
+settings:
+  id: system_branding_block
+  label: 'Site branding'
+  provider: system
+  label_display: '0'
+  use_site_logo: false
+  use_site_name: true
+  use_site_slogan: true
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    pages: ''
+    negate: null
+    context_mapping: {  }

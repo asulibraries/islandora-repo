@@ -19,6 +19,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_genre
     - field.field.node.asu_repository_item.field_geographic_subject
     - field.field.node.asu_repository_item.field_handle
+    - field.field.node.asu_repository_item.field_history
     - field.field.node.asu_repository_item.field_issuance
     - field.field.node.asu_repository_item.field_language
     - field.field.node.asu_repository_item.field_linked_agent
@@ -28,6 +29,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_open_access
     - field.field.node.asu_repository_item.field_peer_reviewed
     - field.field.node.asu_repository_item.field_pid
+    - field.field.node.asu_repository_item.field_place_of_publication_code
     - field.field.node.asu_repository_item.field_place_published
     - field.field.node.asu_repository_item.field_preferred_citation
     - field.field.node.asu_repository_item.field_preservation_state
@@ -46,6 +48,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_weight
     - node.type.asu_repository_item
   module:
+    - asu_item_extras
     - controlled_access_terms
     - datetime
     - entity_reference_revisions
@@ -105,9 +108,9 @@ content:
     third_party_settings: {  }
   display_media_entity_view_4:
     weight: 10
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
   display_media_service_file:
     weight: 48
     region: content
@@ -416,12 +419,11 @@ content:
     type: entity_reference_label
     region: content
   field_title:
-    type: entity_reference_revisions_entity_view
+    type: complex_title_formatter
     weight: 1
-    label: above
+    label: visually_hidden
     settings:
-      view_mode: default
-      link: ''
+      link: 0
     third_party_settings: {  }
     region: content
   field_title_subject:
@@ -478,6 +480,8 @@ hidden:
   display_media_entity_view_1: true
   display_media_thumbnail: true
   field_display_hints: true
+  field_history: true
+  field_place_of_publication_code: true
   islandora_fits_checksum: true
   openseadragon_media_evas_entity_view_2: true
   openseadragon_media_evas_service_file: true
