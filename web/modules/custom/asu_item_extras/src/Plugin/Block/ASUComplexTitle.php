@@ -40,7 +40,8 @@ class ASUComplexTitle extends BlockBase {
 
     $first_title = $node->field_title[0];
     $view = ['type' => 'complex_title_formatter'];
-    $para_render = \Drupal::service('renderer')->render($first_title->view($view));
+    $first_title_view = $first_title->view($view);
+    $para_render = \Drupal::service('renderer')->render($first_title_view);
     return [
       'complex_title' => [
         '#type' => 'item',
