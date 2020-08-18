@@ -5,7 +5,7 @@
 (function($, Drupal) {
 
   $(document).ready(function() {
-    $('[data-toggle="collapse"]').click(function() {
+    $('.text-show-more [data-toggle="collapse"]').click(function() {
       $(this).toggleClass( "active" );
       if ($(this).hasClass("active")) {
         $(this).text("(less)");
