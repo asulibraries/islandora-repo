@@ -44,3 +44,48 @@
 .views-ui-display-tab-actions .dropbutton .form-submit:focus {
     color: $link-color;
 }
+
+.views-row {
+    @extend .col-md-12;
+}
+
+
+
+.view-id-solr_search_content {
+    &.view-display-id-block_1 {
+        background: #F2F2F2;
+        margin-bottom: 40px;
+        .views-view-grid {
+            margin: 15px;
+        }
+        .collection-result {
+            margin: 10px;
+            background: #FFF;
+            border: 1px solid rgba(0,0,0,0.125);
+            img {
+                margin-left: auto;
+                margin-right: auto;
+                display: block;
+                padding-top: 10px;
+            }
+            .views-field-field-title {
+                padding-top: 10px;
+                padding-bottom: 10px;
+            }
+        }
+    }
+    .view-header h2 {
+        background: #F2F2F2;
+        padding: 10px;
+    }
+    .item-result {
+        border-bottom: 1px solid rgba(0,0,0,0.125);
+        padding-bottom: 1rem;
+        .field--type-image {
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+            padding-top: 10px;
+        }
+    }
+}
