@@ -82,11 +82,11 @@
       {% endif %}
     </div>
     <div class="col-md-10">
-      <h4> <a href="{{ url }}" rel="bookmark">{{ content.field_title }}</a></h4>
+      <h4> <a href="{{ url }}" rel="bookmark">{{ content.field_title[0] }}</a></h4>
       {% if content.field_description is not empty %}
         <p>{{content.field_description}}</p>
       {% endif %}
-      {% if content.field_linked_agent is not empty %}
+      {% if content.field_linked_agent[0] is not empty %}
         <strong>Contributors</strong>
         <p>{{content.field_linked_agent}}</p>
       {% endif %}
