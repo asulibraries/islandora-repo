@@ -101,7 +101,7 @@
             <div>{{ content.field_description }}</div>
             <div>{{ content.field_copyright_statement }}</div>
             <div>{{ content.field_reuse_permissions }}</div>
-            <div class="download-info">Download count: xx</div>
+            <div class="download-info">Download count: {{ drupal_entity('block', 'itemdownloadscount', check_access=false) }}</div>
             <div class="download-options">{{ content.display_media_entity_view_3 }}</div>
         </div>
         <div id="details" class="details">
