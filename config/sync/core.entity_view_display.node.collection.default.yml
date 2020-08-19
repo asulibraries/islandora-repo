@@ -14,9 +14,11 @@ dependencies:
     - field.field.node.collection.field_primary_contact
     - field.field.node.collection.field_rich_description
     - field.field.node.collection.field_title
+    - image.style.large
     - node.type.collection
   module:
     - link
+    - media
     - text
     - user
 id: node.collection.default
@@ -26,9 +28,9 @@ mode: default
 content:
   display_media_entity_view_4:
     weight: 10
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
   display_media_service_file:
     weight: 0
     region: content
@@ -43,12 +45,12 @@ content:
     type: entity_reference_label
     region: content
   field_collection_thumbnail:
-    type: entity_reference_entity_view
+    type: media_thumbnail
     weight: 107
     label: above
     settings:
-      view_mode: default
-      link: false
+      image_style: large
+      image_link: ''
     third_party_settings: {  }
     region: content
   field_def:
