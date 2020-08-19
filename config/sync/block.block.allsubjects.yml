@@ -17,7 +17,7 @@ provider: null
 plugin: 'facet_block:all_subjects'
 settings:
   id: 'facet_block:all_subjects'
-  label: 'All Subjects'
+  label: Subject
   provider: facets
   label_display: visible
   block_id: allsubjects
@@ -31,4 +31,9 @@ visibility:
     id: request_path
     pages: '/search*'
     negate: false
+    context_mapping: {  }
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    view_inclusion: {  }
     context_mapping: {  }
