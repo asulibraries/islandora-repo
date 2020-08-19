@@ -2,9 +2,13 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_description
+    - field.storage.node.field_collection_thumbnail
+    - field.storage.node.field_title
+    - image.style.thumbnail
     - search_api.index.default_solr_index
   module:
+    - asu_item_extras
+    - media
     - node
     - search_api
 id: solr_search_content
@@ -207,16 +211,6 @@ display:
           plugin_id: search_api
       title: 'Search Content'
       header:
-        result:
-          id: result
-          table: views
-          field: result
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: false
-          content: 'Displaying results @start - @end of @total'
-          plugin_id: result
         area:
           id: area
           table: views
@@ -224,16 +218,11 @@ display:
           plugin_id: text
       footer: {  }
       empty:
-        result:
-          id: result
+        area:
+          id: area
           table: views
-          field: result
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: true
-          content: 'Displaying @start - @end of @total'
-          plugin_id: result
+          field: area
+          plugin_id: text
       relationships:
         field_member_of:
           id: field_member_of
@@ -258,10 +247,10 @@ display:
         groups:
           1: AND
       fields:
-        title:
-          id: title
-          table: search_api_index_default_solr_index
-          field: title
+        field_collection_thumbnail:
+          id: field_collection_thumbnail
+          table: search_api_datasource_default_solr_index_entity_node
+          field: field_collection_thumbnail
           relationship: none
           group_type: group
           admin_label: ''
@@ -302,14 +291,112 @@ display:
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
+          empty: 'No thumb'
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: media_thumbnail
+          settings:
+            image_style: thumbnail
+            image_link: content
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          field_rendering: true
+          fallback_handler: search_api_entity
+          fallback_options:
+            link_to_item: false
+            use_highlighting: false
+            multi_type: separator
+            multi_separator: ', '
+            display_methods:
+              audio:
+                display_method: label
+                view_mode: default
+              document:
+                display_method: label
+                view_mode: default
+              extracted_text:
+                display_method: label
+                view_mode: default
+              file:
+                display_method: label
+                view_mode: default
+              fits_technical_metadata:
+                display_method: label
+                view_mode: default
+              image:
+                display_method: label
+                view_mode: default
+              remote_video:
+                display_method: label
+                view_mode: default
+              video:
+                display_method: label
+                view_mode: default
+          entity_type: node
+          plugin_id: search_api_field
+        nid:
+          id: nid
+          table: search_api_datasource_default_solr_index_entity_node
+          field: nid
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
           empty: ''
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: string
+          type: number_integer
           settings:
-            link_to_entity: true
+            thousand_separator: ''
+            prefix_suffix: true
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -321,78 +408,37 @@ display:
           separator: ', '
           field_api_classes: false
           field_rendering: true
-          fallback_handler: search_api
+          fallback_handler: search_api_numeric
           fallback_options:
+            set_precision: false
+            precision: 0
+            decimal: .
+            separator: ','
+            format_plural: false
+            format_plural_string: !!binary MQNAY291bnQ=
+            prefix: ''
+            suffix: ''
             link_to_item: false
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
+            format_plural_values:
+              - '1'
+              - '@count'
+          entity_type: node
           plugin_id: search_api_field
-        search_api_excerpt:
-          id: search_api_excerpt
-          table: search_api_index_default_solr_index
-          field: search_api_excerpt
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: ''
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: true
-            max_length: 400
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          link_to_item: false
-          use_highlighting: true
-          multi_type: separator
-          multi_separator: ', '
-          plugin_id: search_api
-        field_description:
-          id: field_description
+        field_title:
+          id: field_title
           table: search_api_datasource_default_solr_index_entity_node
-          field: field_description
+          field: field_title
           relationship: none
           group_type: group
           admin_label: ''
           label: ''
           exclude: false
           alter:
-            alter_text: false
-            text: ''
+            alter_text: true
+            text: '<a href="/node/{{ nid }}">{{ field_title }}</a>'
             make_link: false
             path: ''
             absolute: false
@@ -417,7 +463,7 @@ display:
             trim: false
             preserve_tags: ''
             html: false
-          element_type: ''
+          element_type: h4
           element_class: ''
           element_label_type: ''
           element_label_class: ''
@@ -429,13 +475,14 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          click_sort_column: value
-          type: basic_string
-          settings: {  }
-          group_column: value
+          click_sort_column: target_id
+          type: complex_title_formatter
+          settings:
+            link: 1
+          group_column: ''
           group_columns: {  }
           group_rows: true
-          delta_limit: 0
+          delta_limit: 1
           delta_offset: 0
           delta_reversed: false
           delta_first_last: false
@@ -462,7 +509,8 @@ display:
       cacheable: false
       max-age: -1
       tags:
-        - 'config:field.storage.node.field_description'
+        - 'config:field.storage.node.field_collection_thumbnail'
+        - 'config:field.storage.node.field_title'
         - 'config:search_api.index.default_solr_index'
   block_1:
     display_plugin: block
@@ -542,7 +590,7 @@ display:
           plugin_id: search_api_fulltext
       defaults:
         arguments: false
-        header: true
+        header: false
         filters: false
         filter_groups: false
         relationships: false
@@ -552,6 +600,7 @@ display:
         use_more: false
         use_more_always: false
         use_more_text: false
+        empty: false
       filters: {  }
       filter_groups:
         operator: AND
@@ -564,44 +613,50 @@ display:
         options:
           grouping: {  }
           columns: 3
-          automatic_width: true
+          automatic_width: false
           alignment: horizontal
-          col_class_default: true
-          col_class_custom: ''
-          row_class_default: true
-          row_class_custom: ''
+          col_class_default: false
+          col_class_custom: 'col collection-result'
+          row_class_default: false
+          row_class_custom: row
       row:
-        type: search_api
+        type: fields
         options:
-          view_modes:
-            'entity:node':
-              article: default
-              asu_repository_item: search_result
-              collection: search_result
-              institution: default
-              islandora_object: default
-              page: default
-            'entity:taxonomy_term':
-              copyright_statements: default
-              corporate_body: default
-              family: default
-              genre: default
-              geo_location: default
-              identifier_types: default
-              language: default
-              note_types: default
-              oai_sets: default
-              person: default
-              physical_form: default
-              preservation_states: default
-              resource_types: default
-              reuse_permissions: default
-              subject: default
-              tags: default
-              temporal: default
+          default_field_elements: true
+          inline: {  }
+          separator: ''
+          hide_empty: false
       use_more: true
       use_more_always: false
       use_more_text: more
+      header:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          tokenize: false
+          content:
+            value: '<h2 class="search-header">Matching Collections ([view:total-rows])</h2>'
+            format: basic_html
+          plugin_id: text
+      empty:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content:
+            value: 'No collections found.'
+            format: basic_html
+          plugin_id: text
     cache_metadata:
       contexts:
         - 'languages:language_content'
@@ -613,7 +668,8 @@ display:
       cacheable: false
       max-age: -1
       tags:
-        - 'config:field.storage.node.field_description'
+        - 'config:field.storage.node.field_collection_thumbnail'
+        - 'config:field.storage.node.field_title'
         - 'config:search_api.index.default_solr_index'
   page_1:
     display_plugin: page
@@ -627,7 +683,7 @@ display:
       arguments: {  }
       defaults:
         arguments: false
-        header: true
+        header: false
         filters: false
         filter_groups: false
         relationships: false
@@ -646,7 +702,6 @@ display:
           operator: or
           value:
             asu_repository_item: asu_repository_item
-            collection: collection
           group: 1
           exposed: false
           expose:
@@ -691,10 +746,12 @@ display:
           exposed: true
           expose:
             operator_id: search_api_fulltext_op
-            label: ''
+            label: Search
             description: ''
             use_operator: false
             operator: search_api_fulltext_op
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: search_api_fulltext
             required: false
             remember: false
@@ -704,9 +761,11 @@ display:
               anonymous: '0'
               administrator: '0'
               fedoraadmin: '0'
+              content_approver: '0'
+              depositor: '0'
+              metadata_manager: '0'
+              preservationist: '0'
             placeholder: ''
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -821,6 +880,20 @@ display:
           expose_sort_order: false
           sort_asc_label: Asc
           sort_desc_label: Desc
+      header:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          tokenize: false
+          content:
+            value: '<h2 class="search-header">Matching Items ([view:total-rows])</h2>'
+            format: basic_html
+          plugin_id: text
     cache_metadata:
       contexts:
         - 'languages:language_content'
@@ -832,7 +905,8 @@ display:
       cacheable: false
       max-age: -1
       tags:
-        - 'config:field.storage.node.field_description'
+        - 'config:field.storage.node.field_collection_thumbnail'
+        - 'config:field.storage.node.field_title'
         - 'config:search_api.index.default_solr_index'
   page_2:
     display_plugin: page
@@ -1028,5 +1102,6 @@ display:
         - 'url.query_args:sort_by'
         - 'user.node_grants:view'
       tags:
-        - 'config:field.storage.node.field_description'
+        - 'config:field.storage.node.field_collection_thumbnail'
+        - 'config:field.storage.node.field_title'
         - 'config:search_api.index.default_solr_index'
