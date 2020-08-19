@@ -40,7 +40,8 @@ class ExploreThisItemBlock extends BlockBase {
         '28' => 'Paged Content',
         '30' => 'Publication Issue',
         '26' => 'Video');
-    $field_model = $field_model_mappings[$field_model_tid];
+    $field_model = (array_key_exists($field_model_tid, $field_model_mappings) ? 
+      $field_model_mappings[$field_model_tid] : "");
 
     $output_links = array();
     if ($field_model == 'Image') {
