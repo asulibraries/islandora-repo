@@ -1,0 +1,30 @@
+langcode: en
+status: false
+dependencies:
+  module:
+    - asu_item_extras
+    - context
+  theme:
+    - asulib_barrio
+id: itemdownloadscount
+theme: asulib_barrio
+region: sidebar_first
+weight: 0
+provider: null
+plugin: asu_item_downloads
+settings:
+  id: asu_item_downloads
+  label: 'Item downloads count'
+  provider: asu_item_extras
+  label_display: '0'
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    pages: ''
+    negate: null
+    context_mapping: {  }
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    view_inclusion: {  }
+    context_mapping: {  }
