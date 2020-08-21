@@ -6,20 +6,27 @@ For development purposes, this repository should be integrated with the [islando
 It will also include ansible scripts for provisioning and deploying to additional environments.
 
 # Local Development Setup
-0. Install dependencies
+1. Install dependencies
     a. VirtualBox version 5.whatever (not 6.0)
     b. Vagrant (tested up to version 2.1.2)
     c. git
     d. ansible
     e. vagrant vbguest plugin (`vagrant plugin install vagrant-vbguest`)
-1. Go to the [ASU claw-playbook repo](https://github.com/asulibraries/claw-playbook)
-2. Clone ASU claw-playbook
-3. cd into claw-playbook
-4. Make a file called in your user root called .asurepo_vault_pass and get it from the lastpass. (this is the password for decrypting ansible vault stuff which will allow you to deploy to create and encrypt files)
-5. Run `vagrant up` (from within the claw-playbook root) - it will default to using the asurepo basebox (modelled after the islandora/8 base box idea). If you want to run the build explicitly (via ansible), change the ISLANDORA_DISTRO like `ISLANDORA_DISTRO="ubuntu/bionic64" vagrant up`
-6. This repo will be available inside the vagrant VM as `/var/www/html/drupal`
-7. If you want the ASU specific config, cd into `/var/www/html/drupal` and run `drupal config:import --directory /var/www/html/drupal/config/sync`
-8. Depending on the environment - do a config import of that environment like `drush config:import --partial --source /var/www/html/drupal/config/dev`
+2. Go to the [ASU claw-playbook repo](https://github.com/asulibraries/claw-playbook)
+3. Clone ASU claw-playbook
+4. cd into claw-playbook
+5. Make a file called in your user root called .asurepo_vault_pass and get it from the lastpass. (this is the password for decrypting ansible vault stuff which will allow you to deploy to create and encrypt files)
+6. Run `vagrant up` (from within the claw-playbook root) - it will default to using the asurepo basebox (modelled after the islandora/8 base box idea). If you want to run the build explicitly (via ansible), change the ISLANDORA_DISTRO like `ISLANDORA_DISTRO="ubuntu/bionic64" vagrant up`
+7. This repo will be available inside the vagrant VM as `/var/www/html/drupal`
+8. Make sure composer modules are up to date `composer install` from `/var/www/html/drupal`
+9. make sure submodules are ready `git submodule init` and `git submodule update` from `/var/www/html/drupal`
+10. If you want the ASU specific config, cd into `/var/www/html/drupal` and run `drupal config:import --directory /var/www/html/drupal/config/sync`
+11. Depending on the environment - do a config import of that environment like `drush config:import --partial --source /var/www/html/drupal/config/dev`
+
+## ASU Basebox Option
+If you are using the ASU basebox option and want to spin a new box, then you can simply run `vagrant up` and skip all of the following steps about composer installing and updating modules and database stuff because that will be a fully up to date box (assuming Eli has kept it up to date).
+Another thing worth noting is that a new basebox will need to be updated with `vagrant box update` - note that box updates can only be performed on new installs or destroyed VMs (not on halted/suspended VMs).
+
 
 # Local theme development
 Note: I only have gotten this working on my local machine, not the vagrant environment yet.-dlf
@@ -41,7 +48,7 @@ Example:
 
 "This will generate a style.css file with mappings for debugging and a style.min.css file for production. You will need to change the reference to the file manually on your SUBTHEME.libraries.yml file."
 
-Instructions are from https://www.drupal.org/docs/8/themes/bootstrap-4-sass-barrio-starter-kit/installation 
+Instructions are from https://www.drupal.org/docs/8/themes/bootstrap-4-sass-barrio-starter-kit/installation
 
 # Ansible
 If you've already provisioned your vagrant environment and need to re-run the ASU specific provisioning, you can do so with `ansible-playbook asu-install.yml -i inventory/vagrant -l all -e ansible_ssh_user=$vagrantUser -e islandora_distro=elizoller/asurepo` Your $vagrantUser will either be ubuntu or vagrant. Check to see what user you become when you `vagrant ssh`. The default playbook now uses a prebuilt base box (called elizoller/asurepo). If we want to build explicitly, we need to specify that our VM requires the ubuntu base box instead so we can customize. We do this by prefixing the `ISLANDORA_DISTRO="ubuntu/bionic64"` to the front of `vagrant up` and `vagrant provision` calls.
@@ -56,11 +63,13 @@ Get the json-ld for an object in Drupal like so : http://localhost:8000/node/1?_
 
 # Updating an existing install
 1. pull down updated claw-app (`cd /var/www/html/drupal && git pull`)
-2. drupal config:import like `drupal config:import --directory /var/www/html/drupal/config/sync`
-3. cd into web directory
-3. run database migrations - `drush updatedb`
-4. clear drupal cache - `drush cache-rebuild`
-5. composer updates?
+2. Make sure composer modules are up to date `composer install` from `/var/www/html/drupal`
+3. make sure submodules are ready `git submodule init` and `git submodule update` from `/var/www/html/drupal`
+4. drupal config:import like `drupal config:import --directory /var/www/html/drupal/config/sync`
+5. cd into web directory
+6. run database migrations - `drush updatedb`
+7. clear drupal cache - `drush cache-rebuild`
+
 
 ## So you want to add a module
 1. Add the module to the composer requirements in the ASU specific ansible role
