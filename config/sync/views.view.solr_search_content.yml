@@ -691,6 +691,7 @@ display:
         sorts: false
         pager: false
         exposed_form: false
+        cache: false
       filters:
         type:
           id: type
@@ -801,10 +802,10 @@ display:
           expose:
             label: Relevance
           plugin_id: search_api
-        field_rest_of_title_1:
-          id: field_rest_of_title_1
+        field_main_title:
+          id: field_main_title
           table: search_api_index_default_solr_index
-          field: field_rest_of_title
+          field: field_main_title
           relationship: none
           group_type: group
           admin_label: ''
@@ -813,10 +814,10 @@ display:
           expose:
             label: 'Title: A to Z'
           plugin_id: search_api
-        field_rest_of_title:
-          id: field_rest_of_title
+        field_main_title_1:
+          id: field_main_title_1
           table: search_api_index_default_solr_index
-          field: field_rest_of_title
+          field: field_main_title
           relationship: none
           group_type: group
           admin_label: ''
@@ -894,6 +895,8 @@ display:
             value: '<h2 class="search-header">Matching Items ([view:total-rows])</h2>'
             format: basic_html
           plugin_id: text
+      cache:
+        type: none
     cache_metadata:
       contexts:
         - 'languages:language_content'

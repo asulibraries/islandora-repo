@@ -29,10 +29,10 @@ class ParagraphMapping extends CommonDataConverter {
       $paragraph = $data;
     }
     $nonsort = $arguments['nonsort'];
-    $rest_of_title = $arguments['main'];
+    $main_title = $arguments['main'];
     $subtitle = $arguments['subtitle'];
     $nonsort_val = $paragraph->$nonsort->getValue();
-    $rest_of_title_val = $paragraph->$rest_of_title->getValue();
+    $main_title_val = $paragraph->$main_title->getValue();
     $subtitle_val = $paragraph->$subtitle->getValue();
     $string = "";
     if ($nonsort_val && !empty($nonsort_val)) {
@@ -47,8 +47,8 @@ class ParagraphMapping extends CommonDataConverter {
         }
       }
     }
-    if ($rest_of_title_val && !empty($rest_of_title_val)) {
-      foreach ($rest_of_title_val[0] as $val) {
+    if ($main_title_val && !empty($main_title_val)) {
+      foreach ($main_title_val[0] as $val) {
         if (is_array($val)) {
           if (!empty($val)) {
             $string .= $val[0];

@@ -23,7 +23,7 @@ dependencies:
     - field.storage.node.field_table_of_contents
     - field.storage.node.field_tags
     - field.storage.node.field_title
-    - field.storage.paragraph.field_rest_of_title
+    - field.storage.paragraph.field_main_title
     - field.storage.taxonomy_term.field_geo_alt_name
     - field.storage.taxonomy_term.field_corp_alt_name
     - field.storage.taxonomy_term.field_cat_date_end
@@ -265,6 +265,17 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_local_identifier
+  field_main_title:
+    label: 'Title for Sorting'
+    datasource_id: 'entity:node'
+    property_path: 'field_title:entity:field_main_title'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_title
+        - field.storage.paragraph.field_main_title
+      module:
+        - paragraphs
   field_member_of:
     label: 'Member of'
     datasource_id: 'entity:node'
@@ -281,17 +292,6 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_note
-  field_rest_of_title:
-    label: 'Title for Sorting'
-    datasource_id: 'entity:node'
-    property_path: 'field_title:entity:field_rest_of_title'
-    type: text
-    dependencies:
-      config:
-        - field.storage.node.field_title
-        - field.storage.paragraph.field_rest_of_title
-      module:
-        - paragraphs
   field_table_of_contents:
     label: 'Table of Contents'
     datasource_id: 'entity:node'

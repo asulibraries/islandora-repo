@@ -27,7 +27,7 @@ class ComplexTitleFormatter extends EntityReferenceLabelFormatter {
 
     foreach ($items as $delta => $item) {
       $nonsort = $item->entity->field_nonsort->value;
-      $main = $item->entity->field_rest_of_title->value;
+      $main = $item->entity->field_main_title->value;
       $sub = $item->entity->field_subtitle->value;
       $nm = ($nonsort ? $nonsort . " " : "") .
         ($main ? $main : "[untitled]") .
