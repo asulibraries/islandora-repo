@@ -42,6 +42,7 @@ class ASUItemDownloads extends BlockBase {
 
       }
       return [
+        '#cache' => ['max-age' => 0],
         '#markup' => Markup::create($download_count),
       ];
     }
