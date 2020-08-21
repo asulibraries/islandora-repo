@@ -23,6 +23,10 @@ It will also include ansible scripts for provisioning and deploying to additiona
 10. If you want the ASU specific config, cd into `/var/www/html/drupal` and run `drupal config:import --directory /var/www/html/drupal/config/sync`
 11. Depending on the environment - do a config import of that environment like `drush config:import --partial --source /var/www/html/drupal/config/dev`
 
+## ASU Basebox Option
+If you are using the ASU basebox option and want to spin a new box, then you can simply run `vagrant up` and skip all of the following steps about composer installing and updating modules and database stuff because that will be a fully up to date box (assuming Eli has kept it up to date).
+Another thing worth noting is that a new basebox will need to be updated with `vagrant box --update` - note that box updates can only be performed on new installs or destroyed VMs (not on halted/suspended VMs).
+
 
 # Local theme development
 Note: I only have gotten this working on my local machine, not the vagrant environment yet.-dlf
