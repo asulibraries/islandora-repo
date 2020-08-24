@@ -2,30 +2,35 @@ langcode: en
 status: true
 dependencies:
   config:
-    - facets.facet.status
+    - facets.facet.peer_reviewed
   module:
     - context
     - facets
     - system
   theme:
     - asulib_barrio
-id: status
+id: peerreviewed
 theme: asulib_barrio
 region: sidebar_first
-weight: -2
+weight: -3
 provider: null
-plugin: 'facet_block:status'
+plugin: 'facet_block:peer_reviewed'
 settings:
-  id: 'facet_block:status'
-  label: Status
+  id: 'facet_block:peer_reviewed'
+  label: Peer-reviewed
   provider: facets
   label_display: visible
-  block_id: status
+  block_id: peerreviewed
 visibility:
   request_path_exclusion:
     id: request_path_exclusion
     pages: ''
     negate: null
+    context_mapping: {  }
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    view_inclusion: {  }
     context_mapping: {  }
   request_path:
     id: request_path

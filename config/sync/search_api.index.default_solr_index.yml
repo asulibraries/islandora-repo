@@ -16,10 +16,15 @@ dependencies:
     - field.storage.node.field_edtf_date_created
     - field.storage.node.field_edtf_date_issued
     - field.storage.node.field_description
+    - field.storage.node.field_genre
     - field.storage.node.field_identifier
     - field.storage.node.field_language
     - field.storage.node.field_local_identifier
     - field.storage.node.field_note
+    - field.storage.node.field_open_access
+    - field.storage.node.field_peer_reviewed
+    - field.storage.node.field_place_of_publication_code
+    - field.storage.node.field_resource_type
     - field.storage.node.field_table_of_contents
     - field.storage.node.field_tags
     - field.storage.node.field_title
@@ -188,7 +193,7 @@ field_settings:
     label: Description
     datasource_id: 'entity:node'
     property_path: field_description
-    type: text
+    type: string
     dependencies:
       config:
         - field.storage.node.field_description
@@ -288,10 +293,26 @@ field_settings:
     label: Note
     datasource_id: 'entity:node'
     property_path: field_note
-    type: text
+    type: string
     dependencies:
       config:
         - field.storage.node.field_note
+  field_open_access:
+    label: 'Open Access'
+    datasource_id: 'entity:node'
+    property_path: field_open_access
+    type: boolean
+    dependencies:
+      config:
+        - field.storage.node.field_open_access
+  field_peer_reviewed:
+    label: Peer-reviewed
+    datasource_id: 'entity:node'
+    property_path: field_peer_reviewed
+    type: boolean
+    dependencies:
+      config:
+        - field.storage.node.field_peer_reviewed
   field_table_of_contents:
     label: 'Table of Contents'
     datasource_id: 'entity:node'
@@ -308,6 +329,16 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_tags
+  genre_name:
+    label: Genre
+    datasource_id: 'entity:node'
+    property_path: 'field_genre:entity:name'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_genre
+      module:
+        - taxonomy
   name:
     label: Name
     datasource_id: 'entity:taxonomy_term'
@@ -324,6 +355,16 @@ field_settings:
     indexed_locked: true
     type_locked: true
     hidden: true
+  place_of_publication_code:
+    label: 'Place of Publication (Code)'
+    datasource_id: 'entity:node'
+    property_path: 'field_place_of_publication_code:entity:name'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_place_of_publication_code
+      module:
+        - taxonomy
   preferred_family_name:
     label: 'Person Preferred Family Name'
     datasource_id: 'entity:taxonomy_term'
@@ -348,6 +389,16 @@ field_settings:
     dependencies:
       config:
         - field.storage.taxonomy_term.field_person_preferred_name
+  resource_type_name:
+    label: 'Resource Type'
+    datasource_id: 'entity:node'
+    property_path: 'field_resource_type:entity:name'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_resource_type
+      module:
+        - taxonomy
   status:
     label: 'Publishing status'
     datasource_id: 'entity:node'
@@ -370,7 +421,7 @@ field_settings:
     label: Title
     datasource_id: 'entity:node'
     property_path: title
-    type: text
+    type: string
     boost: !!float 8
     dependencies:
       module:
