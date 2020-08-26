@@ -95,7 +95,11 @@ function asu_custom_rdf_jsonld_alter_normalized_array(EntityInterface $entity, a
           $args = $callback['arguments'];
           // Get field value from $args['value_field'].
           foreach ($entity->get($kmap)->referencedEntities() as $paragraph) {
-            $value = $paragraph->get($args['value_field'])->getValue()[0]['value'];
+            $value = $paragraph->get($args['value_field'])->getValue();
+            if (in_array(0, $value)) {
+              $value = $value[0]['value'];
+            }
+
             // Get the type from the $args['type_field'].
             if (array_key_exists('type_taxonomy_field', $args)) {
               $taxo_entities = $paragraph->get($args['type_field'])->referencedEntities();
