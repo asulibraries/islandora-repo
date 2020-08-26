@@ -1,7 +1,5 @@
 <?php
 
-use Symfony\Component\HttpFoundation\RedirectResponse;
-
 /**
  * @file
  * This module will provides a button to "delete" and handle clicking on that
@@ -110,7 +108,6 @@ function soft_delete_delete_handler(&$form, Drupal\Core\Form\FormState $form_sta
     \Drupal::logger('soft delete')->info($message);
     $messenger->addMessage($message, $messenger::TYPE_STATUS);
     // redirect to the node's view page.
-    $response = new RedirectResponse($entity->toUrl()->toString());
-    return $response->send();
+    $form_state->setRedirect('entity.node.canonical', ['node' => $entity->id()]);
   }
 }
