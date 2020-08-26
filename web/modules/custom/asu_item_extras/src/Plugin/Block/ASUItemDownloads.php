@@ -29,7 +29,7 @@ class ASUItemDownloads extends BlockBase {
     // "ASU Repository Item", the underlying node can be accessed via the path.
     if (\Drupal::routeMatch()->getParameter('node')) {
       $node = \Drupal::routeMatch()->getParameter('node');
-      $views = \Drupal::service('islandora_matomo_services.default')->getViewsForNode($node->id());
+      $views = \Drupal::service('islandora_matomo.default')->getViewsForNode($node->id());
 
       $mids = \Drupal::entityQuery('media')
         ->condition('field_media_of', $node->id())
@@ -37,8 +37,8 @@ class ASUItemDownloads extends BlockBase {
       $download_count = 0;
       foreach ($mids as $mid) {
         $media = Media::load($mid);
-        $fid = \Drupal::service('islandora_matomo_services.default')->getFileFromMedia($mid);
-        $download_count += \Drupal::service('islandora_matomo_services.default')->getDownloadsForFile($fid);
+        $fid = \Drupal::service('islandora_matomo.default')->getFileFromMedia($mid);
+        $download_count += \Drupal::service('islandora_matomo.default')->getDownloadsForFile($fid);
 
       }
       return [
