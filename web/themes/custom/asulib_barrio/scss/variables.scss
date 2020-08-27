@@ -9,6 +9,97 @@ $primary-dark: darken($primary-shade, 12%);
 $accent-shade: #8C1D40;
 $accent-light: lighten($accent-shade, 37%);
 $accent-dark: darken($accent-shade, 12%);
+
+// ASU Brand Standard Colors
+// Reference: https://hub.asu.edu/brand-hq/brand-standards/color-palette
+
+$white: #ffffff; // White
+$gray-1: #fafafa;
+$gray-2: #e8e8e8;
+$gray-3: #d0d0d0;
+$gray-4: #bfbfbf;
+$gray-5: #747474;
+$gray-6: #484848;
+$gray-7: #191919; // Base font color and default black level
+$grays: ();
+// stylelint-disable-next-line scss/dollar-variable-default
+$grays: map-merge(
+                (
+                        '1': $gray-1,
+                        '2': $gray-2,
+                        '3': $gray-3,
+                        '4': $gray-4,
+                        '5': $gray-5,
+                        '6': $gray-6,
+                        '7': $gray-7,
+                ),
+                $grays
+);
+
+$gold: #ffc627; // ASU Gold
+$maroon: #8c1d40; // ASU Maroon
+$dark: $gray-7;
+$light: $gray-2;
+$blue: #00a3e0; // ASU Blue
+$green: #78be20; // ASU Green
+$orange: #ff7f32; // ASU Orange
+
+$bluefocus: #00baff; // A11y Focus Blue - used for highlighting the page element with current focus
+$darkgold: #7f6227; // Visited state of ASU Gold
+$darkmaroon: #440e22; // Visited state of ASU Maroon
+
+$colors: () !default;
+
+$colors: map-merge(
+                (
+                        'gold': $gold,
+                        'maroon': $maroon,
+                        'blue': $blue,
+                        'green': $green,
+                        'orange': $orange,
+                        'white': $white,
+                        'bluefocus': $bluefocus,
+                        'darkgold': $darkgold,
+                        'darkmaroon': $darkmaroon,
+                ),
+                $colors
+);
+
+$primary: $maroon;
+$secondary: $gold;
+$danger: #cc2f2f; // Error
+$warning: #ff7f32; // Warning
+$success: #78be20; // Success
+$info: #00a3e0; // Information
+
+$border-color: $gray-3;
+$header-dark: #353535;
+
+$theme-colors: ();
+// stylelint-disable-next-line scss/dollar-variable-default
+$theme-colors: map-merge(
+                (
+                        'gold': $gold,
+                        'maroon': $maroon,
+                        'success': $success,
+                        'info': $info,
+                        'warning': $warning,
+                        'danger': $danger,
+                        'light': $light,
+                        'gray': $gray-4,
+                        'dark': $dark,
+                        'gray-1': $gray-1,
+                        'gray-2': $gray-2,
+                        'gray-3': $gray-3,
+                        'gray-4': $gray-4,
+                        'gray-5': $gray-5,
+                        'gray-6': $gray-6,
+                        'gray-7': $gray-7,
+                ),
+                $theme-colors
+);
+
+
 // Reassign color vars to semantic color scheme
 $red: #dc3545;
 $yellow: #ffc107;
@@ -17,7 +108,7 @@ $cyan: #17a2b8;
 $white: #fff;
 $gray-100: #f8f9fa;
 $gray-800: #343a40;
-$theme-colors: ( primary: $accent-shade, secondary: $primary-shade, success: $green, info: $cyan, warning: $yellow, danger: $red, light: $gray-100, dark: $gray-800);
+// $theme-colors: ( primary: $accent-shade, secondary: $primary-shade, success: $green, info: $cyan, warning: $yellow, danger: $red, light: $gray-100, dark: $gray-800);
 $brand-primary: $accent-shade;
 //$brand-success: $green;
 //$brand-info: $teal;

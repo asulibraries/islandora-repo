@@ -4,8 +4,9 @@
     .block {
         border-style: solid;
         border-width: $border-width;
-        padding: $spacer $spacer;
-        margin: 0 0 $spacer;
+        border-color: $border-color;
+        /*padding: $spacer $spacer;*/
+        margin: -1px -1px $spacer;
         .content {
             font-size: $font-size-base;
             line-height: $line-height-sm;
@@ -13,11 +14,12 @@
     }
     h2 {
         margin: 0 0 ($spacer * .5);
-        border-bottom: $border-width solid $border-color;
-        padding-bottom: 5px;
-        text-shadow: 0 $border-width 0 $white;
+        padding: 1rem;
+        border: $border-width solid $header-dark;
         font-size: $font-size-lg;
         line-height: $headings-line-height;
+        background-color: $header-dark;
+        color: $gray-1;
     }
     tbody {
         border: none;
