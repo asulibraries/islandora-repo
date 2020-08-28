@@ -1,0 +1,28 @@
+<?php
+
+use Drupal\media\MediaInterface;
+
+/**
+ * Implements hook_entity_type_update().
+ */
+function asu_default_fields_media_update(MediaInterface $media) {
+  $utils = \Drupal::service('islandora.utils');
+  if ($media->hasField('field_media_of') && count($media->get('field_media_of')) > 0) {
+    if ($media->get('field_media_use') && $media->get('field_media_use')->entity) {
+      $taxy = $media->get('field_media_use')->entity;
+      // TODO add a config for which "uses" to assign this value from, possible that multiple uses would assign multiple resource types here
+      if ($taxy->getName() == "Original File") {
+        $node = $utils->getParentNode($media);
+        // Note this only applies up the free one - complex objects may require reworking here.
+        if ($node) {
+          $mime = $media->get('field_mime_type')->value;
+          $mime = str_replace('/', '_', $mime);
+          $mime = str_replace('.', '_', $mime);
+          $res_type = \Drupal::config('asu_default_fields.mimesettings')->get($mime);
+          $node->set('field_resource_type', ['target_id' => $res_type]);
+          $node->save();
+        }
+      }
+    }
+  }
+}
