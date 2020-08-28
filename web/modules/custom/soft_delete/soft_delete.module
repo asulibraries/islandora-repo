@@ -8,15 +8,17 @@
  * behavior would take place and the content  would be deleted.
  */
 
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Form\FormState;
 /**
  * Implements hook_form_alter().
  */
-function soft_delete_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+function soft_delete_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   // check the configuration to see which form_id (which is based on the content type) is being displayed,
   // override the submit function if the content type is configured.
   $node = \Drupal::routeMatch()->getParameter('node');
   if ($node instanceof \Drupal\node\NodeInterface) {
-    $node_vid = \Drupal::entityManager()->getStorage('node')->revisionIds($node);
+    $node_vid = \Drupal::entityTypeManager()->getStorage('node')->revisionIds($node);
     $rev = array_slice($node_vid, -1);
     $latest_revision_id = array_pop($rev);
     $node_revision = node_revision_load($latest_revision_id);
@@ -69,7 +71,7 @@ function soft_delete_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $fo
   }
 }
 
-function soft_delete_delete_handler(&$form, Drupal\Core\Form\FormState $form_state) {
+function soft_delete_delete_handler(&$form, FormState $form_state) {
   // check the value of the "Really delete this item?" checkbox - depending on
   // this value, either set the moderation_state or really delete the node.
   // Get the current node object and check the value of the Publication Status
