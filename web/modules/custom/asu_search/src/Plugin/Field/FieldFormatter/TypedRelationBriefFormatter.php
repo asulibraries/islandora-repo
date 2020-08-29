@@ -31,7 +31,6 @@ class TypedRelationBriefFormatter extends EntityReferenceLabelFormatter
       $rel_types = $item->getRelTypes();
       $rel_type = isset($rel_types[$item->rel_type]) ? $rel_types[$item->rel_type] : $item->rel_type;
       if (isset($elements[$delta])) {
-        \Drupal::logger('typed relation brief')->info("element is set");
         $re = '/(\S*) (\S*)/m';
         $str = $rel_type;
         $subst = '$1';
