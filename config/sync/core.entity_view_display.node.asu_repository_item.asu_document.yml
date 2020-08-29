@@ -9,6 +9,8 @@ dependencies:
     - field.field.node.asu_repository_item.field_copyright_date
     - field.field.node.asu_repository_item.field_copyright_statement
     - field.field.node.asu_repository_item.field_date_digitized
+    - field.field.node.asu_repository_item.field_default_derivative_file_pe
+    - field.field.node.asu_repository_item.field_default_original_file_perm
     - field.field.node.asu_repository_item.field_description
     - field.field.node.asu_repository_item.field_display_hints
     - field.field.node.asu_repository_item.field_edition
@@ -48,6 +50,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_weight
     - node.type.asu_repository_item
   module:
+    - asu_search
     - controlled_access_terms
     - datetime
     - entity_reference_revisions
@@ -263,7 +266,7 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-    type: typed_relation_default
+    type: typed_relation_brief
     region: content
   field_member_of:
     weight: 5
@@ -475,6 +478,8 @@ hidden:
   display_media_entity_view_1: true
   display_media_service_file: true
   display_media_thumbnail: true
+  field_default_derivative_file_pe: true
+  field_default_original_file_perm: true
   field_display_hints: true
   field_history: true
   field_place_of_publication_code: true

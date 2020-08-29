@@ -9,6 +9,8 @@ dependencies:
     - field.field.node.asu_repository_item.field_copyright_date
     - field.field.node.asu_repository_item.field_copyright_statement
     - field.field.node.asu_repository_item.field_date_digitized
+    - field.field.node.asu_repository_item.field_default_derivative_file_pe
+    - field.field.node.asu_repository_item.field_default_original_file_perm
     - field.field.node.asu_repository_item.field_description
     - field.field.node.asu_repository_item.field_display_hints
     - field.field.node.asu_repository_item.field_edition
@@ -49,6 +51,7 @@ dependencies:
     - node.type.asu_repository_item
   module:
     - asu_item_extras
+    - asu_search
     - controlled_access_terms
     - user
 id: node.asu_repository_item.search_result
@@ -80,7 +83,7 @@ content:
     type: edtf_default
     region: content
   field_linked_agent:
-    type: typed_relation_default
+    type: typed_relation_brief
     weight: 3
     region: content
     label: visually_hidden
@@ -113,6 +116,8 @@ hidden:
   field_copyright_date: true
   field_copyright_statement: true
   field_date_digitized: true
+  field_default_derivative_file_pe: true
+  field_default_original_file_perm: true
   field_display_hints: true
   field_edition: true
   field_embargo_release_date: true

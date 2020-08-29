@@ -8,6 +8,8 @@ dependencies:
     - field.field.node.asu_repository_item.field_copyright_date
     - field.field.node.asu_repository_item.field_copyright_statement
     - field.field.node.asu_repository_item.field_date_digitized
+    - field.field.node.asu_repository_item.field_default_derivative_file_pe
+    - field.field.node.asu_repository_item.field_default_original_file_perm
     - field.field.node.asu_repository_item.field_description
     - field.field.node.asu_repository_item.field_display_hints
     - field.field.node.asu_repository_item.field_edition
@@ -47,6 +49,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_weight
     - node.type.asu_repository_item
   module:
+    - asu_search
     - controlled_access_terms
     - datetime
     - entity_reference_revisions
@@ -107,9 +110,9 @@ content:
     third_party_settings: {  }
   display_media_entity_view_4:
     weight: 10
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
   field_additional_memberships:
     weight: 34
     label: above
@@ -162,6 +165,22 @@ content:
       day_format: dd
     third_party_settings: {  }
     type: edtf_default
+    region: content
+  field_default_derivative_file_pe:
+    weight: 50
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_default_original_file_perm:
+    weight: 49
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
     region: content
   field_description:
     weight: 2
@@ -270,7 +289,7 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-    type: typed_relation_default
+    type: typed_relation_brief
     region: content
   field_member_of:
     weight: 5
