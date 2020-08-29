@@ -1,5 +1,6 @@
 <?php
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\media\MediaInterface;
 use Drupal\node\NodeInterface;
 use Drupal\paragraphs\Entity\Paragraph;
@@ -36,7 +37,7 @@ function asu_default_fields_node_presave(NodeInterface $node) {
   if ($node->bundle() == "collection" || $node->bundle() == "asu_repository_item") {
     if ($node->hasField('field_title')) {
       $pgs = $node->field_title->getValue();
-      if (count($pgs > 0)) {
+      if ($pgs) {
         $pg1 = $pgs[0];
         $item = Paragraph::load($pg1['target_id']);
         $nonsort = $item->field_nonsort->value;
@@ -48,6 +49,124 @@ function asu_default_fields_node_presave(NodeInterface $node) {
         $node->setTitle($nm);
       } else {
         $node->setTitle('[untitled]');
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_node_form_alter().
+ */
+function asu_default_fields_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  \Drupal::logger('asu default fields')->info("form is is " . $form_id);
+  if ($form_id == 'node_asu_repository_item_form') {
+    $node = $form_state->getFormObject()->getEntity();
+    if ($node->isNew()) {
+      $query = \Drupal::request()->getQueryString();
+      if (!empty($query_string)) {
+        parse_str($query_string, $query);
+      }
+
+      $qps = explode('&', $query);
+      foreach($qps as $qp) {
+        $parts = explode('=', $qp);
+        if ($parts[0] == 'edit%5Bfield_member_of%5D%5Bwidget%5D%5B0%5D%5Btarget_id%5D') {
+          $nid = $parts[1];
+        }
+      }
+
+      if (isset($nid)){
+        $parent = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
+        if ($parent->hasField('field_default_original_file_perm') && $parent->get('field_default_original_file_perm')->entity != NULL && $node->get('field_default_original_file_perm')->isEmpty()) {
+          $of_default_perms = $parent->get('field_default_original_file_perm')->entity;
+          $form['field_default_original_file_perm']['widget'][0]['target_id']['#default_value'] = $of_default_perms;
+        }
+        if ($parent->hasField('field_default_derivative_file_pe') && $parent->get('field_default_derivative_file_pe')->entity != NULL && $node->get('field_default_derivative_file_pe')->isEmpty()) {
+          $deriv_default_perms = $parent->get('field_default_derivative_file_pe')->entity;
+          $form['field_default_derivative_file_pe']['widget'][0]['target_id']['#default_value'] = $deriv_default_perms;
+        }
+      }
+    }
+  }
+  else if ($form_id == 'media_image_add_form' || $form_id == 'media_audio_add_form' || $form_id == 'media_document_add_form' || $form_id == 'media_file_add_form' || $form_id == 'media_video_add_form') {
+    $media = $form_state->getFormObject()->getEntity();
+    if ($media->isNew()) {
+      $query = \Drupal::request()->getQueryString();
+      if (!empty($query_string)) {
+        parse_str($query_string, $query);
+      }
+
+      $qps = explode('&', $query);
+      foreach ($qps as $qp) {
+        $parts = explode('=', $qp);
+        if ($parts[0] == 'edit%5Bfield_media_of%5D%5Bwidget%5D%5B0%5D%5Btarget_id%5D') {
+          $nid = $parts[1];
+        }
+      }
+      if (isset($nid)){
+        // In the media create form, we inherit the default for the original file only,
+        // because we assume that most manual additions of files are for original files
+        $parent = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
+        if ($parent->hasField('field_default_original_file_perm') && $parent->get('field_default_original_file_perm')->entity != NULL && $media->get('field_access_terms')->isEmpty()) {
+          \Drupal::logger('asu default fields')->info('need to set of_default_perms');
+          $of_default_perms = $parent->get('field_default_original_file_perm')->entity;
+          dsm($of_default_perms);
+          dsm($form['field_access_terms']);
+          $form['field_access_terms']['widget']['#default_value'] = [$of_default_perms->id()];
+          dsm($form['field_access_terms']);
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_node_insert().
+ */
+function asu_default_fields_node_insert(NodeInterface $node) {
+  if ($node->hasField('field_member_of') && $node->get('field_member_of') != NULL) {
+    $parent = $node->get('field_member_of')->entity;
+    if ($parent) {
+      $save = FALSE;
+      if ($parent->hasField('field_default_original_file_perm') && $parent->get('field_default_original_file_perm')->entity != NULL && $node->get('field_default_original_file_perm')->isEmpty()) {
+        $of_default_perms = $parent->get('field_default_original_file_perm')->entity->id();
+        $node->set('field_default_original_file_perm', $of_default_perms);
+        $save = TRUE;
+      }
+      if ($parent->hasField('field_default_derivative_file_pe') && $parent->get('field_default_derivative_file_pe') != NULL && $node->get('field_default_derivative_file_pe')->isEmpty()) {
+        $deriv_default_perms = $parent->get('field_default_derivative_file_pe')->entity->id();
+        $node->set('field_default_derivative_file_pe', $deriv_default_perms);
+        $save = TRUE;
+      }
+      if ($save) {
+        $node->save();
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_media_insert().
+ */
+function asu_default_fields_media_insert(MediaInterface $media) {
+  $islandora_utils = \Drupal::service('islandora.utils');
+  $parent = $islandora_utils->getParentNode($media);
+  if ($parent) {
+    if ($media->get('field_media_use') && $media->get('field_media_use')->entity) {
+      $taxy = $media->get('field_media_use')->entity;
+      if ($taxy->getName() == "Original File") {
+        if ($parent->hasField('field_default_original_file_perm') && $parent->get('field_default_original_file_perm') != NULL && $media->get('field_access_terms')->isEmpty()) {
+          $of_default_perms = $parent->get('field_default_original_file_perm')->entity->id();
+          $media->set('field_access_terms', $of_default_perms);
+          $media->save();
+        }
+      }
+      else if ($taxy->getName() == 'Service File') {
+        if ($parent->hasField('field_default_derivative_file_pe') && $parent->get('field_default_derivative_file_pe') != NULL && $media->get('field_access_terms')->isEmpty()) {
+          $deriv_default_perms = $parent->get('field_default_derivative_file_pe')->entity->id();
+          $media->set('field_access_terms', $deriv_default_perms);
+          $media->save();
+        }
       }
     }
   }
