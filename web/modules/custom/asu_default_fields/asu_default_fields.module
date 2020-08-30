@@ -110,10 +110,7 @@ function asu_default_fields_form_alter(&$form, FormStateInterface $form_state, $
         if ($parent->hasField('field_default_original_file_perm') && $parent->get('field_default_original_file_perm')->entity != NULL && $media->get('field_access_terms')->isEmpty()) {
           \Drupal::logger('asu default fields')->info('need to set of_default_perms');
           $of_default_perms = $parent->get('field_default_original_file_perm')->entity;
-          dsm($of_default_perms);
-          dsm($form['field_access_terms']);
           $form['field_access_terms']['widget']['#default_value'] = [$of_default_perms->id()];
-          dsm($form['field_access_terms']);
         }
       }
     }
