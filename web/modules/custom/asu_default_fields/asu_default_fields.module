@@ -58,7 +58,6 @@ function asu_default_fields_node_presave(NodeInterface $node) {
  * Implements hook_node_form_alter().
  */
 function asu_default_fields_form_alter(&$form, FormStateInterface $form_state, $form_id) {
-  \Drupal::logger('asu default fields')->info("form is is " . $form_id);
   if ($form_id == 'node_asu_repository_item_form') {
     $node = $form_state->getFormObject()->getEntity();
     if ($node->isNew()) {
@@ -108,7 +107,6 @@ function asu_default_fields_form_alter(&$form, FormStateInterface $form_state, $
         // because we assume that most manual additions of files are for original files
         $parent = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
         if ($parent->hasField('field_default_original_file_perm') && $parent->get('field_default_original_file_perm')->entity != NULL && $media->get('field_access_terms')->isEmpty()) {
-          \Drupal::logger('asu default fields')->info('need to set of_default_perms');
           $of_default_perms = $parent->get('field_default_original_file_perm')->entity;
           $form['field_access_terms']['widget']['#default_value'] = [$of_default_perms->id()];
         }
