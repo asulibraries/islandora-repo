@@ -26,7 +26,8 @@ dependencies:
     - field.storage.node.field_frequency
     - field.storage.node.field_genre
     - field.storage.node.field_handle
-    - field.storage.node.field_identifier
+    - field.storage.node.field_typed_identifier
+    - field.storage.paragraph.field_identifier_value
     - field.storage.node.field_issuance
     - field.storage.node.field_language
     - field.storage.node.field_pid
@@ -124,9 +125,17 @@ field_settings:
     label: 'Thesis Advisors (Agent by Role)'
     property_path: asu_agent_ths
     type: string
+  asu_doi:
+    label: 'DOI Identifier'
+    property_path: asu_doi
+    type: string
   asu_isbn:
     label: 'ISBN Identifier'
     property_path: asu_isbn
+    type: string
+  asu_issn:
+    label: 'ISSN Identifier'
+    property_path: asu_issn
     type: string
   asu_local:
     label: 'Local Identifier'
@@ -328,14 +337,17 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_handle
-  field_identifier:
-    label: Identifier
+  field_identifier_value:
+    label: 'Identifier Value'
     datasource_id: 'entity:node'
-    property_path: field_identifier
-    type: string
+    property_path: 'field_typed_identifier:entity:field_identifier_value'
+    type: text
     dependencies:
       config:
-        - field.storage.node.field_identifier
+        - field.storage.node.field_typed_identifier
+        - field.storage.paragraph.field_identifier_value
+      module:
+        - paragraphs
   field_issuance:
     label: Issuance
     datasource_id: 'entity:node'

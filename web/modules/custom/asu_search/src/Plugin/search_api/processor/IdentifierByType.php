@@ -9,12 +9,12 @@ use Drupal\search_api\Processor\ProcessorProperty;
 use Drupal\paragraphs\Entity\Paragraph;
 
 /**
- * Adds the item's idnetifier separately by type.
+ * Adds the item's identifier separately by type.
  *
  * @SearchApiProcessor(
  *   id = "identifier_by_type",
- *   label = @Translation("ISBN Identifier"),
- *   description = @Translation("adds the item's idnetifier separately by type"),
+ *   label = @Translation("Typed Identifier"),
+ *   description = @Translation("adds the item's identifier separately by type"),
  *   stages = {
  *     "add_properties" = 0,
  *   },
@@ -27,19 +27,21 @@ class IdentifierByType extends ProcessorPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function getPropertyDefinitions(DatasourceInterface $datasource = NULL)
-  {
+  public function getPropertyDefinitions(DatasourceInterface $datasource = NULL) {
     $properties = [];
 
     if (!$datasource) {
       $definition = [
-        'label' => $this->t('ISBN Identifier'),
-        'description' => $this->t('A ISBN-type identifier'),
+        'label' => $this->t('Identifier'),
+        'description' => $this->t('A typed identifier'),
         'type' => 'string',
         'processor_id' => $this->getPluginId(),
       ];
       $properties['asu_isbn'] = new ProcessorProperty($definition);
       $properties['asu_local'] = new ProcessorProperty($definition);
+      $properties['asu_issn'] = new ProcessorProperty($definition);
+      $properties['asu_doi'] = new ProcessorProperty($definition);
+      // Add as many identifier types you want - the code for the type is used.
     }
 
     return $properties;
@@ -48,17 +50,16 @@ class IdentifierByType extends ProcessorPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function addFieldValues(ItemInterface $item)
-  {
+  public function addFieldValues(ItemInterface $item) {
     $node = $item->getOriginalObject()->getValue();
-    if ($node->hasField('field_typed_identifier')){
+    if ($node->hasField('field_typed_identifier')) {
       $vals = $node->field_typed_identifier->getValue();
       foreach ($vals as $element) {
         $fields = $item->getFields(FALSE);
         $paragraph = Paragraph::load($element['target_id']);
         $ix = $paragraph->get('field_identifier_type');
         if (isset($ix) && isset($ix->first()->entity)) {
-          $ident_type = $paragraph->get('field_identifier_type')->first()->entity->getName();
+          $ident_type = $paragraph->get('field_identifier_type')->first()->entity->get('field_identifier_predicate')->getValue()[0]['value'];
           $fields = $this->getFieldsHelper()
             ->filterForPropertyPath($fields, NULL, 'asu_' . strtolower($ident_type));
           foreach ($fields as $field) {
