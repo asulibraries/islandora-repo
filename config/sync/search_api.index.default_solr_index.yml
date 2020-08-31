@@ -543,6 +543,10 @@ field_settings:
     indexed_locked: true
     type_locked: true
     hidden: true
+  note_value:
+    label: 'Note value'
+    property_path: note_value
+    type: string
   place_of_publication_code:
     label: 'Place of Publication (Code)'
     datasource_id: 'entity:node'
@@ -696,6 +700,7 @@ processor_settings:
       preprocess_query: -6
   identifier_by_type: {  }
   language_with_fallback: {  }
+  note_value: {  }
   rendered_item:
     weights:
       add_properties: 0
