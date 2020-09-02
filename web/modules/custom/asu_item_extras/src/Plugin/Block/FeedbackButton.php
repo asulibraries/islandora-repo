@@ -86,7 +86,6 @@ class FeedbackButton extends BlockBase implements ContainerFactoryPluginInterfac
     $link = Link::fromTextAndUrl(t('Feedback'), $feedback_url)->toRenderable();
     $markup = [
       '#markup' => render($link),
-      '#cache' => ['max-age' => 0],
     ];
     return $markup;
   }
