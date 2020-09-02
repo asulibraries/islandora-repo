@@ -52,15 +52,7 @@ class AboutThisCollectionBlock extends BlockBase {
     // This needs to only return items that are Published and related to the
     // collection, but there doesn't seem to be a way to have multiple AND / OR
     // conjunctions in a single query.
-    $childrenQuery = \Drupal::entityQuery('node');
-    $orGroup = $childrenQuery
-      ->orConditionGroup()
-      ->condition('field_member_of', $collection_node->id())
-      ->condition('field_additional_memberships', $collection_node->id());
-    $children_nids = $childrenQuery
-      ->condition($orGroup)
-      ->condition('status', 1)
-      ->execute();
+    $children_nids = getAllCollectionChildren($collection_node);
 
     $collection_views = $items = $max_timestamp = 0;
     $nodes = $islandora_models = $stat_boxes = [];
@@ -83,14 +75,14 @@ class AboutThisCollectionBlock extends BlockBase {
         $collection_views += $node_views;
       }
     }
-    $stat_boxes[] = $this->makeBox($files . "<br>files");
-    $stat_boxes[] = $this->makeBox(count($islandora_models));
-    $stat_boxes[] = $this->makeBox($items . "<br>items");
-    $stat_boxes[] = $this->makeBox($collection_views . "<br>usage");
-    $stat_boxes[] = $this->makeBox((($collection_created) ? date('Y', $collection_created): 'unknown') .
-      "<br>collection created");
-    $stat_boxes[] = $this->makeBox((($max_timestamp) ? date('M d, Y', $max_timestamp): 'unknown') .
-      "<br>last updates");
+    $stat_boxes[] = $this->makeBox("<strong>" . $files . "</strong><br>files");
+    $stat_boxes[] = $this->makeBox("<strong>" . count($islandora_models) . "</strong><br>resource types");
+    $stat_boxes[] = $this->makeBox("<strong>" . $items . "</strong><br>items");
+    $stat_boxes[] = $this->makeBox("<strong>" . $collection_views . "</strong><br>usage");
+    $stat_boxes[] = $this->makeBox("<strong>" . (($collection_created) ? date('Y', $collection_created): 'unknown') .
+      "</strong><br>collection created");
+    $stat_boxes[] = $this->makeBox("<strong>" . (($max_timestamp) ? date('M d, Y', $max_timestamp): 'unknown') .
+      "</strong><br>last updates");
     return [
       '#cache' => ['max-age' => 0],
       '#markup' =>
