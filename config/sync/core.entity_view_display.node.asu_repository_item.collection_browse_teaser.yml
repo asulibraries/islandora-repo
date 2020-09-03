@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.node.open_seadragon
+    - core.entity_view_mode.node.collection_browse_teaser
     - field.field.node.asu_repository_item.field_additional_memberships
     - field.field.node.asu_repository_item.field_coordinates
     - field.field.node.asu_repository_item.field_copyright_date
@@ -49,24 +49,57 @@ dependencies:
     - field.field.node.asu_repository_item.field_weight
     - node.type.asu_repository_item
   module:
+    - entity_reference_revisions
+    - field_group
     - user
-id: node.asu_repository_item.open_seadragon
+third_party_settings:
+  field_group:
+    group_sidebar:
+      children: {  }
+      parent_name: ''
+      weight: 62
+      format_type: details_sidebar
+      region: hidden
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+        open: false
+        weight: 0
+        required_fields: false
+      label: Sidebar
+    group_details:
+      children: {  }
+      parent_name: ''
+      weight: 63
+      format_type: details
+      region: hidden
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+        open: false
+        required_fields: false
+      label: Details
+id: node.asu_repository_item.collection_browse_teaser
 targetEntityType: node
 bundle: asu_repository_item
-mode: open_seadragon
+mode: collection_browse_teaser
 content:
-  field_description:
-    weight: 1
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: basic_string
-    region: content
-  openseadragon_media_evas_entity_view_1:
+  display_media_thumbnail:
     weight: 0
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_title:
+    type: entity_reference_revisions_entity_view
+    weight: 1
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
 hidden:
   content_moderation_control: true
   display_media_entity_view_1: true
@@ -74,7 +107,6 @@ hidden:
   display_media_entity_view_3: true
   display_media_entity_view_4: true
   display_media_service_file: true
-  display_media_thumbnail: true
   field_additional_memberships: true
   field_coordinates: true
   field_copyright_date: true
@@ -82,6 +114,7 @@ hidden:
   field_date_digitized: true
   field_default_derivative_file_pe: true
   field_default_original_file_perm: true
+  field_description: true
   field_display_hints: true
   field_edition: true
   field_edtf_date_created: true
@@ -115,13 +148,13 @@ hidden:
   field_subjects_name: true
   field_table_of_contents: true
   field_temporal_subject: true
-  field_title: true
   field_title_subject: true
   field_typed_identifier: true
   field_weight: true
   islandora_fits_checksum: true
   langcode: true
   links: true
+  openseadragon_media_evas_entity_view_1: true
   openseadragon_media_evas_entity_view_2: true
   openseadragon_media_evas_service_file: true
   pdfjs_media_evas_entity_view_1: true
