@@ -1,5 +1,5 @@
 langcode: en
-status: false
+status: true
 dependencies:
   config:
     - views.view.solr_search_content
@@ -10,19 +10,24 @@ dependencies:
     - views
   theme:
     - asulib_barrio
-id: exposedformsolr_search_contentpage_2
+id: exposedformsolr_search_contentpage_3
 theme: asulib_barrio
 region: sidebar_first
-weight: -16
+weight: -8
 provider: null
-plugin: 'views_exposed_filter_block:solr_search_content-page_2'
+plugin: 'views_exposed_filter_block:solr_search_content-page_3'
 settings:
-  id: 'views_exposed_filter_block:solr_search_content-page_2'
+  id: 'views_exposed_filter_block:solr_search_content-page_3'
   label: ''
   provider: views
   label_display: visible
-  views_label: ''
+  views_label: 'Explore this collection'
 visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    pages: ''
+    negate: null
+    context_mapping: {  }
   node_type:
     id: node_type
     bundles:
@@ -30,11 +35,6 @@ visibility:
     negate: false
     context_mapping:
       node: '@node.node_route_context:node'
-  request_path_exclusion:
-    id: request_path_exclusion
-    pages: ''
-    negate: null
-    context_mapping: {  }
   request_path:
     id: request_path
     pages: /node/add/collection
