@@ -1,0 +1,32 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - context
+    - node
+  theme:
+    - asulib_barrio
+id: citethiscollection
+theme: asulib_barrio
+region: sidebar_first
+weight: -6
+provider: null
+plugin: asu_collection_citations
+settings:
+  id: asu_collection_citations
+  label: 'Cite this collection'
+  provider: asu_collection_extras
+  label_display: visible
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    pages: ''
+    negate: null
+    context_mapping: {  }
+  node_type:
+    id: node_type
+    bundles:
+      collection: collection
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'

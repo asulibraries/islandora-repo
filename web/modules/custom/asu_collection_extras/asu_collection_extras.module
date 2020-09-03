@@ -1,0 +1,25 @@
+<?php
+
+/**
+ * getAllCollectionChildren and is used by the blocks in this module to get all
+ * of the child nodes so that the same code does't need to be duplicated.
+ */
+function getAllCollectionChildren($collection_node, $sort_by_date = false, $limit = 0) {
+  $childrenQuery = \Drupal::entityQuery('node');
+  $orGroup = $childrenQuery
+    ->orConditionGroup()
+    ->condition('field_member_of', $collection_node->id())
+    ->condition('field_additional_memberships', $collection_node->id());
+  $childrenQuery
+    ->condition($orGroup)
+    ->condition('status', 1);
+  if ($sort_by_date) {
+    $childrenQuery
+      ->sort('revision_timestamp' , 'DESC');
+  }
+  if ($limit) {
+    $childrenQuery
+      ->range(0, $limit);
+  }
+  return $childrenQuery->execute();
+}
