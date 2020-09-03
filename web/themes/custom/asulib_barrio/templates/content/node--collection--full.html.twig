@@ -99,8 +99,10 @@
             <div>{{ content.field_rich_description }}</div>
             <div>{{ content.field_collaborating_institutions }}</div>
         </div>
-        {{ drupal_entity('block', 'aboutthiscollection', check_access=false) }}
-        {{ drupal_entity('block', 'latestadditionstocollection', check_access=false) }}
+            {{ drupal_block('about_this_collection_block') }}
+            {{ drupal_block('latest_additions_to_collection_block') }}
+
+        <br/>
         <div id="citecollection" class="citecollection">
             <h2>{{ 'Cite this collection'|t }}</h2>
             {{ content.field_preferred_citation }}
