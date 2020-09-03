@@ -4,6 +4,7 @@ dependencies:
   config:
     - field.field.user.user.field_opt_out_of_content_changed
     - field.field.user.user.field_orcid_id
+    - field.field.user.user.field_terms_accepted
     - field.field.user.user.user_picture
     - image.style.thumbnail
   module:
@@ -16,6 +17,16 @@ mode: default
 content:
   field_opt_out_of_content_changed:
     weight: 6
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    type: boolean
+    region: content
+  field_terms_accepted:
+    weight: 7
     label: above
     settings:
       format: default

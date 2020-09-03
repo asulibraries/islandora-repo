@@ -10,20 +10,48 @@ dependencies:
     - search_api
     - asu_search
   config:
+    - field.storage.node.field_additional_memberships
     - field.storage.node.field_member_of
+    - field.storage.node.field_copyright_date
+    - field.storage.node.field_copyright_statement
     - field.storage.node.field_linked_agent
     - field.storage.node.field_edtf_date
     - field.storage.node.field_edtf_date_created
     - field.storage.node.field_edtf_date_issued
     - field.storage.node.field_description
-    - field.storage.node.field_identifier
+    - field.storage.node.field_display_hints
+    - field.storage.node.field_edition
+    - field.storage.node.field_embargo_release_date
+    - field.storage.node.field_extent
+    - field.storage.node.field_frequency
+    - field.storage.node.field_genre
+    - field.storage.node.field_geographic_subject
+    - field.storage.node.field_handle
+    - field.storage.node.field_typed_identifier
+    - field.storage.paragraph.field_identifier_value
+    - field.storage.node.field_issuance
     - field.storage.node.field_language
+    - field.storage.node.field_pid
     - field.storage.node.field_local_identifier
+    - field.storage.node.field_model
+    - field.storage.node.field_subjects_name
     - field.storage.node.field_note
+    - field.storage.node.field_open_access
+    - field.storage.node.field_peer_reviewed
+    - field.storage.node.field_place_of_publication_code
+    - field.storage.node.field_place_published
+    - field.storage.node.field_preferred_citation
+    - field.storage.node.field_resource_type
+    - field.storage.node.field_reuse_permissions
+    - field.storage.node.field_series
+    - field.storage.node.field_statement_responsibility
     - field.storage.node.field_table_of_contents
     - field.storage.node.field_tags
+    - field.storage.node.field_temporal_subject
     - field.storage.node.field_title
     - field.storage.paragraph.field_main_title
+    - field.storage.node.field_title_subject
+    - field.storage.node.field_subject
     - field.storage.taxonomy_term.field_geo_alt_name
     - field.storage.taxonomy_term.field_corp_alt_name
     - field.storage.taxonomy_term.field_cat_date_end
@@ -102,9 +130,17 @@ field_settings:
     label: 'Thesis Advisors (Agent by Role)'
     property_path: asu_agent_ths
     type: string
+  asu_doi:
+    label: 'DOI Identifier'
+    property_path: asu_doi
+    type: string
   asu_isbn:
     label: 'ISBN Identifier'
     property_path: asu_isbn
+    type: string
+  asu_issn:
+    label: 'ISSN Identifier'
+    property_path: asu_issn
     type: string
   asu_local:
     label: 'Local Identifier'
@@ -127,6 +163,11 @@ field_settings:
     dependencies:
       module:
         - node
+  complex_title:
+    label: 'Complex Title'
+    property_path: complex_title
+    type: text
+    boost: !!float 5
   created:
     label: 'Authored on'
     datasource_id: 'entity:node'
@@ -143,6 +184,14 @@ field_settings:
     dependencies:
       module:
         - taxonomy
+  field_additional_memberships:
+    label: 'Additional Memberships'
+    datasource_id: 'entity:node'
+    property_path: field_additional_memberships
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_additional_memberships
   field_ancestors:
     label: Ancestors
     datasource_id: 'entity:node'
@@ -176,6 +225,22 @@ field_settings:
       fields:
         - 'entity:node/field_additional_memberships'
         - 'entity:node/field_member_of'
+  field_copyright_date:
+    label: 'Copyright Date'
+    datasource_id: 'entity:node'
+    property_path: field_copyright_date
+    type: date
+    dependencies:
+      config:
+        - field.storage.node.field_copyright_date
+  field_copyright_statement:
+    label: 'Copyright Statement'
+    datasource_id: 'entity:node'
+    property_path: field_copyright_statement
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_copyright_statement
   field_corp_alt_name:
     label: 'Corporate Body Alternate Name'
     datasource_id: 'entity:taxonomy_term'
@@ -188,15 +253,31 @@ field_settings:
     label: Description
     datasource_id: 'entity:node'
     property_path: field_description
-    type: text
+    type: string
     dependencies:
       config:
         - field.storage.node.field_description
+  field_display_hints:
+    label: 'Display hints'
+    datasource_id: 'entity:node'
+    property_path: field_display_hints
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_display_hints
   field_edited_text:
     label: 'Edited Text'
     datasource_id: 'entity:node'
     property_path: 'search_api_reverse_entity_references_media__field_media_of:field_edited_text'
     type: text
+  field_edition:
+    label: Edition
+    datasource_id: 'entity:node'
+    property_path: field_edition
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_edition
   field_edtf_date:
     label: Date
     datasource_id: 'entity:node'
@@ -221,6 +302,35 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_edtf_date_issued
+  field_embargo_release_date:
+    label: 'Embargo Release Date'
+    datasource_id: 'entity:node'
+    property_path: field_embargo_release_date
+    type: date
+    dependencies:
+      config:
+        - field.storage.node.field_embargo_release_date
+  field_extent:
+    label: Extent
+    datasource_id: 'entity:node'
+    property_path: field_extent
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_extent
+  field_file_size:
+    label: 'File Size'
+    datasource_id: 'entity:node'
+    property_path: 'search_api_reverse_entity_references_media__field_media_of:field_file_size'
+    type: integer
+  field_frequency:
+    label: Frequency
+    datasource_id: 'entity:node'
+    property_path: field_frequency
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_frequency
   field_geo_alt_name:
     label: 'Alternate Name'
     datasource_id: 'entity:taxonomy_term'
@@ -229,14 +339,41 @@ field_settings:
     dependencies:
       config:
         - field.storage.taxonomy_term.field_geo_alt_name
-  field_identifier:
-    label: Identifier
+  field_geographic_subject:
+    label: 'Geographic Subject'
     datasource_id: 'entity:node'
-    property_path: field_identifier
+    property_path: field_geographic_subject
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_geographic_subject
+  field_handle:
+    label: Handle
+    datasource_id: 'entity:node'
+    property_path: field_handle
     type: string
     dependencies:
       config:
-        - field.storage.node.field_identifier
+        - field.storage.node.field_handle
+  field_identifier_value:
+    label: 'Identifier Value'
+    datasource_id: 'entity:node'
+    property_path: 'field_typed_identifier:entity:field_identifier_value'
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_typed_identifier
+        - field.storage.paragraph.field_identifier_value
+      module:
+        - paragraphs
+  field_issuance:
+    label: Issuance
+    datasource_id: 'entity:node'
+    property_path: field_issuance
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_issuance
   field_language_description_1:
     label: 'Language » Taxonomy term » Description'
     datasource_id: 'entity:node'
@@ -284,14 +421,99 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_member_of
+  field_mime_type:
+    label: 'Mime Type'
+    datasource_id: 'entity:node'
+    property_path: 'search_api_reverse_entity_references_media__field_media_of:field_mime_type'
+    type: string
+  field_model:
+    label: Model
+    datasource_id: 'entity:node'
+    property_path: field_model
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_model
   field_note:
     label: Note
     datasource_id: 'entity:node'
     property_path: field_note
-    type: text
+    type: string
     dependencies:
       config:
         - field.storage.node.field_note
+  field_open_access:
+    label: 'Open Access'
+    datasource_id: 'entity:node'
+    property_path: field_open_access
+    type: boolean
+    dependencies:
+      config:
+        - field.storage.node.field_open_access
+  field_peer_reviewed:
+    label: Peer-reviewed
+    datasource_id: 'entity:node'
+    property_path: field_peer_reviewed
+    type: boolean
+    dependencies:
+      config:
+        - field.storage.node.field_peer_reviewed
+  field_pid:
+    label: 'Legacy Identifier'
+    datasource_id: 'entity:node'
+    property_path: field_pid
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_pid
+  field_place_published:
+    label: 'Place of Publication (Text)'
+    datasource_id: 'entity:node'
+    property_path: field_place_published
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_place_published
+  field_preferred_citation:
+    label: 'Preferred Citation'
+    datasource_id: 'entity:node'
+    property_path: field_preferred_citation
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_preferred_citation
+  field_reuse_permissions:
+    label: 'Reuse Permissions'
+    datasource_id: 'entity:node'
+    property_path: field_reuse_permissions
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_reuse_permissions
+  field_series:
+    label: Series
+    datasource_id: 'entity:node'
+    property_path: field_series
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_series
+  field_statement_responsibility:
+    label: 'Statement of Responsibility'
+    datasource_id: 'entity:node'
+    property_path: field_statement_responsibility
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_statement_responsibility
+  field_subjects_name:
+    label: 'Name Subject'
+    datasource_id: 'entity:node'
+    property_path: field_subjects_name
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_subjects_name
   field_table_of_contents:
     label: 'Table of Contents'
     datasource_id: 'entity:node'
@@ -308,6 +530,40 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_tags
+  field_temporal_subject:
+    label: 'Temporal Subject'
+    datasource_id: 'entity:node'
+    property_path: field_temporal_subject
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_temporal_subject
+  field_title_subject:
+    label: 'Title Subject'
+    datasource_id: 'entity:node'
+    property_path: field_title_subject
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_title_subject
+  field_topical_subject:
+    label: 'Topical Subject'
+    datasource_id: 'entity:node'
+    property_path: field_subject
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_subject
+  genre_name:
+    label: Genre
+    datasource_id: 'entity:node'
+    property_path: 'field_genre:entity:name'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_genre
+      module:
+        - taxonomy
   name:
     label: Name
     datasource_id: 'entity:taxonomy_term'
@@ -317,6 +573,14 @@ field_settings:
     dependencies:
       module:
         - taxonomy
+  nid:
+    label: ID
+    datasource_id: 'entity:node'
+    property_path: nid
+    type: integer
+    dependencies:
+      module:
+        - node
   node_grants:
     label: 'Node access information'
     property_path: search_api_node_grants
@@ -324,6 +588,20 @@ field_settings:
     indexed_locked: true
     type_locked: true
     hidden: true
+  note_value:
+    label: 'Note value'
+    property_path: note_value
+    type: string
+  place_of_publication_code:
+    label: 'Place of Publication (Code)'
+    datasource_id: 'entity:node'
+    property_path: 'field_place_of_publication_code:entity:name'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_place_of_publication_code
+      module:
+        - taxonomy
   preferred_family_name:
     label: 'Person Preferred Family Name'
     datasource_id: 'entity:taxonomy_term'
@@ -348,6 +626,16 @@ field_settings:
     dependencies:
       config:
         - field.storage.taxonomy_term.field_person_preferred_name
+  resource_type_name:
+    label: 'Resource Type'
+    datasource_id: 'entity:node'
+    property_path: 'field_resource_type:entity:name'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_resource_type
+      module:
+        - taxonomy
   status:
     label: 'Publishing status'
     datasource_id: 'entity:node'
@@ -370,7 +658,7 @@ field_settings:
     label: Title
     datasource_id: 'entity:node'
     property_path: title
-    type: text
+    type: string
     boost: !!float 8
     dependencies:
       module:
@@ -420,6 +708,7 @@ processor_settings:
   aggregated_field:
     weights:
       add_properties: 20
+  complex_title: {  }
   content_access:
     weights:
       preprocess_index: -6
@@ -456,6 +745,7 @@ processor_settings:
       preprocess_query: -6
   identifier_by_type: {  }
   language_with_fallback: {  }
+  note_value: {  }
   rendered_item:
     weights:
       add_properties: 0

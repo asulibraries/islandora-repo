@@ -4,10 +4,12 @@ dependencies:
   config:
     - field.field.user.user.field_opt_out_of_content_changed
     - field.field.user.user.field_orcid_id
+    - field.field.user.user.field_terms_accepted
     - field.field.user.user.user_picture
     - image.style.thumbnail
   module:
     - image
+    - path
     - user
 id: user.user.default
 targetEntityType: user
@@ -26,6 +28,13 @@ content:
     third_party_settings: {  }
   field_opt_out_of_content_changed:
     weight: 7
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_terms_accepted:
+    weight: 31
     settings:
       display_label: true
     third_party_settings: {  }

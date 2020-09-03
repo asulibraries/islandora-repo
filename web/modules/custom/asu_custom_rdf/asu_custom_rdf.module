@@ -26,16 +26,18 @@ function asu_custom_rdf_jsonld_alter_normalized_array(EntityInterface $entity, a
     // \Drupal::logger('asu custom')->info(print_r($current_rdf_mapping, TRUE));
     foreach ($normalized['@graph'][0] as $gk => $gv) {
       // Clean up the UID.
-      $predicate = $current_rdf_mapping['uid']['properties'][0];
-      $predicate_normalized = NormalizerBase::escapePrefix($predicate, $context['namespaces']);
-      if ($gk === $predicate_normalized) {
-        foreach ($gv as $k => $id) {
-          if (array_key_exists('@value', $id) && array_key_exists('@id', $id) && (strpos($id['@id'], 'user') !== FALSE)) {
-            unset($id['@id']);
-            $gv[$k] = $id;
+      if (array_key_exists('uid', $current_rdf_mapping)) {
+        $predicate = $current_rdf_mapping['uid']['properties'][0];
+        $predicate_normalized = NormalizerBase::escapePrefix($predicate, $context['namespaces']);
+        if ($gk === $predicate_normalized) {
+          foreach ($gv as $k => $id) {
+            if (array_key_exists('@value', $id) && array_key_exists('@id', $id) && (strpos($id['@id'], 'user') !== FALSE)) {
+              unset($id['@id']);
+              $gv[$k] = $id;
+            }
           }
+          $normalized['@graph'][0][$gk] = $gv;
         }
-        $normalized['@graph'][0][$gk] = $gv;
       }
 
       // Clean up empty boolean values.
@@ -95,7 +97,11 @@ function asu_custom_rdf_jsonld_alter_normalized_array(EntityInterface $entity, a
           $args = $callback['arguments'];
           // Get field value from $args['value_field'].
           foreach ($entity->get($kmap)->referencedEntities() as $paragraph) {
-            $value = $paragraph->get($args['value_field'])->getValue()[0]['value'];
+            $value = $paragraph->get($args['value_field'])->getValue();
+            if (in_array(0, $value)) {
+              $value = $value[0]['value'];
+            }
+
             // Get the type from the $args['type_field'].
             if (array_key_exists('type_taxonomy_field', $args)) {
               $taxo_entities = $paragraph->get($args['type_field'])->referencedEntities();

@@ -4,3 +4,27 @@
  * @file
  * Provides an deposit agreement functionality.
  */
+
+use Drupal\Core\Url;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\user\Entity\User;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+
+/**
+ * Implements hook_form_alter().
+ */
+function deposit_agreement_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  if ($form_id == 'node_asu_repository_item_form' || $form_id == 'node_collection_form' || $form_id == 'node_asu_repository_item_edit_form' || $form_id == 'node_collection_edit_form') {
+    $user = User::load(\Drupal::currentUser()->id());
+    if ($user->hasField('field_terms_accepted') && ($user->get('field_terms_accepted')->isEmpty() || $user->get('field_terms_accepted')->value == 0)) {
+      $id = 'depositor_agreement';
+      $current_url = \Drupal::request()->getRequestUri();
+      $options = ['next' => $current_url];
+      $your_custom_path = Url::fromRoute('entity.webform.canonical', ['webform' => $id], $options);
+      $your_custom_path->setOption('query', $options);
+      $response = new RedirectResponse($your_custom_path->toString());
+      $response->send();
+      return;
+    }
+  }
+}

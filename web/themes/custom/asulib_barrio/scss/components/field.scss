@@ -117,3 +117,17 @@ img.copyright-logo {
     max-width: 100px;
     padding: 3px;
 }
+
+
+.node--view-mode-search-result {
+    .field--name-field-linked-agent .field__item {
+        display:inline-block;
+        &:after {
+            content: " /";
+        }
+        &:last-of-type:after {
+            content: "";
+        }
+
+    }
+}

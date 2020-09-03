@@ -11,7 +11,7 @@ id: feedback
 title: Feedback
 description: 'Feedback form related to a particular item'
 category: ''
-elements: "item:\n  '#type': webform_entity_select\n  '#title': Item\n  '#disabled': true\n  '#required': true\n  '#target_type': node\n  '#selection_handler': 'default:node'\n  '#selection_settings':\n    target_bundles:\n      asu_repository_item: asu_repository_item\n      collection: collection\nemail:\n  '#type': email\n  '#title': 'Your Email'\n  '#required': true\n  '#default_value': '[current-user:mail]'\nyour_name:\n  '#type': textfield\n  '#title': 'Your name'\n  '#required': true\n  '#default_value': '[current-user:display-name]'\nfeedback_category:\n  '#type': select\n  '#title': 'Feedback Category'\n  '#options':\n    'Contributing Content': 'Contributing Content'\n    'Intellectual Property and Rights': 'Intellectual Property and Rights'\n    Corrections: Corrections\n    'Problem Report': 'Problem Report'\n    General: General\n    'Caption Request': 'Caption Request'\nmessage:\n  '#type': textarea\n  '#title': Message"
+elements: "collection:\n  '#type': webform_entity_select\n  '#title': Collection\n  '#disabled': true\n  '#target_type': node\n  '#selection_handler': 'default:node'\n  '#selection_settings':\n    target_bundles:\n      collection: collection\nitem:\n  '#type': webform_entity_select\n  '#title': Item\n  '#disabled': true\n  '#required': true\n  '#target_type': node\n  '#selection_handler': 'default:node'\n  '#selection_settings':\n    target_bundles:\n      asu_repository_item: asu_repository_item\n      collection: collection\nemail:\n  '#type': email\n  '#title': 'Your Email'\n  '#required': true\n  '#default_value': '[current-user:mail]'\nyour_name:\n  '#type': textfield\n  '#title': 'Your name'\n  '#required': true\n  '#default_value': '[current-user:display-name]'\nfeedback_category:\n  '#type': select\n  '#title': 'Feedback Category'\n  '#options':\n    'Contributing Content': 'Contributing Content'\n    'Intellectual Property and Rights': 'Intellectual Property and Rights'\n    Corrections: Corrections\n    'Problem Report': 'Problem Report'\n    General: General\n    'Caption Request': 'Caption Request'\nmessage:\n  '#type': textarea\n  '#title': Message"
 css: ''
 javascript: ''
 settings:
@@ -98,9 +98,9 @@ settings:
   draft_loaded_message: ''
   draft_pending_single_message: ''
   draft_pending_multiple_message: ''
-  confirmation_type: page
+  confirmation_type: message
   confirmation_title: ''
-  confirmation_message: ''
+  confirmation_message: 'Your feedback has been submitted.'
   confirmation_url: ''
   confirmation_attributes: {  }
   confirmation_back: true
@@ -127,6 +127,19 @@ settings:
   results_disabled_ignore: false
   token_view: false
   token_update: false
+  page_theme_name: ''
+  share: false
+  share_node: false
+  share_theme_name: ''
+  share_title: true
+  share_page_body_attributes: {  }
+  wizard_auto_forward: true
+  wizard_prev_button_label: ''
+  wizard_next_button_label: ''
+  wizard_toggle: false
+  wizard_toggle_show_label: ''
+  wizard_toggle_hide_label: ''
+  results_customize: false
 access:
   create:
     roles:
