@@ -31,11 +31,6 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  display_media_service_file:
-    weight: 0
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   field_collaborating_institutions:
     weight: 7
     label: above
@@ -46,8 +41,8 @@ content:
     region: content
   field_collection_thumbnail:
     type: media_thumbnail
-    weight: 107
-    label: above
+    weight: -2
+    label: hidden
     settings:
       image_style: large
       image_link: ''
@@ -127,7 +122,7 @@ content:
     type: basic_string
     region: content
   field_rich_description:
-    weight: 105
+    weight: -1
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -151,6 +146,7 @@ content:
 hidden:
   display_media_entity_view_1: true
   display_media_entity_view_2: true
+  display_media_service_file: true
   display_media_thumbnail: true
   field_model: true
   field_title: true
