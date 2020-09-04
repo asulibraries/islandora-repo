@@ -1,24 +1,27 @@
 langcode: en
 status: true
 dependencies:
+  config:
+    - views.view.content_recent
   module:
+    - asu_permissions
     - context
-    - system
+    - views
   theme:
-    - asulib_barrio
-id: asulib_local_tasks
-theme: asulib_barrio
+    - bartik
+id: views_block__content_recent_block_1_2
+theme: bartik
 region: content
-weight: -17
+weight: 0
 provider: null
-plugin: local_tasks_block
+plugin: 'views_block:content_recent-block_1'
 settings:
-  id: local_tasks_block
-  label: Tabs
-  provider: core
-  label_display: '0'
-  primary: true
-  secondary: true
+  id: 'views_block:content_recent-block_1'
+  label: ''
+  provider: views
+  label_display: visible
+  views_label: ''
+  items_per_page: none
 visibility:
   request_path_exclusion:
     id: request_path_exclusion
@@ -29,9 +32,4 @@ visibility:
     id: view_inclusion
     negate: null
     view_inclusion: {  }
-    context_mapping: {  }
-  request_path:
-    id: request_path
-    pages: '<front>'
-    negate: true
     context_mapping: {  }

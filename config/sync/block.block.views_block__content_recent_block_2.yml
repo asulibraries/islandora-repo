@@ -1,24 +1,27 @@
 langcode: en
 status: true
 dependencies:
+  config:
+    - views.view.content_recent
   module:
     - context
     - system
+    - views
   theme:
     - asulib_barrio
-id: asulib_local_tasks
+id: views_block__content_recent_block_2
 theme: asulib_barrio
 region: content
-weight: -17
+weight: -13
 provider: null
-plugin: local_tasks_block
+plugin: 'views_block:content_recent-block_2'
 settings:
-  id: local_tasks_block
-  label: Tabs
-  provider: core
-  label_display: '0'
-  primary: true
-  secondary: true
+  id: 'views_block:content_recent-block_2'
+  label: 'Recent Items'
+  provider: views
+  label_display: visible
+  views_label: 'Recent Items'
+  items_per_page: none
 visibility:
   request_path_exclusion:
     id: request_path_exclusion
@@ -32,6 +35,6 @@ visibility:
     context_mapping: {  }
   request_path:
     id: request_path
-    pages: '<front>'
-    negate: true
+    pages: "<front>\r\n/home\r\n/"
+    negate: false
     context_mapping: {  }
