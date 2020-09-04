@@ -21,9 +21,8 @@
   <ul class="rrssb-buttons">
     {% for button in buttons %}
       <li class="rrssb-{{ button.name }}">
-        <a href="{{ button.link }}" {{ button.class | raw }}>
-          <span class="{{ class_2_fa[button.name]['fa-class'] }} fa-lg"></span>
-          <span class="rrssb-text">{{ button.text }}</span>
+        <a href="{{ button.link }}" {{ button.class | raw }} aria-label="{{ button.text }}">
+          <i aria-hidden="true" class="{{ class_2_fa[button.name]['fa-class'] }} fa-3x"></i>
         </a>
       </li>
     {% endfor %}
