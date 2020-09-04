@@ -4,7 +4,6 @@ namespace Drupal\asu_collection_extras\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\media\Entity\Media;
-
 // ### The next two classes will be needed if using Drupal routes to make links.
 //use Drupal\Core\Url;
 //use Drupal\Core\Link;
@@ -57,7 +56,6 @@ class AboutThisCollectionBlock extends BlockBase {
 
     $collection_views = $items = $max_timestamp = 0;
     $nodes = $islandora_models = $stat_boxes = [];
-    $files = 0;
     $original_file_tid = key(\Drupal::entityTypeManager()
       ->getStorage('taxonomy_term')
       ->loadByProperties(['name' => "Original File"]));
@@ -69,18 +67,7 @@ class AboutThisCollectionBlock extends BlockBase {
         // For "# file (Titles)", get media - extract the and count the original files.
         $files += $this->getOriginalFileCount($child_nid, $original_file_tid);
         $node = \Drupal::entityTypeManager()->getStorage('node')->load($child_nid);
-        if (!$node->get('field_resource_type')->isEmpty()){
-          $res_types = $node->get('field_resource_type')->referencedEntities();
-          foreach ($res_types as $tp) {
-            $nm = $tp->getName();
-            if (array_key_exists($nm, $islandora_models)){
-              $islandora_models[$nm]++;
-            }
-            else {
-              $islandora_models[$nm] = 1;
-            }
-          }
-        }
+        $islandora_models[$node->get('field_resource_type')->getString()]++;
         $this_revisiontimestamp = $node->get('revision_timestamp')->getString();
         $max_timestamp = ($this_revisiontimestamp > $max_timestamp) ?
           $this_revisiontimestamp : $max_timestamp;
@@ -106,7 +93,7 @@ class AboutThisCollectionBlock extends BlockBase {
       'lib' => [
         '#attached' => [
           'library' => [
-            'asu_collection_extras/interact',
+            'asu_collection_extras/style',
           ],
         ],
       ]
@@ -131,7 +118,7 @@ class AboutThisCollectionBlock extends BlockBase {
   }
 
   public function nothing($x) {
-
+    
   }
 
 }

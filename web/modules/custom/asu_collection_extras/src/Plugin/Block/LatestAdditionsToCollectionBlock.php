@@ -32,6 +32,13 @@ class LatestAdditionsToCollectionBlock extends BlockBase {
         ((count($children_nids) > 0) ?
         $rendered_nodes:
         ""),
+      'lib' => [
+        '#attached' => [
+          'library' => [
+            'asu_collection_extras/style',
+          ],
+        ],
+      ]
     ];
     return $return;
   }
@@ -45,7 +52,8 @@ class LatestAdditionsToCollectionBlock extends BlockBase {
       $build = $view_builder->view($node, 'collection_browse_teaser');
       $output[] = render($build);
     }
-    return implode("", $output) . '<br class="clearfloat">';
+    return '<div class="latestitem_box">' .
+      implode('</div><div class="latestitem_box">', $output) . '</div><br class="clearfloat">';
   }
 
 }
