@@ -59,19 +59,35 @@ fieldMappings:
     properties:
       - 'dcterms:type'
       - 'mods:genre'
+    datatype_callback:
+      callable: 'Drupal\jsonld\EntityReferenceConverter::linkFieldPassthrough'
+      arguments:
+        link_field: 'field_external_authority_link'
   field_genre:
     properties:
       - 'dcterms:type'
       - 'mods:genre'
+    datatype_callback:
+      callable: 'Drupal\jsonld\EntityReferenceConverter::linkFieldPassthrough'
+      arguments:
+        link_field: 'field_authority_link'
   field_statement_responsibility:
     properties:
       - 'mods:statementOfResponsibility'
   field_copyright_statement:
     properties:
       - 'dcterms:rights'
+    datatype_callback:
+      callable: 'Drupal\jsonld\EntityReferenceConverter::linkFieldPassthrough'
+      arguments:
+        link_field: 'field_source'
   field_reuse_permissions:
     properties:
       - 'dcterms:license'
+    datatype_callback:
+      callable: 'Drupal\jsonld\EntityReferenceConverter::linkFieldPassthrough'
+      arguments:
+        link_field: 'field_source'
   field_description:
     properties:
       - 'dcterms:description'
@@ -196,7 +212,7 @@ fieldMappings:
       callable: 'Drupal\asu_custom_rdf\ParagraphMapping::titlepartmerge'
       arguments:
         nonsort: field_nonsort
-        main: field_main_title
+        main: field_rest_of_title
         subtitle: field_subtitle
   field_typed_identifier:
     properties:
@@ -210,3 +226,4 @@ fieldMappings:
         type_taxonomy_field: field_identifier_predicate
         value_field: field_identifier_value
         predicate: identifiers
+
