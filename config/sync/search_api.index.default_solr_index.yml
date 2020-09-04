@@ -184,6 +184,10 @@ field_settings:
     dependencies:
       module:
         - taxonomy
+  etdf_created_year_only:
+    label: 'Date Created'
+    property_path: etdf_created_year_only
+    type: integer
   field_additional_memberships:
     label: 'Additional Memberships'
     datasource_id: 'entity:node'
@@ -713,6 +717,7 @@ processor_settings:
     weights:
       preprocess_index: -6
       preprocess_query: -4
+  etdf_created_year_only: {  }
   hierarchy:
     fields:
       field_ancestors: node-field_member_of
