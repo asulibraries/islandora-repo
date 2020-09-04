@@ -97,38 +97,35 @@
   <div{{ content_attributes.addClass('node__content', 'clearfix', 'container') }}>
     <div class="row">
       <div class="col file-container">
-        {{ content.pdfjs_media_evas_entity_view_1 }}
+        {#{{ content.pdfjs_media_evas_entity_view_1 }}#}
+        {{ drupal_view('display_media', 'thumbnail', node.id) }}
       </div>
       <div class="col info-container">
         <div>{{ content.field_description }}</div>
         <div>{{ content.field_copyright_statement }}</div>
         <div>{{ content.field_reuse_permissions }}</div>
         <div class="download-options">{{ content.display_media_entity_view_3 }}</div>
-        <div class="download-info">Download count: {{ drupal_entity('block', 'itemdownloadscount', check_access=false) }}</div>
+        <div class="download-info">Download count: {{ drupal_block('asu_item_downloads') }}</div>
       </div>
     </div>
     <div id="details" class="details">
       <h2>{{ 'Details'|t }}</h2>
-            <div>{{ content.field_peer_reviewed }}</div>
-            <div>{{ content.field_open_access }}</div>
-            <div>{{ content.field_linked_agent }}</div>
-            <div>{{ content.field_date_created }}</div>
-            {# TODO combine all subjects here #}
-            <div>{{ content.field_resource_type }}</div>
-            <div>{{ content.field_primary_membership }}</div>
-            <div>{{ content.field_additional_memberships }}</div>
-            {# TODO collobrating institutations from collection #}
-            <br/>
-            <div><p><strong><a class="icon-link" href="{{ node.id }}/full-metadata"><i class="fa fa-lg
+      <div>{{ content.field_resource_type }}</div>
+      <div><p><strong><a class="icon-link" href="{{ node.id }}/full-metadata"><i class="fa fa-lg
             fa-list-ul"></i></a><a href="{{ node.id }}/full-metadata">{{ 'View full metadata'|t }}</a></strong></p></div>
     </div>
     <div id="interact" class="interact">
       <h2>{{ 'Interact with this item'|t }}</h2>
-      <div class="citation">
-        Citation block(?) here
-      </div>
-      <div class="social-icons">
-        Social block here
+      <p>Start reading link and pages(?)</p>
+      <div class="row">
+        <div class="col citation">
+          <h3>{{ 'Citation, rights and reuse'|t }}</h3>
+          {{ drupal_view('citations_rights_reuse', 'citation_block', node.id) }}
+        </div>
+        <div class="col social-icons">
+          <h3>{{ 'Print and share'|t }}</h3>
+          {{ drupal_block('rrssb_block', { button_set: 'default' }, wrapper=false) }}
+        </div>
       </div>
       <div class="iiif">
         <h3>{{ 'International Image Interoperability Framework' |t }}</h3>
