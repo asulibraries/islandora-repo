@@ -4,10 +4,7 @@ services:
     arguments: ['repo_bento_search']
   repo_bento_search.legacy_repo:
     class: Drupal\repo_bento_search\LegacyRepoApiService
-    arguments: ['@http_client', '@config.factory']
-  logger.channel.repo_bento_search:
-    parent: logger.channel_base
-    arguments: ['repo_bento_search']
+    arguments: ['@http_client', '@config.factory', '@logger.channel.repo_bento_search']
   repo_bento_search.dataverse:
     class: Drupal\repo_bento_search\DataverseApiService
-    arguments: ['@http_client', '@config.factory']
+    arguments: ['@http_client', '@config.factory', '@logger.channel.repo_bento_search']

@@ -7,6 +7,9 @@ namespace Drupal\repo_bento_search;
  */
 interface BentoApiInterface {
 
-    public function getSearchResults(string $term, int $limit = 10);
+  /**
+   * Get the Search Results from the API source.
+   */
+  public function getSearchResults(string $term, int $limit = 10);
 
 }
