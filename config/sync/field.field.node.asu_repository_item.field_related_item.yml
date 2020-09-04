@@ -17,14 +17,8 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: 'default:node'
-  handler_settings:
-    target_bundles:
-      asu_repository_item: asu_repository_item
-    sort:
-      field: _none
-    auto_create: 0
-    auto_create_bundle: ''
+  handler: 'default:taxonomy_term'
+  handler_settings: {  }
   rel_types:
     'mods:relatedPreceding': precededBy
     'mods:relatedSucceeding': succeededBy
