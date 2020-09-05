@@ -4,7 +4,6 @@ dependencies:
   config:
     - core.entity_view_mode.node.full_metadata
     - field.field.node.asu_repository_item.field_additional_memberships
-    - field.field.node.asu_repository_item.field_collaborating_institutions
     - field.field.node.asu_repository_item.field_coordinates
     - field.field.node.asu_repository_item.field_copyright_date
     - field.field.node.asu_repository_item.field_copyright_statement
@@ -66,14 +65,6 @@ content:
   field_additional_memberships:
     type: entity_reference_label
     weight: 8
-    region: content
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-  field_collaborating_institutions:
-    type: entity_reference_label
-    weight: 16
     region: content
     label: above
     settings:

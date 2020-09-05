@@ -117,7 +117,8 @@
             <div>{{ content.field_resource_type }}</div>
             <div>{{ content.field_primary_membership }}</div>
             <div>{{ content.field_additional_memberships }}</div>
-            {# TODO collobrating institutations from collection #}
+            {{ drupal_view('collaborating_institutions', 'block_1', node.id) }}
+
             <br/>
             <div><p><strong><a class="icon-link" href="{{ node.id }}/full-metadata"><i class="fa fa-lg
             fa-list-ul"></i></a><a href="{{ node.id }}/full-metadata">{{ 'View full metadata'|t }}</a></strong></p></div>
