@@ -2,14 +2,14 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.node.field_collaborating_institutions
+    - field.storage.taxonomy_term.field_local_item
     - node.type.asu_repository_item
-    - node.type.institution
-id: node.asu_repository_item.field_collaborating_institutions
-field_name: field_collaborating_institutions
-entity_type: node
-bundle: asu_repository_item
-label: 'Collaborating Institutions'
+    - taxonomy.vocabulary.related_items
+id: taxonomy_term.related_items.field_local_item
+field_name: field_local_item
+entity_type: taxonomy_term
+bundle: related_items
+label: 'Local Item'
 description: ''
 required: false
 translatable: false
@@ -19,7 +19,7 @@ settings:
   handler: 'default:node'
   handler_settings:
     target_bundles:
-      institution: institution
+      asu_repository_item: asu_repository_item
     sort:
       field: _none
     auto_create: false
