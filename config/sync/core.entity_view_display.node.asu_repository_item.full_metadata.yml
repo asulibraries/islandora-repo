@@ -26,6 +26,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_linked_agent
     - field.field.node.asu_repository_item.field_member_of
     - field.field.node.asu_repository_item.field_model
+    - field.field.node.asu_repository_item.field_name_title_subject
     - field.field.node.asu_repository_item.field_note_para
     - field.field.node.asu_repository_item.field_open_access
     - field.field.node.asu_repository_item.field_peer_reviewed
@@ -165,7 +166,7 @@ content:
     third_party_settings: {  }
   field_geographic_subject:
     type: entity_reference_label
-    weight: 24
+    weight: 22
     region: content
     label: above
     settings:
@@ -210,6 +211,14 @@ content:
     settings:
       link: true
     third_party_settings: {  }
+  field_name_title_subject:
+    type: entity_reference_label
+    weight: 23
+    region: content
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
   field_note_para:
     type: entity_reference_revisions_entity_view
     weight: 9
@@ -221,7 +230,7 @@ content:
     third_party_settings: {  }
   field_open_access:
     type: boolean
-    weight: 20
+    weight: 19
     region: content
     label: above
     settings:
@@ -231,7 +240,7 @@ content:
     third_party_settings: {  }
   field_peer_reviewed:
     type: boolean
-    weight: 19
+    weight: 18
     region: content
     label: above
     settings:
@@ -241,7 +250,7 @@ content:
     third_party_settings: {  }
   field_pid:
     type: string
-    weight: 18
+    weight: 17
     region: content
     label: above
     settings:
@@ -311,7 +320,7 @@ content:
     third_party_settings: {  }
   field_subject:
     type: entity_reference_label
-    weight: 23
+    weight: 20
     region: content
     label: above
     settings:
@@ -334,7 +343,7 @@ content:
     third_party_settings: {  }
   field_temporal_subject:
     type: entity_reference_label
-    weight: 22
+    weight: 24
     region: content
     label: above
     settings:
@@ -358,7 +367,7 @@ content:
     third_party_settings: {  }
   field_typed_identifier:
     type: entity_reference_revisions_entity_view
-    weight: 17
+    weight: 16
     region: content
     label: above
     settings:
