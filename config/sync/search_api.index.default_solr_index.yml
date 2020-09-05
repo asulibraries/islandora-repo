@@ -41,6 +41,7 @@ dependencies:
     - field.storage.node.field_place_of_publication_code
     - field.storage.node.field_place_published
     - field.storage.node.field_preferred_citation
+    - field.storage.node.field_related_item
     - field.storage.node.field_resource_type
     - field.storage.node.field_reuse_permissions
     - field.storage.node.field_series
@@ -486,6 +487,24 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_preferred_citation
+  field_related_item:
+    label: 'Related Item'
+    datasource_id: 'entity:node'
+    property_path: field_related_item
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_related_item
+  field_related_item_name:
+    label: 'Related Item Name'
+    datasource_id: 'entity:node'
+    property_path: 'field_related_item:entity:name'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_related_item
+      module:
+        - taxonomy
   field_reuse_permissions:
     label: 'Reuse Permissions'
     datasource_id: 'entity:node'
