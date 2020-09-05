@@ -568,6 +568,10 @@ field_settings:
         - field.storage.node.field_genre
       module:
         - taxonomy
+  institution_from_collection:
+    label: 'Institution From Collection'
+    property_path: institution_from_collection
+    type: string
   name:
     label: Name
     datasource_id: 'entity:taxonomy_term'
@@ -749,6 +753,7 @@ processor_settings:
       preprocess_index: -3
       preprocess_query: -6
   identifier_by_type: {  }
+  institution_from_collection: {  }
   language_with_fallback: {  }
   note_value: {  }
   rendered_item:
