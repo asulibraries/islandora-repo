@@ -1,0 +1,55 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.complex_subject.field_authority_link
+    - field.field.paragraph.complex_subject.field_label
+    - field.field.paragraph.complex_subject.field_simple_subject
+    - field.field.paragraph.complex_subject.field_subject_type
+    - paragraphs.paragraphs_type.complex_subject
+  module:
+    - controlled_access_terms
+    - entity_reference_revisions
+    - options
+id: paragraph.complex_subject.default
+targetEntityType: paragraph
+bundle: complex_subject
+mode: default
+content:
+  field_authority_link:
+    weight: 1
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: _blank
+    third_party_settings: {  }
+    type: authority_formatter_default
+    region: content
+  field_label:
+    weight: 0
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
+    region: content
+  field_simple_subject:
+    type: entity_reference_revisions_entity_view
+    weight: 3
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    region: content
+  field_subject_type:
+    weight: 2
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
+hidden:
+  search_api_excerpt: true

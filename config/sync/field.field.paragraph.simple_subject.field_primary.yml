@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_primary
+    - paragraphs.paragraphs_type.simple_subject
+id: paragraph.simple_subject.field_primary
+field_name: field_primary
+entity_type: paragraph
+bundle: simple_subject
+label: Primary
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'Yes'
+  off_label: 'No'
+field_type: boolean

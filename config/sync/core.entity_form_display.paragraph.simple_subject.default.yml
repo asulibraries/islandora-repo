@@ -1,0 +1,48 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.simple_subject.field_authority_link
+    - field.field.paragraph.simple_subject.field_label
+    - field.field.paragraph.simple_subject.field_primary
+    - field.field.paragraph.simple_subject.field_subject_type
+    - paragraphs.paragraphs_type.simple_subject
+  module:
+    - controlled_access_terms
+id: paragraph.simple_subject.default
+targetEntityType: paragraph
+bundle: simple_subject
+mode: default
+content:
+  field_authority_link:
+    weight: 1
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: authority_link_default
+    region: content
+  field_label:
+    weight: 0
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+  field_primary:
+    weight: 3
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  field_subject_type:
+    weight: 2
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+hidden:
+  created: true
+  status: true
