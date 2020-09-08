@@ -1,0 +1,29 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.paragraph.simple_title
+    - field.field.paragraph.complex_title.field_main_title
+    - field.field.paragraph.complex_title.field_nonsort
+    - field.field.paragraph.complex_title.field_subtitle
+    - field.field.paragraph.complex_title.field_supplied
+    - paragraphs.paragraphs_type.complex_title
+id: paragraph.complex_title.simple_title
+targetEntityType: paragraph
+bundle: complex_title
+mode: simple_title
+content:
+  field_main_title:
+    weight: 0
+    settings:
+      rows: 1
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textarea
+    region: content
+hidden:
+  created: true
+  field_nonsort: true
+  field_subtitle: true
+  field_supplied: true
+  status: true
