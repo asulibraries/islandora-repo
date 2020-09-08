@@ -1,0 +1,13 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.casuser
+  module:
+    - user
+id: user_remove_role_action.casuser
+label: 'Remove the CAS User role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: casuser
