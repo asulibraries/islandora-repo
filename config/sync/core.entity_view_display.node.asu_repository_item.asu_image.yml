@@ -4,6 +4,7 @@ dependencies:
   config:
     - core.entity_view_mode.node.asu_image
     - field.field.node.asu_repository_item.field_additional_memberships
+    - field.field.node.asu_repository_item.field_complex_subjects
     - field.field.node.asu_repository_item.field_coordinates
     - field.field.node.asu_repository_item.field_copyright_date
     - field.field.node.asu_repository_item.field_copyright_statement
@@ -22,6 +23,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_handle
     - field.field.node.asu_repository_item.field_history
     - field.field.node.asu_repository_item.field_issuance
+    - field.field.node.asu_repository_item.field_keywords
     - field.field.node.asu_repository_item.field_language
     - field.field.node.asu_repository_item.field_linked_agent
     - field.field.node.asu_repository_item.field_member_of
@@ -502,8 +504,10 @@ content:
 hidden:
   display_media_entity_view_2: true
   display_media_thumbnail: true
+  field_complex_subjects: true
   field_default_derivative_file_pe: true
   field_default_original_file_perm: true
+  field_keywords: true
   field_name_title_subject: true
   islandora_fits_checksum: true
   openseadragon_media_evas_entity_view_2: true
