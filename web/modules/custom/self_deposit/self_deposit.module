@@ -1,0 +1,77 @@
+<?php
+
+/**
+ * @file
+ * Contains self_deposit.module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\user\UserInterface;
+use Drupal\self_deposit\Form\FieldModelToMedia;
+use Drupal\self_deposit\Form\NodeMediaRedirect;
+
+/**
+ * Implements hook_help().
+ */
+function self_deposit_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the self_deposit module.
+    case 'help.page.self_deposit':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('A module to facilitate self deposit') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_entity_type_build().
+ */
+function self_deposit_entity_type_build(array &$entity_types) {
+  $entity_types['node']->setFormClass('simple_ingest', 'Drupal\node\NodeForm');
+}
+
+/**
+ * Implements hook_form_ETYPE_BUNDLE_form_alter() for node/asu_repository_item.
+ */
+function self_deposit_form_alter(array &$form, FormStateInterface $form_state) {
+  if ($form['#id'] == 'node-asu-repository-item-simple-ingest-form') {
+    if ($form_state->getFormObject()->getOperation() == 'simple_ingest') {
+      FieldModelToMedia::alter($form, $form_state);
+    }
+  }
+}
+
+/**
+ * Implements hook_form_ETYPE_form_alter() for media.
+ */
+function self_deposit_form_media_form_alter(array &$form, FormStateInterface $form_state) {
+  if (strpos($form['#id'], '-add-form')) {
+    NodeMediaRedirect::alter($form, $form_state);
+  }
+}
+
+/**
+ * Implements hook_user_login().
+ */
+function self_deposit_user_login(UserInterface $account) {
+  // Default login destination to the dashboard.
+  $current_request = \Drupal::service('request_stack')->getCurrentRequest();
+  $prev_url = $current_request->headers->get('referer');
+  $urlsplit = explode("?destination=", $prev_url);
+  if (count($urlsplit) > 0) {
+    $destination = urldecode($urlsplit[1]);
+  }
+  if (!$destination) {
+    $current_request->query->set(
+      'destination',
+      $current_request->headers->get('referer')
+    );
+  }
+  else {
+    $current_request->query->set('destination', $destination);
+  }
+}
