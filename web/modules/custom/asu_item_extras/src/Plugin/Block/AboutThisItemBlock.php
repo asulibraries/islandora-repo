@@ -61,7 +61,6 @@ class AboutThisItemBlock extends BlockBase {
     // event that will send the current node's URL to the copy buffer?
     if ($node->hasField('field_handle') && $node->get('field_handle')->value != NULL) {
       $hdl = $node->get('field_handle')->value;
-      dsm($hdl)->value;
       $output_links[] = '<a href="' . $hdl . '">Permalink</a> <span class="fa fa-link copy_permalink_link" title="' . $hdl . '">&nbsp;</span>';
     }
     else {
