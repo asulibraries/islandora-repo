@@ -8,3 +8,6 @@ services:
   repo_bento_search.dataverse:
     class: Drupal\repo_bento_search\DataverseApiService
     arguments: ['@http_client', '@config.factory', '@logger.channel.repo_bento_search']
+  repo_bento_search.this_site:
+    class: Drupal\repo_bento_search\ThisSiteApiService
+    arguments: ['@http_client', '@config.factory', '@logger.channel.repo_bento_search']

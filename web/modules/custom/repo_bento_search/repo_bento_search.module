@@ -36,3 +36,35 @@ function repo_bento_search_theme() {
     ],
   ];
 }
+
+function repo_bento_search_block_view_alter(array &$build, \Drupal\Core\Block\BlockPluginInterface $block) {
+  $block_id = $block->getBaseId();
+  if ($block_id === 'bento_this_site_results_block') {
+    $build['#pre_render'][] = 'repo_bento_search_bento_this_site_results_block_prerender';
+  }
+  if ($block_id === 'bento_legacy_repo_results_block') {
+    $build['#pre_render'][] = 'repo_bento_search_bento_legacy_repo_results_block_prerender';
+  }
+  if ($block_id === 'bento_dataverse_results_block') {
+    $build['#pre_render'][] = 'repo_bento_search_bento_dataverse_results_block_prerender';
+  }
+}
+
+function repo_bento_search_bento_this_site_results_block_prerender(array $build) {
+  $build['#configuration']['label'] = \Drupal::config('repo_bento_search.bentosettings')
+    ->get('titles_this_site') ?: t('This site');
+  return $build;
+}
+
+function repo_bento_search_bento_legacy_repo_results_block_prerender(array $build) {
+  $build['#configuration']['label'] = \Drupal::config('repo_bento_search.bentosettings')
+    ->get('titles_legacy_repo') ?: t('Repository');
+  return $build;
+}
+
+function repo_bento_search_bento_dataverse_results_block_prerender(array $build) {
+  $build['#configuration']['label'] = \Drupal::config('repo_bento_search.bentosettings')
+    ->get('titles_dataverse') ?: t('Dataverse');
+  return $build;
+}
+

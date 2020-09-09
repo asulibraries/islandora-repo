@@ -8,9 +8,9 @@ use GuzzleHttp\Exception\ClientException;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class DataverseApiService.
+ * Class ThisSiteApiService.
  */
-class DataverseApiService implements BentoApiInterface {
+class ThisSiteApiService implements BentoApiInterface {
 
   /**
    * GuzzleHttp\ClientInterface definition.
@@ -32,7 +32,7 @@ class DataverseApiService implements BentoApiInterface {
   protected $logger;
 
   /**
-   * Constructs a new DataverseApiService object.
+   * Constructs a new ThisSiteApiService object.
    */
   public function __construct(ClientInterface $http_client, ConfigFactory $configFactory, LoggerInterface $logger) {
     $this->httpClient = $http_client;
@@ -50,14 +50,10 @@ class DataverseApiService implements BentoApiInterface {
    */
   public function getSearchResults(string $term, int $limit = 10) {
     try {
-      $config = $this->configFactory->get('repo_bento_search.bentosettings');
-      $base_url = $config->get('dataverse_api_url');
-      if (!$base_url) {
-        $this->logger->warning("No URL set for Dataverse: see /admin/config/bento_search/settings");
-        return;
-      }
+      $request_url = \Drupal::request()->getSchemeAndHttpHost() .
+        '/api/search?search_api_fulltext=' . $term . '&format=json';
 
-      $request = $this->httpClient->request('GET', $base_url . "?q=" . $term . "&per_page=" . $limit);
+      $request = $this->httpClient->request('GET', $request_url);
       if ($request->getStatusCode() == 200) {
         $body = $request->getBody()->getContents();
         $this->logger->info(print_r($body, TRUE));
@@ -65,11 +61,11 @@ class DataverseApiService implements BentoApiInterface {
         return $body;
       }
       else {
-        $this->logger->warning("Unable to reach dataverse with response: " . print_r($request, TRUE));
+        $this->logger->warning("Unable to reach the site with response: " . print_r($request, TRUE));
       }
     }
     catch (ClientException $e) {
-      $this->logger->warning("Unable to reach dataverse with response: " . $e);
+      $this->logger->warning("Unable to reach the site with response: " . $e);
     }
   }
 

@@ -7,3 +7,11 @@ repo_bento_search.bento_settings_form:
     _permission: 'administer site configuration'
   options:
     _admin_route: TRUE
+
+repo_bento_search.search_page:
+  path: '/all/search'
+  defaults:
+    _form: '\Drupal\repo_bento_search\Form\BentoSearchForm'
+    _title: 'Search all'
+  requirements:
+    _permission: 'access content'

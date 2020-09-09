@@ -1,0 +1,31 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - context
+    - repo_bento_search
+    - system
+  theme:
+    - asulib_barrio
+id: bentodataversesearchresultsblock
+theme: asulib_barrio
+region: content
+weight: 0
+provider: null
+plugin: bento_dataverse_results_block
+settings:
+  id: bento_dataverse_results_block
+  label: 'Bento Dataverse search results block'
+  provider: repo_bento_search
+  label_display: visible
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    pages: ''
+    negate: null
+    context_mapping: {  }
+  request_path:
+    id: request_path
+    pages: '/all/search*'
+    negate: false
+    context_mapping: {  }
