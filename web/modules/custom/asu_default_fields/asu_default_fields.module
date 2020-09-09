@@ -150,14 +150,14 @@ function asu_default_fields_media_insert(MediaInterface $media) {
     if ($media->get('field_media_use') && $media->get('field_media_use')->entity) {
       $taxy = $media->get('field_media_use')->entity;
       if ($taxy->getName() == "Original File") {
-        if ($parent->hasField('field_default_original_file_perm') && $parent->get('field_default_original_file_perm') != NULL && $media->get('field_access_terms')->isEmpty()) {
+        if ($parent->hasField('field_default_original_file_perm') && !$parent->get('field_default_original_file_perm')->isEmpty() && $media->get('field_access_terms')->isEmpty()) {
           $of_default_perms = $parent->get('field_default_original_file_perm')->entity->id();
           $media->set('field_access_terms', $of_default_perms);
           $media->save();
         }
       }
       else if ($taxy->getName() == 'Service File') {
-        if ($parent->hasField('field_default_derivative_file_pe') && $parent->get('field_default_derivative_file_pe') != NULL && $media->get('field_access_terms')->isEmpty()) {
+        if ($parent->hasField('field_default_derivative_file_pe') && !$parent->get('field_default_derivative_file_pe')->isEmpty() && $media->get('field_access_terms')->isEmpty()) {
           $deriv_default_perms = $parent->get('field_default_derivative_file_pe')->entity->id();
           $media->set('field_access_terms', $deriv_default_perms);
           $media->save();
