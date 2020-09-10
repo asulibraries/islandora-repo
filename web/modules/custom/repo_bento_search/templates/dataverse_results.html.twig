@@ -1,0 +1,46 @@
+{#
+/**
+ * @file
+ * Bootstrap Barrio's theme implementation to display a node.
+ *
+ * Available variables:
+ *  - service_url: base url for this service.
+ *  - items: array of results... key values below.
+ *  - total_results_found:
+ *  - search_term: 
+ *
+ * items elements:
+ *  - name: The title value for the item
+ *  - global_id: The identifier (link) to the item.
+ *  - description: The description for the item
+ *  - createdAt: The created date for the item
+ *  - publisher: The publisher name for the item
+ *  - identifier_of_dataverse: The identifier of the dataverse.
+ */
+#}
+
+<div>
+    <i title="Data from our ASU Library contributors." class="fas fa-question-circle"></i>
+    <i>{{ total_results_found | number_format }} result{% if total_results_found != 1 %}s{% endif %} found</i><br>
+    {% for key,item in items %}
+        <div class="bento_item">
+        {% if item.global_id %}
+            <a href="{{ service_url }}/dataset.xhtml?persistentId={{ item.global_id }}" target="_blank">{{ item.name }}</a>
+        {% else %}
+            <a href="{{ item.url }}" target="_blank">{{ item.name }}</a>
+        {% endif %}<br>
+                {% set description = item.description|render|striptags|trim|split(' ') %}
+                {% if description|length > 40 %}
+                        {{ description|slice(0, 30)|join(' ') }}<span id="more-ellipse" class="collapse
+                        multi-collapse show">&hellip;</span>
+                {% else %}
+                    {{ item.description }}
+                {% endif %}<br>
+            {{ item.createdAt }}<br>
+            {% if item.identifier_of_dataverse %}
+                <a href="{{ service_url }}/dataverse/{{ item.identifier_of_dataverse }}" target="_blank">{{ item.publisher }}</a>
+            {% endif %}
+        </div>
+    {% endfor %}
+    <a href="{{ service_url }}/dataverse/asulibrary/?q={{ search_term }}" target="_blank" title="See all Dataverse results &gt;">See all Dataverse results &gt;</a>
+</div>

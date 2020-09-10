@@ -63,7 +63,8 @@ class LegacyRepoApiService implements BentoApiInterface {
         return;
       }
 
-      $request = $this->httpClient->request('GET', $base_url . "?q=" . $term, [
+      $request = $this->httpClient->request('GET', $base_url . "?q=" . $term .
+          "&count=" . $limit, [
         'headers' => [
           'Authorization' => 'Token ' . $token,
         ],

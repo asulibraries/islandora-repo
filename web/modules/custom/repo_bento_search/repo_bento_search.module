@@ -31,8 +31,32 @@ function repo_bento_search_help($route_name, RouteMatchInterface $route_match) {
  */
 function repo_bento_search_theme() {
   return [
-    'repo_bento_search' => [
-      'render element' => 'children',
+    'dataverse_results' => [
+      'template' => 'dataverse_results',
+      'variables' => [
+        'service_url' => NULL,
+        'items' => NULL,
+        'total_results_found' => NULL,
+        'search_term' => NULL
+      ]
+    ],
+    'legacyrepo_results' => [
+      'template' => 'legacyrepo_results',
+      'variables' => [
+        'service_url' => NULL,
+        'items' => NULL,
+        'total_results_found' => NULL,
+        'search_term' => NULL
+      ]
+    ],
+    'this_site_results' => [
+      'template' => 'this_site_results',
+      'variables' => [
+        'service_url' => NULL,
+        'items' => NULL,
+        'total_results_found' => NULL,
+        'search_term' => NULL
+      ]
     ],
   ];
 }

@@ -1,0 +1,42 @@
+{#
+/**
+ * @file
+ * Bootstrap Barrio's theme implementation to display a node.
+ *
+ * Available variables:
+ *  - service_url: base url for this service.
+ *  - items: array of results... key values below.
+ *  - total_results_found:
+ *  - search_term:
+ *
+ * items elements:
+ *  - item_label: The title value for the item
+ *  - item_id: The identifier (link) to the item.
+ *  - item_description: The description for the item
+ *  - md_created_s: The created date for the item
+ */
+#}
+
+<div>
+    <i title="Items from our digital repository, including scholarly papers, theses, university records, historical photographs, music performances, and more." class="fas fa-question-circle"></i>
+    <i>{{ total_results_found | number_format }} result{% if total_results_found != 1 %}s{% endif %} found</i><br>
+    {% for key,item in items %}
+        <div class="bento_item">
+          {% if item.item_id %}
+            <a href="{{ service_url }}/items/{{ item.item_id }}" target="_blank">{{ item.item_label }}</a>
+          {% else %}
+            <a href="{{ service_url }}/collections/{{ item.collection_id }}" target="_blank">{{ item.item_label }}</a>
+          {% endif %}
+          <br>
+                {% set description = item.item_description|render|striptags|trim|split(' ') %}
+                {% if description|length > 40 %}
+                        {{ description|slice(0, 30)|join(' ') }}<span id="more-ellipse" class="collapse
+                        multi-collapse show">&hellip;</span>
+                {% else %}
+                    {{ item.item_description }}
+                {% endif %}<br>
+            {{ item.md_created_s }}<br>
+        </div>
+    {% endfor %}
+    <a href="{{ service_url }}/search?q={{ search_term }}" target="_blank" title="See all ASU Digital Repository results &gt;">See all ASU Digital Repository results &gt;</a>
+</div>
