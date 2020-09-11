@@ -51,7 +51,7 @@ class ThisSiteApiService implements BentoApiInterface {
   public function getSearchResults(string $term, int $limit = 10) {
     try {
       $request_url = \Drupal::request()->getSchemeAndHttpHost() .
-        '/api/search?q=' . $term . '&format=json';
+        '/api/search?search_api_fulltext=' . $term . '&q=' . $term . '&format=json';
 
       $request = $this->httpClient->request('GET', $request_url);
       if ($request->getStatusCode() == 200) {

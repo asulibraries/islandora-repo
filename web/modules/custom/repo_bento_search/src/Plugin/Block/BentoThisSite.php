@@ -13,7 +13,7 @@ use Drupal\Core\Block\BlockBase;
  *
  * @Block(
  *   id = "bento_this_site_results_block",
- *   admin_label = @Translation("Bento 'this site' search results block"),
+ *   admin_label = @Translation("Bento this site search results block"),
  *   category = @Translation("Views"),
  * )
  */
@@ -31,6 +31,11 @@ class BentoThisSite extends BlockBase {
     $search_term = \Drupal::request()->query->get('q');
     $results_json = ($search_term) ?
       \Drupal::service('repo_bento_search.this_site')->getSearchResults($search_term) : '';
+    $results_arr = json_decode($results_json, true);
+    $result_items = (array_key_exists('search_results', $results_arr) &&
+      is_array($results_arr['search_results'])) ?
+        $results_arr['search_results'] : [];
+
     return [
       '#cache' => ['max-age' => 0],
       'lib' => [
@@ -43,9 +48,16 @@ class BentoThisSite extends BlockBase {
       '#attributes' => [
         'class' => array(0 => 'bento_box'),
       ],
-      '#markup' => '<i>' . $num_results . " results configured</i><br>" .
-        "Search term: <b>" . $search_term . "</b>" .
-        "<pre>" . print_r($results_json, true) . "</pre>",
+      [
+        '#theme' => 'this_site_results',
+        '#service_url' => $service_url,
+        '#items' => $result_items,
+        '#total_results_found' => $results_arr['pager']['count'],
+        '#search_term' => $search_term
+      ],
+//      '#markup' =>
+//        "Search term: <b>" . $search_term . "</b>" .
+//        "<pre>" . print_r($results_json, true) . "</pre>",
     ];
   }
 

@@ -34,6 +34,8 @@ function repo_bento_search_theme() {
     'dataverse_results' => [
       'template' => 'dataverse_results',
       'variables' => [
+        'label' => \Drupal::config('repo_bento_search.bentosettings')
+    ->get('titles_dataverse') ?: t('Dataverse'),
         'service_url' => NULL,
         'items' => NULL,
         'total_results_found' => NULL,
@@ -43,6 +45,8 @@ function repo_bento_search_theme() {
     'legacyrepo_results' => [
       'template' => 'legacyrepo_results',
       'variables' => [
+        'label' => \Drupal::config('repo_bento_search.bentosettings')
+    ->get('titles_legacy_repo') ?: t('Repository'),
         'service_url' => NULL,
         'items' => NULL,
         'total_results_found' => NULL,
@@ -52,6 +56,8 @@ function repo_bento_search_theme() {
     'this_site_results' => [
       'template' => 'this_site_results',
       'variables' => [
+        'label' => \Drupal::config('repo_bento_search.bentosettings')
+    ->get('titles_this_site') ?: t('This site'),
         'service_url' => NULL,
         'items' => NULL,
         'total_results_found' => NULL,

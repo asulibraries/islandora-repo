@@ -50,15 +50,15 @@ class BentoDataverse extends BlockBase {
       ],
       '#attributes' => [
         'class' => array(0 => 'bento_box'),
-     ],
-     [
+      ],
+      [
         '#theme' => 'dataverse_results',
         '#service_url' => $service_url,
         '#items' => $result_items,
         '#total_results_found' => $results_arr['data']['total_count'],
         '#search_term' => $search_term
       ],
-//      '#markup' => 
+//      '#markup' =>
 //        "Search term: <b>" . $search_term . "</b>" .
 //        "<pre>" . print_r($results_arr, true) . "</pre>",
     ];
