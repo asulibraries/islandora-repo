@@ -18,6 +18,7 @@ dependencies:
     - field.storage.node.field_edtf_date
     - field.storage.node.field_edtf_date_created
     - field.storage.node.field_edtf_date_issued
+    - field.storage.node.field_rich_description
     - field.storage.node.field_description
     - field.storage.node.field_display_hints
     - field.storage.node.field_edition
@@ -60,6 +61,7 @@ dependencies:
     - field.storage.taxonomy_term.field_person_alternate_names
     - field.storage.taxonomy_term.field_person_preferred_name
     - search_api.server.default_solr_server
+    - core.entity_view_mode.node.full_metadata
 third_party_settings:
   search_api_solr:
     finalize: false
@@ -513,6 +515,14 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_reuse_permissions
+  field_rich_description:
+    label: 'Description (Collection)'
+    datasource_id: 'entity:node'
+    property_path: field_rich_description
+    type: text
+    dependencies:
+      config:
+        - field.storage.node.field_rich_description
   field_series:
     label: Series
     datasource_id: 'entity:node'
@@ -653,6 +663,44 @@ field_settings:
     dependencies:
       config:
         - field.storage.taxonomy_term.field_person_preferred_name
+  rendered_item:
+    label: 'Rendered Item'
+    property_path: rendered_item
+    type: text
+    configuration:
+      roles:
+        anonymous: anonymous
+      view_mode:
+        'entity:node':
+          article: ''
+          asu_repository_item: full_metadata
+          collection: ''
+          islandora_object: ''
+          page: ''
+        'entity:taxonomy_term':
+          collaborating_institutions: ''
+          conference: ''
+          copyright_statements: ''
+          corporate_body: ''
+          country_codes: ''
+          family: ''
+          genre: ''
+          geo_location: ''
+          identifier_types: ''
+          language: ''
+          name_titles: ''
+          note_types: ''
+          oai_sets: ''
+          person: ''
+          physical_form: ''
+          preservation_states: ''
+          related_items: ''
+          resource_types: ''
+          reuse_permissions: ''
+          subject: ''
+          tags: ''
+          temporal: ''
+          titles: ''
   resource_type_name:
     label: 'Resource Type'
     datasource_id: 'entity:node'
