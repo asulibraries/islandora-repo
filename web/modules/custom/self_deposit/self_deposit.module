@@ -63,7 +63,7 @@ function self_deposit_user_login(UserInterface $account) {
   $prev_url = $current_request->headers->get('referer');
   $urlsplit = explode("?destination=", $prev_url);
   if (count($urlsplit) > 0) {
-    $destination = urldecode($urlsplit[1]);
+    $destination = urldecode(array_values($urlsplit)[1]);
   }
   if (!$destination) {
     $current_request->query->set(

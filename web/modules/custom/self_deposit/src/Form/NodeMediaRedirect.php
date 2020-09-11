@@ -22,7 +22,7 @@ class NodeMediaRedirect {
     $current_request = \Drupal::request()->getRequestUri();
     $urlsplit = explode("?", $current_request);
     if (count($urlsplit) > 0) {
-      $query_params = urldecode($urlsplit[1]);
+      $query_params = urldecode(array_values($urlsplit)[1]);
       $params = explode("&", $query_params);
       foreach ($params as $par) {
         if (strpos($par, 'field_media_of')) {
