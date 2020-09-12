@@ -144,7 +144,7 @@ function _add_object_to_parent_group($node) {
  * Implements hook_node_update().
  */
 function asu_permissions_node_update(NodeInterface $node) {
-  if ($node->bundle() == 'asu_repository_item') {
+  if ($node != NULL && $node->bundle() == 'asu_repository_item') {
     $utils = \Drupal::service('islandora.utils');
     if (!$utils->haveFieldsChanged($node, $node->original)) {
       return;

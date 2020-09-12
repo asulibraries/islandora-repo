@@ -1,12 +1,15 @@
 langcode: en
 status: true
 dependencies:
+  module:
+    - context
+    - system
   theme:
     - asulib_barrio
 id: asulib_local_tasks
 theme: asulib_barrio
 region: content
-weight: -12
+weight: -17
 provider: null
 plugin: local_tasks_block
 settings:
@@ -16,4 +19,19 @@ settings:
   label_display: '0'
   primary: true
   secondary: true
-visibility: {  }
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    pages: ''
+    negate: null
+    context_mapping: {  }
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    view_inclusion: {  }
+    context_mapping: {  }
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: true
+    context_mapping: {  }

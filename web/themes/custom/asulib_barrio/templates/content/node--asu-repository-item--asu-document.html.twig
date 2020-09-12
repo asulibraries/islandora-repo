@@ -110,8 +110,18 @@
     </div>
     <div id="details" class="details">
       <h2>{{ 'Details'|t }}</h2>
-      <div>{{ content.field_resource_type }}</div>
-      <div><p><strong><a class="icon-link" href="{{ node.id }}/full-metadata"><i class="fa fa-lg
+            <div>{{ content.field_peer_reviewed }}</div>
+            <div>{{ content.field_open_access }}</div>
+            <div>{{ content.field_linked_agent }}</div>
+            <div>{{ content.field_date_created }}</div>
+            {# TODO combine all subjects here #}
+            <div>{{ content.field_resource_type }}</div>
+            <div>{{ content.field_primary_membership }}</div>
+            <div>{{ content.field_additional_memberships }}</div>
+            {{ drupal_view('collaborating_institutions', 'block_1', node.id) }}
+
+            <br/>
+            <div><p><strong><a class="icon-link" href="{{ node.id }}/full-metadata"><i class="fa fa-lg
             fa-list-ul"></i></a><a href="{{ node.id }}/full-metadata">{{ 'View full metadata'|t }}</a></strong></p></div>
     </div>
     <div id="interact" class="interact">

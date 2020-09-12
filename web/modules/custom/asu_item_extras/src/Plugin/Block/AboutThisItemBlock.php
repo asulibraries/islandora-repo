@@ -16,6 +16,8 @@ use Drupal\Core\Link;
  * )
  */
 class AboutThisItemBlock extends BlockBase {
+  // TODO add cache tags based on the node id
+
 
   /**
    * {@inheritdoc}
@@ -33,6 +35,7 @@ class AboutThisItemBlock extends BlockBase {
     // Since this block should be set to display on node/[nid] pages that are
     // either "Repository Item", "ASU Repository Item", or "Collection",
     // the underlying node can be accessed via the path.
+    // TODO - use dependency injection
     $node = \Drupal::routeMatch()->getParameter('node');
     if ($node) {
       $nid = $node->id();
@@ -56,10 +59,16 @@ class AboutThisItemBlock extends BlockBase {
     //    $output_links[] = render($link);
     // Add a link to get the Permalink for this node. Could this be a javascript
     // event that will send the current node's URL to the copy buffer?
-    $url_str = \Drupal::request()->getSchemeAndHttpHost() . '/node/' . $nid;
-    $url = Url::fromUri($url_str);
-    $output_links[] = '<a href="' . $url_str . '">Permalink</a> <span class="fa fa-link copy_permalink_link" title="' . $url_str .
-          '">&nbsp;</span>';
+    if ($node->hasField('field_handle') && $node->get('field_handle')->value != NULL) {
+      $hdl = $node->get('field_handle')->value;
+      $output_links[] = '<a href="' . $hdl . '">Permalink</a> <span class="fa fa-link copy_permalink_link" title="' . $hdl . '">&nbsp;</span>';
+    }
+    else {
+      $url_str = \Drupal::request()->getSchemeAndHttpHost() . '/node/' . $nid;
+      $url = Url::fromUri($url_str);
+      $output_links[] = '<a href="' . $url_str . '">Permalink</a> <span class="fa fa-link copy_permalink_link" title="' . $url_str .
+        '">&nbsp;</span>';
+    }
     return [
       '#markup' =>
         (count($output_links) > 0) ?

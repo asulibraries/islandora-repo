@@ -3,18 +3,19 @@ status: true
 dependencies:
   module:
     - asu_search
+    - context
     - system
   theme:
     - asulib_barrio
 id: searchfilterblock
 theme: asulib_barrio
 region: sidebar_first
-weight: -11
+weight: -15
 provider: null
 plugin: search_filter_block
 settings:
   id: search_filter_block
-  label: 'Search Filter block'
+  label: 'Search Filters'
   provider: asu_search
   label_display: visible
 visibility:
@@ -22,4 +23,9 @@ visibility:
     id: request_path
     pages: '/search*'
     negate: false
+    context_mapping: {  }
+  request_path_exclusion:
+    id: request_path_exclusion
+    pages: ''
+    negate: null
     context_mapping: {  }

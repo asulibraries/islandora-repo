@@ -1,0 +1,23 @@
+
+self_deposit.self_deposit_controller_content:
+  path: '/self_deposit/{node_type}'
+  defaults:
+    _controller: '\Drupal\self_deposit\Controller\SelfDepositController::content'
+    _title: 'Self Deposit'
+  requirements:
+    _permission: 'access content'
+  options:
+    _node_operation_route: TRUE
+    parameters:
+      node_type:
+        type: entity:node_type
+        with_config_overrides: TRUE
+self_deposit.settings:
+  path: '/admin/config/self_deposit/settings'
+  defaults:
+    _form: '\Drupal\self_deposit\Form\SelfDepositSettings'
+    _title: 'Self Deposit Settings'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE

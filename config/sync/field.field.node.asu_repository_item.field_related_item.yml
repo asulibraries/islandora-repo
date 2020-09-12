@@ -4,6 +4,7 @@ dependencies:
   config:
     - field.storage.node.field_related_item
     - node.type.asu_repository_item
+    - taxonomy.vocabulary.related_items
   module:
     - controlled_access_terms
 id: node.asu_repository_item.field_related_item
@@ -17,12 +18,13 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  handler: 'default:node'
+  handler: 'default:taxonomy_term'
   handler_settings:
     target_bundles:
-      asu_repository_item: asu_repository_item
+      related_items: related_items
     sort:
-      field: _none
+      field: name
+      direction: asc
     auto_create: 0
     auto_create_bundle: ''
   rel_types:
