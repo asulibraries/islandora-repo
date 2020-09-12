@@ -3,6 +3,7 @@
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\media\MediaInterface;
 use Drupal\node\NodeInterface;
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\paragraphs\Entity\Paragraph;
 
 /**
@@ -138,6 +139,29 @@ function asu_default_fields_node_insert(NodeInterface $node) {
       }
     }
   }
+  if ($node->bundle() == "asu_repository_item" || $node->bundle() == "collection") {
+    $entity_type = $node->getEntityTypeId();
+
+    if (!$entity_type == 'node') {
+      return;
+    }
+
+    $handle_field = \Drupal::config('persistent_identifiers.settings')->get('persistent_identifiers_target_field');
+    if ($node->hasField($handle_field) && $node->get($handle_field)->isEmpty()) {
+      // Only run the minter if the field handle is empty.
+      $config = \Drupal::config('persistent_identifiers.settings');
+      $content_type = $node->bundle();
+      $allowed_types = $config->get('persistent_identifiers_bundles');
+      if ($node->getEntityTypeId() == 'node' && in_array($content_type, $allowed_types, TRUE)) {
+        if ($node->bundle() == "collection") {
+          _mint_handle($node, 'R.2.C');
+        }
+        else {
+          _mint_handle($node);
+        }
+      }
+    }
+  }
 }
 
 /**
@@ -155,6 +179,8 @@ function asu_default_fields_media_insert(MediaInterface $media) {
           $media->set('field_access_terms', $of_default_perms);
           $media->save();
         }
+        // Media don't h
+        // _mint_handle($media, 'R.2.M');
       }
       else if ($taxy->getName() == 'Service File') {
         if ($parent->hasField('field_default_derivative_file_pe') && !$parent->get('field_default_derivative_file_pe')->isEmpty() && $media->get('field_access_terms')->isEmpty()) {
@@ -164,5 +190,29 @@ function asu_default_fields_media_insert(MediaInterface $media) {
         }
       }
     }
+  }
+}
+
+/**
+ * A helper function to call the handle minting service.
+ */
+function _mint_handle(EntityInterface $object, string $prefix = NULL) {
+  $config = \Drupal::config('persistent_identifiers.settings');
+  $minter = \Drupal::service($config->get('persistent_identifiers_minter'));
+  if ($prefix) {
+    $extras = ['hdl_qualifier' => $prefix];
+    $pid = $minter->mint($object, $extras);
+  } else {
+    $pid = $minter->mint($object, NULL);
+  }
+  if (is_null($pid)) {
+    \Drupal::logger('persistent_identifiers')->warning(t("Persistent identifier not created for node @nid.", ['@nid' => $object->id()]));
+    return;
+  }
+  $persister = \Drupal::service($config->get('persistent_identifiers_persister'));
+  if ($persister->persist($object, $pid)) {
+    \Drupal::logger('persistent_identifiers')->info(t("Persistent identifier %pid created for node @nid.", ['%pid' => $pid, '@nid' => $object->id()]));
+  } else {
+    \Drupal::logger('persistent_identifiers')->warning(t("Persistent identifier not created for node @nid.", ['@nid' => $object->id()]));
   }
 }
