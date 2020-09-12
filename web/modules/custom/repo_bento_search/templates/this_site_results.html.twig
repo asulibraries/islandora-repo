@@ -1,0 +1,32 @@
+{#
+/**
+ * @file
+ * Bootstrap Barrio's theme implementation to display a node.
+ *
+ * Available variables:
+ *  - service_url: base url for this service.
+ *  - items: array of results... key values below.
+ *  - total_results_found:
+ *  - search_term:
+ *
+ * items elements:
+ *  - complex_title: The title value for the item
+ *  - nid: The identifier (link) to the item.
+ *  - field_description: The description for the item
+ *  - field_edtf_date_created: The created date for the item
+ */
+#}
+
+<div class="bento_box">
+    <h2>{{ label }}</h2>
+    <i title="Data from our ASU Library contributors." class="fas fa-question-circle"></i>
+    <i>{{ total_results_found | number_format }} result{% if total_results_found != 1 %}s{% endif %} found</i><br>
+    {% for key,item in items %}
+        <div class="bento_item">
+            <a href="{{ service_url }}/items/{{ item.nid }}" target="_blank">{{ item.complex_title }}</a><br>
+            {{ item.field_description }}<br>
+            {{ item.field_edtf_date_created }}<br>
+        </div>
+    {% endfor %}
+    <a href="{{ service_url }}/search?search_api_fulltext={{ search_term }}" target="_blank" title="See all KEEP results &gt;">See all KEEP results &gt;</a>
+</div>

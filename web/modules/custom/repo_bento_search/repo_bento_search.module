@@ -1,0 +1,100 @@
+<?php
+
+/**
+ * @file
+ * Contains repo_bento_search.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function repo_bento_search_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the repo_bento_search module.
+    case 'help.page.repo_bento_search':
+      dsm(\Drupal::service('repo_bento_search.legacy_repo')->getSearchResults("test"));
+      dsm(\Drupal::service('repo_bento_search.dataverse')->getSearchResults("test"));
+
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('A module to accomplish bento search across multiple repositories.') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function repo_bento_search_theme() {
+  return [
+    'dataverse_results' => [
+      'template' => 'dataverse_results',
+      'variables' => [
+        'label' => \Drupal::config('repo_bento_search.bentosettings')
+    ->get('titles_dataverse') ?: t('Dataverse'),
+        'service_url' => NULL,
+        'items' => NULL,
+        'total_results_found' => NULL,
+        'search_term' => NULL
+      ]
+    ],
+    'legacyrepo_results' => [
+      'template' => 'legacyrepo_results',
+      'variables' => [
+        'label' => \Drupal::config('repo_bento_search.bentosettings')
+    ->get('titles_legacy_repo') ?: t('Repository'),
+        'service_url' => NULL,
+        'items' => NULL,
+        'total_results_found' => NULL,
+        'search_term' => NULL
+      ]
+    ],
+    'this_site_results' => [
+      'template' => 'this_site_results',
+      'variables' => [
+        'label' => \Drupal::config('repo_bento_search.bentosettings')
+    ->get('titles_this_site') ?: t('This site'),
+        'service_url' => NULL,
+        'items' => NULL,
+        'total_results_found' => NULL,
+        'search_term' => NULL
+      ]
+    ],
+  ];
+}
+
+function repo_bento_search_block_view_alter(array &$build, \Drupal\Core\Block\BlockPluginInterface $block) {
+  $block_id = $block->getBaseId();
+  if ($block_id === 'bento_this_site_results_block') {
+    $build['#pre_render'][] = 'repo_bento_search_bento_this_site_results_block_prerender';
+  }
+  if ($block_id === 'bento_legacy_repo_results_block') {
+    $build['#pre_render'][] = 'repo_bento_search_bento_legacy_repo_results_block_prerender';
+  }
+  if ($block_id === 'bento_dataverse_results_block') {
+    $build['#pre_render'][] = 'repo_bento_search_bento_dataverse_results_block_prerender';
+  }
+}
+
+function repo_bento_search_bento_this_site_results_block_prerender(array $build) {
+  $build['#configuration']['label'] = \Drupal::config('repo_bento_search.bentosettings')
+    ->get('titles_this_site') ?: t('This site');
+  return $build;
+}
+
+function repo_bento_search_bento_legacy_repo_results_block_prerender(array $build) {
+  $build['#configuration']['label'] = \Drupal::config('repo_bento_search.bentosettings')
+    ->get('titles_legacy_repo') ?: t('Repository');
+  return $build;
+}
+
+function repo_bento_search_bento_dataverse_results_block_prerender(array $build) {
+  $build['#configuration']['label'] = \Drupal::config('repo_bento_search.bentosettings')
+    ->get('titles_dataverse') ?: t('Dataverse');
+  return $build;
+}
+
