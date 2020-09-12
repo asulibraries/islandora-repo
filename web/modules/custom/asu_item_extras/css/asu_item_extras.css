@@ -76,18 +76,9 @@
   padding: 0.25rem !important;
 }
 
-li.rrssb-email span, li.rrssb-facebook span,
-li.rrssb-twitter span, li.rrssb-print span  {
-  background-color: white !important;
-  color: #8c1d40 !important;
-}
 li.rrssb-email a, li.rrssb-facebook a,
 li.rrssb-twitter a, li.rrssb-print a  {
   background-color: white !important;
-}
-li.rrssb-email a:hover, li.rrssb-facebook a:hover,
-li.rrssb-twitter a:hover, li.rrssb-print a:hover  {
-  background-color: #8c1d40 !important;
 }
 
 .rrssb-email .rrssb-icon {
@@ -101,4 +92,13 @@ li.rrssb-twitter a:hover, li.rrssb-print a:hover  {
 }
 .rrssb-print .rrssb-icon {
   background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path d="M448 192V77.25c0-8.49-3.37-16.62-9.37-22.63L393.37 9.37c-6-6-14.14-9.37-22.63-9.37H96C78.33 0 64 14.33 64 32v160c-35.35 0-64 28.65-64 64v112c0 8.84 7.16 16 16 16h48v96c0 17.67 14.33 32 32 32h320c17.67 0 32-14.33 32-32v-96h48c8.84 0 16-7.16 16-16V256c0-35.35-28.65-64-64-64zm-64 256H128v-96h256v96zm0-224H128V64h192v48c0 8.84 7.16 16 16 16h48v96zm48 72c-13.25 0-24-10.75-24-24 0-13.26 10.75-24 24-24s24 10.74 24 24c0 13.25-10.75 24-24 24z"/></svg>') !important;
+}
+
+/* space out the icons and wrap on noble */
+.rrssb .rrssb-buttons {
+  display: flex;
+  flex-wrap:wrap;
+  justify-content: space-between;
+  margin: 1.5rem 1rem;
+  width: auto;
 }
