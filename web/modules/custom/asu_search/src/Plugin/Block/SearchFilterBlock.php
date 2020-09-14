@@ -24,7 +24,7 @@ class SearchFilterBlock extends BlockBase {
    */
   public function build() {
     return [
-      '#markup' => $this->t('Search Filters'),
+      '#markup' => '',
     ];
   }
 
