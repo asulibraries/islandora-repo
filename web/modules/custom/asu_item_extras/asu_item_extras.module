@@ -1,2 +1,18 @@
 <?php
 
+/**
+ * Implements hook_theme().
+ */
+function asu_item_extras_theme() {
+  return [
+    'file_video_with_caption' => [
+      'template' => 'file-video-caption',
+      'variables' => [
+        'caption' => NULL,
+        'files' => [],
+        'poster' => NULL,
+        'attributes' => NULL
+      ]
+    ],
+  ];
+}

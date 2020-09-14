@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - field.field.media.video.field_access_terms
+    - field.field.media.video.field_captions
     - field.field.media.video.field_file_size
     - field.field.media.video.field_media_of
     - field.field.media.video.field_media_use
@@ -29,6 +30,13 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: options_buttons
+    region: content
+  field_captions:
+    weight: 27
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+    type: file_generic
     region: content
   field_media_of:
     type: entity_reference_autocomplete

@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - field.field.media.video.field_access_terms
+    - field.field.media.video.field_captions
     - field.field.media.video.field_file_size
     - field.field.media.video.field_media_of
     - field.field.media.video.field_media_use
@@ -11,6 +12,7 @@ dependencies:
     - field.field.media.video.field_original_name
     - media.type.video
   module:
+    - asu_item_extras
     - file
 id: media.video.default
 targetEntityType: media
@@ -25,6 +27,14 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
     region: content
+  field_captions:
+    weight: 102
+    label: above
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    type: file_default
+    region: content
   field_file_size:
     type: number_integer
     weight: 3
@@ -36,9 +46,9 @@ content:
     third_party_settings: {  }
   field_gemini_uri:
     weight: 100
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
   field_media_of:
     type: entity_reference_label
     weight: 4
@@ -56,17 +66,17 @@ content:
       link: true
     third_party_settings: {  }
   field_media_video_file:
-    type: file_video
+    type: file_video_caption
     weight: 1
     label: visually_hidden
     settings:
-      muted: false
+      controls: true
+      multiple_file_display_type: tags
       width: 640
       height: 480
-      controls: true
       autoplay: false
       loop: false
-      multiple_file_display_type: tags
+      muted: false
     third_party_settings: {  }
     region: content
   field_mime_type:
