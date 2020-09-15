@@ -1,0 +1,21 @@
+<?php
+
+use Drupal\Core\Url;
+use Drupal\Core\Link;
+use Drupal\Core\Breadcrumb\Breadcrumb;
+
+function asu_breadcrumbs_system_breadcrumb_alter(\Drupal\Core\Breadcrumb\Breadcrumb &$breadcrumb,
+  \Drupal\Core\Routing\RouteMatchInterface $route_match, array $context) {
+  if (!empty($breadcrumb)) {
+    $links = $breadcrumb->getLinks();
+    if (!empty($links[0])) {
+      $t = $links[0]->getText();
+      if ($links[0]->getText() == 'Home') {
+        $links[0]->setUrl(Url::fromRoute('<front>'));
+        $links[0]->setText(\Drupal::config('system.site')->get('slogan'));
+        $breadcrumb = new Breadcrumb();
+        $breadcrumb->setLinks($links);
+      }
+    }
+  }
+}
