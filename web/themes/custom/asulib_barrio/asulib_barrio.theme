@@ -58,6 +58,7 @@ function asulib_barrio_preprocess_breadcrumb(&$variables) {
         'text' => 'Search for "' . $search_term . '"',
         'attributes' => new Attribute(['class' => ['is_active']])
       ];
+      $variables['#cache']['contexts'][] = 'url';
     }
   }
 }
