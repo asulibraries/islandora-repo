@@ -139,25 +139,27 @@ function asu_default_fields_node_insert(NodeInterface $node) {
       }
     }
   }
-  if ($node->bundle() == "asu_repository_item" || $node->bundle() == "collection") {
-    $entity_type = $node->getEntityTypeId();
+  $moduleHandler = \Drupal::service('module_handler');
+  if ($moduleHandler->moduleExists('hdl')) {
+    if ($node->bundle() == "asu_repository_item" || $node->bundle() == "collection") {
+      $entity_type = $node->getEntityTypeId();
 
-    if (!$entity_type == 'node') {
-      return;
-    }
+      if (!$entity_type == 'node') {
+        return;
+      }
 
-    $handle_field = \Drupal::config('persistent_identifiers.settings')->get('persistent_identifiers_target_field');
-    if ($node->hasField($handle_field) && $node->get($handle_field)->isEmpty()) {
-      // Only run the minter if the field handle is empty.
-      $config = \Drupal::config('persistent_identifiers.settings');
-      $content_type = $node->bundle();
-      $allowed_types = $config->get('persistent_identifiers_bundles');
-      if ($node->getEntityTypeId() == 'node' && in_array($content_type, $allowed_types, TRUE)) {
-        if ($node->bundle() == "collection") {
-          _mint_handle($node, 'R.2.C');
-        }
-        else {
-          _mint_handle($node);
+      $handle_field = \Drupal::config('persistent_identifiers.settings')->get('persistent_identifiers_target_field');
+      if ($node->hasField($handle_field) && $node->get($handle_field)->isEmpty()) {
+        // Only run the minter if the field handle is empty.
+        $config = \Drupal::config('persistent_identifiers.settings');
+        $content_type = $node->bundle();
+        $allowed_types = $config->get('persistent_identifiers_bundles');
+        if ($node->getEntityTypeId() == 'node' && in_array($content_type, $allowed_types, TRUE)) {
+          if ($node->bundle() == "collection") {
+            _mint_handle($node, 'R.2.C');
+          } else {
+            _mint_handle($node);
+          }
         }
       }
     }
