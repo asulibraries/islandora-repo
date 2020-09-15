@@ -6,7 +6,6 @@ dependencies:
     - field.storage.paragraph.field_nonsort
     - node.type.collection
     - system.menu.main
-    - views.view.search_within_collection
   module:
     - group
     - node
@@ -228,19 +227,6 @@ display:
           plugin_id: standard
       title: Collections
       header:
-        area:
-          id: area
-          table: views
-          field: area
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: false
-          tokenize: false
-          content:
-            value: '<a href="/collections/all">All</a> | '
-            format: full_html
-          plugin_id: text
         view:
           id: view
           table: views
@@ -251,11 +237,6 @@ display:
           empty: false
           view_to_insert: 'collections:block_1'
           inherit_arguments: false
-          plugin_id: view
-        view_1:
-          id: view_1
-          table: views
-          field: view
           plugin_id: view
       footer: {  }
       empty: {  }
@@ -450,6 +431,86 @@ display:
           admin_label: ''
           default_action: ignore
           exception:
+            value: ''
+            title_enable: true
+            title: Collections
+          title_enable: true
+          title: 'Collections starting with "{{ arguments.field_main_title_value }}"'
+          default_argument_type: fixed
+          default_argument_options:
+            argument: all
+          default_argument_skip_url: false
+          summary_options:
+            base_path: ''
+            count: true
+            items_per_page: 25
+            override: false
+          summary:
+            sort_order: asc
+            number_of_records: 0
+            format: default_summary
+          specify_validation: true
+          validate:
+            type: none
+            fail: ignore
+          validate_options: {  }
+          glossary: true
+          limit: 1
+          case: upper
+          path_case: lower
+          transform_dash: false
+          break_phrase: false
+          plugin_id: string
+      defaults:
+        arguments: false
+        relationships: false
+        header: true
+      relationships:
+        field_title:
+          id: field_title
+          table: node__field_title
+          field: field_title
+          relationship: none
+          group_type: group
+          admin_label: 'field_title: Paragraph'
+          required: false
+          plugin_id: standard
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
+        - 'user.node_grants:view'
+      tags:
+        - 'config:field.storage.paragraph.field_nonsort'
+  page_2:
+    display_plugin: page
+    id: page_2
+    display_title: Page
+    position: 1
+    display_options:
+      display_extenders: {  }
+      path: collections
+      menu:
+        type: normal
+        title: 'Browse Collections'
+        description: 'Browse all of our digital collections'
+        expanded: false
+        parent: ''
+        weight: 4
+        context: '0'
+        menu_name: main
+      arguments:
+        field_main_title_value:
+          id: field_main_title_value
+          table: paragraph__field_main_title
+          field: field_main_title_value
+          relationship: field_title
+          group_type: group
+          admin_label: ''
+          default_action: ignore
+          exception:
             value: all
             title_enable: true
             title: Collections
@@ -483,7 +544,7 @@ display:
       defaults:
         arguments: false
         relationships: false
-        header: false
+        header: true
       relationships:
         field_title:
           id: field_title
@@ -494,42 +555,6 @@ display:
           admin_label: 'field_title: Paragraph'
           required: false
           plugin_id: standard
-      header:
-        area:
-          id: area
-          table: views
-          field: area
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: false
-          tokenize: false
-          content:
-            value: '<a href="/collections/all">All</a> | '
-            format: full_html
-          plugin_id: text
-        view:
-          id: view
-          table: views
-          field: view
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: false
-          view_to_insert: 'collections:block_1'
-          inherit_arguments: false
-          plugin_id: view
-        view_1:
-          id: view_1
-          table: views
-          field: view
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: false
-          view_to_insert: 'search_within_collection:block_1'
-          inherit_arguments: false
-          plugin_id: view
     cache_metadata:
       max-age: -1
       contexts:
