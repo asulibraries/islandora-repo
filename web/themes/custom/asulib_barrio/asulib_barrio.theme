@@ -47,6 +47,7 @@ function asulib_barrio_preprocess_breadcrumb(&$variables) {
           'text' => $page_title,
           'attributes' => new Attribute(['class' => ['is_active']])
         ];
+        $variables['#cache']['contexts'][] = 'url';
       }
     }
     // Add the search text as a text-breadcrumb as text.
