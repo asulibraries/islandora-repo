@@ -1,12 +1,11 @@
 <?php
 
 use Drupal\Core\Url;
-use Drupal\Core\Link;
 use Drupal\Core\Breadcrumb\Breadcrumb;
-use Drupal\Core\Template\Attribute;
+use Drupal\Core\Routing\RouteMatchInterface;
 
-function asu_breadcrumbs_system_breadcrumb_alter(\Drupal\Core\Breadcrumb\Breadcrumb &$breadcrumb,
-  \Drupal\Core\Routing\RouteMatchInterface $route_match, array $context) {
+function asu_breadcrumbs_system_breadcrumb_alter(Breadcrumb &$breadcrumb,
+  RouteMatchInterface $route_match, array $context) {
   // Add the title of a node to the breadcrumbs (not as a link, but as plain text.
   // NOTE: because Drupal 8 is strict at the module level and will not allow
   // any breadcrumbs that are not links at this point, the "breadcrumb as text"
