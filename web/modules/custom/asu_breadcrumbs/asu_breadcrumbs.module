@@ -1,0 +1,29 @@
+<?php
+
+use Drupal\Core\Url;
+use Drupal\Core\Breadcrumb\Breadcrumb;
+use Drupal\Core\Routing\RouteMatchInterface;
+
+function asu_breadcrumbs_system_breadcrumb_alter(Breadcrumb &$breadcrumb,
+  RouteMatchInterface $route_match, array $context) {
+  // Add the title of a node to the breadcrumbs (not as a link, but as plain text.
+  // NOTE: because Drupal 8 is strict at the module level and will not allow
+  // any breadcrumbs that are not links at this point, the "breadcrumb as text"
+  // must be handled in the themes/custom/asulib_barrio/asulib_barrio.theme file.
+
+  if (!empty($breadcrumb)) {
+    $links = $breadcrumb->getLinks();
+    // Change the "Home" breadcrumb text to match the site's site_slogan value.
+    if (!empty($links[0])) {
+      $t = $links[0]->getText();
+      if ($links[0]->getText() == 'Home') {
+        $links[0]->setUrl(Url::fromRoute('<front>'));
+        $links[0]->setText(\Drupal::config('system.site')->get('slogan'));
+      }
+    }
+  }
+  if (count($links) > 0) {
+    $breadcrumb = new Breadcrumb();
+    $breadcrumb->setLinks($links);
+  }
+}
