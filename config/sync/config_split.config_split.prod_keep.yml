@@ -1,25 +1,25 @@
 langcode: en
 status: true
 dependencies: {  }
-id: staging
-label: 'Staging Config'
-description: 'Staging Settings that are specific per environment'
-folder: ../config/staging
+id: prod_keep
+label: 'Production KEEP Config'
+description: 'Production KEEP Settings that are specific per environment'
+folder: ../config/keep
 module:
-  hdl: 0
   cas: 0
   cas_attributes: 0
   cdn: 0
   clamav: 0
   s3fs: 0
+  hdl: 0
 theme: {  }
 blacklist:
-  - hdl.settings
-  - smtp.settings
   - cas.settings
   - cdn.settings
   - clamav.settings
+  - hdl.settings
   - s3fs.settings
+  - smtp.settings
 graylist:
   - context.context.openseadragon_block
   - context.context.open_seadragon

@@ -6,6 +6,7 @@ dependencies:
   module:
     - context
     - node
+    - system
     - views
   theme:
     - asulib_barrio
@@ -36,3 +37,13 @@ visibility:
     negate: false
     context_mapping:
       node: '@node.node_route_context:node'
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    view_inclusion: {  }
+    context_mapping: {  }
+  request_path:
+    id: request_path
+    pages: "/node/*/edit\r\n/node/add/*"
+    negate: true
+    context_mapping: {  }

@@ -5,6 +5,7 @@ dependencies:
     - asu_collection_extras
     - context
     - node
+    - system
   theme:
     - asulib_barrio
 id: citethiscollection
@@ -31,3 +32,13 @@ visibility:
     negate: false
     context_mapping:
       node: '@node.node_route_context:node'
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    view_inclusion: {  }
+    context_mapping: {  }
+  request_path:
+    id: request_path
+    pages: "/node/add/collection\r\n/node/*/edit"
+    negate: true
+    context_mapping: {  }
