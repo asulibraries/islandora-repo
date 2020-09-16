@@ -55,7 +55,6 @@ function asulib_barrio_preprocess_breadcrumb(&$variables) {
         'q' : 'search_api_fulltext';
       $search_term = \Drupal::request()->query->get($search_param_name);
       if ($search_term && $search_term != "") {
-        \Drupal::logger('debug theme')->info('search term is ' . $search_term);
         $variables['breadcrumb'][] = [
           'text' => 'Search for "' . $search_term . '"',
           'attributes' => new Attribute(['class' => ['is_active']])
