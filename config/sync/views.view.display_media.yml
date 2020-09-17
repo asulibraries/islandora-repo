@@ -12,6 +12,7 @@ dependencies:
     - field.storage.media.field_media_video_file
     - field.storage.media.field_mime_type
     - field.storage.media.field_width
+    - responsive_image.styles.item_displays
   enforced:
     module:
       - islandora_core_feature
@@ -20,6 +21,7 @@ dependencies:
     - file
     - image
     - media
+    - responsive_image
     - taxonomy
     - user
 id: display_media
@@ -1672,6 +1674,9 @@ display:
         filters: false
         filter_groups: false
         title: false
+        style: false
+        row: false
+        fields: false
       filter_groups:
         operator: AND
         groups:
@@ -1680,6 +1685,84 @@ display:
       bundles: {  }
       title: Thumbnail
       show_title: false
+      style:
+        type: default
+        options:
+          grouping: {  }
+          row_class: ''
+          default_row_class: false
+      row:
+        type: fields
+        options:
+          default_field_elements: true
+          inline: {  }
+          separator: ''
+          hide_empty: true
+      fields:
+        field_media_image:
+          id: field_media_image
+          table: media__field_media_image
+          field: field_media_image
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: responsive_image
+          settings:
+            responsive_image_style: item_displays
+            image_link: ''
+          group_column: ''
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
     cache_metadata:
       max-age: -1
       contexts:
@@ -1687,4 +1770,5 @@ display:
         - 'languages:language_interface'
         - url
         - user.permissions
-      tags: {  }
+      tags:
+        - 'config:field.storage.media.field_media_image'
