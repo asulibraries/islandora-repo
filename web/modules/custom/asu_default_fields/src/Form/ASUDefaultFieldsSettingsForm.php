@@ -15,7 +15,7 @@ class ASUDefaultFieldsSettingsForm extends ConfigFormBase {
    */
   protected function getEditableConfigNames() {
     return [
-      'asu_default_fields.settings_form',
+      'asu_default_fields.settings',
     ];
   }
 
