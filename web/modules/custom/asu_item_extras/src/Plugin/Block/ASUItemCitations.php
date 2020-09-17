@@ -59,7 +59,7 @@ class ASUItemCitations extends BlockBase {
     $render_this = [
       '#markup' =>
         ((count($output_links) > 0) ?
-          "<ul class=''><li>" . implode("</li><li>", $output_links) . "</li></ul>" :
+          "<nav><ul class=''><li>" . implode("</li><li>", $output_links) . "</li></ul></nav>" :
           ""),
     ];
     return [
