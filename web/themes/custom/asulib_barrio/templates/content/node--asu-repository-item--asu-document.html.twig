@@ -96,16 +96,17 @@
   </header>
   <div{{ content_attributes.addClass('node__content', 'clearfix', 'container') }}>
     <div class="row">
-      <div class="col file-container">
-        {#{{ content.pdfjs_media_evas_entity_view_1 }}#}
+      <div class="col-md-5 file-container">
         {{ drupal_view('display_media', 'thumbnail', node.id) }}
       </div>
-      <div class="col info-container">
+      <div class="col-md-7 info-container">
         <div>{{ content.field_description }}</div>
         <div>{{ content.field_copyright_statement }}</div>
         <div>{{ content.field_reuse_permissions }}</div>
         <div class="download-options">{{ content.display_media_entity_view_3 }}</div>
-        <div class="download-info">Download count: {{ drupal_block('asu_item_downloads') }}</div>
+        <div class="download-info">
+          <p>Download count: {{ drupal_block('asu_item_downloads', wrapper=false) }}</p>
+        </div>
       </div>
     </div>
     <div id="details" class="details">
@@ -121,8 +122,7 @@
             {{ drupal_view('collaborating_institutions', 'block_1', node.id) }}
 
             <br/>
-            <div><p><strong><a class="icon-link" href="{{ node.id }}/full-metadata"><i class="fa fa-lg
-            fa-list-ul"></i></a><a href="{{ node.id }}/full-metadata">{{ 'View full metadata'|t }}</a></strong></p></div>
+            <div><p><strong><a class="icon-link" href="/node/{{ node.id }}/full-metadata"><i class="fa fa-lg fa-list-ul"></i></a><a href="/node/{{ node.id }}/full-metadata">{{ 'View full metadata'|t }}</a></strong></p></div>
     </div>
     <div id="interact" class="interact">
       <h2>{{ 'Interact with this item'|t }}</h2>
@@ -151,5 +151,4 @@
       </ul>
     </div>
 </article>
-{#
-{{ kint(content|keys) }}#}
+{#{{ kint(content|keys) }}#}

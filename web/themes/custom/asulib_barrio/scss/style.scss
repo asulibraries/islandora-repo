@@ -74,7 +74,37 @@ a {
   border-bottom: 1px dotted $maroon;
 }
 
+.social-icons a {
+  border-bottom: none;
+}
+
 a.icon-link {
   border-bottom: none;
   margin-right: .75rem;
+}
+
+/* This might be too general */
+img { width: 100%; }
+
+/* Remove main content padding */
+.node__content.container { padding: 0; }
+
+picture img { width: 100%; }
+
+.file-container {
+  margin-bottom: 1rem;
+}
+
+.download-options {
+  .btn-group {
+    margin-bottom: 1rem;
+  }
+  .dropdown-item {
+    border: 0;
+  }
+}
+
+.iiif input,
+.iiif a.btn {
+  border-radius: 0;
 }
