@@ -41,25 +41,26 @@ function asulib_barrio_preprocess_breadcrumb(&$variables) {
       $request = \Drupal::request();
       $route_match = \Drupal::routeMatch();
       $page_title = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
-    
+
       if (!empty($page_title)) {
         $variables['breadcrumb'][] = [
           'text' => $page_title,
           'attributes' => new Attribute(['class' => ['is_active']])
         ];
-        $variables['#cache']['contexts'][] = 'url';
       }
     }
-    // Add the search text as a text-breadcrumb as text.
-    $search_param_name = (\Drupal::service('current_route_match')->getRouteName() == 'repo_bento_search.search_page') ?
-      'q' : 'search_api_fulltext';
-    $search_term = \Drupal::request()->query->get($search_param_name);
-    if ($search_term) {
-      $variables['breadcrumb'][] = [
-        'text' => 'Search for "' . $search_term . '"',
-        'attributes' => new Attribute(['class' => ['is_active']])
-      ];
-      $variables['#cache']['contexts'][] = 'url';
+    else {
+      // Add the search text as a text-breadcrumb as text.
+      $search_param_name = (\Drupal::service('current_route_match')->getRouteName() == 'repo_bento_search.search_page') ?
+        'q' : 'search_api_fulltext';
+      $search_term = \Drupal::request()->query->get($search_param_name);
+      if ($search_term && $search_term != "") {
+        $variables['breadcrumb'][] = [
+          'text' => 'Search for "' . $search_term . '"',
+          'attributes' => new Attribute(['class' => ['is_active']])
+        ];
+      }
     }
   }
+  $variables['#cache']['contexts'][] = 'url';
 }
