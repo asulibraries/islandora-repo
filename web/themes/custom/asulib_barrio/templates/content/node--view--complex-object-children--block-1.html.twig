@@ -62,93 +62,39 @@
 {{ attach_library('bootstrap_barrio/node') }}
 
 {%
-    set classes = [
+  set classes = [
     'node',
     'node--type-' ~ node.bundle|clean_class,
     node.isPromoted() ? 'node--promoted',
     node.isSticky() ? 'node--sticky',
     not node.isPublished() ? 'node--unpublished',
-    view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
-    'clearfix',
-    'repo-item',
-]
+  ]
 %}
-<article{{ attributes.addClass(classes) }}>
-    <header>
-        {{ title_prefix }}
-        {% if label and not page %}
-            <h2{{ title_attributes.addClass('node__title') }}>
-                <a href="{{ url }}" rel="bookmark">{{ label }}</a>
-            </h2>
-        {% endif %}
-        {{ title_suffix }}
-        {% if display_submitted %}
-            <div class="node__meta">
-                {{ author_picture }}
-                {% block submitted %}
-                    <em{{ author_attributes }}>
-                        {% trans %}Submitted by {{ author_name }} on {{ date }}{% endtrans %}
-                    </em>
-                {% endblock %}
-                {{ metadata }}
+<div class="complex-object-child">
+    <article{{ attributes.addClass(classes) }}>
+      <header>
+        <div>
+            <div class="tat-thumbnail">
+                {{ drupal_view('display_media', 'child_thumbnail', node.id) }}
             </div>
-        {% endif %}
-    </header>
-    <div{{ content_attributes.addClass('node__content', 'clearfix', 'container') }}>
-        <div class="row">
-            <div class="col file-container">
-                {#{{ content.openseadragon_media_evas_entity_view_1 }}#}
-                {{ drupal_view('display_media', 'thumbnail', node.id) }}
-            </div>
-            <div class="col info-container">
-                <div>{{ content.field_description }}</div>
-                <div>{{ content.field_copyright_statement }}</div>
-                <div>{{ content.field_reuse_permissions }}</div>
-            </div>
-        </div>
-        <div id="included-this-item">
-            <h2>{{ 'Included in this item'|t }}</h2>
-            <div class="children-3-wide">
-                {{ drupal_view('complex_object_children', 'block_1', node.id) }}
+            <div class="tat-title">
+                {{ title_prefix }}
+                {% if content.display_media_child_media_name %}
+                  <h5{{ title_attributes.addClass('node__title') }}>
+                    <a href="{{ url }}" rel="bookmark">{{ content.display_media_child_media_name }}</a>
+                  </h5>
+                {% else %}
+                    <b>what the fuck - why is `content.display_media_child_media_name` missing</b>
+                {% endif %}
+                {{ title_suffix }}
             </div>
             <br class="clearfloat">
-            <a href="/items/{{ node.id }}/members">View all associated media</a
+            Download count: {{ drupal_block('asu_item_downloads') }}<br>
+            <br>
+            <a href="#">Preview</a><br>
+            <div class="download-options">{{ content.display_media_entity_view_3 }}</div>
+            <a href="#">Permanent Link</a><br>
         </div>
-        <div id="details" class="details">
-            <h2>{{ 'Details'|t }}</h2>
-            <div>{{ content.field_resource_type }}</div>
-            <div>{{ content.field_primary_membership }}</div>
-            <div>{{ content.field_additional_memberships }}</div>
-            {{ drupal_view('collaborating_institutions', 'block_1', node.id) }}
-
-            <br/>
-            <div><p><strong><a class="icon-link" href="{{ node.id }}/full-metadata"><i class="fa fa-lg
-            fa-list-ul"></i></a><a href="{{ node.id }}/full-metadata">{{ 'View full metadata'|t }}</a></strong></p></div>
-        </div>
-        <div id="interact" class="interact">
-            <h2>{{ 'Interact with this item'|t }}</h2>
-            <div class="row">
-                <div class="col citation">
-                    <h3>{{ 'Citation, rights and reuse'|t }}</h3>
-                    {{ drupal_view('citations_rights_reuse', 'citation_block', node.id) }}
-                </div>
-                <div class="col social-icons">
-                    <h3>{{ 'Print and share'|t }}</h3>
-                    {{ drupal_block('rrssb_block', { button_set: 'default' }, wrapper=false) }}
-                </div>
-            </div>
-            <div class="iiif">
-                <h3>{{ 'International Image Interoperability Framework' |t }}</h3>
-                block or content here
-            </div>
-        </div>
-        <div id="machine" class="machine">
-            <h2>{{ 'Machine-readable links'|t }}</h2>
-            <ul>
-                <li><a href="">MODS</a></li>
-                <li><a href="">OAI</a></li>
-                <li><a href="">Dublin Core</a></li>
-            </ul>
-    </div>
-</article>
-
+      </header>
+    </article>
+</div>
