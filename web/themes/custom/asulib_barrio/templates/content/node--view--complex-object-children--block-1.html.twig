@@ -79,12 +79,10 @@
             </div>
             <div class="tat-title">
                 {{ title_prefix }}
-                {% if content.display_media_child_media_name %}
+                {% if label %}
                   <h5{{ title_attributes.addClass('node__title') }}>
-                    <a href="{{ url }}" rel="bookmark">{{ content.display_media_child_media_name }}</a>
+                    <a href="{{ url }}" rel="bookmark">{{ label }}</a>
                   </h5>
-                {% else %}
-                    <b>what the fuck - why is `content.display_media_child_media_name` missing</b>
                 {% endif %}
                 {{ title_suffix }}
             </div>
