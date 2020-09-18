@@ -99,6 +99,8 @@
             <div>{{ content.field_rich_description }}</div>
             <div>{{ content.field_collaborating_institutions }}</div>
         </div>
+        {{ drupal_block('about_this_collection_block') }}
+
             <h2>{{ 'Latest additions'|t }}</h2>
             {{ drupal_block('latest_additions_to_collection_block') }}
         <br/>
