@@ -11,7 +11,7 @@ use Drupal\Core\Link;
  *
  * @Block(
  *   id = "asu_item_citations",
- *   admin_label = @Translation("Citations, Rights and Reuse"),
+ *   admin_label = @Translation("Citations, rights and reuse"),
  *   category = @Translation("Views"),
  * )
  */
