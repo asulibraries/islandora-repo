@@ -37,7 +37,7 @@
                 {% else %}
                     {{ item.description }}
                 {% endif %}<br>
-            {{ item.createdAt }}<br>
+            <small><label>Created: </label> {{ item.createdAt }}</small><br>
             {% if item.identifier_of_dataverse %}
                 <a href="{{ service_url }}/dataverse/{{ item.identifier_of_dataverse }}" target="_blank">{{ item.publisher }}</a>
             {% endif %}

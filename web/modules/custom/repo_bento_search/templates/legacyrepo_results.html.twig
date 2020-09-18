@@ -36,7 +36,7 @@
                 {% else %}
                     {{ item.item_description }}
                 {% endif %}<br>
-            {{ item.md_created_s }}<br>
+            <small><label>Created: </label> {{ item.md_created_s }}</small><br>
         </div>
     {% endfor %}
     <a href="{{ service_url }}/search?q={{ search_term }}" target="_blank" title="See all ASU Digital Repository results &gt;">See all ASU Digital Repository results &gt;</a>
