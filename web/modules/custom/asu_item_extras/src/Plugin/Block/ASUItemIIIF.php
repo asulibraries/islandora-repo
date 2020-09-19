@@ -58,10 +58,10 @@ class ASUItemIIIF extends BlockBase {
           '#type' => 'container',
           'left-block' => [
             '#type' => 'item',
-            '#prefix' => '<div class="float_l_18">',
+            '#prefix' => '<div class="row"><div class="col-md-2">',
             '#suffix' => '</div>',
-            '#markup' => '            <a href="https://iiif.io/technical-details/" target="_blank">
-                <img class="img " src="' .
+            '#markup' => '            <a class="icon-link" href="https://iiif.io/technical-details/" target="_blank">
+                <img class="img" src="' .
                 \Drupal::request()->getSchemeAndHttpHost() . "/" .
                 drupal_get_path("module", "asu_item_extras") . '/images/IIIF-logo-colored-text.svg">
               </a>',
@@ -79,10 +79,13 @@ class ASUItemIIIF extends BlockBase {
               '#id' => 'iiif_editbox' . $id_suffix,
               '#value' => \Drupal::request()->getSchemeAndHttpHost() . $url->toString() . '/manifest',
             ],
-            '#prefix' => '<div class="float_l_80"><p><span>We support the </span><a href="https://iiif.io/technical-details/" target="_blank">IIIF</a><span> Presentation API</span></p>',
+            '#prefix' => '<div class="col-md-6 offset-md-1"><p>We support the <a href="https://iiif.io/technical-details/" target="_blank">IIIF</a> Presentation API</p><div class="row no-gutters"><div class="col-9">',
             '#suffix' => '<!-- Unnamed (Rectangle) -->
-            <div>
-              <a id="copy_manifest_link" class="copy_button">Copy link</a>
+            </div>
+            <div class="col">
+              <a id="copy_manifest_link" class="btn btn-primary copy_button">Copy link</a>
+            </div>
+            </div>
             </div>
           </div>',
           ],
