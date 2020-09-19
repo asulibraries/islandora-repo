@@ -116,6 +116,14 @@
             <div>{{ content.field_linked_agent }}</div>
             <div>{{ content.field_date_created }}</div>
             {# TODO combine all subjects here #}
+            <div class="all-subjects">
+                <div class="field__label">{{ 'Subjects'|t }}</div>
+                {{ content.field_subject }}
+                {{ content.field_geographic_subject }}
+                {{ content.field_subjects_name }}
+                {{ content.field_temporal_subject }}
+                {{ content.field_title_subject }}
+            </div>
             <div>{{ content.field_resource_type }}</divI>
             <div>{{ content.field_primary_membership }}</div>
             <div>{{ content.field_additional_memberships }}</div>
@@ -153,3 +161,4 @@
     </div>
 </article>
 {#{{ kint(content|keys) }}#}
+{{ kint(content.field_linked_agent) }}

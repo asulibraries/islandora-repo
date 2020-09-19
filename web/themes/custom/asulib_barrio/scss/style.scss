@@ -114,3 +114,19 @@ a {
     border-radius: 0;
   }
 }
+
+/* Subjects and Linked Agent */
+.inline-list {
+  list-style: none;
+  padding: 0;
+}
+
+.all-subjects .inline-list,
+.inline-list li {
+  display: inline;
+}
+
+.inline-list li:not(:last-child)::after,
+.all-subjects ul:not(:first-of-type)::before {
+  content: ' / ';
+}
