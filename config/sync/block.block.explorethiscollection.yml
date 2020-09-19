@@ -8,15 +8,15 @@ dependencies:
     - system
   theme:
     - asulib_barrio
-id: citethiscollection
+id: explorethiscollection
 theme: asulib_barrio
 region: sidebar_first
-weight: -9
+weight: 3
 provider: null
-plugin: asu_collection_citations
+plugin: explore_this_collection_block
 settings:
-  id: asu_collection_citations
-  label: 'Cite this collection'
+  id: explore_this_collection_block
+  label: 'Explore this collection'
   provider: asu_collection_extras
   label_display: visible
 visibility:
@@ -25,6 +25,11 @@ visibility:
     pages: ''
     negate: null
     context_mapping: {  }
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    view_inclusion: {  }
+    context_mapping: {  }
   node_type:
     id: node_type
     bundles:
@@ -32,13 +37,8 @@ visibility:
     negate: false
     context_mapping:
       node: '@node.node_route_context:node'
-  view_inclusion:
-    id: view_inclusion
-    negate: null
-    view_inclusion: {  }
-    context_mapping: {  }
   request_path:
     id: request_path
-    pages: "/node/add/collection\r\n/node/*/edit"
+    pages: /node/add/collection
     negate: true
     context_mapping: {  }
