@@ -69,7 +69,7 @@ third_party_settings:
     group_sidebar:
       children: {  }
       parent_name: ''
-      weight: 61
+      weight: 65
       format_type: details_sidebar
       region: hidden
       format_settings:
@@ -83,7 +83,7 @@ third_party_settings:
     group_details:
       children: {  }
       parent_name: ''
-      weight: 62
+      weight: 66
       format_type: details
       region: hidden
       format_settings:
@@ -103,8 +103,13 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  display_media_download_button:
+    weight: 11
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   display_media_entity_view_1:
-    weight: 53
+    weight: 52
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -114,12 +119,17 @@ content:
     settings: {  }
     third_party_settings: {  }
   display_media_entity_view_4:
-    weight: 11
+    weight: 12
     region: content
     settings: {  }
     third_party_settings: {  }
   display_media_service_file:
-    weight: 48
+    weight: 47
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  display_media_thumbnail:
+    weight: 53
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -177,7 +187,7 @@ content:
     region: content
   field_display_hints:
     type: entity_reference_rss_category
-    weight: 49
+    weight: 48
     region: content
     label: above
     settings: {  }
@@ -202,7 +212,7 @@ content:
     type: edtf_default
     region: content
   field_embargo_release_date:
-    weight: 47
+    weight: 46
     label: above
     settings:
       format_type: medium
@@ -226,7 +236,7 @@ content:
     type: list_default
     region: content
   field_gemini_uri:
-    weight: 42
+    weight: 41
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -240,7 +250,7 @@ content:
     region: content
   field_geographic_subject:
     weight: 37
-    label: above
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
@@ -256,7 +266,7 @@ content:
     region: content
   field_history:
     type: jsonb_default
-    weight: 50
+    weight: 49
     region: content
     label: above
     settings: {  }
@@ -280,7 +290,7 @@ content:
     weight: 4
     label: above
     settings:
-      link: true
+      link: 0
     third_party_settings: {  }
     type: typed_relation_brief
     region: content
@@ -339,7 +349,7 @@ content:
     region: content
   field_place_of_publication_code:
     type: entity_reference_rss_category
-    weight: 51
+    weight: 50
     region: content
     label: above
     settings: {  }
@@ -409,7 +419,7 @@ content:
     region: content
   field_subject:
     weight: 40
-    label: above
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
@@ -417,7 +427,7 @@ content:
     region: content
   field_subjects_name:
     weight: 39
-    label: above
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
@@ -432,7 +442,7 @@ content:
     region: content
   field_temporal_subject:
     weight: 38
-    label: above
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
@@ -447,8 +457,8 @@ content:
     third_party_settings: {  }
     region: content
   field_title_subject:
-    weight: 46
-    label: above
+    weight: 45
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
@@ -474,7 +484,7 @@ content:
     region: content
   langcode:
     type: language
-    weight: 43
+    weight: 42
     region: content
     label: above
     settings:
@@ -487,23 +497,22 @@ content:
     settings: {  }
     third_party_settings: {  }
   openseadragon_media_evas_entity_view_1:
-    weight: 45
+    weight: 44
     region: content
     settings: {  }
     third_party_settings: {  }
   openseadragon_media_evas_service_file:
-    weight: 52
+    weight: 51
     region: content
     settings: {  }
     third_party_settings: {  }
   pdfjs_media_evas_entity_view_1:
-    weight: 44
+    weight: 43
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
   display_media_entity_view_2: true
-  display_media_thumbnail: true
   field_complex_subjects: true
   field_default_derivative_file_pe: true
   field_default_original_file_perm: true
