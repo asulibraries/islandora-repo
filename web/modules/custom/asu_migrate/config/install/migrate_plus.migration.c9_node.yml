@@ -99,19 +99,15 @@ process:
       bundle_key: vid
       bundle: islandora_models
 
-  # field_description:
-    # plugin: skip_on_empty
-    # source: Description
-    # method: process
-  # TODO send descriptions to notes
-  # add abstract to its own field
-  # Lets just say i'll rename field_description
-  # at the label level in the UI
-  # and add the description to notes in the merge py script
-  field_description:
+  field_rich_description/value:
     plugin: skip_on_empty
-    source: Abstract
+    source: Description
     method: process
+
+  field_rich_description/format:
+    plugin: default_value
+    default_value: "description_restricted_items"
+
 
   field_table_of_contents:
     plugin: skip_on_empty

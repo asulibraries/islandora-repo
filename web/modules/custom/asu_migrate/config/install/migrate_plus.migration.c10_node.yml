@@ -4,13 +4,13 @@ dependencies:
     module:
       - asu_migrate
 
-id: c5_node
-label: Import Collection 5 from CSV
-migration_group: migrate_c5_csv
+id: c10_node
+label: Import Collection 10 from CSV
+migration_group: migrate_c10_csv
 
 source:
   plugin: csv
-  path: /var/www/html/drupal/web/modules/custom/asu_migrate/c5_merged.csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/c10_merged.csv
 
   # 1 means you have a header row, 0 means you don't
   header_row_count: 1
@@ -26,7 +26,7 @@ source:
 
     # Everything gets created as admin
     uid: 1
-    cid: 'Mediterranean Landscape Dynamics Project'
+    cid: 'Wolf (Allgood), Tammy'
     pres_state: '558' # Not Preserved
     handle: "https://hdl.handle.net/2286/R.I."
 
@@ -42,18 +42,26 @@ process:
     method: process
 
   field_copyright_statement:
-    plugin: entity_lookup_by_field
-    source: Copyright
-    lookup_field: field_source/uri
-    entity_type: taxonomy_term
-    bundle: copyright_statements
+    -
+      plugin: skip_on_empty
+      source: Copyright
+      method: process
+    -
+      plugin: entity_lookup_by_field
+      lookup_field: field_source/uri
+      entity_type: taxonomy_term
+      bundle: copyright_statements
 
   field_reuse_permissions:
-    plugin: entity_lookup_by_field
-    source: Reuse
-    lookup_field: field_source/uri
-    entity_type: taxonomy_term
-    bundle: reuse_permissions
+    -
+      plugin: skip_on_empty
+      source: Reuse
+      method: process
+    -
+      plugin: entity_lookup_by_field
+      lookup_field: field_source/uri
+      entity_type: taxonomy_term
+      bundle: reuse_permissions
 
   created:
     plugin: format_date
@@ -70,30 +78,13 @@ process:
       Private: draft
       Public: published
 
-  # TODO - set type from media?
-  # can we force the media migration through a custom plugin
-  # probably if its only one item, but it gets way more complicated if there are more than one
-
-  # Make the object an 'Digital Document'
-  # if it only has 1 attachment
-  # otherwise make it a Paged Content object
   field_model:
-    -
-      plugin: str_replace
-      source: Attachment Count
-      search: 1
-      replace: 'Digital Document'
-    -
-      plugin: str_replace
-      search: "/[2-9]/"
-      regex: true
-      replace: 'Paged Content'
-    -
-      plugin: entity_lookup
-      entity_type: taxonomy_term
-      value_key: name
-      bundle_key: vid
-      bundle: islandora_models
+    source: Model
+    plugin: entity_lookup
+    entity_type: taxonomy_term
+    value_key: name
+    bundle_key: vid
+    bundle: islandora_models
 
   field_display_hints:
     -
@@ -202,6 +193,7 @@ process:
 
   uid: constants/uid
   # TODO lookup user by asurite from original system creator
+  #source: System User
 
   field_pid: Item ID
 
@@ -227,14 +219,41 @@ process:
       - constants/handle
       - Item ID
 
+
+  # item_parents:
+  #   source: Parent Item
+  #   plugin: entity_lookup
+  #   entity_type: node
+  #   access_check: 0
+  #   bundle_key: type
+  #   bundle: asu_repository_item
+  #   value_key: id
+
+  # collection_parents:
+  #   # -
+  #   #   plugin: skip_on_empty
+  #   #   method: process
+  #   #   source: Collection Title
+  #   # # -
+  #   plugin: entity_lookup
+  #   entity_type: node
+  #   access_check: 0
+  #   bundle_key: type
+  #   bundle: collection
+  #   value_key: title
+  #   default_value: constants/cid
+
   field_member_of:
-    source: constants/cid
-    plugin: entity_lookup
-    entity_type: node
-    access_check: 0
-    bundle_key: type
-    bundle: collection
-    value_key: title
+    -
+      plugin: get
+      source:
+        - 'Parent Item'
+        - 'constants/cid'
+    -
+      plugin: multi_entity_lookup
+      entity_type: node
+      access_check: 0
+      bundle_key: type
 
   field_subject:
     -

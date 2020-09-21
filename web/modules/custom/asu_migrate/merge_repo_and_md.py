@@ -196,7 +196,7 @@ def main(argv):
     merge_df['History JSON'] = merge_df["History"]
     del merge_df["History JSON"]
     del merge_df["History"] # temp remove history until we decide what to do with it
-
+    del merge_df["Repository Ingestion Notes"]
 
     merge_df.to_csv('c' + str(int(merge_df.iloc[0]['Collection ID'])) + '_merged.csv')
     att_df.to_csv('data/migration_data/att_file_' +

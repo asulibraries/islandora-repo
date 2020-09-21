@@ -10,7 +10,6 @@ dependencies:
     - field.field.node.asu_repository_item.field_date_digitized
     - field.field.node.asu_repository_item.field_default_derivative_file_pe
     - field.field.node.asu_repository_item.field_default_original_file_perm
-    - field.field.node.asu_repository_item.field_description
     - field.field.node.asu_repository_item.field_display_hints
     - field.field.node.asu_repository_item.field_edition
     - field.field.node.asu_repository_item.field_edtf_date_created
@@ -39,6 +38,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_related_item
     - field.field.node.asu_repository_item.field_resource_type
     - field.field.node.asu_repository_item.field_reuse_permissions
+    - field.field.node.asu_repository_item.field_rich_description
     - field.field.node.asu_repository_item.field_series
     - field.field.node.asu_repository_item.field_statement_responsibility
     - field.field.node.asu_repository_item.field_subject
@@ -68,6 +68,7 @@ third_party_settings:
         - field_title
         - field_member_of
         - field_additional_memberships
+        - field_rich_description
         - field_description
         - field_linked_agent
         - field_language
@@ -293,14 +294,6 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
-  field_description:
-    weight: 26
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
-    type: string_textarea
-    region: content
   field_display_hints:
     weight: 7
     settings: {  }
@@ -397,7 +390,7 @@ content:
     type: entity_reference_autocomplete
     region: content
   field_linked_agent:
-    weight: 27
+    weight: 28
     settings:
       match_operator: CONTAINS
       match_limit: 10
@@ -523,6 +516,14 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: options_select
+    region: content
+  field_rich_description:
+    weight: 26
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
     region: content
   field_series:
     weight: 16
