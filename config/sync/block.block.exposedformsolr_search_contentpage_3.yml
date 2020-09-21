@@ -20,7 +20,7 @@ settings:
   id: 'views_exposed_filter_block:solr_search_content-page_3'
   label: ''
   provider: views
-  label_display: visible
+  label_display: '0'
   views_label: 'Explore this collection'
 visibility:
   request_path_exclusion:
@@ -39,4 +39,9 @@ visibility:
     id: request_path
     pages: /node/add/collection
     negate: true
+    context_mapping: {  }
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    view_inclusion: {  }
     context_mapping: {  }
