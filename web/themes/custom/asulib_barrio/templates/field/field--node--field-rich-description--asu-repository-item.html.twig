@@ -56,7 +56,7 @@
 <div{{ attributes.addClass(classes, 'text-show-more field__item') }}>
 	<div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
 	{% for item in items %}
-		{% set description = item.content|render|striptags|trim|split(' ') %}
+		{% set description = item.content|render|trim|split(' ') %}
 		{% if description|length > 40 %}
 			{% set teaser = description|slice(0, 30)|join(' ') ~ '<span id="more-ellipse" class="collapse
 			multi-collapse show">&hellip;
