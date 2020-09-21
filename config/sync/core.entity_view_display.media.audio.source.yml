@@ -4,6 +4,7 @@ dependencies:
   config:
     - core.entity_view_mode.media.source
     - field.field.media.audio.field_access_terms
+    - field.field.media.audio.field_captions
     - field.field.media.audio.field_file_size
     - field.field.media.audio.field_media_audio_file
     - field.field.media.audio.field_media_of
@@ -15,7 +16,7 @@ dependencies:
     module:
       - islandora_core_feature
   module:
-    - file
+    - asu_item_extras
 id: media.audio.source
 targetEntityType: media
 bundle: audio
@@ -23,11 +24,11 @@ mode: source
 content:
   field_gemini_uri:
     weight: 100
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
   field_media_audio_file:
-    type: file_audio
+    type: file_video_caption
     weight: 0
     label: visually_hidden
     settings:
@@ -35,11 +36,15 @@ content:
       multiple_file_display_type: tags
       autoplay: false
       loop: false
+      muted: false
+      width: 640
+      height: 480
     third_party_settings: {  }
     region: content
 hidden:
   created: true
   field_access_terms: true
+  field_captions: true
   field_file_size: true
   field_media_of: true
   field_media_use: true

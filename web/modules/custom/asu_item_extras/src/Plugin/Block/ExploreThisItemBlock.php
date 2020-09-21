@@ -67,7 +67,7 @@ class ExploreThisItemBlock extends BlockBase {
       '#cache' => ['max-age' => 0],
       '#markup' =>
         ((count($output_links) > 0) ?
-        "<ul class=''><li>" . implode("</li><li>", $output_links) . "</li></ul>" :
+        "<nav><ul class=''><li>" . implode("</li><li>", $output_links) . "</li></ul></nav>" :
         ""),
     ];
     if ($field_model == 'Paged Content') {

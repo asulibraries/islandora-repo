@@ -11,7 +11,6 @@ dependencies:
     - field.field.node.asu_repository_item.field_date_digitized
     - field.field.node.asu_repository_item.field_default_derivative_file_pe
     - field.field.node.asu_repository_item.field_default_original_file_perm
-    - field.field.node.asu_repository_item.field_description
     - field.field.node.asu_repository_item.field_display_hints
     - field.field.node.asu_repository_item.field_edition
     - field.field.node.asu_repository_item.field_edtf_date_created
@@ -40,6 +39,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_related_item
     - field.field.node.asu_repository_item.field_resource_type
     - field.field.node.asu_repository_item.field_reuse_permissions
+    - field.field.node.asu_repository_item.field_rich_description
     - field.field.node.asu_repository_item.field_series
     - field.field.node.asu_repository_item.field_statement_responsibility
     - field.field.node.asu_repository_item.field_subject
@@ -89,6 +89,11 @@ targetEntityType: node
 bundle: asu_repository_item
 mode: collection_browse_teaser
 content:
+  display_media_download_button:
+    weight: 10
+    settings: {  }
+    third_party_settings: {  }
+    region: content
   display_media_thumbnail:
     weight: 0
     region: content
@@ -101,6 +106,21 @@ content:
     settings:
       view_mode: default
       link: ''
+    third_party_settings: {  }
+    region: content
+  video_media_evas_original_file:
+    weight: 10
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  video_media_evas_preservation_master:
+    weight: 10
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  video_media_evas_service_file:
+    weight: 10
+    settings: {  }
     third_party_settings: {  }
     region: content
 hidden:
@@ -118,7 +138,6 @@ hidden:
   field_date_digitized: true
   field_default_derivative_file_pe: true
   field_default_original_file_perm: true
-  field_description: true
   field_display_hints: true
   field_edition: true
   field_edtf_date_created: true
@@ -148,6 +167,7 @@ hidden:
   field_related_item: true
   field_resource_type: true
   field_reuse_permissions: true
+  field_rich_description: true
   field_series: true
   field_statement_responsibility: true
   field_subject: true

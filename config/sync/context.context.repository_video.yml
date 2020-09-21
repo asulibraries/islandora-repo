@@ -1,0 +1,25 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora
+name: repository_video
+label: 'Repository Video'
+group: Display
+description: 'Video view mode and related'
+requireAllConditions: false
+disabled: false
+conditions:
+  node_has_term:
+    id: node_has_term
+    logic: and
+    negate: 0
+    uri: 'http://purl.org/coar/resource_type/c_12ce'
+    context_mapping:
+      node: '@node.node_route_context:node'
+reactions:
+  view_mode_alter:
+    id: view_mode_alter
+    mode: node.asu_video
+    saved: false
+weight: 0

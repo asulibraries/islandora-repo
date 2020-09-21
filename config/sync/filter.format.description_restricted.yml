@@ -3,7 +3,7 @@ status: true
 dependencies:
   module:
     - media
-name: 'Description Restricted'
+name: 'Description Restricted with Links'
 format: description_restricted
 weight: 0
 filters:
@@ -16,3 +16,12 @@ filters:
       allowed_html: '<a href hreflang>'
       filter_html_help: true
       filter_html_nofollow: false
+  media_embed:
+    id: media_embed
+    provider: media
+    status: false
+    weight: 100
+    settings:
+      default_view_mode: default
+      allowed_media_types: {  }
+      allowed_view_modes: {  }

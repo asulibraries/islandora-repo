@@ -36,22 +36,25 @@ class ParagraphTitleGenerate extends ParagraphGenerate {
   public function transform($title_string, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
     $split = $this->configuration['split_into_parts'];
     $fields = $this->configuration['fields'];
-    $fields['field_main_title'] = $title_string;
+    $fields['field_main_title'] = trim($title_string);
     if ($split) {
       if (str_contains($fields['field_main_title'], ':')) {
         $tparts = explode(':', $fields['field_main_title']);
         $tparts = array_map('trim', $tparts);
-        $fields['field_subtitle'] = array_pop($tparts);
-        $fields['field_main_title'] = implode(":", $tparts);
+        $fields['field_subtitle'] = trim(array_pop($tparts));
+        $fields['field_main_title'] = trim(implode(":", $tparts));
       }
       foreach ($this->nonsorts as $ns) {
         $ns = $ns . " ";
         if (substr(strtolower($fields['field_main_title']), 0, strlen($ns)) === $ns) {
           $tparts = explode(" ", $fields['field_main_title'], 2);
-          $fields['field_nonsort'] = $tparts[0];
-          $fields['field_main_title'] = end($tparts);
+          $fields['field_nonsort'] = trim($tparts[0]);
+          $fields['field_main_title'] = trim(end($tparts));
           break;
         }
+      }
+      if ($fields['field_subtitle'] == " "){
+        $fields['field_subtitle'] = NULL;
       }
       foreach ($fields as $k => $field) {
         if ($field != "" || $field != " " || $field != NULL) {

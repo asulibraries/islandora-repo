@@ -17,7 +17,7 @@
 */
 #}
 
-<video {{ attributes }}>
+<video controls="controls" width="100%">
   {% for file in files %}
     <source {{ file.source_attributes }} />
   {% endfor %}
