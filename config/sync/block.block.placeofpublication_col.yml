@@ -1,29 +1,27 @@
 langcode: en
 status: true
 dependencies:
+  config:
+    - facets.facet.place_of_publication_code_col
   module:
-    - asu_search
     - context
+    - facets
     - system
   theme:
     - asulib_barrio
-id: searchfilterblock
+id: placeofpublication_col
 theme: asulib_barrio
 region: sidebar_first
-weight: -16
+weight: -4
 provider: null
-plugin: search_filter_block
+plugin: 'facet_block:place_of_publication_code_col'
 settings:
-  id: search_filter_block
-  label: 'Search Filters'
-  provider: asu_search
+  id: 'facet_block:place_of_publication_code_col'
+  label: 'Place of Publication'
+  provider: facets
   label_display: visible
+  block_id: placeofpublication_col
 visibility:
-  request_path:
-    id: request_path
-    pages: "/search*\r\n/collections/*/search*"
-    negate: false
-    context_mapping: {  }
   request_path_exclusion:
     id: request_path_exclusion
     pages: ''
@@ -33,4 +31,9 @@ visibility:
     id: view_inclusion
     negate: null
     view_inclusion: {  }
+    context_mapping: {  }
+  request_path:
+    id: request_path
+    pages: '/collections/*/search*'
+    negate: false
     context_mapping: {  }

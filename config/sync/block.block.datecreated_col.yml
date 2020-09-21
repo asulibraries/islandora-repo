@@ -1,29 +1,27 @@
 langcode: en
 status: true
 dependencies:
+  config:
+    - facets.facet.date_created_year_col
   module:
-    - asu_search
     - context
+    - facets
     - system
   theme:
     - asulib_barrio
-id: searchfilterblock
+id: datecreated_col
 theme: asulib_barrio
 region: sidebar_first
-weight: -16
+weight: -1
 provider: null
-plugin: search_filter_block
+plugin: 'facet_block:date_created_year_col'
 settings:
-  id: search_filter_block
-  label: 'Search Filters'
-  provider: asu_search
+  id: 'facet_block:date_created_year_col'
+  label: 'Date Created'
+  provider: facets
   label_display: visible
+  block_id: datecreated_col
 visibility:
-  request_path:
-    id: request_path
-    pages: "/search*\r\n/collections/*/search*"
-    negate: false
-    context_mapping: {  }
   request_path_exclusion:
     id: request_path_exclusion
     pages: ''
@@ -33,4 +31,9 @@ visibility:
     id: view_inclusion
     negate: null
     view_inclusion: {  }
+    context_mapping: {  }
+  request_path:
+    id: request_path
+    pages: '/collections/*/search*'
+    negate: false
     context_mapping: {  }

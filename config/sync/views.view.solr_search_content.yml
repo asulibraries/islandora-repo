@@ -1068,11 +1068,12 @@ display:
         header: false
         pager: false
         sorts: false
+        cache: false
       filter_groups:
         operator: AND
         groups:
           1: AND
-      path: search-collection/%
+      path: collections/%/search
       arguments:
         field_combined_member_of:
           id: field_combined_member_of
@@ -1225,6 +1226,8 @@ display:
           expose:
             label: 'Date Created: Newest to Oldest'
           plugin_id: search_api
+      cache:
+        type: none
     cache_metadata:
       max-age: -1
       contexts:
