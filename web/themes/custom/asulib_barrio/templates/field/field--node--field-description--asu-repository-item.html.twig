@@ -39,40 +39,35 @@
 #}
 {{ attach_library('asulib_barrio/toggle-more') }}
 {%
-		set classes = [
-		'field',
-		'field--name-' ~ field_name|clean_class,
-		'field--type-' ~ field_type|clean_class,
-		'field--label-' ~ label_display,
+  set classes = [
+  'field',
+  'field--name-' ~ field_name|clean_class,
+  'field--type-' ~ field_type|clean_class,
+  'field--label-' ~ label_display,
 ]
 %}
 {%
-		set title_classes = [
-		'field__label',
-		label_display == 'visually_hidden' ? 'visually-hidden',
+  set title_classes = [
+  'field__label',
+  label_display == 'visually_hidden' ? 'visually-hidden',
 ]
 %}
 
 <div{{ attributes.addClass(classes, 'text-show-more field__item') }}>
-	<div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
-	{% for item in items %}
-		{% set description = item.content|render|striptags|trim|split(' ') %}
-		{% if description|length > 40 %}
-			{% set teaser = description|slice(0, 30)|join(' ') ~ '<span id="more-ellipse" class="collapse
-			multi-collapse show">&hellip;
-			</span>' %}
-			{% set remainder = description|slice(30)|join(' ') %}
-			<p>
-				{{ teaser|raw }}
-				<span class="summary-remainder multi-collapse collapse" id="remainder">{{ remainder|raw }}</span>
-				<button aria-expanded="false" aria-controls="remainder more-ellipse" type="button" data-toggle="collapse"
-								data-target="
-				.multi-collapse" class="btn-link show-more">
-					{% trans %}(more){% endtrans %}
-				</button>
-			</p>
-		{% else %}
-				{{ item.content }}
-		{% endif %}
-	{% endfor %}
+  <div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
+  {% for item in items %}
+    {% set description = item.content|render|trim|split(' ') %}
+    {% if description|length > 40 %}
+      {% set teaser = description|slice(0, 30)|join(' ') ~ '<span id="more-ellipse" class="collapse multi-collapse show">&hellip;</span>' %}
+      {% set remainder = description|slice(30)|join(' ') %}
+      <p>
+        {{ teaser|raw }}
+        <span class="summary-remainder multi-collapse collapse" id="remainder">{{ remainder|raw }}</span>
+        <button aria-expanded="false" aria-controls="remainder more-ellipse" type="button" data-toggle="collapse" data-target=".multi-collapse" class="btn-link show-more">{% trans %}(more){% endtrans %}
+        </button>
+      </p>
+    {% else %}
+      {{ item.content }}
+    {% endif %}
+  {% endfor %}
 </div>

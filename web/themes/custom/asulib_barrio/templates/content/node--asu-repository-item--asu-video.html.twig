@@ -161,12 +161,7 @@
 		<div id="machine" class="machine">
 			<h2>{{ 'Machine-readable links'|t }}</h2>
 			<ul>
-				<li><a href="">MODS</a></li>
-				<li><a href="">OAI</a></li>
-				<li><a href="">Dublin Core</a></li>
+				<li><a href="{{ oai_base_url ~ node.id }}">OAI</a></li>
 			</ul>
 		</div>
 	</article>
-	{#{{ kint(content|keys) }}#}
-	{# {{ kint(content.field_linked_agent) }} #}
-
