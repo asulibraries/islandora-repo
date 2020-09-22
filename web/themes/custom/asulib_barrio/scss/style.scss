@@ -62,7 +62,7 @@ a {
 /* remove padding from inside some views on repo item displays */
 .file-container .views-row { padding: 0; }
 
-.repo-item {
+.repo-item, .node--type-collection.node--view-mode-full {
   h2 {
     padding: 1.5rem 1rem;
     background: $gray-2;
@@ -72,7 +72,7 @@ a {
   }
   .field--name-field-description {
     margin-bottom: $spacer;
-}
+  }
 
   .main-content a {
     border-bottom: 1px dotted $maroon;
