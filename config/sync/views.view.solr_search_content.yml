@@ -937,6 +937,17 @@ display:
           sort_asc_label: Asc
           sort_desc_label: Desc
       header:
+        view:
+          id: view
+          table: views
+          field: view
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          view_to_insert: 'solr_search_content:block_1'
+          inherit_arguments: true
+          plugin_id: view
         area:
           id: area
           table: views
@@ -1068,11 +1079,12 @@ display:
         header: false
         pager: false
         sorts: false
+        cache: false
       filter_groups:
         operator: AND
         groups:
           1: AND
-      path: search-collection/%
+      path: collections/%/search
       arguments:
         field_combined_member_of:
           id: field_combined_member_of
@@ -1225,6 +1237,8 @@ display:
           expose:
             label: 'Date Created: Newest to Oldest'
           plugin_id: search_api
+      cache:
+        type: none
     cache_metadata:
       max-age: -1
       contexts:

@@ -11,7 +11,6 @@ dependencies:
     - field.field.node.asu_repository_item.field_date_digitized
     - field.field.node.asu_repository_item.field_default_derivative_file_pe
     - field.field.node.asu_repository_item.field_default_original_file_perm
-    - field.field.node.asu_repository_item.field_description
     - field.field.node.asu_repository_item.field_display_hints
     - field.field.node.asu_repository_item.field_edition
     - field.field.node.asu_repository_item.field_edtf_date_created
@@ -40,6 +39,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_related_item
     - field.field.node.asu_repository_item.field_resource_type
     - field.field.node.asu_repository_item.field_reuse_permissions
+    - field.field.node.asu_repository_item.field_rich_description
     - field.field.node.asu_repository_item.field_series
     - field.field.node.asu_repository_item.field_statement_responsibility
     - field.field.node.asu_repository_item.field_subject
@@ -53,27 +53,26 @@ dependencies:
     - node.type.asu_repository_item
   module:
     - controlled_access_terms
+    - text
     - user
 id: node.asu_repository_item.teaser
 targetEntityType: node
 bundle: asu_repository_item
 mode: teaser
 content:
+  display_media_download_button:
+    weight: 6
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   display_media_thumbnail:
     weight: 0
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_description:
-    type: basic_string
-    weight: 1
-    region: content
-    label: inline
-    settings: {  }
-    third_party_settings: {  }
   field_edtf_date_created:
     type: edtf_default
-    weight: 2
+    weight: 3
     region: content
     label: above
     settings:
@@ -84,14 +83,36 @@ content:
     third_party_settings: {  }
   field_linked_agent:
     type: typed_relation_default
-    weight: 3
+    weight: 4
     region: content
     label: inline
     settings:
       link: true
     third_party_settings: {  }
+  field_rich_description:
+    type: text_default
+    weight: 2
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
   links:
-    weight: 4
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  video_media_evas_original_file:
+    weight: 7
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  video_media_evas_preservation_master:
+    weight: 8
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  video_media_evas_service_file:
+    weight: 9
     region: content
     settings: {  }
     third_party_settings: {  }

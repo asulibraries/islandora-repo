@@ -61,7 +61,7 @@
 {%- endif -%}
 <div{{ attributes.addClass(classes, count_class) }}>
   {%- if not label_hidden -%}
-    <h3{{ title_attributes.addClass(title_classes) }}>{{- label -}}</h3>
+    <div{{ title_attributes.addClass(title_classes) }}>{{- label -}}</div>
   {%- endif -%}
   <div{{ content_attributes.addClass('field__items') }}>
     {%- for item in items -%}

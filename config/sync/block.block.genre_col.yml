@@ -1,0 +1,39 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.genre_col
+  module:
+    - context
+    - facets
+    - system
+  theme:
+    - asulib_barrio
+id: genre_col
+theme: asulib_barrio
+region: sidebar_first
+weight: -3
+provider: null
+plugin: 'facet_block:genre_col'
+settings:
+  id: 'facet_block:genre_col'
+  label: Genre
+  provider: facets
+  label_display: visible
+  block_id: genre_col
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    pages: ''
+    negate: null
+    context_mapping: {  }
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    view_inclusion: {  }
+    context_mapping: {  }
+  request_path:
+    id: request_path
+    pages: '/collections/*/search*'
+    negate: false
+    context_mapping: {  }
