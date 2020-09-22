@@ -12,7 +12,7 @@
  * items elements:
  *  - complex_title: The title value for the item
  *  - nid: The identifier (link) to the item.
- *  - field_description: The description for the item
+ *  - field_rich_description: The description for the item
  *  - field_edtf_date_created: The created date for the item
  */
 #}
@@ -24,7 +24,7 @@
     {% for key,item in items %}
         <div class="bento_item">
             <a href="{{ service_url }}/items/{{ item.nid }}" target="_blank">{{ item.complex_title }}</a><br>
-            {{ item.field_description }}<br>
+            {{ item.field_rich_description }}<br>
             <small><label>Created: </label> {{ item.field_edtf_date_created }}</small><br>
         </div>
     {% endfor %}
