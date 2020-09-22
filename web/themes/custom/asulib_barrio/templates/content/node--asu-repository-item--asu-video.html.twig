@@ -62,15 +62,15 @@
 {{ attach_library('bootstrap_barrio/node') }}
 
 {%
-    set classes = [
-    'node',
-    'node--type-' ~ node.bundle|clean_class,
-    node.isPromoted() ? 'node--promoted',
-    node.isSticky() ? 'node--sticky',
-    not node.isPublished() ? 'node--unpublished',
-    view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
-    'clearfix',
-    'repo-item',
+  set classes = [
+  'node',
+  'node--type-' ~ node.bundle|clean_class,
+  node.isPromoted() ? 'node--promoted',
+  node.isSticky() ? 'node--sticky',
+  not node.isPublished() ? 'node--unpublished',
+  view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+  'clearfix',
+  'repo-item',
 ]
 %}
 <article{{attributes.addClass(classes)}}>
@@ -100,7 +100,7 @@
 	<div{{content_attributes.addClass('node__content','clearfix','container')}}>
 		<div class="row">
 			<div class="col-md-7 file-container">
-                {{ drupal_view('video_media_evas', 'original_file', node.id) }}
+				{{ drupal_view('video_media_evas', 'original_file', node.id) }}
 			</div>
 			<div class="col-md-5 info-container">
 				<div>{{ content.field_rich_description }}</div>
@@ -119,7 +119,6 @@
 			<h2>{{ 'Details'|t }}</h2>
 			<div>{{ content.field_linked_agent }}</div>
 			<div>{{ content.field_date_created }}</div>
-			{# TODO combine all subjects here #}
 			<div class="all-subjects">
 				<div class="field__label">{{ 'Subjects'|t }}</div>
 				{{ content.field_subject }}
@@ -137,10 +136,10 @@
 			<div>
 				<p>
 					<strong>
-						<a class="icon-link" href="/node/{{ node.id }}/full-metadata">
+						<a class="icon-link" href="{{ url }}/metadata">
 							<i class="fa fa-lg fa-list-ul"></i>
 						</a>
-						<a href="/node/{{ node.id }}/full-metadata">{{ 'View full metadata'|t }}</a>
+						<a href="{{ url }}/metadata">{{ 'View full metadata'|t }}</a>
 					</strong>
 				</p>
 			</div>
@@ -161,12 +160,7 @@
 		<div id="machine" class="machine">
 			<h2>{{ 'Machine-readable links'|t }}</h2>
 			<ul>
-				<li><a href="">MODS</a></li>
-				<li><a href="">OAI</a></li>
-				<li><a href="">Dublin Core</a></li>
+				<li><ahref="{{ oai_base_url ~ node.id }}">OAI</a></li>
 			</ul>
 		</div>
 	</article>
-	{#{{ kint(content|keys) }}#}
-	{# {{ kint(content.field_linked_agent) }} #}
-
