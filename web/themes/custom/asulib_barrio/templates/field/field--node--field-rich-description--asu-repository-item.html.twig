@@ -39,17 +39,17 @@
 #}
 {{ attach_library('asulib_barrio/toggle-more') }}
 {%
-		set classes = [
-		'field',
-		'field--name-' ~ field_name|clean_class,
-		'field--type-' ~ field_type|clean_class,
-		'field--label-' ~ label_display,
+  set classes = [
+  'field',
+  'field--name-' ~ field_name|clean_class,
+  'field--type-' ~ field_type|clean_class,
+  'field--label-' ~ label_display,
 ]
 %}
 {%
-		set title_classes = [
-		'field__label',
-		label_display == 'visually_hidden' ? 'visually-hidden',
+  set title_classes = [
+  'field__label',
+  label_display == 'visually_hidden' ? 'visually-hidden',
 ]
 %}
 
