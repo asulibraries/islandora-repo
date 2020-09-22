@@ -67,7 +67,10 @@ function asulib_barrio_preprocess_breadcrumb(&$variables) {
 
 function asulib_barrio_preprocess_node(&$variables) {
   $node = \Drupal::request()->attributes->get('node');
-  if ( $node->getType() == 'asu_repository_item') {
+  if (!is_object($node) && is_string($node)) {
+    $node = \Drupal::entityTypeManager()->getStorage('node')->load($node);
+  }
+  if ($node && $node->getType() == 'asu_repository_item') {
     $site_url = \Drupal::urlGenerator()->generateFromRoute('<front>', [], ['absolute' => TRUE]);
     $url_parts = explode('/', $site_url, -1);
     $domain = $url_parts[2];

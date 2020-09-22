@@ -53,7 +53,7 @@ class AboutThisItemBlock extends BlockBase {
     // to the bottom of the page - and as long as there are tabs for nodes to
     // "View" and "Full metadata", the link in this block is extra.
     //    // Add a link to the "View full metadata" anchor for this node.
-    //    $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/node/' . $nid . '/full-metadata');
+    //    $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/items/' . $nid . '/metadata');
     //    $link = Link::fromTextAndUrl(t('View full metadata'), $url);
     //    $link = $link->toRenderable();
     //    $output_links[] = render($link);
