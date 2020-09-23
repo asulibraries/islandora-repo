@@ -95,7 +95,7 @@
     {% endif %}
   </header>
   <div{{ content_attributes.addClass('node__content', 'clearfix', 'container') }}>
-    <div class="row">
+    <div class="content-section row">
       <div class="col-md-5 file-container">
         {{ drupal_view('display_media', 'thumbnail', node.id) }}
       </div>
@@ -111,7 +111,7 @@
         </div>
       </div>
     </div>
-    <div id="details" class="details">
+    <div id="details" class="content-section details">
       <h2>{{ 'Details'|t }}</h2>
       <div>{{ content.field_peer_reviewed }}</div>
       <div>{{ content.field_open_access }}</div>
@@ -131,9 +131,9 @@
       {{ drupal_view('collaborating_institutions', 'block_1', node.id) }}
 
       <br/>
-      <div><p><strong><a class="icon-link" href="/node/{{ node.id }}/full-metadata"><i class="fa fa-lg fa-list-ul"></i></a><a href="/node/{{ node.id }}/full-metadata">{{ 'View full metadata'|t }}</a></strong></p></div>
+      <div><p><strong><a class="icon-link" href="{{ url }}/metadata"><i class="fa fa-lg fa-list-ul"></i></a><a href="{{ url }}/metadata">{{ 'View full metadata'|t }}</a></strong></p></div>
     </div>
-    <div id="interact" class="interact">
+    <div id="interact" class="content-section interact">
       <h2>{{ 'Interact with this item'|t }}</h2>
       <p>Start reading link and pages(?)</p>
       <div class="row">
@@ -147,13 +147,10 @@
         </div>
       </div>
     </div>
-    <div id="machine" class="machine">
+    <div id="machine" class="content-section machine">
       <h2>{{ 'Machine-readable links'|t }}</h2>
       <ul>
-        <li><a href="">MODS</a></li>
-        <li><a href="">OAI</a></li>
-        <li><a href="">Dublin Core</a></li>
+        <li><a href="{{ oai_base_url ~ node.id }}">OAI</a></li>
       </ul>
     </div>
 </article>
-{#{{ kint(content|keys) }}#}
