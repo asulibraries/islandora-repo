@@ -52,8 +52,7 @@ class LatestAdditionsToCollectionBlock extends BlockBase {
       $build = $view_builder->view($node, 'collection_browse_teaser');
       $output[] = render($build);
     }
-    return '<div class="latestitem_box">' .
-      implode('</div><div class="latestitem_box">', $output) . '</div><br class="clearfloat">';
+    return '<div class="row">' . implode('', $output) . "</div>";
   }
 
 }

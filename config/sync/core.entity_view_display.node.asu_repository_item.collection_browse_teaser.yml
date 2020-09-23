@@ -52,7 +52,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_weight
     - node.type.asu_repository_item
   module:
-    - entity_reference_revisions
+    - asu_item_extras
     - field_group
     - user
 third_party_settings:
@@ -60,7 +60,7 @@ third_party_settings:
     group_sidebar:
       children: {  }
       parent_name: ''
-      weight: 62
+      weight: 68
       format_type: details_sidebar
       region: hidden
       format_settings:
@@ -74,7 +74,7 @@ third_party_settings:
     group_details:
       children: {  }
       parent_name: ''
-      weight: 63
+      weight: 69
       format_type: details
       region: hidden
       format_settings:
@@ -89,42 +89,22 @@ targetEntityType: node
 bundle: asu_repository_item
 mode: collection_browse_teaser
 content:
-  display_media_download_button:
-    weight: 10
-    settings: {  }
-    third_party_settings: {  }
-    region: content
   display_media_thumbnail:
     weight: 0
     region: content
     settings: {  }
     third_party_settings: {  }
   field_title:
-    type: entity_reference_revisions_entity_view
+    type: complex_title_formatter
     weight: 1
     label: above
     settings:
-      view_mode: default
       link: ''
-    third_party_settings: {  }
-    region: content
-  video_media_evas_original_file:
-    weight: 10
-    settings: {  }
-    third_party_settings: {  }
-    region: content
-  video_media_evas_preservation_master:
-    weight: 10
-    settings: {  }
-    third_party_settings: {  }
-    region: content
-  video_media_evas_service_file:
-    weight: 10
-    settings: {  }
     third_party_settings: {  }
     region: content
 hidden:
   content_moderation_control: true
+  display_media_download_button: true
   display_media_entity_view_1: true
   display_media_entity_view_2: true
   display_media_entity_view_3: true
@@ -187,3 +167,6 @@ hidden:
   pdfjs_media_evas_entity_view_2: true
   pdfjs_media_evas_service_file: true
   search_api_excerpt: true
+  video_media_evas_original_file: true
+  video_media_evas_preservation_master: true
+  video_media_evas_service_file: true
