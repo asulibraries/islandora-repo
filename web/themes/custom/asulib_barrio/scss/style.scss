@@ -130,3 +130,21 @@ a {
 .all-subjects ul:not(:first-of-type)::before {
   content: ' / ';
 }
+
+/* Handling icon fallbacks for items */
+.icon-container {
+  margin: auto;
+  text-align: center;
+  i.far, i.fa {
+    text-align: center;
+    color: #747474;
+  }
+}
+.card.node--type-asu-repository-item {
+  h5 {
+    align-self: flex-end;
+  }
+  .card-body {
+    display: flex;
+  }
+}

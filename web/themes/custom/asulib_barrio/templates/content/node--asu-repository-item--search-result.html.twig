@@ -72,13 +72,31 @@
     'clearfix',
   ]
 %}
+
+{%
+    set model_icons = {
+        "Image": "far fa-file-image",
+        "Audio": "far fa-file-audio",
+        "Video": "far fa-file-video",
+        "Digital Document": "far fa-file-alt",
+        "Binary": "far fa-file",
+        "Complex object": "far fa-copy",
+        "Paged Content": "far fa-copy",
+    }
+%}
+
 <article{{ attributes.addClass(classes) }}>
   <div{{ content_attributes.addClass('node__content', 'clearfix', 'row', 'item-result') }}>
     <div class="col-md-2">
-      {% if content.display_media_thumbnail is not empty %}
-        {{content.display_media_thumbnail}}
+      {% if drupal_view_result('display_media', 'thumbnail', node.id) is empty %}
+        {% set mod = content.field_model[0]|render|trim %}
+        {% for k, v in model_icons|filter((v, k) => k == mod) -%}
+          <div class="icon-container">
+            <i class="{{ v }} fa-6x"></i>
+          </div>
+        {% endfor %}
       {% else %}
-        No thumb
+        {{ drupal_view('display_media', 'thumbnail', node.id) }}
       {% endif %}
     </div>
     <div class="col-md-10">
