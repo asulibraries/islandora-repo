@@ -98,7 +98,7 @@
 		{% endif %}
 	</header>
 	<div{{content_attributes.addClass('node__content','clearfix','container')}}>
-		<div class="row">
+		<div class="content-section row">
 			<div class="col-md-5 file-container">
 				{{ drupal_view('video_media_evas', 'original_file', node.id) }}
 			</div>
@@ -115,7 +115,7 @@
 				</div>
 			</div>
 		</div>
-		<div id="details" class="details">
+		<div id="details" class="content-section details">
 			<h2>{{ 'Details'|t }}</h2>
 			<div>{{ content.field_linked_agent }}</div>
 			<div>{{ content.field_date_created }}</div>
@@ -145,7 +145,7 @@
 				</p>
 			</div>
 		</div>
-		<div id="interact" class="interact">
+		<div id="interact" class="content-section interact">
 			<h2>{{ 'Interact with this item'|t }}</h2>
 			<div class="row">
 				<div class="col citation">
@@ -158,7 +158,7 @@
 				</div>
 			</div>
 		</div>
-		<div id="machine" class="machine">
+		<div id="machine" class="content-section machine">
 			<h2>{{ 'Machine-readable links'|t }}</h2>
 			<ul>
 				<li><a href="{{ oai_base_url ~ node.id }}">OAI</a></li>
