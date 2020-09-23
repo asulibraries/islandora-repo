@@ -5,3 +5,11 @@ asu_item_extras.full_metadata_view:
     _title: 'Full metadata'
   requirements:
     _permission: 'access content'
+
+asu_item_extras.viewer_controller_render_view:
+  path: '/items/{node}/view'
+  defaults:
+    _controller: '\Drupal\asu_item_extras\Controller\ViewerController::render_view'
+    _title: 'View'
+  requirements:
+    _permission: 'access content'
