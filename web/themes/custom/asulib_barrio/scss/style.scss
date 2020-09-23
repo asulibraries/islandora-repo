@@ -1,4 +1,4 @@
-/*
+/* 
 Theme Name: Bootstrap 4 Sass
 Description: Bootstrap 4 with Sass
 */
@@ -10,71 +10,99 @@ Description: Bootstrap 4 with Sass
 -------------------------------------------------*/
 
 body {
-  background: $white;
+    background: $white;
 }
 
 
-/* COLORS
+/* COLORS 
 --------------------------------------------------*/
 
 a {
-  color: $maroon;
+    color: $accent-shade;
 }
 
 .bg-inverse {
-  background: $primary-shade !important;
+    background: $primary-shade !important;
 }
 
-// .site-footer {
-//     background: $accent-shade !important;
-// }
+.site-footer {
+    background: $accent-shade !important;
+}
 
 .menu--main li a {
-  color: $primary-shade;
+    color: $primary-shade;
 }
 
 .menu--account li a {
-  color: $primary-shade;
+    color: $primary-shade;
 }
 
 .site-name-slogan a {
-  text-decoration: none;
+    text-decoration: none;
 }
 
 .card-group img {
-  margin: 0;
-  width: 100%;
-  height: auto;
+    margin: 0;
+    width: 100%;
+    height: auto;
 }
 
 .card-group .field--type-image {
-  margin: 0
+    margin: 0
 }
 
 .slick {
-  width: 100%;
+    width: 100%;
 }
 
 .slick>div {
-  margin: 0 15px;
+    margin: 0 15px;
 }
 
-/* remove padding from inside the view on repo item displays */
-.col .views-row { padding: 0; }
-
-.repo-item h2 {
-  padding: 1.5rem 1rem;
-  background: $gray-2;
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 1.75rem;
+/** classes for complex object elements display **/
+.children-3-wide div.views-col {
 }
 
-.main-content a {
-  border-bottom: 1px dotted $maroon;
+.view-id-complex_object_children div.view-content div.views-view-grid {
+    width: 100%;
 }
 
-a.icon-link {
-  border-bottom: none;
-  margin-right: .75rem;
+.complex-object-child {
+    border: 1px solid #d7d7d7;
+    padding: 15px;
+    padding-top: 0.5em;
+}
+
+.complex-object-child-box {
+    border: 1px solid #d7d7d7;
+    padding: 15px;
+    padding-top: 0.5em;
+    margin: 0 0.4%;
+    width: 32.5%;
+    float: left;
+}
+
+.tat-thumbnail {
+    max-width: 100px;
+    height: 100px;
+    float: left;
+    min-height: 100px;
+    margin-left: 8px;
+}
+
+.view-id-complex_object_children div.view-content div.views-view-grid .view-display-id-child_thumbnail .views-row {
+    padding-left: 0 !important;
+}
+
+.tat-thumbnail img {
+}
+
+.tat-title {
+    float: left;
+    min-height: 100px;
+    padding-left: 23px;
+}
+
+.tat-title h5.node__title {
+    font-size: 1em;
 }

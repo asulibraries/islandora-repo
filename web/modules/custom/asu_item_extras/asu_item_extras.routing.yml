@@ -5,3 +5,11 @@ asu_item_extras.full_metadata_view:
     _title: 'Full metadata'
   requirements:
     _permission: 'access content'
+
+asu_item_extras.complex_object_members:
+  path: '/items/{node}/members'
+  defaults:
+    _controller: '\Drupal\asu_item_extras\Controller\ComplexObjectMembersController::buildContent'
+    _title: 'Included in this item'
+  requirements:
+    _permission: 'access content'

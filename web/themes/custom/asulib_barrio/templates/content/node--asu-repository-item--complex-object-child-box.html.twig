@@ -70,7 +70,7 @@
     not node.isPublished() ? 'node--unpublished',
   ]
 %}
-<div class="complex-object-child">
+<div class="complex-object-child-box">
     <article{{ attributes.addClass(classes) }}>
       <header>
         <div>
@@ -89,10 +89,10 @@
             <br class="clearfloat">
             Download count: {{ drupal_block('asu_item_downloads') }}<br>
             <br>
-            <a href="#">Preview</a><br>
-            <div class="download-options">{{ content.display_media_entity_view_3 }}</div>
-            <a href="#">Permanent Link</a><br>
+            <div class="download-options">{{ drupal_view('display_media', 'entity_view_3', node.id) }}</div>
+            <a href="items/{{ node.id }}">Preview</a><br>
+            <a href="items/{{ node.id }}">Permanent Link</a><br>
         </div>
-      </header>
+     </header>
     </article>
 </div>

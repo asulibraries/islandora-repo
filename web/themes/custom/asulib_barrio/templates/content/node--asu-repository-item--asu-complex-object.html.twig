@@ -109,7 +109,7 @@
         <div id="included-this-item">
             <h2>{{ 'Included in this item'|t }}</h2>
             <div class="children-3-wide">
-                {{ drupal_view('complex_object_children', 'block_1', node.id) }}
+                {{ drupal_block('asu_included_in_item') }}
             </div>
             <br class="clearfloat">
             <a href="/items/{{ node.id }}/members">View all associated media</a><br/>

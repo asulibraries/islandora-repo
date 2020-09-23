@@ -27,12 +27,16 @@ class ASUItemDownloads extends BlockBase {
      */
     // Since this block should be set to display on node/[nid] pages that are
     // "ASU Repository Item", the underlying node can be accessed via the path.
+
+    // When this block appears on the items/{nid}/members view, each node.id value
+    // is passed as a parameter.
     if (\Drupal::routeMatch()->getParameter('node')) {
       $node = \Drupal::routeMatch()->getParameter('node');
-      $views = \Drupal::service('islandora_matomo.default')->getViewsForNode($node->id());
+      $node_id = (is_object($node)) ? $node->id() : $node;
+      $views = \Drupal::service('islandora_matomo.default')->getViewsForNode($node_id);
 
       $mids = \Drupal::entityQuery('media')
-        ->condition('field_media_of', $node->id())
+        ->condition('field_media_of', $node_id)
         ->execute();
       $download_count = 0;
       foreach ($mids as $mid) {
