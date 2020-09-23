@@ -62,18 +62,13 @@ targetEntityType: node
 bundle: asu_repository_item
 mode: search_result
 content:
-  display_media_download_button:
-    weight: 7
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   display_media_thumbnail:
     weight: 0
     region: content
     settings: {  }
     third_party_settings: {  }
   field_edtf_date_created:
-    weight: 5
+    weight: 4
     label: visually_hidden
     settings:
       date_separator: dash
@@ -85,15 +80,23 @@ content:
     region: content
   field_linked_agent:
     type: typed_relation_brief
-    weight: 4
+    weight: 3
     region: content
     label: visually_hidden
     settings:
       link: '1'
     third_party_settings: {  }
+  field_model:
+    type: entity_reference_label
+    weight: 6
+    region: content
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
   field_rich_description:
     type: text_default
-    weight: 3
+    weight: 2
     region: content
     label: above
     settings: {  }
@@ -107,27 +110,13 @@ content:
       link: ''
     third_party_settings: {  }
   search_api_excerpt:
-    weight: 6
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  video_media_evas_original_file:
-    weight: 8
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  video_media_evas_preservation_master:
-    weight: 9
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  video_media_evas_service_file:
-    weight: 10
+    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
   content_moderation_control: true
+  display_media_download_button: true
   display_media_entity_view_1: true
   display_media_entity_view_2: true
   display_media_entity_view_3: true
@@ -155,7 +144,6 @@ hidden:
   field_keywords: true
   field_language: true
   field_member_of: true
-  field_model: true
   field_name_title_subject: true
   field_note_para: true
   field_open_access: true
@@ -186,3 +174,6 @@ hidden:
   pdfjs_media_evas_entity_view_1: true
   pdfjs_media_evas_entity_view_2: true
   pdfjs_media_evas_service_file: true
+  video_media_evas_original_file: true
+  video_media_evas_preservation_master: true
+  video_media_evas_service_file: true
