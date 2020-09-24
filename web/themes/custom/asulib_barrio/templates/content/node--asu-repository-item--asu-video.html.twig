@@ -98,12 +98,12 @@
 		{% endif %}
 	</header>
 	<div{{content_attributes.addClass('node__content','clearfix','container')}}>
-		<div class="row">
+		<div class="content-section row">
 			<div class="col-md-12 file-container">
 				{{ drupal_view('video_media_evas', 'original_file', node.id) }}
 			</div>
     </div>
-    <div class="row">
+    <div class="content-section row">
 			<div class="col-md-12 info-container">
 				<div>{{ content.field_rich_description }}</div>
 				<div class="row">
@@ -117,7 +117,7 @@
 				</div>
 			</div>
 		</div>
-		<div id="details" class="details">
+		<div id="details" class="content-section details">
 			<h2>{{ 'Details'|t }}</h2>
 			<div>{{ content.field_linked_agent }}</div>
 			<div>{{ content.field_date_created }}</div>
