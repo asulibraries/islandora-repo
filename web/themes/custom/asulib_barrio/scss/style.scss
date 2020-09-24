@@ -25,9 +25,9 @@ a {
     background: $primary-shade !important;
 }
 
-.site-footer {
-    background: $accent-shade !important;
-}
+// .site-footer {
+//     background: $accent-shade !important;
+// }
 
 .menu--main li a {
     color: $primary-shade;
@@ -60,12 +60,6 @@ a {
 }
 
 /** classes for complex object elements display **/
-.children-3-wide div.views-col {
-}
-
-.view-id-complex_object_children div.view-content div.views-view-grid {
-    width: 100%;
-}
 
 .complex-object-child {
     border: 1px solid #d7d7d7;
@@ -80,25 +74,11 @@ a {
     margin: 0 0.4%;
     width: 32.5%;
     float: left;
+    img {
+      max-height: 100px;
+    }
 }
 
-.tat-thumbnail {
-    max-width: 100px;
-    height: 100px;
-    float: left;
-    min-height: 100px;
-    margin-left: 8px;
-}
-
-.tat-title {
-    float: left;
-    min-height: 100px;
-    padding-left: 23px;
-}
-
-.tat-title h5.node__title {
-    font-size: 1em;
-}
 /* remove padding from inside some views on repo item displays */
 .file-container .views-row { padding: 0; }
 
