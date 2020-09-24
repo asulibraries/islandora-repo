@@ -1,27 +1,23 @@
 langcode: en
-status: false
+status: true
 dependencies:
-  config:
-    - views.view.content_recent
   module:
+    - asu_search
     - context
     - system
-    - views
   theme:
     - asulib_barrio
-id: views_block__content_recent_block_3
+id: searchformforhomepage
 theme: asulib_barrio
 region: content
-weight: -21
+weight: -24
 provider: null
-plugin: 'views_block:content_recent-block_3'
+plugin: search_home_form_block
 settings:
-  id: 'views_block:content_recent-block_3'
-  label: 'Recent Collections'
-  provider: views
-  label_display: visible
-  views_label: 'Recent Collections'
-  items_per_page: none
+  id: search_home_form_block
+  label: 'Search form for Homepage'
+  provider: asu_search
+  label_display: '0'
 visibility:
   request_path_exclusion:
     id: request_path_exclusion
@@ -35,6 +31,6 @@ visibility:
     context_mapping: {  }
   request_path:
     id: request_path
-    pages: "<front>\r\n/home\r\n/"
+    pages: '<front>'
     negate: false
     context_mapping: {  }

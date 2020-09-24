@@ -1,27 +1,28 @@
 langcode: en
-status: false
+status: true
 dependencies:
-  config:
-    - views.view.content_recent
+  content:
+    - 'block_content:basic:28c9ba6d-098a-4e6e-a8e7-06b17d8a3045'
   module:
+    - block_content
     - context
     - system
-    - views
   theme:
     - asulib_barrio
-id: views_block__content_recent_block_3
+id: keephero
 theme: asulib_barrio
 region: content
-weight: -21
+weight: -25
 provider: null
-plugin: 'views_block:content_recent-block_3'
+plugin: 'block_content:28c9ba6d-098a-4e6e-a8e7-06b17d8a3045'
 settings:
-  id: 'views_block:content_recent-block_3'
-  label: 'Recent Collections'
-  provider: views
-  label_display: visible
-  views_label: 'Recent Collections'
-  items_per_page: none
+  id: 'block_content:28c9ba6d-098a-4e6e-a8e7-06b17d8a3045'
+  label: 'Keep Hero'
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
 visibility:
   request_path_exclusion:
     id: request_path_exclusion
@@ -35,6 +36,6 @@ visibility:
     context_mapping: {  }
   request_path:
     id: request_path
-    pages: "<front>\r\n/home\r\n/"
+    pages: '<front>'
     negate: false
     context_mapping: {  }

@@ -12,7 +12,7 @@ header #search-block-form {
     flex-flow: row wrap;
 }
 
-#search-block-form {
+#search-block-form, #search-home-block-form {
     display: flex;
 }
 
@@ -22,4 +22,18 @@ nav #search-form {
         @extend .col-md-7;
     }
 
+}
+
+.search-home-form {
+    margin-top: 40px;
+    margin-bottom: 40px;
+}
+
+#search-home-form {
+    padding: 30px;
+    background: $gray-2;
+    fieldset.form-group {
+        display: inline-block;
+        @extend .col-md-7;
+    }
 }
