@@ -49,7 +49,7 @@ function asulib_barrio_preprocess_breadcrumb(&$variables) {
           'attributes' => new Attribute(['class' => ['is_active']])
         ];
       }
-    } elseif ($current_route == 'view.complex_object_children.page_1') {
+    } elseif ($current_route == 'asu_item_extras.complex_object_members') {
         $variables['breadcrumb'][] = [
           'text' => t('Associated media'),
           'attributes' => new Attribute(['class' => ['is_active']])
