@@ -7,3 +7,13 @@ asu_default_fields.mimesettings:
         _permission: 'access administration pages'
     options:
         _admin_route: TRUE
+
+asu_default_fields.settings:
+  path: '/admin/config/asu_default_fields/settings'
+  defaults:
+    _form: '\Drupal\asu_default_fields\Form\ASUDefaultFieldsSettingsForm'
+    _title: 'ASU Default Fields Settings'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE

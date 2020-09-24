@@ -1,0 +1,41 @@
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:28c9ba6d-098a-4e6e-a8e7-06b17d8a3045'
+  module:
+    - block_content
+    - context
+    - system
+  theme:
+    - asulib_barrio
+id: keephero
+theme: asulib_barrio
+region: content
+weight: -25
+provider: null
+plugin: 'block_content:28c9ba6d-098a-4e6e-a8e7-06b17d8a3045'
+settings:
+  id: 'block_content:28c9ba6d-098a-4e6e-a8e7-06b17d8a3045'
+  label: 'Keep Hero'
+  provider: block_content
+  label_display: '0'
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    pages: ''
+    negate: null
+    context_mapping: {  }
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    view_inclusion: {  }
+    context_mapping: {  }
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: false
+    context_mapping: {  }

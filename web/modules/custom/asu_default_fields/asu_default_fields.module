@@ -44,9 +44,9 @@ function asu_default_fields_node_presave(NodeInterface $node) {
         $nonsort = $item->field_nonsort->value;
         $main = $item->field_main_title->value;
         $sub = $item->field_subtitle->value;
-        $nm = ($nonsort ? $nonsort . " " : "") .
-          ($main ? $main : "[untitled]") .
-          ($sub ? ": " . $sub : "");
+        $nm = ($nonsort != NULL ? $nonsort . " " : "") .
+          ($main != NULL ? $main : "[untitled]") .
+          ($sub != NULL ? ": " . $sub : "");
         $node->setTitle($nm);
       } else {
         $node->setTitle('[untitled]');
@@ -154,7 +154,9 @@ function asu_default_fields_node_insert(NodeInterface $node) {
         $config = \Drupal::config('persistent_identifiers.settings');
         $content_type = $node->bundle();
         $allowed_types = $config->get('persistent_identifiers_bundles');
-        if ($node->getEntityTypeId() == 'node' && in_array($content_type, $allowed_types, TRUE)) {
+        $config = \Drupal::configFactory()->getEditable('asu_default_fields.settings');
+        if ($node->getEntityTypeId() == 'node' && in_array($content_type, $allowed_types, TRUE) &&
+          !($config->get('disable_handle_generation')) ) {
           if ($node->bundle() == "collection") {
             _mint_handle($node, 'R.2.C');
           } else {

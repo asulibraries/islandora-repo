@@ -1,15 +1,21 @@
 asu_item_extras.full_metadata_view:
-  path: '/node/{node}/full-metadata'
+  path: '/items/{node}/metadata'
   defaults:
     _controller: '\Drupal\asu_item_extras\Controller\FullMetadataController::buildContent'
     _title: 'Full metadata'
   requirements:
     _permission: 'access content'
-
 asu_item_extras.complex_object_members:
   path: '/items/{node}/members'
   defaults:
     _controller: '\Drupal\asu_item_extras\Controller\ComplexObjectMembersController::buildContent'
     _title: 'Included in this item'
+  requirements:
+    _permission: 'access content'
+asu_item_extras.viewer_controller_render_view:
+  path: '/items/{node}/view'
+  defaults:
+    _controller: '\Drupal\asu_item_extras\Controller\ViewerController::render_view'
+    _title: 'View'
   requirements:
     _permission: 'access content'

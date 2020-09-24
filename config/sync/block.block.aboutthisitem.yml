@@ -11,7 +11,7 @@ dependencies:
 id: aboutthisitem
 theme: asulib_barrio
 region: sidebar_first
-weight: -19
+weight: -27
 provider: null
 plugin: about_this_item_block
 settings:
@@ -34,6 +34,11 @@ visibility:
     context_mapping: {  }
   request_path:
     id: request_path
-    pages: /node/add/asu_repository_item
+    pages: "/node/add/asu_repository_item\r\n/node/*/edit"
     negate: true
+    context_mapping: {  }
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    view_inclusion: {  }
     context_mapping: {  }

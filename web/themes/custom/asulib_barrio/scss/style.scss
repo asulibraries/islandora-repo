@@ -82,6 +82,7 @@ a {
     float: left;
 }
 
+<<<<<<< HEAD
 .tat-thumbnail {
     max-width: 100px;
     height: 100px;
@@ -105,4 +106,94 @@ a {
 
 .tat-title h5.node__title {
     font-size: 1em;
+=======
+/* remove padding from inside some views on repo item displays */
+.file-container .views-row { padding: 0; }
+
+.repo-item, .node--type-collection.node--view-mode-full {
+  h2 {
+    padding: 1.5rem 1rem;
+    background: $gray-2;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1.75rem;
+  }
+  .field--name-field-description {
+    margin-bottom: $spacer;
+  }
+
+  .main-content a {
+    border-bottom: 1px dotted $maroon;
+  }
+
+  .social-icons a {
+    border-bottom: none;
+  }
+
+  a.icon-link {
+    border-bottom: none;
+    margin-right: .75rem;
+  }
+
+  /* This might be too general */
+  img { width: 100%; }
+
+  /* Remove main content padding */
+  .node__content.container { padding: 0; }
+
+  .file-container {
+    margin-bottom: 1rem;
+  }
+
+  .download-options {
+    .btn-group {
+      margin-bottom: 1rem;
+    }
+    .dropdown-item {
+      border: 0;
+    }
+    .views-row {
+      padding: 0;
+    }
+  }
+
+  .iiif input,
+  .iiif a.btn {
+    border-radius: 0;
+  }
+}
+
+/* Subjects and Linked Agent */
+.inline-list {
+  list-style: none;
+  padding: 0;
+}
+
+.all-subjects .inline-list,
+.inline-list li {
+  display: inline;
+}
+
+.inline-list li:not(:last-child)::after,
+.all-subjects ul:not(:first-of-type)::before {
+  content: ' / ';
+}
+
+/* Handling icon fallbacks for items */
+.icon-container {
+  margin: auto;
+  text-align: center;
+  i.far, i.fa {
+    text-align: center;
+    color: $gray-5;
+  }
+}
+.card.node--type-asu-repository-item {
+  h5 {
+    align-self: flex-end;
+  }
+  .card-body {
+    display: flex;
+  }
+>>>>>>> develop
 }

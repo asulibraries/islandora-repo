@@ -96,35 +96,50 @@
     </header>
     <div{{ content_attributes.addClass('node__content', 'clearfix', 'container') }}>
         <div class="row">
-            <div class="col file-container">
-                {#{{ content.openseadragon_media_evas_entity_view_1 }}#}
-                {{ drupal_view('display_media', 'thumbnail', node.id) }}
+            <div class="col-md-5 file-container">
+                {{ content.display_media_thumbnail }}
             </div>
-            <div class="col info-container">
-                <div>{{ content.field_description }}</div>
-                <div>{{ content.field_copyright_statement }}</div>
-                <div>{{ content.field_reuse_permissions }}</div>
-                <div class="download-options">{{ content.display_media_entity_view_3 }}</div>
-                <div class="download-info">Download count: {{ drupal_block('asu_item_downloads') }}</div>
+            <div class="col-md-7 info-container">
+                <div>{{ content.field_rich_description }}</div>
+                <div class="row">
+                    <div class="col-md-6">{{ content.field_copyright_statement }}</div>
+                    <div class="col-md-6">{{ content.field_reuse_permissions }}</div>
+                </div>
+                <div class="download-options">{{ content.display_media_download_button }}</div>
+                <div class="download-info">
+                    <p>Download count: {{ drupal_block('asu_item_downloads', wrapper=false) }}</p>
+                </div>
             </div>
         </div>
         <div id="details" class="details">
             <h2>{{ 'Details'|t }}</h2>
+            <div>{{ content.field_linked_agent }}</div>
+            <div>{{ content.field_date_created }}</div>
+            {# TODO combine all subjects here #}
+            <div class="all-subjects">
+                <div class="field__label">{{ 'Subjects'|t }}</div>
+                {{ content.field_subject }}
+                {{ content.field_geographic_subject }}
+                {{ content.field_subjects_name }}
+                {{ content.field_temporal_subject }}
+                {{ content.field_title_subject }}
+            </div>
             <div>{{ content.field_resource_type }}</div>
             <div>{{ content.field_primary_membership }}</div>
             <div>{{ content.field_additional_memberships }}</div>
             {{ drupal_view('collaborating_institutions', 'block_1', node.id) }}
 
             <br/>
-            <div><p><strong><a class="icon-link" href="{{ node.id }}/full-metadata"><i class="fa fa-lg
-            fa-list-ul"></i></a><a href="{{ node.id }}/full-metadata">{{ 'View full metadata'|t }}</a></strong></p></div>
+            <div>
+                <p><strong><a class="icon-link" href="{{ url }}/metadata"><i class="fa fa-lg fa-list-ul"></i></a><a href="{{ url }}/metadata">{{ 'View full metadata'|t }}</a></strong></p>
+            </div>
         </div>
         <div id="interact" class="interact">
             <h2>{{ 'Interact with this item'|t }}</h2>
             <div class="row">
                 <div class="col citation">
                     <h3>{{ 'Citation, rights and reuse'|t }}</h3>
-                    {{ drupal_view('citations_rights_reuse', 'citation_block', node.id) }}
+                    {{ drupal_block('asu_item_citations', wrapper=false) }}
                 </div>
                 <div class="col social-icons">
                     <h3>{{ 'Print and share'|t }}</h3>
@@ -133,16 +148,13 @@
             </div>
             <div class="iiif">
                 <h3>{{ 'International Image Interoperability Framework' |t }}</h3>
-                block or content here
+                {{ drupal_block('asu_item_iiif', wrapper=false) }}
             </div>
         </div>
         <div id="machine" class="machine">
             <h2>{{ 'Machine-readable links'|t }}</h2>
             <ul>
-                <li><a href="">MODS</a></li>
-                <li><a href="">OAI</a></li>
-                <li><a href="">Dublin Core</a></li>
+              <li><a href="{{ oai_base_url ~ node.id }}">OAI</a></li>
             </ul>
     </div>
 </article>
-

@@ -11,7 +11,6 @@ dependencies:
     - field.field.node.asu_repository_item.field_date_digitized
     - field.field.node.asu_repository_item.field_default_derivative_file_pe
     - field.field.node.asu_repository_item.field_default_original_file_perm
-    - field.field.node.asu_repository_item.field_description
     - field.field.node.asu_repository_item.field_display_hints
     - field.field.node.asu_repository_item.field_edition
     - field.field.node.asu_repository_item.field_edtf_date_created
@@ -40,6 +39,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_related_item
     - field.field.node.asu_repository_item.field_resource_type
     - field.field.node.asu_repository_item.field_reuse_permissions
+    - field.field.node.asu_repository_item.field_rich_description
     - field.field.node.asu_repository_item.field_series
     - field.field.node.asu_repository_item.field_statement_responsibility
     - field.field.node.asu_repository_item.field_subject
@@ -52,19 +52,20 @@ dependencies:
     - field.field.node.asu_repository_item.field_weight
     - node.type.asu_repository_item
   module:
+    - text
     - user
 id: node.asu_repository_item.open_seadragon
 targetEntityType: node
 bundle: asu_repository_item
 mode: open_seadragon
 content:
-  field_description:
+  field_rich_description:
+    type: text_default
     weight: 1
+    region: content
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: basic_string
-    region: content
   openseadragon_media_evas_entity_view_1:
     weight: 0
     region: content
@@ -72,6 +73,7 @@ content:
     third_party_settings: {  }
 hidden:
   content_moderation_control: true
+  display_media_download_button: true
   display_media_entity_view_1: true
   display_media_entity_view_2: true
   display_media_entity_view_3: true
@@ -134,3 +136,6 @@ hidden:
   pdfjs_media_evas_entity_view_2: true
   pdfjs_media_evas_service_file: true
   search_api_excerpt: true
+  video_media_evas_original_file: true
+  video_media_evas_preservation_master: true
+  video_media_evas_service_file: true

@@ -59,7 +59,7 @@ function asulib_barrio_preprocess_breadcrumb(&$variables) {
       $search_param_name = ($current_route == 'repo_bento_search.search_page') ?
         'q' : 'search_api_fulltext';
       $search_term = \Drupal::request()->query->get($search_param_name);
-      if ($search_term) {
+      if ($search_term && $search_term != "") {
         $variables['breadcrumb'][] = [
           'text' => 'Search for "' . $search_term . '"',
           'attributes' => new Attribute(['class' => ['is_active']])
@@ -68,4 +68,17 @@ function asulib_barrio_preprocess_breadcrumb(&$variables) {
     }
   }
   $variables['#cache']['contexts'][] = 'url';
+}
+
+function asulib_barrio_preprocess_node(&$variables) {
+  $node = \Drupal::request()->attributes->get('node');
+  if (!is_object($node) && is_string($node)) {
+    $node = \Drupal::entityTypeManager()->getStorage('node')->load($node);
+  }
+  if ($node && $node->getType() == 'asu_repository_item') {
+    $site_url = \Drupal::urlGenerator()->generateFromRoute('<front>', [], ['absolute' => TRUE]);
+    $url_parts = explode('/', $site_url, -1);
+    $domain = $url_parts[2];
+    $variables['oai_base_url'] = $site_url . 'oai/request?verb=GetRecord&metadataPrefix=oai_dc&identifier=oai:' . $domain . ':node-';
+  }
 }

@@ -68,7 +68,7 @@ class AboutThisCollectionBlock extends BlockBase {
         // For "# file (Titles)", get media - extract the and count the original files.
         $files += $this->getOriginalFileCount($child_nid, $original_file_tid);
         $node = \Drupal::entityTypeManager()->getStorage('node')->load($child_nid);
-        if (!$node->get('field_resource_type')->isEmpty()) {
+        if ($node->hasField('field_resource_type') && !$node->get('field_resource_type')->isEmpty()) {
           $res_types = $node->get('field_resource_type')->referencedEntities();
           foreach ($res_types as $tp) {
             $nm = $tp->getName();

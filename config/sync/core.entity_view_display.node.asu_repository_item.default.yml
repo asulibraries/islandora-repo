@@ -10,7 +10,6 @@ dependencies:
     - field.field.node.asu_repository_item.field_date_digitized
     - field.field.node.asu_repository_item.field_default_derivative_file_pe
     - field.field.node.asu_repository_item.field_default_original_file_perm
-    - field.field.node.asu_repository_item.field_description
     - field.field.node.asu_repository_item.field_display_hints
     - field.field.node.asu_repository_item.field_edition
     - field.field.node.asu_repository_item.field_edtf_date_created
@@ -39,6 +38,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_related_item
     - field.field.node.asu_repository_item.field_resource_type
     - field.field.node.asu_repository_item.field_reuse_permissions
+    - field.field.node.asu_repository_item.field_rich_description
     - field.field.node.asu_repository_item.field_series
     - field.field.node.asu_repository_item.field_statement_responsibility
     - field.field.node.asu_repository_item.field_subject
@@ -97,6 +97,11 @@ mode: default
 content:
   content_moderation_control:
     weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  display_media_download_button:
+    weight: 10
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -175,13 +180,6 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
-    region: content
-  field_description:
-    weight: 2
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-    type: basic_string
     region: content
   field_edition:
     weight: 14
@@ -409,6 +407,13 @@ content:
     third_party_settings: {  }
     type: entity_reference_entity_view
     region: content
+  field_rich_description:
+    weight: 67
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: text_default
+    region: content
   field_series:
     weight: 32
     label: above
@@ -511,6 +516,21 @@ content:
     third_party_settings: {  }
   pdfjs_media_evas_entity_view_1:
     weight: 44
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  video_media_evas_original_file:
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  video_media_evas_preservation_master:
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  video_media_evas_service_file:
+    weight: 10
     region: content
     settings: {  }
     third_party_settings: {  }

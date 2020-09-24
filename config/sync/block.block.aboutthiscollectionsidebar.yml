@@ -1,0 +1,44 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - asu_collection_extras
+    - context
+    - node
+    - system
+  theme:
+    - asulib_barrio
+id: aboutthiscollectionsidebar
+theme: asulib_barrio
+region: sidebar_first
+weight: -26
+provider: null
+plugin: about_this_collection_sidebar_block
+settings:
+  id: about_this_collection_sidebar_block
+  label: 'About this collection'
+  provider: asu_collection_extras
+  label_display: visible
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    pages: ''
+    negate: null
+    context_mapping: {  }
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    view_inclusion: {  }
+    context_mapping: {  }
+  node_type:
+    id: node_type
+    bundles:
+      collection: collection
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+  request_path:
+    id: request_path
+    pages: "/node/add/collection*\r\n/node/*/edit"
+    negate: true
+    context_mapping: {  }

@@ -12,7 +12,7 @@ dependencies:
 id: views_block__solr_search_content_block_1
 theme: asulib_barrio
 region: content
-weight: -18
+weight: -27
 provider: null
 plugin: 'views_block:solr_search_content-block_1'
 settings:
@@ -25,7 +25,7 @@ settings:
 visibility:
   request_path:
     id: request_path
-    pages: '/search*'
+    pages: "/search/*\r\n/search?*"
     negate: false
     context_mapping: {  }
   request_path_exclusion:

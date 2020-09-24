@@ -11,7 +11,6 @@ dependencies:
     - field.field.node.asu_repository_item.field_date_digitized
     - field.field.node.asu_repository_item.field_default_derivative_file_pe
     - field.field.node.asu_repository_item.field_default_original_file_perm
-    - field.field.node.asu_repository_item.field_description
     - field.field.node.asu_repository_item.field_display_hints
     - field.field.node.asu_repository_item.field_edition
     - field.field.node.asu_repository_item.field_edtf_date_created
@@ -40,6 +39,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_related_item
     - field.field.node.asu_repository_item.field_resource_type
     - field.field.node.asu_repository_item.field_reuse_permissions
+    - field.field.node.asu_repository_item.field_rich_description
     - field.field.node.asu_repository_item.field_series
     - field.field.node.asu_repository_item.field_statement_responsibility
     - field.field.node.asu_repository_item.field_subject
@@ -52,7 +52,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_weight
     - node.type.asu_repository_item
   module:
-    - entity_reference_revisions
+    - asu_item_extras
     - field_group
     - user
 third_party_settings:
@@ -60,7 +60,7 @@ third_party_settings:
     group_sidebar:
       children: {  }
       parent_name: ''
-      weight: 62
+      weight: 68
       format_type: details_sidebar
       region: hidden
       format_settings:
@@ -74,7 +74,7 @@ third_party_settings:
     group_details:
       children: {  }
       parent_name: ''
-      weight: 63
+      weight: 69
       format_type: details
       region: hidden
       format_settings:
@@ -94,17 +94,25 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_model:
+    type: entity_reference_label
+    weight: 2
+    region: content
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
   field_title:
-    type: entity_reference_revisions_entity_view
+    type: complex_title_formatter
     weight: 1
     label: above
     settings:
-      view_mode: default
       link: ''
     third_party_settings: {  }
     region: content
 hidden:
   content_moderation_control: true
+  display_media_download_button: true
   display_media_entity_view_1: true
   display_media_entity_view_2: true
   display_media_entity_view_3: true
@@ -118,7 +126,6 @@ hidden:
   field_date_digitized: true
   field_default_derivative_file_pe: true
   field_default_original_file_perm: true
-  field_description: true
   field_display_hints: true
   field_edition: true
   field_edtf_date_created: true
@@ -135,7 +142,6 @@ hidden:
   field_language: true
   field_linked_agent: true
   field_member_of: true
-  field_model: true
   field_name_title_subject: true
   field_note_para: true
   field_open_access: true
@@ -148,6 +154,7 @@ hidden:
   field_related_item: true
   field_resource_type: true
   field_reuse_permissions: true
+  field_rich_description: true
   field_series: true
   field_statement_responsibility: true
   field_subject: true
@@ -167,3 +174,6 @@ hidden:
   pdfjs_media_evas_entity_view_2: true
   pdfjs_media_evas_service_file: true
   search_api_excerpt: true
+  video_media_evas_original_file: true
+  video_media_evas_preservation_master: true
+  video_media_evas_service_file: true

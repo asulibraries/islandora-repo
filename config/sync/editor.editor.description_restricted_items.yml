@@ -1,0 +1,35 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.description_restricted_items
+  module:
+    - ckeditor
+format: description_restricted_items
+editor: ckeditor
+settings:
+  toolbar:
+    rows:
+      -
+        -
+          name: Formatting
+          items:
+            - Bold
+            - Italic
+        -
+          name: Tools
+          items:
+            - Source
+  plugins:
+    language:
+      language_list: un
+    stylescombo:
+      styles: ''
+image_upload:
+  status: false
+  scheme: public
+  directory: inline-images
+  max_size: ''
+  max_dimensions:
+    width: null
+    height: null

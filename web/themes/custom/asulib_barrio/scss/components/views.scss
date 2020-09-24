@@ -87,6 +87,11 @@
             display: block;
             padding-top: 10px;
         }
+        .views-field-field-media-image {
+            img {
+                width: 100%;
+            }
+        }
     }
 }
 
@@ -100,4 +105,56 @@
   font-weight: bold;
   cursor: default;
   color: $gray-7;
+}
+
+
+/* collection browse view */
+.views-view-grid {
+    @extend .container;
+}
+.view-id-collections {
+    .view-header {
+        @extend .container;
+    }
+    .view-content {
+        @extend .container;
+    }
+}
+.collection-browse-object {
+    border: 1px solid $gray-5;
+    padding: 20px 20px 0px 20px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    .collection-browse-button {
+        background: $gray-5;
+        text-decoration: none;
+        color: #FFF;
+        text-align: center;
+        padding: 5px;
+    }
+    .collection-browse-button:nth-of-type(1) {
+        margin-right: -10px;
+        margin-left: -5px;
+    }
+    .collection-browse-button:nth-of-type(2) {
+        margin-left: 20px;
+        margin-right: -10px;
+    }
+    .collection-browse-thumb {
+        padding-right: 10px;
+        max-width: 50%;
+    }
+}
+.collection-browse-object:nth-of-type(odd) {
+    margin-left: -5px;
+}
+.collection-browse-object:nth-of-type(even) {
+    margin-right: -5px;
+}
+
+/** Openseadragon **/
+.node--view-mode-open-seadragon {
+    .field--name-field-media-image {
+        width: 100%;
+    }
 }

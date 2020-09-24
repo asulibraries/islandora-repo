@@ -26,4 +26,8 @@ function asu_breadcrumbs_system_breadcrumb_alter(Breadcrumb &$breadcrumb,
     $breadcrumb = new Breadcrumb();
     $breadcrumb->setLinks($links);
   }
+
+  if ($route_match && $node = $route_match->getParameter('node')) {
+    $breadcrumb->addCacheableDependency($node);
+  }
 }

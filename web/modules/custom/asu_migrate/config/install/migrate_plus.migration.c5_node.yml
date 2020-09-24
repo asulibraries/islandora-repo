@@ -108,9 +108,18 @@ process:
       bundle_key: vid
       bundle: islandora_models
 
-  field_description:
+  field_rich_description/value:
     plugin: skip_on_empty
     source: Description
+    method: process
+
+  field_rich_description/format:
+    plugin: default_value
+    default_value: "description_restricted_items"
+
+  field_table_of_contents:
+    plugin: skip_on_empty
+    source: Table of Contents
     method: process
 
   field_series:
@@ -174,7 +183,7 @@ process:
   field_note_para:
     -
       plugin: skip_on_empty
-      source: Notes_x
+      source: Notes
       method: process
     -
       plugin: explode
@@ -303,13 +312,13 @@ process:
       - '@authors'
       - '@contributors'
 
-  field_history:
-    -
-      plugin: skip_on_empty
-      method: process
-      source: History JSON
-    -
-      plugin: string_to_json
+  # field_history:
+  #   -
+  #     plugin: skip_on_empty
+  #     method: process
+  #     source: History JSON
+  #   -
+  #     plugin: string_to_json
 
 
 # We're making nodes

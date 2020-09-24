@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - block.block.exposedformsolr_search_contentpage_3
     - field.storage.node.field_collection_thumbnail
     - field.storage.node.field_title
     - image.style.thumbnail
@@ -208,6 +209,18 @@ display:
           exposed: true
           expose:
             label: Relevance
+          plugin_id: search_api
+        field_main_title:
+          id: field_main_title
+          table: search_api_index_default_solr_index
+          field: field_main_title
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: ASC
+          exposed: true
+          expose:
+            label: 'Title for Sorting'
           plugin_id: search_api
       title: 'Search Content'
       header:
@@ -584,6 +597,7 @@ display:
         use_more_text: false
         empty: false
         pager: false
+        sorts: false
       filters:
         type:
           id: type
@@ -686,6 +700,19 @@ display:
         options:
           items_per_page: 3
           offset: 0
+      sorts:
+        search_api_relevance:
+          id: search_api_relevance
+          table: search_api_index_default_solr_index
+          field: search_api_relevance
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: DESC
+          exposed: true
+          expose:
+            label: Relevance
+          plugin_id: search_api
     cache_metadata:
       contexts:
         - 'languages:language_content'
@@ -910,6 +937,17 @@ display:
           sort_asc_label: Asc
           sort_desc_label: Desc
       header:
+        view:
+          id: view
+          table: views
+          field: view
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          view_to_insert: 'solr_search_content:block_1'
+          inherit_arguments: true
+          plugin_id: view
         area:
           id: area
           table: views
@@ -923,6 +961,19 @@ display:
             value: '<h2 class="search-header">Matching Items ([view:total-rows])</h2>'
             format: basic_html
           plugin_id: text
+        entity_block:
+          id: entity_block
+          table: views
+          field: entity_block
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          tokenize: true
+          target: facetsummary
+          view_mode: default
+          bypass_access: false
+          plugin_id: entity
       cache:
         type: none
     cache_metadata:
@@ -942,7 +993,7 @@ display:
   page_3:
     display_plugin: page
     id: page_3
-    display_title: 'Page 3'
+    display_title: 'Search Within Collection - Page'
     position: 4
     display_options:
       display_extenders: {  }
@@ -1039,11 +1090,14 @@ display:
         filter_groups: false
         arguments: false
         header: false
+        pager: false
+        sorts: false
+        cache: false
       filter_groups:
         operator: AND
         groups:
           1: AND
-      path: search-collection/%
+      path: collections/%/search
       arguments:
         field_combined_member_of:
           id: field_combined_member_of
@@ -1099,7 +1153,105 @@ display:
           empty: true
           content: 'Displaying @start - @end of @total'
           plugin_id: result
+        entity_block:
+          id: entity_block
+          table: views
+          field: entity_block
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          target: exposedformsolr_search_contentpage_3
+          view_mode: default
+          bypass_access: true
+          plugin_id: entity
       exposed_block: true
+      pager:
+        type: full
+        options:
+          items_per_page: 10
+          offset: 0
+          id: 0
+          total_pages: null
+          tags:
+            previous: '‹ previous'
+            next: 'next ›'
+            first: '« First'
+            last: 'Last »'
+          expose:
+            items_per_page: true
+            items_per_page_label: 'Items per page'
+            items_per_page_options: '5, 10, 25, 50'
+            items_per_page_options_all: false
+            items_per_page_options_all_label: '- All -'
+            offset: false
+            offset_label: Offset
+          quantity: 9
+      display_description: ''
+      sorts:
+        search_api_relevance:
+          id: search_api_relevance
+          table: search_api_index_default_solr_index
+          field: search_api_relevance
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: DESC
+          exposed: true
+          expose:
+            label: Relevance
+          plugin_id: search_api
+        field_main_title:
+          id: field_main_title
+          table: search_api_index_default_solr_index
+          field: field_main_title
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: ASC
+          exposed: true
+          expose:
+            label: 'Title: A to Z'
+          plugin_id: search_api
+        field_main_title_1:
+          id: field_main_title_1
+          table: search_api_index_default_solr_index
+          field: field_main_title
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: DESC
+          exposed: true
+          expose:
+            label: 'Title: Z to A'
+          plugin_id: search_api
+        field_edtf_date_created:
+          id: field_edtf_date_created
+          table: search_api_index_default_solr_index
+          field: field_edtf_date_created
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: ASC
+          exposed: true
+          expose:
+            label: 'Date Created: Oldest to Newest'
+          plugin_id: search_api
+        field_edtf_date_created_1:
+          id: field_edtf_date_created_1
+          table: search_api_index_default_solr_index
+          field: field_edtf_date_created
+          relationship: none
+          group_type: group
+          admin_label: ''
+          order: DESC
+          exposed: true
+          expose:
+            label: 'Date Created: Newest to Oldest'
+          plugin_id: search_api
+      cache:
+        type: none
     cache_metadata:
       max-age: -1
       contexts:

@@ -63,40 +63,49 @@
 
 {%
     set classes = [
-    'latestitem_box',
     'node',
     'node--type-' ~ node.bundle|clean_class,
     node.isPromoted() ? 'node--promoted',
     node.isSticky() ? 'node--sticky',
     not node.isPublished() ? 'node--unpublished',
     view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
-    'clearfix',
+    'card',
 ]
 %}
-<article{{ attributes.addClass(classes) }}>
-    <header>
-        {{ title_prefix }}
-        {% if label and not page %}
-            <h5{{ title_attributes.addClass('node__title') }}>
-                <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+
+{%
+    set model_icons = {
+        "Image": "far fa-file-image",
+        "Audio": "far fa-file-audio",
+        "Video": "far fa-file-video",
+        "Digital Document": "far fa-file-alt",
+        "Binary": "far fa-file",
+        "Complex object": "far fa-copy",
+        "Paged Content": "far fa-copy",
+    }
+
+%}
+{# <div class="col-md-3"> #}
+    <div {{ attributes.addClass(classes) }}>
+        <div{{content_attributes.addClass('node__content','card-img-top')}}>
+            {% if drupal_view_result('display_media', 'thumbnail', node.id) is empty %}
+                {% set mod = content.field_model[0]|render|trim %}
+                {% for k, v in model_icons|filter((v, k) => k == mod) -%}
+                    <div class="icon-container"><i class="{{ v }} fa-6x"></i></div>
+                {% endfor %}
+            {% else %}
+                {{ drupal_view('display_media', 'thumbnail', node.id) }}
+            {% endif %}
+        </div>
+        <div class="card-body">
+            <h5{{ title_attributes.addClass('node__title', 'card-title') }}>
+                {% set title = content.field_title[0]|render|trim|slice(0, 40) %}
+                <a href="{{ url }}" rel="bookmark">{{ title }}
+                {% if content.field_title[0]|render|length > 40 %}
+                    ...
+                {% endif %}
+                </a>
             </h5>
-        {% endif %}
-        {{ title_suffix }}
-        {% if display_submitted %}
-            <div class="node__meta">
-                {{ author_picture }}
-                {% block submitted %}
-                    <em{{ author_attributes }}>
-                        {% trans %}Submitted by {{ author_name }} on {{ date }}{% endtrans %}
-                    </em>
-                {% endblock %}
-                {{ metadata }}
-            </div>
-        {% endif %}
-    </header>
-    <div{{ content_attributes.addClass('node__content', 'clearfix') }}>
-        <div class="image-container">
-            {{ content.display_media_thumbnail }}
         </div>
     </div>
-</article>
+{# </div> #}

@@ -6,6 +6,7 @@ label: 'Staging Config'
 description: 'Staging Settings that are specific per environment'
 folder: ../config/staging
 module:
+  hdl: 0
   cas: 0
   cas_attributes: 0
   cdn: 0
@@ -13,11 +14,12 @@ module:
   s3fs: 0
 theme: {  }
 blacklist:
+  - hdl.settings
+  - smtp.settings
   - cas.settings
   - cdn.settings
   - clamav.settings
   - s3fs.settings
-  - smtp.settings
 graylist:
   - context.context.openseadragon_block
   - context.context.open_seadragon

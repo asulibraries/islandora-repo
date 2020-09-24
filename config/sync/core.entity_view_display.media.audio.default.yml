@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - field.field.media.audio.field_access_terms
+    - field.field.media.audio.field_captions
     - field.field.media.audio.field_file_size
     - field.field.media.audio.field_media_audio_file
     - field.field.media.audio.field_media_of
@@ -25,6 +26,14 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
     region: content
+  field_captions:
+    weight: 102
+    label: above
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    type: file_default
+    region: content
   field_file_size:
     type: number_integer
     weight: 3
@@ -36,9 +45,9 @@ content:
     third_party_settings: {  }
   field_gemini_uri:
     weight: 100
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
   field_media_audio_file:
     type: file_audio
     weight: 1
