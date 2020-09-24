@@ -10,7 +10,7 @@ Description: Bootstrap 4 with Sass
 -------------------------------------------------*/
 
 body {
-  background: $white;
+    background: $white;
 }
 
 
@@ -18,11 +18,11 @@ body {
 --------------------------------------------------*/
 
 a {
-  color: $maroon;
+    color: $accent-shade;
 }
 
 .bg-inverse {
-  background: $primary-shade !important;
+    background: $primary-shade !important;
 }
 
 // .site-footer {
@@ -30,33 +30,53 @@ a {
 // }
 
 .menu--main li a {
-  color: $primary-shade;
+    color: $primary-shade;
 }
 
 .menu--account li a {
-  color: $primary-shade;
+    color: $primary-shade;
 }
 
 .site-name-slogan a {
-  text-decoration: none;
+    text-decoration: none;
 }
 
 .card-group img {
-  margin: 0;
-  width: 100%;
-  height: auto;
+    margin: 0;
+    width: 100%;
+    height: auto;
 }
 
 .card-group .field--type-image {
-  margin: 0
+    margin: 0
 }
 
 .slick {
-  width: 100%;
+    width: 100%;
 }
 
 .slick>div {
-  margin: 0 15px;
+    margin: 0 15px;
+}
+
+/** classes for complex object elements display **/
+
+.complex-object-child {
+    border: 1px solid #d7d7d7;
+    padding: 15px;
+    padding-top: 0.5em;
+}
+
+.complex-object-child-box {
+    border: 1px solid #d7d7d7;
+    padding: 15px;
+    padding-top: 0.5em;
+    margin: 0 0.4%;
+    width: 32.5%;
+    float: left;
+    img {
+      max-height: 100px;
+    }
 }
 
 /* remove padding from inside some views on repo item displays */

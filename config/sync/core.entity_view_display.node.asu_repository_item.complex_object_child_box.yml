@@ -2,6 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.node.complex_object_child_box
     - field.field.node.asu_repository_item.field_additional_memberships
     - field.field.node.asu_repository_item.field_complex_subjects
     - field.field.node.asu_repository_item.field_coordinates
@@ -10,6 +11,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_date_digitized
     - field.field.node.asu_repository_item.field_default_derivative_file_pe
     - field.field.node.asu_repository_item.field_default_original_file_perm
+    - field.field.node.asu_repository_item.field_rich_description
     - field.field.node.asu_repository_item.field_display_hints
     - field.field.node.asu_repository_item.field_edition
     - field.field.node.asu_repository_item.field_edtf_date_created
@@ -38,7 +40,6 @@ dependencies:
     - field.field.node.asu_repository_item.field_related_item
     - field.field.node.asu_repository_item.field_resource_type
     - field.field.node.asu_repository_item.field_reuse_permissions
-    - field.field.node.asu_repository_item.field_rich_description
     - field.field.node.asu_repository_item.field_series
     - field.field.node.asu_repository_item.field_statement_responsibility
     - field.field.node.asu_repository_item.field_subject
@@ -58,6 +59,7 @@ dependencies:
     - field_group
     - geolocation
     - jsonb
+    - layout_builder
     - options
     - text
     - user
@@ -90,10 +92,13 @@ third_party_settings:
         open: false
         required_fields: false
       label: Details
-id: node.asu_repository_item.default
+  layout_builder:
+    allow_custom: false
+    enabled: false
+id: node.asu_repository_item.complex_object_child_box
 targetEntityType: node
 bundle: asu_repository_item
-mode: default
+mode: complex_object_child_box
 content:
   content_moderation_control:
     weight: 0
@@ -102,9 +107,9 @@ content:
     third_party_settings: {  }
   display_media_download_button:
     weight: 10
-    region: content
     settings: {  }
     third_party_settings: {  }
+    region: content
   display_media_entity_view_2:
     weight: 45
     region: content
@@ -408,12 +413,12 @@ content:
     type: entity_reference_entity_view
     region: content
   field_rich_description:
-    weight: 67
-    label: above
+    type: text_default
+    weight: 1
+    region: content
+    label: inline
     settings: {  }
     third_party_settings: {  }
-    type: text_default
-    region: content
   field_series:
     weight: 32
     label: above
@@ -521,19 +526,19 @@ content:
     third_party_settings: {  }
   video_media_evas_original_file:
     weight: 10
-    region: content
     settings: {  }
     third_party_settings: {  }
+    region: content
   video_media_evas_preservation_master:
     weight: 10
-    region: content
     settings: {  }
     third_party_settings: {  }
+    region: content
   video_media_evas_service_file:
     weight: 10
-    region: content
     settings: {  }
     third_party_settings: {  }
+    region: content
 hidden:
   display_media_child_media_name: true
   display_media_child_thumbnail: true
