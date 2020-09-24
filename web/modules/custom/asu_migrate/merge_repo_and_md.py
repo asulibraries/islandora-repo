@@ -74,7 +74,7 @@ def get_model(att_count, item_id, att_df):
             return model
     else:
         # print("Paged Content")
-        return "Paged Content"
+        return "Complex Object"
 
 
 def set_file_id(model, media_type, file_id):
