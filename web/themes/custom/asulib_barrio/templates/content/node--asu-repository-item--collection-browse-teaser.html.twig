@@ -69,9 +69,7 @@
     node.isSticky() ? 'node--sticky',
     not node.isPublished() ? 'node--unpublished',
     view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
-    'clearfix',
     'card',
-    'h-100'
 ]
 %}
 
@@ -87,7 +85,7 @@
     }
 
 %}
-<div class="col-md-3">
+{# <div class="col-md-3"> #}
     <div {{ attributes.addClass(classes) }}>
         <div{{content_attributes.addClass('node__content','card-img-top')}}>
             {% if drupal_view_result('display_media', 'thumbnail', node.id) is empty %}
@@ -99,7 +97,7 @@
                 {{ drupal_view('display_media', 'thumbnail', node.id) }}
             {% endif %}
         </div>
-        <div class="card-body h-100">
+        <div class="card-body">
             <h5{{ title_attributes.addClass('node__title', 'card-title') }}>
                 {% set title = content.field_title[0]|render|trim|slice(0, 40) %}
                 <a href="{{ url }}" rel="bookmark">{{ title }}
@@ -110,4 +108,4 @@
             </h5>
         </div>
     </div>
-</div>
+{# </div> #}

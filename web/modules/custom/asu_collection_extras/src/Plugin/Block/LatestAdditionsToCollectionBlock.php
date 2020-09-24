@@ -52,7 +52,7 @@ class LatestAdditionsToCollectionBlock extends BlockBase {
       $build = $view_builder->view($node, 'collection_browse_teaser');
       $output[] = render($build);
     }
-    return '<div class="row">' . implode('', $output) . "</div>";
+    return '<div class="card-deck">' . implode('', $output) . "</div>";
   }
 
 }
