@@ -25,16 +25,22 @@ class ASUItemDownloads extends BlockBase {
      * The output of this block should be:
      *  - Download count for all media on the object
      */
+    $block_config = BlockBase::getConfiguration();
+    if (is_array($block_config) && array_key_exists('child_node_id', $block_config)) {
+      $node_id = $block_config['child_node_id'];
+    }
+    else {
     // Since this block should be set to display on node/[nid] pages that are
     // "ASU Repository Item", the underlying node can be accessed via the path.
 
     // When this block appears on the items/{nid}/members view, each node.id value
     // is passed as a parameter.
-    if (\Drupal::routeMatch()->getParameter('node')) {
-      $node = \Drupal::routeMatch()->getParameter('node');
-      $node_id = (is_object($node)) ? $node->id() : $node;
-      $views = \Drupal::service('islandora_matomo.default')->getViewsForNode($node_id);
-
+      if (\Drupal::routeMatch()->getParameter('node')) {
+        $node = \Drupal::routeMatch()->getParameter('node');
+        $node_id = $node->id();
+      }
+    }
+    if ($node_id) {
       $mids = \Drupal::entityQuery('media')
         ->condition('field_media_of', $node_id)
         ->execute();
