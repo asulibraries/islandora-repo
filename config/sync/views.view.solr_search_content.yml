@@ -961,6 +961,19 @@ display:
             value: '<h2 class="search-header">Matching Items ([view:total-rows])</h2>'
             format: basic_html
           plugin_id: text
+        entity_block:
+          id: entity_block
+          table: views
+          field: entity_block
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          tokenize: true
+          target: facetsummary
+          view_mode: default
+          bypass_access: false
+          plugin_id: entity
       cache:
         type: none
     cache_metadata:
