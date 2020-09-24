@@ -97,7 +97,7 @@
   <div{{ content_attributes.addClass('node__content', 'clearfix', 'container') }}>
     <div class="content-section row">
       <div class="col-md-5 file-container">
-        {{ drupal_view('display_media', 'thumbnail', node.id) }}
+        <a href="{{ url }}/view" class="image-link">{{ content.display_media_thumbnail }}</a>
       </div>
       <div class="col-md-7 info-container">
         <div>{{ content.field_description }}</div>
