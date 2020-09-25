@@ -109,7 +109,7 @@ content:
     settings: {  }
     third_party_settings: {  }
   display_media_entity_view_1:
-    weight: 55
+    weight: 56
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -124,12 +124,12 @@ content:
     settings: {  }
     third_party_settings: {  }
   display_media_service_file:
-    weight: 50
+    weight: 51
     region: content
     settings: {  }
     third_party_settings: {  }
   display_media_thumbnail:
-    weight: 56
+    weight: 57
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -180,7 +180,7 @@ content:
     region: content
   field_display_hints:
     type: entity_reference_rss_category
-    weight: 51
+    weight: 52
     region: content
     label: above
     settings: {  }
@@ -205,7 +205,7 @@ content:
     type: edtf_default
     region: content
   field_embargo_release_date:
-    weight: 49
+    weight: 50
     label: above
     settings:
       format_type: medium
@@ -229,7 +229,7 @@ content:
     type: list_default
     region: content
   field_gemini_uri:
-    weight: 44
+    weight: 46
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -259,7 +259,7 @@ content:
     region: content
   field_history:
     type: jsonb_default
-    weight: 52
+    weight: 53
     region: content
     label: above
     settings: {  }
@@ -303,6 +303,14 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
     region: content
+  field_name_title_subject:
+    type: entity_reference_label
+    weight: 45
+    region: content
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
   field_note_para:
     type: entity_reference_revisions_entity_view
     weight: 23
@@ -342,7 +350,7 @@ content:
     region: content
   field_place_of_publication_code:
     type: entity_reference_rss_category
-    weight: 53
+    weight: 54
     region: content
     label: above
     settings: {  }
@@ -397,9 +405,9 @@ content:
     region: content
   field_rich_description:
     type: text_default
-    weight: 57
+    weight: 2
     region: content
-    label: above
+    label: visually_hidden
     settings: {  }
     third_party_settings: {  }
   field_series:
@@ -457,7 +465,7 @@ content:
     third_party_settings: {  }
     region: content
   field_title_subject:
-    weight: 48
+    weight: 44
     label: hidden
     settings:
       link: true
@@ -484,7 +492,7 @@ content:
     region: content
   langcode:
     type: language
-    weight: 45
+    weight: 47
     region: content
     label: above
     settings:
@@ -497,17 +505,17 @@ content:
     settings: {  }
     third_party_settings: {  }
   openseadragon_media_evas_entity_view_1:
-    weight: 47
+    weight: 49
     region: content
     settings: {  }
     third_party_settings: {  }
   openseadragon_media_evas_service_file:
-    weight: 54
+    weight: 55
     region: content
     settings: {  }
     third_party_settings: {  }
   pdfjs_media_evas_entity_view_1:
-    weight: 46
+    weight: 48
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -532,7 +540,6 @@ hidden:
   field_default_derivative_file_pe: true
   field_default_original_file_perm: true
   field_keywords: true
-  field_name_title_subject: true
   islandora_fits_checksum: true
   openseadragon_media_evas_entity_view_2: true
   pdfjs_media_evas_entity_view_2: true

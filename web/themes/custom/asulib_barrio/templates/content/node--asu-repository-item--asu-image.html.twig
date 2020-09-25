@@ -62,99 +62,100 @@
 {{ attach_library('bootstrap_barrio/node') }}
 
 {%
-    set classes = [
-    'node',
-    'node--type-' ~ node.bundle|clean_class,
-    node.isPromoted() ? 'node--promoted',
-    node.isSticky() ? 'node--sticky',
-    not node.isPublished() ? 'node--unpublished',
-    view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
-    'clearfix',
-    'repo-item',
+  set classes = [
+  'node',
+  'node--type-' ~ node.bundle|clean_class,
+  node.isPromoted() ? 'node--promoted',
+  node.isSticky() ? 'node--sticky',
+  not node.isPublished() ? 'node--unpublished',
+  view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+  'clearfix',
+  'repo-item',
 ]
 %}
 <article{{ attributes.addClass(classes) }}>
-    <header>
-        {{ title_prefix }}
-        {% if label and not page %}
-            <h2{{ title_attributes.addClass('node__title') }}>
-                <a href="{{ url }}" rel="bookmark">{{ label }}</a>
-            </h2>
-        {% endif %}
-        {{ title_suffix }}
-        {% if display_submitted %}
-            <div class="node__meta">
-                {{ author_picture }}
-                {% block submitted %}
-                    <em{{ author_attributes }}>
-                        {% trans %}Submitted by {{ author_name }} on {{ date }}{% endtrans %}
-                    </em>
-                {% endblock %}
-                {{ metadata }}
-            </div>
-        {% endif %}
-    </header>
-    <div{{ content_attributes.addClass('node__content', 'clearfix', 'container') }}>
-        <div class="content-section row">
-            <div class="col-md-5 file-container">
-                <a href="{{ url }}/view" class="image-link">{{ content.display_media_thumbnail }}</a>
-            </div>
-            <div class="col-md-7 info-container">
-                <div>{{ content.field_rich_description }}</div>
-                <div class="row">
-                    <div class="col-md-6">{{ content.field_copyright_statement }}</div>
-                    <div class="col-md-6">{{ content.field_reuse_permissions }}</div>
-                </div>
-                <div class="download-options">{{ content.display_media_download_button }}</div>
-                <div class="download-info">
-                    <p>Download count: {{ drupal_block('asu_item_downloads', wrapper=false) }}</p>
-                </div>
-            </div>
+  <header>
+    {{ title_prefix }}
+    {% if label and not page %}
+      <h2{{ title_attributes.addClass('node__title') }}>
+        <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+      </h2>
+    {% endif %}
+    {{ title_suffix }}
+    {% if display_submitted %}
+      <div class="node__meta">
+        {{ author_picture }}
+        {% block submitted %}
+          <em{{ author_attributes }}>
+            {% trans %}Submitted by {{ author_name }} on {{ date }}{% endtrans %}
+          </em>
+        {% endblock %}
+        {{ metadata }}
+      </div>
+    {% endif %}
+  </header>
+  <div{{ content_attributes.addClass('node__content', 'clearfix', 'container') }}>
+    <div class="row">
+      <div class="col-md-5 file-container">
+        {{ content.display_media_thumbnail }}
+      </div>
+      <div class="col-md-7 info-container">
+        <div>{{ content.field_rich_description }}</div>
+        <div class="row">
+          <div class="col-md-6">{{ content.field_copyright_statement }}</div>
+          <div class="col-md-6">{{ content.field_reuse_permissions }}</div>
         </div>
-        <div id="details" class="content-section details">
-            <h2>{{ 'Details'|t }}</h2>
-            <div>{{ content.field_linked_agent }}</div>
-            <div>{{ content.field_date_created }}</div>
-            {# TODO combine all subjects here #}
-            <div class="all-subjects">
-                <div class="field__label">{{ 'Subjects'|t }}</div>
-                {{ content.field_subject }}
-                {{ content.field_geographic_subject }}
-                {{ content.field_subjects_name }}
-                {{ content.field_temporal_subject }}
-                {{ content.field_title_subject }}
-            </div>
-            <div>{{ content.field_resource_type }}</div>
-            <div>{{ content.field_primary_membership }}</div>
-            <div>{{ content.field_additional_memberships }}</div>
-            {{ drupal_view('collaborating_institutions', 'block_1', node.id) }}
-
-            <br/>
-            <div>
-                <p><strong><a class="icon-link" href="{{ url }}/metadata"><i class="fa fa-lg fa-list-ul"></i></a><a href="{{ url }}/metadata">{{ 'View full metadata'|t }}</a></strong></p>
-            </div>
+        <div class="download-options">{{ content.display_media_download_button }}</div>
+        <div class="download-info">
+          <p>Download count: {{ drupal_block('asu_item_downloads', wrapper=false) }}</p>
         </div>
-        <div id="interact" class="content-section interact">
-            <h2>{{ 'Interact with this item'|t }}</h2>
-            <div class="row">
-                <div class="col citation">
-                    <h3>{{ 'Citation, rights and reuse'|t }}</h3>
-                    {{ drupal_block('asu_item_citations', wrapper=false) }}
-                </div>
-                <div class="col social-icons">
-                    <h3>{{ 'Print and share'|t }}</h3>
-                    {{ drupal_block('rrssb_block', { button_set: 'default' }, wrapper=false) }}
-                </div>
-            </div>
-            <div class="iiif">
-                <h3>{{ 'International Image Interoperability Framework' |t }}</h3>
-                {{ drupal_block('asu_item_iiif', wrapper=false) }}
-            </div>
+      </div>
+    </div>
+    <div id="details" class="details">
+      <h2>{{ 'Details'|t }}</h2>
+      <div>{{ content.field_linked_agent }}</div>
+      <div>{{ content.field_date_created }}</div>
+      {# Use the node field to check if empty. Content field is less reliable. #}
+      {% if (node.field_subject is not empty) or (node.field_geographic_subject is not empty) or (node.field_subjects_name is not empty) or (node.field_temporal_subject is not empty) or (node.field_title_subject is not empty) or (node.field_name_title_subject is not empty) %}
+        <div class="all-subjects">
+          <div class="field__label">{{ 'Subjects'|t }}</div>
+          {{ content.field_subject }}
+          {{ content.field_geographic_subject }}
+          {{ content.field_subjects_name }}
+          {{ content.field_temporal_subject }}
+          {{ content.field_title_subject }}
+          {{ content.field_name_title_subject }}
         </div>
-        <div id="machine" class="content-section machine">
-            <h2>{{ 'Machine-readable links'|t }}</h2>
-            <ul>
-              <li><a href="{{ oai_base_url ~ node.id }}">OAI</a></li>
-            </ul>
+      {% endif %}
+      <div>{{ content.field_resource_type }}</div>
+      <div>{{ content.field_primary_membership }}</div>
+      <div>{{ content.field_additional_memberships }}</div>
+      {{ drupal_view('collaborating_institutions', 'block_1', node.id) }}
+      <div>
+        <p><strong><a class="icon-link" href="{{ url }}/metadata"><i class="fa fa-lg fa-list-ul"></i></a><a href="{{ url }}/metadata">{{ 'View full metadata'|t }}</a></strong></p>
+      </div>
+    </div>
+    <div id="interact" class="interact">
+      <h2>{{ 'Interact with this item'|t }}</h2>
+      <div class="row">
+        <div class="col citation">
+          <h3>{{ 'Citation, rights and reuse'|t }}</h3>
+          {{ drupal_block('asu_item_citations', wrapper=false) }}
+        </div>
+        <div class="col social-icons">
+          <h3>{{ 'Print and share'|t }}</h3>
+          {{ drupal_block('rrssb_block', { button_set: 'default' }, wrapper=false) }}
+        </div>
+      </div>
+      <div class="iiif">
+        <h3>{{ 'International Image Interoperability Framework' |t }}</h3>
+        {{ drupal_block('asu_item_iiif', wrapper=false) }}
+      </div>
+    </div>
+    <div id="machine" class="machine">
+      <h2>{{ 'Machine-readable links'|t }}</h2>
+      <ul>
+        <li><a href="{{ oai_base_url ~ node.id }}">OAI</a></li>
+      </ul>
     </div>
 </article>
