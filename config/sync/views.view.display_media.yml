@@ -141,6 +141,45 @@ display:
             operator_limit_selection: false
             operator_list: {  }
           group: 1
+        field_external_uri_uri:
+          id: field_external_uri_uri
+          table: taxonomy_term__field_external_uri
+          field: field_external_uri_uri
+          relationship: field_media_use
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: 'http://pcdm.org/use#ThumbnailImage'
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: string
       sorts: {  }
       title: ''
       header: {  }
@@ -192,6 +231,25 @@ display:
           not: false
           plugin_id: numeric
       display_extenders: {  }
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
+        - user.permissions
+      tags: {  }
+  child_thumbnail:
+    display_plugin: entity_view
+    id: child_thumbnail
+    display_title: 'Child thumbnail'
+    position: 7
+    display_options:
+      display_extenders: {  }
+      entity_type: node
+      bundles: {  }
+      title: 'Child thumbnail'
+      display_description: ''
     cache_metadata:
       max-age: -1
       contexts:
@@ -1709,8 +1767,8 @@ display:
           label: ''
           exclude: false
           alter:
-            alter_text: false
-            text: ''
+            alter_text: true
+            text: "{{ field_media_image }}\r\n<span class=\"expand-image\"><i class=\"fas fa-expand-alt\" aria-hidden=\"true\"></i></span>"
             make_link: false
             path: ''
             absolute: false

@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\asu_item_extras\Plugin\Block;
+namespace Drupal\asu_search\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Url;

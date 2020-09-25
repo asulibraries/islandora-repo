@@ -1,0 +1,39 @@
+<?php
+
+use Drupal\taxonomy\Entity\Term;
+
+/**
+ * @file
+ * Install, update and uninstall functions for the ASU Item Extras module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function asu_item_extras_install() {
+  _get_or_create_co_tag();
+}
+
+/**
+ * Updates taxonomy for Islandora Models to add "Compound Object".
+ */
+function asu_item_extras_update_8001() {
+  _get_or_create_co_tag();
+}
+
+/**
+ * Looks up or creates "Complex Object" term.
+ */
+function _get_or_create_co_tag() {
+  $term_name = 'Complex Object';
+  $test_terms = taxonomy_term_load_multiple_by_name($term_name);
+  if (!$test_terms) {
+    $term = Term::create([
+      'parent' => [],
+      'name' => $term_name,
+      'vid' => 'islandora_models',
+      'description' => 'This model can have metadata and media of its own but it will also have multiple child objects related to it.',
+      'field_external_uri' => ['uri' => 'https://schema.org/MediaObject'],
+    ])->save();
+  }
+}

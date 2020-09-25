@@ -76,7 +76,7 @@ process:
 
   # Make the object an 'Digital Document'
   # if it only has 1 attachment
-  # otherwise make it a Paged Content object
+  # otherwise make it a Complex Object object
   field_model:
     -
       plugin: str_replace
@@ -87,7 +87,7 @@ process:
       plugin: str_replace
       search: "/[2-9]/"
       regex: true
-      replace: 'Paged Content'
+      replace: 'Complex Object'
     -
       plugin: entity_lookup
       entity_type: taxonomy_term

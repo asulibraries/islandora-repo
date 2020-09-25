@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\asu_item_extras\Plugin\Field\FieldFormatter;
+namespace Drupal\asu_search\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\Plugin\Field\FieldFormatter\EntityReferenceLabelFormatter;
 use Drupal\Core\Field\FieldItemListInterface;

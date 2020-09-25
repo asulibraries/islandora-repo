@@ -10,7 +10,7 @@ Description: Bootstrap 4 with Sass
 -------------------------------------------------*/
 
 body {
-  background: $white;
+    background: $white;
 }
 
 
@@ -18,11 +18,11 @@ body {
 --------------------------------------------------*/
 
 a {
-  color: $maroon;
+    color: $accent-shade;
 }
 
 .bg-inverse {
-  background: $primary-shade !important;
+    background: $primary-shade !important;
 }
 
 // .site-footer {
@@ -30,33 +30,53 @@ a {
 // }
 
 .menu--main li a {
-  color: $primary-shade;
+    color: $primary-shade;
 }
 
 .menu--account li a {
-  color: $primary-shade;
+    color: $primary-shade;
 }
 
 .site-name-slogan a {
-  text-decoration: none;
+    text-decoration: none;
 }
 
 .card-group img {
-  margin: 0;
-  width: 100%;
-  height: auto;
+    margin: 0;
+    width: 100%;
+    height: auto;
 }
 
 .card-group .field--type-image {
-  margin: 0
+    margin: 0
 }
 
 .slick {
-  width: 100%;
+    width: 100%;
 }
 
 .slick>div {
-  margin: 0 15px;
+    margin: 0 15px;
+}
+
+/** classes for complex object elements display **/
+
+.complex-object-child {
+    border: 1px solid #d7d7d7;
+    padding: 15px;
+    padding-top: 0.5em;
+}
+
+.complex-object-child-box {
+    border: 1px solid #d7d7d7;
+    padding: 15px;
+    padding-top: 0.5em;
+    margin: 0 0.4%;
+    width: 32.5%;
+    float: left;
+    img {
+      max-height: 100px;
+    }
 }
 
 /* remove padding from inside some views on repo item displays */
@@ -70,49 +90,62 @@ a {
     font-weight: bold;
     margin-bottom: 1.75rem;
   }
+  h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
   .field--name-field-description {
     margin-bottom: $spacer;
   }
-
-  .main-content a {
-    border-bottom: 1px dotted $maroon;
+  .content-section {
+    margin-bottom: ($spacer * 2);
   }
+}
 
-  .social-icons a {
-    border-bottom: none;
-  }
+.main-content a {
+  border-bottom: 1px dotted $maroon;
+}
 
-  a.icon-link {
-    border-bottom: none;
-    margin-right: .75rem;
-  }
+.social-icons a {
+  border-bottom: none;
+}
 
-  /* This might be too general */
-  img { width: 100%; }
+a.icon-link {
+  border-bottom: none;
+  margin-right: .75rem;
+}
 
-  /* Remove main content padding */
-  .node__content.container { padding: 0; }
+/* This might be too general */
+img { width: 100%; }
 
-  .file-container {
+/* Remove main content padding */
+.node__content.container { padding: 0; }
+
+.file-container {
+  margin-bottom: 1rem;
+}
+
+.download-options {
+  .btn-group {
     margin-bottom: 1rem;
   }
-
-  .download-options {
-    .btn-group {
-      margin-bottom: 1rem;
-    }
-    .dropdown-item {
-      border: 0;
-    }
-    .views-row {
-      padding: 0;
-    }
+  .dropdown-item {
+    border: 0;
   }
-
-  .iiif input,
-  .iiif a.btn {
-    border-radius: 0;
+  .views-row {
+    padding: 0;
   }
+}
+
+.iiif input,
+.iiif a.btn {
+  border-radius: 0;
+}
+
+.citation ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 /* Subjects and Linked Agent */
@@ -148,3 +181,6 @@ a {
     display: flex;
   }
 }
+a.image-link,
+a.image-link:hover,
+a.image-link:focus { border: none; }
