@@ -58,21 +58,15 @@
 	{% for item in items %}
 		{% set description = item.content|render|trim|split(' ') %}
 		{% if description|length > 40 %}
-			{% set teaser = description|slice(0, 30)|join(' ') ~ '<span id="more-ellipse" class="collapse
-			multi-collapse show">&hellip;
-			</span>' %}
-			{% set remainder = description|slice(30)|join(' ') %}
-			<p>
-				{{ teaser|raw }}
-				<span class="summary-remainder multi-collapse collapse" id="remainder">{{ remainder|raw }}</span>
-				<button aria-expanded="false" aria-controls="remainder more-ellipse" type="button" data-toggle="collapse"
-								data-target="
-				.multi-collapse" class="btn-link show-more">
-					{% trans %}(more){% endtrans %}
-				</button>
-			</p>
+			{% set teaser = description|slice(0, 30)|join(' ')|trim('</p>', 'right') ~ '<span id="more-ellipse" class="collapse multi-collapse show">&hellip;</span></p>' %}
+			{#{% set remainder = description|slice(30)|join(' ') %}#}
+      <div class="collapse multi-collapse show">{{ teaser|raw }}</div>
+      <div class="summary-remainder multi-collapse collapse" id="remainder">{{ item.content }}</div>
+      <button aria-expanded="false" aria-controls="remainder more-ellipse" type="button" data-toggle="collapse" data-target=".multi-collapse" class="btn-link show-more">
+        {% trans %}(more){% endtrans %}
+      </button>
 		{% else %}
-				{{ item.content }}
+      {{ item.content }}
 		{% endif %}
 	{% endfor %}
 </div>
