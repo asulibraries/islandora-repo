@@ -40,22 +40,23 @@ class ExploreThisItemBlock extends BlockBase {
         '28' => 'Paged Content',
         '30' => 'Publication Issue',
         '26' => 'Video');
-    $field_model = (array_key_exists($field_model_tid, $field_model_mappings) ? 
+    $field_model = (array_key_exists($field_model_tid, $field_model_mappings) ?
       $field_model_mappings[$field_model_tid] : "");
 
     $output_links = array();
     if ($field_model == 'Image') {
-      $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/node/' . $nid . '/openseadragon_view');
+      $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/node/' . $nid . '/view');
       $link = Link::fromTextAndUrl(t('View Image'), $url);
       // get the node's service file information from the node - just use the openseadragon view
       $link = $link->toRenderable();
       $output_links[] = render($link);
-    } elseif ($field_model == 'Paged Content' || $field_model == 'Page' ||
+    }
+    elseif ($field_model == 'Paged Content' || $field_model == 'Page' ||
       $field_model == 'Digital Document') {
       // "Start reading" and "Show all pages" links as well as a search box.
       // get the node's openseadragon viewer url.
-      $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/node/' . $nid . '/openseadragon_view');
-      $link = Link::fromTextAndUrl(t('Start reading'), $url);
+      $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/node/' . $nid . '/view');
+      $link = Link::fromTextAndUrl(t('Explore Document'), $url);
       $link = $link->toRenderable();
       $output_links[] = render($link);
       $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/node/' . $nid . '/all_pages');
