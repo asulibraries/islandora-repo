@@ -120,29 +120,48 @@
         @extend .container;
     }
 }
+.node--view-mode-collection-browse-teaser.node--type-collection {
+    height: calc(100% - 20px);
+}
 .collection-browse-object {
     border: 1px solid $gray-5;
     padding: 20px 20px 0px 20px;
     margin-top: 10px;
     margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
     .collection-browse-button {
-        background: $gray-5;
-        text-decoration: none;
-        color: #FFF;
-        text-align: center;
-        padding: 5px;
-    }
-    .collection-browse-button:nth-of-type(1) {
-        margin-right: -10px;
-        margin-left: -5px;
-    }
-    .collection-browse-button:nth-of-type(2) {
-        margin-left: 20px;
-        margin-right: -10px;
+        width: 100%;
+        align-self: flex-end;
+        a {
+            background: $gray-5;
+            color: #FFF;
+            border-bottom: none;
+            border-radius: 0px;
+            border: 1px solid $gray-5;
+        }
+        .btn:nth-of-type(1) {
+            margin-left: -5px;
+            margin-right: 11px;
+        }
+        .btn:nth-of-type(2) {
+            margin-right: -5px;
+        }
     }
     .collection-browse-thumb {
         padding-right: 10px;
-        max-width: 50%;
+    }
+    img {
+        height: auto;
+    }
+    h2 {
+        font-size: 1.3rem;
+        font-weight: bold;
+    }
+    .row:last-of-type {
+        align-self: auto;
+        flex-grow: 1;
     }
 }
 .collection-browse-object:nth-of-type(odd) {
@@ -183,7 +202,7 @@
     }
 }
 
-.node--type-page, .view-solr-search-content, .node--type-collection {
+.node--type-page, .view-solr-search-content, .node--type-collection, .node--view-mode-asu-complex-object {
     .expand-image {
         display: none;
     }
