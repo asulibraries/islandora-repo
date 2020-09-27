@@ -50,13 +50,16 @@ def loc_lookup(atype, astring):
         return astring + "|" + uri
 
 
-def get_model(att_count, item_id, att_df):
+def get_model(att_count, item_id, att_df, att_id):
     # print("in get model")
     # print(att_count)
     # print(item_id)
     if att_count == 1:
         # print("row is 1")
-        atts = att_df[att_df['item id'] == item_id]
+        if item_id is not None:
+            atts = att_df[att_df['item id'] == item_id]
+        else:
+            atts = att_df[att_df['attachment id'] == att_id]
         # print(atts)
         for index, a in atts.iterrows():
             mime = a['file mime']
@@ -108,7 +111,7 @@ def main(argv):
     att_df = att_df.loc[:, ~att_df.columns.str.contains('^Unnamed')]
     print(att_df)
     merge_df = pandas.merge(left=repo_df, right=md_df, left_on='Item ID', right_on='ID', how='left')
-    merge_df['Model'] = merge_df.apply(lambda row: get_model(row['Attachment Count'], row['Item ID'], att_df), axis=1)
+    merge_df['Model'] = merge_df.apply(lambda row: get_model(row['Attachment Count'], row['Item ID'], att_df, None), axis=1)
     merge_df['Parent Item'] = ""
     att_df['old item id'] = ""
 
@@ -157,7 +160,7 @@ def main(argv):
                             notes = notes + "|" + a['attachment description']
                         else:
                             notes = a['attachment description']
-                    new_row = {'Item ID': a['attachment id'], 'Item Title': a['attachment label'], 'Notes': a['attachment notes'], 'Model': 'Page', 'Parent Item': a['item id'], 'Visibility': a_status, 'Notes': '|'.join(notes), 'System Created': a['file created'], 'System Updated': a['file created'], 'Attachment Count': 1}
+                    new_row = {'Item ID': a['attachment id'], 'Item Title': a['attachment label'], 'Notes': a['attachment notes'], 'Model': get_model(1, None, att_df, a['attachment id']), 'Parent Item': a['item id'], 'Visibility': a_status, 'Notes': '|'.join(notes), 'System Created': a['file created'], 'System Updated': a['file created'], 'Attachment Count': 1}
                     print("add att")
                     att_df.at[index, 'old item id'] = a['item id']
                     att_df.at[index, 'item id'] = a['attachment id']
