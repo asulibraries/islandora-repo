@@ -11,7 +11,7 @@ dependencies:
     - node.type.asu_repository_item
     - node.type.collection
   module:
-    - asu_item_extras
+    - asu_search
     - image
     - media
     - node
@@ -2132,7 +2132,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "<a href=\"/items/{{nid}}\">{{field_title}}</a><br/>\r\n{{changed}}"
+            text: "<a href=\"/collections/{{nid}}\">{{field_title}}</a><br/>\r\n{{changed}}"
             make_link: false
             path: '/items/{{nid}}'
             absolute: false
