@@ -3,8 +3,7 @@
 namespace Drupal\asu_search\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
-use Drupal\Core\Url;
-use Drupal\Core\Link;
+use Drupal\Core\Entity\EntityInterface;
 
 /**
  * Provides a 'Complex Title' Block for page title purposes.
@@ -30,28 +29,33 @@ class ASUComplexTitle extends BlockBase {
     // Since this block should be set to display on node/[nid] pages that are
     // "ASU Repository Item", or possibly "Collection", these should both have
     // the paragraph field that is used for display.
-    if (\Drupal::routeMatch()->getParameter('node')) {
-      $node = \Drupal::routeMatch()->getParameter('node');
-
-      $first_title = $node->field_title[0];
-      $view = ['type' => 'complex_title_formatter'];
-      $first_title_view = $first_title->view($view);
-      $para_render = \Drupal::service('renderer')->render($first_title_view);
-      return [
-        'complex_title' => [
-          '#type' => 'item',
-          '#prefix' => '<h1 class="title">',
-          '#suffix' => '</h1>',
-          '#markup' => $para_render,
-        ],
-      ];
+    $current_route = \Drupal::routeMatch();
+    if ($current_route->getParameter('node')) {
+      $node = $current_route->getParameter('node');
+    }
+    elseif ($current_route->getParameter('arg_0')) {
+      $node = \Drupal::entityTypeManager()->getStorage('node')->load($current_route->getParameter('arg_0'));
     }
     else {
       return [];
     }
+
+    $first_title = $node->field_title[0];
+    $view = ['type' => 'complex_title_formatter'];
+    $first_title_view = $first_title->view($view);
+    $para_render = \Drupal::service('renderer')->render($first_title_view);
+    return [
+      'complex_title' => [
+        '#type' => 'item',
+        '#prefix' => '<h1 class="title">',
+        '#suffix' => '</h1>',
+        '#markup' => $para_render,
+      ],
+    ];
   }
 
   public function getCacheMaxAge() {
-      return 0;
+    return 0;
   }
+
 }
