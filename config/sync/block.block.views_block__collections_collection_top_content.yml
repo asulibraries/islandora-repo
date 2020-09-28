@@ -1,0 +1,49 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.collections
+  module:
+    - context
+    - node
+    - system
+    - views
+  theme:
+    - asulib_barrio
+id: views_block__collections_collection_top_content
+theme: asulib_barrio
+region: top_content
+weight: 0
+provider: null
+plugin: 'views_block:collections-collection_top_content'
+settings:
+  id: 'views_block:collections-collection_top_content'
+  label: ''
+  provider: views
+  label_display: '0'
+  views_label: ''
+  items_per_page: none
+  context_mapping: {  }
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    pages: ''
+    negate: null
+    context_mapping: {  }
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    view_inclusion: {  }
+    context_mapping: {  }
+  node_type:
+    id: node_type
+    bundles:
+      collection: collection
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+  request_path:
+    id: request_path
+    pages: "/collections/*/edit\r\n/node/add/collections"
+    negate: true
+    context_mapping: {  }
