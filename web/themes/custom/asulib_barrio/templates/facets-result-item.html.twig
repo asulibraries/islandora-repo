@@ -16,10 +16,13 @@
  * @ingroup themeable
  */
 #}
-{% if is_active %}
-  <span class="facet-item__status js-facet-deactivate">(-)</span>
-{% endif %}
+
 <span class="facet-item__value">{{ value }}</span>
+{% if is_active %}
+	<span class="facet-item__status js-facet-deactivate">
+		<i class="fas fa-times"></i>
+	</span>
+{% endif %}
 {% if show_count %}
   <span class="facet-item__count badge badge-pill badge-light">{{ count }}</span>
 {% endif %}
