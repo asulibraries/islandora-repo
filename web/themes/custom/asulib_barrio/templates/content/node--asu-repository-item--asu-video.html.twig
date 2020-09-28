@@ -117,9 +117,14 @@
         </div>
       </div>
     </div>
-    <div id="details" class="details">
+    <div id="details" class="content-section details">
       <h2>{{ 'Details'|t }}</h2>
-      <div>{{ content.field_linked_agent }}</div>
+      {% if node.field_linked_agent is not empty %}
+        <div class="agents">
+          <div class="field__label">{{ 'Author/Contributors'|t }}</div>
+          {{ content.field_linked_agent }}
+        </div>
+      {% endif %}
       <div>{{ content.field_date_created }}</div>
       {# Use the node field to check if empty. Content field is less reliable. #}
       {% if (node.field_subject is not empty) or (node.field_geographic_subject is not empty) or (node.field_subjects_name is not empty) or (node.field_temporal_subject is not empty) or (node.field_title_subject is not empty) or (node.field_name_title_subject is not empty) %}
@@ -133,32 +138,36 @@
           {{ content.field_name_title_subject }}
         </div>
       {% endif %}
-      <div>{{ content.field_resource_type }}</divI>
-        <div>{{ content.field_primary_membership }}</div>
-        <div>{{ content.field_additional_memberships }}</div>
-        {{ drupal_view('collaborating_institutions', 'block_1', node.id) }}
-        <div>
-          <p>
-            <strong>
-              <a class="icon-link" href="{{ url }}/metadata">
-                <i class="fa fa-lg fa-list-ul"></i>
-              </a>
-              <a href="{{ url }}/metadata">{{ 'View full metadata'|t }}</a>
-            </strong>
-          </p>
+      <div>{{ content.field_resource_type }}</div>
+      {% if node.field_member_of is not empty %}
+        <div class="all-memberships">
+          <div class="field__label">{{ 'Collections this item is in'|t }}</div>
+          <div>{{ content.field_member_of }}</div>
+          <div>{{ content.field_additional_memberships }}</div>
         </div>
+      {% endif %}
+      {% if drupal_view_result('collaborating_institutions', 'block_1', node.id) is not empty %}
+        <div class="collab">
+          <div class="field__label">{{ 'Collaborating institutions'|t }}</div>
+          {{ drupal_view('collaborating_institutions', 'block_1', node.id) }}
+        </div>
+      {% endif %}
+      <div>
+        <p>
+          <strong>
+            <a class="icon-link" href="{{ url }}/metadata"><i class="fa fa-lg fa-list-ul"></i></a>
+            <a href="{{ url }}/metadata">{{ 'View full metadata'|t }}</a>
+          </strong>
+        </p>
       </div>
-      <div id="interact" class="interact">
-        <h2>{{ 'Interact with this item'|t }}</h2>
-        <div class="row">
-          <div class="col citation">
-            <h3>{{ 'Citation, rights and reuse'|t }}</h3>
-            {{ drupal_block('asu_item_citations', wrapper=false) }}
-          </div>
-          <div class="col social-icons">
-            <h3>{{ 'Print and share'|t }}</h3>
-            {{ drupal_block('rrssb_block', { button_set: 'default' }, wrapper=false) }}
-          </div>
+    </div>
+      <div id="interact" class="content-section interact">
+        <h2>{{ 'Citation and reuse'|t }}</h2>
+        {{ content.field_preferred_citation }}
+        {{ content.field_statement_responsibility }}
+        <div class="iiif">
+          <h3>{{ 'International Image Interoperability Framework' |t }}</h3>
+          {{ drupal_block('asu_item_iiif', wrapper=false) }}
         </div>
       </div>
       <div id="machine" class="machine">
