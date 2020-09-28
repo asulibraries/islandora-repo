@@ -88,9 +88,10 @@ fieldMappings:
       callable: 'Drupal\jsonld\EntityReferenceConverter::linkFieldPassthrough'
       arguments:
         link_field: 'field_source'
-  field_description:
+  field_rich_description:
     properties:
       - 'dcterms:description'
+      - 'mods:abstract'
   field_extent:
     properties:
       - 'dcterms:extent'
