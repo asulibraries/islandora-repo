@@ -94,11 +94,7 @@
         {% endif %}
     </header>
     <div{{ content_attributes.addClass('node__content', 'clearfix') }}>
-        {{ content.field_collection_thumbnail }}
-        <div class="info-container">
-            <div>{{ content.field_rich_description }}</div>
-            <div>{{ content.field_collaborating_institutions }}</div>
-        </div>
+        <!-- note that the title, thumbnail, description and collaborating institutions have been moved to a view so they can be in a different region of the page -->
         <h2>{{ 'About this collection'|t }}</h2>
         <div class="col-md-12">
             {{ drupal_block('about_this_collection_block') }}
