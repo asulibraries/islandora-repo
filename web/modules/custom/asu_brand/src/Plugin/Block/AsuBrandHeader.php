@@ -198,7 +198,7 @@ class AsuBrandHeader extends AsuBrandBlockBase {
     ];
 
     // Alter the signin/signout URL if cas is enabled.
-    if ($moduleHandler->moduleExists('cas')){
+    if ($moduleHandler->moduleExists('cas')) {
       $cas_sign_in_path = \Drupal::config('cas.settings')->get('server.path');
       $js_settings['asu_sso_signinurl'] = Url::fromUserInput($cas_sign_in_path, ['absolute' => TRUE, 'https' => TRUE])->toString();
       $js_settings['asu_sso_signouturl'] = Url::fromUserInput('/caslogout', ['absolute' => TRUE])->toString();
