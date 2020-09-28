@@ -36,6 +36,8 @@ class ExploreForm extends FormBase {
     $form['search_api_fulltext'] = array(
       '#type' => 'textfield',
       '#title' => t('Fulltext search'),
+      '#title_display' => 'invisible',
+      '#placeholder' => t('Search for items'),
     );
     $form['actions']['#type'] = 'actions';
     $form['actions']['submit'] = array(
