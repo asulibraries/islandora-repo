@@ -50,6 +50,20 @@ def loc_lookup(atype, astring):
         return astring + "|" + uri
 
 
+def get_model_from_mime(mime):
+    if "image" in mime:
+        model = "Image"
+    elif "audio" in mime:
+        model = "Audio"
+    elif "video" in mime:
+        model = "Video"
+    elif "pdf" in mime:
+        model = "Digital Document"
+    else:
+        model = "Binary"
+    return model
+
+
 def get_model(att_count, item_id, att_df, att_id):
     # print("in get model")
     # print(att_count)
@@ -63,16 +77,7 @@ def get_model(att_count, item_id, att_df, att_id):
         # print(atts)
         for index, a in atts.iterrows():
             mime = a['file mime']
-            if "image" in mime:
-                model = "Image"
-            elif "audio" in mime:
-                model = "Audio"
-            elif "video" in mime:
-                model = "Video"
-            elif "pdf" in mime:
-                model = "Digital Document"
-            else:
-                model = "Binary"
+            model = get_model_from_mime(mime)
             # print(model)
             return model
     else:
@@ -80,19 +85,22 @@ def get_model(att_count, item_id, att_df, att_id):
         return "Complex Object"
 
 
-def set_file_id(model, media_type, file_id):
+def set_file_id(mime, media_type, file_id, field):
     # return row['file id']
-    print(media_type)
+    # print(media_type)
     print(file_id)
-    if media_type == "image":
+    print(mime)
+    model = get_model_from_mime(mime)
+    print(model)
+    if media_type == "image" and model == "Image" and field == 'image':
         return file_id
-    elif media_type == 'document':
+    elif media_type == 'document' and model == "Digital Document" and field == 'document':
         return file_id
-    elif media_type == 'audio':
+    elif media_type == 'audio' and model == 'Audio' and field == 'audio':
         return file_id
-    elif media_type == 'video':
+    elif media_type == 'video' and model == 'Video' and field == 'video':
         return file_id
-    elif media_type == 'file':
+    elif media_type == 'file' and model == 'Binary' and field == 'binary':
         return file_id
 
 
@@ -121,15 +129,15 @@ def main(argv):
             print("TES")
 
     att_df['image id'] = att_df.apply(lambda row: set_file_id(
-        'image', row['media type'], row['file id']), axis=1)
+        row['file mime'], row['media type'], row['file id'], 'image'), axis=1)
     att_df['document id'] = att_df.apply(
-        lambda row: set_file_id('document', row['media type'], row['file id']), axis=1)
+        lambda row: set_file_id(row['file mime'], row['media type'], row['file id'], 'document'), axis=1)
     att_df['video id'] = att_df.apply(lambda row: set_file_id(
-        'video', row['media type'], row['file id']), axis=1)
+        row['file mime'], row['media type'], row['file id'], 'video'), axis=1)
     att_df['audio id'] = att_df.apply(lambda row: set_file_id(
-        'audio', row['media type'], row['file id']), axis=1)
+        row['file mime'], row['media type'], row['file id'], 'audio'), axis=1)
     att_df['generic file id'] = att_df.apply(
-        lambda row: set_file_id('generic file', row['media type'], row['file id']), axis=1)
+        lambda row: set_file_id(row['file mime'], row['media type'], row['file id'], 'binary'), axis=1)
 
     # for col in merge_df.columns:
         # print(col)
