@@ -5,7 +5,6 @@ dependencies:
     - views.view.collections
   module:
     - context
-    - node
     - system
     - views
   theme:
@@ -35,15 +34,8 @@ visibility:
     negate: null
     view_inclusion: {  }
     context_mapping: {  }
-  node_type:
-    id: node_type
-    bundles:
-      collection: collection
-    negate: false
-    context_mapping:
-      node: '@node.node_route_context:node'
   request_path:
     id: request_path
-    pages: "/collections/*/edit\r\n/node/add/collections"
-    negate: true
+    pages: '/collections/*'
+    negate: false
     context_mapping: {  }
