@@ -36,7 +36,6 @@ class MultiEntityLookup extends EntityLookup {
       $par = array_keys($par)[0];
     }
     else {
-      \Drupal::logger("multi_entity_lookup")->info('has a collection parent');
       $this->configuration['bundle'] = 'collection';
       $this->configuration['value_key'] = 'title';
       $par = parent::transform($collection_parent, $migrate_executable, $row, $destination_property);
