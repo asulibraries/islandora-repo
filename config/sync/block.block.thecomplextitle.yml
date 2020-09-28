@@ -4,7 +4,7 @@ dependencies:
   module:
     - asu_search
     - context
-    - ctools
+    - system
   theme:
     - asulib_barrio
 id: thecomplextitle
@@ -16,7 +16,7 @@ plugin: asu_complex_title
 settings:
   id: asu_complex_title
   label: 'The complex title'
-  provider: asu_item_extras
+  provider: asu_search
   label_display: '0'
 visibility:
   request_path_exclusion:
@@ -24,11 +24,13 @@ visibility:
     pages: ''
     negate: null
     context_mapping: {  }
-  'entity_bundle:node':
-    id: 'entity_bundle:node'
-    bundles:
-      asu_repository_item: asu_repository_item
-      collection: collection
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    view_inclusion: {  }
+    context_mapping: {  }
+  request_path:
+    id: request_path
+    pages: "/collections/*/search*\r\n/node/*/edit\r\n/items/*\r\n/collections/*"
     negate: false
-    context_mapping:
-      node: '@node.node_route_context:node'
+    context_mapping: {  }
