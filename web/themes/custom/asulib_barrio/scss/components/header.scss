@@ -80,3 +80,15 @@ header {
     font-size: 1.5rem;
     padding-top: 5px;
 }
+
+#main-standardfront-page a.sf-depth-1 {
+    color: #353535;
+    width: 0;
+    height: 0;
+    overflow: hidden;
+    &:before {
+        content: "\f015";
+        font-family: "Font Awesome 5 Free";
+        color: #FFF;
+    }
+}
