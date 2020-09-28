@@ -43,7 +43,8 @@ class UserLookup extends ProcessPluginBase {
       return $user->id();
     }
     else {
-      return $row->getDestinationProperty('uid');
+      $uid = $row->getSourceProperty('constants/uid');
+      return $uid;
     }
   }
 
