@@ -29,7 +29,7 @@ class StringToJson extends ProcessPluginBase {
    * {@inheritdoc}
    */
   public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
-    return $value;
+    return json_encode($value);
   }
 
 }

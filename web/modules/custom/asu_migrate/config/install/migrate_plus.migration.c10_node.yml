@@ -191,9 +191,10 @@ process:
           order: 0
           type: text
 
-  uid: constants/uid
-  # TODO lookup user by asurite from original system creator
-  #source: System User
+  uid:
+    plugin: user_lookup
+    source: System User
+    default_value: constants/uid
 
   field_pid: Item ID
 
@@ -218,30 +219,6 @@ process:
     source:
       - constants/handle
       - Item ID
-
-
-  # item_parents:
-  #   source: Parent Item
-  #   plugin: entity_lookup
-  #   entity_type: node
-  #   access_check: 0
-  #   bundle_key: type
-  #   bundle: asu_repository_item
-  #   value_key: id
-
-  # collection_parents:
-  #   # -
-  #   #   plugin: skip_on_empty
-  #   #   method: process
-  #   #   source: Collection Title
-  #   # # -
-  #   plugin: entity_lookup
-  #   entity_type: node
-  #   access_check: 0
-  #   bundle_key: type
-  #   bundle: collection
-  #   value_key: title
-  #   default_value: constants/cid
 
   field_member_of:
     -
@@ -331,13 +308,13 @@ process:
       - '@authors'
       - '@contributors'
 
-  # field_history:
-  #   -
-  #     plugin: skip_on_empty
-  #     method: process
-  #     source: History JSON
-  #   -
-  #     plugin: string_to_json
+  field_history:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: History JSON
+    -
+      plugin: string_to_json
 
 
 # We're making nodes
