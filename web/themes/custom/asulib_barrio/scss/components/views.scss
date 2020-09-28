@@ -62,15 +62,21 @@
             margin: 10px;
             background: #FFF;
             border: 1px solid rgba(0,0,0,0.125);
-            img {
-                margin-left: auto;
-                margin-right: auto;
-                display: block;
+            display: flex;
+            flex-direction: column;
+            .views-field-field-collection-thumbnail {
+                // margin-left: auto;
+                // margin-right: auto;
+                // display: block;
                 padding-top: 10px;
+                align-self: center;
+                flex: 2;
             }
+
             .views-field-field-title {
                 padding-top: 10px;
                 padding-bottom: 10px;
+                align-self: baseline;
             }
         }
     }
@@ -92,6 +98,10 @@
                 width: 100%;
             }
         }
+    }
+    .collection-thumbnail-icon {
+        text-align: center;
+        color: $gray-5;
     }
 }
 
