@@ -35,6 +35,18 @@ Drupal.behaviors.asu_item_extras = {
       }
       return;
     });
+    // on click code to handle clipboard copy of Citation
+    $('#copy_citation', context).once('asu_item_extras').click(function () {
+      try {
+        var citation = $('#citation-text').text();
+        copyToClipboard(citation);
+        alert("Citation copied to clipboard.");
+      } catch (err) {
+        alert("Unable to copy the text with your browser.");
+        console.error("Unable to copy citation", err);
+      }
+      return;
+    });
   }
 };
 
