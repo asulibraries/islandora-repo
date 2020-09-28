@@ -11,6 +11,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_date_digitized
     - field.field.node.asu_repository_item.field_default_derivative_file_pe
     - field.field.node.asu_repository_item.field_default_original_file_perm
+    - field.field.node.asu_repository_item.field_description
     - field.field.node.asu_repository_item.field_display_hints
     - field.field.node.asu_repository_item.field_edition
     - field.field.node.asu_repository_item.field_edtf_date_created
@@ -52,13 +53,13 @@ dependencies:
     - field.field.node.asu_repository_item.field_weight
     - node.type.asu_repository_item
   module:
-    - asu_search
     - controlled_access_terms
     - datetime
     - entity_reference_revisions
     - field_group
     - geolocation
     - options
+    - taxonomy
     - text
     - user
 third_party_settings:
@@ -102,11 +103,16 @@ content:
     third_party_settings: {  }
   display_media_child_thumbnail:
     weight: 10
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
   display_media_download_button:
     weight: 14
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  display_media_entity_view_1:
+    weight: 0
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -125,6 +131,11 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  display_media_service_file:
+    weight: 0
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   display_media_thumbnail:
     weight: 52
     region: content
@@ -132,16 +143,15 @@ content:
     third_party_settings: {  }
   field_additional_memberships:
     weight: 39
-    label: above
+    label: hidden
     settings:
       link: true
-      view_mode: default
     third_party_settings: {  }
-    type: entity_reference_entity_view
+    type: entity_reference_label
     region: content
   field_coordinates:
     weight: 38
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     type: geolocation_latlng
@@ -225,19 +235,17 @@ content:
     third_party_settings: {  }
   field_genre:
     weight: 3
-    label: above
-    settings:
-      link: true
+    label: hidden
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_label
+    type: entity_reference_rss_category
     region: content
   field_geographic_subject:
     weight: 40
-    label: hidden
-    settings:
-      link: true
+    label: above
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_label
+    type: entity_reference_rss_category
     region: content
   field_handle:
     weight: 15
@@ -264,15 +272,15 @@ content:
     region: content
   field_linked_agent:
     weight: 4
-    label: above
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
-    type: typed_relation_brief
+    type: typed_relation_default
     region: content
   field_member_of:
     weight: 5
-    label: above
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
@@ -286,14 +294,6 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
     region: content
-  field_name_title_subject:
-    type: entity_reference_label
-    weight: 45
-    region: content
-    label: hidden
-    settings:
-      link: true
-    third_party_settings: {  }
   field_note_para:
     type: entity_reference_revisions_entity_view
     weight: 23
@@ -305,21 +305,21 @@ content:
     region: content
   field_open_access:
     weight: 28
-    label: above
+    label: hidden
     settings:
-      format: default
+      format: custom
+      format_custom_true: 'Open Access'
       format_custom_false: ''
-      format_custom_true: ''
     third_party_settings: {  }
     type: boolean
     region: content
   field_peer_reviewed:
     weight: 27
-    label: above
+    label: hidden
     settings:
-      format: default
+      format: custom
+      format_custom_true: Peer-reviewed
       format_custom_false: ''
-      format_custom_true: ''
     third_party_settings: {  }
     type: boolean
     region: content
@@ -341,7 +341,7 @@ content:
     region: content
   field_preferred_citation:
     weight: 22
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
@@ -380,11 +380,12 @@ content:
     type: entity_reference_entity_view
     region: content
   field_rich_description:
-    type: text_default
+    type: text_trimmed
     weight: 2
     region: content
     label: visually_hidden
-    settings: {  }
+    settings:
+      trim_length: 600
     third_party_settings: {  }
   field_series:
     weight: 35
@@ -396,7 +397,7 @@ content:
     region: content
   field_statement_responsibility:
     weight: 37
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     type: basic_string
@@ -443,7 +444,7 @@ content:
     region: content
   field_title_subject:
     weight: 44
-    label: hidden
+    label: above
     settings:
       link: true
     third_party_settings: {  }
@@ -507,14 +508,14 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
-  display_media_entity_view_1: true
-  display_media_service_file: true
   field_complex_subjects: true
   field_default_derivative_file_pe: true
   field_default_original_file_perm: true
+  field_description: true
   field_display_hints: true
   field_history: true
   field_keywords: true
+  field_name_title_subject: true
   field_place_of_publication_code: true
   islandora_fits_checksum: true
   openseadragon_media_evas_entity_view_2: true

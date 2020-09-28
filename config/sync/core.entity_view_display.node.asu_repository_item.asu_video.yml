@@ -11,6 +11,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_date_digitized
     - field.field.node.asu_repository_item.field_default_derivative_file_pe
     - field.field.node.asu_repository_item.field_default_original_file_perm
+    - field.field.node.asu_repository_item.field_description
     - field.field.node.asu_repository_item.field_display_hints
     - field.field.node.asu_repository_item.field_edition
     - field.field.node.asu_repository_item.field_edtf_date_created
@@ -105,6 +106,11 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  display_media_child_thumbnail:
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   display_media_download_button:
     weight: 12
     region: content
@@ -127,7 +133,7 @@ content:
     third_party_settings: {  }
   field_additional_memberships:
     weight: 39
-    label: above
+    label: hidden
     settings:
       link: true
       view_mode: default
@@ -289,7 +295,7 @@ content:
     region: content
   field_linked_agent:
     weight: 4
-    label: above
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
@@ -297,7 +303,7 @@ content:
     region: content
   field_member_of:
     weight: 5
-    label: above
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
@@ -330,21 +336,21 @@ content:
     region: content
   field_open_access:
     weight: 28
-    label: above
+    label: hidden
     settings:
-      format: default
+      format: custom
+      format_custom_true: 'Open Access'
       format_custom_false: ''
-      format_custom_true: ''
     third_party_settings: {  }
     type: boolean
     region: content
   field_peer_reviewed:
     weight: 27
-    label: above
+    label: hidden
     settings:
-      format: default
+      format: custom
+      format_custom_true: Peer-reviewed
       format_custom_false: ''
-      format_custom_true: ''
     third_party_settings: {  }
     type: boolean
     region: content
@@ -374,7 +380,7 @@ content:
     region: content
   field_preferred_citation:
     weight: 22
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
@@ -429,7 +435,7 @@ content:
     region: content
   field_statement_responsibility:
     weight: 37
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     type: basic_string
@@ -549,6 +555,7 @@ hidden:
   display_media_service_file: true
   display_media_thumbnail: true
   field_complex_subjects: true
+  field_description: true
   field_display_hints: true
   islandora_fits_checksum: true
   openseadragon_media_evas_entity_view_2: true
