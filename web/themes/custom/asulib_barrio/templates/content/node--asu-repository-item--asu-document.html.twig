@@ -146,11 +146,14 @@
           <div>{{ content.field_additional_memberships }}</div>
         </div>
       {% endif %}
-      {% if drupal_view_result('collaborating_institutions', 'block_1', node.id) is not empty %}
+      {% if drupal_view('collaborating_institutions', 'block_1', node.id)|render|striptags|trim|length > 0 %}
         <div class="collab">
           <div class="field__label">{{ 'Collaborating institutions'|t }}</div>
           {{ drupal_view('collaborating_institutions', 'block_1', node.id) }}
         </div>
+      {% endif %}
+      {% if node.field_typed_identifier is not empty %}
+        <div>{{ content.field_typed_identifier }}</div>
       {% endif %}
       <div>
         <p>
