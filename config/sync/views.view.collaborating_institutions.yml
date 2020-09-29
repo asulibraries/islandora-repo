@@ -52,8 +52,17 @@ display:
           offset: 0
       style:
         type: default
+        options:
+          grouping: {  }
+          row_class: ''
+          default_row_class: true
       row:
         type: fields
+        options:
+          default_field_elements: false
+          inline: {  }
+          separator: ''
+          hide_empty: true
       fields:
         title:
           id: title
@@ -161,9 +170,9 @@ display:
           element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
-          element_default_classes: true
+          element_default_classes: false
           empty: ''
-          hide_empty: false
+          hide_empty: true
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
@@ -182,19 +191,6 @@ display:
           field_api_classes: false
           plugin_id: field
       filters:
-        status:
-          value: '1'
-          table: node_field_data
-          field: status
-          plugin_id: boolean
-          entity_type: node
-          entity_field: status
-          id: status
-          expose:
-            operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
-          group: 1
         type:
           id: type
           table: node_field_data
@@ -253,7 +249,7 @@ display:
           expose:
             label: ''
           granularity: second
-      title: 'Collaborating Institutions'
+      title: ''
       header: {  }
       footer: {  }
       empty: {  }
@@ -305,6 +301,7 @@ display:
           entity_field: nid
           plugin_id: node_nid
       display_extenders: {  }
+      show_admin_links: false
     cache_metadata:
       max-age: -1
       contexts:
@@ -323,6 +320,7 @@ display:
     display_options:
       display_extenders: {  }
       block_description: 'Collaborating Institutions'
+      block_hide_empty: true
     cache_metadata:
       max-age: -1
       contexts:

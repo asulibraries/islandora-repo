@@ -60,9 +60,9 @@
 		{% if description|length > 40 %}
 			{% set teaser = description|slice(0, 30)|join(' ')|trim('</p>', 'right') ~ '<span id="more-ellipse" class="collapse multi-collapse show">&hellip;</span></p>' %}
 			{#{% set remainder = description|slice(30)|join(' ') %}#}
-      <div class="collapse multi-collapse show">{{ teaser|raw }}</div>
-      <div class="summary-remainder multi-collapse collapse" id="remainder">{{ item.content }}</div>
-      <button aria-expanded="false" aria-controls="remainder more-ellipse" type="button" data-toggle="collapse" data-target=".multi-collapse" class="btn-link show-more">
+      <div class="description-teaser collapse multi-collapse show">{{ teaser|raw }}</div>
+      <div class="description-full multi-collapse collapse" id="full-content">{{ item.content }}</div>
+      <button aria-expanded="false" aria-controls="full-content more-ellipse" type="button" data-toggle="collapse" data-target=".multi-collapse" class="btn-link show-more">
         {% trans %}(more){% endtrans %}
       </button>
 		{% else %}

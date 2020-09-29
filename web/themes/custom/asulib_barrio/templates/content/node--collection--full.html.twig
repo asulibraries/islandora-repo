@@ -103,18 +103,6 @@
             <h2>{{ 'Latest additions'|t }}</h2>
             {{ drupal_block('latest_additions_to_collection_block') }}
         <br/>
-        {% if content.field_preferred_citation[0] is not empty %}
-            <div id="citecollection" class="citecollection">
-                <h2>{{ 'Cite this collection'|t }}</h2>
-                <div class="col-md-12">
-                <p>
-                    This is a suggested citation. Consult the appropriate style guide for specific citation guidelines.
-                </p>
-                <blockquote class="blockquote">
-                {{ content.field_preferred_citation }}
-                </blockquote>
-                </div>
-            </div>
-        {% endif %}
+        {{ content.field_preferred_citation }}
     </div>
 </article>

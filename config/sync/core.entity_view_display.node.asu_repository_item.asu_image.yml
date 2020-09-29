@@ -52,7 +52,6 @@ dependencies:
     - field.field.node.asu_repository_item.field_weight
     - node.type.asu_repository_item
   module:
-    - asu_item_extras
     - asu_search
     - controlled_access_terms
     - datetime
@@ -61,6 +60,7 @@ dependencies:
     - geolocation
     - jsonb
     - options
+    - paragraphs
     - taxonomy
     - text
     - user
@@ -103,6 +103,11 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  display_media_child_thumbnail:
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   display_media_download_button:
     weight: 14
     region: content
@@ -135,12 +140,11 @@ content:
     third_party_settings: {  }
   field_additional_memberships:
     weight: 39
-    label: above
+    label: hidden
     settings:
       link: true
-      view_mode: default
     third_party_settings: {  }
-    type: entity_reference_entity_view
+    type: entity_reference_label
     region: content
   field_coordinates:
     weight: 38
@@ -153,10 +157,10 @@ content:
     weight: 33
     label: above
     settings:
-      format_type: medium
       timezone_override: ''
+      date_format: 'Y-m-d\TH:i:s'
     third_party_settings: {  }
-    type: datetime_default
+    type: datetime_custom
     region: content
   field_copyright_statement:
     weight: 25
@@ -274,14 +278,13 @@ content:
   field_language:
     weight: 8
     label: above
-    settings:
-      link: true
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_label
+    type: entity_reference_rss_category
     region: content
   field_linked_agent:
     weight: 4
-    label: above
+    label: hidden
     settings:
       link: 0
     third_party_settings: {  }
@@ -289,7 +292,7 @@ content:
     region: content
   field_member_of:
     weight: 5
-    label: above
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
@@ -312,31 +315,29 @@ content:
       link: true
     third_party_settings: {  }
   field_note_para:
-    type: entity_reference_revisions_entity_view
+    type: paragraph_summary
     weight: 23
-    label: above
-    settings:
-      view_mode: default
-      link: ''
+    label: hidden
+    settings: {  }
     third_party_settings: {  }
     region: content
   field_open_access:
     weight: 28
-    label: above
+    label: hidden
     settings:
-      format: default
+      format: custom
+      format_custom_true: 'Open Access'
       format_custom_false: ''
-      format_custom_true: ''
     third_party_settings: {  }
     type: boolean
     region: content
   field_peer_reviewed:
     weight: 27
-    label: above
+    label: hidden
     settings:
-      format: default
+      format: custom
+      format_custom_true: Peer-reviewed
       format_custom_false: ''
-      format_custom_true: ''
     third_party_settings: {  }
     type: boolean
     region: content
@@ -365,18 +366,18 @@ content:
     region: content
   field_preferred_citation:
     weight: 22
-    label: above
-    settings: {  }
+    label: hidden
+    settings:
+      trim_length: 600
     third_party_settings: {  }
-    type: text_default
+    type: text_trimmed
     region: content
   field_preservation_state:
     weight: 19
     label: above
-    settings:
-      link: true
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_label
+    type: entity_reference_rss_category
     region: content
   field_related_item:
     weight: 36
@@ -384,15 +385,14 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-    type: typed_relation_default
+    type: typed_relation_brief
     region: content
   field_resource_type:
     weight: 31
     label: above
-    settings:
-      link: true
+    settings: {  }
     third_party_settings: {  }
-    type: entity_reference_label
+    type: entity_reference_rss_category
     region: content
   field_reuse_permissions:
     weight: 26
@@ -420,7 +420,7 @@ content:
     region: content
   field_statement_responsibility:
     weight: 37
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     type: basic_string
@@ -484,11 +484,9 @@ content:
   field_weight:
     weight: 21
     label: above
-    settings:
-      thousand_separator: ''
-      prefix_suffix: true
+    settings: {  }
     third_party_settings: {  }
-    type: number_integer
+    type: number_unformatted
     region: content
   langcode:
     type: language

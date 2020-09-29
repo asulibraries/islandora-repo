@@ -6,6 +6,9 @@
 .field__label {
     margin-bottom: ($spacer * .25);
 }
+.node--type-asu-repository-item .field__label {
+    margin-bottom: 0;
+}
 
 .field--type-entity-reference {
     margin: 0 0 ($spacer * 1.2);
@@ -138,4 +141,41 @@ img.copyright-logo {
 
 .reuse-logo {
     max-width: 120px;
+    padding: 10px 0;
+}
+
+.field--name-field-open-access svg {
+    width: 1.75rem;
+    margin-top: -15px;
+    margin-left: -5px;
+    fill: $maroon;
+}
+.icon-link:hover svg,
+.icon-link:focus svg {
+    fill: $brightmaroon;
+}
+
+.field--name-field-peer-reviewed .fa-eye {
+    font-size: 1.5rem;
+}
+
+.text-show-more .multi-collapse p:last-child {
+    margin-bottom: 0;
+}
+
+button.show-more {
+    margin-bottom: 1rem;
+}
+
+.field--name-field-identifier-type {
+    display: inline-block;
+    .field__item {
+        display: inline-block;
+    }
+    &:after {
+        content: ': ';
+    }
+}
+.field--name-field-identifier-value {
+    display: inline-block;
 }
