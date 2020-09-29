@@ -690,7 +690,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "<div class=\"col\">\r\n{{ field_rich_description }}\r\n{{ field_collaborating_institutions }}\r\n</div>"
+            text: "<div class=\"col\">\r\n{{ field_rich_description }}\r\n{% if field_collaborating_institutions is not empty %}\r\n<div class=\"field__label\">Collaborating Institutions: </div>\r\n{{ field_collaborating_institutions }}\r\n{% endif %}\r\n</div>"
             make_link: false
             path: ''
             absolute: false
