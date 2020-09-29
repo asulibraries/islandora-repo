@@ -47,8 +47,20 @@
       padding: 1rem;
       list-style: none;
     }
-  }
+    li:hover {
+      background-color: $gray-2;
+    }
+    li:not(:last-child):hover {
+      border-bottom: 1px solid $border-color;
 
+    }
+    a:hover,
+    a:focus {
+      color: $maroon;
+      font-weight: bold;
+      text-decoration: underline;
+    }
+  }
   .block-explore-this-collection-block .content {
     padding: 12px;
   }
