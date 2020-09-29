@@ -55,8 +55,7 @@ label_display == 'visually_hidden' ? 'visually-hidden',
 {% if label_hidden %}
   {% for item in items %}
     <div{{ attributes.addClass(classes, 'field__item') }}>
-      <a class="icon-link" href="/search?f[0]=peer_reviewed%3A1"><i class="far fa-eye"></i></a>
-      <a href="/search?f[0]=peer_reviewed%3A1">{{ item.content }}</a>
+      <a class="icon-link" href="/search?f[0]=peer_reviewed%3A1"><i class="far fa-eye"></i><span>{{ item.content }}</span></a>
     </div>
   {% endfor %}
 {% else %}
@@ -64,8 +63,7 @@ label_display == 'visually_hidden' ? 'visually-hidden',
   <div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
   {% for item in items %}
     <div{{ item.attributes.addClass('field__item') }}>
-      <a class="icon-link" href="/search?f[0]=peer_reviewed%3A1"><i class="far fa-eye"></i></a>
-      <a href="/search?f[0]=peer_reviewed%3A1">{{ item.content }}</a>
+      <a class="icon-link" href="/search?f[0]=peer_reviewed%3A1"><i class="far fa-eye"></i><span>{{ item.content }}</span></a>
     </div>
   {% endfor %}
   </div>
