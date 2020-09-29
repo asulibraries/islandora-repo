@@ -23,21 +23,32 @@ class BentoLegacyRepo extends BlockBase {
    * {@inheritdoc}
    */
   public function build() {
-    // Read the configuration to see how many results we need to display.
-    $config = \Drupal::config('repo_bento_search.bentosettings');
-    $service_api_url = $config->get('legacy_repository_api_url');
-    $parsed_url = parse_url($service_api_url);
-    $service_url = $parsed_url['scheme'] . '://' . $parsed_url['host'];
-    $num_results = $config->get('num_results') ?: 10;
     // Get the search parameter from the GET url.
     // the url parameter is q as in q=cat
     $search_term = \Drupal::request()->query->get('q');
-    $results_json = ($search_term) ?
-      \Drupal::service('repo_bento_search.legacy_repo')->getSearchResults($search_term) : '';
-    $results_arr = json_decode($results_json, true);
-    $result_items = (array_key_exists('results', $results_arr) && is_array($results_arr['results'])) ?
-        $results_arr['results'] : [];
-
+    // Read the configuration to see how many results we need to display.
+    $config = \Drupal::config('repo_bento_search.bentosettings');
+    $service_api_url = $config->get('legacy_repository_api_url');
+    if (!trim(($service_api_url))) {
+      $results_arr = [
+        'results' => 'Legacy search not configured.',
+        'count' => 0
+      ];
+      $result_items = [];
+      $service_url = '';
+    }
+    else {
+      $parsed_url = parse_url($service_api_url);
+      $service_url = $parsed_url['scheme'] . '://' . $parsed_url['host'];
+      // $num_results not supported as a parameter for the legacy api searching,
+      // but the value is passed through regardless.
+      $num_results = $config->get('num_results') ?: 10;
+      $results_json = ($search_term) ?
+        \Drupal::service('repo_bento_search.legacy_repo')->getSearchResults($search_term, $num_results) : '';
+      $results_arr = json_decode($results_json, true);
+      $result_items = (array_key_exists('results', $results_arr) && is_array($results_arr['results'])) ?
+          $results_arr['results'] : [];
+    }
     return [
       '#cache' => ['max-age' => 0],
       'lib' => [

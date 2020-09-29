@@ -25,7 +25,9 @@
         <div class="bento_item">
             <a href="{{ service_url }}/items/{{ item.nid }}" target="_blank">{{ item.complex_title }}</a><br>
             {{ item.field_rich_description }}<br>
+            {% if item.field_edtf_date_created %}
             <small><label>Created: </label> {{ item.field_edtf_date_created }}</small><br>
+            {% endif %}
         </div>
     {% endfor %}
     <a href="{{ service_url }}/search?search_api_fulltext={{ search_term }}" target="_blank" title="See all KEEP results &gt;">See all KEEP results &gt;</a>
