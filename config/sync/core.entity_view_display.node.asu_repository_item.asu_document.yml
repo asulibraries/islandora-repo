@@ -52,6 +52,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_weight
     - node.type.asu_repository_item
   module:
+    - asu_search
     - controlled_access_terms
     - datetime
     - entity_reference_revisions
@@ -275,7 +276,7 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-    type: typed_relation_default
+    type: typed_relation_brief
     region: content
   field_member_of:
     weight: 5
@@ -359,7 +360,7 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-    type: typed_relation_default
+    type: typed_relation_brief
     region: content
   field_resource_type:
     weight: 31
