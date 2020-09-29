@@ -113,8 +113,13 @@
     </div>
     <div id="details" class="content-section details">
       <h2>{{ 'Details'|t }}</h2>
-      <div>{{ content.field_peer_reviewed }}</div>
-      <div>{{ content.field_open_access }}</div>
+      {# {{node.field_peer_reviewed.value}} #}
+      {% if node.field_peer_reviewed.value == 1 %}
+        <div>{{ content.field_peer_reviewed }}</div>
+      {% endif %}
+      {% if node.field_open_access.value == 1 %}
+        <div>{{ content.field_open_access }}</div>
+      {% endif %}
       {% if node.field_linked_agent is not empty %}
         <div class="agents">
           <div class="field__label">{{ 'Author/Contributors'|t }}</div>
