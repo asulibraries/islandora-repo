@@ -152,6 +152,9 @@
           {{ drupal_view('collaborating_institutions', 'block_1', node.id) }}
         </div>
       {% endif %}
+      {% if node.field_typed_identifier is not empty %}
+        <div>{{ content.field_typed_identifier }}</div>
+      {% endif %}
       <div>
         <p>
           <strong>
