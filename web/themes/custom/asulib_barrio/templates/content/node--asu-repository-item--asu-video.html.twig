@@ -119,12 +119,15 @@
     </div>
     <div id="details" class="content-section details">
       <h2>{{ 'Details'|t }}</h2>
+<<<<<<< HEAD
       {% if node.field_peer_reviewed.value == 1 %}
         <div>{{ content.field_peer_reviewed }}</div>
       {% endif %}
       {% if node.field_open_access.value == 1 %}
         <div>{{ content.field_open_access }}</div>
       {% endif %}
+=======
+>>>>>>> 9d48168a118138281565ccdea3c4d5fa65847207
       {% if node.field_linked_agent is not empty %}
         <div class="agents">
           <div class="field__label">{{ 'Author/Contributors'|t }}</div>
@@ -150,6 +153,7 @@
           <div class="field__label">{{ 'Collections this item is in'|t }}</div>
           <div>{{ content.field_member_of }}</div>
           <div>{{ content.field_additional_memberships }}</div>
+<<<<<<< HEAD
         </div>
       {% endif %}
       {% if drupal_view_result('collaborating_institutions', 'block_1', node.id) is not empty %}
@@ -158,6 +162,16 @@
           {{ drupal_view('collaborating_institutions', 'block_1', node.id) }}
         </div>
       {% endif %}
+=======
+        </div>
+      {% endif %}
+      {% if drupal_view_result('collaborating_institutions', 'block_1', node.id) is not empty %}
+        <div class="collab">
+          <div class="field__label">{{ 'Collaborating institutions'|t }}</div>
+          {{ drupal_view('collaborating_institutions', 'block_1', node.id) }}
+        </div>
+      {% endif %}
+>>>>>>> 9d48168a118138281565ccdea3c4d5fa65847207
       <div>
         <p>
           <strong>
