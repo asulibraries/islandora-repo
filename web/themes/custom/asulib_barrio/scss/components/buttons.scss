@@ -13,4 +13,24 @@
 .btn-link:hover {
   text-decoration: none;
 }
-a.btn-primary { color: #fff; }
+a.btn-primary,
+a.copy_button { color: #fff; }
+.btn-primary:hover,
+.btn-primary:focus,
+a.copy_button:hover,
+a.copy_button:focus {
+  color: $white;
+  background-color: $brightmaroon;
+}
+.btn-primary:hover,
+.btn-primary:focus {
+  border-color: $brightmaroon;
+}
+.sidebar .btn-primary a { background-color: transparent;}
+.sidebar .btn-primary a:hover,
+.sidebar .btn-primary a:focus,
+.sidebar .btn-primary:hover,
+.sidebar .btn-primary:focus {
+  background-color: $brightmaroon;
+  border-color: $brightmaroon;
+}

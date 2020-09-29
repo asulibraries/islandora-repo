@@ -144,14 +144,25 @@ img.copyright-logo {
     padding: 10px 0;
 }
 
-
 .field--name-field-open-access svg {
     width: 1.75rem;
     margin-top: -15px;
     margin-left: -5px;
-    fill: #8c1d40;
+    fill: $maroon;
+}
+.icon-link:hover svg,
+.icon-link:focus svg {
+    fill: $brightmaroon;
 }
 
 .field--name-field-peer-reviewed .fa-eye {
     font-size: 1.5rem;
+}
+
+.text-show-more .multi-collapse p:last-child {
+    margin-bottom: 0;
+}
+
+button.show-more {
+    margin-bottom: 1rem;
 }

@@ -20,6 +20,11 @@ body {
 a {
     color: $accent-shade;
 }
+a:hover,
+a:focus {
+  color: $brightmaroon;
+  text-decoration: none;
+}
 
 .bg-inverse {
     background: $primary-shade !important;
@@ -95,7 +100,7 @@ a {
     margin-bottom: 1rem;
     font-weight: bold;
   }
-  .field--name-field-description {
+  .field--name-field-rich-description {
     margin-bottom: $spacer;
   }
   .content-section {
@@ -113,7 +118,12 @@ a {
 
 a.icon-link {
   border-bottom: none;
-  margin-right: .75rem;
+}
+.icon-link i {
+     margin-right: .75rem;
+   }
+.icon-link span {
+  border-bottom: 1px dotted $maroon;
 }
 
 /* This might be too general */
@@ -143,11 +153,6 @@ img { width: 100%; }
 }
 .interact > div {
   margin-bottom: 2.5rem;
-}
-
-.iiif input,
-.iiif a.btn {
-  border-radius: 0;
 }
 
 .citation ul {
@@ -192,4 +197,3 @@ img { width: 100%; }
 a.image-link,
 a.image-link:hover,
 a.image-link:focus { border: none; }
-
