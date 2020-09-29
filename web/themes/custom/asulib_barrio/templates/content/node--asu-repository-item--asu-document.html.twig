@@ -113,18 +113,12 @@
     </div>
     <div id="details" class="content-section details">
       <h2>{{ 'Details'|t }}</h2>
-<<<<<<< HEAD
-      {# {{node.field_peer_reviewed.value}} #}
       {% if node.field_peer_reviewed.value == 1 %}
         <div>{{ content.field_peer_reviewed }}</div>
       {% endif %}
       {% if node.field_open_access.value == 1 %}
         <div>{{ content.field_open_access }}</div>
       {% endif %}
-=======
-      <div>{{ content.field_peer_reviewed }}</div>
-      <div>{{ content.field_open_access }}</div>
->>>>>>> 9d48168a118138281565ccdea3c4d5fa65847207
       {% if node.field_linked_agent is not empty %}
         <div class="agents">
           <div class="field__label">{{ 'Author/Contributors'|t }}</div>
@@ -170,10 +164,6 @@
       <h2>{{ 'Citation and reuse'|t }}</h2>
       {{ content.field_preferred_citation }}
       {{ content.field_statement_responsibility }}
-      <div class="iiif">
-        <h3>{{ 'International Image Interoperability Framework' |t }}</h3>
-        {{ drupal_block('asu_item_iiif', wrapper=false) }}
-      </div>
     </div>
     <div id="machine" class="content-section machine">
       <h2>{{ 'Machine-readable links'|t }}</h2>
