@@ -4,9 +4,8 @@ namespace Drupal\asu_collection_extras\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\media\Entity\Media;
-// ### The next two classes will be needed if using Drupal routes to make links.
-//use Drupal\Core\Url;
-//use Drupal\Core\Link;
+use Drupal\Core\Url;
+use Drupal\Core\Link;
 
 /**
  * Provides a 'About this collection' Block.
@@ -55,7 +54,7 @@ class AboutThisCollectionBlock extends BlockBase {
     $children_nids = getAllCollectionChildren($collection_node);
 
     $collection_views = $items = $max_timestamp = 0;
-    $nodes = $islandora_models = $stat_boxes = [];
+    $nodes = $islandora_models = $stat_box_row1 = $stats_box_row2 = [];
     $files = 0;
     $original_file_tid = key(\Drupal::entityTypeManager()
       ->getStorage('taxonomy_term')
@@ -63,7 +62,6 @@ class AboutThisCollectionBlock extends BlockBase {
     foreach ($children_nids as $child_nid) {
       if ($child_nid) {
         // @todo load complex objects for this node -- if any... and inner-loop these
-
         $items++;
         // For "# file (Titles)", get media - extract the and count the original files.
         $files += $this->getOriginalFileCount($child_nid, $original_file_tid);
@@ -86,20 +84,32 @@ class AboutThisCollectionBlock extends BlockBase {
         $collection_views += $node_views;
       }
     }
-    $stat_boxes[] = $this->makeBox("<strong>" . $files . "</strong><br>files");
-    $stat_boxes[] = $this->makeBox("<strong>" . count($islandora_models) . "</strong><br>resource types");
-    $stat_boxes[] = $this->makeBox("<strong>" . $items . "</strong><br>items");
-    $stat_boxes[] = $this->makeBox("<strong>" . $collection_views . "</strong><br>usage");
-    $stat_boxes[] = $this->makeBox("<strong>" . (($collection_created) ? date('Y', $collection_created): 'unknown') .
+    // Calculate the "Items" box link.
+    $items_url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/collections/' .
+       (($collection_node) ? $collection_node->id() : 0) . '/search/?search_api_fulltext=');
+    $stat_box_row1[] = $this->makeBox("<strong>" . $items . "</strong><br>items", $items_url);
+    // Until I find a way to pass a wildcard filter on resource_type for the files box...
+    //    $files_url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/collections/' .
+    //       (($collection_node) ? $collection_node->id() : 0) . '/search/?search_api_fulltext=&f[0]=resource_type:Image');
+    $stat_box_row1[] = $this->makeBox("<strong>" . $files . "</strong><br>files");
+    $stat_box_row1[] = $this->makeBox("<strong>" . count($islandora_models) . "</strong><br>resource types");
+    $stat_box_row2[] = $this->makeBox("<strong>" . $collection_views . "</strong><br>usage");
+    $stat_box_row2[] = $this->makeBox("<strong>" . (($collection_created) ? date('Y', $collection_created): 'unknown') .
       "</strong><br>collection created");
-    $stat_boxes[] = $this->makeBox("<strong>" . (($max_timestamp) ? date('M d, Y', $max_timestamp): 'unknown') .
-      "</strong><br>last updates");
+    $stat_box_row2[] = $this->makeBox("<strong>" . (($max_timestamp) ? date('M d, Y', $max_timestamp): 'unknown') .
+      "</strong><br>last updates</div>");
     return [
       '#cache' => ['max-age' => 0],
       '#markup' =>
-        (count($stat_boxes) > 0) ?
-        implode('', $stat_boxes) .
-        '<br class="clearfloat">' :
+        (count($stat_box_row1) > 0) ?
+        // ROW 1
+        '<div class="container"><div class="row">' .
+        implode('', $stat_box_row1) .
+        '</div>' .
+        // ROW 2
+        '<div class="row">' .
+        implode('', $stat_box_row2) .
+        '</div><br class="clearfloat">' :
         "",
       'lib' => [
         '#attached' => [
@@ -111,9 +121,16 @@ class AboutThisCollectionBlock extends BlockBase {
     ];
   }
 
-  private function makeBox($string) {
-    return '<div class="stats_box">' . $string . '</div>';
-  }
+  private function makeBox($string, $link_url = NULL) {
+    if ($link_url) {
+      // Drupal's Link class is escaping the HTML, so this must be done manually.
+      return '<div class="stats_box col-4 stats_pointer_box"><a href="' . $link_url->toString() . '" title="Explore items">' .
+        '<div class="stats_border_box">' . $string . '</div></a></div>';
+    }
+    else {
+      return '<div class="stats_box col-4"><div class="stats_border_box">' . $string . '</div></div>';
+    }
+}
 
   private function getOriginalFileCount($related_nid, $original_file_tid) {
     $files = 0;
@@ -126,10 +143,6 @@ class AboutThisCollectionBlock extends BlockBase {
       $files += (is_object($media) ? 1 : 0);
     }
     return $files;
-  }
-
-  public function nothing($x) {
-
   }
 
 }
