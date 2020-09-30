@@ -5,7 +5,6 @@ dependencies:
     - field.storage.node.field_additional_memberships
     - field.storage.node.field_copyright_date
     - field.storage.node.field_copyright_statement
-    - field.storage.node.field_description
     - field.storage.node.field_edition
     - field.storage.node.field_edtf_date
     - field.storage.node.field_edtf_date_created
@@ -25,6 +24,7 @@ dependencies:
     - field.storage.node.field_place_published
     - field.storage.node.field_preferred_citation
     - field.storage.node.field_reuse_permissions
+    - field.storage.node.field_rich_description
     - field.storage.node.field_series
     - field.storage.node.field_statement_responsibility
     - field.storage.node.field_subject
@@ -1257,14 +1257,14 @@ display:
             multi_type: separator
             multi_separator: ', '
           plugin_id: search_api_field
-        field_description:
-          id: field_description
+        field_rich_description:
+          id: field_rich_description
           table: search_api_index_default_solr_index
-          field: field_description
+          field: field_rich_description
           relationship: none
           group_type: group
           admin_label: ''
-          label: ''
+          label: Description
           exclude: false
           alter:
             alter_text: false
@@ -1297,7 +1297,7 @@ display:
           element_class: ''
           element_label_type: ''
           element_label_class: ''
-          element_label_colon: false
+          element_label_colon: true
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
@@ -1306,7 +1306,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: basic_string
+          type: text_default
           settings: {  }
           group_column: value
           group_columns: {  }
@@ -4520,7 +4520,6 @@ display:
         - 'config:field.storage.node.field_additional_memberships'
         - 'config:field.storage.node.field_copyright_date'
         - 'config:field.storage.node.field_copyright_statement'
-        - 'config:field.storage.node.field_description'
         - 'config:field.storage.node.field_edition'
         - 'config:field.storage.node.field_edtf_date'
         - 'config:field.storage.node.field_edtf_date_created'
@@ -4540,6 +4539,7 @@ display:
         - 'config:field.storage.node.field_place_published'
         - 'config:field.storage.node.field_preferred_citation'
         - 'config:field.storage.node.field_reuse_permissions'
+        - 'config:field.storage.node.field_rich_description'
         - 'config:field.storage.node.field_series'
         - 'config:field.storage.node.field_statement_responsibility'
         - 'config:field.storage.node.field_subject'
@@ -4591,6 +4591,159 @@ display:
             all_subjects:
               alias: ''
               raw_output: false
+            nid:
+              alias: ''
+              raw_output: false
+            field_additional_memberships:
+              alias: ''
+              raw_output: false
+            field_ancestors:
+              alias: ''
+              raw_output: false
+            changed:
+              alias: ''
+              raw_output: false
+            type:
+              alias: ''
+              raw_output: false
+            field_copyright_date:
+              alias: ''
+              raw_output: false
+            field_copyright_statement:
+              alias: ''
+              raw_output: false
+            field_linked_agent:
+              alias: ''
+              raw_output: false
+            field_edtf_date:
+              alias: ''
+              raw_output: false
+            field_edtf_date_created:
+              alias: ''
+              raw_output: false
+            field_edtf_date_issued:
+              alias: ''
+              raw_output: false
+            field_rich_description:
+              alias: ''
+              raw_output: false
+            field_edition:
+              alias: ''
+              raw_output: false
+            field_extent:
+              alias: ''
+              raw_output: false
+            field_frequency:
+              alias: ''
+              raw_output: false
+            genre_name:
+              alias: ''
+              raw_output: false
+            field_geographic_subject:
+              alias: ''
+              raw_output: false
+            field_handle:
+              alias: ''
+              raw_output: false
+            field_identifier_value:
+              alias: ''
+              raw_output: false
+            field_issuance:
+              alias: ''
+              raw_output: false
+            field_language_description_1:
+              alias: ''
+              raw_output: false
+            field_pid:
+              alias: ''
+              raw_output: false
+            field_local_identifier:
+              alias: ''
+              raw_output: false
+            field_member_of:
+              alias: ''
+              raw_output: false
+            field_model:
+              alias: ''
+              raw_output: false
+            field_subjects_name:
+              alias: ''
+              raw_output: false
+            field_note:
+              alias: ''
+              raw_output: false
+            field_open_access:
+              alias: ''
+              raw_output: false
+            field_peer_reviewed:
+              alias: ''
+              raw_output: false
+            place_of_publication_code:
+              alias: ''
+              raw_output: false
+            field_place_published:
+              alias: ''
+              raw_output: false
+            field_preferred_citation:
+              alias: ''
+              raw_output: false
+            status:
+              alias: ''
+              raw_output: false
+            field_related_item_name:
+              alias: ''
+              raw_output: false
+            resource_type_name:
+              alias: ''
+              raw_output: false
+            field_reuse_permissions:
+              alias: ''
+              raw_output: false
+            field_series:
+              alias: ''
+              raw_output: false
+            field_statement_responsibility:
+              alias: ''
+              raw_output: false
+            field_table_of_contents:
+              alias: ''
+              raw_output: false
+            field_temporal_subject:
+              alias: ''
+              raw_output: false
+            field_title_subject:
+              alias: ''
+              raw_output: false
+            field_topical_subject:
+              alias: ''
+              raw_output: false
+            complex_title:
+              alias: ''
+              raw_output: false
+            etdf_created_year_only:
+              alias: ''
+              raw_output: false
+            asu_doi:
+              alias: ''
+              raw_output: false
+            institution_from_collection:
+              alias: ''
+              raw_output: false
+            asu_isbn:
+              alias: ''
+              raw_output: false
+            asu_issn:
+              alias: ''
+              raw_output: false
+            asu_local:
+              alias: ''
+              raw_output: false
+            field_combined_member_of:
+              alias: ''
+              raw_output: false
+            note_value:
+              alias: ''
+              raw_output: false
     cache_metadata:
       max-age: -1
       contexts:
@@ -4604,7 +4757,6 @@ display:
         - 'config:field.storage.node.field_additional_memberships'
         - 'config:field.storage.node.field_copyright_date'
         - 'config:field.storage.node.field_copyright_statement'
-        - 'config:field.storage.node.field_description'
         - 'config:field.storage.node.field_edition'
         - 'config:field.storage.node.field_edtf_date'
         - 'config:field.storage.node.field_edtf_date_created'
@@ -4624,6 +4776,7 @@ display:
         - 'config:field.storage.node.field_place_published'
         - 'config:field.storage.node.field_preferred_citation'
         - 'config:field.storage.node.field_reuse_permissions'
+        - 'config:field.storage.node.field_rich_description'
         - 'config:field.storage.node.field_series'
         - 'config:field.storage.node.field_statement_responsibility'
         - 'config:field.storage.node.field_subject'
