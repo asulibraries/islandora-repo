@@ -5,6 +5,7 @@ dependencies:
     - field.field.media.video.field_access_terms
     - field.field.media.video.field_captions
     - field.field.media.video.field_file_size
+    - field.field.media.video.field_legacy_checksum
     - field.field.media.video.field_media_of
     - field.field.media.video.field_media_use
     - field.field.media.video.field_media_video_file
@@ -28,7 +29,7 @@ content:
     type: entity_reference_label
     region: content
   field_captions:
-    weight: 102
+    weight: 9
     label: above
     settings:
       use_description_as_link_text: true
@@ -45,7 +46,7 @@ content:
       prefix_suffix: true
     third_party_settings: {  }
   field_gemini_uri:
-    weight: 100
+    weight: 7
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -88,7 +89,7 @@ content:
       link_to_entity: false
     third_party_settings: {  }
   field_original_name:
-    weight: 101
+    weight: 8
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -104,6 +105,7 @@ content:
     third_party_settings: {  }
 hidden:
   created: true
+  field_legacy_checksum: true
   langcode: true
   search_api_excerpt: true
   thumbnail: true
