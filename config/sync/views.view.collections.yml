@@ -2,7 +2,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.node.collection_browse_teaser
     - core.entity_view_mode.node.teaser
     - field.storage.node.field_collaborating_institutions
     - field.storage.node.field_collection_thumbnail
@@ -51,11 +50,11 @@ display:
       exposed_form:
         type: basic
         options:
-          submit_button: Apply
+          submit_button: Search
           reset_button: false
           reset_button_label: Reset
           exposed_sorts_label: 'Sort by'
-          expose_sort_order: true
+          expose_sort_order: false
           sort_asc_label: Asc
           sort_desc_label: Desc
       pager:
@@ -806,86 +805,6 @@ display:
         description: 'Browse all of our digital collections'
         expanded: false
         parent: ''
-        weight: 10
-        context: '0'
-        menu_name: main
-      arguments:
-        field_main_title_value:
-          id: field_main_title_value
-          table: paragraph__field_main_title
-          field: field_main_title_value
-          relationship: field_title
-          group_type: group
-          admin_label: ''
-          default_action: ignore
-          exception:
-            value: ''
-            title_enable: true
-            title: Collections
-          title_enable: true
-          title: 'Collections starting with "{{ arguments.field_main_title_value }}"'
-          default_argument_type: fixed
-          default_argument_options:
-            argument: all
-          default_argument_skip_url: false
-          summary_options:
-            base_path: ''
-            count: true
-            items_per_page: 25
-            override: false
-          summary:
-            sort_order: asc
-            number_of_records: 0
-            format: default_summary
-          specify_validation: true
-          validate:
-            type: none
-            fail: ignore
-          validate_options: {  }
-          glossary: true
-          limit: 1
-          case: upper
-          path_case: lower
-          transform_dash: false
-          break_phrase: false
-          plugin_id: string
-      defaults:
-        arguments: false
-        relationships: false
-        header: true
-      relationships:
-        field_title:
-          id: field_title
-          table: node__field_title
-          field: field_title
-          relationship: none
-          group_type: group
-          admin_label: 'field_title: Paragraph'
-          required: false
-          plugin_id: standard
-    cache_metadata:
-      max-age: -1
-      contexts:
-        - 'languages:language_content'
-        - 'languages:language_interface'
-        - url
-        - 'user.node_grants:view'
-      tags:
-        - 'config:field.storage.paragraph.field_nonsort'
-  page_2:
-    display_plugin: page
-    id: page_2
-    display_title: Page
-    position: 1
-    display_options:
-      display_extenders: {  }
-      path: collections
-      menu:
-        type: normal
-        title: 'Browse Collections'
-        description: 'Browse all of our digital collections'
-        expanded: false
-        parent: ''
         weight: 4
         context: '0'
         menu_name: main
@@ -937,6 +856,8 @@ display:
         row: false
         fields: false
         css_class: false
+        filters: false
+        filter_groups: false
       relationships:
         field_title:
           id: field_title
@@ -950,19 +871,21 @@ display:
       style:
         type: views_bootstrap_grid
         options:
-          row_class: container
-          default_row_class: true
-          uses_fields: false
+          grouping: {  }
+          row_class: 'clearfix collection-browse-object container'
+          default_row_class: false
           col_xs: col-12
           col_sm: none
           col_md: col-md-6
           col_lg: col-lg-6
           col_xl: col-xl-6
       row:
-        type: 'entity:node'
+        type: fields
         options:
-          relationship: none
-          view_mode: collection_browse_teaser
+          default_field_elements: false
+          inline: {  }
+          separator: ''
+          hide_empty: true
       fields:
         nid:
           id: nid
@@ -1067,14 +990,14 @@ display:
             preserve_tags: ''
             html: false
           element_type: div
-          element_class: 'float-left collection-browse-thumb'
+          element_class: 'col-3 collection-browse-thumb'
           element_label_type: ''
           element_label_class: ''
           element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
-          empty: '<i class="far fa-folder-open fa-6x"></i>'
+          empty: ''
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
@@ -1358,7 +1281,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "<div class=\"row\">\r\n<div class=\"col-md-3\">\r\n{{ field_collection_thumbnail }} \r\n</div>\r\n<div class=\"col-md-9\">\r\n<h2>{{ field_title }}</h2>\r\n{{ field_rich_description }} \r\n</div>\r\n</div>"
+            text: "<div class=\"row\">\r\n{{ field_collection_thumbnail }} \r\n<div class=\"col\">\r\n<h2><a href=\"/collections/{{nid}}\">{{ field_title }}</a></h2>\r\n{{ field_rich_description }} \r\n</div>\r\n</div>"
             make_link: false
             path: ''
             absolute: false
@@ -1407,7 +1330,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: '<div class="row"><a href="/collections/{{nid}}" class="col-sm-6 collection-browse-button">About</a><a href="/collections/{{nid}}/search/?search_api_fulltext="  class="col-sm-6 collection-browse-button">Browse</a></div>'
+            text: "<div class=\"row\">\r\n        <div class=\"btn-group collection-browse-button\" role=\"group\">\r\n          <a role=\"button\" href=\"/collections/{{nid}}\" class=\"btn btn-secondary\">About</a>\r\n<a role=\"button\" href=\"/collections/{{nid}}/search?search_api_fulltext=\" class=\"btn btn-secondary\">Browse</a>\r\n</div></div>"
             make_link: false
             path: ''
             absolute: false
@@ -1446,6 +1369,795 @@ display:
           hide_alter_empty: false
           plugin_id: custom
       css_class: ''
+      filters:
+        type:
+          id: type
+          table: node_field_data
+          field: type
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: in
+          value:
+            collection: collection
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: node
+          entity_field: type
+          plugin_id: bundle
+        combine:
+          id: combine
+          table: views
+          field: combine
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: contains
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: combine_op
+            label: ''
+            description: ''
+            use_operator: false
+            operator: combine_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: combine
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              fedoraadmin: '0'
+              content_approver: '0'
+              depositor: '0'
+              metadata_manager: '0'
+              preservationist: '0'
+              casuser: '0'
+            placeholder: 'Search for collections'
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          fields:
+            nid: nid
+            title: title
+            field_rich_description: field_rich_description
+          plugin_id: combine
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
+        - 'user.node_grants:view'
+      tags:
+        - 'config:field.storage.node.field_collection_thumbnail'
+        - 'config:field.storage.node.field_rich_description'
+        - 'config:field.storage.node.field_title'
+        - 'config:field.storage.paragraph.field_nonsort'
+  page_2:
+    display_plugin: page
+    id: page_2
+    display_title: Page
+    position: 1
+    display_options:
+      display_extenders: {  }
+      path: collections
+      menu:
+        type: normal
+        title: 'Browse Collections'
+        description: 'Browse all of our digital collections'
+        expanded: false
+        parent: ''
+        weight: 4
+        context: '0'
+        menu_name: main
+      arguments:
+        field_main_title_value:
+          id: field_main_title_value
+          table: paragraph__field_main_title
+          field: field_main_title_value
+          relationship: field_title
+          group_type: group
+          admin_label: ''
+          default_action: ignore
+          exception:
+            value: all
+            title_enable: true
+            title: Collections
+          title_enable: true
+          title: 'Collections starting with "{{ arguments.field_main_title_value }}"'
+          default_argument_type: fixed
+          default_argument_options:
+            argument: all
+          default_argument_skip_url: false
+          summary_options:
+            base_path: ''
+            count: true
+            items_per_page: 25
+            override: false
+          summary:
+            sort_order: asc
+            number_of_records: 0
+            format: default_summary
+          specify_validation: true
+          validate:
+            type: none
+            fail: ignore
+          validate_options: {  }
+          glossary: true
+          limit: 1
+          case: upper
+          path_case: lower
+          transform_dash: false
+          break_phrase: false
+          plugin_id: string
+      defaults:
+        arguments: false
+        relationships: false
+        header: true
+        style: false
+        row: false
+        fields: false
+        css_class: false
+        filters: false
+        filter_groups: false
+      relationships:
+        field_title:
+          id: field_title
+          table: node__field_title
+          field: field_title
+          relationship: none
+          group_type: group
+          admin_label: 'field_title: Paragraph'
+          required: false
+          plugin_id: standard
+      style:
+        type: views_bootstrap_grid
+        options:
+          grouping: {  }
+          row_class: 'clearfix collection-browse-object container'
+          default_row_class: false
+          col_xs: col-12
+          col_sm: none
+          col_md: col-md-6
+          col_lg: col-lg-6
+          col_xl: col-xl-6
+      row:
+        type: fields
+        options:
+          default_field_elements: false
+          inline: {  }
+          separator: ''
+          hide_empty: true
+      fields:
+        nid:
+          id: nid
+          table: node_field_data
+          field: nid
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: number_integer
+          settings:
+            thousand_separator: ''
+            prefix_suffix: true
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          entity_type: node
+          entity_field: nid
+          plugin_id: field
+        field_collection_thumbnail:
+          id: field_collection_thumbnail
+          table: node__field_collection_thumbnail
+          field: field_collection_thumbnail
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: '<div class="col-md-3">{{ field_collection_thumbnail }}</div>'
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: div
+          element_class: 'col-3 collection-browse-thumb'
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: media_thumbnail
+          settings:
+            image_style: square_thumb
+            image_link: content
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_title:
+          id: field_title
+          table: node__field_title
+          field: field_title
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: true
+            path: '/collections/{{nid}}'
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: h2
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: complex_title_formatter
+          settings:
+            link: 0
+          group_column: ''
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        title:
+          id: title
+          table: node_field_data
+          field: title
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: false
+            ellipsis: false
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: true
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          entity_type: node
+          entity_field: title
+          plugin_id: field
+        field_nonsort:
+          id: field_nonsort
+          table: paragraph__field_nonsort
+          field: field_nonsort
+          relationship: field_title
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 1
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: true
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_rich_description:
+          id: field_rich_description
+          table: node__field_rich_description
+          field: field_rich_description
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: true
+          alter:
+            alter_text: true
+            text: '{{ field_rich_description }}'
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 300
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: true
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: text_default
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        nothing_1:
+          id: nothing_1
+          table: views
+          field: nothing
+          relationship: none
+          group_type: group
+          admin_label: 'Row for thumb, title/desc'
+          label: ''
+          exclude: false
+          alter:
+            alter_text: true
+            text: "<div class=\"row\">\r\n{{ field_collection_thumbnail }} \r\n<div class=\"col\">\r\n<h2><a href=\"/collections/{{nid}}\">{{ field_title }}</a></h2>\r\n{{ field_rich_description }} \r\n</div>\r\n</div>"
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: false
+          plugin_id: custom
+        nothing:
+          id: nothing
+          table: views
+          field: nothing
+          relationship: none
+          group_type: group
+          admin_label: 'About and Browse Buttons'
+          label: ''
+          exclude: false
+          alter:
+            alter_text: true
+            text: "<div class=\"row\">\r\n        <div class=\"btn-group collection-browse-button\" role=\"group\">\r\n          <a role=\"button\" href=\"/collections/{{nid}}\" class=\"btn btn-secondary\">About</a>\r\n<a role=\"button\" href=\"/collections/{{nid}}/search?search_api_fulltext=\" class=\"btn btn-secondary\">Browse</a>\r\n</div></div>"
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: false
+          plugin_id: custom
+      css_class: ''
+      filters:
+        type:
+          id: type
+          table: node_field_data
+          field: type
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: in
+          value:
+            collection: collection
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: node
+          entity_field: type
+          plugin_id: bundle
+        combine:
+          id: combine
+          table: views
+          field: combine
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: contains
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: combine_op
+            label: ''
+            description: ''
+            use_operator: false
+            operator: combine_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: combine
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              fedoraadmin: '0'
+              content_approver: '0'
+              depositor: '0'
+              metadata_manager: '0'
+              preservationist: '0'
+              casuser: '0'
+            placeholder: 'Search for collections'
+          is_grouped: false
+          group_info:
+            label: 'Combine fields filter'
+            description: null
+            identifier: combine
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items:
+              1: {  }
+              2: {  }
+              3: {  }
+          fields:
+            nid: nid
+            title: title
+            field_rich_description: field_rich_description
+          plugin_id: combine
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
     cache_metadata:
       max-age: -1
       contexts:
