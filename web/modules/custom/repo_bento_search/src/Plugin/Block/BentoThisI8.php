@@ -30,7 +30,8 @@ class BentoThisI8 extends BlockBase {
     if (!trim(($service_api_url))) {
       $total_results_found = 0;
       $result_items = [];
-    } else {
+    }
+    else {
       $num_results = $config->get('num_results') ?: 10;
       // Get the search parameter from the GET url.
       // the url parameter is q as in q=cat
@@ -52,14 +53,14 @@ class BentoThisI8 extends BlockBase {
         ],
       ],
       '#attributes' => [
-        'class' => array(0 => 'bento_box'),
+        'class' => [0 => 'bento_box'],
       ],
       [
         '#theme' => 'this_i8_results',
-        '#service_url' => $service_url,
+        '#service_url' => $service_api_url,
         '#items' => $result_items,
         '#total_results_found' => $total_results_found,
-        '#search_term' => $search_term
+        '#search_term' => $search_term,
       ],
 //      '#markup' =>
 //        "Search term: <b>" . $search_term . "</b>" .
