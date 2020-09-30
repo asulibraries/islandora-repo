@@ -5,6 +5,7 @@ dependencies:
     - field.field.media.video.field_access_terms
     - field.field.media.video.field_captions
     - field.field.media.video.field_file_size
+    - field.field.media.video.field_legacy_checksum
     - field.field.media.video.field_media_of
     - field.field.media.video.field_media_use
     - field.field.media.video.field_media_video_file
@@ -37,6 +38,14 @@ content:
       progress_indicator: throbber
     third_party_settings: {  }
     type: file_generic
+    region: content
+  field_legacy_checksum:
+    weight: 28
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
     region: content
   field_media_of:
     type: entity_reference_autocomplete

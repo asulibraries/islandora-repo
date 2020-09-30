@@ -4,6 +4,7 @@ dependencies:
   config:
     - field.field.media.file.field_access_terms
     - field.field.media.file.field_file_size
+    - field.field.media.file.field_legacy_checksum
     - field.field.media.file.field_media_file
     - field.field.media.file.field_media_of
     - field.field.media.file.field_media_use
@@ -30,6 +31,14 @@ content:
     third_party_settings: {  }
     type: options_buttons
     region: content
+  field_legacy_checksum:
+    type: string_textfield
+    weight: 11
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_media_file:
     settings:
       progress_indicator: throbber
@@ -54,7 +63,7 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_original_name:
-    weight: 26
+    weight: 10
     settings:
       rows: 5
       placeholder: ''
