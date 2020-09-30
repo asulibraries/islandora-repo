@@ -80,28 +80,33 @@ display:
             'entity:node':
               article: default
               asu_repository_item: search_result
-              collection: teaser
-              institution: default
+              collection: collection_browse_teaser
               islandora_object: default
               page: default
             'entity:taxonomy_term':
+              collaborating_institutions: default
+              conference: default
               copyright_statements: default
               corporate_body: default
+              country_codes: default
               family: default
               genre: default
               geo_location: default
               identifier_types: default
               language: default
+              name_titles: default
               note_types: default
               oai_sets: default
               person: default
               physical_form: default
               preservation_states: default
+              related_items: default
               resource_types: default
               reuse_permissions: default
               subject: default
               tags: default
               temporal: default
+              titles: default
       filters:
         type:
           id: type
@@ -667,7 +672,7 @@ display:
           inline: {  }
           separator: ''
           hide_empty: false
-      use_more: true
+      use_more: false
       use_more_always: false
       use_more_text: more
       header:
@@ -678,10 +683,10 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          empty: true
-          tokenize: false
+          empty: false
+          tokenize: true
           content:
-            value: '<h2 class="search-header">Matching Collections ([view:total-rows])</h2>'
+            value: "<h2 class=\"search-header\">Matching Collections ([view:total-rows])</h2>\r\n{% if arguments.search_api_fulltext|trim == \"*\" %}\r\n<a href=\"/collections\">View all matching collections</a>\r\n{% else %}\r\n<a href=\"/collections?combine={{ arguments.search_api_fulltext }}\">View all matching collections</a>\r\n{% endif %}"
             format: basic_html
           plugin_id: text
       empty:
