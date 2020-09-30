@@ -34,7 +34,7 @@ process:
   # todo set to asurite
   bundle: media type
   field_original_name: file original_filename
-
+  field_legacy_checksum: file checksum
 
   # Make the media an 'Original File'
   field_media_use:
@@ -66,7 +66,7 @@ process:
       migration: c9_file
       no_stub: true
 
-  field_media_video:
+  field_media_video_file:
     -
       plugin: skip_on_empty
       method: process
@@ -76,7 +76,7 @@ process:
       migration: c9_file
       no_stub: true
 
-  field_media_audio:
+  field_media_audio_file:
     -
       plugin: skip_on_empty
       method: process
@@ -96,6 +96,7 @@ process:
       migration: c9_file
       no_stub: true
 
+
   # Lookup the migrated node in the node migration
   field_media_of:
     plugin: migration_lookup
@@ -106,7 +107,7 @@ process:
   created:
     plugin: format_date
     source: file created
-    from_format: 'Y-m-d H:i:s.uP'
+    from_format: 'Y-m-d G:i:s.uP'
     to_format: 'U'
     from_timezone: 'UTC'
     to_timezone: 'UTC'

@@ -33,6 +33,7 @@ process:
   uid: constants/uid
   # todo set to asurite
   field_original_name: file original_filename
+  field_legacy_checksum: file checksum
 
   # Make the media an 'Original File'
   field_media_use:
@@ -59,7 +60,7 @@ process:
 
   created:
     plugin: format_date
-    source: attachment date
+    source: file created
     from_format: 'Y-m-d G:i:s.uP'
     to_format: 'U'
     from_timezone: 'UTC'
