@@ -6,7 +6,8 @@ dependencies:
     - taxonomy.vocabulary.islandora_media_use
     - user.role.administrator
   content:
-    - 'taxonomy_term:islandora_media_use:c1075525-748e-466a-955c-c816e4391aa0'
+    - 'taxonomy_term:islandora_media_use:324ffd07-53f3-4881-9608-674e9c6ca95c'
+    - 'taxonomy_term:islandora_media_use:a83b9b97-3dda-45be-8946-1f24cc6ce639'
   module:
     - file
     - media
@@ -217,65 +218,6 @@ display:
           entity_field: mid
           plugin_id: field
       filters:
-        status:
-          value: '1'
-          table: media_field_data
-          field: status
-          plugin_id: boolean
-          entity_type: media
-          entity_field: status
-          id: status
-          expose:
-            operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
-          group: 1
-        field_media_use_target_id:
-          id: field_media_use_target_id
-          table: media__field_media_use
-          field: field_media_use_target_id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: or
-          value:
-            17: 17
-          group: 1
-          exposed: false
-          expose:
-            operator_id: ''
-            label: ''
-            description: ''
-            use_operator: false
-            operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: ''
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
-          type: select
-          limit: true
-          vid: islandora_media_use
-          hierarchy: false
-          error_message: true
-          plugin_id: taxonomy_index_tid
         type:
           id: type
           table: node_field_data
@@ -318,6 +260,53 @@ display:
           entity_type: node
           entity_field: type
           plugin_id: bundle
+        field_media_use_target_id:
+          id: field_media_use_target_id
+          table: media__field_media_use
+          field: field_media_use_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value:
+            - 17
+            - 18
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          type: textfield
+          limit: true
+          vid: islandora_media_use
+          hierarchy: false
+          error_message: true
+          plugin_id: taxonomy_index_tid
       sorts:
         changed:
           id: changed
@@ -364,6 +353,29 @@ display:
           group_type: group
           admin_label: 'image from field_media_image'
           required: false
+          plugin_id: standard
+        field_media_audio_file_target_id:
+          id: field_media_audio_file_target_id
+          table: media__field_media_audio_file
+          field: field_media_audio_file_target_id
+          relationship: none
+          group_type: group
+          admin_label: 'file from field_media_audio_file'
+          required: false
+          plugin_id: standard
+        field_media_document_target_id:
+          id: field_media_document_target_id
+          table: media__field_media_document
+          field: field_media_document_target_id
+          relationship: none
+          group_type: group
+          admin_label: 'file from field_media_document'
+          required: false
+          plugin_id: standard
+        field_media_video_file_target_id:
+          id: field_media_video_file_target_id
+          table: media__field_media_video_file
+          field: field_media_video_file_target_id
           plugin_id: standard
       arguments: {  }
       display_extenders: {  }
