@@ -59,10 +59,10 @@ class ExploreThisItemBlock extends BlockBase {
       $link = Link::fromTextAndUrl(t('Explore Document'), $url);
       $link = $link->toRenderable();
       $output_links[] = render($link);
-      $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/node/' . $nid . '/all_pages');
-      $link = Link::fromTextAndUrl(t('Show all pages'), $url);
-      $link = $link->toRenderable();
-      $output_links[] = render($link);
+      // $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/node/' . $nid . '/all_pages');
+      // $link = Link::fromTextAndUrl(t('Show all pages'), $url);
+      // $link = $link->toRenderable();
+      // $output_links[] = render($link);
     }
     $return = [
       '#cache' => ['max-age' => 0],
