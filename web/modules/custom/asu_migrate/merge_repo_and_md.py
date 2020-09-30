@@ -86,12 +86,8 @@ def get_model(att_count, item_id, att_df, att_id):
 
 
 def set_file_id(mime, media_type, file_id, field):
-    # return row['file id']
-    # print(media_type)
-    print(file_id)
-    print(mime)
     model = get_model_from_mime(mime)
-    print(model)
+    file_id = int(file_id)
     if media_type == "image" and model == "Image" and field == 'image':
         return file_id
     elif media_type == 'document' and model == "Digital Document" and field == 'document':
@@ -102,6 +98,8 @@ def set_file_id(mime, media_type, file_id, field):
         return file_id
     elif media_type == 'file' and model == 'Binary' and field == 'binary':
         return file_id
+    else:
+        return ""
 
 
 def main(argv):
@@ -138,6 +136,8 @@ def main(argv):
         row['file mime'], row['media type'], row['file id'], 'audio'), axis=1)
     att_df['generic file id'] = att_df.apply(
         lambda row: set_file_id(row['file mime'], row['media type'], row['file id'], 'binary'), axis=1)
+    xcols = ['image id', 'document id', 'video id', 'audio id', 'generic file id']
+    att_df[xcols] = att_df[xcols].replace(".0", "")
 
     # for col in merge_df.columns:
         # print(col)
