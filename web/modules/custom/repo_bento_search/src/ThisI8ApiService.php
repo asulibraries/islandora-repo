@@ -8,9 +8,9 @@ use GuzzleHttp\Exception\ClientException;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class ThisSiteApiService.
+ * Class ThisI8ApiService.
  */
-class ThisSiteApiService implements BentoApiInterface {
+class ThisI8ApiService implements BentoApiInterface {
 
   /**
    * GuzzleHttp\ClientInterface definition.
@@ -32,7 +32,7 @@ class ThisSiteApiService implements BentoApiInterface {
   protected $logger;
 
   /**
-   * Constructs a new ThisSiteApiService object.
+   * Constructs a new ThisI8ApiService object.
    */
   public function __construct(ClientInterface $http_client, ConfigFactory $configFactory, LoggerInterface $logger) {
     $this->httpClient = $http_client;
@@ -50,18 +50,24 @@ class ThisSiteApiService implements BentoApiInterface {
    */
   public function getSearchResults(string $term, int $limit = 10) {
     try {
-      $request_url = \Drupal::request()->getSchemeAndHttpHost() .
-        '/api/search?search_api_fulltext=' . $term . '&q=' . $term . '&format=json';
-
-      $request = $this->httpClient->request('GET', $request_url);
-      if ($request->getStatusCode() == 200) {
-        $body = $request->getBody()->getContents();
-        $this->logger->info(print_r($body, TRUE));
-        // dsm(print_r($body, TRUE));
-        return $body;
-      }
-      else {
-        $this->logger->warning("Unable to reach the site with response: " . print_r($request, TRUE));
+      $config = $this->configFactory->get('repo_bento_search.bentosettings');
+      $base_url = $config->get('this_i8_api_url');
+      if (!trim($base_url)) {
+        $this->logger->warning("No URL set for Legacy Repository: see /admin/config/bento_search/settings");
+        return;
+      } else {
+        $request_url = $base_url . '?search_api_fulltext=' . $term . '&q=' . $term .
+          '&format=json' . (($limit > 10) ? "items_per_page=" . $limit : "");
+        $request = $this->httpClient->request('GET', $request_url);
+        if ($request->getStatusCode() == 200) {
+          $body = $request->getBody()->getContents();
+          $this->logger->info(print_r($body, TRUE));
+          // dsm(print_r($body, TRUE));
+          return $body;
+        }
+        else {
+          $this->logger->warning("Unable to reach the site with response: " . print_r($request, TRUE));
+        }
       }
     }
     catch (ClientException $e) {

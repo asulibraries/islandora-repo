@@ -2,22 +2,22 @@
 
 /**
  * @file
- * BentoDataverse
+ * BentoSecondI8
  */
 namespace Drupal\repo_bento_search\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 
 /**
- * Provides a 'Search results from dataverse' Block.
+ * Provides a 'Search results from secondary Islandora 8' Block.
  *
  * @Block(
- *   id = "bento_dataverse_results_block",
- *   admin_label = @Translation("Bento Dataverse search results block"),
+ *   id = "bento_second_i8_results_block",
+ *   admin_label = @Translation("Bento secondary Islandora 8 search results block"),
  *   category = @Translation("Views"),
  * )
  */
-class BentoDataverse extends BlockBase {
+class BentoSecondI8 extends BlockBase {
 
   /**
    * {@inheritdoc}
@@ -25,30 +25,24 @@ class BentoDataverse extends BlockBase {
   public function build() {
     // Read the configuration to see how many results we need to display.
     $config = \Drupal::config('repo_bento_search.bentosettings');
-    $service_api_url = $config->get('dataverse_api_url');
+    $service_api_url = $config->get('second_i8_api_url');
     $search_term = \Drupal::request()->query->get('q');
     if (!trim(($service_api_url))) {
-      $results_arr = [
-        'results' => 'Dataverse search not configured.',
-      ];
-      $service_url = '';
+      $total_results_found = 0;
       $result_items = [];
-      $results_arr['data']['total_count'] = 0;
-      $results_arr['data']['items'] = [];
-    }
-    else {
-      $parsed_url = parse_url($service_api_url);
-      $service_url = $parsed_url['scheme'] . '://' . $parsed_url['host'];
+    } else {
       $num_results = $config->get('num_results') ?: 10;
       // Get the search parameter from the GET url.
       // the url parameter is q as in q=cat
       $results_json = ($search_term) ?
-        \Drupal::service('repo_bento_search.dataverse')->getSearchResults($search_term, $num_results) : '';
+        \Drupal::service('repo_bento_search.this_i8')->getSearchResults($search_term) : '';
       $results_arr = json_decode($results_json, true);
-      $result_items = (array_key_exists('data', $results_arr) &&
-        array_key_exists('items', $results_arr['data']) && is_array($results_arr['data']['items'])) ?
-          $results_arr['data']['items'] : [];
-    }
+      $result_items = (array_key_exists('search_results', $results_arr) &&
+        is_array($results_arr['search_results'])) ?
+          $results_arr['search_results'] : [];
+      $total_results_found = $results_arr['pager']['count'];
+    }    
+
     return [
       '#cache' => ['max-age' => 0],
       'lib' => [
@@ -62,15 +56,15 @@ class BentoDataverse extends BlockBase {
         'class' => array(0 => 'bento_box'),
       ],
       [
-        '#theme' => 'dataverse_results',
+        '#theme' => 'second_i8_results',
         '#service_url' => $service_url,
         '#items' => $result_items,
-        '#total_results_found' => $results_arr['data']['total_count'],
+        '#total_results_found' => $total_results_found,
         '#search_term' => $search_term
       ],
 //      '#markup' =>
 //        "Search term: <b>" . $search_term . "</b>" .
-//        "<pre>" . print_r($results_arr, true) . "</pre>",
+//        "<pre>" . print_r($results_json, true) . "</pre>",
     ];
   }
 

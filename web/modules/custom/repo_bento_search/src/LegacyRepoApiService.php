@@ -53,7 +53,7 @@ class LegacyRepoApiService implements BentoApiInterface {
       // Note: the API is hard-coded to 10 results as a time.
       $config = $this->configFactory->get('repo_bento_search.bentosettings');
       $base_url = $config->get('legacy_repository_api_url');
-      if (!$base_url) {
+      if (!trim($base_url)) {
         $this->logger->warning("No URL set for Legacy Repository: see /admin/config/bento_search/settings");
         return;
       }
@@ -63,20 +63,22 @@ class LegacyRepoApiService implements BentoApiInterface {
         return;
       }
 
-      $request = $this->httpClient->request('GET', $base_url . "?q=" . $term .
-          "&count=" . $limit, [
-        'headers' => [
-          'Authorization' => 'Token ' . $token,
-        ],
-      ]);
-      if ($request->getStatusCode() == 200) {
-        $body = $request->getBody()->getContents();
-        $this->logger->info(print_r($body, TRUE));
-        // dsm(print_r($body, TRUE));
-        return $body;
-      }
-      else {
-        $this->logger->warning("Unable to reach legacy repository with response: " . print_r($request, TRUE));
+      if (trim($base_url) <> '') {
+        $request = $this->httpClient->request('GET', $base_url . "?q=" . $term .
+            "&count=" . $limit, [
+          'headers' => [
+            'Authorization' => 'Token ' . $token,
+          ],
+        ]);
+        if ($request->getStatusCode() == 200) {
+          $body = $request->getBody()->getContents();
+          $this->logger->info(print_r($body, TRUE));
+          // dsm(print_r($body, TRUE));
+          return $body;
+        }
+        else {
+          $this->logger->warning("Unable to reach legacy repository with response: " . print_r($request, TRUE));
+        }
       }
     }
     catch (ClientException $e) {
