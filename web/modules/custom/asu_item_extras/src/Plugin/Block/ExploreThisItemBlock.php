@@ -5,6 +5,7 @@ namespace Drupal\asu_item_extras\Plugin\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Url;
 use Drupal\Core\Link;
+use Drupal\taxonomy\Entity\Term;
 
 /**
  * Provides a 'About this item' Block.
@@ -30,24 +31,21 @@ class ExploreThisItemBlock extends BlockBase {
     }
 
     $field_model_tid = $node->get('field_model')->getString();
-    $field_model_mappings = array(
-        '22' => 'Audio',
-        '23' => 'Binary',
-        '24' => 'Collection',
-        '27' => 'Digital Document',
-        '25' => 'Image',
-        '29' => 'Page',
-        '28' => 'Paged Content',
-        '30' => 'Publication Issue',
-        '26' => 'Video');
-    $field_model = (array_key_exists($field_model_tid, $field_model_mappings) ?
-      $field_model_mappings[$field_model_tid] : "");
+    $field_model_term = Term::load($field_model_tid);
+    $field_model = (isset($field_model_term) && is_object($field_model_term)) ?
+      $field_model_term->getName() : '';
 
     $output_links = array();
     if ($field_model == 'Image') {
       $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/node/' . $nid . '/view');
       $link = Link::fromTextAndUrl(t('View Image'), $url);
       // get the node's service file information from the node - just use the openseadragon view
+      $link = $link->toRenderable();
+      $output_links[] = render($link);
+    }
+    elseif ($field_model == 'Complex Object') {
+      $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/node/' . $nid . '/members');
+      $link = Link::fromTextAndUrl(t('View all associated media'), $url);
       $link = $link->toRenderable();
       $output_links[] = render($link);
     }

@@ -40,6 +40,9 @@ class ASUComplexTitle extends BlockBase {
       return [];
     }
 
+    if (!is_object($node)) {
+      $node = \Drupal::entityManager()->getStorage('node')->load($node);
+    }
     $first_title = $node->field_title[0];
     $view = ['type' => 'complex_title_formatter'];
     $first_title_view = $first_title->view($view);
