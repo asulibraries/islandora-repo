@@ -64,7 +64,7 @@ class AboutThisItemBlock extends BlockBase {
       $output_links[] = '<a href="' . $hdl . '">Permalink</a> <span class="fa fa-link fa-flip-horizontal fa-lg copy_permalink_link" title="' . $hdl . '">&nbsp;</span>';
     }
     else {
-      $url_str = \Drupal::request()->getSchemeAndHttpHost() . '/node/' . $nid;
+      $url_str = \Drupal::request()->getSchemeAndHttpHost() . '/items/' . $nid;
       $url = Url::fromUri($url_str);
       $output_links[] = '<a href="' . $url_str . '">Permalink</a> <span class="fa fa-link fa-flip-horizontal fa-lg copy_permalink_link" title="' . $url_str .
         '">&nbsp;</span>';
