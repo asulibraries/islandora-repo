@@ -16,7 +16,7 @@ disabled: true
 conditions:
   node_has_term:
     id: node_has_term
-    negate: 0
+    negate: false
     context_mapping:
       node: '@node.node_route_context:node'
     uri: 'http://purl.org/dc/dcmitype/Collection'
@@ -25,7 +25,7 @@ conditions:
     id: node_type
     bundles:
       collection: collection
-    negate: 0
+    negate: false
     uuid: 52ed303c-c706-4386-9642-fa62f6f47ecf
     context_mapping:
       node: '@node.node_route_context:node'
