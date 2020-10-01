@@ -158,7 +158,8 @@
           {{ drupal_view('collaborating_institutions', 'block_1', node.id) }}
         </div>
       {% endif %}
-      {% if node.field_typed_identifier is not empty %}
+      {# Regular node.field check doesn't work for this paragraph #}
+      {% if (content.field_typed_identifier.0['#paragraph'].field_identifier_type is not empty) or (content.field_typed_identifier.0['#paragraph'].field_identifier_value is not empty) %}
         <div>{{ content.field_typed_identifier }}</div>
       {% endif %}
       <div>
@@ -169,15 +170,17 @@
         </p>
       </div>
     </div>
+    {% if (node.field_preferred_citation is not empty) or (node.field_statement_responsibility is not empty) %}
       <div id="interact" class="content-section interact">
         <h2>{{ 'Citation and reuse'|t }}</h2>
         {{ content.field_preferred_citation }}
         {{ content.field_statement_responsibility }}
       </div>
-      <div id="machine" class="machine">
-        <h2>{{ 'Machine-readable links'|t }}</h2>
-        <ul>
-          <li><ahref="{{ oai_base_url ~ node.id }}">OAI</a></li>
-        </ul>
-      </div>
+    {% endif %}
+    <div id="machine" class="content-section machine">
+      <h2>{{ 'Machine-readable links'|t }}</h2>
+      <ul>
+        <li><ahref="{{ oai_base_url ~ node.id }}">OAI</a></li>
+      </ul>
+    </div>
 </article>
