@@ -43,7 +43,11 @@ class ASUItemIsPartOf extends BlockBase {
           // parent_link is calculated based on the parent_node values:
           $options = ['absolute' => TRUE];
           $parent_url = \Drupal\Core\Url::fromRoute('entity.node.canonical', ['node' => $parent_node_id], $options);
-          $link = Link::fromTextAndUrl(t('Citing this image'), $parent_url)->toRenderable();
+          $first_title = $parent_node->field_title[0];
+          $view = ['type' => 'complex_title_formatter'];
+          $first_title_view = $first_title->view($view);
+          $parent_title = \Drupal::service('renderer')->render($first_title_view);
+          $link = Link::fromTextAndUrl($parent_title, $parent_url)->toRenderable();
           $rendered_link = render($link);
           $output = 'Part of ' . $rendered_link;
         }
