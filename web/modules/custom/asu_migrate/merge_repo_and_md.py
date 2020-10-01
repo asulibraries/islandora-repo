@@ -205,6 +205,7 @@ def main(argv):
     # for col in merge_df.columns:
     #     print(col)
     merge_df['History JSON'] = merge_df["History"]
+    del merge_df['History']
     del merge_df["Repository Ingestion Notes"]
 
     merge_df.to_csv('c' + str(int(merge_df.iloc[0]['Collection ID'])) + '_merged.csv')
