@@ -21,7 +21,7 @@ class AsuLibFooter extends BlockBase {
   public function build() {
     $build = [];
     // $build['#theme'] = 'asu_lib_footer_block';
-    global $base_url;
+    $base_url = \Drupal::request()->getSchemeAndHttpHost();
     $theme = \Drupal::theme()->getActiveTheme();
     $logo_url = $base_url . '/' . $theme->getPath() . '/images/library_footer_logo_white.png';
 
