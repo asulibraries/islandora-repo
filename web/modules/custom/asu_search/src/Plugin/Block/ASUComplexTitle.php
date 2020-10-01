@@ -32,6 +32,9 @@ class ASUComplexTitle extends BlockBase {
     $current_route = \Drupal::routeMatch();
     if ($current_route->getParameter('node')) {
       $node = $current_route->getParameter('node');
+      if (!is_object($node)) {
+        $node = \Drupal::entityTypeManager()->getStorage('node')->load($node);
+      }
     }
     elseif ($current_route->getParameter('arg_0')) {
       $node = \Drupal::entityTypeManager()->getStorage('node')->load($current_route->getParameter('arg_0'));
@@ -40,9 +43,6 @@ class ASUComplexTitle extends BlockBase {
       return [];
     }
 
-    if (!is_object($node)) {
-      $node = \Drupal::entityManager()->getStorage('node')->load($node);
-    }
     $first_title = $node->field_title[0];
     $view = ['type' => 'complex_title_formatter'];
     $first_title_view = $first_title->view($view);
