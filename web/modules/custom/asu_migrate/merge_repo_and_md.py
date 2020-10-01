@@ -115,9 +115,13 @@ def main(argv):
     att_df = pandas.read_csv(att_md_file)
     att_df.sort_values(by=['item id'])
     att_df = att_df.loc[:, ~att_df.columns.str.contains('^Unnamed')]
+
     print(att_df)
     merge_df = pandas.merge(left=repo_df, right=md_df, left_on='Item ID', right_on='ID', how='left')
     merge_df['Model'] = merge_df.apply(lambda row: get_model(row['Attachment Count'], row['Item ID'], att_df, None), axis=1)
+    temp_series = merge_df["History"]
+    del merge_df['History']
+    del merge_df["Repository Ingestion Notes"]
     merge_df['Parent Item'] = ""
     att_df['old item id'] = ""
 
@@ -204,9 +208,7 @@ def main(argv):
         lambda row: loc_lookup("subjects", row))
     # for col in merge_df.columns:
     #     print(col)
-    merge_df['History JSON'] = merge_df["History"]
-    del merge_df['History']
-    del merge_df["Repository Ingestion Notes"]
+    merge_df['History JSON'] = temp_series
 
     merge_df.to_csv('c' + str(int(merge_df.iloc[0]['Collection ID'])) + '_merged.csv')
     att_df.to_csv('data/migration_data/att_file_' +
