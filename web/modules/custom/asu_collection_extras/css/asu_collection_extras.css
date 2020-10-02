@@ -16,6 +16,15 @@
     margin: 3% 2%;
 }
 
+/* make the sides even with the header */
+.stats_box:nth-of-type(3n+1) .stats_border_box {
+    margin-left: 0;
+}
+
+.stats_box:nth-of-type(3n) .stats_border_box {
+    margin-right: 0;
+}
+
 .stats_pointer_box {
     cursor: pointer;
 }
