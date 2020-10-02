@@ -109,7 +109,7 @@ class AboutThisCollectionBlock extends BlockBase {
         // ROW 2
         '<div class="row">' .
         implode('', $stat_box_row2) .
-        '</div><br class="clearfloat">' :
+        '</div>' :
         "",
       'lib' => [
         '#attached' => [
