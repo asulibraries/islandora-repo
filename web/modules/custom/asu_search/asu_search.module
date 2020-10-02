@@ -29,12 +29,8 @@ function asu_search_search_api_solr_field_mapping_alter(IndexInterface $index, a
   $fields['field_mime_type'] = 'sm_field_mime_type';
 }
 
-function asulib_search_preprocess_node(&$variables) {
-  $node = \Drupal::request()->attributes->get('node');
-  if (!is_object($node) && is_string($node)) {
-    $node = \Drupal::entityTypeManager()->getStorage('node')->load($node);
-  }
-  if ($node && $node->getType() == 'asu_repository_item') {
-    $variables['is_published'] = ASUIslandoraUtils::asu_islandora_utils_node_is_published($node);
+function asu_search_preprocess_node(&$variables) {
+  if ($variables['node'] && $variables['node']->getType() == 'asu_repository_item') {
+    $variables['is_published'] = ASUIslandoraUtils::asu_islandora_utils_node_is_published($variables['node']);
   }
 }

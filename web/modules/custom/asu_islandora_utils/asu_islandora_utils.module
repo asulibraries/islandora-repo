@@ -10,20 +10,25 @@ class ASUIslandoraUtils {
 
   // bases the published state on the moderation state of the latest revision or
   // the node's isPublished() method if it is not moderated content;
-  public function asu_islandora_utils_node_is_published(Node $node) {
+  public function asu_islandora_utils_node_is_published(\Drupal\node\Entity\Node $node) {
     $retval = $node->isPublished();
     // now, set a variable that can be based on the moderation state.
     if ($node->isDefaultRevision() == TRUE) {
-      // Get all of the revision ids.
-      $revision_ids = \Drupal::entityTypeManager()->getStorage('node')->revisionIds($node);
-
-      // Check if the last item in the revisions is the loaded one.
-      $last_revision_id = end($revision_ids);
-      if ($node->getRevisionId() != $last_revision_id) {
-        $last_revision = \Drupal::entityTypeManager()->getStorage('node')->loadRevision($last_revision_id);
-        // Get the revisions moderation state.
-        $last_revision_state = $last_revision->get('moderation_state')->getString();
-        $retval = ($last_revision_state == 'published');
+      try {
+        // Get all of the revision ids.
+        $revision_ids = \Drupal::entityTypeManager()->getStorage('node')->revisionIds($node);
+        // Check if the last item in the revisions is the loaded one.
+        $last_revision_id = end($revision_ids);
+        if ($node->getRevisionId() != $last_revision_id) {
+          $last_revision = \Drupal::entityTypeManager()->getStorage('node')->loadRevision($last_revision_id);
+          // Get the revisions moderation state.
+          $last_revision_state = $last_revision->get('moderation_state')->getString();
+          $retval = ($last_revision_state == 'published');
+        }
+      }
+      catch (Exception $e) {
+        // do nothing special... just allow the node's isPublished state to be
+        // returned.
       }
     }
     return $retval;
