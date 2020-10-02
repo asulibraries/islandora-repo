@@ -30,10 +30,14 @@ class BentoSecondI8 extends BlockBase {
     if (!trim(($service_api_url))) {
       $total_results_found = 0;
       $result_items = [];
-    } else {
+      $service_url = '';
+    }
+    else {
       $num_results = $config->get('num_results') ?: 10;
       // Get the search parameter from the GET url.
       // the url parameter is q as in q=cat
+      $parsed_url = parse_url($service_api_url);
+      $service_url = $parsed_url['scheme'] . '://' . $parsed_url['host'];
       $results_json = ($search_term) ?
         \Drupal::service('repo_bento_search.this_i8')->getSearchResults($search_term) : '';
       $results_arr = json_decode($results_json, true);
@@ -41,7 +45,7 @@ class BentoSecondI8 extends BlockBase {
         is_array($results_arr['search_results'])) ?
           $results_arr['search_results'] : [];
       $total_results_found = $results_arr['pager']['count'];
-    }    
+    }
 
     return [
       '#cache' => ['max-age' => 0],
