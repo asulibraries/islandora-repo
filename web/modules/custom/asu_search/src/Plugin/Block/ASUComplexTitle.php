@@ -4,6 +4,7 @@ namespace Drupal\asu_search\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Entity\EntityInterface;
+use asu_islandora_utils\ASUIslandoraUtils;
 
 /**
  * Provides a 'Complex Title' Block for page title purposes.
@@ -43,16 +44,21 @@ class ASUComplexTitle extends BlockBase {
       return [];
     }
 
+    $node_is_published = ASUIslandoraUtils::asu_islandora_utils_node_is_published($node);
     $first_title = $node->field_title[0];
     $view = ['type' => 'complex_title_formatter'];
     $first_title_view = $first_title->view($view);
     $para_render = \Drupal::service('renderer')->render($first_title_view);
+
     return [
+      '#cache' => ['max-age' => 0],
       'complex_title' => [
         '#type' => 'item',
-        '#prefix' => '<h1 class="title">',
+          '#prefix' => '<h1 class="title' .
+          ($node_is_published ? "" : " unpublished_title") . '">',
         '#suffix' => '</h1>',
-        '#markup' => $para_render,
+        '#markup' => ($node_is_published ? '' : '<i class="fa fa-lock"></i>&nbsp;') .
+          $para_render,
       ],
     ];
   }

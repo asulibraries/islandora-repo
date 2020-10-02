@@ -1,6 +1,7 @@
 <?php
 
 use Drupal\search_api\IndexInterface;
+use asu_islandora_utils\ASUIslandoraUtils;
 
 /**
  * Implements hook_form_alter().
@@ -26,4 +27,14 @@ function asu_search_search_api_solr_field_mapping_alter(IndexInterface $index, a
   // Make file size and mime type multi-valued.
   $fields['field_file_size'] = 'itm_field_file_size';
   $fields['field_mime_type'] = 'sm_field_mime_type';
+}
+
+function asulib_search_preprocess_node(&$variables) {
+  $node = \Drupal::request()->attributes->get('node');
+  if (!is_object($node) && is_string($node)) {
+    $node = \Drupal::entityTypeManager()->getStorage('node')->load($node);
+  }
+  if ($node && $node->getType() == 'asu_repository_item') {
+    $variables['is_published'] = ASUIslandoraUtils::asu_islandora_utils_node_is_published($node);
+  }
 }
