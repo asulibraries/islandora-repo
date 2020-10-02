@@ -12,25 +12,22 @@
 *   - source_attributes: An array of HTML attributes for to be added to the
 *     source tag.
 * - caption: the captions file
+* - poster: the poster (thumbnail) file
 *
 * @ingroup themeable
 */
 #}
-
-<video controls="controls" width="100%">
+{% if poster %}
+  <video controls="controls" width="100%" poster="{{ poster }}">
+{% else %}
+  <video controls="controls" width="100%">
+{% endif %}
   {% for file in files %}
     <source {{ file.source_attributes }} />
   {% endfor %}
   {% if caption %}
     <track src="{{ caption }}" kind="subtitles" >
   {% endif %}
+Your browser does not support the video tag. Please <a href="{{path("entity.webform.canonical",  {"webform": "feedback"})}}">
+report this issue</a> with your browser information so we can improve our platform.
 </video>
-
-
-
-{# <video width="320" height="240" controls>
-  <source src="forrest_gump.mp4" type="video/mp4">
-  <source src="forrest_gump.ogg" type="video/ogg">
-  <track src="fgsubtitles_en.vtt" kind="subtitles" srclang="en" label="English">
-  <track src="fgsubtitles_no.vtt" kind="subtitles" srclang="no" label="Norwegian">
-</video> #}

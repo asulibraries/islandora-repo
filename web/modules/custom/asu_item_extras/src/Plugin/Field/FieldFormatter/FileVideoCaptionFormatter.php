@@ -32,6 +32,7 @@ class FileVideoCaptionFormatter extends FileVideoFormatter {
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = [];
+    $utils = \Drupal::service('islandora.utils');
 
     $source_files = $this->getSourceFiles($items, $langcode);
     if (empty($source_files)) {
@@ -46,7 +47,12 @@ class FileVideoCaptionFormatter extends FileVideoFormatter {
       if ($first_media->get('field_captions')->entity != NULL) {
         $caption = $first_media->get('field_captions')->entity->url();
       }
-      // TODO Add the poster - preloaded from the thumbnail to the $attributes;
+      $node = $utils->getParentNode($first_media);
+      $thumbn_term = $utils->getTermForUri('http://pcdm.org/use#ThumbnailImage');
+      $thumb_media = $utils->getMediaWithTerm($node, $thumbn_term);
+      if ($thumb_media) {
+        $poster = $thumb_media->get('field_media_image')->entity->url();
+      }
 
       $elements[$delta] = [
         '#theme' => 'file_video_with_caption',
@@ -57,6 +63,9 @@ class FileVideoCaptionFormatter extends FileVideoFormatter {
 
       if (isset($caption)) {
         $elements[$delta]['#caption'] = $caption;
+      }
+      if (isset($poster)) {
+        $elements[$delta]['#poster'] = $poster;
       }
 
       $cache_tags = [];
