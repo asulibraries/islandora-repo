@@ -24,7 +24,8 @@
   {% endif %}
   {% if site_slogan %}
     <div class="ml-2 d-none d-inline-block align-top site-name-slogan">
-      | {{ site_slogan }}
+      |
+      <a href="{{ path('<front>') }}">{{ site_slogan }}</a>
     </div>
   {% endif %}
 </div>
