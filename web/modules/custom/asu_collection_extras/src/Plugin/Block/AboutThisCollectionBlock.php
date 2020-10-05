@@ -61,7 +61,8 @@ class AboutThisCollectionBlock extends BlockBase {
       ->loadByProperties(['name' => "Original File"]));
     foreach ($children_nids as $child_nid) {
       if ($child_nid) {
-        // @todo load complex objects for this node -- if any... and inner-loop these
+        // @todo load complex objects for this node -- if any... and inner-loop 
+        // these if deemed to be needed.
         $items++;
         // For "# file (Titles)", get media - extract the and count the original files.
         $files += $this->getOriginalFileCount($child_nid, $original_file_tid);
@@ -134,6 +135,16 @@ class AboutThisCollectionBlock extends BlockBase {
 
   private function getOriginalFileCount($related_nid, $original_file_tid) {
     $files = 0;
+    $collection_children_nids = getAllCollectionChildren($related_nid);
+
+    foreach ($collection_children_nids as $collection_child_nid) {
+      // recursively call this to add counts for EACH CHILD of the top level
+      // object that was referenced by $related_nid.
+      $files += $this->getOriginalFileCount($collection_child_nid, $original_file_tid);
+    }
+
+    // Now, add the actual number of files that may be related to the provided
+    // top level object that is referenced by $related_nid.
     $mids = \Drupal::entityQuery('media')
       ->condition('field_media_of', $related_nid)
       ->condition('field_media_use', $original_file_tid)
