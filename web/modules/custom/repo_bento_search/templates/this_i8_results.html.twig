@@ -23,8 +23,8 @@
     <i>{{ total_results_found | number_format }} result{% if total_results_found != 1 %}s{% endif %} found</i><br>
     {% for key,item in items %}
         <div class="bento_item">
-            <a href="{{ service_url }}/items/{{ item.nid }}" target="_blank">{{ item.complex_title }}</a><br>
-            {{ item.field_rich_description|striptags|slice(0,250) }}
+            <a href="{{ service_url }}/items/{{ item.nid }}" target="_blank">{{ item.complex_title|raw }}</a><br>
+            {{ item.field_rich_description|striptags|slice(0,250)|raw }}
             {% if item.field_rich_description|length > 40 %}
             ...
             {% endif %}

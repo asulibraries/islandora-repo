@@ -24,19 +24,21 @@
     {% for key,item in items %}
         <div class="bento_item">
           {% if item.item_id %}
-            <a href="{{ service_url }}/items/{{ item.item_id }}" target="_blank">{{ item.item_label }}</a>
+            <a href="{{ service_url }}/items/{{ item.item_id }}" target="_blank">{{ item.item_label|raw }}</a>
           {% else %}
             <a href="{{ service_url }}/collections/{{ item.collection_id }}" target="_blank">{{ item.item_label }}</a>
           {% endif %}
           <br>
-                {% set description = item.item_description|render|striptags|trim|split(' ') %}
-                {% if description|length > 40 %}
-                        {{ description|slice(0, 30)|join(' ') }}<span id="more-ellipse" class="collapse
-                        multi-collapse show">&hellip;</span>
-                {% else %}
-                    {{ item.item_description }}
-                {% endif %}<br>
+            {% set description = item.item_description|render|raw|striptags|trim|split(' ') %}
+            {% if description|length > 40 %}
+                    {{ description|slice(0, 30)|join(' ') }}<span id="more-ellipse" class="collapse
+                    multi-collapse show">&hellip;</span>
+            {% else %}
+                {{ item.item_description }}
+            {% endif %}<br>
+            {% if item.md_created_s %}
             <small><label>Created: </label> {{ item.md_created_s }}</small><br>
+            {% endif %}
         </div>
     {% endfor %}
     <a href="{{ service_url }}/search?q={{ search_term }}" target="_blank" title="See all ASU Digital Repository results &gt;">See all ASU Digital Repository results &gt;</a>

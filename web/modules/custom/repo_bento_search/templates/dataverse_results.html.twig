@@ -28,16 +28,18 @@
         {% if item.global_id %}
             <a href="{{ service_url }}/dataset.xhtml?persistentId={{ item.global_id }}" target="_blank">{{ item.name }}</a>
         {% else %}
-            <a href="{{ item.url }}" target="_blank">{{ item.name }}</a>
+            <a href="{{ item.url }}" target="_blank">{{ item.name|raw }}</a>
         {% endif %}<br>
-                {% set description = item.description|render|striptags|trim|split(' ') %}
-                {% if description|length > 40 %}
-                        {{ description|slice(0, 30)|join(' ') }}<span id="more-ellipse" class="collapse
-                        multi-collapse show">&hellip;</span>
-                {% else %}
-                    {{ item.description }}
-                {% endif %}<br>
+            {% set description = item.description|render|striptags|trim|split(' ') %}
+            {% if description|length > 40 %}
+                    {{ description|slice(0, 30)|join(' ') }}<span id="more-ellipse" class="collapse
+                    multi-collapse show">&hellip;</span>
+            {% else %}
+                {{ item.description }}
+            {% endif %}<br>
+            {% if item.createdAt %}
             <small><label>Created: </label> {{ item.createdAt }}</small><br>
+            {% endif %}
             {% if item.identifier_of_dataverse %}
                 <a href="{{ service_url }}/dataverse/{{ item.identifier_of_dataverse }}" target="_blank">{{ item.publisher }}</a>
             {% endif %}

@@ -46,8 +46,14 @@ class BentoLegacyRepo extends BlockBase {
       $results_json = ($search_term) ?
         \Drupal::service('repo_bento_search.legacy_repo')->getSearchResults($search_term, $num_results) : '';
       $results_arr = json_decode($results_json, true);
-      $result_items = (array_key_exists('results', $results_arr) && is_array($results_arr['results'])) ?
-          $results_arr['results'] : [];
+      if (is_null($results_arr)) {
+        $result_items = [];
+        $results_arr['count'] = 0;
+      }
+      else {
+        $result_items = (array_key_exists('results', $results_arr) && is_array($results_arr['results'])) ?
+            $results_arr['results'] : [];
+      }
     }
     return [
       '#cache' => ['max-age' => 0],

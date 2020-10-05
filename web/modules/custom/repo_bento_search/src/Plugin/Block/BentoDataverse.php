@@ -45,9 +45,15 @@ class BentoDataverse extends BlockBase {
       $results_json = ($search_term) ?
         \Drupal::service('repo_bento_search.dataverse')->getSearchResults($search_term, $num_results) : '';
       $results_arr = json_decode($results_json, true);
-      $result_items = (array_key_exists('data', $results_arr) &&
-        array_key_exists('items', $results_arr['data']) && is_array($results_arr['data']['items'])) ?
-          $results_arr['data']['items'] : [];
+      if (is_null($results_arr)) {
+        $result_items = [];
+        $results_arr['data'] = 0;
+      }
+      else {
+        $result_items = (array_key_exists('data', $results_arr) &&
+          array_key_exists('items', $results_arr['data']) && is_array($results_arr['data']['items'])) ?
+            $results_arr['data']['items'] : [];
+      }
     }
     return [
       '#cache' => ['max-age' => 0],

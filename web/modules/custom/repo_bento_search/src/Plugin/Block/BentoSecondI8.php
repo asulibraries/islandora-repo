@@ -41,10 +41,16 @@ class BentoSecondI8 extends BlockBase {
       $results_json = ($search_term) ?
         \Drupal::service('repo_bento_search.this_i8')->getSearchResults($search_term) : '';
       $results_arr = json_decode($results_json, true);
-      $result_items = (array_key_exists('search_results', $results_arr) &&
-        is_array($results_arr['search_results'])) ?
-          $results_arr['search_results'] : [];
-      $total_results_found = $results_arr['pager']['count'];
+      if (is_null($results_arr)) {
+        $result_items = [];
+        $total_results_found = 0;
+      }
+      else {
+        $result_items = (array_key_exists('search_results', $results_arr) &&
+          is_array($results_arr['search_results'])) ?
+            $results_arr['search_results'] : [];
+        $total_results_found = $results_arr['pager']['count'];
+      }
     }
 
     return [
