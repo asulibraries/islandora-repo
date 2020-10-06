@@ -51,6 +51,9 @@ def loc_lookup(atype, astring):
 
 
 def get_model_from_mime(mime):
+    print("mime is %s" % mime)
+    if isinstance(mime, float):
+        return 0
     if "image" in mime:
         model = "Image"
     elif "audio" in mime:
@@ -87,6 +90,8 @@ def get_model(att_count, item_id, att_df, att_id):
 
 def set_file_id(mime, media_type, file_id, field):
     model = get_model_from_mime(mime)
+    if isinstance(file_id, float):
+        return ""
     file_id = int(file_id)
     if media_type == "image" and model == "Image" and field == 'image':
         return file_id
@@ -119,6 +124,7 @@ def main(argv):
     print(att_df)
     merge_df = pandas.merge(left=repo_df, right=md_df, left_on='Item ID', right_on='ID', how='left')
     merge_df['Model'] = merge_df.apply(lambda row: get_model(row['Attachment Count'], row['Item ID'], att_df, None), axis=1)
+    merge_df = merge_df.loc[:, ~merge_df.columns.str.contains('^Unnamed')]
     temp_series = merge_df["History"]
     del merge_df['History']
     del merge_df["Repository Ingestion Notes"]
@@ -198,17 +204,32 @@ def main(argv):
     authors = merge_df[merge_df.columns[pandas.Series(
         merge_df.columns).str.startswith('Creator')]]
     merge_df['Authors'] = authors.apply(lambda row: sjoin(row), axis=1)
-    merge_df['Contributor'] = merge_df.Contributor.apply(
-        lambda row: loc_lookup("names", row))
-    merge_df['Contributor.1'] = merge_df['Contributor.1'].apply(lambda row: loc_lookup("names", row))
+    # merge_df['Contributor'] = merge_df.Contributor.apply(
+        # lambda row: loc_lookup("names", row))
+    # merge_df['Contributor.1'] = merge_df['Contributor.1'].apply(lambda row: loc_lookup("names", row))
     contribs = merge_df[merge_df.columns[pandas.Series(
         merge_df.columns).str.startswith('Contributor')]]
+    for ccc in contribs:
+        print(ccc)
+        # exit()
+        merge_df[ccc] = merge_df[ccc].apply(lambda row: loc_lookup("names", row))
     merge_df['Contributors-Person'] = contribs.apply(lambda row: sjoin(row), axis=1)
+
+    corp_contribs = merge_df[merge_df.columns[pandas.Series(merge_df.columns).str.startswith('Corporate Contributor')]]
+    # corp_contribs = corp_contribs.apply(lambda row: loc_lookup("names", row))
+    for corpcc in corp_contribs:
+        print(corpcc)
+        merge_df[corpcc] = merge_df[corpcc].apply(
+            lambda row: loc_lookup("names", row))
+
+    merge_df['Contributors-Corporate'] = corp_contribs.apply(lambda row: sjoin(row), axis=1)
+
     merge_df['Geographic Subject'] = merge_df['Geographic Subject'].apply(
         lambda row: loc_lookup("subjects", row))
     # for col in merge_df.columns:
     #     print(col)
     merge_df['History JSON'] = temp_series
+    merge_df['History JSON'] = merge_df['History JSON'].apply(lambda row: row.replace('\n', '').replace('\r\n', '') if not isinstance(row, float) else None)
 
     merge_df.to_csv('c' + str(int(merge_df.iloc[0]['Collection ID'])) + '_merged.csv')
     att_df.to_csv('data/migration_data/att_file_' +
