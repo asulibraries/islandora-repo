@@ -142,8 +142,8 @@
       {% if node.field_member_of is not empty %}
         <div class="all-memberships">
           <div class="field__label">{{ 'Collections this item is in'|t }}</div>
-          <div>{{ content.field_member_of }}</div>
-          <div>{{ content.field_additional_memberships }}</div>
+          {{ content.field_member_of }}
+          {{ content.field_additional_memberships }}
         </div>
       {% endif %}
       {% if drupal_view('collaborating_institutions', 'block_1', node.id)|render|striptags|trim|length > 0 %}
