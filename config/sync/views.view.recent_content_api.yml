@@ -229,10 +229,26 @@ display:
       display_extenders: {  }
       path: api/recent
       pager:
-        type: some
+        type: full
         options:
           items_per_page: 10
           offset: 0
+          id: 0
+          total_pages: null
+          tags:
+            previous: '‹ Previous'
+            next: 'Next ›'
+            first: '« First'
+            last: 'Last »'
+          expose:
+            items_per_page: true
+            items_per_page_label: 'Items per page'
+            items_per_page_options: '5, 10, 12, 20, 25, 50, 100, 200'
+            items_per_page_options_all: true
+            items_per_page_options_all_label: '- All -'
+            offset: true
+            offset_label: Offset
+          quantity: 9
       style:
         type: serializer
         options:
@@ -249,6 +265,7 @@ display:
         - 'languages:language_interface'
         - request_format
         - url
+        - url.query_args
         - 'user.node_grants:view'
         - user.permissions
       tags: {  }
