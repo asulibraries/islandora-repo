@@ -116,9 +116,8 @@
         <div class="download-options">{{ drupal_view('display_media', 'download_button', node.id) }}</div>
         <a href="/items/{{ node.id }}">Preview</a><br/>
         {% if node.field_handle[0].value %}
-          <a href="{{node.field_handle[0].value}}">Permanent Link
-            <span class="fa fa-link fa-flip-horizontal fa-lg">&nbsp;</span>
-          </a>
+          <span class="copy_permalink_link" title="{{node.field_handle[0].value}}">Permanent Link</span> &nbsp;
+            <span class="copy_permalink_link far fa-copy fa-lg" title="{{node.field_handle[0].value}}">&nbsp;</span>
         {% endif %}
 
      </header>

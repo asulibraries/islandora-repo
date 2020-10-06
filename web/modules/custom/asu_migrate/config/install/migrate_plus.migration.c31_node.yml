@@ -1,0 +1,344 @@
+# Uninstall this config when the feature is uninstalled
+dependencies:
+  enforced:
+    module:
+      - asu_migrate
+
+id: c31_node
+label: Import Collection 31 from CSV
+migration_group: migrate_c31_csv
+
+source:
+  plugin: csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/c31_merged.csv
+
+  # 1 means you have a header row, 0 means you don't
+  header_row_count: 1
+
+  # Each migration needs a unique key per row in the csv.  Here we're using the file path.
+  keys:
+    - Item ID
+
+  # You can't enter string literals into a process plugin, but you can give it a constant as a 'source'.
+  constants:
+    # We're tagging our nodes as Images
+    model: Digital Document
+
+    # Everything gets created as admin
+    uid: 1
+    cid: 'Center for Earth Systems Engineering and Management'
+    pres_state: '558' # Not Preserved
+    handle: "https://hdl.handle.net/2286/R.I."
+
+process:
+  field_extent:
+    plugin: skip_on_empty
+    source: Extent
+    method: process
+
+  field_edtf_date_created:
+    plugin: skip_on_empty
+    source: Date Created
+    method: process
+
+  field_copyright_statement:
+    -
+      plugin: skip_on_empty
+      source: Copyright
+      method: process
+    -
+      plugin: entity_lookup_by_field
+      lookup_field: field_source/uri
+      entity_type: taxonomy_term
+      bundle: copyright_statements
+
+  field_reuse_permissions:
+    -
+      plugin: skip_on_empty
+      source: Reuse
+      method: process
+    -
+      plugin: entity_lookup_by_field
+      lookup_field: field_source/uri
+      entity_type: taxonomy_term
+      bundle: reuse_permissions
+
+  created:
+    plugin: format_date
+    source: System Created
+    from_format: 'Y-m-d G:i:s.uP'
+    to_format: 'U'
+    from_timezone: 'UTC'
+    to_timezone: 'UTC'
+
+  moderation_state:
+    plugin: static_map
+    source: Visibility
+    map:
+      Private: draft
+      Public: published
+
+  field_model:
+    source: Model
+    plugin: entity_lookup
+    entity_type: taxonomy_term
+    value_key: name
+    bundle_key: vid
+    bundle: islandora_models
+
+  field_display_hints:
+    -
+      plugin: str_replace
+      source: Attachment Count
+      search: 1
+      replace: PDFjs
+    -
+      plugin: entity_lookup
+      entity_type: taxonomy_term
+      value_key: name
+      bundle_key: vid
+      bundle: islandora_models
+
+  field_rich_description/value:
+    plugin: skip_on_empty
+    source: Description
+    method: process
+
+  field_rich_description/format:
+    plugin: default_value
+    default_value: "description_restricted_items"
+
+  field_table_of_contents:
+    plugin: skip_on_empty
+    source: Table of Contents
+    method: process
+
+  field_series:
+    plugin: skip_on_empty
+    source: Series
+    method: process
+
+  field_preferred_citation:
+    plugin: skip_on_empty
+    source: Citation
+    method: process
+
+  title:
+    plugin: substr
+    source: Item Title
+    start: 0
+    length: 254
+
+  field_title:
+    -
+      plugin: explode
+      delimiter: '||'
+      source: Item Title
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: paragraph_title_generate
+      paragraph_type: 'complex_title'
+      split_into_parts: true
+      fields:
+        field_nonsort: " "
+        field_main_title: " "
+        field_subtitle: " "
+
+
+  field_typed_identifier:
+    -
+      plugin: skip_on_empty
+      source: Identifiers
+      method: process
+    -
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: paragraph_generate
+      paragraph_type: 'typed_identifier'
+      delimiter: '|'
+      fields:
+        field_identifier_value:
+          order: 0
+          type: text
+        field_identifier_type:
+          order: 1
+          type: taxonomy_term
+          lookup_field: field_identifier_predicate
+
+  field_note_para:
+    -
+      plugin: skip_on_empty
+      source: Notes
+      method: process
+    -
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: paragraph_generate
+      paragraph_type: 'complex_note'
+      delimiter: '|'
+      fields:
+        field_note_text:
+          order: 0
+          type: text
+
+  uid:
+    plugin: user_lookup
+    source: System User
+    default_value: constants/uid
+
+  field_pid: Item ID
+
+  field_preservation_state:
+    plugin: entity_lookup
+    source: constants/pres_state
+    entity_type: taxonomy_term
+    bundle_key: vid
+    value_key: tid
+    bundle: preservation_states
+
+  field_language:
+    plugin: entity_lookup
+    source: Language
+    entity_type: taxonomy_term
+    value_key: name
+    bundle_key: vid
+    bundle: language
+
+  field_handle:
+    plugin: concat
+    source:
+      - constants/handle
+      - Item ID
+
+  field_member_of:
+    -
+      plugin: get
+      source:
+        - 'Parent Item'
+        - 'constants/cid'
+    -
+      plugin: multi_entity_lookup
+      entity_type: node
+      access_check: 0
+      bundle_key: type
+      bundle: collection
+      value_key: title
+
+  field_subject:
+    -
+      plugin: skip_on_empty
+      source: Topical Subjects
+      method: process
+    -
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: name_uri_generate
+      delimiter: '|'
+      uri_field: field_authority_link
+      default_vocabulary: subject
+
+  field_geographic_subject:
+    -
+      plugin: skip_on_empty
+      source: Geographic Subject
+      method: process
+    -
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: name_uri_generate
+      delimiter: '|'
+      uri_field: field_authority_link
+      default_vocabulary: geo_location
+
+  authors:
+    -
+      plugin: explode
+      delimiter: '||'
+      source: Authors
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: skip_on_empty
+      method: process
+    -
+      plugin: typed_relation_generate
+      delimiter: '|'
+      uri_field: field_authority_link
+      default_vocabulary: person
+      relator: 'relators:aut'
+
+  contributors:
+    -
+      plugin: explode
+      delimiter: '||'
+      source: Contributors-Person
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: skip_on_empty
+      method: process
+    -
+      plugin: typed_relation_generate
+      delimiter: '|'
+      uri_field: field_authority_link
+      default_vocabulary: person
+      relator: 'relators:ctb'
+
+  corporations:
+    -
+      plugin: explode
+      delimiter: '||'
+      source: Contributors-Corporate
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: skip_on_empty
+      method: process
+    -
+      plugin: typed_relation_generate
+      delimiter: '|'
+      url_field: field_authority_link
+      default_vocabulary: corporate_body
+      relator: 'relators:ctb'
+
+  field_linked_agent:
+    plugin: merge
+    source:
+      - '@authors'
+      - '@contributors'
+      - '@corporations'
+
+  field_history:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: History JSON
+    -
+      plugin: string_to_json
+
+
+# We're making nodes
+destination:
+  plugin: 'entity:node'
+  default_bundle: asu_repository_item

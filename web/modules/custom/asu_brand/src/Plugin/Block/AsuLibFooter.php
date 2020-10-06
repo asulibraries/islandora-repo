@@ -20,10 +20,7 @@ class AsuLibFooter extends BlockBase {
    */
   public function build() {
     $build = [];
-    // $build['#theme'] = 'asu_lib_footer_block';
-    global $base_url;
-    $theme = \Drupal::theme()->getActiveTheme();
-    $logo_url = $base_url . '/' . $theme->getPath() . '/images/library_footer_logo_white.png';
+    $logo_url = 'https://repository.lib.asu.edu/themes/custom/asulib_barrio/images/library_footer_logo_white.png';
 
     $c1 = '<img src="' . $logo_url . '" /><br/><ul class="list-inline"><li class="list-inline-item"><a href="http://twitter.com/ASUlibraries"><i class="fab fa-twitter-square" title="ASU Library Twitter"></i></a></li><li class="list-inline-item"><a href="http://www.facebook.com/ASULibraries" title="ASU Library Facebook"><i class="fab fa-facebook-square"></i></a></li><li class="list-inline-item"><a href="http://instagram.com/ASULibraries/" title="ASU Library Instagram"><i class="fab fa-instagram-square"></i></a></li></ul>';
     $c2 = '<ul class="list-unstyled links"><li><a href="/about/policies/terms-of-deposit" title="Terms of Deposit">Terms of Deposit</a></li><li><a href="https://libguides.asu.edu/digitalrepository/home" title="ASU Digital Repository Guide">Sharing Materials: ASU Digital Repository Guide</a></li></ul>';

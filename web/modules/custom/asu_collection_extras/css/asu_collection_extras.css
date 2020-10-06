@@ -5,15 +5,25 @@
     font-size: 24px;
     min-height: 5.2em;
     padding: 0px !important;
+    margin-bottom: 2%;
 }
 
 .stats_border_box {
     position: relative;
-    width: 96%;
+    width: auto;
     height: 94%;
     border: 1px solid #d7d7d7;
-    padding: 10px;
-    margin: 3% 2%;
+    padding: 15px;
+    margin: 3% 4%;
+}
+
+/* make the sides even with the header */
+.stats_box:nth-of-type(3n+1) .stats_border_box {
+    margin-left: 0;
+}
+
+.stats_box:nth-of-type(3n) .stats_border_box {
+    margin-right: 0;
 }
 
 .stats_pointer_box {

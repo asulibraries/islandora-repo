@@ -55,6 +55,7 @@ dependencies:
     - asu_search
     - controlled_access_terms
     - datetime
+    - entity_reference_revisions
     - field_group
     - geolocation
     - jsonb
@@ -383,6 +384,15 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
     region: content
+  field_typed_identifier:
+    type: entity_reference_revisions_entity_view
+    weight: 42
+    region: content
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
   langcode:
     type: language
     weight: 27
@@ -437,7 +447,6 @@ hidden:
   field_preservation_state: true
   field_table_of_contents: true
   field_title: true
-  field_typed_identifier: true
   field_weight: true
   islandora_fits_checksum: true
   links: true

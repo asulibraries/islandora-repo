@@ -12,7 +12,7 @@ disabled: false
 conditions:
   node_has_term:
     id: node_has_term
-    negate: 0
+    negate: false
     uuid: e5689bd5-7eec-4378-b329-2f35d5bb35b0
     uri: 'https://schema.org/Book'
     context_mapping:
@@ -25,7 +25,7 @@ reactions:
         id: openseadragon_block
         label: 'Openseadragon block'
         provider: openseadragon
-        label_display: 0
+        label_display: '0'
         region: content
         weight: '-1'
         iiif_manifest_url: 'http://localhost:8000/node/[node:nid]/manifest'
@@ -53,7 +53,7 @@ reactions:
         id: openseadragon_block
         label: 'Openseadragon block'
         provider: openseadragon
-        label_display: 0
+        label_display: '0'
         region: content
         weight: '0'
         iiif_manifest_url: 'http://localhost:8000/node/[node:nid]/manifest'

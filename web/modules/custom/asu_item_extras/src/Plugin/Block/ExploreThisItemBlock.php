@@ -37,14 +37,14 @@ class ExploreThisItemBlock extends BlockBase {
 
     $output_links = array();
     if ($field_model == 'Image') {
-      $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/node/' . $nid . '/view');
+      $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/items/' . $nid . '/view');
       $link = Link::fromTextAndUrl(t('View Image'), $url);
       // get the node's service file information from the node - just use the openseadragon view
       $link = $link->toRenderable();
       $output_links[] = render($link);
     }
     elseif ($field_model == 'Complex Object') {
-      $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/node/' . $nid . '/members');
+      $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/items/' . $nid . '/members');
       $link = Link::fromTextAndUrl(t('View all associated media'), $url);
       $link = $link->toRenderable();
       $output_links[] = render($link);
@@ -53,7 +53,7 @@ class ExploreThisItemBlock extends BlockBase {
       $field_model == 'Digital Document') {
       // "Start reading" and "Show all pages" links as well as a search box.
       // get the node's openseadragon viewer url.
-      $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/node/' . $nid . '/view');
+      $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/items/' . $nid . '/view');
       $link = Link::fromTextAndUrl(t('Explore Document'), $url);
       $link = $link->toRenderable();
       $output_links[] = render($link);

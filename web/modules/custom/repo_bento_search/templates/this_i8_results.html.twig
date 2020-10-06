@@ -23,12 +23,16 @@
     <i>{{ total_results_found | number_format }} result{% if total_results_found != 1 %}s{% endif %} found</i><br>
     {% for key,item in items %}
         <div class="bento_item">
-            <a href="{{ service_url }}/items/{{ item.nid }}" target="_blank">{{ item.complex_title }}</a><br>
-            {{ item.field_rich_description }}<br>
+            <a href="{{ service_url }}/items/{{ item.nid }}" target="_blank">{{ item.complex_title|raw }}</a><br>
+            {{ item.field_rich_description|striptags|slice(0,250)|raw }}
+            {% if item.field_rich_description|length > 250 %}
+            ...
+            {% endif %}
+            <br>
             {% if item.field_edtf_date_created %}
             <small><label>Created: </label> {{ item.field_edtf_date_created }}</small><br>
             {% endif %}
         </div>
     {% endfor %}
-    <a href="{{ service_url }}/search?search_api_fulltext={{ search_term }}" target="_blank" title="See all DIGITAL COLLECTIONS results &gt;">See all DIGITAL COLLECTIONS results &gt;</a>
+    <a href="{{ service_url }}/search?search_api_fulltext={{ search_term }}" target="_blank" title="See all KEEP results &gt;">See all KEEP results &gt;</a>
 </div>

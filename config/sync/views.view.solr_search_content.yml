@@ -12,7 +12,6 @@ dependencies:
   module:
     - asu_search
     - media
-    - node
     - search_api
 id: solr_search_content
 label: 'Search content'
@@ -256,18 +255,7 @@ display:
           table: views
           field: area
           plugin_id: text
-      relationships:
-        field_member_of:
-          id: field_member_of
-          table: search_api_datasource_default_solr_index_entity_node
-          field: field_member_of
-          relationship: none
-          group_type: group
-          admin_label: 'Primary Member of: Content'
-          required: false
-          skip_access: false
-          entity_type: node
-          plugin_id: search_api
+      relationships: {  }
       arguments:
         field_ancestors:
           id: field_ancestors
@@ -1359,10 +1347,10 @@ display:
           1: AND
       path: collections/%/search
       arguments:
-        field_combined_member_of:
-          id: field_combined_member_of
+        field_ancestors:
+          id: field_ancestors
           table: search_api_index_default_solr_index
-          field: field_combined_member_of
+          field: field_ancestors
           relationship: none
           group_type: group
           admin_label: ''
@@ -1381,11 +1369,15 @@ display:
             sort_order: asc
             number_of_records: 0
             format: default_summary
-          specify_validation: false
+          specify_validation: true
           validate:
-            type: none
+            type: 'entity:node'
             fail: 'not found'
-          validate_options: {  }
+          validate_options:
+            operation: view
+            multiple: 1
+            bundles: {  }
+            access: false
           break_phrase: false
           not: false
           plugin_id: search_api

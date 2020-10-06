@@ -80,7 +80,13 @@ a:focus {
     width: 32.5%;
     float: left;
     img {
-      max-height: 100px;
+      height: auto;
+    }
+    .node__title {
+      word-break: break-all;
+    }
+    .node__title {
+      word-break: break-all;
     }
 }
 
@@ -130,7 +136,12 @@ a.icon-link {
 img { width: 100%; }
 
 /* Remove main content padding */
-.node__content.container { padding: 0; }
+.node__content.container {
+  padding: 0;
+}
+.node--type-collection .col-md-12 {
+  padding: 0;
+}
 
 .file-container {
   margin-bottom: 1rem;
@@ -161,19 +172,21 @@ img { width: 100%; }
   margin: 0;
 }
 
-/* Subjects and Linked Agent */
-.inline-list {
+/* Subjects and Linked Agent, and Collaborating institutions */
+article:not(.node--view-mode-full-metadata) .inline-list {
   list-style: none;
   padding: 0;
 }
 
 .all-subjects .inline-list,
+.all-memberships .inline-list,
 .inline-list li {
   display: inline;
 }
 
 .inline-list li:not(:last-child)::after,
-.all-subjects ul:not(:first-of-type)::before {
+.all-subjects ul:not(:first-of-type)::before,
+.all-memberships ul:not(:first-of-type)::before {
   content: ' / ';
 }
 

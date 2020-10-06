@@ -52,12 +52,12 @@ dependencies:
     - field.field.node.asu_repository_item.field_weight
     - node.type.asu_repository_item
   module:
-    - asu_search
     - controlled_access_terms
     - datetime
     - entity_reference_revisions
     - geolocation
     - options
+    - taxonomy
     - text
     - user
 id: node.asu_repository_item.full_metadata
@@ -65,9 +65,14 @@ targetEntityType: node
 bundle: asu_repository_item
 mode: full_metadata
 content:
+  content_moderation_control:
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   field_additional_memberships:
     type: entity_reference_label
-    weight: 8
+    weight: 20
     region: content
     label: inline
     settings:
@@ -75,48 +80,29 @@ content:
     third_party_settings: {  }
   field_coordinates:
     type: geolocation_latlng
-    weight: 15
+    weight: 23
     region: content
     label: inline
     settings: {  }
     third_party_settings: {  }
   field_copyright_date:
-    type: datetime_default
-    weight: 11
+    type: datetime_custom
+    weight: 4
     region: content
     label: inline
     settings:
-      format_type: medium
       timezone_override: ''
+      date_format: 'Y-m-d\TH:i:s'
     third_party_settings: {  }
   field_copyright_statement:
     type: entity_reference_label
-    weight: 12
+    weight: 17
     region: content
     label: inline
     settings:
-      link: true
+      link: false
     third_party_settings: {  }
   field_date_digitized:
-    type: edtf_default
-    weight: 36
-    region: content
-    label: inline
-    settings:
-      date_separator: dash
-      date_order: big_endian
-      month_format: mm
-      day_format: dd
-    third_party_settings: {  }
-  field_edition:
-    type: string
-    weight: 28
-    region: content
-    label: inline
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-  field_edtf_date_created:
     type: edtf_default
     weight: 5
     region: content
@@ -127,9 +113,28 @@ content:
       month_format: mm
       day_format: dd
     third_party_settings: {  }
+  field_edition:
+    type: string
+    weight: 30
+    region: content
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_edtf_date_created:
+    type: edtf_default
+    weight: 3
+    region: content
+    label: inline
+    settings:
+      date_separator: dash
+      date_order: big_endian
+      month_format: mm
+      day_format: dd
+    third_party_settings: {  }
   field_embargo_release_date:
     type: datetime_default
-    weight: 37
+    weight: 36
     region: content
     label: inline
     settings:
@@ -138,7 +143,7 @@ content:
     third_party_settings: {  }
   field_extent:
     type: string
-    weight: 31
+    weight: 15
     region: content
     label: inline
     settings:
@@ -146,14 +151,14 @@ content:
     third_party_settings: {  }
   field_frequency:
     type: list_default
-    weight: 30
+    weight: 32
     region: content
     label: inline
     settings: {  }
     third_party_settings: {  }
   field_genre:
     type: entity_reference_label
-    weight: 2
+    weight: 14
     region: content
     label: inline
     settings:
@@ -161,15 +166,15 @@ content:
     third_party_settings: {  }
   field_geographic_subject:
     type: entity_reference_label
-    weight: 22
+    weight: 11
     region: content
-    label: hidden
+    label: inline
     settings:
       link: true
     third_party_settings: {  }
   field_handle:
     type: string
-    weight: 32
+    weight: 35
     region: content
     label: inline
     settings:
@@ -177,22 +182,21 @@ content:
     third_party_settings: {  }
   field_issuance:
     type: list_default
-    weight: 29
+    weight: 31
     region: content
     label: inline
     settings: {  }
     third_party_settings: {  }
   field_language:
     type: entity_reference_label
-    weight: 35
+    weight: 16
     region: content
     label: inline
-    settings:
-      link: true
+    settings: {  }
     third_party_settings: {  }
   field_linked_agent:
     type: typed_relation_brief
-    weight: 4
+    weight: 6
     region: content
     label: inline
     settings:
@@ -200,7 +204,7 @@ content:
     third_party_settings: {  }
   field_member_of:
     type: entity_reference_label
-    weight: 7
+    weight: 19
     region: content
     label: inline
     settings:
@@ -208,15 +212,15 @@ content:
     third_party_settings: {  }
   field_name_title_subject:
     type: entity_reference_label
-    weight: 23
+    weight: 10
     region: content
-    label: hidden
+    label: inline
     settings:
       link: true
     third_party_settings: {  }
   field_note_para:
     type: entity_reference_revisions_entity_view
-    weight: 9
+    weight: 21
     region: content
     label: inline
     settings:
@@ -225,7 +229,7 @@ content:
     third_party_settings: {  }
   field_open_access:
     type: boolean
-    weight: 19
+    weight: 27
     region: content
     label: inline
     settings:
@@ -235,7 +239,7 @@ content:
     third_party_settings: {  }
   field_peer_reviewed:
     type: boolean
-    weight: 18
+    weight: 26
     region: content
     label: inline
     settings:
@@ -245,7 +249,7 @@ content:
     third_party_settings: {  }
   field_pid:
     type: string
-    weight: 17
+    weight: 25
     region: content
     label: inline
     settings:
@@ -267,16 +271,9 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-  field_preferred_citation:
-    type: text_default
-    weight: 13
-    region: content
-    label: inline
-    settings: {  }
-    third_party_settings: {  }
   field_related_item:
     type: typed_relation_default
-    weight: 26
+    weight: 28
     region: content
     label: inline
     settings:
@@ -284,105 +281,95 @@ content:
     third_party_settings: {  }
   field_resource_type:
     type: entity_reference_label
-    weight: 3
-    region: content
-    label: inline
-    settings:
-      link: true
-    third_party_settings: {  }
-  field_reuse_permissions:
-    type: entity_reference_label
-    weight: 10
-    region: content
-    label: inline
-    settings:
-      link: true
-    third_party_settings: {  }
-  field_rich_description:
-    type: text_default
-    weight: 1
+    weight: 13
     region: content
     label: inline
     settings: {  }
     third_party_settings: {  }
+  field_reuse_permissions:
+    type: entity_reference_label
+    weight: 18
+    region: content
+    label: inline
+    settings:
+      link: false
+    third_party_settings: {  }
+  field_rich_description:
+    type: text_default
+    weight: 2
+    region: content
+    label: inline
+    settings: { }
+    third_party_settings: {  }
   field_series:
     type: string
-    weight: 27
+    weight: 29
     region: content
     label: inline
     settings:
       link_to_entity: false
     third_party_settings: {  }
-  field_statement_responsibility:
-    type: basic_string
-    weight: 14
-    region: content
-    label: inline
-    settings: {  }
-    third_party_settings: {  }
   field_subject:
     type: entity_reference_label
-    weight: 20
+    weight: 7
     region: content
-    label: hidden
+    label: inline
     settings:
       link: true
     third_party_settings: {  }
   field_subjects_name:
     type: entity_reference_label
-    weight: 21
+    weight: 8
     region: content
-    label: hidden
+    label: inline
     settings:
       link: true
     third_party_settings: {  }
   field_table_of_contents:
     type: text_default
-    weight: 6
+    weight: 22
     region: content
     label: inline
-    settings: {  }
+    settings: { }
     third_party_settings: {  }
   field_temporal_subject:
     type: entity_reference_label
-    weight: 24
-    region: content
-    label: hidden
-    settings:
-      link: true
-    third_party_settings: {  }
-  field_title:
-    type: complex_title_formatter
-    weight: 0
+    weight: 12
     region: content
     label: inline
     settings:
-      link: ''
+      link: true
     third_party_settings: {  }
   field_title_subject:
     type: entity_reference_label
-    weight: 25
+    weight: 9
     region: content
-    label: hidden
+    label: inline
     settings:
       link: true
     third_party_settings: {  }
   field_typed_identifier:
     type: entity_reference_revisions_entity_view
-    weight: 16
+    weight: 24
     region: content
     label: inline
     settings:
       view_mode: default
       link: ''
     third_party_settings: {  }
+  field_weight:
+    type: number_unformatted
+    weight: 0
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
   links:
-    weight: 38
+    weight: 37
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
-  content_moderation_control: true
   display_media_child_thumbnail: true
   display_media_download_button: true
   display_media_entity_view_1: true
@@ -399,8 +386,10 @@ hidden:
   field_history: true
   field_keywords: true
   field_model: true
+  field_preferred_citation: true
   field_preservation_state: true
-  field_weight: true
+  field_statement_responsibility: true
+  field_title: true
   islandora_fits_checksum: true
   langcode: true
   openseadragon_media_evas_entity_view_1: true

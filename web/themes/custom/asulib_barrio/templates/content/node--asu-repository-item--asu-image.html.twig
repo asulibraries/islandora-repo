@@ -131,19 +131,19 @@
         <div class="all-subjects">
           <div class="field__label">{{ 'Subjects'|t }}</div>
           {{ content.field_subject }}
-          {{ content.field_geographic_subject }}
           {{ content.field_subjects_name }}
-          {{ content.field_temporal_subject }}
           {{ content.field_title_subject }}
           {{ content.field_name_title_subject }}
+          {{ content.field_geographic_subject }}
+          {{ content.field_temporal_subject }}
         </div>
       {% endif %}
       <div>{{ content.field_resource_type }}</div>
       {% if node.field_member_of is not empty %}
         <div class="all-memberships">
           <div class="field__label">{{ 'Collections this item is in'|t }}</div>
-          <div>{{ content.field_member_of }}</div>
-          <div>{{ content.field_additional_memberships }}</div>
+          {{ content.field_member_of }}
+          {{ content.field_additional_memberships }}
         </div>
       {% endif %}
       {% if drupal_view('collaborating_institutions', 'block_1', node.id)|render|striptags|trim|length > 0 %}
@@ -152,7 +152,8 @@
           {{ drupal_view('collaborating_institutions', 'block_1', node.id) }}
         </div>
       {% endif %}
-      {% if node.field_typed_identifier is not empty %}
+      {# Regular node.field check doesn't work for this paragraph #}
+      {% if (content.field_typed_identifier.0['#paragraph'].field_identifier_type is not empty) or (content.field_typed_identifier.0['#paragraph'].field_identifier_value is not empty) %}
         <div>{{ content.field_typed_identifier }}</div>
       {% endif %}
       <div>

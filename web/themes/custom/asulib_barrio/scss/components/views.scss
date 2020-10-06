@@ -115,6 +115,9 @@
 .views-summary a {
   margin-right: .8em;
 }
+.views-summary:not(:first-child) a {
+    margin-left: .6em;
+}
 .views-summary .is-active {
   text-decoration: none;
   font-weight: bold;
@@ -135,6 +138,42 @@
         @extend .container;
     }
 }
+.view-collections {
+    .form-control {
+        border-radius: 0;
+    }
+    .form-actions,
+    .view-header {
+        padding-left: 0;
+    }
+    .view-content {
+        margin-bottom: ($spacer * 1.5);
+    }
+    .form-row fieldset {
+        padding-right: 0;
+    }
+    .view-display-id-block_1 .view-content {
+        padding: 0;
+    }
+    &.view-display-id-sub_collections {
+        .views-row.row {
+            margin-bottom: 1rem;
+            border-bottom: 1px solid rgba(0,0,0,0.125);
+            padding-bottom: .5rem;
+            img {
+                height: auto;
+            }
+            i {
+                color: $gray-5;
+            }
+        }
+        .col-3 {
+            display: flex;
+            justify-content: center;
+        }
+    }
+}
+
 .node--view-mode-collection-browse-teaser.node--type-collection {
     height: calc(100% - 20px);
 }
@@ -219,9 +258,15 @@
     }
 }
 
-.node--type-page, .view-solr-search-content, .node--type-collection, .node--view-mode-asu-complex-object {
+.node--type-page, .view-solr-search-content, .node--type-collection, .node--view-mode-asu-complex-object, .complex-object-child-box {
     .expand-image {
         display: none;
+    }
+}
+
+.repo-item {
+    .view-display-id-thumbnail {
+        border: 1px solid $border-color;
     }
 }
 
@@ -230,5 +275,6 @@
     width: 100%;
     img {
         margin-bottom: 30px;
+        height: auto;
     }
 }
