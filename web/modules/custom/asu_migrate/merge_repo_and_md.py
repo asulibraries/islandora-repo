@@ -215,7 +215,7 @@ def main(argv):
         merge_df[ccc] = merge_df[ccc].apply(lambda row: loc_lookup("names", row))
     merge_df['Contributors-Person'] = contribs.apply(lambda row: sjoin(row), axis=1)
 
-    corp_contribs = merge_df[merge_df.columns[pandas.Series(merge_df.columns).str.startswith('Corporate Contributor')]]
+    corp_contribs = merge_df[merge_df.columns[pandas.Series(merge_df.columns).str.startswith('Corporate contributor')]]
     # corp_contribs = corp_contribs.apply(lambda row: loc_lookup("names", row))
     for corpcc in corp_contribs:
         print(corpcc)
