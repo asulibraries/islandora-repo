@@ -3,8 +3,7 @@
 namespace Drupal\asu_search\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
-use Drupal\Core\Entity\EntityInterface;
-use asu_islandora_utils\ASUIslandoraUtils;
+use Drupal\Core\Cache\Cache;
 
 /**
  * Provides a 'Complex Title' Block for page title purposes.
@@ -43,15 +42,14 @@ class ASUComplexTitle extends BlockBase {
     else {
       return [];
     }
-
-    $node_is_published = ASUIslandoraUtils::asu_islandora_utils_node_is_published($node);
+    $asu_utils = \Drupal::service('asu_utils');
+    $node_is_published = $asu_utils->isNodePublished($node);
     $first_title = $node->field_title[0];
     $view = ['type' => 'complex_title_formatter'];
     $first_title_view = $first_title->view($view);
     $para_render = \Drupal::service('renderer')->render($first_title_view);
 
     return [
-      '#cache' => ['max-age' => 0],
       'complex_title' => [
         '#type' => 'item',
           '#prefix' => '<h1 class="title' .
@@ -63,8 +61,22 @@ class ASUComplexTitle extends BlockBase {
     ];
   }
 
-  public function getCacheMaxAge() {
-    return 0;
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheTags() {
+    if ($node = \Drupal::routeMatch()->getParameter('node')) {
+      return Cache::mergeTags(parent::getCacheTags(), ['node:' . $node->id()]);
+    } else {
+      return parent::getCacheTags();
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheContexts() {
+    return Cache::mergeContexts(parent::getCacheContexts(), ['route']);
   }
 
 }
