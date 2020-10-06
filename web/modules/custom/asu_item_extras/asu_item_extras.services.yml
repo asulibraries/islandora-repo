@@ -1,0 +1,5 @@
+services:
+  asu_item_extras.route_subscriber:
+    class: Drupal\asu_item_extras\Routing\RouteSubscriber
+    tags:
+      - { name: event_subscriber }
