@@ -188,14 +188,14 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_language:
-    type: entity_reference_rss_category
+    type: entity_reference_label
     weight: 16
     region: content
     label: inline
     settings: {  }
     third_party_settings: {  }
   field_linked_agent:
-    type: typed_relation_default
+    type: typed_relation_brief
     weight: 6
     region: content
     label: inline
@@ -280,7 +280,7 @@ content:
       link: true
     third_party_settings: {  }
   field_resource_type:
-    type: entity_reference_rss_category
+    type: entity_reference_label
     weight: 13
     region: content
     label: inline
@@ -295,12 +295,11 @@ content:
       link: false
     third_party_settings: {  }
   field_rich_description:
-    type: text_trimmed
+    type: text_default
     weight: 2
     region: content
     label: inline
-    settings:
-      trim_length: 600
+    settings: { }
     third_party_settings: {  }
   field_series:
     type: string
@@ -327,12 +326,11 @@ content:
       link: true
     third_party_settings: {  }
   field_table_of_contents:
-    type: text_trimmed
+    type: text_default
     weight: 22
     region: content
     label: inline
-    settings:
-      trim_length: 600
+    settings: { }
     third_party_settings: {  }
   field_temporal_subject:
     type: entity_reference_label
