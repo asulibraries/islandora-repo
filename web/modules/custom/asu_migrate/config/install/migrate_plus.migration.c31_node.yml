@@ -314,7 +314,7 @@ process:
       callable: trim
     -
       plugin: skip_on_empty
-      callable: process
+      method: process
     -
       plugin: typed_relation_generate
       delimiter: '|'
