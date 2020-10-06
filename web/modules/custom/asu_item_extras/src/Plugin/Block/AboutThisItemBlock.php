@@ -46,7 +46,7 @@ class AboutThisItemBlock extends BlockBase {
     $output_links = [];
     // Add a link for the "Overview" of this node.
     $variables['nodeid'] = $nid;
-    $url = Url::fromRoute('<current>', []);
+    $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/items/' . $nid);
     $link = Link::fromTextAndUrl(t('Overview'), $url);
     $link = $link->toRenderable();
     $output_links[] = render($link);
