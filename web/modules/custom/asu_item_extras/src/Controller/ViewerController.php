@@ -7,7 +7,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Url;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
-
 /**
  * Class ViewerController.
  */
@@ -44,12 +43,11 @@ class ViewerController extends ControllerBase {
    *   Return a view.
    */
   public function render_view($node) {
-    $nid = $this->currentRouteMatch->getParameter('node');
-    if ($nid) {
+    $node = $this->currentRouteMatch->getParameter('node');
+    if ($node) {
       $routeName = 'entity.node.canonical';
-      $routeParameters = ['node' => $nid];
+      $routeParameters = ['node' => $node->id()];
       $url = Url::fromRoute($routeName, $routeParameters);
-      $node = $this->entityTypeManager->getStorage('node')->load($nid);
       $content_type = $node->bundle();
       if ($content_type == 'asu_repository_item') {
         $builder = $this->entityTypeManager->getViewBuilder('node');
@@ -58,9 +56,11 @@ class ViewerController extends ControllerBase {
           $model = $model_term->getName();
           if ($model == 'Digital Document') {
             $view_mode = 'pdfjs';
+            return $builder->view($node, $view_mode);
           }
           elseif ($model == 'Image') {
             $view_mode = 'open_seadragon';
+            return $builder->view($node, $view_mode);
           }
           else {
             return new RedirectResponse($url->toString());
@@ -69,8 +69,6 @@ class ViewerController extends ControllerBase {
         else {
           return new RedirectResponse($url->toString());
         }
-        $build = $builder->view($node, $view_mode);
-        return $build;
       }
       else {
         return new RedirectResponse($url->toString());
