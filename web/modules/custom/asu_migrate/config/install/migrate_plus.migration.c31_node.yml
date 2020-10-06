@@ -307,7 +307,7 @@ process:
   corporations:
     -
       plugin: explode
-      delimeter: '||'
+      delimiter: '||'
       source: Contributors-Corporate
     -
       plugin: callback
@@ -317,7 +317,7 @@ process:
       callable: process
     -
       plugin: typed_relation_generate
-      delimeter: '|'
+      delimiter: '|'
       url_field: field_authority_link
       default_vocabulary: corporate_body
       relator: 'relators:ctb'
