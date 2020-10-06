@@ -7,7 +7,7 @@
  *  - service_url: base url for this service.
  *  - items: array of results... key values below.
  *  - total_results_found:
- *  - search_term: 
+ *  - search_term:
  *
  * items elements:
  *  - name: The title value for the item
@@ -31,9 +31,8 @@
             <a href="{{ item.url }}" target="_blank">{{ item.name|raw }}</a>
         {% endif %}<br>
             {% set description = item.description|render|striptags|trim|split(' ') %}
-            {% if description|length > 40 %}
-                    {{ description|slice(0, 30)|join(' ') }}<span id="more-ellipse" class="collapse
-                    multi-collapse show">&hellip;</span>
+            {% if description|length > 250 %}
+                    {{ description|slice(0, 250)|join('...') }}
             {% else %}
                 {{ item.description }}
             {% endif %}<br>

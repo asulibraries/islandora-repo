@@ -25,7 +25,7 @@
         <div class="bento_item">
             <a href="{{ service_url }}/items/{{ item.nid }}" target="_blank">{{ item.complex_title|raw }}</a><br>
             {{ item.field_rich_description|striptags|slice(0,250)|raw }}
-            {% if item.field_rich_description|length > 40 %}
+            {% if item.field_rich_description|length > 250 %}
                 ...
             {% endif %}
             <br>

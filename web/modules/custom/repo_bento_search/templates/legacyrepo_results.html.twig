@@ -30,9 +30,8 @@
           {% endif %}
           <br>
             {% set description = item.item_description|render|raw|striptags|trim|split(' ') %}
-            {% if description|length > 40 %}
-                    {{ description|slice(0, 30)|join(' ') }}<span id="more-ellipse" class="collapse
-                    multi-collapse show">&hellip;</span>
+            {% if description|length > 250 %}
+                    {{ description|slice(0, 250)|join('...') }
             {% else %}
                 {{ item.item_description }}
             {% endif %}<br>
