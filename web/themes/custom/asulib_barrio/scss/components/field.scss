@@ -159,7 +159,8 @@ img.copyright-logo {
     font-size: 1.5rem;
 }
 
-.text-show-more .multi-collapse p:last-child {
+.text-show-more .multi-collapse p:last-child,
+.node--view-mode-full-metadata .field--name-field-rich-description p:last-child {
     margin-bottom: 0;
 }
 
@@ -178,4 +179,19 @@ button.show-more {
 }
 .field--name-field-identifier-value {
     display: inline-block;
+}
+
+.node--view-mode-full-metadata .node__content > .field {
+    border-bottom: 1px solid $border-color;
+    padding-top: ($spacer * .75);
+    padding-bottom: ($spacer * .75);
+    margin-left: 0;
+    margin-bottom: 0;
+}
+.node--view-mode-full-metadata .field__label {
+    padding-left: 0;
+}
+.node--view-mode-full-metadata .field--type-entity-reference,
+.node--view-mode-full-metadata .inline-list {
+    margin-bottom: 0;
 }
