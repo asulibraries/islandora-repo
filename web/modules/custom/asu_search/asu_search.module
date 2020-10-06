@@ -27,3 +27,10 @@ function asu_search_search_api_solr_field_mapping_alter(IndexInterface $index, a
   $fields['field_file_size'] = 'itm_field_file_size';
   $fields['field_mime_type'] = 'sm_field_mime_type';
 }
+
+function asu_search_preprocess_node(&$variables) {
+  if ($variables['node'] && $variables['node']->getType() == 'asu_repository_item') {
+    $asu_utils = \Drupal::service('asu_utils');
+    $variables['is_published'] = $asu_utils->isNodePublished($variables['node']);
+  }
+}

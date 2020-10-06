@@ -1,0 +1,7 @@
+services:
+  logger.channel.asu_islandora_utils:
+    parent: logger.channel_base
+    arguments: ['asu_islandora_utils']
+  asu_utils:
+    class: Drupal\asu_islandora_utils\AsuUtils
+    arguments: ['@entity_type.manager', '@logger.factory']

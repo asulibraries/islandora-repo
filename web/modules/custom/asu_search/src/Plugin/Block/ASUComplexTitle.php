@@ -3,7 +3,7 @@
 namespace Drupal\asu_search\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
-use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Cache\Cache;
 
 /**
  * Provides a 'Complex Title' Block for page title purposes.
@@ -42,23 +42,41 @@ class ASUComplexTitle extends BlockBase {
     else {
       return [];
     }
-
+    $asu_utils = \Drupal::service('asu_utils');
+    $node_is_published = $asu_utils->isNodePublished($node);
     $first_title = $node->field_title[0];
     $view = ['type' => 'complex_title_formatter'];
     $first_title_view = $first_title->view($view);
     $para_render = \Drupal::service('renderer')->render($first_title_view);
+
     return [
       'complex_title' => [
         '#type' => 'item',
-        '#prefix' => '<h1 class="title">',
+          '#prefix' => '<h1 class="title' .
+          ($node_is_published ? "" : " unpublished_title") . '">',
         '#suffix' => '</h1>',
-        '#markup' => $para_render,
+        '#markup' => ($node_is_published ? '' : '<i class="fa fa-lock"></i>&nbsp;') .
+          $para_render,
       ],
     ];
   }
 
-  public function getCacheMaxAge() {
-    return 0;
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheTags() {
+    if ($node = \Drupal::routeMatch()->getParameter('node')) {
+      return Cache::mergeTags(parent::getCacheTags(), ['node:' . $node->id()]);
+    } else {
+      return parent::getCacheTags();
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheContexts() {
+    return Cache::mergeContexts(parent::getCacheContexts(), ['route']);
   }
 
 }

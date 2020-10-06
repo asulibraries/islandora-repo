@@ -67,7 +67,7 @@
     'node--type-' ~ node.bundle|clean_class,
     node.isPromoted() ? 'node--promoted',
     node.isSticky() ? 'node--sticky',
-    not node.isPublished() ? 'node--unpublished',
+    not is_published ? 'node--unpublished',
   ]
 %}
 
@@ -102,6 +102,7 @@
             {{ title_prefix }}
             {% if label %}
               <h5{{ title_attributes.addClass('node__title') }}>
+                {% if not is_published %}<i class="fas fa-ban"></i>&nbsp;{% endif %}
                 <a href="{{ url }}" rel="bookmark">{{ label }}</a>
               </h5>
             {% endif %}
