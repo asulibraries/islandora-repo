@@ -12,7 +12,7 @@
  *  the number of results to return (to provide the recent additions for the
  * block that only displays only 4 items)
  */
-function getAllCollectionChildren($collection_node, $sort_by_date = false, $limit = 0) {
+function getAllCollectionChildren($collection_node, $sort_by_date = false, $limit = 0, $items_only = true) {
   $collection_nid = (is_object($collection_node) ? $collection_node->id() : $collection_node);
   $childrenQuery = \Drupal::entityQuery('node');
   $orGroup = $childrenQuery
@@ -22,6 +22,10 @@ function getAllCollectionChildren($collection_node, $sort_by_date = false, $limi
   $childrenQuery
     ->condition($orGroup)
     ->condition('status', 1);
+  if ($items_only) {
+    $childrenQuery
+      ->condition('type', 'asu_repository_item');
+  }
   if ($sort_by_date) {
     $childrenQuery
       ->sort('revision_timestamp' , 'DESC');
