@@ -70,6 +70,10 @@ function asulib_barrio_preprocess_breadcrumb(&$variables) {
   $variables['#cache']['contexts'][] = 'url';
 }
 
+/**
+ * Implements hook_preprocess_node()
+ * Builds OAI link out of site URL elements
+ */
 function asulib_barrio_preprocess_node(&$variables) {
   $node = \Drupal::request()->attributes->get('node');
   if (!is_object($node) && is_string($node)) {
@@ -81,4 +85,18 @@ function asulib_barrio_preprocess_node(&$variables) {
     $domain = $url_parts[2];
     $variables['oai_base_url'] = $site_url . 'oai/request?verb=GetRecord&metadataPrefix=oai_dc&identifier=oai:' . $domain . ':node-';
   }
+}
+
+/**
+ * Implements hook_theme_suggestions_field_alter()
+ * Add view mode to theme suggestions for fields
+ */
+function asulib_barrio_theme_suggestions_field_alter(&$suggestions, $variables) {
+  $suggestions[] = 'field__node__' .
+      $variables['element']['#field_name'] . '__' .
+      $variables['element']['#bundle'] . '__' .
+      $variables['element']['#view_mode'];
+  $suggestions[] = 'field__node__' .
+      $variables['element']['#bundle'] . '__' .
+      $variables['element']['#view_mode'];
 }
