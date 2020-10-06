@@ -37,10 +37,9 @@ class ComplexObjectMembersController extends ControllerBase {
    *   The render array.
    */
   public function buildContent(UserInterface $user = NULL) {
-    $nid = \Drupal::routeMatch()->getParameter('node');
+    $node = \Drupal::routeMatch()->getParameter('node');
     $build_output = [];
-    if ($nid) {
-      $node = \Drupal\node\Entity\Node::load($nid);
+    if ($node) {
       // What is the type for this node?
       $content_type = $node->getType();
 
@@ -52,11 +51,12 @@ class ComplexObjectMembersController extends ControllerBase {
 
       // check that the model for this node is set to "Complex Object".
       if (($content_type == 'asu_repository_item') && $field_model == 'Complex Object') {
-        $children = asu_item_extras_get_complex_object_child_nodes($nid);
+        $children = asu_item_extras_get_complex_object_child_nodes($node->id());
         foreach ($children as $child_obj) {
           if ($child_obj->entity_id) {
             $node = \Drupal::entityTypeManager()->getStorage('node')->load($child_obj->entity_id);
-            $build_output[] = node_view($node, 'complex_object_child_box');
+            $builder = \Drupal::entityTypeManager()->getViewBuilder('node');
+            $build_output[] = $builder->view($node, 'complex_object_child_box');
           }
         }
       }
@@ -64,7 +64,8 @@ class ComplexObjectMembersController extends ControllerBase {
     return [
       '#markup' => '<h2>' . t('Included in this item') . '</h2>',
       '#cache' => ['max-age' => 0],
-      $build_output
+      $build_output,
     ];
   }
+
 }
