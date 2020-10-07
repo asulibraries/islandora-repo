@@ -8,6 +8,7 @@ import shlex
 import subprocess
 import re
 import math
+import numpy as np
 
 # example usage merge_repo_and_md.py repo.csv md.csv att_md.csv
 cols = ["label", "authority", "uri"]
@@ -91,7 +92,7 @@ def get_model(att_count, item_id, att_df, att_id):
 def set_file_id(mime, media_type, file_id, field):
     model = get_model_from_mime(mime)
     if isinstance(file_id, float):
-        return ""
+        return None
     file_id = int(file_id)
     if media_type == "image" and model == "Image" and field == 'image':
         return file_id
@@ -104,7 +105,7 @@ def set_file_id(mime, media_type, file_id, field):
     elif media_type == 'file' and model == 'Binary' and field == 'binary':
         return file_id
     else:
-        return ""
+        return None
 
 
 def main(argv):
@@ -146,7 +147,8 @@ def main(argv):
         row['file mime'], row['media type'], row['file id'], 'audio'), axis=1)
     att_df['generic file id'] = att_df.apply(
         lambda row: set_file_id(row['file mime'], row['media type'], row['file id'], 'binary'), axis=1)
-    xcols = ['image id', 'document id', 'video id', 'audio id', 'generic file id', 'file id']
+    xcols = ['image id', 'document id',
+             'video id', 'audio id', 'generic file id']
     att_df[xcols] = att_df[xcols].replace(".0", "")
 
     # for col in merge_df.columns:
@@ -230,6 +232,16 @@ def main(argv):
     #     print(col)
     merge_df['History JSON'] = temp_series
     merge_df['History JSON'] = merge_df['History JSON'].apply(lambda row: row.replace('\n', '').replace('\r\n', '') if not isinstance(row, float) else None)
+
+    # xcols = ['image id', 'document id', 'video id',
+                #  'audio id', 'generic file id', 'file id']
+    # for x_col in xcols:
+    x_col = 'file id'
+    # att_df[x_col] = att_df[x_col].replace(".0", "")
+    att_df[x_col] = att_df[x_col].fillna(-1)
+    att_df[x_col] = att_df[x_col].astype('int64')
+    att_df[x_col] = att_df[x_col].replace(-1, None)
+    att_df[x_col] = att_df[x_col].replace("-1", "")
 
     merge_df.to_csv('c' + str(int(merge_df.iloc[0]['Collection ID'])) + '_merged.csv')
     att_df.to_csv('data/migration_data/att_file_' +
