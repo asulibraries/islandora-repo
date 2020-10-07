@@ -91,9 +91,13 @@ def get_model(att_count, item_id, att_df, att_id):
 
 def set_file_id(mime, media_type, file_id, field):
     model = get_model_from_mime(mime)
-    if isinstance(file_id, float):
-        return None
+    # if isinstance(file_id, float):
+        # return
+    if math.isnan(file_id):
+        return
     file_id = int(file_id)
+    file_id = str(file_id)
+    print(file_id)
     if media_type == "image" and model == "Image" and field == 'image':
         return file_id
     elif media_type == 'document' and model == "Digital Document" and field == 'document':
@@ -233,8 +237,8 @@ def main(argv):
     merge_df['History JSON'] = temp_series
     merge_df['History JSON'] = merge_df['History JSON'].apply(lambda row: row.replace('\n', '').replace('\r\n', '') if not isinstance(row, float) else None)
 
-    # xcols = ['image id', 'document id', 'video id',
-                #  'audio id', 'generic file id', 'file id']
+    xcols = ['image id', 'document id', 'video id',
+                 'audio id', 'generic file id', 'file id']
     # for x_col in xcols:
     x_col = 'file id'
     # att_df[x_col] = att_df[x_col].replace(".0", "")
