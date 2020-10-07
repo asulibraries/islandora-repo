@@ -42,23 +42,29 @@ class ASUComplexTitle extends BlockBase {
     else {
       return [];
     }
-    $asu_utils = \Drupal::service('asu_utils');
-    $node_is_published = $asu_utils->isNodePublished($node);
-    $first_title = $node->field_title[0];
-    $view = ['type' => 'complex_title_formatter'];
-    $first_title_view = $first_title->view($view);
-    $para_render = \Drupal::service('renderer')->render($first_title_view);
+    if ($node->bundle() == "asu_repository_item" || $node->bundle() == "collection") {
+      $asu_utils = \Drupal::service('asu_utils');
+      $node_is_published = $asu_utils->isNodePublished($node);
+      $first_title = $node->field_title[0];
+      $view = ['type' => 'complex_title_formatter'];
+      $first_title_view = $first_title->view($view);
+      $para_render = \Drupal::service('renderer')->render($first_title_view);
 
-    return [
-      'complex_title' => [
-        '#type' => 'item',
+      return [
+        'complex_title' => [
+          '#type' => 'item',
           '#prefix' => '<h1 class="title' .
-          ($node_is_published ? "" : " unpublished_title") . '">',
-        '#suffix' => '</h1>',
-        '#markup' => ($node_is_published ? '' : '<i class="fa fa-lock"></i>&nbsp;') .
-          $para_render,
-      ],
-    ];
+            ($node_is_published ? "" : " unpublished_title") . '">',
+          '#suffix' => '</h1>',
+          '#markup' => ($node_is_published ? '' : '<i class="fa fa-lock"></i>&nbsp;') .
+            $para_render,
+        ],
+      ];
+    }
+    else {
+      return [];
+    }
+
   }
 
   /**
