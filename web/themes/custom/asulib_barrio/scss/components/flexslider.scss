@@ -1,0 +1,19 @@
+#fp-flexslider .flex-direction-nav a,
+#fp-flexslider .flex-direction-nav a { display: block; }
+.flex-direction-nav a { height: 50px; transition: none; } /* fix bottom of arrow getting cut off */
+/* we want the controls always visible and outside the content area */
+.flexslider .flex-direction-nav a {display: block; opacity: .7; border: none; }
+.flex-direction-nav a { top: 45%; }
+.flexslider { margin: 0 50px 60px 50px; } /* make room for controls on the outside */
+.flexslider:hover .flex-direction-nav .flex-next { right: -50px; } /* and keep them there */
+.flexslider:hover .flex-direction-nav .flex-prev { left: -50px; }
+/* better icons for the pause/play control */
+.flex-pauseplay a { height: 30px; border: none; bottom: -40px; }
+.flex-pauseplay a.flex-play::before {
+  font-family: FontAwesome;
+  content: '\f04b';
+}
+.flex-pauseplay a.flex-pause::before {
+  font-family: FontAwesome;
+  content: '\f04c';
+}
