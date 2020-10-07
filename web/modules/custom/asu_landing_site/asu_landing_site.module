@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains asu_landing_site.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function asu_landing_site_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the asu_landing_site module.
+    case 'help.page.asu_landing_site':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('A module that provides blocks and functionality for the repository landing site') . '</p>';
+      return $output;
+
+    default:
+  }
+}
