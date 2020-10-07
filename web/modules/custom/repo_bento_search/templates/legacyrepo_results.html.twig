@@ -29,12 +29,11 @@
             <a href="{{ service_url }}/collections/{{ item.collection_id }}" target="_blank">{{ item.item_label }}</a>
           {% endif %}
           <br>
-            {% set description = item.item_description|render|raw|striptags|trim|split(' ') %}
-            {% if description|length > 250 %}
-                    {{ description|slice(0, 250)|join('...') }
-            {% else %}
-                {{ item.item_description }}
-            {% endif %}<br>
+          {{ item.item_description|striptags|slice(0,150)|raw }}
+          {% if item.item_description|length > 150 %}
+              ...
+          {% endif %}
+          <br/>
             {% if item.md_created_s %}
             <small><label>Created: </label> {{ item.md_created_s }}</small><br>
             {% endif %}

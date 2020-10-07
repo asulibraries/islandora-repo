@@ -30,12 +30,11 @@
         {% else %}
             <a href="{{ item.url }}" target="_blank">{{ item.name|raw }}</a>
         {% endif %}<br>
-            {% set description = item.description|render|striptags|trim|split(' ') %}
-            {% if description|length > 250 %}
-                    {{ description|slice(0, 250)|join('...') }}
-            {% else %}
-                {{ item.description }}
-            {% endif %}<br>
+            {{ item.description|striptags|slice(0,150)|raw }}
+            {% if item.description|length > 150 %}
+                ...
+            {% endif %}
+            <br>
             {% if item.createdAt %}
             <small><label>Created: </label> {{ item.createdAt }}</small><br>
             {% endif %}
