@@ -146,7 +146,7 @@ def main(argv):
         row['file mime'], row['media type'], row['file id'], 'audio'), axis=1)
     att_df['generic file id'] = att_df.apply(
         lambda row: set_file_id(row['file mime'], row['media type'], row['file id'], 'binary'), axis=1)
-    xcols = ['image id', 'document id', 'video id', 'audio id', 'generic file id']
+    xcols = ['image id', 'document id', 'video id', 'audio id', 'generic file id', 'file id']
     att_df[xcols] = att_df[xcols].replace(".0", "")
 
     # for col in merge_df.columns:
