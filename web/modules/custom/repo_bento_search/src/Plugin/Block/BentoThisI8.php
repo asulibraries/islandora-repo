@@ -37,7 +37,7 @@ class BentoThisI8 extends BlockBase {
       $parsed_url = parse_url($service_api_url);
       $service_url = $parsed_url['scheme'] . '://' .
         $parsed_url['host'] .
-        ($parsed_url['port'] ? ":" . $parsed_url['port'] : "");
+        (array_key_exists('port', $parsed_url) ? ":" . $parsed_url['port'] : "");
       // Get the search parameter from the GET url.
       // the url parameter is q as in q=cat
       $results_json = ($search_term) ?

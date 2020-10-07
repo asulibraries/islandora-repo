@@ -75,4 +75,39 @@ class ThisI8ApiService implements BentoApiInterface {
     }
   }
 
+  /**
+   * Gets the recent items from the API.
+   *
+   * @param string $type
+   *   The content type.
+   * @param int $limit
+   *   The number of results to limit to.
+   */
+  public function getRecentItems(string $type = 'asu_repository_item', int $limit = 12) {
+    try {
+      $config = $this->configFactory->get('repo_bento_search.bentosettings');
+      $base_url = $config->get('recent_items_api');
+      if (!trim($base_url)) {
+        $this->logger->warning("No recent items api url set: see /admin/config/bento_search/settings");
+        return;
+      }
+      else {
+        $request_url = $base_url . '?_format=json&type=' . $type . '&items_per_page=' . $limit;
+        $request = $this->httpClient->request('GET', $request_url);
+        if ($request->getStatusCode() == 200) {
+          $body = $request->getBody()->getContents();
+          $this->logger->info(print_r($body, TRUE));
+          // dsm(print_r($body, TRUE));
+          return $body;
+        }
+        else {
+          $this->logger->warning("Unable to reach the site with response: " . print_r($request, TRUE));
+        }
+      }
+    }
+    catch (ClientException $e) {
+      $this->logger->warning("Unable to reach the site with response: " . $e);
+    }
+  }
+
 }

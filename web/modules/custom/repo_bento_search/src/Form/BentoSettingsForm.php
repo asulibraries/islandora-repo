@@ -109,6 +109,12 @@ class BentoSettingsForm extends ConfigFormBase {
       '#description' => $this->t('The number of results to show per bento box. Default value is 10 results.'),
       '#default_value' => $config->get('num_results') ?: 10,
     ];
+    $form['recent_items_api'] = [
+      '#type' => 'textfield',
+      '#title' => $this->t('Recent Items Api URL'),
+      '#description' => $this->t('The URL for the API endpoint to use for recent items on the landing site homepage'),
+      '#default_value' => $config->get('recent_items_api'),
+    ];
     return parent::buildForm($form, $form_state);
   }
 
@@ -129,6 +135,8 @@ class BentoSettingsForm extends ConfigFormBase {
       ->set('titles_second_i8', $form_state->getValue('titles_second_i8'))
       ->set('titles_legacy_repo', $form_state->getValue('legacy_repo'))
       ->set('titles_dataverse', $form_state->getValue('dataverse'))
+      ->set('recent_items_api', $form_state->getValue('recent_items_api'))
       ->save();
   }
+
 }
