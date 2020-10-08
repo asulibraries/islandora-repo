@@ -1,6 +1,8 @@
 langcode: en
 status: true
 dependencies:
+  config:
+    - node.type.asu_repository_item
   module:
     - content_moderation
 id: ingest
@@ -8,42 +10,94 @@ label: Ingest
 type: content_moderation
 type_settings:
   states:
-    declined:
+    approved_by_content_lead:
       published: false
       default_revision: false
+      label: 'Approved by content lead'
+      weight: -1
+    approved_by_metadata_team:
+      published: true
+      default_revision: true
+      label: 'Approved by metadata team'
+      weight: 0
+    declined:
+      published: false
+      default_revision: true
       label: Declined
       weight: 2
     draft:
       label: Draft
       published: false
       default_revision: false
-      weight: 0
+      weight: -3
+    initial_triage:
+      published: false
+      default_revision: false
+      label: 'Initial Triage Completed'
+      weight: -2
     published:
       label: Published
       published: true
       default_revision: true
       weight: 1
+    soft_delet:
+      published: false
+      default_revision: true
+      label: 'Soft Deleted'
+      weight: 3
   transitions:
     create_new_draft:
       label: 'Create New Draft'
       to: draft
       weight: 0
       from:
+        - approved_by_content_lead
+        - approved_by_metadata_team
         - draft
+        - initial_triage
         - published
     decline_submission:
       label: 'Decline Submission'
       from:
+        - approved_by_content_lead
+        - approved_by_metadata_team
         - draft
+        - initial_triage
         - published
       to: declined
       weight: 2
+    draft_to_triaged:
+      label: 'Draft to Triaged'
+      from:
+        - draft
+      to: initial_triage
+      weight: 3
     publish:
       label: Publish
       to: published
       weight: 1
       from:
+        - approved_by_content_lead
+        - approved_by_metadata_team
         - draft
+        - initial_triage
         - published
-  entity_types: {  }
+    to_approved_by_content_lead:
+      label: 'To Approved by Content Lead'
+      from:
+        - draft
+        - initial_triage
+      to: approved_by_content_lead
+      weight: 4
+    to_approved_by_metadata_team:
+      label: 'To Approved by metadata team'
+      from:
+        - approved_by_content_lead
+        - draft
+        - initial_triage
+      to: approved_by_metadata_team
+      weight: 5
+  entity_types:
+    node:
+      - asu_repository_item
   default_moderation_state: draft
