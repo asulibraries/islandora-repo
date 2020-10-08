@@ -23,6 +23,10 @@ function asu_default_fields_media_presave(MediaInterface $media) {
           $mime = str_replace('/', '_', $mime);
           $mime = str_replace('.', '_', $mime);
           $res_type = \Drupal::config('asu_default_fields.mimesettings')->get($mime);
+          // TODO - add the ability to push the resource type to a complex object parent
+          // would correlate with a view of objects that do not have resource types set
+          // but that view would also filter out children of complex objects
+          // because as long as the parent complex object has at least 1 resource type, its ok
           $node->set('field_resource_type', ['target_id' => $res_type]);
           $node->save();
         }
@@ -132,6 +136,15 @@ function asu_default_fields_node_insert(NodeInterface $node) {
       if ($parent->hasField('field_default_derivative_file_pe') && !$parent->get('field_default_derivative_file_pe')->isEmpty() && $node->get('field_default_derivative_file_pe')->isEmpty()) {
         $deriv_default_perms = $parent->get('field_default_derivative_file_pe')->entity->id();
         $node->set('field_default_derivative_file_pe', $deriv_default_perms);
+        $save = TRUE;
+      }
+      if ($parent->bundle() == 'collection' && $parent->hasField('field_oai_set') && !$parent->get('field_oai_set')->isEmpty()) {
+        $oai_set = $parent->get('field_oai_set')->entity->id();
+        $node->set('field_oai_set', $oai_set);
+        $save = TRUE;
+      }
+      if ($parent->bundle() == "asu_repository_item") {
+        $node->set('field_complex_object_child', 1);
         $save = TRUE;
       }
       if ($save) {

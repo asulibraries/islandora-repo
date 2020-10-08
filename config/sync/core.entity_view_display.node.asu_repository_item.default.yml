@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - field.field.node.asu_repository_item.field_additional_memberships
+    - field.field.node.asu_repository_item.field_complex_object_child
     - field.field.node.asu_repository_item.field_complex_subjects
     - field.field.node.asu_repository_item.field_coordinates
     - field.field.node.asu_repository_item.field_copyright_statement
@@ -28,6 +29,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_model
     - field.field.node.asu_repository_item.field_name_title_subject
     - field.field.node.asu_repository_item.field_note_para
+    - field.field.node.asu_repository_item.field_oai_set
     - field.field.node.asu_repository_item.field_open_access
     - field.field.node.asu_repository_item.field_peer_reviewed
     - field.field.node.asu_repository_item.field_pid
@@ -66,7 +68,7 @@ third_party_settings:
     group_sidebar:
       children: {  }
       parent_name: ''
-      weight: 70
+      weight: 71
       format_type: details_sidebar
       region: hidden
       format_settings:
@@ -80,7 +82,7 @@ third_party_settings:
     group_details:
       children: {  }
       parent_name: ''
-      weight: 71
+      weight: 72
       format_type: details
       region: hidden
       format_settings:
@@ -181,7 +183,7 @@ content:
     type: string
     region: content
   field_edtf_copyright_date:
-    weight: 72
+    weight: 56
     label: above
     settings:
       date_separator: dash
@@ -542,8 +544,10 @@ hidden:
   display_media_entity_view_1: true
   display_media_service_file: true
   display_media_thumbnail: true
+  field_complex_object_child: true
   field_complex_subjects: true
   field_display_hints: true
+  field_oai_set: true
   islandora_fits_checksum: true
   openseadragon_media_evas_entity_view_2: true
   openseadragon_media_evas_service_file: true

@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_complex_object_child
+    - node.type.asu_repository_item
+id: node.asu_repository_item.field_complex_object_child
+field_name: field_complex_object_child
+entity_type: node
+bundle: asu_repository_item
+label: 'Complex Object Child'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'Complex Object Child'
+  off_label: 'Not a Complex Object Child'
+field_type: boolean
