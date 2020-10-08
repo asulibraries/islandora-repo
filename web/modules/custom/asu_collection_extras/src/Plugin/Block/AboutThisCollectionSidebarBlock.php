@@ -53,7 +53,7 @@ class AboutThisCollectionSidebarBlock extends BlockBase {
     // event that will send the current node's URL to the copy buffer?
     if ($node->hasField('field_handle') && $node->get('field_handle')->value != NULL) {
       $hdl = $node->get('field_handle')->value;
-      $output_links[] = '<span class="copy_permalink_link" title="' . $hdl . '">Permalink</span>&nbsp; <span class="fa fa-copy fa-lg copy_permalink_link" title="' . $hdl . '">&nbsp;</span>';
+      $output_links[] = '<span class="copy_permalink_link" title="' . $hdl . '">Permalink</span>&nbsp; <span class="far fa-copy fa-lg copy_permalink_link" title="' . $hdl . '">&nbsp;</span>';
     }
     return [
       '#markup' => (count($output_links) > 0) ?
