@@ -1,0 +1,13 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.collections_staff
+  module:
+    - user
+id: user_add_role_action.collections_staff
+label: 'Add the Collections Staff role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: collections_staff
