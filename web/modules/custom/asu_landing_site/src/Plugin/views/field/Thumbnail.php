@@ -17,6 +17,9 @@ class Thumbnail extends FieldPluginBase {
   public function render(ResultRow $values) {
     $thumb = $this->getValue($values);
     if ($thumb) {
+      if (!str_starts_with($thumb, 'http')) {
+        $thumb = "https://keep.lib.asu.edu" . $thumb;
+      }
       return [
         '#theme' => 'image',
         '#uri' => $thumb,
