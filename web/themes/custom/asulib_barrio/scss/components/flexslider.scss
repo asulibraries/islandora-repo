@@ -21,8 +21,11 @@
   width: auto;
 }
 .view-id-landing_page_recent_keep_items, .view-id-flexslider_views_example {
-  .view-content, .view-content.row > div {
+  .view-content {
     width: 100%;
+  }
+  .view-content.row > div {
+    @extend .col-12;
   }
   .slides li {
     padding: 20px;
