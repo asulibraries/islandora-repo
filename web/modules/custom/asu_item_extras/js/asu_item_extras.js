@@ -22,7 +22,7 @@ Drupal.behaviors.asu_item_extras = {
     // on click code to handle clipboard copy of "Permalink".
     $('.copy_permalink_link', context).once('asu_item_extras').click(function () {
       // If called from the "About this item" block, the component to copy from
-      // will be "permalink_about_editbox".
+      // will be "copy_permalink_link" class.
       var copy_from_box = $('.copy_permalink_link');
       try {
         // this value is stored on the span's title attribute.

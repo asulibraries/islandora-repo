@@ -53,31 +53,16 @@ class AboutThisCollectionSidebarBlock extends BlockBase {
     // event that will send the current node's URL to the copy buffer?
     if ($node->hasField('field_handle') && $node->get('field_handle')->value != NULL) {
       $hdl = $node->get('field_handle')->value;
-      $output_links[] = '<a href="' . $hdl . '">Permalink</a> <span class="fa fa-link fa-flip-horizontal fa-lg copy_permalink_link" title="' . $hdl . '">&nbsp;</span>';
-    }
-    else {
-      $url_str = \Drupal::request()->getSchemeAndHttpHost() . '/collections/' . $nid;
-      $url = Url::fromUri($url_str);
-      $output_links[] = '<a href="' . $url_str . '">Permalink</a> <span class="fa fa-link fa-flip-horizontal fa-lg copy_permalink_link" title="' . $url_str .
-          '">&nbsp;</span>';
+      $output_links[] = '<span class="copy_permalink_link" title="' . $hdl . '">Permalink</span>&nbsp; <span class="fa fa-copy fa-lg copy_permalink_link" title="' . $hdl . '">&nbsp;</span>';
     }
     return [
       '#markup' => (count($output_links) > 0) ?
         "<nav><ul class=''><li>" . implode("</li><li>", $output_links) . "</li></ul></nav>" :
         "",
-      'permalink' => [
-        '#type' => 'hidden',
-        '#id' => 'permalink_about_editbox',
-        '#attached' => [
-          'library' => [
-            'asu_item_extras/interact',
-          ],
+      '#attached' => [
+        'library' => [
+          'asu_collection_extras/style',
         ],
-        '#attributes' => [
-          'class' => array('disabled_small_prompt'),
-          'readonly' => TRUE,
-        ],
-        '#value' => $url->toString(),
       ],
     ];
   }
