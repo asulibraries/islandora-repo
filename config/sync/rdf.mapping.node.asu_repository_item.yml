@@ -38,7 +38,7 @@ fieldMappings:
       - 'mods:dateCreated'
     datatype_callback:
       callable: 'Drupal\controlled_access_terms\EDTFConverter::dateIso8601Value'
-  field_copyright_date:
+  field_edtf_copyright_date:
     properties:
       - 'dcterms:dateCopyrighted'
       - 'mods:dateOfCopyright'
@@ -62,7 +62,7 @@ fieldMappings:
     datatype_callback:
       callable: 'Drupal\jsonld\EntityReferenceConverter::linkFieldPassthrough'
       arguments:
-        link_field: 'field_external_authority_link'
+        link_field: field_external_authority_link
   field_genre:
     properties:
       - 'dcterms:type'
@@ -70,7 +70,7 @@ fieldMappings:
     datatype_callback:
       callable: 'Drupal\jsonld\EntityReferenceConverter::linkFieldPassthrough'
       arguments:
-        link_field: 'field_authority_link'
+        link_field: field_authority_link
   field_statement_responsibility:
     properties:
       - 'mods:statementOfResponsibility'
@@ -80,14 +80,14 @@ fieldMappings:
     datatype_callback:
       callable: 'Drupal\jsonld\EntityReferenceConverter::linkFieldPassthrough'
       arguments:
-        link_field: 'field_source'
+        link_field: field_source
   field_reuse_permissions:
     properties:
       - 'dcterms:license'
     datatype_callback:
       callable: 'Drupal\jsonld\EntityReferenceConverter::linkFieldPassthrough'
       arguments:
-        link_field: 'field_source'
+        link_field: field_source
   field_rich_description:
     properties:
       - 'dcterms:description'
@@ -227,4 +227,3 @@ fieldMappings:
         type_taxonomy_field: field_identifier_predicate
         value_field: field_identifier_value
         predicate: identifiers
-

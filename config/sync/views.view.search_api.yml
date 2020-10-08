@@ -3,7 +3,7 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_additional_memberships
-    - field.storage.node.field_copyright_date
+    - field.storage.node.field_edtf_copyright_date
     - field.storage.node.field_copyright_statement
     - field.storage.node.field_edition
     - field.storage.node.field_edtf_date
@@ -640,10 +640,10 @@ display:
               node_type:
                 display_method: label
           plugin_id: search_api_field
-        field_copyright_date:
-          id: field_copyright_date
+        field_edtf_copyright_date:
+          id: field_edtf_copyright_date
           table: search_api_index_default_solr_index
-          field: field_copyright_date
+          field: field_edtf_copyright_date
           relationship: none
           group_type: group
           admin_label: ''
@@ -4616,7 +4616,7 @@ display:
         - 'user.node_grants:view'
       tags:
         - 'config:field.storage.node.field_additional_memberships'
-        - 'config:field.storage.node.field_copyright_date'
+        - 'config:field.storage.node.field_edtf_copyright_date'
         - 'config:field.storage.node.field_copyright_statement'
         - 'config:field.storage.node.field_edition'
         - 'config:field.storage.node.field_edtf_date'
@@ -4704,7 +4704,7 @@ display:
             type:
               alias: ''
               raw_output: false
-            field_copyright_date:
+            field_edtf_copyright_date:
               alias: ''
               raw_output: false
             field_copyright_statement:
@@ -4855,7 +4855,7 @@ display:
         - 'user.node_grants:view'
       tags:
         - 'config:field.storage.node.field_additional_memberships'
-        - 'config:field.storage.node.field_copyright_date'
+        - 'config:field.storage.node.field_edtf_copyright_date'
         - 'config:field.storage.node.field_copyright_statement'
         - 'config:field.storage.node.field_edition'
         - 'config:field.storage.node.field_edtf_date'

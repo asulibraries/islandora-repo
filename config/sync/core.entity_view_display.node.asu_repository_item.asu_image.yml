@@ -6,13 +6,13 @@ dependencies:
     - field.field.node.asu_repository_item.field_additional_memberships
     - field.field.node.asu_repository_item.field_complex_subjects
     - field.field.node.asu_repository_item.field_coordinates
-    - field.field.node.asu_repository_item.field_copyright_date
     - field.field.node.asu_repository_item.field_copyright_statement
     - field.field.node.asu_repository_item.field_date_digitized
     - field.field.node.asu_repository_item.field_default_derivative_file_pe
     - field.field.node.asu_repository_item.field_default_original_file_perm
     - field.field.node.asu_repository_item.field_display_hints
     - field.field.node.asu_repository_item.field_edition
+    - field.field.node.asu_repository_item.field_edtf_copyright_date
     - field.field.node.asu_repository_item.field_edtf_date_created
     - field.field.node.asu_repository_item.field_embargo_release_date
     - field.field.node.asu_repository_item.field_extent
@@ -151,15 +151,6 @@ content:
     settings: {  }
     third_party_settings: {  }
     type: geolocation_latlng
-    region: content
-  field_copyright_date:
-    weight: 33
-    label: above
-    settings:
-      timezone_override: ''
-      date_format: 'Y-m-d\TH:i:s'
-    third_party_settings: {  }
-    type: datetime_custom
     region: content
   field_copyright_statement:
     weight: 25
@@ -541,6 +532,7 @@ hidden:
   field_complex_subjects: true
   field_default_derivative_file_pe: true
   field_default_original_file_perm: true
+  field_edtf_copyright_date: true
   field_keywords: true
   islandora_fits_checksum: true
   openseadragon_media_evas_entity_view_2: true
