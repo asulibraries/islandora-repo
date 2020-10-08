@@ -69,17 +69,6 @@ class ExploreThisItemBlock extends BlockBase {
         "<nav><ul class=''><li>" . implode("</li><li>", $output_links) . "</li></ul></nav>" :
         ""),
     ];
-    if ($field_model == 'Paged Content') {
-      $return['permalink'] = [
-          '#type' => 'textfield',
-          '#id' => 'permalink_about_editbox',
-          '#attributes' => [
-            'class' => array('disabled_small_prompt'),
-            'readonly' => TRUE,
-          ],
-          '#value' => $url->toString(),
-        ];
-    }
     return $return;
   }
 
