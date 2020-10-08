@@ -100,24 +100,3 @@ function asulib_barrio_theme_suggestions_field_alter(&$suggestions, $variables) 
       $variables['element']['#bundle'] . '__' .
       $variables['element']['#view_mode'];
 }
-
-/**
- * To potentially suppress the "Matching Collections" block for any /search
- * that has had a facet filter applied to it.
- */
-function asulib_barrio_preprocess_views_view(&$variables) {
-  if ($variables['id'] == "solr_search_content") {
-    // inspect the query from the URL and if there are any facets, suppress
-    // the inclusion of the collections block at the top of the /search page.
-    $facet_filters = \Drupal::request()->query->get('f');
-    if (is_array($facet_filters) && count($facet_filters) > 0) {
-      // Since there are multiple header elements, check to be sure that the
-      // "view" is in the header... and only get rid of the header element that
-      // matches for a theme name of "view_view__solr_search_content__block_1".
-      if (array_key_exists('view', $variables['header']) &&
-        !(array_search('view_view__solr_search_content__block_1', $variables['header']['view']['#theme']) === FALSE) ) {
-        unset($variables['header']['view']);
-      }
-    }
-  }
-}
