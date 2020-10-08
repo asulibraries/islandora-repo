@@ -44,6 +44,12 @@ class NodeMediaRedirect {
       $form['field_media_of']['widget']['entity_browser']['#default_value'] = $node;
       $form['field_media_of']['#access'] = FALSE;
     }
+
+    $form['field_access_terms']['#access'] = FALSE;
+    $form['status']['#access'] = FALSE;
+    $form['field_original_name']['#access'] = FALSE;
+    $form['revision_log_message']['#access'] = FALSE;
+    $form['author']['#access'] = FALSE;
     $form['actions']['submit']['#submit'][] = [static::class, 'submit'];
   }
 
