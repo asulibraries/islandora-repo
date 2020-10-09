@@ -12,14 +12,14 @@ dependencies:
   config:
     - field.storage.node.field_additional_memberships
     - field.storage.node.field_member_of
-    - field.storage.node.field_copyright_date
+    - field.storage.node.field_edtf_copyright_date
     - field.storage.node.field_copyright_statement
     - field.storage.node.field_linked_agent
     - field.storage.node.field_edtf_date
     - field.storage.node.field_edtf_date_created
     - field.storage.node.field_edtf_date_issued
-    - field.storage.node.field_rich_description
     - field.storage.node.field_description
+    - field.storage.node.field_rich_description
     - field.storage.node.field_display_hints
     - field.storage.node.field_edition
     - field.storage.node.field_embargo_release_date
@@ -226,20 +226,12 @@ field_settings:
   field_combined_member_of:
     label: 'Member Of (Primary and Additional)'
     property_path: aggregated_field
-    type: string
+    type: integer
     configuration:
       type: union
       fields:
         - 'entity:node/field_additional_memberships'
         - 'entity:node/field_member_of'
-  field_copyright_date:
-    label: 'Copyright Date'
-    datasource_id: 'entity:node'
-    property_path: field_copyright_date
-    type: date
-    dependencies:
-      config:
-        - field.storage.node.field_copyright_date
   field_copyright_statement:
     label: 'Copyright Statement'
     datasource_id: 'entity:node'
@@ -285,6 +277,14 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_edition
+  field_edtf_copyright_date:
+    label: 'Copyright Date'
+    datasource_id: 'entity:node'
+    property_path: field_edtf_copyright_date
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_edtf_copyright_date
   field_edtf_date:
     label: Date
     datasource_id: 'entity:node'
@@ -424,7 +424,7 @@ field_settings:
     label: 'Member of'
     datasource_id: 'entity:node'
     property_path: field_member_of
-    type: integer
+    type: string
     dependencies:
       config:
         - field.storage.node.field_member_of
@@ -675,6 +675,7 @@ field_settings:
           article: ''
           asu_repository_item: full_metadata
           collection: ''
+          flexslider_example: ''
           islandora_object: ''
           page: ''
         'entity:taxonomy_term':
@@ -783,6 +784,9 @@ processor_settings:
   aggregated_field:
     weights:
       add_properties: 20
+  collection_parents:
+    weights:
+      preprocess_index: 5
   complex_title: {  }
   content_access:
     weights:

@@ -12,36 +12,11 @@ entity_type: taxonomy_term
 bundle: person
 label: 'Person Preferred Name'
 description: ''
-required: true
+required: false
 translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
-  size:
-    name: 6
-    given: 20
-    middle: 20
-    family: 20
-    generational: 5
-    credentials: 35
-  title_display:
-    name: description
-    given: description
-    middle: description
-    family: description
-    generational: description
-    credentials: description
-  field_type:
-    name: select
-    given: text
-    middle: text
-    family: text
-    generational: select
-    credentials: text
-  component_layout: default
-  show_component_required_marker: false
-  credentials_inline: false
-  override_format: default
   components:
     title: true
     given: true
@@ -50,13 +25,20 @@ settings:
     generational: true
     credentials: true
   minimum_components:
-    title: false
     given: true
-    middle: false
     family: true
+    title: false
+    middle: false
     generational: false
     credentials: false
   allow_family_or_given: false
+  field_type:
+    title: text
+    given: text
+    middle: text
+    family: text
+    generational: select
+    credentials: text
   max_length:
     title: 31
     given: 63
@@ -64,14 +46,17 @@ settings:
     family: 63
     generational: 15
     credentials: 255
+  sort_options:
+    title: false
+    generational: false
   autocomplete_source:
     title:
-      - title
+      title: title
     given: {  }
     middle: {  }
     family: {  }
     generational:
-      - generation
+      generational: '0'
     credentials: {  }
   autocomplete_separator:
     title: ' '
@@ -102,13 +87,8 @@ settings:
     - VIII
     - IX
     - X
-  sort_options:
-    title: false
-    given: false
-    middle: false
-    family: false
-    generational: false
-    credentials: false
+  component_layout: default
+  show_component_required_marker: false
   labels:
     title: Title
     given: Given
@@ -116,9 +96,25 @@ settings:
     family: Family
     generational: Generational
     credentials: Credentials
+  title_display:
+    title: null
+    given: description
+    middle: description
+    family: description
+    generational: description
+    credentials: description
+  size:
+    title: null
+    given: 20
+    middle: 20
+    family: 20
+    generational: 5
+    credentials: 35
+  credentials_inline: false
   widget_layout: stacked
   preferred_field_reference: ''
   preferred_field_reference_separator: ', '
   alternative_field_reference: ''
   alternative_field_reference_separator: ', '
+  override_format: default
 field_type: name

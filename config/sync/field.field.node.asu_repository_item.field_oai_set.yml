@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_oai_set
+    - node.type.asu_repository_item
+    - taxonomy.vocabulary.oai_sets
+id: node.asu_repository_item.field_oai_set
+field_name: field_oai_set
+entity_type: node
+bundle: asu_repository_item
+label: 'OAI Set'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      oai_sets: oai_sets
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

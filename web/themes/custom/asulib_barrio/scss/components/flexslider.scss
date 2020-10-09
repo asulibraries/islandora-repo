@@ -18,23 +18,35 @@
   content: '\f04c';
 }
 #flex-recent-keep-items {
-  width: 100%;
+  width: auto;
 }
 .view-id-landing_page_recent_keep_items, .view-id-flexslider_views_example {
-  .view-content, .view-content.row > div {
+  .view-content {
     width: 100%;
   }
+  .view-content.row > div {
+    @extend .col-12;
+  }
   .slides li {
-    // @extend .col-md-3;
-    // width: calc(100%) -  !important;
+    // padding: 20px;
     img {
-      max-height: 250px;
-      width: auto;
+      // max-height: 150px;
+      max-width: 150px;
+      padding: 20px;
+      // width: 100%;
       margin-left: auto;
       margin-right: auto;
+    }
+    .flex-caption {
+      padding: 15px 20px 0px 20px;
+    }
+    i {
+      padding: 20px;
     }
   }
   .flex-viewport {
     background-color: rgba(242, 242, 242, 1);
+    padding: 10px;
   }
 }
+
