@@ -23,7 +23,6 @@ function asu_custom_rdf_jsonld_alter_normalized_array(EntityInterface $entity, a
   if (isset($normalized['@graph']) && is_array($normalized['@graph'])) {
     $current_rdf_mapping = $context['current_entity_rdf_mapping']->get('fieldMappings');
     $lang = \Drupal::languageManager()->getCurrentLanguage()->getId();
-    // \Drupal::logger('asu custom')->info(print_r($current_rdf_mapping, TRUE));
     foreach ($normalized['@graph'][0] as $gk => $gv) {
       // Clean up the UID.
       if (array_key_exists('uid', $current_rdf_mapping)) {
@@ -45,11 +44,15 @@ function asu_custom_rdf_jsonld_alter_normalized_array(EntityInterface $entity, a
         $predicate = $current_rdf_mapping['field_open_access']['properties'][0];
         $predicate_normalized = NormalizerBase::escapePrefix($predicate, $context['namespaces']);
         if ($gk === $predicate_normalized) {
-          // \Drupal::logger('asu custom rdf')->info($predicate_normalized);
-          // \Drupal::logger('asu custom rdf')->info($gk);
           foreach ($gv[0] as $k => $v) {
             if ($k === "@value" && $v === "") {
               unset($normalized['@graph'][0][$gk]);
+            }
+            if ($k === "@value" && $v != "") {
+              $normalized['@graph'][0][$gk][0]["@language"] = "en";
+            }
+            if ($k === "@type") {
+              unset($normalized['@graph'][0][$gk][0]["@type"]);
             }
           }
         }
@@ -69,13 +72,35 @@ function asu_custom_rdf_jsonld_alter_normalized_array(EntityInterface $entity, a
         }
       }
 
+      // Change boolean for peer reviewed to an @id, not a boolean/value
+      if (array_key_exists('field_peer_reviewed', $current_rdf_mapping)) {
+        foreach ($current_rdf_mapping['field_peer_reviewed']['properties'] as $predicate) {
+          $predicate_normalized = NormalizerBase::escapePrefix($predicate, $context['namespaces']);
+          if ($gk === $predicate_normalized) {
+            foreach ($gv as $this_key => $value_array) {
+              foreach ($value_array as $k => $v) {
+                if ($k === "@value" && $v === "") {
+                  unset($normalized['@graph'][0][$gk]);
+                }
+                if ($k === "@value" && $v != "") {
+                  $normalized['@graph'][0][$gk][$this_key]['@id'] = $v;
+                  unset($normalized['@graph'][0][$gk][$this_key]['@value']);
+                }
+                if ($k === "@type") {
+                  unset($normalized['@graph'][0][$gk][$this_key]["@type"]);
+                }
+              }
+            }
+          }
+        }
+      }
+
+
       // Make sure paragraph mappings don't leave behind empty ids.
       if (is_array($gv)) {
         foreach ($gv as $key => $val) {
           if (is_array($val)) {
             foreach ($val as $kgv => $vgv) {
-              // \Drupal::logger('asu custom rdf')->info($kgv);
-              // \Drupal::logger('asu custom rdf')->info($vgv);
               if ($kgv === "@id" && $vgv === "") {
                 unset($gv[$key][$kgv]);
                 // TODO change current language to field language.

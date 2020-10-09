@@ -199,6 +199,10 @@ fieldMappings:
     properties:
       - 'dcterms:type'
       - 'mods:genre'
+    datatype_callback:
+      callable: 'Drupal\asu_custom_rdf\ParseBoolean::touri'
+      arguments:
+        1: 'http://vocab.getty.edu/page/aat/300380321'
   field_series:
     properties:
       - 'mods:relatedSeries'
