@@ -43,7 +43,9 @@ process:
   # todo set to asurite
 
   field_original_name/value: file original_filename
-  filename: file original_filename
+  filename:
+    plugin: transliteration
+    source: file original_filename
 
 
   # Construct the destination URI using the file name.
