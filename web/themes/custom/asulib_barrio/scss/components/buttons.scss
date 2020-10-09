@@ -34,3 +34,41 @@ a.copy_button:focus {
   background-color: $brightmaroon;
   border-color: $brightmaroon;
 }
+
+/* WS2.0 style buttons for some form elements */
+button.tabledrag-toggle-weight {
+  border-radius: 96px;
+  display: inline-block;
+  transition: .1s ease-out;
+  background-color: $gray-4;
+  border: none;
+  padding: 8px 16px; /* small WS 2.0 default button size */
+  margin: 0 .2rem .5rem 0;
+  a {
+    display: block;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1em;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 8px 16px;
+    color: $gray-7;
+  }
+  @media (min-width: 800px) {
+    &:hover {
+      transform: scale(1.05);
+    }
+    &:active {
+      transform: scale(1);
+    }
+  }
+
+  @media (max-width: 800px) {
+    &:active {
+      transform: scale(.95);
+    }
+  }
+
+}
+
+/* stop full-width buttons in the body - don't want to mess with sidebar or nav styling */
+#main .form-control.btn { width: auto; }
