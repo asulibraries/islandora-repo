@@ -53,21 +53,25 @@
     width: 100%;
 }
 #navbar-main {
-    background-color: #353535;
+    background-color: $header-dark;
     // width: 100%;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 #navbar-top {
     @extend .container;
 }
 #block-mainnavigation {
-    background-color: #353535;
+    background-color: $header-dark;
 }
 ul.sf-menu a {
-    color: #ededed;
+    color: $header-text;
     font-weight: bold;
+    background: $header-dark;
+    padding: 21px 25px;
 }
 li.sf-depth-2 {
-    background: #353535;
+    background: $header-dark;
 }
 header {
     margin-bottom: 20px;
@@ -85,20 +89,41 @@ header {
     font-weight: normal;
 }
 
-#main-standardfront-page a.sf-depth-1 {
-    color: #353535;
-    width: 0;
-    height: 0;
-    overflow: hidden;
-    &:before {
-        content: "\f015";
-        font-family: "Font Awesome 5 Free";
-        color: #FFF;
+#superfish-main {
+    a:focus, a:hover, a.is-active, a:active {
+        background: $black;
+        color: $header-hover;
+    }
+}
+
+#main-standardfront-page {
+    a.sf-depth-1 {
+        color: $header-dark;
+        height: 58px;
+        width: 65px;
+        overflow: hidden;
+        &:before {
+            content: "\f015";
+            font-family: "Font Awesome 5 Free";
+            color: $header-text;
+        }
+        &:hover, &:active, &:focus {
+            color: $black;
+        }
+        &:hover::before, &:active::before, &:focus::before {
+            color: $header-hover;
+        }
+    }
+    a.is-active {
+        color: $black;
+    }
+    a.is-active::before {
+        color: $header-hover;
     }
 }
 
 .unpublished_title {
-  background-color: #fff4da;
-  font-style: italic;
-  padding: 16px 8px;
+    background-color: #fff4da;
+    font-style: italic;
+    padding: 16px 8px;
 }
