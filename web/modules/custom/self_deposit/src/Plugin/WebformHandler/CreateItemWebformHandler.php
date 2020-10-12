@@ -31,20 +31,24 @@ class CreateItemWebformHandler extends WebformHandlerBase {
   public function preSave(WebformSubmissionInterface $webform_submission) {
     // Get an array of the values from the submission.
     $values = $webform_submission->getData();
-
-    switch ($values['file_type']) {
-      case 'document':
-        $term = "Digital Document";
-      case 'image':
-        $term = "Image";
-      case 'audio':
-        $term = "Audio";
-      case 'video':
-        $term = 'Video';
-      case 'file':
-        $term = 'Binary';
-      default:
-        $term = 'Binary';
+    $type = $values['file_type'];
+    if ($type == 'document') {
+      $term = "Digital Document";
+    }
+    elseif ($type == 'image') {
+      $term = "Image";
+    }
+    elseif ($type == 'video') {
+      $term = 'Video';
+    }
+    elseif ($type == 'audio') {
+      $term = "Audio";
+    }
+    elseif ($type == 'file') {
+      $term = 'Binary';
+    }
+    else {
+      $term = 'Binary';
     }
     $taxo_terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties(['name' => $term]);
     $taxo_term = reset($taxo_terms);

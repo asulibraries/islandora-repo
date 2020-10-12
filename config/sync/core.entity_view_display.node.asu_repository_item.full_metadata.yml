@@ -4,6 +4,7 @@ dependencies:
   config:
     - core.entity_view_mode.node.full_metadata
     - field.field.node.asu_repository_item.field_additional_memberships
+    - field.field.node.asu_repository_item.field_cataloging_standards
     - field.field.node.asu_repository_item.field_complex_object_child
     - field.field.node.asu_repository_item.field_complex_subjects
     - field.field.node.asu_repository_item.field_coordinates
@@ -11,6 +12,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_date_digitized
     - field.field.node.asu_repository_item.field_default_derivative_file_pe
     - field.field.node.asu_repository_item.field_default_original_file_perm
+    - field.field.node.asu_repository_item.field_description_source
     - field.field.node.asu_repository_item.field_display_hints
     - field.field.node.asu_repository_item.field_edition
     - field.field.node.asu_repository_item.field_edtf_copyright_date
@@ -25,6 +27,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_issuance
     - field.field.node.asu_repository_item.field_keywords
     - field.field.node.asu_repository_item.field_language
+    - field.field.node.asu_repository_item.field_level_of_coding
     - field.field.node.asu_repository_item.field_linked_agent
     - field.field.node.asu_repository_item.field_member_of
     - field.field.node.asu_repository_item.field_model
@@ -80,6 +83,14 @@ content:
     settings:
       link: true
     third_party_settings: {  }
+  field_cataloging_standards:
+    type: entity_reference_label
+    weight: 42
+    region: content
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
   field_coordinates:
     type: geolocation_latlng
     weight: 22
@@ -106,6 +117,13 @@ content:
       month_format: mm
       day_format: dd
     third_party_settings: {  }
+  field_description_source:
+    type: basic_string
+    weight: 40
+    region: content
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
   field_edition:
     type: string
     weight: 29
@@ -118,7 +136,7 @@ content:
     type: edtf_default
     weight: 37
     region: content
-    label: above
+    label: inline
     settings:
       date_separator: dash
       date_order: big_endian
@@ -199,6 +217,13 @@ content:
     settings:
       link: true
     third_party_settings: {  }
+  field_level_of_coding:
+    type: list_default
+    weight: 41
+    region: content
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
   field_linked_agent:
     type: typed_relation_brief
     weight: 5
@@ -276,6 +301,13 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
+  field_preferred_citation:
+    type: text_default
+    weight: 38
+    region: content
+    label: inline
+    settings: {  }
+    third_party_settings: {  }
   field_related_item:
     type: typed_relation_default
     weight: 27
@@ -314,6 +346,13 @@ content:
     label: inline
     settings:
       link_to_entity: false
+    third_party_settings: {  }
+  field_statement_responsibility:
+    type: basic_string
+    weight: 39
+    region: content
+    label: inline
+    settings: {  }
     third_party_settings: {  }
   field_subject:
     type: entity_reference_label
@@ -367,7 +406,7 @@ content:
     type: number_unformatted
     weight: 0
     region: content
-    label: above
+    label: inline
     settings: {  }
     third_party_settings: {  }
   links:
@@ -394,9 +433,7 @@ hidden:
   field_keywords: true
   field_model: true
   field_oai_set: true
-  field_preferred_citation: true
   field_preservation_state: true
-  field_statement_responsibility: true
   field_title: true
   islandora_fits_checksum: true
   langcode: true

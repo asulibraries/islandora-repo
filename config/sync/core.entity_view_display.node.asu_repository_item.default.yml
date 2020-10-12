@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - field.field.node.asu_repository_item.field_additional_memberships
+    - field.field.node.asu_repository_item.field_cataloging_standards
     - field.field.node.asu_repository_item.field_complex_object_child
     - field.field.node.asu_repository_item.field_complex_subjects
     - field.field.node.asu_repository_item.field_coordinates
@@ -10,6 +11,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_date_digitized
     - field.field.node.asu_repository_item.field_default_derivative_file_pe
     - field.field.node.asu_repository_item.field_default_original_file_perm
+    - field.field.node.asu_repository_item.field_description_source
     - field.field.node.asu_repository_item.field_display_hints
     - field.field.node.asu_repository_item.field_edition
     - field.field.node.asu_repository_item.field_edtf_copyright_date
@@ -24,6 +26,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_issuance
     - field.field.node.asu_repository_item.field_keywords
     - field.field.node.asu_repository_item.field_language
+    - field.field.node.asu_repository_item.field_level_of_coding
     - field.field.node.asu_repository_item.field_linked_agent
     - field.field.node.asu_repository_item.field_member_of
     - field.field.node.asu_repository_item.field_model
@@ -124,16 +127,23 @@ content:
     third_party_settings: {  }
   field_additional_memberships:
     weight: 37
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  field_cataloging_standards:
+    weight: 73
     label: above
     settings:
       link: true
-      view_mode: default
     third_party_settings: {  }
-    type: entity_reference_entity_view
+    type: entity_reference_label
     region: content
   field_coordinates:
     weight: 36
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     type: geolocation_latlng
@@ -173,6 +183,13 @@ content:
       link: true
     third_party_settings: {  }
     type: entity_reference_label
+    region: content
+  field_description_source:
+    weight: 74
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: basic_string
     region: content
   field_edition:
     weight: 16
@@ -235,7 +252,7 @@ content:
     third_party_settings: {  }
   field_genre:
     weight: 2
-    label: above
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
@@ -243,7 +260,7 @@ content:
     region: content
   field_geographic_subject:
     weight: 39
-    label: above
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
@@ -286,9 +303,16 @@ content:
     third_party_settings: {  }
     type: entity_reference_label
     region: content
+  field_level_of_coding:
+    weight: 75
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    type: list_default
+    region: content
   field_linked_agent:
     weight: 3
-    label: above
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
@@ -296,7 +320,7 @@ content:
     region: content
   field_member_of:
     weight: 4
-    label: above
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
@@ -312,7 +336,7 @@ content:
     region: content
   field_name_title_subject:
     weight: 42
-    label: above
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
@@ -329,7 +353,7 @@ content:
     region: content
   field_open_access:
     weight: 27
-    label: above
+    label: hidden
     settings:
       format: default
       format_custom_false: ''
@@ -339,7 +363,7 @@ content:
     region: content
   field_peer_reviewed:
     weight: 26
-    label: above
+    label: hidden
     settings:
       format: default
       format_custom_false: ''
@@ -373,7 +397,7 @@ content:
     region: content
   field_preferred_citation:
     weight: 21
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     type: text_default
@@ -392,7 +416,7 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-    type: typed_relation_default
+    type: typed_relation_brief
     region: content
   field_resource_type:
     weight: 30
@@ -428,14 +452,14 @@ content:
     region: content
   field_statement_responsibility:
     weight: 35
-    label: above
+    label: hidden
     settings: {  }
     third_party_settings: {  }
     type: basic_string
     region: content
   field_subject:
     weight: 38
-    label: above
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
@@ -443,7 +467,7 @@ content:
     region: content
   field_subjects_name:
     weight: 41
-    label: above
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
@@ -458,7 +482,7 @@ content:
     region: content
   field_temporal_subject:
     weight: 40
-    label: above
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
