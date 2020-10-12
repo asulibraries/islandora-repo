@@ -90,9 +90,34 @@ header {
 }
 
 #superfish-main {
-    a:focus, a:hover, a.is-active, a:active {
+    a:focus, a:hover, a.is-active, a:active, .sfHover > a {
         background: $black;
         color: $header-hover;
+    }
+    a:focus {
+        outline: 2px solid $focus-color;
+        box-shadow: 0px 0px 5px $focus-color;
+    }
+    .menuparent {
+        ul {
+            padding: 10px 0;
+            border-radius: 0 0 4px 4px;
+            position: absolute;
+            top: 100%;
+            z-index: 1000;
+            background-color: $header-dark;
+            @include box-shadow(0 5px 10px black);
+            a {
+                padding: 9px 10px 10px 25px;
+                font-weight: normal;
+                line-height: 1;
+                color: $header-text;
+                border-bottom: 0;
+            }
+        }
+        li > a:hover {
+            color: $header-text;
+        }
     }
 }
 
@@ -127,3 +152,17 @@ header {
     font-style: italic;
     padding: 16px 8px;
 }
+
+ul.sf-menu .sf-sub-indicator::after {
+    font-size: .75rem;
+}
+
+ul.sf-menu .sf-sub-indicator {
+    right: 1rem;
+}
+
+a.menuparent:hover .sf-sub-indicator::after {
+    color: #ffb204;
+}
+
+
