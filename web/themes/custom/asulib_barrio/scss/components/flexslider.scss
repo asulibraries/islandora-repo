@@ -54,6 +54,10 @@
     @extend .col-12;
   }
 }
-.flex-pauseplay a.flex-pause::before {
+.flex-pauseplay a.flex-pause::before, .flex-pauseplay a.flex-play::before {
   font-family: 'Font Awesome 5 Free';
+  color: $gray-2;
+}
+.flex-pauseplay a.flex-play:before {
+  content: '\f04c';
 }
