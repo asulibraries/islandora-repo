@@ -45,6 +45,9 @@
   .view-content.row > div {
     @extend .col-12;
   }
+  .field--type-entity-reference {
+    margin-bottom: none;
+  }
 }
 .flex-pauseplay a.flex-pause::before, .flex-pauseplay a.flex-play::before {
   color: $gray-6;
@@ -57,5 +60,8 @@
 .flex-pauseplay a.flex-pause:before {
   content: "\f04c";
   font-family: "Font Awesome 5 Free";
+}
+.main-content .flex-pauseplay a {
+  border-bottom: none;
 }
 
