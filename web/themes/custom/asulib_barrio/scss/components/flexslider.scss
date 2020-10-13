@@ -8,15 +8,7 @@
 .flexslider:hover .flex-direction-nav .flex-next { right: -50px; } /* and keep them there */
 .flexslider:hover .flex-direction-nav .flex-prev { left: -50px; }
 /* better icons for the pause/play control */
-.flex-pauseplay a { height: 30px; border: none; bottom: -40px; }
-.flex-pauseplay a.flex-play::before {
-  font-family: FontAwesome;
-  content: '\f04b';
-}
-.flex-pauseplay a.flex-pause::before {
-  font-family: FontAwesome;
-  content: '\f04c';
-}
+.flex-pauseplay a { height: 30px; border: none; bottom: -20px; }
 #flex-recent-keep-items {
   width: auto;
 }
@@ -53,11 +45,28 @@
   .view-content.row > div {
     @extend .col-12;
   }
+  .field--type-entity-reference {
+    margin-bottom: none;
+  }
+  article {
+    background-color: rgba(242, 242, 242, 1);
+    padding-top: 1rem;
+    border-bottom: none;
+  }
 }
 .flex-pauseplay a.flex-pause::before, .flex-pauseplay a.flex-play::before {
-  font-family: 'Font Awesome 5 Free';
-  color: $gray-2;
+  color: $gray-6;
+  font-weight: 900;
 }
 .flex-pauseplay a.flex-play:before {
-  content: '\f04c';
+  content: "\f04b";
+  font-family: "Font Awesome 5 Free";
 }
+.flex-pauseplay a.flex-pause:before {
+  content: "\f04c";
+  font-family: "Font Awesome 5 Free";
+}
+.main-content .flex-pauseplay a {
+  border-bottom: none;
+}
+
