@@ -20,9 +20,9 @@ nav #search-form {
     fieldset.form-group {
         display: inline-block;
         @extend .col-md-7;
-        margin-bottom: 0;
+        margin: .5rem 0;
+        padding-right: 0;
     }
-
 }
 
 .search-home-form fieldset.form-group, .bento-home-search-form fieldset.form-group {
@@ -40,5 +40,34 @@ nav #search-form {
     fieldset.form-group {
         display: inline-block;
         @extend .col-md-7;
+    }
+}
+
+.repo-search {
+    fieldset {
+        /*@extend .col;*/
+        margin: 0;
+        padding: 0 !important;
+    }
+    input {
+         border-radius: 0;
+    }
+    .form-submit {
+        border: 0;
+        background: url(/themes/custom/asulib_barrio/images/search-white.svg) center center / 1.25rem no-repeat content-box $maroon;
+        text-indent: -5555px;
+        padding: unset;
+    }
+    form {
+        @extend .row;
+        @extend .no-gutters;
+        @extend .justify-content-center;
+        /*@extend .align-items-center;*/
+    }
+}
+
+@media (max-width: 768px) {
+    #search-form .form-submit {
+        margin: .5rem 0;
     }
 }

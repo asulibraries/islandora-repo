@@ -70,5 +70,9 @@ button.tabledrag-toggle-weight {
 
 }
 
-/* stop full-width buttons in the body - don't want to mess with sidebar or nav styling */
-#main .form-control.btn { width: auto; }
+/* stop full-width buttons in the body - don't want to mess with sidebar */
+@media (min-width: 768px) {
+  #main .form-control.btn {
+    width: auto;
+  }
+}

@@ -49,13 +49,12 @@ class SearchHomeForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $form['#attributes']['class'][] = 'form--inline';
+    $form['#attributes']['class'][] = 'repo-search';
     $form['search_api_fulltext'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('keyword'),
+      '#title' => $this->t('Search KEEP'),
       '#size' => 80,
       '#weight' => '0',
-      '#title_display' => 'invisible',
       '#attributes' => ['placeholder' => 'Enter keyword(s) here'],
     ];
     $form['actions']['submit'] = [
@@ -63,7 +62,7 @@ class SearchHomeForm extends FormBase {
       '#title' => $this->t('Search'),
       '#weight' => '0',
       '#value' => 'Search',
-      '#attributes' => ['class' => ['col-md-3', 'form--inline']],
+      '#attributes' => ['class' => ['col-md-1', 'align-self-end']],
     ];
     return $form;
   }
