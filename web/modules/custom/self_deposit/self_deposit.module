@@ -26,25 +26,3 @@ function self_deposit_help($route_name, RouteMatchInterface $route_match) {
     default:
   }
 }
-
-/**
- * Implements hook_user_login().
- */
-// function self_deposit_user_login(UserInterface $account) {
-//   // Default login destination to the dashboard.
-//   $current_request = \Drupal::service('request_stack')->getCurrentRequest();
-//   $prev_url = $current_request->headers->get('referer');
-//   $urlsplit = explode("?destination=", $prev_url);
-//   if (count($urlsplit) > 1) {
-//     $destination = urldecode(array_values($urlsplit)[1]);
-//   }
-//   if (!isset($destination)) {
-//     $current_request->query->set(
-//       'destination',
-//       $current_request->headers->get('referer')
-//     );
-//   }
-//   else {
-//     $current_request->query->set('destination', $destination);
-//   }
-// }
