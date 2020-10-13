@@ -49,7 +49,6 @@ class SearchHomeForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $form['#attributes']['class'][] = 'form--inline';
     $form['#attributes']['class'][] = 'repo-search';
     $form['search_api_fulltext'] = [
       '#type' => 'textfield',
@@ -63,7 +62,7 @@ class SearchHomeForm extends FormBase {
       '#title' => $this->t('Search'),
       '#weight' => '0',
       '#value' => 'Search',
-      '#attributes' => ['class' => ['col-md-1', 'form--inline']],
+      '#attributes' => ['class' => ['col-md-1', 'align-self-end']],
     ];
     return $form;
   }
