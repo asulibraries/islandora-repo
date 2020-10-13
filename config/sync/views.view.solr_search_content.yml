@@ -3,8 +3,6 @@ status: true
 dependencies:
   config:
     - block.block.exposedformsolr_search_contentpage_3
-    - block.block.facetsummary
-    - block.block.facetsummary_2
     - field.storage.node.field_collection_thumbnail
     - field.storage.node.field_title
     - image.style.square_thumb
@@ -1210,32 +1208,6 @@ display:
             value: '<h2 class="search-header">Matching Items ([view:total-rows])</h2>'
             format: basic_html
           plugin_id: text
-        entity_block:
-          id: entity_block
-          table: views
-          field: entity_block
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: false
-          tokenize: true
-          target: facetsummary
-          view_mode: default
-          bypass_access: false
-          plugin_id: entity
-        entity_block_1:
-          id: entity_block_1
-          table: views
-          field: entity_block
-          relationship: none
-          group_type: group
-          admin_label: ''
-          empty: false
-          tokenize: true
-          target: facetsummary_2
-          view_mode: default
-          bypass_access: false
-          plugin_id: entity
       cache:
         type: none
     cache_metadata:

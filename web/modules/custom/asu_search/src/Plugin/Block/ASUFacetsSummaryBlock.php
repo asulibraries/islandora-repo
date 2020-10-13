@@ -171,6 +171,7 @@ class ASUFacetsSummaryBlock extends BlockBase implements FacetsSummaryBlockInter
       '#theme' => 'facets_summary_item_list',
       '#facet_summary_id' => $facets_summary->id(),
       '#attributes' => [
+        'class' => ['facets_summary'],
         'data-drupal-facets-summary-id' => $facets_summary->id(),
       ],
     ];
@@ -230,7 +231,7 @@ class ASUFacetsSummaryBlock extends BlockBase implements FacetsSummaryBlockInter
             'facet-summary-item--facet',
           ],
         ];
-        $item['#prefix'] = $facets_config[$result->getFacet()->id()]['label'] . " &rsaquo; ";
+        $item['#prefix'] = $facets_config[$result->getFacet()->id()]['label'] . ": ";
         $items[] = $item;
      }
       if ($children = $result->getChildren()) {
