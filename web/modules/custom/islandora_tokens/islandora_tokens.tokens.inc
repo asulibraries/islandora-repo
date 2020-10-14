@@ -79,19 +79,22 @@ function islandora_tokens_tokens($type, $tokens, array $data, array $options, \D
  * @return string
  */
 function _get_term_with_rel_type($node, $field_name, $relation_type = '') {
-  $tids = $node->get($field_name)->getValue();
   $matches = [];
-  foreach ($tids as $tid) {
-    // Inspect the taxonomy term.
-    if (is_array($tid) &&
-      array_key_exists('target_id', $tid)) {
-      if ($relation_type && array_key_exists('rel_type', $tid)) {
-        if ($tid['rel_type'] == $relation_type) {
+  $field = ($node->hasField($field_name) ? $node->get($field_name) : NULL);
+  if (is_object($field)) {
+    $tids = $field->getValue();
+    foreach ($tids as $tid) {
+      // Inspect the taxonomy term.
+      if (is_array($tid) &&
+        array_key_exists('target_id', $tid)) {
+        if ($relation_type && array_key_exists('rel_type', $tid)) {
+          if ($tid['rel_type'] == $relation_type) {
+            $matches[] = Term::load($tid['target_id'])->getName();
+          }
+        }
+        else {
           $matches[] = Term::load($tid['target_id'])->getName();
         }
-      }
-      else {
-        $matches[] = Term::load($tid['target_id'])->getName();
       }
     }
   }
