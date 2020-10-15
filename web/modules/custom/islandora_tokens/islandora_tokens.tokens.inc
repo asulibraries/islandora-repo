@@ -22,10 +22,9 @@ function islandora_tokens_token_info() {
        'name' => t("Creators"),
        'description' => t('The node\'s Creators linked agent'),
    ];
-   $node['dateformat'] = [
-       'name' => t("Custom Date Format"),
-       'dynamic' => TRUE,
-       'description' => t('Show a custom format for the current date'),
+   $node['publication_date'] = [
+       'name' => t("Publication date"),
+       'description' => t('Show the Date Created (EDTF) into YYYY/MM/DD format'),
    ];
    return [
        'types' => ['islandoratokens' => $type],
@@ -40,25 +39,34 @@ function islandora_tokens_tokens($type, $tokens, array $data, array $options, \D
    if ($type == 'islandoratokens' && !empty($data['node'])) {
        foreach ($tokens as $name => $original) {
            switch ($name) {
-               case 'title':
-                  $replacements[$original] = $data['node']->getTitle();
-               break;
-               case 'agent_author':
-                  // For the Linked agent field, the Author/s are specified
-                  // by the relationship "aut" for Author.
-                 $replacements[$original] = _get_term_with_rel_type($data['node'], 'field_linked_agent', 'relators:aut');
-               break;
-               case 'agent_creators':
-                  // For the Linked agent field, Creators are any relationship value.
-                 $replacements[$original] = _get_term_with_rel_type($data['node'], 'field_linked_agent', '');
-               break;
-           }
-       }
-       if ($dateTokens = \Drupal::token()->findWithPrefix($tokens, 'dateformat')) {
-           // var_dump($dateTokens)
-           // retult: array(1) { ["Y-m-d"]=> string(30) "[islandoratokens:dateformat:Y-m-d]" }
-           foreach ($dateTokens as $format => $original) {
-               $replacements[$original] = date($format);
+              case 'title':
+                $replacements[$original] = $data['node']->getTitle();
+              break;
+              case 'agent_author':
+                 // For the Linked agent field, the Author/s are specified
+                 // by the relationship "aut" for Author.
+                $replacements[$original] = _get_term_with_rel_type($data['node'], 'field_linked_agent', 'relators:aut');
+              break;
+              case 'agent_creators':
+                 // For the Linked agent field, Creators are any relationship value.
+                $replacements[$original] = _get_term_with_rel_type($data['node'], 'field_linked_agent', '');
+              break;
+              case 'publication_date':
+                try {
+                  $created_date = ($data['node']->hasField('field_edtf_date_created') ? $data['node']->get('field_edtf_date_created') : NULL);
+                  if (!is_null($created_date)) {
+                    $date_val = new DateTime($created_date->getValue('field_edtf_date_created')[0]['value']);
+                    $replacements[$original] = $date_val->format('Y/m/d');
+                  }
+                } catch (Exception $e) {
+                  // Date value could not be converted to a string
+                  \Drupal::logger('islandora_tokens')->notice('Date value: @date could not be converted to a DateTime object, used token "@token_value".',
+                      array(
+                          '@date' => @$created_date->getValue('field_edtf_date_created')[0]['value'],
+                          '@token_value' => $original,
+                      ));
+                }
+                break;
            }
        }
    }
