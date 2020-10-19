@@ -23,13 +23,3 @@ function asu_searchable_entity_formatter_help($route_name, RouteMatchInterface $
   }
 }
 
-/**
- * Implements hook_theme().
- */
-function asu_searchable_entity_formatter_theme() {
-  return [
-    'asu_searchable_entity_formatter' => [
-      'render element' => 'children',
-    ],
-  ];
-}
