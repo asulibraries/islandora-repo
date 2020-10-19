@@ -1,0 +1,35 @@
+<?php
+
+/**
+ * @file
+ * Contains asu_searchable_entity_formatter.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function asu_searchable_entity_formatter_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the asu_searchable_entity_formatter module.
+    case 'help.page.asu_searchable_entity_formatter':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Custom formatter to link entity to search results.') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function asu_searchable_entity_formatter_theme() {
+  return [
+    'asu_searchable_entity_formatter' => [
+      'render element' => 'children',
+    ],
+  ];
+}
