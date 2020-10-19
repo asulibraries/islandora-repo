@@ -26,6 +26,9 @@ form .form-type-textarea {
   margin-bottom: 0;
 }
 
+.node-form .field--name-field-identifier-type::after {
+  content: '';
+}
 
 /* Webform styling elements -- maybe expand to all form elements? */
 
@@ -192,15 +195,25 @@ select {
   max-width: $asu-width;
 }
 
-/* Draggable webform tables */
+/* Draggable tables */
 a.tabledrag-handle .handle {
   padding: 1rem;
   margin: -.25rem 0 0 .5rem;
   background-size: 25px;
+  width: 30px;
 }
 
 .draggable a.tabledrag-handle {
   border: none;
+}
+.node-form a.tabledrag-handle {
+  overflow: visible;
+  margin-top: -8px;
+}
+
+.tabledrag-toggle-weight-wrapper {
+  position: absolute;
+  right: 2rem;
 }
 
 .webform-multiple-table td.webform-multiple-table--operations input {
@@ -247,7 +260,8 @@ a.tabledrag-handle .handle {
 .webform-multiple-add input.button {
   margin-top: -2px;
 }
-.form-type-webform-multiple tr:last-child td {
+.form-type-webform-multiple tr:last-child td,
+.field-multiple-table tr:last-child td {
   border-bottom: 1px solid $gray-3;
 }
 .form-type-webform-multiple thead {
@@ -259,4 +273,34 @@ a.tabledrag-handle .handle {
 .form-wrapper summary {
   font-size: 1.25rem;
   font-weight: bold;
+}
+
+/* draggable paragraphs */
+.node-form .field-label h4 {
+  font-size: $font-size-sm;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+.paragraph-type-top {
+  flex-flow: row-reverse;
+  margin: 0;
+}
+.paragraph-type-top .paragraphs-dropbutton-wrapper, {
+  position: absolute;
+  right: 2.5rem;
+}
+.node-form .paragraph-type-title {
+  display: none;
+}
+.field-multiple-table th {
+  padding: 0;
+  padding-top: 1.25rem;
+  border: 0;
+}
+td.field-multiple-drag {
+  vertical-align: middle;
+  padding-right: 0;
+}
+.paragraphs-subform .form-group {
+  margin-bottom: 0;
 }
