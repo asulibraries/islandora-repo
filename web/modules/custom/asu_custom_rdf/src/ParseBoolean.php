@@ -38,4 +38,24 @@ class ParseBoolean extends CommonDataConverter {
     return $string;
   }
 
+  /**
+   * Parses a boolean value into a URI.
+   *
+   * @param mixed $data
+   *   The array containing the boolean value.
+   * @param mixed $arguments
+   *   The array containing the argumnents.
+   */
+  public static function touri($data, $arguments) {
+    if (is_array($data)) {
+      $value = $data['value'];
+    }
+    foreach ($arguments as $key => $val) {
+      $value = intval($value);
+      if ($value === $key) {
+        return $val;
+      }
+    }
+  }
+
 }

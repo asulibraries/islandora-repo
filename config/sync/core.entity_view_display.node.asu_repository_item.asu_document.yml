@@ -4,15 +4,18 @@ dependencies:
   config:
     - core.entity_view_mode.node.asu_document
     - field.field.node.asu_repository_item.field_additional_memberships
+    - field.field.node.asu_repository_item.field_cataloging_standards
+    - field.field.node.asu_repository_item.field_complex_object_child
     - field.field.node.asu_repository_item.field_complex_subjects
     - field.field.node.asu_repository_item.field_coordinates
-    - field.field.node.asu_repository_item.field_copyright_date
     - field.field.node.asu_repository_item.field_copyright_statement
     - field.field.node.asu_repository_item.field_date_digitized
     - field.field.node.asu_repository_item.field_default_derivative_file_pe
     - field.field.node.asu_repository_item.field_default_original_file_perm
+    - field.field.node.asu_repository_item.field_description_source
     - field.field.node.asu_repository_item.field_display_hints
     - field.field.node.asu_repository_item.field_edition
+    - field.field.node.asu_repository_item.field_edtf_copyright_date
     - field.field.node.asu_repository_item.field_edtf_date_created
     - field.field.node.asu_repository_item.field_embargo_release_date
     - field.field.node.asu_repository_item.field_extent
@@ -24,11 +27,13 @@ dependencies:
     - field.field.node.asu_repository_item.field_issuance
     - field.field.node.asu_repository_item.field_keywords
     - field.field.node.asu_repository_item.field_language
+    - field.field.node.asu_repository_item.field_level_of_coding
     - field.field.node.asu_repository_item.field_linked_agent
     - field.field.node.asu_repository_item.field_member_of
     - field.field.node.asu_repository_item.field_model
     - field.field.node.asu_repository_item.field_name_title_subject
     - field.field.node.asu_repository_item.field_note_para
+    - field.field.node.asu_repository_item.field_oai_set
     - field.field.node.asu_repository_item.field_open_access
     - field.field.node.asu_repository_item.field_peer_reviewed
     - field.field.node.asu_repository_item.field_pid
@@ -101,7 +106,7 @@ content:
     settings: {  }
     third_party_settings: {  }
   display_media_child_thumbnail:
-    weight: 13
+    weight: 12
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -116,7 +121,7 @@ content:
     settings: {  }
     third_party_settings: {  }
   display_media_entity_view_2:
-    weight: 52
+    weight: 51
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -126,7 +131,7 @@ content:
     settings: {  }
     third_party_settings: {  }
   display_media_entity_view_4:
-    weight: 12
+    weight: 13
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -136,12 +141,12 @@ content:
     settings: {  }
     third_party_settings: {  }
   display_media_thumbnail:
-    weight: 55
+    weight: 54
     region: content
     settings: {  }
     third_party_settings: {  }
   field_additional_memberships:
-    weight: 42
+    weight: 41
     label: hidden
     settings:
       link: true
@@ -149,20 +154,11 @@ content:
     type: entity_reference_label
     region: content
   field_coordinates:
-    weight: 41
+    weight: 40
     label: hidden
     settings: {  }
     third_party_settings: {  }
     type: geolocation_latlng
-    region: content
-  field_copyright_date:
-    weight: 36
-    label: above
-    settings:
-      format_type: medium
-      timezone_override: ''
-    third_party_settings: {  }
-    type: datetime_default
     region: content
   field_copyright_statement:
     weight: 28
@@ -174,7 +170,7 @@ content:
     type: entity_reference_entity_view
     region: content
   field_date_digitized:
-    weight: 37
+    weight: 36
     label: above
     settings:
       date_separator: dash
@@ -204,7 +200,7 @@ content:
     type: edtf_default
     region: content
   field_embargo_release_date:
-    weight: 54
+    weight: 53
     label: above
     settings:
       format_type: medium
@@ -228,7 +224,7 @@ content:
     type: list_default
     region: content
   field_gemini_uri:
-    weight: 49
+    weight: 48
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -241,7 +237,7 @@ content:
     type: entity_reference_label
     region: content
   field_geographic_subject:
-    weight: 43
+    weight: 42
     label: hidden
     settings:
       link: true
@@ -297,7 +293,7 @@ content:
     region: content
   field_name_title_subject:
     type: entity_reference_label
-    weight: 48
+    weight: 46
     region: content
     label: hidden
     settings:
@@ -364,7 +360,7 @@ content:
     type: entity_reference_label
     region: content
   field_related_item:
-    weight: 39
+    weight: 38
     label: above
     settings:
       link: true
@@ -397,7 +393,7 @@ content:
       trim_length: 600
     third_party_settings: {  }
   field_series:
-    weight: 38
+    weight: 37
     label: above
     settings:
       link_to_entity: false
@@ -405,14 +401,14 @@ content:
     type: string
     region: content
   field_statement_responsibility:
-    weight: 40
+    weight: 39
     label: hidden
     settings: {  }
     third_party_settings: {  }
     type: basic_string
     region: content
   field_subject:
-    weight: 46
+    weight: 45
     label: hidden
     settings:
       link: true
@@ -420,7 +416,7 @@ content:
     type: entity_reference_label
     region: content
   field_subjects_name:
-    weight: 45
+    weight: 44
     label: hidden
     settings:
       link: true
@@ -435,7 +431,7 @@ content:
     type: text_default
     region: content
   field_temporal_subject:
-    weight: 44
+    weight: 43
     label: hidden
     settings:
       link: true
@@ -479,7 +475,7 @@ content:
     region: content
   langcode:
     type: language
-    weight: 50
+    weight: 49
     region: content
     label: above
     settings:
@@ -492,12 +488,12 @@ content:
     settings: {  }
     third_party_settings: {  }
   openseadragon_media_evas_entity_view_1:
-    weight: 53
+    weight: 52
     region: content
     settings: {  }
     third_party_settings: {  }
   pdfjs_media_evas_entity_view_1:
-    weight: 51
+    weight: 50
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -517,12 +513,18 @@ content:
     settings: {  }
     third_party_settings: {  }
 hidden:
+  field_cataloging_standards: true
+  field_complex_object_child: true
   field_complex_subjects: true
   field_default_derivative_file_pe: true
   field_default_original_file_perm: true
+  field_description_source: true
   field_display_hints: true
+  field_edtf_copyright_date: true
   field_history: true
   field_keywords: true
+  field_level_of_coding: true
+  field_oai_set: true
   field_place_of_publication_code: true
   islandora_fits_checksum: true
   openseadragon_media_evas_entity_view_2: true

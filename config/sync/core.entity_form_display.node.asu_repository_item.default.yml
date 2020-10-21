@@ -3,15 +3,18 @@ status: true
 dependencies:
   config:
     - field.field.node.asu_repository_item.field_additional_memberships
+    - field.field.node.asu_repository_item.field_cataloging_standards
+    - field.field.node.asu_repository_item.field_complex_object_child
     - field.field.node.asu_repository_item.field_complex_subjects
     - field.field.node.asu_repository_item.field_coordinates
-    - field.field.node.asu_repository_item.field_copyright_date
     - field.field.node.asu_repository_item.field_copyright_statement
     - field.field.node.asu_repository_item.field_date_digitized
     - field.field.node.asu_repository_item.field_default_derivative_file_pe
     - field.field.node.asu_repository_item.field_default_original_file_perm
+    - field.field.node.asu_repository_item.field_description_source
     - field.field.node.asu_repository_item.field_display_hints
     - field.field.node.asu_repository_item.field_edition
+    - field.field.node.asu_repository_item.field_edtf_copyright_date
     - field.field.node.asu_repository_item.field_edtf_date_created
     - field.field.node.asu_repository_item.field_embargo_release_date
     - field.field.node.asu_repository_item.field_extent
@@ -23,11 +26,13 @@ dependencies:
     - field.field.node.asu_repository_item.field_issuance
     - field.field.node.asu_repository_item.field_keywords
     - field.field.node.asu_repository_item.field_language
+    - field.field.node.asu_repository_item.field_level_of_coding
     - field.field.node.asu_repository_item.field_linked_agent
     - field.field.node.asu_repository_item.field_member_of
     - field.field.node.asu_repository_item.field_model
     - field.field.node.asu_repository_item.field_name_title_subject
     - field.field.node.asu_repository_item.field_note_para
+    - field.field.node.asu_repository_item.field_oai_set
     - field.field.node.asu_repository_item.field_open_access
     - field.field.node.asu_repository_item.field_peer_reviewed
     - field.field.node.asu_repository_item.field_pid
@@ -50,7 +55,6 @@ dependencies:
     - field.field.node.asu_repository_item.field_typed_identifier
     - field.field.node.asu_repository_item.field_weight
     - node.type.asu_repository_item
-    - workflows.workflow.editorial
   module:
     - content_moderation
     - controlled_access_terms
@@ -85,11 +89,11 @@ third_party_settings:
     group_system:
       children:
         - field_model
+        - field_complex_object_child
         - field_pid
         - field_handle
         - field_weight
         - field_preservation_state
-        - field_display_hints
         - uid
         - promote
         - created
@@ -193,8 +197,8 @@ third_party_settings:
         - field_place_published
         - field_preferred_citation
         - field_edtf_date_created
+        - field_edtf_copyright_date
         - field_date_digitized
-        - field_copyright_date
         - field_place_of_publication_code
         - field_table_of_contents
         - field_series
@@ -234,6 +238,23 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
+  field_cataloging_standards:
+    weight: 40
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_complex_object_child:
+    weight: 3
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
   field_complex_subjects:
     type: entity_reference_paragraphs
     weight: 39
@@ -252,12 +273,6 @@ content:
     third_party_settings: {  }
     type: geolocation_latlng
     region: content
-  field_copyright_date:
-    weight: 13
-    settings: {  }
-    third_party_settings: {  }
-    type: datetime_default
-    region: content
   field_copyright_statement:
     weight: 15
     settings: {  }
@@ -265,7 +280,7 @@ content:
     type: options_select
     region: content
   field_date_digitized:
-    weight: 12
+    weight: 13
     settings:
       strict_dates: false
       intervals: true
@@ -293,11 +308,13 @@ content:
     third_party_settings: {  }
     type: entity_reference_autocomplete
     region: content
-  field_display_hints:
-    weight: 7
-    settings: {  }
+  field_description_source:
+    weight: 41
+    settings:
+      rows: 5
+      placeholder: ''
     third_party_settings: {  }
-    type: options_buttons
+    type: string_textarea
     region: content
   field_edition:
     weight: 18
@@ -306,6 +323,15 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: string_textfield
+    region: content
+  field_edtf_copyright_date:
+    weight: 12
+    settings:
+      strict_dates: false
+      intervals: true
+      sets: false
+    third_party_settings: {  }
+    type: edtf_default
     region: content
   field_edtf_date_created:
     weight: 11
@@ -357,7 +383,7 @@ content:
     type: entity_reference_autocomplete
     region: content
   field_handle:
-    weight: 4
+    weight: 5
     settings:
       size: 60
       placeholder: ''
@@ -387,6 +413,12 @@ content:
       placeholder: ''
     third_party_settings: {  }
     type: entity_reference_autocomplete
+    region: content
+  field_level_of_coding:
+    weight: 42
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
     region: content
   field_linked_agent:
     weight: 28
@@ -451,7 +483,7 @@ content:
     type: boolean_checkbox
     region: content
   field_pid:
-    weight: 3
+    weight: 4
     settings:
       size: 60
       placeholder: ''
@@ -485,7 +517,7 @@ content:
     type: text_textarea
     region: content
   field_preservation_state:
-    weight: 6
+    weight: 7
     settings: {  }
     third_party_settings: {  }
     type: options_select
@@ -613,7 +645,7 @@ content:
     third_party_settings: {  }
     region: content
   field_weight:
-    weight: 5
+    weight: 6
     settings:
       placeholder: ''
     third_party_settings: {  }
@@ -670,5 +702,7 @@ content:
     region: content
     third_party_settings: {  }
 hidden:
+  field_display_hints: true
   field_keywords: true
+  field_oai_set: true
   title: true

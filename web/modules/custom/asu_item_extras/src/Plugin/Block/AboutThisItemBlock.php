@@ -39,8 +39,7 @@ class AboutThisItemBlock extends BlockBase {
     $node = \Drupal::routeMatch()->getParameter('node');
     if ($node) {
       $nid = $node->id();
-    }
-    else {
+    } else {
       $nid = 0;
     }
     $output_links = [];
@@ -68,9 +67,9 @@ class AboutThisItemBlock extends BlockBase {
     return [
       '#cache' => ['max-age' => 0],
       '#markup' =>
-      (count($output_links) > 0) ?
-      "<nav><ul class=''><li>" . implode("</li><li>", $output_links) . "</li></ul></nav>" :
-      "",
+        (count($output_links) > 0) ?
+        "<nav><ul class=''><li>" . implode("</li><li>", $output_links) . "</li></ul></nav>" :
+        "",
       '#attached' => [
         'library' => [
           'asu_item_extras/interact',

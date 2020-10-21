@@ -25,7 +25,7 @@ source:
     # Islandora uses flysystem and stream wrappers to work with files.  What we're really saying here is
     # to put these files in Fedora in a 'csv_migration' folder.  It doesn't matter if the directory
     # doesn't exist yet, it will get created for you automatically.
-    destination_dir: 'fedora://asu_ir/c5'
+    destination_dir: 'fedora://c5'
 
     # Hard-code mime type to jpeg.  This could easily come from a column in the CSV if you have
     # different mimetypes.
@@ -43,7 +43,9 @@ process:
   # todo set to asurite
 
   field_original_name/value: file original_filename
-  filename: file original_filename
+  filename:
+    plugin: transliteration
+    source: file original_filename
 
 
   # Construct the destination URI using the file name.

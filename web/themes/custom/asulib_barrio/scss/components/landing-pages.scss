@@ -22,10 +22,12 @@
 }
 
 .node--type-page {
-    p.gray-bg {
-        background-color: rgba(242, 242, 242, 1);
-        padding: 10px;
-        margin-bottom: 30px;
+    .gray-bg {
+        background-color: $gray-2;
+    }
+    .padded-content-box {
+        /*padding: 2.5rem 15px 1.5rem;*/
+        margin-bottom: 4rem;
     }
     .view-id-content_recent .view-content {
         background-color: rgba(242, 242, 242, 1);
@@ -43,7 +45,6 @@
         }
     }
 
-
     #block-views-block-content-recent-block-2, #block-views-block-content-recent-block-3,
     #block-views-block-content-recent-block-4,
     #block-views-block-content-recent-block-5 {
@@ -57,10 +58,12 @@
 
     #block-views-block-content-recent-block-4 {
         margin-right: -20px;
+        padding-left: 0;
     }
     #block-views-block-content-recent-block-5 {
         margin-left: 20px;
         float: right;
+        padding-right: 0;
         td:first-of-type {
             padding-right: 0;
             max-width: 60px;
@@ -110,4 +113,11 @@
     p {
         padding-top: 10px;
     }
+}
+
+.path-frontpage header {
+    margin-bottom: 0;
+}
+.path-frontpage h2 {
+    margin-bottom: ($spacer * 1.5);
 }
