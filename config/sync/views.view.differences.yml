@@ -68,7 +68,7 @@ display:
             offset: false
             offset_label: Offset
       style:
-        type: default
+        type: table
         options:
           grouping:
             -
@@ -77,6 +77,87 @@ display:
               rendered_strip: false
           row_class: ''
           default_row_class: true
+          override: false
+          sticky: false
+          caption: ''
+          summary: ''
+          description: ''
+          columns:
+            title: title
+            changed_1: changed_1
+            changed_2: changed_2
+            uid: uid
+            vid: vid
+            vid_1: vid_1
+            nid: nid
+            nothing: nothing
+            nothing_1: nothing_1
+          info:
+            title:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            changed_1:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            changed_2:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            uid:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            vid:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            vid_1:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            nid:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            nothing:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            nothing_1:
+              sortable: false
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+          default: changed_2
+          empty_table: false
       row:
         type: fields
       fields:
@@ -261,11 +342,11 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: timestamp_ago
+          type: timestamp
           settings:
-            future_format: '@interval hence'
-            past_format: '@interval ago'
-            granularity: 3
+            date_format: medium
+            custom_date_format: ''
+            timezone: ''
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -537,7 +618,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: 'view changes'
+            text: Differences
             make_link: true
             path: '/node/{{ nid }}/revisions/view/{{ vid_1 }}/{{ vid }}/unified_fields'
             absolute: true
@@ -727,11 +808,11 @@ display:
           entity_field: changed
           plugin_id: date
       sorts:
-        changed_1:
-          id: changed_1
-          table: node_field_revision
+        changed:
+          id: changed
+          table: node_field_data
           field: changed
-          relationship: none
+          relationship: nid
           group_type: group
           admin_label: ''
           order: DESC
