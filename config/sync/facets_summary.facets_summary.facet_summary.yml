@@ -75,6 +75,12 @@ facets:
     separator: ', '
     weight: 0
     show_count: false
+  member_of:
+    checked: true
+    label: 'Member of'
+    separator: ', '
+    weight: 0
+    show_count: false
 facet_source_id: 'search_api:views_page__solr_search_content__page_1'
 processor_configs:
   reset_facets:
@@ -83,8 +89,3 @@ processor_configs:
       build: '30'
     settings:
       link_text: Reset
-  show_summary:
-    processor_id: show_summary
-    weights:
-      build: '20'
-    settings: {  }
