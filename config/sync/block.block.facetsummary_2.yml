@@ -1,0 +1,38 @@
+langcode: en
+status: false
+dependencies:
+  config:
+    - facets_summary.facets_summary.facet_summary
+  module:
+    - asu_search
+    - context
+    - system
+  theme:
+    - asulib_barrio
+id: facetsummary_2
+theme: asulib_barrio
+region: sidebar_first
+weight: 0
+provider: null
+plugin: 'asu_facets_summary_block:facet_summary'
+settings:
+  id: 'asu_facets_summary_block:facet_summary'
+  label: 'Facet Summary'
+  provider: asu_search
+  label_display: '0'
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    pages: ''
+    negate: null
+    context_mapping: {  }
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    view_inclusion: {  }
+    context_mapping: {  }
+  request_path:
+    id: request_path
+    pages: '/search*'
+    negate: false
+    context_mapping: {  }
