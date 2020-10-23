@@ -139,11 +139,17 @@ function _get_term_with_rel_type($node, $field_name, $relation_type = '', $remov
       ) {
         if ($relation_type && array_key_exists('rel_type', $tid)) {
           if ($tid['rel_type'] == $relation_type) {
-            $matches[] = islandora_tokens_remove_comma(Term::load($tid['target_id'])->getName(), $remove_comma);
+            $term = Term::load($tid['target_id']);
+            if ($term) {
+              $matches[] = islandora_tokens_remove_comma($term->getName(), $remove_comma);
+            }
           }
         }
         else {
-          $matches[] = islandora_tokens_remove_comma(Term::load($tid['target_id'])->getName(), $remove_comma);
+          $term = Term::load($tid['target_id']);
+          if ($term) {
+            $matches[] = islandora_tokens_remove_comma($term->getName(), $remove_comma);
+          }
         }
       }
     }
