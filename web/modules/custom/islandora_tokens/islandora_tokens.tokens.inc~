@@ -108,16 +108,26 @@ function _get_term_with_rel_type($node, $field_name, $relation_type = '', $remov
   if (is_object($field)) {
     $tids = $field->getValue();
     foreach ($tids as $tid) {
+      $m = '';
       // Inspect the taxonomy term.
       if (is_array($tid) &&
         array_key_exists('target_id', $tid)) {
         if ($relation_type && array_key_exists('rel_type', $tid)) {
           if ($tid['rel_type'] == $relation_type) {
-            $matches[] = islandora_tokens_remove_comma(Term::load($tid['target_id'])->getName(), $remove_comma);
+            $m = Term::load($tid['target_id'])->getName();
           }
         }
         else {
-          $matches[] = islandora_tokens_remove_comma(Term::load($tid['target_id'])->getName(), $remove_comma);
+          $m = Term::load($tid['target_id'])->getName();
+        }
+        if ($m) {
+          if ($remove_comma) {
+            $parts = explode(",", $m);
+            $parts = array_reverse($parts);
+            $matches[] = implode(" ", $parts);
+          } else {
+            $matches[] = $m;
+          }
         }
       }
     }
@@ -214,23 +224,3 @@ function _url_to_service_file_media_by_mimetype($node, $mime_type) {
   }
 }
 
-/**
- * Helper function that would conditionally remove any commas
- * and reverse the order of the string values.
- *
- * @param string $input
- *  The string value to potentially remove and flip parts.
- * @param boolean $remove_comma
- *  Whether or not to remove the comma and flip the parts.
- * @return string
-
- */
-function islandora_tokens_remove_comma($input, $remove_comma = FALSE) {
-  if ($remove_comma) {
-    $parts = explode(",", $input);
-    $parts = array_reverse($parts);
-    return implode(" ", $parts);
-  } else {
-    return $input;
-  }
-}
