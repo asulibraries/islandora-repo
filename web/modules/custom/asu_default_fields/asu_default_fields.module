@@ -29,6 +29,14 @@ function asu_default_fields_media_presave(MediaInterface $media) {
           // because as long as the parent complex object has at least 1 resource type, its ok
           $node->set('field_resource_type', ['target_id' => $res_type]);
           $node->save();
+          // if ($node->hasField('field_complex_object_child') && $node->get('field_complex_object_child') == 1 && $node->hasField('field_member_of') && !$node->get('field_member_of')->isEmpty()) {
+          //   $parent = $node->get('field_member_of')->entity;
+          //   $current_types = $parent->get('field_resource_type');
+          //   // have to check if its in the current types before appending it
+          //   // if (in_array())
+          //   // $parent->set('field_resource_type', ['target_id' => $res_type]);
+          //   $parent->save();
+          // }
         }
       }
     }
@@ -111,7 +119,7 @@ function asu_default_fields_form_alter(&$form, FormStateInterface $form_state, $
         // In the media create form, we inherit the default for the original file only,
         // because we assume that most manual additions of files are for original files
         $parent = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
-        if ($parent->hasField('field_default_original_file_perm') && $parent->get('field_default_original_file_perm')->entity != NULL && $media->get('field_access_terms')->isEmpty()) {
+        if ($parent->hasField('field_default_original_file_perm') && !$parent->get('field_default_original_file_perm')->isEmpty() && $media->get('field_access_terms')->isEmpty()) {
           $of_default_perms = $parent->get('field_default_original_file_perm')->entity;
           $form['field_access_terms']['widget']['#default_value'] = [$of_default_perms->id()];
         }
