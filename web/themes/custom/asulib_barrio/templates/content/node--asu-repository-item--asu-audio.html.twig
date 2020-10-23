@@ -143,13 +143,21 @@
         </div>
       {% endif %}
       <div>{{ content.field_resource_type }}</div>
-      {% if node.field_member_of is not empty %}
+      {% if node.field_complex_object_child %}
         <div class="all-memberships">
-          <div class="field__label">{{ 'Collections this item is in'|t }}</div>
-          {{ content.field_member_of }}
-          {{ content.field_additional_memberships }}
+          <div class="field__label">{{ 'Part of'|t }}</div>
+          {{ content.field_member_of.0 }}
         </div>
+      {% else %}
+        {% if node.field_member_of is not empty %}
+          <div class="all-memberships">
+            <div class="field__label">{{ 'Collections this item is in'|t }}</div>
+              {{ content.field_member_of }}
+            {{ content.field_additional_memberships }}
+          </div>
+        {% endif %}
       {% endif %}
+
       {% if drupal_view('collaborating_institutions', 'block_1', node.id)|render|striptags|trim|length > 0 %}
         <div class="collab">
           <div class="field__label">{{ 'Collaborating institutions'|t }}</div>
