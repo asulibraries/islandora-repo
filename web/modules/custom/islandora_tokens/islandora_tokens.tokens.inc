@@ -33,7 +33,7 @@ function islandora_tokens_token_info() {
     'name' => t("Contributors"),
     'description' => t("The node's Contributor linked agents"),
   ];
-  $node['agent_publishers'] = [
+  $node['agent_publisher'] = [
     'name' => t("Publishers"),
     'description' => t("The node's Publishers linked agents"),
   ];
@@ -88,7 +88,7 @@ function islandora_tokens_tokens($type, $tokens, array $data, array $options, Bu
           $replacements[$original] = _get_term_with_rel_type($data['node'], 'field_linked_agent', '');
           break;
 
-        case 'agent_publishers':
+        case 'agent_publisher':
           // For the Linked agent field, Publishers are any relationship value.
           $replacements[$original] = _get_term_with_rel_type($data['node'], 'field_linked_agent', 'relators:pbl');
           break;
