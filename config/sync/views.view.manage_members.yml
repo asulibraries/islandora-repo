@@ -1,6 +1,8 @@
 langcode: en
 status: true
 dependencies:
+  config:
+    - taxonomy.vocabulary.islandora_models
   enforced:
     module:
       - islandora_core_feature
@@ -9,6 +11,7 @@ dependencies:
     - node
     - rest
     - serialization
+    - taxonomy
     - user
 id: manage_members
 label: 'Manage members'
@@ -300,6 +303,69 @@ display:
         weight: 0
         context: '0'
         menu_name: main
+      filters:
+        field_model_target_id:
+          id: field_model_target_id
+          table: node__field_model
+          field: field_model_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_model_target_id_op
+            label: 'Model (field_model)'
+            description: ''
+            use_operator: false
+            operator: field_model_target_id_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_model_target_id
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              fedoraadmin: '0'
+              content_approver: '0'
+              depositor: '0'
+              metadata_manager: '0'
+              preservationist: '0'
+              casuser: '0'
+              repositor_manager: '0'
+              collections_staff: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          type: select
+          limit: true
+          vid: islandora_models
+          hierarchy: false
+          error_message: true
+          plugin_id: taxonomy_index_tid
+      defaults:
+        filters: false
+        filter_groups: false
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
     cache_metadata:
       max-age: 0
       contexts:
@@ -307,6 +373,7 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user
         - 'user.node_grants:view'
         - user.permissions
       tags: {  }
