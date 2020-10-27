@@ -29,30 +29,37 @@ class ASUItemIsPartOf extends BlockBase {
     $parents_output = [];
     $block_config = BlockBase::getConfiguration();
     if (is_array($block_config) && array_key_exists('node', $block_config)) {
-      $field_row = $block_config['field_row'];
+      $is_metadata_page = $block_config['is_metadata_page'];
       $node = $block_config['node'];
       $field_complex_object_child = $node->get('field_complex_object_child')->getString();
       if ($field_complex_object_child) {
         // first look at the node's field_member_of
         $complex_object_parent = $node->get('field_member_of')->entity;
         if (is_object($complex_object_parent)) {
-          $parents_output[] = $this->_make_link_and_label(t('Part of'), $field_row, $complex_object_parent);
+          $parents_output[] = $this->_make_link_and_label(t('Part of'), $is_metadata_page, $complex_object_parent);
         }
         $direct_complex_obj_parent = $complex_object_parent->get('field_member_of')->entity;
         if (is_object($direct_complex_obj_parent)) {
           $additional_complex_obj_parents = $complex_object_parent->get('field_additional_memberships')->referencedEntities();
           // also pass this the field_additional_memberships ($additional_complex_obj_parents)
           $parents_output[] = $this->_make_link_and_label(t('Collections this item is in'),
-            $field_row, $direct_complex_obj_parent, $additional_complex_obj_parents);
+            $is_metadata_page, $direct_complex_obj_parent, $additional_complex_obj_parents);
         }
       }
       else {
+        $collection_parent = $node->get('field_member_of')->entity;
+        if (is_object($collection_parent)) {
+          $additional_parents = $node->get('field_additional_memberships')->referencedEntities();
+          // also pass this the field_additional_memberships ($additional_complex_obj_parents)
+          $parents_output[] = $this->_make_link_and_label(t('Collections this item is in'),
+            $is_metadata_page, $collection_parent, $additional_parents);
+        }
       }
     }
-    $split_html = ($field_row) ? '</div><div class="field--label-inline row field">' : '<br>';
+    $split_html = ($is_metadata_page) ? '</div><div class="field--label-inline row field">' : '<br>';
     return [
       '#cache' => ['max-age' => 0],
-      '#markup' => (($field_row) ? '<div class="field--label-inline row field">' : '<div>') .
+      '#markup' => (($is_metadata_page) ? '<div class="field--label-inline row field">' : '<div>') .
         implode($split_html, $parents_output) .
         '</div>',
     ];
@@ -63,8 +70,8 @@ class ASUItemIsPartOf extends BlockBase {
    *
    * @param string $label_text
    *  The lable div to output before the link.
-   * @param boolean $field_row
-   *  Whether or not the display is being wrapped with a field_row class
+   * @param boolean $is_metadata_page
+   *  Whether or not the display is being wrapped with a field row class
    * @param object $parent_node
    *  The referenced entity by way of the node's field_member_of->entity.
    * @param array $additional_parents
@@ -73,7 +80,7 @@ class ASUItemIsPartOf extends BlockBase {
    * @return string
    *  The HTML that represents the label div and the link to the provided node/s.
    */
-  private function _make_link_and_label($label_text, $field_row, $parent_node, $additional_parents = NULL) {
+  private function _make_link_and_label($label_text, $is_metadata_page, $parent_node, $additional_parents = NULL) {
     $html_of_links[] = $this->_get_html_of_entity($parent_node);
     if (is_array($additional_parents)) {
       foreach ($additional_parents as $additional_parent) {
@@ -81,8 +88,8 @@ class ASUItemIsPartOf extends BlockBase {
       }
     }
     return
-      '  <div class="field__label' . (($field_row) ? ' col-sm-2' : '') . '">' . $label_text . '</div>' .
-      '  <div class="field__item' . (($field_row) ? ' col-sm-9' : '') . '">' . implode(", ", $html_of_links) . '</div>';
+      '  <div class="field__label' . (($is_metadata_page) ? ' col-sm-2' : '') . '">' . $label_text . '</div>' .
+      '  <div class="field__item' . (($is_metadata_page) ? ' col-sm-9' : '') . '">' . implode(", ", $html_of_links) . '</div>';
   }
 
   /**

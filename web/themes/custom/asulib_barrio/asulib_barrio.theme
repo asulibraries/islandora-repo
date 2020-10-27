@@ -1,7 +1,6 @@
 <?php
 
 use Drupal\Core\Template\Attribute;
-use Drupal\Core\Url;
 
 /**
  * @file
@@ -106,7 +105,5 @@ function asulib_barrio_theme_suggestions_field_alter(&$suggestions, $variables) 
  * Process block content
  */
 function asulib_barrio_preprocess_block(&$variables) {
-  $url_str = Url::fromRoute('<current>')->toString();
-  \Drupal::logger('asulib_barrio_preprocess_block')->info($url_str);
-  $variables['is_metadata_page'] = strstr($url_str, "/metadata");
+  $variables['is_metadata_page'] = (\Drupal::routeMatch()->getRouteName() == "asu_item_extras.full_metadata_view");
 }
