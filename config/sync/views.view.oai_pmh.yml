@@ -3,6 +3,10 @@ status: true
 dependencies:
   config:
     - node.type.asu_repository_item
+    - taxonomy.vocabulary.oai_sets
+  content:
+    - 'taxonomy_term:oai_sets:55d2342e-bdda-4bd8-b726-d4e9c74f9270'
+    - 'taxonomy_term:oai_sets:7d079fb5-48c3-47c4-be9f-37769210ec91'
   module:
     - node
     - taxonomy
@@ -182,45 +186,6 @@ display:
           entity_type: node
           entity_field: type
           plugin_id: bundle
-        field_external_uri_uri:
-          id: field_external_uri_uri
-          table: taxonomy_term__field_external_uri
-          field: field_external_uri_uri
-          relationship: field_model
-          group_type: group
-          admin_label: ''
-          operator: '!='
-          value: 'http://purl.org/dc/dcmitype/Collection'
-          group: 1
-          exposed: false
-          expose:
-            operator_id: ''
-            label: ''
-            description: ''
-            use_operator: false
-            operator: ''
-            identifier: ''
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            placeholder: ''
-            operator_limit_selection: false
-            operator_list: {  }
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          plugin_id: string
         field_complex_object_child_value:
           id: field_complex_object_child_value
           table: node__field_complex_object_child
@@ -259,6 +224,52 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           plugin_id: boolean
+        field_oai_set_target_id:
+          id: field_oai_set_target_id
+          table: node__field_oai_set
+          field: field_oai_set_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value:
+            - 1104
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          type: textfield
+          limit: true
+          vid: oai_sets
+          hierarchy: false
+          error_message: true
+          plugin_id: taxonomy_index_tid
       sorts:
         created:
           id: created
@@ -278,16 +289,7 @@ display:
       header: {  }
       footer: {  }
       empty: {  }
-      relationships:
-        field_model:
-          id: field_model
-          table: node__field_model
-          field: field_model
-          relationship: none
-          group_type: group
-          admin_label: 'field_model: Taxonomy term'
-          required: false
-          plugin_id: standard
+      relationships: {  }
       arguments: {  }
       display_extenders: {  }
       filter_groups:
@@ -300,13 +302,185 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url.query_args
+        - user
         - 'user.node_grants:view'
         - user.permissions
       tags: {  }
-  all_repository_items:
+  primo_set:
     display_plugin: entity_reference
-    id: all_repository_items
-    display_title: 'All Repository Items'
+    id: primo_set
+    display_title: 'Primo Set'
+    position: 1
+    display_options:
+      display_extenders: {  }
+      style:
+        type: entity_reference
+        options:
+          search_fields:
+            title: title
+      display_description: ''
+      arguments: {  }
+      defaults:
+        arguments: false
+        filters: false
+        filter_groups: false
+      filters:
+        status:
+          value: '1'
+          table: node_field_data
+          field: status
+          plugin_id: boolean
+          entity_type: node
+          entity_field: status
+          id: status
+          expose:
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+          group: 1
+        type:
+          id: type
+          table: node_field_data
+          field: type
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: in
+          value:
+            asu_repository_item: asu_repository_item
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: node
+          entity_field: type
+          plugin_id: bundle
+        field_complex_object_child_value:
+          id: field_complex_object_child_value
+          table: node__field_complex_object_child
+          field: field_complex_object_child_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: '0'
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: boolean
+        field_oai_set_target_id:
+          id: field_oai_set_target_id
+          table: node__field_oai_set
+          field: field_oai_set_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: or
+          value:
+            - 1103
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          type: textfield
+          limit: true
+          vid: oai_sets
+          hierarchy: false
+          error_message: true
+          plugin_id: taxonomy_index_tid
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - user
+        - 'user.node_grants:view'
+        - user.permissions
+      tags: {  }
+  research_set:
+    display_plugin: entity_reference
+    id: research_set
+    display_title: 'Research Set'
     position: 1
     display_options:
       display_extenders: {  }
@@ -321,6 +495,7 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - user
         - 'user.node_grants:view'
         - user.permissions
       tags: {  }
