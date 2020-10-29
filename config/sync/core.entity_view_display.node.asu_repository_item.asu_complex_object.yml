@@ -64,7 +64,6 @@ dependencies:
     - field_group
     - geolocation
     - jsonb
-    - layout_builder
     - options
     - text
     - user
@@ -73,7 +72,7 @@ third_party_settings:
     group_sidebar:
       children: {  }
       parent_name: ''
-      weight: 69
+      weight: 74
       format_type: details_sidebar
       region: hidden
       format_settings:
@@ -87,7 +86,7 @@ third_party_settings:
     group_details:
       children: {  }
       parent_name: ''
-      weight: 70
+      weight: 75
       format_type: details
       region: hidden
       format_settings:
@@ -97,31 +96,33 @@ third_party_settings:
         open: false
         required_fields: false
       label: Details
-  layout_builder:
-    allow_custom: false
-    enabled: false
 id: node.asu_repository_item.asu_complex_object
 targetEntityType: node
 bundle: asu_repository_item
 mode: asu_complex_object
 content:
-  display_media_child_thumbnail:
-    weight: 1
+  content_moderation_control:
+    weight: 0
     region: content
     settings: {  }
     third_party_settings: {  }
-  display_media_download_button:
+  display_media_child_thumbnail:
     weight: 2
     region: content
     settings: {  }
     third_party_settings: {  }
+  display_media_download_button:
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   display_media_entity_view_2:
-    weight: 28
+    weight: 29
     region: content
     settings: {  }
     third_party_settings: {  }
   field_additional_memberships:
-    weight: 19
+    weight: 20
     label: hidden
     settings:
       link: true
@@ -130,7 +131,7 @@ content:
     type: entity_reference_entity_view
     region: content
   field_coordinates:
-    weight: 18
+    weight: 19
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -138,7 +139,7 @@ content:
     region: content
   field_copyright_statement:
     type: entity_reference_entity_view
-    weight: 39
+    weight: 40
     region: content
     label: above
     settings:
@@ -146,7 +147,7 @@ content:
       link: false
     third_party_settings: {  }
   field_date_digitized:
-    weight: 14
+    weight: 15
     label: above
     settings:
       date_separator: dash
@@ -157,7 +158,7 @@ content:
     type: edtf_default
     region: content
   field_default_derivative_file_pe:
-    weight: 35
+    weight: 36
     label: above
     settings:
       link: true
@@ -165,7 +166,7 @@ content:
     type: entity_reference_label
     region: content
   field_default_original_file_perm:
-    weight: 34
+    weight: 35
     label: above
     settings:
       link: true
@@ -173,7 +174,7 @@ content:
     type: entity_reference_label
     region: content
   field_edtf_date_created:
-    weight: 6
+    weight: 7
     label: above
     settings:
       date_separator: dash
@@ -184,7 +185,7 @@ content:
     type: edtf_default
     region: content
   field_embargo_release_date:
-    weight: 31
+    weight: 32
     label: above
     settings:
       format_type: medium
@@ -193,19 +194,19 @@ content:
     type: datetime_default
     region: content
   field_frequency:
-    weight: 11
+    weight: 12
     label: above
     settings: {  }
     third_party_settings: {  }
     type: list_default
     region: content
   field_gemini_uri:
-    weight: 25
+    weight: 26
     region: content
     settings: {  }
     third_party_settings: {  }
   field_geographic_subject:
-    weight: 21
+    weight: 22
     label: hidden
     settings:
       link: true
@@ -213,28 +214,28 @@ content:
     type: entity_reference_label
     region: content
   field_history:
-    weight: 33
+    weight: 34
     label: above
     settings: {  }
     third_party_settings: {  }
     type: jsonb_default
     region: content
   field_issuance:
-    weight: 10
+    weight: 11
     label: above
     settings: {  }
     third_party_settings: {  }
     type: list_default
     region: content
   field_keywords:
-    weight: 37
+    weight: 38
     label: above
     settings: {  }
     third_party_settings: {  }
     type: basic_string
     region: content
   field_language:
-    weight: 0
+    weight: 1
     label: above
     settings:
       link: true
@@ -243,7 +244,7 @@ content:
     region: content
   field_linked_agent:
     type: typed_relation_brief
-    weight: 40
+    weight: 41
     region: content
     label: above
     settings:
@@ -251,14 +252,14 @@ content:
     third_party_settings: {  }
   field_member_of:
     type: entity_reference_label
-    weight: 36
+    weight: 37
     region: content
     label: hidden
     settings:
       link: true
     third_party_settings: {  }
   field_name_title_subject:
-    weight: 24
+    weight: 25
     label: hidden
     settings:
       link: true
@@ -266,7 +267,7 @@ content:
     type: entity_reference_label
     region: content
   field_open_access:
-    weight: 9
+    weight: 10
     label: above
     settings:
       format: default
@@ -276,7 +277,7 @@ content:
     type: boolean
     region: content
   field_peer_reviewed:
-    weight: 8
+    weight: 9
     label: above
     settings:
       format: default
@@ -286,7 +287,7 @@ content:
     type: boolean
     region: content
   field_pid:
-    weight: 13
+    weight: 14
     label: above
     settings:
       link_to_entity: false
@@ -294,7 +295,7 @@ content:
     type: string
     region: content
   field_place_of_publication_code:
-    weight: 32
+    weight: 33
     label: above
     settings:
       link: true
@@ -302,7 +303,7 @@ content:
     type: entity_reference_label
     region: content
   field_related_item:
-    weight: 16
+    weight: 17
     label: above
     settings:
       link: true
@@ -310,7 +311,7 @@ content:
     type: typed_relation_default
     region: content
   field_resource_type:
-    weight: 12
+    weight: 13
     label: above
     settings:
       link: true
@@ -318,7 +319,7 @@ content:
     type: entity_reference_label
     region: content
   field_reuse_permissions:
-    weight: 7
+    weight: 8
     label: above
     settings:
       view_mode: image_as_link
@@ -328,13 +329,13 @@ content:
     region: content
   field_rich_description:
     type: text_default
-    weight: 38
+    weight: 39
     region: content
     label: above
     settings: {  }
     third_party_settings: {  }
   field_series:
-    weight: 15
+    weight: 16
     label: above
     settings:
       link_to_entity: false
@@ -342,14 +343,14 @@ content:
     type: string
     region: content
   field_statement_responsibility:
-    weight: 17
+    weight: 18
     label: above
     settings: {  }
     third_party_settings: {  }
     type: basic_string
     region: content
   field_subject:
-    weight: 20
+    weight: 21
     label: hidden
     settings:
       link: true
@@ -357,7 +358,7 @@ content:
     type: entity_reference_label
     region: content
   field_subjects_name:
-    weight: 23
+    weight: 24
     label: hidden
     settings:
       link: true
@@ -365,7 +366,7 @@ content:
     type: entity_reference_label
     region: content
   field_temporal_subject:
-    weight: 22
+    weight: 23
     label: hidden
     settings:
       link: true
@@ -373,7 +374,7 @@ content:
     type: entity_reference_label
     region: content
   field_title_subject:
-    weight: 30
+    weight: 31
     label: above
     settings:
       link: true
@@ -382,7 +383,7 @@ content:
     region: content
   field_typed_identifier:
     type: entity_reference_revisions_entity_view
-    weight: 41
+    weight: 42
     region: content
     label: above
     settings:
@@ -391,7 +392,7 @@ content:
     third_party_settings: {  }
   langcode:
     type: language
-    weight: 26
+    weight: 27
     region: content
     label: above
     settings:
@@ -399,32 +400,31 @@ content:
       native_language: false
     third_party_settings: {  }
   openseadragon_media_evas_entity_view_1:
-    weight: 29
+    weight: 30
     region: content
     settings: {  }
     third_party_settings: {  }
   pdfjs_media_evas_entity_view_1:
-    weight: 27
+    weight: 28
     region: content
     settings: {  }
     third_party_settings: {  }
   video_media_evas_original_file:
-    weight: 5
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
   video_media_evas_preservation_master:
-    weight: 4
+    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }
   video_media_evas_service_file:
-    weight: 3
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
 hidden:
-  content_moderation_control: true
   display_media_entity_view_1: true
   display_media_entity_view_3: true
   display_media_entity_view_4: true
