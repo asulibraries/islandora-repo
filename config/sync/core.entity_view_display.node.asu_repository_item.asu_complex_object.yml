@@ -58,6 +58,7 @@ dependencies:
     - node.type.asu_repository_item
   module:
     - asu_search
+    - asu_searchable_entity_formatter
     - controlled_access_terms
     - datetime
     - entity_reference_revisions
@@ -210,8 +211,11 @@ content:
     label: hidden
     settings:
       link: true
+      search_link: 'search?f[0]'
+      search_var: all_subjects
+      search_term: false
     third_party_settings: {  }
-    type: entity_reference_label
+    type: searchable_entity_formatter
     region: content
   field_history:
     weight: 34
@@ -238,9 +242,12 @@ content:
     weight: 1
     label: above
     settings:
+      search_link: 'search?f[0]'
+      search_var: language
+      search_term: '1'
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    type: searchable_entity_formatter
     region: content
   field_linked_agent:
     type: typed_relation_brief
@@ -263,8 +270,11 @@ content:
     label: hidden
     settings:
       link: true
+      search_link: 'search?f[0]'
+      search_var: all_subjects
+      search_term: false
     third_party_settings: {  }
-    type: entity_reference_label
+    type: searchable_entity_formatter
     region: content
   field_open_access:
     weight: 10
@@ -314,9 +324,12 @@ content:
     weight: 13
     label: above
     settings:
+      search_link: 'search?f[0]'
+      search_var: resource_type
+      search_term: '1'
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    type: searchable_entity_formatter
     region: content
   field_reuse_permissions:
     weight: 8
@@ -354,32 +367,44 @@ content:
     label: hidden
     settings:
       link: true
+      search_link: 'search?f[0]'
+      search_var: all_subjects
+      search_term: false
     third_party_settings: {  }
-    type: entity_reference_label
+    type: searchable_entity_formatter
     region: content
   field_subjects_name:
     weight: 24
     label: hidden
     settings:
       link: true
+      search_link: 'search?f[0]'
+      search_var: all_subjects
+      search_term: false
     third_party_settings: {  }
-    type: entity_reference_label
+    type: searchable_entity_formatter
     region: content
   field_temporal_subject:
     weight: 23
     label: hidden
     settings:
       link: true
+      search_link: 'search?f[0]'
+      search_var: all_subjects
+      search_term: false
     third_party_settings: {  }
-    type: entity_reference_label
+    type: searchable_entity_formatter
     region: content
   field_title_subject:
     weight: 31
     label: above
     settings:
       link: true
+      search_link: 'search?f[0]'
+      search_var: all_subjects
+      search_term: false
     third_party_settings: {  }
-    type: entity_reference_label
+    type: searchable_entity_formatter
     region: content
   field_typed_identifier:
     type: entity_reference_revisions_entity_view

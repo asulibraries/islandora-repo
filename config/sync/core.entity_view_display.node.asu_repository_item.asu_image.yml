@@ -58,6 +58,7 @@ dependencies:
     - node.type.asu_repository_item
   module:
     - asu_search
+    - asu_searchable_entity_formatter
     - controlled_access_terms
     - datetime
     - entity_reference_revisions
@@ -237,17 +238,23 @@ content:
     weight: 3
     label: above
     settings:
+      search_link: 'search?f[0]'
+      search_var: genre
+      search_term: '1'
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    type: searchable_entity_formatter
     region: content
   field_geographic_subject:
     weight: 40
     label: hidden
     settings:
       link: true
+      search_link: 'search?f[0]'
+      search_var: all_subjects
+      search_term: false
     third_party_settings: {  }
-    type: entity_reference_label
+    type: searchable_entity_formatter
     region: content
   field_handle:
     weight: 11
@@ -275,9 +282,12 @@ content:
     weight: 8
     label: above
     settings:
+      search_link: 'search?f[0]'
+      search_var: language
+      search_term: '1'
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    type: searchable_entity_formatter
     region: content
   field_linked_agent:
     weight: 4
@@ -304,12 +314,15 @@ content:
     type: entity_reference_label
     region: content
   field_name_title_subject:
-    type: entity_reference_label
+    type: searchable_entity_formatter
     weight: 45
     region: content
     label: hidden
     settings:
       link: true
+      search_link: 'search?f[0]'
+      search_var: all_subjects
+      search_term: false
     third_party_settings: {  }
   field_note_para:
     type: paragraph_summary
@@ -390,9 +403,12 @@ content:
     weight: 31
     label: above
     settings:
+      search_link: 'search?f[0]'
+      search_var: resource_type
+      search_term: '1'
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    type: searchable_entity_formatter
     region: content
   field_reuse_permissions:
     weight: 26
@@ -430,16 +446,22 @@ content:
     label: hidden
     settings:
       link: true
+      search_link: 'search?f[0]'
+      search_var: all_subjects
+      search_term: false
     third_party_settings: {  }
-    type: entity_reference_label
+    type: searchable_entity_formatter
     region: content
   field_subjects_name:
     weight: 42
     label: hidden
     settings:
       link: true
+      search_link: 'search?f[0]'
+      search_var: all_subjects
+      search_term: false
     third_party_settings: {  }
-    type: entity_reference_label
+    type: searchable_entity_formatter
     region: content
   field_table_of_contents:
     weight: 7
@@ -453,8 +475,11 @@ content:
     label: hidden
     settings:
       link: true
+      search_link: 'search?f[0]'
+      search_var: all_subjects
+      search_term: false
     third_party_settings: {  }
-    type: entity_reference_label
+    type: searchable_entity_formatter
     region: content
   field_title:
     type: complex_title_formatter
@@ -469,8 +494,11 @@ content:
     label: hidden
     settings:
       link: true
+      search_link: 'search?f[0]'
+      search_var: all_subjects
+      search_term: false
     third_party_settings: {  }
-    type: entity_reference_label
+    type: searchable_entity_formatter
     region: content
   field_typed_identifier:
     type: entity_reference_revisions_entity_view

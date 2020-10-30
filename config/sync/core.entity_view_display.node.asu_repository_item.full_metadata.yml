@@ -58,6 +58,7 @@ dependencies:
     - node.type.asu_repository_item
   module:
     - asu_search
+    - asu_searchable_entity_formatter
     - controlled_access_terms
     - datetime
     - entity_reference_revisions
@@ -179,20 +180,26 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_genre:
-    type: entity_reference_label
+    type: searchable_entity_formatter
     weight: 13
     region: content
     label: inline
     settings:
+      search_link: 'search?f[0]'
+      search_var: genre
+      search_term: '1'
       link: true
     third_party_settings: {  }
   field_geographic_subject:
-    type: entity_reference_label
+    type: searchable_entity_formatter
     weight: 10
     region: content
     label: inline
     settings:
       link: true
+      search_link: 'search?f[0]'
+      search_var: all_subjects
+      search_term: false
     third_party_settings: {  }
   field_handle:
     type: string
@@ -210,11 +217,14 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_language:
-    type: entity_reference_label
+    type: searchable_entity_formatter
     weight: 15
     region: content
     label: inline
     settings:
+      search_link: 'search?f[0]'
+      search_var: language
+      search_term: '1'
       link: true
     third_party_settings: {  }
   field_level_of_coding:
@@ -241,12 +251,15 @@ content:
       link: true
     third_party_settings: {  }
   field_name_title_subject:
-    type: entity_reference_label
+    type: searchable_entity_formatter
     weight: 9
     region: content
     label: inline
     settings:
       link: true
+      search_link: 'search?f[0]'
+      search_var: all_subjects
+      search_term: false
     third_party_settings: {  }
   field_note_para:
     type: entity_reference_revisions_entity_view
@@ -317,11 +330,14 @@ content:
       link: true
     third_party_settings: {  }
   field_resource_type:
-    type: entity_reference_label
+    type: searchable_entity_formatter
     weight: 12
     region: content
     label: inline
     settings:
+      search_link: 'search?f[0]'
+      search_var: resource_type
+      search_term: '1'
       link: true
     third_party_settings: {  }
   field_reuse_permissions:
@@ -355,20 +371,26 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_subject:
-    type: entity_reference_label
+    type: searchable_entity_formatter
     weight: 6
     region: content
     label: inline
     settings:
+      search_link: 'search?f[0]'
+      search_var: all_subjects
+      search_term: 0
       link: true
     third_party_settings: {  }
   field_subjects_name:
-    type: entity_reference_label
+    type: searchable_entity_formatter
     weight: 7
     region: content
     label: inline
     settings:
       link: true
+      search_link: 'search?f[0]'
+      search_var: all_subjects
+      search_term: false
     third_party_settings: {  }
   field_table_of_contents:
     type: text_default
@@ -378,19 +400,25 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_temporal_subject:
-    type: entity_reference_label
+    type: searchable_entity_formatter
     weight: 11
     region: content
     label: inline
     settings:
       link: true
+      search_link: 'search?f[0]'
+      search_var: all_subjects
+      search_term: false
     third_party_settings: {  }
   field_title_subject:
-    type: entity_reference_label
+    type: searchable_entity_formatter
     weight: 8
     region: content
     label: inline
     settings:
+      search_link: 'search?f[0]'
+      search_var: all_subjects
+      search_term: 0
       link: true
     third_party_settings: {  }
   field_typed_identifier:
