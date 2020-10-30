@@ -2,10 +2,7 @@
 
 namespace Drupal\asu_searchable_entity_formatter\Plugin\Field\FieldFormatter;
 
-use Drupal\Component\Utility\Html;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\Exception\UndefinedLinkTemplateException;
-use Drupal\Core\Field\FieldItemInterface;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\Plugin\Field\FieldFormatter\EntityReferenceLabelFormatter;
 use Drupal\Core\Form\FormStateInterface;
@@ -28,10 +25,10 @@ class SearchableEntityFormatter extends EntityReferenceLabelFormatter {
    */
   public static function defaultSettings() {
     return [
-            'search_link' => 'search?f[0]',
-            'search_var' => 'all_subjects',
-            'search_term' => FALSE,
-        ] + parent::defaultSettings();
+      'search_link' => 'search?f[0]',
+      'search_var' => 'all_subjects',
+      'search_term' => FALSE,
+    ] + parent::defaultSettings();
   }
 
   /**
@@ -39,21 +36,21 @@ class SearchableEntityFormatter extends EntityReferenceLabelFormatter {
    */
   public function settingsForm(array $form, FormStateInterface $form_state) {
     $elements['search_link'] = [
-        '#title' => t('Search base path'),
-        '#type' => 'textfield',
-        '#required' => true,
-        '#default_value' => $this->getSetting('search_link'),
+      '#title' => t('Search base path'),
+      '#type' => 'textfield',
+      '#required' => TRUE,
+      '#default_value' => $this->getSetting('search_link'),
     ];
     $elements['search_var'] = [
-        '#title' => t('Search variable'),
-        '#type' => 'textfield',
-        '#required' => true,
-        '#default_value' => $this->getSetting('search_var'),
+      '#title' => t('Search variable'),
+      '#type' => 'textfield',
+      '#required' => TRUE,
+      '#default_value' => $this->getSetting('search_var'),
     ];
     $elements['search_term'] = [
-        '#title' => t('Use label as search term'),
-        '#type' => 'checkbox',
-        '#default_value' => $this->getSetting('search_term'),
+      '#title' => t('Use label as search term'),
+      '#type' => 'checkbox',
+      '#default_value' => $this->getSetting('search_term'),
     ];
     return $elements;
   }
@@ -73,32 +70,24 @@ class SearchableEntityFormatter extends EntityReferenceLabelFormatter {
    * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
-    $elements = [];
+    $par_elements = parent::viewElements($items, $langcode);
     foreach ($this->getEntitiesToView($items, $langcode) as $delta => $entity) {
-      $label = $entity->label();
-      $search_link = $this->getSetting('search_link');
       $search_var = $this->getSetting('search_var');
       $search_term = $this->getSetting('search_term');
 
       if ($search_term == TRUE) {
-        $search = "/" . $search_link . "=" . $search_var . ":" . $label;
+        $param = $par_elements[$delta]['#title'];
       }
       else {
-        $tid = $entity->id();
-        $search = "/" . $search_link . "=" . $search_var . ":" . $tid;
+        $param = $entity->id();
       }
-      $markup = '<a href="' . $search . '">' . $label . '</a>';
 
-      $elements[$delta] = [
-          '#type' => 'link',
-          '#title' => $label,
-          '#markup' => $markup,
-      ];
+      $url = \Drupal::service('facets.utility.url_generator')->getUrl([$search_var => [$param]]);
 
-      $elements[$delta]['#cache']['tags'] = $entity
-          ->getCacheTags();
+      $par_elements[$delta]['#url'] = $url;
+
     }
-    return $elements;
+    return $par_elements;
   }
 
   /**
