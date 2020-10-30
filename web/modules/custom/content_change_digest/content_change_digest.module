@@ -141,13 +141,16 @@ function content_change_digest_get_view_html() {
 
 function content_change_digest_mail($key, &$message, $params) {
   $data['user'] = $params['account'];
+  $config = \Drupal::config('system.site');
+  $site_name = $config->get('name');
+  $site_slogan = $config->get('slogan');
+  $options['@site'] = $site_name . (($site_slogan) ? " | " . $site_slogan : "");
   $options['langcode'] = $message['langcode'];
-  //user_mail_tokens($variables, $data, $options);
   switch ($key) {
     case 'notice':
       $message['headers']['MIME-Version'] = '1.0';
       $message['headers']['Content-Type'] = 'text/html; charset=UTF-8';
-      $message['subject'] = t('Notification from @site', $options);
+      $message['subject'] = t('Daily report of content changes on @site', $options);
       $message['body'] = array($params['message']);
       $message['from'] = \Drupal::config('system.site')->get('mail');
       break;

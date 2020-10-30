@@ -68,7 +68,7 @@ display:
             offset: false
             offset_label: Offset
       style:
-        type: table
+        type: default
         options:
           grouping:
             -
@@ -77,87 +77,6 @@ display:
               rendered_strip: false
           row_class: ''
           default_row_class: true
-          override: false
-          sticky: false
-          caption: ''
-          summary: ''
-          description: ''
-          columns:
-            title: title
-            changed_1: changed_1
-            changed_2: changed_2
-            uid: uid
-            vid: vid
-            vid_1: vid_1
-            nid: nid
-            nothing: nothing
-            nothing_1: nothing_1
-          info:
-            title:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            changed_1:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            changed_2:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            uid:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            vid:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            vid_1:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            nid:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            nothing:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            nothing_1:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-          default: changed_2
-          empty_table: false
       row:
         type: fields
       fields:
@@ -360,14 +279,14 @@ display:
           entity_type: node
           entity_field: changed
           plugin_id: field
-        uid:
-          id: uid
-          table: node_field_data
-          field: uid
+        revision_uid:
+          id: revision_uid
+          table: node_revision
+          field: revision_uid
           relationship: nid
           group_type: group
           admin_label: ''
-          label: 'created or changed by'
+          label: 'changed by'
           exclude: false
           alter:
             alter_text: false
@@ -423,7 +342,7 @@ display:
           separator: ', '
           field_api_classes: false
           entity_type: node
-          entity_field: uid
+          entity_field: revision_uid
           plugin_id: field
         vid:
           id: vid
