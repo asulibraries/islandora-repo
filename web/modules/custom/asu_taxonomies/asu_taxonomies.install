@@ -10,14 +10,14 @@ use Drupal\taxonomy\Entity\Term;
 /**
  * Implements hook_install().
  */
-function asu_item_extras_install() {
+function asu_taxonomies_install() {
   _get_or_create_oai_sets_terms();
 }
 
 /**
  * Updates taxonomy for OAI Sets terms.
  */
-function asu_item_extras_update_8001() {
+function asu_taxonomies_update_8001() {
   _get_or_create_oai_sets_terms();
 }
 
