@@ -37,7 +37,7 @@ class ASUItemDownloads extends BlockBase {
     // is passed as a parameter.
       if (\Drupal::routeMatch()->getParameter('node')) {
         $node = \Drupal::routeMatch()->getParameter('node');
-        $node_id = $node->id();
+        $node_id = (is_string($node) ? $node : $node->id());
       }
     }
     if ($node_id) {
