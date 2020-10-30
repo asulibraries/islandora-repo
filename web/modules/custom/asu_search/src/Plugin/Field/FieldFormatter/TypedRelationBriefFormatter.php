@@ -16,14 +16,12 @@ use Drupal\Core\Field\FieldItemListInterface;
  *   }
  * )
  */
-class TypedRelationBriefFormatter extends EntityReferenceLabelFormatter
-{
+class TypedRelationBriefFormatter extends EntityReferenceLabelFormatter {
 
   /**
    * {@inheritdoc}
    */
-  public function viewElements(FieldItemListInterface $items, $langcode)
-  {
+  public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = parent::viewElements($items, $langcode);
 
     foreach ($items as $delta => $item) {
@@ -37,8 +35,11 @@ class TypedRelationBriefFormatter extends EntityReferenceLabelFormatter
         $rel_type = preg_replace($re, $subst, $str);
         $elements[$delta]['#suffix'] = ' (' . $rel_type . ')';
       }
+      $url = \Drupal::service('facets.utility.url_generator')->getUrl(['linked_agents' => [$elements[$delta]['#title']]]);
+      $elements[$delta]['#url'] = $url;
     }
 
     return $elements;
   }
+
 }
