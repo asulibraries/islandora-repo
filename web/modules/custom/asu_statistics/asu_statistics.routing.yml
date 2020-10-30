@@ -1,0 +1,7 @@
+asu_statistics.report:
+  path: '/admin/reports/asu_statistics'
+  defaults:
+    _controller: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::main'
+    _title: 'ASU Statistics Reports'
+  requirements:
+    _permission: 'view asu statistics reports'
