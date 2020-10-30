@@ -87,10 +87,10 @@ class CreateItemWebformHandler extends WebformHandlerBase {
         ['target_id' => $copyright_term->id()],
       ],
       'field_default_derivative_file_pe' => [
-        ['target_id' => $values['file_permissions']],
+        ['target_id' => $values['file_permissions_select']],
       ],
       'field_default_original_file_perm' => [
-        ['target_id' => $values['file_permissions']],
+        ['target_id' => $values['file_permissions_select']],
       ],
       'field_model' => [
         ['target_id' => $taxo_term->id()],
