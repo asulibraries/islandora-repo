@@ -46,8 +46,17 @@ process:
 
   field_original_name/value: file original_filename
   filename:
-    plugin: transliteration
-    source: file original_filename
+    -
+      plugin: transliteration
+      source: file original_filename
+    -
+      plugin: str_replace
+      search: " "
+      replace: "_"
+    -
+      plugin: str_replace
+      search: "'"
+      replace: ""
 
 
   # Construct the destination URI using the file name.
