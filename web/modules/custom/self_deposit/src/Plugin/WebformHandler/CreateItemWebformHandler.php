@@ -57,6 +57,10 @@ class CreateItemWebformHandler extends WebformHandlerBase {
     $copyright_term_arr = $taxo_manager->loadByProperties(['name' => 'In Copyright']);
     $copyright_term = reset($copyright_term_arr);
 
+    $perm_term_arr =
+    $taxo_manager->loadByProperties(['name' => $values['file_permissions_select']]);
+    $perm_term = reset($perm_term_arr);
+
     $paragraph = Paragraph::create(['type' => 'complex_title', 'field_main_title' => $values['item_title']]);
     $paragraph->save();
 
@@ -87,10 +91,10 @@ class CreateItemWebformHandler extends WebformHandlerBase {
         ['target_id' => $copyright_term->id()],
       ],
       'field_default_derivative_file_pe' => [
-        ['target_id' => $values['file_permissions_select']],
+        ['target_id' => $perm_term->id()],
       ],
       'field_default_original_file_perm' => [
-        ['target_id' => $values['file_permissions_select']],
+        ['target_id' => $perm_term->id()],
       ],
       'field_model' => [
         ['target_id' => $taxo_term->id()],
