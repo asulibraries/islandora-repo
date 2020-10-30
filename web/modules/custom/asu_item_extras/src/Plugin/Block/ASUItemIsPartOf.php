@@ -29,7 +29,12 @@ class ASUItemIsPartOf extends BlockBase {
     $parents_output = [];
     $block_config = BlockBase::getConfiguration();
     if (is_array($block_config) && array_key_exists('node', $block_config)) {
-      $is_metadata_page = $block_config['is_metadata_page'];
+      if (array_key_exists('is_metadata_page', $block_config)) {
+        $is_metadata_page = $block_config['is_metadata_page'];
+      }
+      else {
+        $is_metadata_page = NULL;
+      }
       $node = $block_config['node'];
       $field_complex_object_child = $node->get('field_complex_object_child')->getString();
       if ($field_complex_object_child) {
@@ -42,17 +47,24 @@ class ASUItemIsPartOf extends BlockBase {
         if (is_object($direct_complex_obj_parent)) {
           $additional_complex_obj_parents = $complex_object_parent->get('field_additional_memberships')->referencedEntities();
           // also pass this the field_additional_memberships ($additional_complex_obj_parents)
-          $parents_output[] = $this->_make_link_and_label(t('Collections this item is in'),
-            $is_metadata_page, $direct_complex_obj_parent, $additional_complex_obj_parents);
+          $parents_output[] = $this->_make_link_and_label(
+            t('Collections this item is in'),
+            $is_metadata_page,
+            $direct_complex_obj_parent,
+            $additional_complex_obj_parents
+          );
         }
-      }
-      else {
+      } else {
         $collection_parent = $node->get('field_member_of')->entity;
         if (is_object($collection_parent)) {
           $additional_parents = $node->get('field_additional_memberships')->referencedEntities();
           // also pass this the field_additional_memberships ($additional_complex_obj_parents)
-          $parents_output[] = $this->_make_link_and_label(t('Collections this item is in'),
-            $is_metadata_page, $collection_parent, $additional_parents);
+          $parents_output[] = $this->_make_link_and_label(
+            t('Collections this item is in'),
+            $is_metadata_page,
+            $collection_parent,
+            $additional_parents
+          );
         }
       }
     }
