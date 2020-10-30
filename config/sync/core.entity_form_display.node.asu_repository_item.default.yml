@@ -55,6 +55,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_typed_identifier
     - field.field.node.asu_repository_item.field_weight
     - node.type.asu_repository_item
+    - workflows.workflow.ingest
   module:
     - content_moderation
     - controlled_access_terms
@@ -103,6 +104,10 @@ third_party_settings:
         - moderation_state
         - field_history
         - langcode
+        - field_cataloging_standards
+        - field_description_source
+        - field_level_of_coding
+        - field_oai_set
       parent_name: group_tab_container
       weight: 6
       format_type: tab
@@ -239,7 +244,7 @@ content:
     type: entity_reference_autocomplete
     region: content
   field_cataloging_standards:
-    weight: 40
+    weight: 17
     settings:
       match_operator: CONTAINS
       match_limit: 10
@@ -309,7 +314,7 @@ content:
     type: entity_reference_autocomplete
     region: content
   field_description_source:
-    weight: 41
+    weight: 18
     settings:
       rows: 5
       placeholder: ''
@@ -415,7 +420,7 @@ content:
     type: entity_reference_autocomplete
     region: content
   field_level_of_coding:
-    weight: 42
+    weight: 19
     settings: {  }
     third_party_settings: {  }
     type: options_select
@@ -468,6 +473,16 @@ content:
       default_paragraph_type: ''
     third_party_settings: {  }
     region: content
+  field_oai_set:
+    type: entity_reference_autocomplete
+    weight: 20
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_open_access:
     weight: 22
     settings:
@@ -704,5 +719,4 @@ content:
 hidden:
   field_display_hints: true
   field_keywords: true
-  field_oai_set: true
   title: true

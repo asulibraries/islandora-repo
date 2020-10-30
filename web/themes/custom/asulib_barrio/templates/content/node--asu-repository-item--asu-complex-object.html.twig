@@ -73,6 +73,7 @@
   'repo-item',
 ]
 %}
+{{content.content_moderation_control}}
 <article{{ attributes.addClass(classes) }}>
   <header>
     {{ title_prefix }}
@@ -149,12 +150,8 @@
         </div>
       {% endif %}
       <div>{{ content.field_resource_type }}</div>
+       {{ drupal_block('asu_item_is_part_of', {'node': node}) }}
       {% if node.field_member_of is not empty %}
-        <div class="all-memberships">
-          <div class="field__label">{{ 'Collections this item is in'|t }}</div>
-          {{ content.field_member_of }}
-          {{ content.field_additional_memberships }}
-        </div>
       {% endif %}
       {% if drupal_view('collaborating_institutions', 'block_1', node.id)|render|striptags|trim|length > 0 %}
         <div class="collab">

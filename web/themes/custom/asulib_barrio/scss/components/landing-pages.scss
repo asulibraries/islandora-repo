@@ -81,6 +81,9 @@
             bottom: auto;
         }
     }
+    .flex-caption {
+        word-wrap: break-word;
+    }
 }
 
 #block-callstoactionblock {
@@ -124,4 +127,13 @@
 
 .card-wrapper {
     margin-bottom: 1rem;
+}
+
+/* Mobile breakpoint */
+@media (max-width: 990px) {
+    .calls-to-action {
+        .col-md-4 {
+            margin-bottom: 2rem;
+        }
+    }
 }

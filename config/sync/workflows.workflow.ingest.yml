@@ -5,6 +5,15 @@ dependencies:
     - node.type.asu_repository_item
   module:
     - content_moderation
+    - workbench_email
+  enforced:
+    config:
+      - workbench_email.workbench_email_template.new_triaged_item_ready_for_revie
+third_party_settings:
+  workbench_email:
+    workbench_email_templates:
+      draft_to_triaged:
+        new_triaged_item_ready_for_revie: new_triaged_item_ready_for_revie
 id: ingest
 label: Ingest
 type: content_moderation

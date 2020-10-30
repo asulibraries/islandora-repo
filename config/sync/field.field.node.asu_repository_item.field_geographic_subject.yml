@@ -4,6 +4,7 @@ dependencies:
   config:
     - field.storage.node.field_geographic_subject
     - node.type.asu_repository_item
+    - taxonomy.vocabulary.country_codes
     - taxonomy.vocabulary.geo_location
 id: node.asu_repository_item.field_geographic_subject
 field_name: field_geographic_subject
@@ -19,10 +20,11 @@ settings:
   handler: 'default:taxonomy_term'
   handler_settings:
     target_bundles:
+      country_codes: country_codes
       geo_location: geo_location
     sort:
       field: name
       direction: asc
     auto_create: false
-    auto_create_bundle: ''
+    auto_create_bundle: country_codes
 field_type: entity_reference

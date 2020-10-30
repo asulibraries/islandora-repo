@@ -26,6 +26,8 @@ def loc_lookup(atype, astring):
     # print(astring)
     if not isinstance(astring, str):# or math.isnan(astring):
         return None
+    astring = astring.replace('\n', '')
+    astring = astring.strip()
     global loc_df
     loc_base = "https://id.loc.gov/authorities/"
     authority = atype # subjects, names
@@ -135,6 +137,7 @@ def main(argv):
     del merge_df["Repository Ingestion Notes"]
     merge_df['Parent Item'] = ""
     att_df['old item id'] = ""
+    merge_df['Complex Object Child'] = 0
 
     for col in att_df.columns:
         print(col)
@@ -184,7 +187,7 @@ def main(argv):
                             notes = notes + "|" + a['attachment description']
                         else:
                             notes = a['attachment description']
-                    new_row = {'Item ID': a['attachment id'], 'Item Title': a['attachment label'], 'Notes': a['attachment notes'], 'Model': get_model(1, None, att_df, a['attachment id']), 'Parent Item': a['item id'], 'Visibility': a_status, 'Notes': '|'.join(notes), 'System Created': a['file created'], 'System Updated': a['file created'], 'Attachment Count': 1}
+                    new_row = {'Item ID': a['attachment id'], 'Item Title': a['attachment label'], 'Notes': a['attachment notes'], 'Model': get_model(1, None, att_df, a['attachment id']), 'Parent Item': a['item id'], 'Visibility': a_status, 'Notes': '|'.join(notes), 'System Created': a['file created'], 'System Updated': a['file created'], 'Attachment Count': 1, 'Complex Object Child': 1}
                     print("add att")
                     att_df.at[index, 'old item id'] = a['item id']
                     att_df.at[index, 'item id'] = a['attachment id']
@@ -206,6 +209,27 @@ def main(argv):
     topics = merge_df[merge_df.columns[pandas.Series(
         merge_df.columns).str.startswith('Topical Subject')]]
     merge_df['Topical Subjects'] = topics.apply(lambda row: sjoin(row), axis=1)
+
+    corp_name_subs = [col for col in merge_df if col.startswith(
+        'Corporate Name Subject')]
+    for cpn in corp_name_subs:
+        merge_df[cpn] = merge_df[cpn].apply(
+            lambda row: loc_lookup("names", row))
+    corp_name_subjects = merge_df[merge_df.columns[pandas.Series(
+        merge_df.columns).str.startswith('Corporate Name Subject')]]
+    merge_df['Corporate Name Subjects'] = corp_name_subjects.apply(
+        lambda row: sjoin(row), axis=1)
+
+    pers_name_subs = [col for col in merge_df if col.startswith(
+            'Personal Name Subject')]
+    for pns in pers_name_subs:
+        merge_df[pns] = merge_df[pns].apply(
+            lambda row: loc_lookup("names", row))
+    pers_name_subjects = merge_df[merge_df.columns[pandas.Series(
+        merge_df.columns).str.startswith('Personal Name Subject')]]
+    merge_df['Personal Name Subjects'] = pers_name_subjects.apply(
+        lambda row: sjoin(row), axis=1)
+
     merge_df['Creator'] = merge_df.Creator.apply(lambda row: loc_lookup("names", row))
     authors = merge_df[merge_df.columns[pandas.Series(
         merge_df.columns).str.startswith('Creator')]]
