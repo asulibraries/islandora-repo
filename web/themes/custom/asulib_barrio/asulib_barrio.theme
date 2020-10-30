@@ -100,3 +100,10 @@ function asulib_barrio_theme_suggestions_field_alter(&$suggestions, $variables) 
       $variables['element']['#bundle'] . '__' .
       $variables['element']['#view_mode'];
 }
+
+/**
+ * Process block content
+ */
+function asulib_barrio_preprocess_block(&$variables) {
+  $variables['is_metadata_page'] = (\Drupal::routeMatch()->getRouteName() == "asu_item_extras.full_metadata_view");
+}
