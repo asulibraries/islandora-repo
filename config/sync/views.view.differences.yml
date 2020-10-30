@@ -279,14 +279,14 @@ display:
           entity_type: node
           entity_field: changed
           plugin_id: field
-        uid:
-          id: uid
-          table: node_field_data
-          field: uid
+        revision_uid:
+          id: revision_uid
+          table: node_revision
+          field: revision_uid
           relationship: nid
           group_type: group
           admin_label: ''
-          label: 'created or changed by'
+          label: 'changed by'
           exclude: false
           alter:
             alter_text: false
@@ -342,7 +342,7 @@ display:
           separator: ', '
           field_api_classes: false
           entity_type: node
-          entity_field: uid
+          entity_field: revision_uid
           plugin_id: field
         vid:
           id: vid
