@@ -1,0 +1,48 @@
+<?php
+
+use Drupal\taxonomy\Entity\Term;
+
+/**
+ * @file
+ * Install, update and uninstall functions for the ASU Taxonomies module.
+ */
+
+/**
+ * Implements hook_install().
+ */
+function asu_taxonomies_install() {
+  _get_or_create_oai_sets_terms();
+}
+
+/**
+ * Updates taxonomy for OAI Sets terms.
+ */
+function asu_taxonomies_update_8001() {
+  _get_or_create_oai_sets_terms();
+}
+
+/**
+ * Looks up or creates "OAI Sets" terms.
+ */
+function _get_or_create_oai_sets_terms() {
+  $term_name = 'Primo Set';
+  $test_terms = taxonomy_term_load_multiple_by_name($term_name);
+  if (!$test_terms) {
+    $term = Term::create([
+      'parent' => [],
+      'name' => $term_name,
+      'vid' => 'oai_sets',
+      'description' => 'Items to be harvested into Primo.',
+    ])->save();
+  }
+  $term_name = 'Research Set';
+  $test_terms = taxonomy_term_load_multiple_by_name($term_name);
+  if (!$test_terms) {
+    $term = Term::create([
+      'parent' => [],
+      'name' => $term_name,
+      'vid' => 'oai_sets',
+      'description' => 'Items to be harvested into SHARE.',
+    ])->save();
+  }
+}
