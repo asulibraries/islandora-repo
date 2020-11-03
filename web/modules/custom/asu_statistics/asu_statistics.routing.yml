@@ -5,3 +5,15 @@ asu_statistics.report:
     _title: 'ASU Statistics Reports'
   requirements:
     _permission: 'view asu statistics reports'
+asu_statistics.collection_statistics_view:
+  path: '/collection/{node}/statistics'
+  defaults:
+    _title: 'Statistics'
+    # _entity_view: node.full_metadata
+  requirements:
+    _entity_access: 'node.view'
+    node: \d+
+  options:
+    parameters:
+      node:
+        type: entity:node

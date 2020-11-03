@@ -1,8 +1,266 @@
 <?php
 
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\node\Entity\NodeType;
+
 /**
  * @file
  * Contains asu_statistics.module.
  */
 
 // asu_statistics
+
+
+/**
+ * Implements hook_theme().
+ */
+function asu_statistics_theme($existing, $type, $theme, $path) {
+  return [
+    'asu_statistics_chart' => [
+      'variables' => ['form' => NULL, 'show_csv_link' => NULL, 'stats' => NULL],
+    ],
+    'islandora_repository_reports_tips_block' => [
+      'variables' => ['content' => NULL],
+    ],
+  ];
+}
+
+/**
+ * Default preprocessor for the islandora_repository_reports_theme hook.
+ */
+function template_preprocess_asu_statistics_tips_block(&$variables) {
+  $variables['attributes'] = [
+    'id' => ['islandora_repository_reports_tips_content'],
+  ];
+}
+
+/**
+ * Default preprocessor for the asu_statistics_theme hook.
+ */
+function template_preprocess_asu_statistics_chart(&$variables) {
+  $utilities = \Drupal::service('islandora_repository_reports.utilities');
+  $variables['attributes'] = [
+    'id' => ['asu_statistics_chart'],
+  ];
+
+  $report_type = $utilities->getFormElementDefault('islandora_repository_reports_report_type', 'mimetype');
+
+  if (!empty(\Drupal::hasService('islandora_repository_reports.datasource.' . $report_type))) {
+    $data_source = \Drupal::service('islandora_repository_reports.datasource.' . $report_type);
+  }
+  else {
+    \Drupal::messenger()->addMessage(t('The report type you last selected is no longer available. Choose another report type, or contact the site administrator.'), 'warning');
+    return;
+  }
+
+  // Since the report is generate by calling $utilities->getReportData(),
+  // we need a way to avoid calling that method when a user simply views
+  // the report page. Tempstore age seems as good as any.
+  if ($utilities->tempstoreIsStale()) {
+    return;
+  }
+
+  if ($data_source->getChartType() == 'html') {
+    $variables['html_content'] = $data_source->getData();
+    $variables['chart_title'] = $data_source->getChartTitle('');
+  }
+
+  if ($variables['show_csv_link']) {
+    $default_schema = \Drupal::config('system.file')->get('default_scheme');
+    $files_path = \Drupal::service('file_system')->realpath(default_schema . "://");
+    $filename = 'asu_statistics_' . $report_type . '.csv';
+    $report_url = file_create_url($default_schema . '://' . $filename);
+    $variables['csv_url'] = $report_url;
+    // chart_type is 'pie', 'bar', etc from Chart.js, or 'html' for rendered
+    // HTML content such as a table or list.
+    $variables['chart_type'] = $data_source->getChartType();
+  }
+}
+
+/**
+ * Implements hook_form_form_id_alter().
+ */
+function asu_statistics_form_asu_statistics_report_selector_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $form['#attached']['library'][] = 'asu_statistics/asu_statistics_loading_message';
+  $utilities = \Drupal::service('islandora_repository_reports.utilities');
+
+  // Content type select widget.
+  $selected_content_types = $utilities->getFormElementDefault('islandora_repository_reports_content_types', []);
+
+  // Determine whether to show the content type list in the
+  // report selector form.
+  $data_sources = $utilities->getServices(TRUE);
+  $need_content_type_list = [];
+  $do_not_need_content_type_list = ['content_type'];
+  foreach ($data_sources as $report_type) {
+    $data_source_service_id = 'islandora_repository_reports.datasource.' . $report_type;
+    $data_source = \Drupal::service($data_source_service_id);
+    if ($data_source->getBaseEntity() == 'node' && !in_array($report_type, $do_not_need_content_type_list)) {
+      $need_content_type_list[] = ['value' => $report_type];
+    }
+  }
+
+  $content_types = NodeType::loadMultiple();
+  $content_type_options = [];
+  foreach ($content_types as $key => $value) {
+    $content_type_options[$key] = $value->label();
+  }
+  $form['islandora_repository_reports_content_types'] = [
+    '#type' => 'checkboxes',
+    '#weight' => 0,
+    '#title' => t('Content types to include in report'),
+    '#options' => $content_type_options,
+    '#default_value' => $selected_content_types,
+    '#states' => [
+      'visible' => [
+        ':input[name="islandora_repository_reports_report_type"]' => [
+          $need_content_type_list,
+        ],
+      ],
+    ],
+  ];
+
+  // MIME type report form.
+  $media_use_terms = $utilities->getFormElementDefault('islandora_repository_reports_media_use_terms', []);
+
+  $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree('islandora_media_use');
+  $media_use_options = [];
+  foreach ($terms as $term) {
+    $media_use_options[$term->tid] = $term->name;
+  }
+  $form['islandora_repository_reports_media_use_terms'] = [
+    '#type' => 'checkboxes',
+    '#weight' => 0,
+    '#title' => t('Include media with the following Media Use tags'),
+    '#options' => $media_use_options,
+    '#default_value' => $media_use_terms,
+    '#states' => [
+      'visible' => [
+        ':input[name="islandora_repository_reports_report_type"]' => ['value' => 'mimetype'],
+      ],
+    ],
+  ];
+
+  // Disk usage report form.
+  $disk_usage_type = $utilities->getFormElementDefault('islandora_repository_reports_disk_usage_type', 'filesystem');
+
+  $form['islandora_repository_reports_disk_usage_type'] = [
+    '#type' => 'select',
+    '#weight' => 0,
+    '#title' => t('Group disk usage by'),
+    '#default_value' => $disk_usage_type,
+    '#options' => [
+      'filesystem' => t('Drupal filesystem'),
+      'mimetype' => t('MIME type'),
+      'collection' => t('Collection'),
+    ],
+    '#states' => [
+      'visible' => [
+        ':input[name="islandora_repository_reports_report_type"]' => ['value' => 'disk_usage'],
+      ],
+    ],
+  ];
+
+  // Date range widgets for some reports.
+  $start_of_range = $utilities->getFormElementDefault('islandora_repository_reports_nodes_by_month_range_start', '');
+  $end_of_range = $utilities->getFormElementDefault('islandora_repository_reports_nodes_by_month_range_end', '');
+
+  $form['islandora_repository_reports_nodes_by_month_range_start'] = [
+    '#type' => 'textfield',
+    '#weight' => 0,
+    '#size' => 10,
+    '#title' => t('Start date'),
+    '#default_value' => $start_of_range,
+    '#placeholder' => 'yyyy-mm',
+    '#description' => t('Limit report to nodes created in or after the specified month. Leave empty to include all months up to end date.'),
+    '#states' => [
+      'visible' => [
+        ':input[name="islandora_repository_reports_report_type"]' => [
+          ['value' => 'nodes_by_month'],
+          ['value' => 'genre'],
+          ['value' => 'vocab'],
+        ],
+      ],
+    ],
+  ];
+
+  $form['islandora_repository_reports_nodes_by_month_range_end'] = [
+    '#type' => 'textfield',
+    '#weight' => 0,
+    '#size' => 10,
+    '#title' => t('End date'),
+    '#placeholder' => 'yyyy-mm',
+    '#default_value' => $end_of_range,
+    '#description' => t('Limit report to nodes created up to and including the specified month. Leave empty to include all months after start date.'),
+    '#states' => [
+      'visible' => [
+        ':input[name="islandora_repository_reports_report_type"]' => [
+          ['value' => 'nodes_by_month'],
+          ['value' => 'genre'],
+          ['value' => 'vocab'],
+        ],
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function asu_statistics_page_attachments(array &$attachments) {
+  $attachments['#attached']['library'][] = 'asu_statistics/asu_statistics_css';
+  $utilities = \Drupal::service('islandora_repository_reports.utilities');
+  $current_path = \Drupal::service('path.current')->getPath();
+  if ($current_path == '/admin/reports/islandora_repository_reports') {
+    $report_type = $utilities->getFormElementDefault('islandora_repository_reports_report_type', 'mimetype');
+
+    // Since the report is generate by calling $utilities->getReportData(),
+    // we need a way to avoid calling that method when a user simply views
+    // the report page. Tempstore age seems as good as any.
+    if ($utilities->tempstoreIsStale()) {
+      return;
+    }
+
+    $data_source_service_id = 'islandora_repository_reports.datasource.' . $report_type;
+    if (!empty(\Drupal::hasService($data_source_service_id))) {
+      $data_source = \Drupal::service($data_source_service_id);
+    }
+    else {
+      \Drupal::messenger()->addMessage(t('The report type you last selected is no longer available. Choose another report type, or contact the site administrator.'), 'warning');
+      return;
+    }
+
+    $chart_type = $data_source->getChartType();
+    if ($chart_type == 'pie') {
+      $config = \Drupal::config('islandora_repository_reports.settings');
+      $food_chart_type = $config->get('islandora_repository_reports_pie_or_doughnut');
+      $pie_chart_data = $utilities->getReportData($report_type);
+      $attachments['#attached']['library'][] = 'islandora_repository_reports/islandora_repository_reports_chart';
+      $attachments['#attached']['drupalSettings']['islandora_repository_reports']['chart_type'] = $food_chart_type;
+      $attachments['#attached']['drupalSettings']['islandora_repository_reports']['chart_title'] = $pie_chart_data['title'];
+      $attachments['#attached']['drupalSettings']['islandora_repository_reports']['chart_data'] = $pie_chart_data;
+    }
+    if ($chart_type == 'bar') {
+      $bar_chart_data = $utilities->getReportData($report_type);
+      $attachments['#attached']['library'][] = 'islandora_repository_reports/islandora_repository_reports_chart';
+      $attachments['#attached']['drupalSettings']['islandora_repository_reports']['chart_type'] = 'bar';
+      $attachments['#attached']['drupalSettings']['islandora_repository_reports']['chart_title'] = $bar_chart_data['title'];
+      $attachments['#attached']['drupalSettings']['islandora_repository_reports']['chart_data'] = $bar_chart_data;
+    }
+  }
+}
+
+/**
+ * Implements hook_file_download().
+ */
+function asu_statistics_file_download($uri) {
+  if (preg_match('/islandora_repository_reports_/', $uri)) {
+    if (\Drupal::currentUser()->hasPermission('view islandora repository reports')) {
+      return ['Content-disposition' => 'attachment; filename="' . basename($uri) . '"'];
+    }
+    else {
+      return -1;
+    }
+  }
+  return NULL;
+}

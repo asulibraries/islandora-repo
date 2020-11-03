@@ -21,7 +21,7 @@ class ASUStatisticsReportsReportSelectorForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $utilities = \Drupal::service('asu_statistics.utilities');
+    $utilities = \Drupal::service('islandora_repository_reports.utilities');
     $report_type = $utilities->getFormElementDefault('asu_statistics_report_type', 'mimetype');
     $services = $utilities->getServices();
     natsort($services);

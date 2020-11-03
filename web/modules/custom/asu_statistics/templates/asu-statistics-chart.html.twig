@@ -1,0 +1,14 @@
+<div id="islandora-repository-reports-report-type-form">{{ form }}</div>
+  {% if show_csv_link %}
+    <div id="islandora-repository-reports-csv_link"><a href="{{ csv_url }}">Download the CSV</a></div>
+  {% endif %}
+
+  <pre style="color:red">{{ stats }}</pre>
+  {% if html_content %}
+    <div id="islandora-repository-reports-content">
+      <div id="islandora-repository-reports-chart-title"><h3>{{ chart_title }}</h3></div>
+      <div style="padding-top: 20px" id="islandora-repository-reports-html">{{ html_content }}</div>
+    </div>
+  {% else %}
+    <div id="islandora-repository-reports-content"><canvas id="islandora-repository-reports-chart"></canvas></div>
+  {% endif %}
