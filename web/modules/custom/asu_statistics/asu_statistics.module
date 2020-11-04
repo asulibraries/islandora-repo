@@ -172,7 +172,7 @@ function asu_statistics_page_attachments(array &$attachments) {
   $utilities = \Drupal::service('islandora_repository_reports.utilities');
   $current_path = \Drupal::service('path.current')->getPath();
   if ($current_path == '/admin/reports/asu_statistics') {
-    $report_type = 'nodes_by_month'; // $utilities->getFormElementDefault('asu_statistics_report_type', 'mimetype');
+    $report_type = 'published_nodes_by_month'; // $utilities->getFormElementDefault('asu_statistics_report_type', 'mimetype');
 
     // Since the report is generate by calling $utilities->getReportData(),
     // we need a way to avoid calling that method when a user simply views
@@ -183,7 +183,7 @@ function asu_statistics_page_attachments(array &$attachments) {
     //      return;
     //    }
 
-    $data_source_service_id = 'islandora_repository_reports.datasource.' . $report_type;
+    $data_source_service_id = 'asu_statistics.datasource.' . $report_type;
     if (!empty(\Drupal::hasService($data_source_service_id))) {
       $data_source = \Drupal::service($data_source_service_id);
     }

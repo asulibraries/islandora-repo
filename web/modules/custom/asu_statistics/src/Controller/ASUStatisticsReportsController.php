@@ -21,7 +21,10 @@ class ASUStatisticsReportsController extends ControllerBase {
     $show_csv_link = ($tempstore = \Drupal::service('user.private_tempstore')->get('asu_statistics')) ?
       $tempstore->get('asu_statistics_generate_csv') : FALSE;
     $form = \Drupal::formBuilder()->getForm('Drupal\asu_statistics\Plugin\Form\ASUStatisticsReportsReportSelectorForm');
-    $collection_stats = $this->get_collection_stats();
+    $node = \Drupal::routeMatch()->getParameter('node');
+    $collection_node_id = ($node) ? $node->id(): 
+      $node = \Drupal::routeMatch()->getParameter('node');
+    $collection_stats = $this->get_stats($collection_node_id);
     return [
       '#form' => $form,
       '#show_csv_link' => $show_csv_link,
@@ -30,16 +33,16 @@ class ASUStatisticsReportsController extends ControllerBase {
     ];
   }
 
-  public function get_collection_stats() {
-    $node = \Drupal::routeMatch()->getParameter('node');
-    $collection_node_id = ($node) ? $node->id(): 3;
+  public function get_stats($collection_node_id = NULL) {
     $query = \Drupal::database()->select('node_field_data', 'node_field_data');
     $query->addExpression('COUNT(node_field_data.nid)', 'items');
     $query->addExpression('YEAR(FROM_UNIXTIME(node_field_data.created))', 'item_year');
     $query->addExpression('MONTH(FROM_UNIXTIME(node_field_data.created))', 'item_month');
-    $query->join('node__field_member_of', 'node__field_member_of',
-        'node__field_member_of.entity_id = node_field_data.nid');
-    $query->condition('node__field_member_of.field_member_of_target_id', $collection_node_id);
+    if ($collection_node_id) {
+      $query->join('node__field_member_of', 'node__field_member_of',
+          'node__field_member_of.entity_id = node_field_data.nid');
+      $query->condition('node__field_member_of.field_member_of_target_id', $collection_node_id);
+    }
     $query->condition('node_field_data.status', 1);
     $query->groupBy('YEAR(FROM_UNIXTIME(node_field_data.created)), MONTH(FROM_UNIXTIME(node_field_data.created))');
     $result = $query->execute()->fetchAll();

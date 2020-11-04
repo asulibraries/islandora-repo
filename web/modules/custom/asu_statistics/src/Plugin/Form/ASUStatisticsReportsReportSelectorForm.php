@@ -25,7 +25,6 @@ class ASUStatisticsReportsReportSelectorForm extends FormBase {
     $report_type = 'published_nodes_by_month'; // $utilities->getFormElementDefault('asu_statistics_report_type', 'mimetype');
     $services = $utilities->getServices();
     natsort($services);
-
     $form['asu_statistics_generate_csv'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Generate a CSV file of this data'),
@@ -42,6 +41,16 @@ class ASUStatisticsReportsReportSelectorForm extends FormBase {
       ],
     ];
 
+    // If this is called from a collection page like `collection/14/statistics`.
+    $node = \Drupal::routeMatch()->getParameter('node');
+    $collection_node_id = ($node) ? $node->id(): 0;
+    if ($collection_node_id) {
+      $form['inodes_by_month_collection'] = [
+        '#type' => 'hidden',
+        '#value' => $collection_node_id,
+      ];
+    }
+
     return $form;
   }
 
@@ -52,6 +61,7 @@ class ASUStatisticsReportsReportSelectorForm extends FormBase {
     $tempstore = \Drupal::service('user.private_tempstore')->get('asu_statistics');
     $tempstore->set('asu_statistics_report_type', 'published_nodes_by_month');
     $tempstore->set('asu_statistics_generate_csv', $form_state->getValue('asu_statistics_generate_csv'));
+    $tempstore->set('asu_statistics_nodes_by_month_collection', $form_state->getValue('inodes_by_month_collection'));
     // Pass the entire form state in so third-party modules that alter the
     // form can retrieve their custom form values.
     $tempstore->set('asu_statistics_report_form_values', $form_state);
