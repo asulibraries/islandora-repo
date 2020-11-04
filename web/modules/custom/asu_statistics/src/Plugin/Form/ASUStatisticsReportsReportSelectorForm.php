@@ -22,7 +22,7 @@ class ASUStatisticsReportsReportSelectorForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $utilities = \Drupal::service('islandora_repository_reports.utilities');
-    $report_type = 'nodes_by_month'; // $utilities->getFormElementDefault('asu_statistics_report_type', 'mimetype');
+    $report_type = 'published_nodes_by_month'; // $utilities->getFormElementDefault('asu_statistics_report_type', 'mimetype');
     $services = $utilities->getServices();
     natsort($services);
 
@@ -50,7 +50,7 @@ class ASUStatisticsReportsReportSelectorForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $tempstore = \Drupal::service('user.private_tempstore')->get('asu_statistics');
-    $tempstore->set('asu_statistics_report_type', 'nodes_by_month');
+    $tempstore->set('asu_statistics_report_type', 'published_nodes_by_month');
     $tempstore->set('asu_statistics_generate_csv', $form_state->getValue('asu_statistics_generate_csv'));
     // Pass the entire form state in so third-party modules that alter the
     // form can retrieve their custom form values.

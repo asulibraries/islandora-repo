@@ -43,7 +43,7 @@ function template_preprocess_asu_statistics_chart(&$variables) {
     'id' => ['asu_statistics_chart'],
   ];
 
-  $report_type = 'nodes_by_month'; // $utilities->getFormElementDefault('asu_statistics_report_type', 'mimetype');
+  $report_type = 'published_nodes_by_month'; // $utilities->getFormElementDefault('asu_statistics_report_type', 'mimetype');
 
   if (!empty(\Drupal::hasService('islandora_repository_reports.datasource.' . $report_type))) {
     $data_source = \Drupal::service('islandora_repository_reports.datasource.' . $report_type);
@@ -136,7 +136,7 @@ function asu_statistics_form_asu_statistics_report_selector_alter(&$form, FormSt
     '#states' => [
       'visible' => [
         ':input[name="asu_statistics_report_type"]' => [
-          ['value' => 'nodes_by_month'],
+          ['value' => 'published_nodes_by_month'],
           ['value' => 'genre'],
           ['value' => 'vocab'],
         ],
@@ -155,7 +155,7 @@ function asu_statistics_form_asu_statistics_report_selector_alter(&$form, FormSt
     '#states' => [
       'visible' => [
         ':input[name="asu_statistics_report_type"]' => [
-          ['value' => 'nodes_by_month'],
+          ['value' => 'published_nodes_by_month'],
           ['value' => 'genre'],
           ['value' => 'vocab'],
         ],
@@ -172,14 +172,16 @@ function asu_statistics_page_attachments(array &$attachments) {
   $utilities = \Drupal::service('islandora_repository_reports.utilities');
   $current_path = \Drupal::service('path.current')->getPath();
   if ($current_path == '/admin/reports/asu_statistics') {
-    $report_type = $utilities->getFormElementDefault('asu_statistics_report_type', 'mimetype');
+    $report_type = 'nodes_by_month'; // $utilities->getFormElementDefault('asu_statistics_report_type', 'mimetype');
 
     // Since the report is generate by calling $utilities->getReportData(),
     // we need a way to avoid calling that method when a user simply views
     // the report page. Tempstore age seems as good as any.
-    if ($utilities->tempstoreIsStale()) {
-      return;
-    }
+    //
+    // If this is cached, the chart does not get added. Commenting out this logic.
+    //    if ($utilities->tempstoreIsStale()) {
+    //      return;
+    //    }
 
     $data_source_service_id = 'islandora_repository_reports.datasource.' . $report_type;
     if (!empty(\Drupal::hasService($data_source_service_id))) {
