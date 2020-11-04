@@ -43,10 +43,8 @@ function template_preprocess_asu_statistics_chart(&$variables) {
     'id' => ['asu_statistics_chart'],
   ];
 
-  $report_type = 'published_nodes_by_month'; // $utilities->getFormElementDefault('asu_statistics_report_type', 'mimetype');
-
-  if (!empty(\Drupal::hasService('islandora_repository_reports.datasource.' . $report_type))) {
-    $data_source = \Drupal::service('islandora_repository_reports.datasource.' . $report_type);
+  if (!empty(\Drupal::hasService('asu_statistics.datasource.published_nodes_by_month'))) {
+    $data_source = \Drupal::service('asu_statistics.datasource.published_nodes_by_month');
   }
   else {
     \Drupal::messenger()->addMessage(t('The report type you last selected is no longer available. Choose another report type, or contact the site administrator.'), 'warning');
@@ -56,10 +54,9 @@ function template_preprocess_asu_statistics_chart(&$variables) {
   // Since the report is generate by calling $utilities->getReportData(),
   // we need a way to avoid calling that method when a user simply views
   // the report page. Tempstore age seems as good as any.
-  if ($utilities->tempstoreIsStale()) {
-    return;
-  }
-$chart_type = $data_source->getChartType();
+//  if ($utilities->tempstoreIsStale()) {
+//    return;
+//  }
 
   if ($data_source->getChartType() == 'html') {
     $variables['html_content'] = $data_source->getData();
@@ -90,11 +87,11 @@ function asu_statistics_form_asu_statistics_report_selector_alter(&$form, FormSt
 
   // Determine whether to show the content type list in the
   // report selector form.
-  $data_sources = $utilities->getServices(TRUE);
+  $data_sources = ['published_nodes_by_month']; // $utilities->getServices(TRUE);
   $need_content_type_list = [];
   $do_not_need_content_type_list = ['content_type'];
   foreach ($data_sources as $report_type) {
-    $data_source_service_id = 'islandora_repository_reports.datasource.' . $report_type;
+    $data_source_service_id = 'asu_statistics.datasource.' . $report_type;
     $data_source = \Drupal::service($data_source_service_id);
     if ($data_source->getBaseEntity() == 'node' && !in_array($report_type, $do_not_need_content_type_list)) {
       $need_content_type_list[] = ['value' => $report_type];
@@ -114,7 +111,7 @@ function asu_statistics_form_asu_statistics_report_selector_alter(&$form, FormSt
     '#default_value' => $selected_content_types,
     '#states' => [
       'visible' => [
-        ':input[name="asu_statistics_report_type"]' => [
+        ':input[name="islandora_repository_reports_report_type"]' => [
           $need_content_type_list,
         ],
       ],
@@ -135,7 +132,7 @@ function asu_statistics_form_asu_statistics_report_selector_alter(&$form, FormSt
     '#description' => t('Limit report to nodes created in or after the specified month. Leave empty to include all months up to end date.'),
     '#states' => [
       'visible' => [
-        ':input[name="asu_statistics_report_type"]' => [
+        ':input[name="islandora_repository_reports_report_type"]' => [
           ['value' => 'published_nodes_by_month'],
           ['value' => 'genre'],
           ['value' => 'vocab'],
@@ -154,7 +151,7 @@ function asu_statistics_form_asu_statistics_report_selector_alter(&$form, FormSt
     '#description' => t('Limit report to nodes created up to and including the specified month. Leave empty to include all months after start date.'),
     '#states' => [
       'visible' => [
-        ':input[name="asu_statistics_report_type"]' => [
+        ':input[name="islandora_repository_reports_report_type"]' => [
           ['value' => 'published_nodes_by_month'],
           ['value' => 'genre'],
           ['value' => 'vocab'],
@@ -172,7 +169,7 @@ function asu_statistics_page_attachments(array &$attachments) {
   $utilities = \Drupal::service('islandora_repository_reports.utilities');
   $current_path = \Drupal::service('path.current')->getPath();
   if ($current_path == '/admin/reports/asu_statistics') {
-    $report_type = 'published_nodes_by_month'; // $utilities->getFormElementDefault('asu_statistics_report_type', 'mimetype');
+    $report_type = 'published_nodes_by_month'; // $utilities->getFormElementDefault('islandora_repository_reports_report_type', 'mimetype');
 
     // Since the report is generate by calling $utilities->getReportData(),
     // we need a way to avoid calling that method when a user simply views
@@ -183,31 +180,12 @@ function asu_statistics_page_attachments(array &$attachments) {
     //      return;
     //    }
 
-    $data_source_service_id = 'asu_statistics.datasource.' . $report_type;
-    if (!empty(\Drupal::hasService($data_source_service_id))) {
-      $data_source = \Drupal::service($data_source_service_id);
+    if (!empty(\Drupal::hasService('asu_statistics.datasource.published_nodes_by_month'))) {
+      $data_source = \Drupal::service('asu_statistics.datasource.published_nodes_by_month');
     }
     else {
       \Drupal::messenger()->addMessage(t('The report type you last selected is no longer available. Choose another report type, or contact the site administrator.'), 'warning');
       return;
-    }
-
-    $chart_type = $data_source->getChartType();
-    if ($chart_type == 'pie') {
-      $config = \Drupal::config('islandora_repository_reports.settings');
-      $food_chart_type = $config->get('islandora_repository_reports_pie_or_doughnut');
-      $pie_chart_data = $utilities->getReportData($report_type);
-      $attachments['#attached']['library'][] = 'asu_statistics/asu_statistics_chart';
-      $attachments['#attached']['drupalSettings']['islandora_repository_reports']['chart_type'] = $food_chart_type;
-      $attachments['#attached']['drupalSettings']['islandora_repository_reports']['chart_title'] = $pie_chart_data['title'];
-      $attachments['#attached']['drupalSettings']['islandora_repository_reports']['chart_data'] = $pie_chart_data;
-    }
-    if ($chart_type == 'bar') {
-      $bar_chart_data = $utilities->getReportData($report_type);
-      $attachments['#attached']['library'][] = 'asu_statistics/asu_statistics_chart';
-      $attachments['#attached']['drupalSettings']['islandora_repository_reports']['chart_type'] = 'bar';
-      $attachments['#attached']['drupalSettings']['islandora_repository_reports']['chart_title'] = $bar_chart_data['title'];
-      $attachments['#attached']['drupalSettings']['islandora_repository_reports']['chart_data'] = $bar_chart_data;
     }
   }
 }
