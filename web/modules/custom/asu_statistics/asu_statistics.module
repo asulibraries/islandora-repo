@@ -43,7 +43,7 @@ function template_preprocess_asu_statistics_chart(&$variables) {
     'id' => ['asu_statistics_chart'],
   ];
 
-  $report_type = $utilities->getFormElementDefault('islandora_repository_reports_report_type', 'mimetype');
+  $report_type = 'nodes_by_month'; // $utilities->getFormElementDefault('asu_statistics_report_type', 'mimetype');
 
   if (!empty(\Drupal::hasService('islandora_repository_reports.datasource.' . $report_type))) {
     $data_source = \Drupal::service('islandora_repository_reports.datasource.' . $report_type);
@@ -59,6 +59,7 @@ function template_preprocess_asu_statistics_chart(&$variables) {
   if ($utilities->tempstoreIsStale()) {
     return;
   }
+$chart_type = $data_source->getChartType();
 
   if ($data_source->getChartType() == 'html') {
     $variables['html_content'] = $data_source->getData();
@@ -113,50 +114,9 @@ function asu_statistics_form_asu_statistics_report_selector_alter(&$form, FormSt
     '#default_value' => $selected_content_types,
     '#states' => [
       'visible' => [
-        ':input[name="islandora_repository_reports_report_type"]' => [
+        ':input[name="asu_statistics_report_type"]' => [
           $need_content_type_list,
         ],
-      ],
-    ],
-  ];
-
-  // MIME type report form.
-  $media_use_terms = $utilities->getFormElementDefault('islandora_repository_reports_media_use_terms', []);
-
-  $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree('islandora_media_use');
-  $media_use_options = [];
-  foreach ($terms as $term) {
-    $media_use_options[$term->tid] = $term->name;
-  }
-  $form['islandora_repository_reports_media_use_terms'] = [
-    '#type' => 'checkboxes',
-    '#weight' => 0,
-    '#title' => t('Include media with the following Media Use tags'),
-    '#options' => $media_use_options,
-    '#default_value' => $media_use_terms,
-    '#states' => [
-      'visible' => [
-        ':input[name="islandora_repository_reports_report_type"]' => ['value' => 'mimetype'],
-      ],
-    ],
-  ];
-
-  // Disk usage report form.
-  $disk_usage_type = $utilities->getFormElementDefault('islandora_repository_reports_disk_usage_type', 'filesystem');
-
-  $form['islandora_repository_reports_disk_usage_type'] = [
-    '#type' => 'select',
-    '#weight' => 0,
-    '#title' => t('Group disk usage by'),
-    '#default_value' => $disk_usage_type,
-    '#options' => [
-      'filesystem' => t('Drupal filesystem'),
-      'mimetype' => t('MIME type'),
-      'collection' => t('Collection'),
-    ],
-    '#states' => [
-      'visible' => [
-        ':input[name="islandora_repository_reports_report_type"]' => ['value' => 'disk_usage'],
       ],
     ],
   ];
@@ -175,7 +135,7 @@ function asu_statistics_form_asu_statistics_report_selector_alter(&$form, FormSt
     '#description' => t('Limit report to nodes created in or after the specified month. Leave empty to include all months up to end date.'),
     '#states' => [
       'visible' => [
-        ':input[name="islandora_repository_reports_report_type"]' => [
+        ':input[name="asu_statistics_report_type"]' => [
           ['value' => 'nodes_by_month'],
           ['value' => 'genre'],
           ['value' => 'vocab'],
@@ -194,7 +154,7 @@ function asu_statistics_form_asu_statistics_report_selector_alter(&$form, FormSt
     '#description' => t('Limit report to nodes created up to and including the specified month. Leave empty to include all months after start date.'),
     '#states' => [
       'visible' => [
-        ':input[name="islandora_repository_reports_report_type"]' => [
+        ':input[name="asu_statistics_report_type"]' => [
           ['value' => 'nodes_by_month'],
           ['value' => 'genre'],
           ['value' => 'vocab'],
@@ -211,8 +171,8 @@ function asu_statistics_page_attachments(array &$attachments) {
   $attachments['#attached']['library'][] = 'asu_statistics/asu_statistics_css';
   $utilities = \Drupal::service('islandora_repository_reports.utilities');
   $current_path = \Drupal::service('path.current')->getPath();
-  if ($current_path == '/admin/reports/islandora_repository_reports') {
-    $report_type = $utilities->getFormElementDefault('islandora_repository_reports_report_type', 'mimetype');
+  if ($current_path == '/admin/reports/asu_statistics') {
+    $report_type = $utilities->getFormElementDefault('asu_statistics_report_type', 'mimetype');
 
     // Since the report is generate by calling $utilities->getReportData(),
     // we need a way to avoid calling that method when a user simply views
@@ -235,14 +195,14 @@ function asu_statistics_page_attachments(array &$attachments) {
       $config = \Drupal::config('islandora_repository_reports.settings');
       $food_chart_type = $config->get('islandora_repository_reports_pie_or_doughnut');
       $pie_chart_data = $utilities->getReportData($report_type);
-      $attachments['#attached']['library'][] = 'islandora_repository_reports/islandora_repository_reports_chart';
+      $attachments['#attached']['library'][] = 'asu_statistics/asu_statistics_chart';
       $attachments['#attached']['drupalSettings']['islandora_repository_reports']['chart_type'] = $food_chart_type;
       $attachments['#attached']['drupalSettings']['islandora_repository_reports']['chart_title'] = $pie_chart_data['title'];
       $attachments['#attached']['drupalSettings']['islandora_repository_reports']['chart_data'] = $pie_chart_data;
     }
     if ($chart_type == 'bar') {
       $bar_chart_data = $utilities->getReportData($report_type);
-      $attachments['#attached']['library'][] = 'islandora_repository_reports/islandora_repository_reports_chart';
+      $attachments['#attached']['library'][] = 'asu_statistics/asu_statistics_chart';
       $attachments['#attached']['drupalSettings']['islandora_repository_reports']['chart_type'] = 'bar';
       $attachments['#attached']['drupalSettings']['islandora_repository_reports']['chart_title'] = $bar_chart_data['title'];
       $attachments['#attached']['drupalSettings']['islandora_repository_reports']['chart_data'] = $bar_chart_data;
@@ -254,7 +214,7 @@ function asu_statistics_page_attachments(array &$attachments) {
  * Implements hook_file_download().
  */
 function asu_statistics_file_download($uri) {
-  if (preg_match('/islandora_repository_reports_/', $uri)) {
+  if (preg_match('/asu_statistics_/', $uri)) {
     if (\Drupal::currentUser()->hasPermission('view islandora repository reports')) {
       return ['Content-disposition' => 'attachment; filename="' . basename($uri) . '"'];
     }

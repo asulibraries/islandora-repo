@@ -32,16 +32,17 @@ class ASUStatisticsReportsController extends ControllerBase {
 
   public function get_collection_stats() {
     $node = \Drupal::routeMatch()->getParameter('node');
-    $collection_node_id = ($node) ? $node->id(): 0;
-    $query = \Drupal::database()->query("SELECT " .
-      " YEAR(FROM_UNIXTIME(node_field_data.created)) as `item_year`, " .
-      " MONTH(FROM_UNIXTIME(node_field_data.created)) as `item_month`, " .
-      " COUNT(node_field_data.nid) as `items` " .
-      "FROM {node_field_data} node_field_data " .
-      "INNER JOIN {node__field_member_of} node__field_member_of ON node__field_member_of.entity_id = node_field_data.nid " .
-      "WHERE (node__field_member_of.field_member_of_target_id = " . $collection_node_id . ") AND (node_field_data.status = 1) " .
-      "GROUP BY YEAR(FROM_UNIXTIME(node_field_data.created)), MONTH(FROM_UNIXTIME(node_field_data.created))");
-    $result = $query->fetchAll();
+    $collection_node_id = ($node) ? $node->id(): 3;
+    $query = \Drupal::database()->select('node_field_data', 'node_field_data');
+    $query->addExpression('COUNT(node_field_data.nid)', 'items');
+    $query->addExpression('YEAR(FROM_UNIXTIME(node_field_data.created))', 'item_year');
+    $query->addExpression('MONTH(FROM_UNIXTIME(node_field_data.created))', 'item_month');
+    $query->join('node__field_member_of', 'node__field_member_of',
+        'node__field_member_of.entity_id = node_field_data.nid');
+    $query->condition('node__field_member_of.field_member_of_target_id', $collection_node_id);
+    $query->condition('node_field_data.status', 1);
+    $query->groupBy('YEAR(FROM_UNIXTIME(node_field_data.created)), MONTH(FROM_UNIXTIME(node_field_data.created))');
+    $result = $query->execute()->fetchAll();
     return $this->make_table_rows_from_result($result);
   }
 

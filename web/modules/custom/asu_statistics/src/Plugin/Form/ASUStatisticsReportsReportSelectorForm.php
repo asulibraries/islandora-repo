@@ -22,20 +22,10 @@ class ASUStatisticsReportsReportSelectorForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $utilities = \Drupal::service('islandora_repository_reports.utilities');
-    $report_type = $utilities->getFormElementDefault('asu_statistics_report_type', 'mimetype');
+    $report_type = 'nodes_by_month'; // $utilities->getFormElementDefault('asu_statistics_report_type', 'mimetype');
     $services = $utilities->getServices();
     natsort($services);
 
-    $form['asu_statistics_report_type'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Report type'),
-      '#default_value' => $report_type,
-      '#options' => $services,
-      '#attributes' => [
-        'name' => 'asu_statistics_report_type',
-        'id' => 'asu_statistics_report_type',
-      ],
-    ];
     $form['asu_statistics_generate_csv'] = [
       '#type' => 'checkbox',
       '#title' => $this->t('Generate a CSV file of this data'),
@@ -60,7 +50,7 @@ class ASUStatisticsReportsReportSelectorForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     $tempstore = \Drupal::service('user.private_tempstore')->get('asu_statistics');
-    $tempstore->set('asu_statistics_report_type', $form_state->getValue('asu_statistics_report_type'));
+    $tempstore->set('asu_statistics_report_type', 'nodes_by_month');
     $tempstore->set('asu_statistics_generate_csv', $form_state->getValue('asu_statistics_generate_csv'));
     // Pass the entire form state in so third-party modules that alter the
     // form can retrieve their custom form values.

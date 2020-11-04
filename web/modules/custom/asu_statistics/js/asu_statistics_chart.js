@@ -10,7 +10,7 @@ Javascript that renders a Chart.js chart.
     $('.islandora-repository-reports-is-loading-message').fadeOut('slow')
   });
 
-  $("#islandora_repository_reports_report_type").change(function(){
+  $("#asu_statistics_report_type").change(function(){
     $('#islandora-repository-reports-content').find('*').fadeTo(0, 0.3)
   });
 
