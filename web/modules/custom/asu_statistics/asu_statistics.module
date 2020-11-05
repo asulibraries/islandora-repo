@@ -38,7 +38,7 @@ function template_preprocess_asu_statistics_tips_block(&$variables) {
  * Default preprocessor for the asu_statistics_theme hook.
  */
 function template_preprocess_asu_statistics_chart(&$variables) {
-  $utilities = \Drupal::service('islandora_repository_reports.utilities');
+  $utilities = \Drupal::service('asu_statistics.utilities');
   $variables['attributes'] = [
     'id' => ['asu_statistics_chart'],
   ];
@@ -80,7 +80,7 @@ function template_preprocess_asu_statistics_chart(&$variables) {
  */
 function asu_statistics_form_asu_statistics_report_selector_alter(&$form, FormStateInterface $form_state, $form_id) {
   $form['#attached']['library'][] = 'asu_statistics/asu_statistics_loading_message';
-  $utilities = \Drupal::service('islandora_repository_reports.utilities');
+  $utilities = \Drupal::service('asu_statistics.utilities');
 
   // Content type select widget.
   $selected_content_types = $utilities->getFormElementDefault('islandora_repository_reports_content_types', []);
@@ -117,48 +117,6 @@ function asu_statistics_form_asu_statistics_report_selector_alter(&$form, FormSt
       ],
     ],
   ];
-
-  // Date range widgets for some reports.
-  $start_of_range = $utilities->getFormElementDefault('islandora_repository_reports_nodes_by_month_range_start', '');
-  $end_of_range = $utilities->getFormElementDefault('islandora_repository_reports_nodes_by_month_range_end', '');
-
-  $form['islandora_repository_reports_nodes_by_month_range_start'] = [
-    '#type' => 'textfield',
-    '#weight' => 0,
-    '#size' => 10,
-    '#title' => t('Start date'),
-    '#default_value' => $start_of_range,
-    '#placeholder' => 'yyyy-mm',
-    '#description' => t('Limit report to nodes created in or after the specified month. Leave empty to include all months up to end date.'),
-    '#states' => [
-      'visible' => [
-        ':input[name="islandora_repository_reports_report_type"]' => [
-          ['value' => 'published_nodes_by_month'],
-          ['value' => 'genre'],
-          ['value' => 'vocab'],
-        ],
-      ],
-    ],
-  ];
-
-  $form['islandora_repository_reports_nodes_by_month_range_end'] = [
-    '#type' => 'textfield',
-    '#weight' => 0,
-    '#size' => 10,
-    '#title' => t('End date'),
-    '#placeholder' => 'yyyy-mm',
-    '#default_value' => $end_of_range,
-    '#description' => t('Limit report to nodes created up to and including the specified month. Leave empty to include all months after start date.'),
-    '#states' => [
-      'visible' => [
-        ':input[name="islandora_repository_reports_report_type"]' => [
-          ['value' => 'published_nodes_by_month'],
-          ['value' => 'genre'],
-          ['value' => 'vocab'],
-        ],
-      ],
-    ],
-  ];
 }
 
 /**
@@ -166,7 +124,7 @@ function asu_statistics_form_asu_statistics_report_selector_alter(&$form, FormSt
  */
 function asu_statistics_page_attachments(array &$attachments) {
   $attachments['#attached']['library'][] = 'asu_statistics/asu_statistics_css';
-  $utilities = \Drupal::service('islandora_repository_reports.utilities');
+  $asu_utilities = \Drupal::service('asu_statistics.utilities');
   $current_path = \Drupal::service('path.current')->getPath();
   if ($current_path == '/admin/reports/asu_statistics') {
     $report_type = 'published_nodes_by_month'; // $utilities->getFormElementDefault('islandora_repository_reports_report_type', 'mimetype');
@@ -182,6 +140,23 @@ function asu_statistics_page_attachments(array &$attachments) {
 
     if (!empty(\Drupal::hasService('asu_statistics.datasource.published_nodes_by_month'))) {
       $data_source = \Drupal::service('asu_statistics.datasource.published_nodes_by_month');
+      $chart_type = $data_source->getChartType();
+      if ($chart_type == 'pie') {
+        $config = \Drupal::config('islandora_repository_reports.settings');
+        $food_chart_type = $config->get('islandora_repository_reports_pie_or_doughnut');
+        $pie_chart_data = $asu_utilities->getReportData($report_type);
+        $attachments['#attached']['library'][] = 'islandora_repository_reports/islandora_repository_reports_chart';
+        $attachments['#attached']['drupalSettings']['islandora_repository_reports']['chart_type'] = $food_chart_type;
+        $attachments['#attached']['drupalSettings']['islandora_repository_reports']['chart_title'] = $pie_chart_data['title'];
+        $attachments['#attached']['drupalSettings']['islandora_repository_reports']['chart_data'] = $pie_chart_data;
+      }
+      if ($chart_type == 'bar') {
+        $bar_chart_data = $asu_utilities->getReportData($report_type);
+        $attachments['#attached']['library'][] = 'islandora_repository_reports/islandora_repository_reports_chart';
+        $attachments['#attached']['drupalSettings']['islandora_repository_reports']['chart_type'] = 'bar';
+        $attachments['#attached']['drupalSettings']['islandora_repository_reports']['chart_title'] = $bar_chart_data['title'];
+        $attachments['#attached']['drupalSettings']['islandora_repository_reports']['chart_data'] = $bar_chart_data;
+      }
     }
     else {
       \Drupal::messenger()->addMessage(t('The report type you last selected is no longer available. Choose another report type, or contact the site administrator.'), 'warning');
