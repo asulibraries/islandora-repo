@@ -97,6 +97,7 @@
       <div class="field__label {{ label_col }}">{{ 'Additional Formats'|t }}</div>
       <ul class="inline-list field__items {{ item_col }}">
         <li><a href="{{ oai_base_url ~ node.id }}">OAI</a></li>
+        <li><a href="/items/{{ node.id }}?_format=mods">MODS XML</a></li>
       </ul>
     </div>
   </div>
