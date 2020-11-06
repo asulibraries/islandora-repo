@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains asu_mods.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function asu_mods_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the asu_mods module.
+    case 'help.page.asu_mods':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('ASU MODS') . '</p>';
+      return $output;
+
+    default:
+  }
+}

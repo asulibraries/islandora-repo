@@ -1,0 +1,67 @@
+dependencies:
+  enforced:
+    module:
+      - asu_mods
+id: mods_xml
+label: Import/Update Nodes from MODS XML
+migration_group: mods_xml
+
+source:
+  plugin: url
+  data_fetcher_plugin: file
+  data_parser_plugin: xml
+  urls: /var/www/html/drupal/web/modules/custom/asu_mods/data/t1mods.xml
+  item_selector: /modsCollection/mods
+  fields:
+    -
+      name: title
+      label: title
+      selector: titleInfo/title
+    -
+      name: pid
+      label: Pid
+      selector: 'recordInfo/recordIdentifier[@src="aztes"]'
+  ids:
+    pid:
+      type: string
+  constants:
+    uid: 1
+
+
+process:
+  # setting the nid allows you to update nodes which were not originally created by this migration - if we skip_on_empty it should create new nodes
+  nid:
+    plugin: skip_on_empty
+    method: process
+    source: pid
+  field_title:
+    -
+      plugin: callback
+      callable: trim
+      source: title
+    -
+      plugin: paragraph_title_generate
+      paragraph_type: 'complex_title'
+      split_into_parts: true
+      fields:
+        field_nonsort: " "
+        field_main_title: " "
+        field_subtitle: " "
+  uid: constants/uid
+  status:
+    plugin: default_value
+    default_value: 1
+  type:
+    plugin: default_value
+    default_value: asu_repository_item
+
+destination:
+  plugin: 'entity:node'
+  overwrite_properties:
+    - field_title
+    - field_rich_description
+    # todo list all fields we want to overwrite
+    # examples:
+    # - 'field_address/address_line1'
+    # - field_synchronized_title
+
