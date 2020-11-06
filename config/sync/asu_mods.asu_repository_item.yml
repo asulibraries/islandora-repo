@@ -1,0 +1,168 @@
+field_title:
+  _top: titleInfo
+  title:
+    '@supplied': field_supplied
+    '#': field_main_title
+  nonSort: field_nonsort
+  subTitle: field_subtitle
+field_rich_description: abstract
+field_table_of_contents: tableOfContents
+field_linked_agent:
+  _top: name
+  '@type': bundle
+  roleTerm:
+    '@type': code
+    '#': rel_type
+  namePart: name
+field_language:
+  _top: language
+  languageTerm:
+    '@type': code
+    '@authority': iso639-2b
+    '#': name
+field_note_para:
+  _top: note
+  '@type': field_note_type
+  '#': field_note_text
+field_preferred_citation:
+  _top: note
+  '@type': 'preferred citation'
+  '#': field_preferred_citation
+field_statement_responsibility:
+  _top: note
+  '@type': 'statement of responsibility'
+  '#': field_statement_responsibility
+field_typed_identifier:
+  _top: identifier
+  '@type': field_identifier_type
+  '#': field_identifier_value
+field_handle:
+  _top: identifier
+  '@type': hdl
+  '#': field_handle
+field_peer_reviewed:
+  _top: genre
+  '@authority': getty
+  '@valueURI': urigoeshere
+  '#': field_peer_reviewed
+field_open_access:
+  _top: genre
+  '@authority': local
+  '@valueURI': urihere
+  '#': field_open_access
+field_genre:
+  _top: genre
+  '@authority': field_authority_source
+  '@valueURI': field_authority_source/uri
+  '#': name
+field_extent:
+  _top: physicalDescription
+  extent:
+    '#': field_extent
+status:
+  _top: recordInfo
+  recordInfoNote:
+    '@type': visibility
+    '#': status
+created:
+  _top: recordInfo
+  recordCreationDate:
+    '#': created
+changed:
+  _top: recordInfo
+  recordChangeDate:
+    '@encoding': iso8601
+    '#': changed
+nid:
+  _top: recordInfo
+  recordIdentifier:
+    '@src': aztes
+    '#': nid
+uid:
+  _top: recordInfo
+  recordContentSource:
+    '#': uid
+field_copyright_statement:
+  _top: accessCondition
+  '@type': 'use and reproduction'
+  '#': name
+field_reuse_permissions:
+  _top: accessCondition
+  '@type': 'use and reproduction'
+  '#': name
+field_member_of:
+  _top: relatedItem
+  '@type': host
+  '@xlink:href': field_handle
+field_additional_memberships:
+  _top: relatedItem
+  '@type': host
+  '@xlink:href': field_handle
+field_edtf_copyright_date:
+  _top: originInfo
+  copyrightDate: field_edtf_copyright_date
+field_edtf_date_created:
+  _top: originInfo
+  dateCreated: field_edtf_date_created
+field_edition:
+  _top: originInfo
+  edition: field_edition
+field_issuance:
+  _top: originInfo
+  issuance: field_issuance
+field_frequency:
+  _top: originInfo
+  frequency: field_frequency
+field_place_of_publication_code:
+  _top: originInfo
+  place:
+    placeTerm:
+      '#': field_place_of_publication_code
+      '@type': code
+      '@authority': marccountry
+field_place_published:
+  _top: originInfo
+  place:
+    placeTerm:
+      '#': field_place_published
+      '@type': text
+field_embargo_release_date:
+  _top: originInfo
+  dateOther:
+    '@type': embargo
+    '@point': end
+    '#': field_embargo_release_date
+field_resource_type:
+  _top: typeOfResource
+  '@authority': field_external_authority_link
+  '@valueURI': field_external_authority_link/uri
+  '#': name
+field_geographic_subject:
+  _top: subject
+  geographic:
+    '@authority': field_external_authority_link/source
+    '@valueURI': field_external_authority_link/uri
+    '#': name
+field_temporal_subject:
+  _top: subject
+  temporal:
+    '@authority': field_authority_link/source
+    '@valueURI': field_authority_link/uri
+    '#': name
+field_subject:
+  _top: subject
+  topic:
+    '@authority': field_authority_link/source
+    '@valueURI': field_authority_link/uri
+    '#': name
+field_subjects_name:
+  _top: subject
+  name:
+    '@authority': field_authority_link/source
+    '@valueURI': field_authority_link/uri
+    '#': name
+field_title_subject:
+  _top: subject
+  title:
+    titleInfo:
+      '#': name
