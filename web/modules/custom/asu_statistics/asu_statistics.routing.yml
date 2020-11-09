@@ -6,7 +6,7 @@ asu_statistics.report:
   requirements:
     _permission: 'view asu statistics reports'
 asu_statistics.collection_statistics_view:
-  path: '/collection/{node}/statistics'
+  path: '/collections/{node}/statistics'
   defaults:
     _title: 'Statistics'
     _controller: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::main'

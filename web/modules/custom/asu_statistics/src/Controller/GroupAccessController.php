@@ -32,9 +32,9 @@ foreach ($grps as $grp) {
 }
      */
     
+    // return AccessResult::allowedIf($account->hasPermission('do example things') && $this->someOtherCustomCondition());
     
-    
-    return AccessResult::allowedIf($account->hasPermission('do example things') && $this->someOtherCustomCondition());
+    return AccessResult::allowedIf($account->hasPermission('view content'));
   }
 
 }

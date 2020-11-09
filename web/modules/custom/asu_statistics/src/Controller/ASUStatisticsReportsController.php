@@ -17,11 +17,11 @@ class ASUStatisticsReportsController extends ControllerBase {
    * @return string
    *   Markup used by the chart and the statistics table.
    */
-  public function main() {
+  public function main($node) {
+    $node = !($node) ? $this->currentRouteMatch->getParameter('node'): $node;
     $show_csv_link = ($tempstore = \Drupal::service('user.private_tempstore')->get('asu_statistics')) ?
       $tempstore->get('asu_statistics_generate_csv') : FALSE;
     $form = \Drupal::formBuilder()->getForm('Drupal\asu_statistics\Plugin\Form\ASUStatisticsReportsReportSelectorForm');
-    $node = \Drupal::routeMatch()->getParameter('node');
     $collection_node_id = ($node) ? $node->id(): 0;
     $collection_stats = $this->get_stats($collection_node_id);
     return [

@@ -41,7 +41,7 @@ class ASUStatisticsReportsReportSelectorForm extends FormBase {
       ],
     ];
 
-    // If this is called from a collection page like `collection/14/statistics`.
+    // If this is called from a collection page like `collections/14/statistics`.
     $node = \Drupal::routeMatch()->getParameter('node');
     $collection_node_id = ($node) ? $node->id(): 0;
     if ($collection_node_id) {

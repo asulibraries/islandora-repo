@@ -56,7 +56,6 @@ class PublishedNodesByMonth implements IslandoraRepositoryReportsDataSourceInter
     $query = \Drupal::database()->select('node_field_data', 'node_field_data');
     $query->join('node__field_member_of', 'node__field_member_of',
         'node__field_member_of.entity_id = node_field_data.nid');
-    $query->condition('node__field_member_of.field_member_of_target_id', $collection_node_id);
     if ($collection_id) {
       $result = $database->query("SELECT created, " .
         "YEAR(FROM_UNIXTIME(node_field_data.created)) item_year, " .
