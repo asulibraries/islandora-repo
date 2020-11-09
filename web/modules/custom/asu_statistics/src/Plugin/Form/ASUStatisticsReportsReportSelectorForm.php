@@ -43,7 +43,7 @@ class ASUStatisticsReportsReportSelectorForm extends FormBase {
 
     // If this is called from a collection page like `collection/14/statistics`.
     $node = \Drupal::routeMatch()->getParameter('node');
-    $collection_node_id = ($node) ? $node->id(): 3;
+    $collection_node_id = ($node) ? $node->id(): 0;
     if ($collection_node_id) {
       $form['nodes_by_month_collection'] = [
         '#type' => 'hidden',

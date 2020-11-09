@@ -16,7 +16,6 @@ Javascript that renders a Chart.js chart.
 
   var IslandoraRepositoryReportsChartCanvas = document.getElementById('islandora-repository-reports-chart');
   var IslandoraRepositoryReportsChartType = drupalSettings.islandora_repository_reports.chart_type;
-alert(IslandoraRepositoryReportsChartType);
   if (IslandoraRepositoryReportsChartType == 'pie' || IslandoraRepositoryReportsChartType == 'doughnut') {
     var IslandoraRepositoryReportsPieChartData = drupalSettings.islandora_repository_reports.chart_data;
     var IslandoraRepositoryReportsPieChartTitle = drupalSettings.islandora_repository_reports.chart_title;

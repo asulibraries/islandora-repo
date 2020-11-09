@@ -9,9 +9,9 @@ asu_statistics.collection_statistics_view:
   path: '/collection/{node}/statistics'
   defaults:
     _title: 'Statistics'
-    # _entity_view: node.full_metadata
+    _controller: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::main'
   requirements:
-    _entity_access: 'node.view'
+    _custom_access: '\Drupal\asu_statistics\Controller\GroupAccessController::access'
     node: \d+
   options:
     parameters:

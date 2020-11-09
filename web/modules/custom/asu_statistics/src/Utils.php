@@ -57,7 +57,7 @@ class Utils {
    *   The default value of the element.
    */
   public function getFormElementDefault($form_element, $default_value) {
-    if ($tempstore = \Drupal::service('user.private_tempstore')->get('islandora_repository_reports')) {
+    if ($tempstore = \Drupal::service('user.private_tempstore')->get('asu_statistics')) {
       if ($form_state = $tempstore->get('islandora_repository_reports_report_form_values')) {
         $default_value = $form_state->getValue($form_element);
       }
@@ -78,7 +78,7 @@ class Utils {
    */
   public function tempstoreIsStale($key = 'islandora_repository_reports_report_type', $bb = 60) {
     $tempstore_age = 0;
-    if ($tempstore = \Drupal::service('user.private_tempstore')->get('islandora_repository_reports')) {
+    if ($tempstore = \Drupal::service('user.private_tempstore')->get('asu_statistics')) {
       if (is_null($tempstore->getMetadata($key))) {
         return TRUE;
       }
@@ -119,12 +119,12 @@ class Utils {
    *   the content type form widget.
    */
   public function getSelectedContentTypes() {
-    $content_types = [];
-    if ($tempstore = \Drupal::service('user.private_tempstore')->get('islandora_repository_reports')) {
-      if ($form_state = $tempstore->get('islandora_repository_reports_report_form_values')) {
-        $content_types = $form_state->getValue('islandora_repository_reports_content_types');
-      }
-    }
+    $content_types = ['asu_repository_item'];
+//    if ($tempstore = \Drupal::service('user.private_tempstore')->get('asu_statistics')) {
+//      if ($form_state = $tempstore->get('islandora_repaository_reports_report_form_values')) {
+//        $content_types = $form_state->getValue('islandora_repository_reports_content_types');
+//      }
+//    }
     return (array) $content_types;
   }
 
@@ -520,11 +520,11 @@ class Utils {
    *   An array of arrays corresponding to CSV records.
    */
   public function writeCsvFile($report_type, $csv_data) {
-    if ($tempstore = \Drupal::service('user.private_tempstore')->get('islandora_repository_reports')) {
-      if ($tempstore->get('islandora_repository_reports_generate_csv')) {
+    if ($tempstore = \Drupal::service('user.private_tempstore')->get('asu_statistics')) {
+      if ($tempstore->get('asu_statistics_generate_csv')) {
         $default_schema = \Drupal::config('system.file')->get('default_scheme');
         $files_path = \Drupal::service('file_system')->realpath($default_schema . "://");
-        $filename = 'islandora_repository_reports_' . $report_type . '.csv';
+        $filename = 'asu_statistics_' . $report_type . '.csv';
         $fp = fopen($files_path . '/' . $filename, 'w');
         foreach ($csv_data as $fields) {
           fputcsv($fp, $fields);
@@ -533,7 +533,7 @@ class Utils {
 
         // We're finished with this session variable, so clear it for
         // the next rendering of the report page.
-        $tempstore->delete('islandora_repository_reports_generate_csv');
+        $tempstore->delete('asu_statistics_generate_csv');
       }
     }
   }

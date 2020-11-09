@@ -66,6 +66,7 @@ function template_preprocess_asu_statistics_chart(&$variables) {
   if ($variables['show_csv_link']) {
     $default_schema = \Drupal::config('system.file')->get('default_scheme');
     $files_path = \Drupal::service('file_system')->realpath(default_schema . "://");
+    $report_type = 'published_nodes_by_month';
     $filename = 'asu_statistics_' . $report_type . '.csv';
     $report_url = file_create_url($default_schema . '://' . $filename);
     $variables['csv_url'] = $report_url;
@@ -82,9 +83,6 @@ function asu_statistics_form_asu_statistics_report_selector_alter(&$form, FormSt
   $form['#attached']['library'][] = 'asu_statistics/asu_statistics_loading_message';
   $utilities = \Drupal::service('asu_statistics.utilities');
 
-  // Content type select widget.
-  $selected_content_types = $utilities->getFormElementDefault('islandora_repository_reports_content_types', []);
-
   // Determine whether to show the content type list in the
   // report selector form.
   $data_sources = ['published_nodes_by_month']; // $utilities->getServices(TRUE);
@@ -97,26 +95,6 @@ function asu_statistics_form_asu_statistics_report_selector_alter(&$form, FormSt
       $need_content_type_list[] = ['value' => $report_type];
     }
   }
-
-  $content_types = NodeType::loadMultiple();
-  $content_type_options = [];
-  foreach ($content_types as $key => $value) {
-    $content_type_options[$key] = $value->label();
-  }
-  $form['islandora_repository_reports_content_types'] = [
-    '#type' => 'checkboxes',
-    '#weight' => 0,
-    '#title' => t('Content types to include in report'),
-    '#options' => $content_type_options,
-    '#default_value' => $selected_content_types,
-    '#states' => [
-      'visible' => [
-        ':input[name="islandora_repository_reports_report_type"]' => [
-          $need_content_type_list,
-        ],
-      ],
-    ],
-  ];
 }
 
 /**
@@ -145,14 +123,14 @@ function asu_statistics_page_attachments(array &$attachments) {
         $config = \Drupal::config('islandora_repository_reports.settings');
         $food_chart_type = $config->get('islandora_repository_reports_pie_or_doughnut');
         $pie_chart_data = $asu_utilities->getReportData($report_type);
-        $attachments['#attached']['library'][] = 'islandora_repository_reports/islandora_repository_reports_chart';
+        $attachments['#attached']['library'][] = 'asu_statistics/asu_statistics_chart';
         $attachments['#attached']['drupalSettings']['islandora_repository_reports']['chart_type'] = $food_chart_type;
         $attachments['#attached']['drupalSettings']['islandora_repository_reports']['chart_title'] = $pie_chart_data['title'];
         $attachments['#attached']['drupalSettings']['islandora_repository_reports']['chart_data'] = $pie_chart_data;
       }
       if ($chart_type == 'bar') {
         $bar_chart_data = $asu_utilities->getReportData($report_type);
-        $attachments['#attached']['library'][] = 'islandora_repository_reports/islandora_repository_reports_chart';
+        $attachments['#attached']['library'][] = 'asu_statistics/asu_statistics_chart';
         $attachments['#attached']['drupalSettings']['islandora_repository_reports']['chart_type'] = 'bar';
         $attachments['#attached']['drupalSettings']['islandora_repository_reports']['chart_title'] = $bar_chart_data['title'];
         $attachments['#attached']['drupalSettings']['islandora_repository_reports']['chart_data'] = $bar_chart_data;
@@ -178,4 +156,73 @@ function asu_statistics_file_download($uri) {
     }
   }
   return NULL;
+}
+
+function asu_statistics_make_table_rows_from_result($result) {
+  $build_output = $rows = [];
+  $month_names = [];
+  for ($month = 1; $month < 13; $month++) {
+    $month_names[$month] = date("F", mktime(0, 0, 0, $month, 10));
+  }
+  // get all of the rows into an array where each row contains the results for
+  // the query result which have records with these years / months.
+  $earliest_year = PHP_INT_MAX;
+  $latest_year = 0;
+  foreach ($result as $child_obj) {
+    if ($child_obj->item_year < $earliest_year) {
+      $earliest_year = $child_obj->item_year;
+    }
+    if ($child_obj->item_year > $latest_year) {
+      $latest_year = $child_obj->item_year;
+    }
+    $record_arr = (array)$child_obj;
+    $record_arr['created'] = mktime(0, 0, 0, $child_obj->item_month, 10);
+    $record_arr['item_month_name'] = $month_names[$child_obj->item_month];
+    $pad0_month = (($child_obj->item_month < 10) ? "0" : "") . $child_obj->item_month;
+    $rows[$child_obj->item_year . "-" . $pad0_month] = $record_arr;
+  }
+
+  // fill any empty months with a 0.
+  for ($year = $earliest_year; $year <= $latest_year; $year++) {
+    for ($month = 1; $month < 13; $month++) {
+      $pad0_month = (($month < 10) ? "0" : "") . $month;
+      $year_month_key = $year . "-" . $pad0_month;
+      if (!array_key_exists($year_month_key, $rows)) {
+        $build_output[$year][$pad0_month] = 0;
+      } else {
+        $build_output[$year][$pad0_month] = $rows[$year_month_key]['items'];
+      }
+    }
+  }
+  // now, add a row total at the end.
+  foreach ($build_output as $year => $month_data) {
+    $row_total = 0;
+    foreach ($month_data as $month_num => $items) {
+      $row_total+= $items;
+    }
+    $build_output[$year]['total'] = $row_total;
+  }
+  return $build_output;
+}
+
+function asu_statistics_get_stats($collection_node_id = NULL) {
+  $query = \Drupal::database()->select('node_field_data', 'node_field_data');
+  $query->addExpression('COUNT(node_field_data.nid)', 'items');
+  $query->addExpression('YEAR(FROM_UNIXTIME(node_field_data.created))', 'item_year');
+  $query->addExpression('MONTH(FROM_UNIXTIME(node_field_data.created))', 'item_month');
+    if ($collection_node_id) {
+    $query->join('node__field_member_of', 'node__field_member_of',
+        'node__field_member_of.entity_id = node_field_data.nid');
+    $query->condition('node__field_member_of.field_member_of_target_id', $collection_node_id);
+  }
+  // Do not limit the results by published nodes only -- the make_table_rows_from_result
+  // will need to inspect the item's moderation state by using
+  //     $asu_utils = \Drupal::service('asu_utils');
+  //     $node = \Drupal::entityTypeManager()->getStorage('node')->load($node);
+  //     $node_is_published = $asu_utils->c($node);
+
+  // $query->condition('node_field_data.status', 1);
+  $query->groupBy('YEAR(FROM_UNIXTIME(node_field_data.created)), MONTH(FROM_UNIXTIME(node_field_data.created))');
+  $result = $query->execute()->fetchAll();
+  return asu_statistics_make_table_rows_from_result($result);
 }

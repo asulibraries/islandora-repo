@@ -53,13 +53,15 @@ class PublishedNodesByMonth implements IslandoraRepositoryReportsDataSourceInter
     $collection_id = trim($collection_id);
 
     $database = \Drupal::database();
-      $node_types = $utilities->getSelectedContentTypes();
     $query = \Drupal::database()->select('node_field_data', 'node_field_data');
     $query->join('node__field_member_of', 'node__field_member_of',
         'node__field_member_of.entity_id = node_field_data.nid');
     $query->condition('node__field_member_of.field_member_of_target_id', $collection_node_id);
     if ($collection_id) {
-      $result = $database->query("SELECT created FROM {node_field_data} " .
+      $result = $database->query("SELECT created, " .
+        "YEAR(FROM_UNIXTIME(node_field_data.created)) item_year, " .
+        "MONTH(FROM_UNIXTIME(node_field_data.created)) item_month " .
+        "FROM {node_field_data} " .
         "INNER JOIN {node__field_member_of} node__field_member_of ON node__field_member_of.entity_id = node_field_data.nid " .
         "WHERE type in (:types[]) AND status = :status AND node__field_member_of.field_member_of_target_id = :collection_id",
         [
@@ -69,7 +71,10 @@ class PublishedNodesByMonth implements IslandoraRepositoryReportsDataSourceInter
         ]
       );
     } else {
-      $result = $database->query("SELECT created FROM {node_field_data} WHERE type in (:types[]) AND status = :status",
+      $result = $database->query("SELECT created, " .
+        "YEAR(FROM_UNIXTIME(node_field_data.created)) item_year, " .
+        "MONTH(FROM_UNIXTIME(node_field_data.created)) item_month " .
+        "FROM {node_field_data} WHERE type in (:types[]) AND status = :status",
         [
           ':types[]' => $utilities->getSelectedContentTypes(),
           ':status' => 1,
@@ -88,12 +93,17 @@ class PublishedNodesByMonth implements IslandoraRepositoryReportsDataSourceInter
       }
     }
 
-    $this->csvData = [[t('Month created'), 'Count']];
-    foreach ($created_counts as $month => $count) {
-      $this->csvData[] = [$month, $count];
+    $stats_result = asu_statistics_get_stats($collection_id);
+    $month_names = [];
+    for ($month = 1; $month < 13; $month++) {
+      $month_names[$month] = date("F", mktime(0, 0, 0, $month, 10));
     }
-
-    ksort($created_counts);
+    $headers = array_merge([t('Year')], $month_names, [t('Total')]);
+    $this->csvData[] = $headers;
+    foreach ($stats_result as $year => $row) {
+      $data_row = array_merge([$year], $row);
+      $this->csvData[] = $data_row;
+    }
     return $created_counts;
   }
 
