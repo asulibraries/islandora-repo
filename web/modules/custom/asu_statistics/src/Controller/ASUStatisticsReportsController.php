@@ -33,12 +33,14 @@ class ASUStatisticsReportsController extends ControllerBase {
         '#sticky' => true,
         '#caption' => '',
     ];
+    $summary_row = '';
     return [
       '#form' => $form,
       '#show_csv_link' => $show_csv_link,
       '#theme' => 'asu_statistics_chart',
       '#stats' => print_r($collection_stats, true),
-      '#stats_table' => $stats_table
+      '#stats_table' => $stats_table,
+      '#summary_row' => $summary_row,
     ];
   }
 
