@@ -228,14 +228,3 @@ function asu_statistics_get_stats($collection_node_id = NULL) {
   $result = $query->execute()->fetchAll();
   return asu_statistics_make_table_rows_from_result($result);
 }
-
-/**
- * Implements hook_ENTITY_TYPE_view() for node entities.
- */
-function asu_statistics_node_view_alter(array &$build, Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display) {
-  if ($entity->getType() == 'store') {
-    $title = $build['title'][0]['#context']['value'];
-    $new_title = t('@title Statistics', ['@title' => $title]);
-    $build['title'][0]['#context']['value'] = $new_title;
-  }
-}
