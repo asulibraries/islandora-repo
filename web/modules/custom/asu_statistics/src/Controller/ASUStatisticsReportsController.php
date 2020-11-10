@@ -42,6 +42,10 @@ class ASUStatisticsReportsController extends ControllerBase {
     ];
   }
 
+  public function getTitle($node = NULL) {
+    return (($node) ? $node->getTitle() . " " : "") . "Statistics";
+  }
+
   public function get_stats($collection_node_id = NULL) {
     return asu_statistics_get_stats($collection_node_id);
   }

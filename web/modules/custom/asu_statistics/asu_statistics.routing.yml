@@ -8,7 +8,7 @@ asu_statistics.report:
 asu_statistics.collection_statistics_view:
   path: '/collections/{node}/statistics'
   defaults:
-    _title: 'Statistics'
+    _title_callback: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::getTitle'
     _controller: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::main'
   requirements:
     _custom_access: '\Drupal\asu_statistics\Controller\GroupAccessController::access'

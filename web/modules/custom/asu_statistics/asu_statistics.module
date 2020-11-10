@@ -2,6 +2,8 @@
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\node\Entity\NodeType;
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 
 /**
  * @file
@@ -220,11 +222,6 @@ function asu_statistics_get_stats($collection_node_id = NULL) {
         'node__field_member_of.entity_id = node_field_data.nid');
     $query->condition('node__field_member_of.field_member_of_target_id', $collection_node_id);
   }
-  // Do not limit the results by published nodes only -- the make_table_rows_from_result
-  // will need to inspect the item's moderation state by using
-  //     $asu_utils = \Drupal::service('asu_utils');
-  //     $node = \Drupal::entityTypeManager()->getStorage('node')->load($node);
-  //     $node_is_published = $asu_utils->c($node);
 
   // $query->condition('node_field_data.status', 1);
   $query->groupBy('YEAR(FROM_UNIXTIME(node_field_data.created)), MONTH(FROM_UNIXTIME(node_field_data.created))');
@@ -233,17 +230,12 @@ function asu_statistics_get_stats($collection_node_id = NULL) {
 }
 
 /**
- * Implements hook_preprocess_HOOK().
+ * Implements hook_ENTITY_TYPE_view() for node entities.
  */
-function asu_statistics_node_view(array &$build, $entity, $display, $view_mode) {
+function asu_statistics_node_view_alter(array &$build, Drupal\Core\Entity\EntityInterface $entity, \Drupal\Core\Entity\Display\EntityViewDisplayInterface $display) {
   if ($entity->getType() == 'store') {
     $title = $build['title'][0]['#context']['value'];
-    $new_title = t('@title Review', ['@title' => $title]);
+    $new_title = t('@title Statistics', ['@title' => $title]);
     $build['title'][0]['#context']['value'] = $new_title;
   }
-//_preprocess_page_title(&$variables) {
-//  $route_name = \Drupal::routeMatch()->getRouteName();
-//  if ($route_name == 'asu_statistics.collection_statistics_view') {
-//    $variables['title'] .= " Statistics";
-//  }
 }
