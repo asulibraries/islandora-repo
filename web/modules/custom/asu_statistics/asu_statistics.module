@@ -17,7 +17,8 @@ use Drupal\node\Entity\NodeType;
 function asu_statistics_theme($existing, $type, $theme, $path) {
   return [
     'asu_statistics_chart' => [
-      'variables' => ['form' => NULL, 'show_csv_link' => NULL, 'stats' => NULL],
+      'variables' => ['form' => NULL, 'show_csv_link' => NULL, 'stats' => NULL,
+        'stats_table' => NULL],
     ],
     'islandora_repository_reports_tips_block' => [
       'variables' => ['content' => NULL],
@@ -184,21 +185,25 @@ function asu_statistics_make_table_rows_from_result($result) {
 
   // fill any empty months with a 0.
   for ($year = $earliest_year; $year <= $latest_year; $year++) {
+    $build_output[$year]['Year'] = $year;
     for ($month = 1; $month < 13; $month++) {
       $pad0_month = (($month < 10) ? "0" : "") . $month;
       $year_month_key = $year . "-" . $pad0_month;
+      $month_key = substr($month_names[$month], 0, 3);
       if (!array_key_exists($year_month_key, $rows)) {
-        $build_output[$year][$pad0_month] = 0;
+        $build_output[$year][$month_key] = 0;
       } else {
-        $build_output[$year][$pad0_month] = $rows[$year_month_key]['items'];
+        $build_output[$year][$month_key] = $rows[$year_month_key]['items'];
       }
     }
   }
   // now, add a row total at the end.
   foreach ($build_output as $year => $month_data) {
     $row_total = 0;
+    $skip_first_cell = TRUE;
     foreach ($month_data as $month_num => $items) {
-      $row_total+= $items;
+      $row_total+= ($skip_first_cell) ? 0 : $items;
+      $skip_first_cell = FALSE;
     }
     $build_output[$year]['total'] = $row_total;
   }
@@ -225,4 +230,20 @@ function asu_statistics_get_stats($collection_node_id = NULL) {
   $query->groupBy('YEAR(FROM_UNIXTIME(node_field_data.created)), MONTH(FROM_UNIXTIME(node_field_data.created))');
   $result = $query->execute()->fetchAll();
   return asu_statistics_make_table_rows_from_result($result);
+}
+
+/**
+ * Implements hook_preprocess_HOOK().
+ */
+function asu_statistics_node_view(array &$build, $entity, $display, $view_mode) {
+  if ($entity->getType() == 'store') {
+    $title = $build['title'][0]['#context']['value'];
+    $new_title = t('@title Review', ['@title' => $title]);
+    $build['title'][0]['#context']['value'] = $new_title;
+  }
+//_preprocess_page_title(&$variables) {
+//  $route_name = \Drupal::routeMatch()->getRouteName();
+//  if ($route_name == 'asu_statistics.collection_statistics_view') {
+//    $variables['title'] .= " Statistics";
+//  }
 }

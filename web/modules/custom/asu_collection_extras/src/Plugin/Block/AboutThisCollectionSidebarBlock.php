@@ -45,10 +45,18 @@ class AboutThisCollectionSidebarBlock extends BlockBase {
     $output_links = [];
     // Add a link for the "Overview" of this node.
     $variables['nodeid'] = $nid;
-    $url = Url::fromRoute('<current>', []);
+    $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/collections/' . $nid);
     $link = Link::fromTextAndUrl(t('Overview'), $url);
     $link = $link->toRenderable();
     $output_links[] = render($link);
+    $current_user = \Drupal::currentUser();
+    $view_statistics = \Drupal\asu_statistics\Controller\GroupAccessController::access($current_user);
+    if ($view_statistics) {
+      $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/collections/' . $nid . '/statistics');
+      $link = Link::fromTextAndUrl(t('Statistics'), $url);
+      $link = $link->toRenderable();
+      $output_links[] = render($link);
+    }
     // Add a link to get the Permalink for this node. Could this be a javascript
     // event that will send the current node's URL to the copy buffer?
     if ($node->hasField('field_handle') && $node->get('field_handle')->value != NULL) {
