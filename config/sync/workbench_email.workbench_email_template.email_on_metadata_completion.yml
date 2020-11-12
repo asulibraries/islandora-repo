@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.administrator
+    - user.role.repositor_manager
+id: email_on_metadata_completion
+label: 'Email on Metadata Completion'
+subject: 'KEEP Self-Deposit Metadata Completed'
+body:
+  value: "Metadata team has enriched and approved: [node:title]\r\n[node:url]"
+  format: plain_text
+bundles: {  }
+recipient_types:
+  role:
+    id: role
+    provider: workbench_email
+    status: true
+    settings:
+      roles:
+        administrator: administrator
+        repositor_manager: repositor_manager

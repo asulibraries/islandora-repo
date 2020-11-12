@@ -1208,6 +1208,19 @@ display:
             value: '<h2 class="search-header">Matching Items ([view:total-rows])</h2>'
             format: basic_html
           plugin_id: text
+        area_1:
+          id: area_1
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: 'link to mods'
+          empty: false
+          tokenize: true
+          content:
+            value: '<a href="/mods-xml/{{ nid }}">View MODS XML for search results</a>'
+            format: basic_html
+          plugin_id: text
       cache:
         type: none
     cache_metadata:
