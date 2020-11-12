@@ -49,6 +49,7 @@ class ASUStatisticsReportsController extends ControllerBase {
   }
 
   public function get_stats($collection_node_id = NULL) {
+    $zz = asu_statistics_solr_get_stats($collection_node_id);
     return asu_statistics_get_stats($collection_node_id);
   }
 
