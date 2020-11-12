@@ -29,7 +29,7 @@ class ASUItemIsPartOf extends BlockBase {
     $parents_output = [];
     $block_config = BlockBase::getConfiguration();
     if (is_array($block_config) && array_key_exists('node', $block_config)) {
-      $is_metadata_page = $block_config['is_metadata_page'];
+      $is_metadata_page = (array_key_exists('is_metadata_page', $block_config)) ? $block_config['is_metadata_page'] : FALSE;
       $node = $block_config['node'];
       $field_complex_object_child = $node->get('field_complex_object_child')->getString();
       if ($field_complex_object_child) {
