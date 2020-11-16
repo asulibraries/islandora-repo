@@ -1,10 +1,6 @@
 <?php
 
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\node\Entity\NodeType;
-use Drupal\Core\Entity\EntityInterface;
-use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
-use Drupal\search_api\Entity\Index;
 
 /**
  * @file
@@ -230,48 +226,14 @@ function asu_statistics_get_stats($collection_node_id = NULL) {
   return asu_statistics_make_table_rows_from_result($result);
 }
 
-function asu_statistics_solr_get_stats($collection_node_id = NULL) {
-  /* @var $search_api_index \Drupal\search_api\IndexInterface */
-  $search_api_index = Index::load('default_solr_index');
-  // Create the query.
-  $query = $search_api_index->query([
-    'limit'  => 500,
-    'offset' => 0,
-  ]);
-  // Set the language to search.
-  $query->setLanguages(['en']);
-  $query->setOption('search_api_retrieved_field_values', [
-    ['created' => 'created', 'nid' => 'nid', 'field_file_size' => 'field_file_size']]);
-  $conditions = $query->createConditionGroup('OR');
-  $conditions->addCondition('field_ancestors', $collection_node_id, '=')
-    ->addCondition('field_additional_memberships', $collection_node_id, '=');
-  $query->addConditionGroup($conditions);
-  $query->sort('search_api_relevance', 'DESC');
-  $results = $query->execute();
-  $out = '';
-  $counts = [];
-  $out .= "Result count: {$results->getResultCount()}<br>";
-  $ids = implode(', ', array_keys($results->getResultItems()));
-  $out .= "Returned IDs: $ids.<br>";
-  /** @var \Drupal\search_api\Item\ItemInterface $result */
-  foreach ($results as $result) {
-    /** @var \Solarium\QueryType\Select\Result\Document $solr_document */
-    // $solr_document = $result->getExtraData('search_api_solr_document', NULL);
-    // $fields = $solr_document->getFields();
-    // check ['its_nid', 'its_field_file_size', 'ds_created']
-    $nid = $result->getField('nid')->getValues()[0];
-    $out .= '<b>nid</b> = ' . $nid . '<hr>';
-
-    $file_size = $result->getField('field_file_size')->getValues()[0];
-    $out .= '<b>File size</b> = ' . $file_size . '<br>';
-
-    $created = $result->getField('created')->getValues()[0];
-    $out .= '<b>created</b> = ' . $created . '<br>';
-
-    $year = date('Y', $created);
-    $month = date('m', $created);
-    $day = date('d', $created);
-    $out .= "Y = " . $year . "/" . $month . "/" . $day . "<hr>";
-  }
-  echo "Returned results: <pre>" . $out . "</pre><br>";
+/**
+ * I think the $query is \Drupal\search_api\Query\QueryInterface.
+ */
+function asu_statistics_search_api_solr_query_alter(\Solarium\Core\Query\QueryInterface $solarium_query, $query){
+  // check to see that this query's options are not set up to be a facets call...
+  // the only REST call that I want to impact is the one.
+  //  $call_args['params']['fl'] = 'item_id,score,fm_field_placelng';
+  // add the correct params in order to get the URL to be like:
+  //   q=its_field_ancestors&stats=true&stats.field=its_field_file_size&rows=0
+  $searchId = $query->getSearchId();
 }
