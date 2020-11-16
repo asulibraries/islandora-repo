@@ -199,12 +199,16 @@ process:
     bundle: preservation_states
 
   field_language:
-    plugin: entity_lookup
-    source: Language
-    entity_type: taxonomy_term
-    value_key: name
-    bundle_key: vid
-    bundle: language
+    -
+      plugin: skip_on_empty
+      source: Language
+      method: process
+    -
+      plugin: entity_lookup
+      entity_type: taxonomy_term
+      value_key: name
+      bundle_key: vid
+      bundle: language
 
   field_handle:
     plugin: concat
@@ -309,9 +313,12 @@ process:
 
   authors:
     -
+      plugin: skip_on_empty
+      method: process
+      source: Authors
+    -
       plugin: explode
       delimiter: '||'
-      source: Authors
     -
       plugin: callback
       callable: trim
@@ -327,9 +334,12 @@ process:
 
   contributors:
     -
+      plugin: skip_on_empty
+      method: process
+      source: Contributors-Person
+    -
       plugin: explode
       delimiter: '||'
-      source: Contributors-Person
     -
       plugin: callback
       callable: trim
@@ -345,9 +355,12 @@ process:
 
   corporations:
     -
+      plugin: skip_on_empty
+      method: process
+      source: Contributors-Corporate
+    -
       plugin: explode
       delimiter: '||'
-      source: Contributors-Corporate
     -
       plugin: callback
       callable: trim
@@ -363,9 +376,12 @@ process:
 
   corp_publishers:
     -
+      plugin: skip_on_empty
+      method: process
+      source: Publishers-Corporate
+    -
       plugin: explode
       delimiter: '||'
-      source: Publishers-Corporate
     -
       plugin: callback
       callable: trim
@@ -381,9 +397,12 @@ process:
 
   pers_photographers:
     -
+      plugin: skip_on_empty
+      method: process
+      source: Photographers-Personal
+    -
       plugin: explode
       delimiter: '||'
-      source: Photographers-Personal
     -
       plugin: callback
       callable: trim
@@ -399,9 +418,12 @@ process:
 
   pers_transcribers:
     -
+      plugin: skip_on_empty
+      method: process
+      source: Transcriber-Personal
+    -
       plugin: explode
       delimiter: '||'
-      source: Transcriber-Personal
     -
       plugin: callback
       callable: trim
@@ -416,14 +438,18 @@ process:
       relator: 'relators:trc'
 
   field_linked_agent:
-    plugin: merge
-    source:
-      - '@authors'
-      - '@contributors'
-      - '@corporations'
-      - '@corp_publishers'
-      - '@pers_photographers'
-      - '@pers_transcribers'
+    -
+      plugin: get
+      source:
+        - '@authors'
+        - '@contributors'
+        - '@corporations'
+        - '@corp_publishers'
+        - '@pers_photographers'
+        - '@pers_transcribers'
+    -
+      plugin: skip_on_empty
+      method: process
 
   field_history:
     -
