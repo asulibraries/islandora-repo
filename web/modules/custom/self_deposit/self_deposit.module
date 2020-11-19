@@ -5,11 +5,8 @@
  * Contains self_deposit.module.
  */
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\user\UserInterface;
-use Drupal\self_deposit\Form\FieldModelToMedia;
-use Drupal\self_deposit\Form\NodeMediaRedirect;
+use Drupal\user\Entity\User;
 
 /**
  * Implements hook_help().
@@ -24,5 +21,29 @@ function self_deposit_help($route_name, RouteMatchInterface $route_match) {
       return $output;
 
     default:
+  }
+}
+
+function self_deposit_preprocess_node(&$variables) {
+  if ($variables['node'] && $variables['node']->getType() == 'asu_repository_item') {
+    $current_user = User::load(\Drupal::currentUser()->id());
+    if ($current_user->hasRole('administrator') || $current_user->hasRole('content_approver') || $current_user->hasRole('metadata_manager')){
+      $connection = \Drupal::database();
+      $node_id = $variables['node']->id();
+      $query = $connection->query("SELECT DISTINCT sid
+    FROM webform_submission_data wsd
+     WHERE wsd.webform_id = 'self_deposit'
+     AND sid IN (SELECT sid FROM webform_submission_data wsd2
+                  WHERE wsd2.name = 'item_node'
+                    AND wsd2.value = :node_id)", [
+        ':node_id' => $node_id
+      ]);
+      $result = $query->fetchAll();
+      if (count($result) > 0) {
+        $submission_id = $result[0]->sid;
+        $url = "/webform/self_deposit/submissions/" . $submission_id;
+        \Drupal::messenger()->addMessage(t('This node is related to a self deposit. <a href="' . $url . '">View original deposit.</a>'));
+      }
+    }
   }
 }

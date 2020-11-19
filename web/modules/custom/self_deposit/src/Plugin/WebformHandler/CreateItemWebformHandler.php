@@ -50,8 +50,16 @@ class CreateItemWebformHandler extends WebformHandlerBase {
     else {
       $term = 'Binary';
     }
-    $taxo_terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties(['name' => $term]);
+    $taxo_manager = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
+    $taxo_terms = $taxo_manager->loadByProperties(['name' => $term]);
     $taxo_term = reset($taxo_terms);
+
+    $copyright_term_arr = $taxo_manager->loadByProperties(['name' => 'In Copyright']);
+    $copyright_term = reset($copyright_term_arr);
+
+    $perm_term_arr =
+    $taxo_manager->loadByProperties(['name' => $values['file_permissions_select']]);
+    $perm_term = reset($perm_term_arr);
 
     $paragraph = Paragraph::create(['type' => 'complex_title', 'field_main_title' => $values['item_title']]);
     $paragraph->save();
@@ -73,17 +81,20 @@ class CreateItemWebformHandler extends WebformHandlerBase {
         'value' => $values['item_description'],
         'format' => 'description_restricted_items',
       ],
-      'field_copyright_statement' => [
-        ['target_id' => $values['copyright_statement']],
+      'field_embargo_release_date' => [
+        $values['embargo_release_date'] . "T23:59:59",
       ],
       'field_reuse_permissions' => [
         ['target_id' => $values['reuse_permissions']],
       ],
+      'field_copyright_statement' => [
+        ['target_id' => $copyright_term->id()],
+      ],
       'field_default_derivative_file_pe' => [
-        ['target_id' => $values['file_permissions']],
+        ['target_id' => $perm_term->id()],
       ],
       'field_default_original_file_perm' => [
-        ['target_id' => $values['file_permissions']],
+        ['target_id' => $perm_term->id()],
       ],
       'field_model' => [
         ['target_id' => $taxo_term->id()],
