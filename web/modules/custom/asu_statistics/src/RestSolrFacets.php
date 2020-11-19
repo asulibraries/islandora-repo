@@ -9,7 +9,7 @@ use GuzzleHttp\Exception\ClientException;
 /**
  * Class DataverseApiService.
  */
-class RestSolrFacets implements BentoApiInterface {
+class RestSolrFacets implements RESTApiInterface {
 
   /**
    * GuzzleHttp\ClientInterface definition.
