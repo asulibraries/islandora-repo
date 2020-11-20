@@ -32,10 +32,16 @@ source:
 
 process:
   field_extent:
-    plugin: skip_on_empty
-    source: Extent
-    method: process
-    # todo split on ||
+    -
+      plugin: skip_on_empty
+      source: Extent
+      method: process
+    -
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: callback
+      callable: trim
 
   field_edtf_date_created:
     plugin: skip_on_empty
