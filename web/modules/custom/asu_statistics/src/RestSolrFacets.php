@@ -41,7 +41,7 @@ class RestSolrFacets implements RESTApiInterface {
       if ($status_code != 200) {
         \Drupal::logger('asu_statistics')->warning($status_code . " returned from Solr : <pre>" . print_r($response, TRUE) . "</pre>");
       }
-      else {
+      else {    
         $resource = json_decode($response_body, TRUE);
         if (array_key_exists('result', $resource) && $resource['result'] == 'error') {
           \Drupal::logger('asu_statistics')->warning("Error returned from Solr : <pre>" . print_r($resource, TRUE) . "</pre>");
