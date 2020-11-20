@@ -40,7 +40,7 @@ class CollectionParents extends ProcessorPluginBase {
           }
         }
 
-        if ($item->hasField('field_additional_memberships')) {
+        if ($node->hasField('field_additional_memberships')) {
           $additional_memberships = $item->getField('field_additional_memberships');
           if ($additional_memberships) {
             $additional_memberships = $additional_memberships->getValues();
