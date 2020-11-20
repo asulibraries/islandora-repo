@@ -28,6 +28,8 @@ class ASUStatisticsReportsController extends ControllerBase {
     $form = \Drupal::formBuilder()->getForm('Drupal\asu_statistics\Plugin\Form\ASUStatisticsReportsReportSelectorForm');
     $collection_node_id = ($node) ? $node->id(): 0;
     $collection_stats = $this->get_stats($collection_node_id);
+    $total_file_size = $this->solr_get_sum('its_field_file_size', $collection_node_id);
+
     $firstKey = $this->array_key_first($collection_stats);
     $first_row = $collection_stats[$firstKey];
     $stats_table = [
@@ -37,14 +39,14 @@ class ASUStatisticsReportsController extends ControllerBase {
         '#sticky' => true,
         '#caption' => '',
     ];
-    $summary_row = '';
+    $summary_row = $total_file_size;
     return [
       '#form' => $form,
       '#show_csv_link' => $show_csv_link,
       '#theme' => 'asu_statistics_chart',
       '#stats' => print_r($collection_stats, true),
       '#stats_table' => $stats_table,
-      '#summary_row' => $summary_row,
+      '#summary_row' => number_format($summary_row),
     ];
   }
 
@@ -53,77 +55,51 @@ class ASUStatisticsReportsController extends ControllerBase {
   }
 
   public function get_stats($collection_node_id = NULL) {
-    $zz = $this->solr_get_stats($collection_node_id);
     return asu_statistics_get_stats($collection_node_id);
   }
 
   private function array_key_first(array $array) { foreach ($array as $key => $value) { return $key; } }
 
-  public function solr_get_stats($collection_node_id = NULL) {
-    /* @var $search_api_index \Drupal\search_api\IndexInterface */
-//    $search_api_index = Index::load('default_solr_index');
-//    // Create the query.
-//    $query = $search_api_index->query([
-//      'limit'  => 500,
-//      'offset' => 0,
-//    ]);
-//    // Set the language to search.
-//    $query->setLanguages(['en']);
-//    $query->setOption('search_api_retrieved_field_values', [
-//      ['created' => 'created', 'nid' => 'nid', 'field_file_size' => 'field_file_size']]);
-//    $conditions = $query->createConditionGroup('OR');
-//    $conditions->addCondition('field_ancestors', $collection_node_id, '=')
-//      ->addCondition('field_additional_memberships', $collection_node_id, '=');
-//    $query->addConditionGroup($conditions);
-//    $query->setOption('search_api_facets', [
-//      'created' => [
-//        'field' => 'created',
-//        'limit' => 0,
-//        'min_count' => 1,
-//        'operator' => 'or',
-//        'missing' => FALSE,
-//        'query_type' => 'search_api_date',
-//      'granularity' => 5,
-//        'gap' => 5,
-//  //      'start' => 1,
-//      ]
-//    ]);
-//    $query->sort('search_api_relevance', 'DESC');
-//    $results = $query->execute();
-//    $facets = $results->getExtraData('search_api_facets', []);
-//    $out = '';
-//    $counts = [];
-//    $out .= "Result count: {$results->getResultCount()}<br>";
-//    $ids = implode(', ', array_keys($results->getResultItems()));
-//    $out .= "Returned IDs: $ids.<br>";
-//    /** @var \Drupal\search_api\Item\ItemInterface $result */
-//    foreach ($results as $result) {
-//      /** @var \Solarium\QueryType\Select\Result\Document $solr_document */
-//      // $solr_document = $result->getExtraData('search_api_solr_document', NULL);
-//      // $fields = $solr_document->getFields();
-//      // check ['its_nid', 'its_field_file_size', 'ds_created']
-//      $nid = $result->getField('nid')->getValues()[0];
-//      $out .= '<b>nid</b> = ' . $nid . '<hr>';
-//
-//      $file_sizes = $result->getField('field_file_size')->getValues();
-//      $file_size = (is_array($file_sizes) && count($file_sizes) > 0) ? $file_sizes[0]: 0;
-//      $out .= '<b>File size</b> = ' . $file_size . '<br>';
-//
-//      $created = $result->getField('created')->getValues()[0];
-//      $out .= '<b>created</b> = ' . $created . '<br>';
-//
-//      $year = date('Y', $created);
-//      $month = date('m', $created);
-//      $day = date('d', $created);
-//      $out .= "Y = " . $year . "/" . $month . "/" . $day . "<hr>";
+  /**
+   * Function to run a Solr query on either the whole site or limited to a 
+   * collection and return the stats getSum for the its_field_file_size field.
+   * 
+   * @param type $stats_field
+   *   Optional field for which to return sum statistics. Default field is the
+   * its_field_file_size.
+   * @param int $collection_node_id
+   *   Optional parameter to limit the stats to children of a collection.
+   */
+  public function solr_get_sum($stats_field = 'its_field_file_size', $collection_node_id = NULL) {
+    $index = Index::load('default_solr_index');
+    $server = $index->getServerInstance();
+    $backend = $server->getBackend();
+    $solrConnector = $backend->getSolrConnector();
+    $solariumQuery = $solrConnector->getSelectQuery();
+    $solariumQuery->setRows(0);
+    $solariumQuery->addParam('q', 'its_field_ancestors:' . $collection_node_id);
+    $solariumQuery->addParam('rows', '0');
+    $stats = $solariumQuery->getStats();
+    $stats->createField('its_field_file_size');
+    $executed = $solrConnector->execute($solariumQuery);
+    $stats = $executed->getStats();
+    $sum = 0;
+    foreach ($stats->getResults() as $field) {
+      $sum = $field->getSum();
+    }
+//      echo '<h1>' . $field->getName() . '</h1>';
+//      echo 'Min: ' . $field->getMin() . '<br/>';
+//      echo 'Max: ' . $field->getMax() . '<br/>';
+//      echo 'Sum: ' . $field->getSum() . '<br/>';
+//      \Drupal::logger('asu statistics')->info("sum is " . $field->getSum());
+//      echo 'Count: ' . $field->getCount() . '<br/>';
+//      echo 'Missing: ' . $field->getMissing() . '<br/>';
+//      echo 'SumOfSquares: ' . $field->getSumOfSquares() . '<br/>';
+//      echo 'Mean: ' . $field->getMean() . '<br/>';
+//      echo 'Stddev: ' . $field->getStddev() . '<br/>';
+//      echo '<hr/>';
 //    }
-//    $out .= "<br>Facets data: <pre>" . var_export($facets, TRUE) . "</pre>";
-//    echo "Returned results: <pre>" . $out . "</pre><br>";
-    // Call the REST endpoint to get the "Authored on" created month facets.
-//    $month_facet_results = $this->call_REST($collection_node_id, 'month_facets');
-    // Call the REST endpoint to get the statistics of file size total.
-    $sum_filesize_results = \Drupal::service('asu_statistics.rest_solr_facets')->call_REST($collection_node_id, 'sum_filesize');
+    return $sum;
   }
-
 
 }

@@ -2,7 +2,9 @@
   {% if show_csv_link %}
     <div id="islandora-repository-reports-csv_link"><a href="{{ csv_url }}">Download the CSV</a></div>
   {% endif %}
-  {{ summary_row }}
+  {% if summary_row %}
+  {{ summary_row }} bytes
+  {% endif %}
   {{ stats_table }}
   <pre style="color:red">{{ stats }}</pre>
   {% if html_content %}
