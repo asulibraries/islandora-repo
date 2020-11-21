@@ -113,19 +113,6 @@ field_issuance:
 field_frequency:
   _top: originInfo
   frequency: field_frequency
-field_place_of_publication_code:
-  _top: originInfo
-  place:
-    placeTerm:
-      '#': field_place_of_publication_code
-      '@type': code
-      '@authority': marccountry
-field_place_published:
-  _top: originInfo
-  place:
-    placeTerm:
-      '#': field_place_published
-      '@type': text
 field_embargo_release_date:
   _top: originInfo
   dateOther:
@@ -140,8 +127,8 @@ field_resource_type:
 field_geographic_subject:
   _top: subject
   geographic:
-    '@authority': field_external_authority_link/source
-    '@valueURI': field_external_authority_link/uri
+    '@authority': field_authority_link/source
+    '@valueURI': field_authority_link/uri
     '#': name
 field_temporal_subject:
   _top: subject
