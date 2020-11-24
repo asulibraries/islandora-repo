@@ -52,8 +52,8 @@ field_open_access:
   '#': field_open_access
 field_genre:
   _top: genre
-  '@authority': field_authority_source
-  '@valueURI': field_authority_source/uri
+  '@authority': field_authority_link/source
+  '@valueURI': field_authority_link/uri
   '#': name
 field_extent:
   _top: physicalDescription
@@ -121,7 +121,7 @@ field_embargo_release_date:
     '#': field_embargo_release_date
 field_resource_type:
   _top: typeOfResource
-  '@authority': field_external_authority_link
+  '@authority': field_external_authority_link/source
   '@valueURI': field_external_authority_link/uri
   '#': name
 field_geographic_subject:
