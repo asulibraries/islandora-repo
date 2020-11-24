@@ -25,7 +25,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_handle
     - field.field.node.asu_repository_item.field_history
     - field.field.node.asu_repository_item.field_issuance
-    - field.field.node.asu_repository_item.field_keywords
+    - field.field.node.asu_repository_item.field_keyword
     - field.field.node.asu_repository_item.field_language
     - field.field.node.asu_repository_item.field_level_of_coding
     - field.field.node.asu_repository_item.field_linked_agent
@@ -140,14 +140,6 @@ content:
     third_party_settings: {  }
     type: edtf_default
     region: content
-  field_keywords:
-    type: string_textarea
-    weight: 5
-    region: content
-    settings:
-      rows: 1
-      placeholder: ''
-    third_party_settings: {  }
   field_linked_agent:
     weight: 6
     settings:
@@ -227,6 +219,7 @@ hidden:
   field_handle: true
   field_history: true
   field_issuance: true
+  field_keyword: true
   field_language: true
   field_level_of_coding: true
   field_name_title_subject: true
