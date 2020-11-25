@@ -28,8 +28,13 @@ class ASUStatisticsReportsController extends ControllerBase {
     $form = \Drupal::formBuilder()->getForm('Drupal\asu_statistics\Plugin\Form\ASUStatisticsReportsReportSelectorForm');
     $collection_node_id = ($node) ? $node->id(): 0;
     $collection_stats = $this->get_stats($collection_node_id);
-    $total_file_size = $this->solr_get_sum('its_field_file_size', $collection_node_id);
-
+    $total_file_sizes = $this->solr_get_sum('its_field_file_size', $collection_node_id);
+echo "<pre>" . print_r($total_file_sizes, true) . "</pre>";
+    $total_file_size = 0;
+    foreach ($total_file_sizes as $mime_type => $sum) {
+      $total_file_size += $sum['value'];
+    }
+    
     $firstKey = $this->array_key_first($collection_stats);
     $first_row = $collection_stats[$firstKey];
     $stats_table = [
@@ -46,7 +51,8 @@ class ASUStatisticsReportsController extends ControllerBase {
       '#theme' => 'asu_statistics_chart',
       '#stats' => print_r($collection_stats, true),
       '#stats_table' => $stats_table,
-      '#summary_row' => number_format($summary_row),
+      '#mime_type_sums' => $total_file_sizes,
+      '#summary_row' => $summary_row,
     ];
   }
 
@@ -75,31 +81,28 @@ class ASUStatisticsReportsController extends ControllerBase {
     $server = $index->getServerInstance();
     $backend = $server->getBackend();
     $solrConnector = $backend->getSolrConnector();
-    $solariumQuery = $solrConnector->getSelectQuery();
-    $solariumQuery->setRows(0);
-    $solariumQuery->addParam('q', 'its_field_ancestors:' . $collection_node_id);
-    $solariumQuery->addParam('rows', '0');
-    $stats = $solariumQuery->getStats();
-    $stats->createField('its_field_file_size');
-    $executed = $solrConnector->execute($solariumQuery);
-    $stats = $executed->getStats();
-    $sum = 0;
-    foreach ($stats->getResults() as $field) {
-      $sum = $field->getSum();
-    }
-//      echo '<h1>' . $field->getName() . '</h1>';
-//      echo 'Min: ' . $field->getMin() . '<br/>';
-//      echo 'Max: ' . $field->getMax() . '<br/>';
-//      echo 'Sum: ' . $field->getSum() . '<br/>';
-//      \Drupal::logger('asu statistics')->info("sum is " . $field->getSum());
-//      echo 'Count: ' . $field->getCount() . '<br/>';
-//      echo 'Missing: ' . $field->getMissing() . '<br/>';
-//      echo 'SumOfSquares: ' . $field->getSumOfSquares() . '<br/>';
-//      echo 'Mean: ' . $field->getMean() . '<br/>';
-//      echo 'Stddev: ' . $field->getStddev() . '<br/>';
-//      echo '<hr/>';
-//    }
-    return $sum;
-  }
+    // first, run a facets query to get all possible mime_types
+    // loop through the mime_types and get their sums
+    $mime_types = ['image/jpeg', 'image/png'];
+    $sums = [];
+    foreach ($mime_types as $mime_type) {
+      $solariumQuery = $solrConnector->getSelectQuery();
+      $solariumQuery->setRows(0);    
+      $solariumQuery->addParam('q', 'its_field_ancestors:' . $collection_node_id);
+      $solariumQuery->addParam('q', 'sm_field_mime_type:' . $mime_type);
+      $solariumQuery->addParam('rows', '0');
+      $stats[$mime_type] = $solariumQuery->getStats();
+      $stats[$mime_type]->createField('its_field_file_size');
+      $executed = $solrConnector->execute($solariumQuery);
+      $stats[$mime_type] = $executed->getStats();
 
+      $stats[$mime_type] = $executed->getStats();
+
+      foreach ($stats[$mime_type]->getResults() as $field) {
+        $sums[$mime_type] = ['name' => $mime_type, 'value' => $field->getSum(), 'count' => $executed->getNumFound()];
+      }
+    }
+    return $sums;
+  }
+  
 }

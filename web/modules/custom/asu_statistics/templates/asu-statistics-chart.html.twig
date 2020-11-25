@@ -2,10 +2,21 @@
   {% if show_csv_link %}
     <div id="islandora-repository-reports-csv_link"><a href="{{ csv_url }}">Download the CSV</a></div>
   {% endif %}
-  {% if summary_row %}
-  {{ summary_row }} bytes
-  {% endif %}
   {{ stats_table }}
+
+  {% if summary_row %}
+    <label>Space used</label> {{ summary_row|format_bytes }}
+    <table>
+        <tr><th>Mime type</th><th>Attachment count</th><th>Size</th></tr>
+    {% for elem in mime_type_sums %}
+        <tr>
+            <td>{{ elem.name }}</td>
+            <td style="text-align:right">{{ elem.count }}</td>
+            <td>{{ elem.value|format_bytes }}</td>
+        </tr>
+    {% endfor %}
+    </table>
+  {% endif %}
   <pre style="color:red">{{ stats }}</pre>
   {% if html_content %}
     <div id="islandora-repository-reports-content">
