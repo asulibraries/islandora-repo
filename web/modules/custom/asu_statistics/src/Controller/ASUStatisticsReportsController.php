@@ -27,14 +27,28 @@ class ASUStatisticsReportsController extends ControllerBase {
       $tempstore->get('asu_statistics_generate_csv') : FALSE;
     $form = \Drupal::formBuilder()->getForm('Drupal\asu_statistics\Plugin\Form\ASUStatisticsReportsReportSelectorForm');
     $collection_node_id = ($node) ? $node->id(): 0;
-    $collection_stats = $this->get_stats($collection_node_id);
-    $total_file_sizes = $this->solr_get_sum('its_field_file_size', $collection_node_id);
-echo "<pre>" . print_r($total_file_sizes, true) . "</pre>";
-    $total_file_size = 0;
-    foreach ($total_file_sizes as $mime_type => $sum) {
-      $total_file_size += $sum['value'];
-    }
+    // Total
+    $collection_stats = $this->get_stats($collection_node_id, FALSE);
+    // Public Items
+    $public_items_stats = $this->get_stats($collection_node_id, TRUE);
     
+    
+    // Private Items (total only)
+    $total_file_sizes = $this->solr_get_sum('its_field_file_size', $collection_node_id);
+    $total_file_size = 0;
+    $asu_utils = \Drupal::service('asu_utils');    
+    foreach ($total_file_sizes as $mime_type => $sum) {
+      $total_file_size += $sum['Size'];
+      $total_file_sizes[$mime_type]['Size'] = $asu_utils->formatBytes($sum['Size'], 1);     
+    }
+    $total_items = ['total', 'public', 'private'];
+    foreach ($collection_stats as $year=>$totals) {
+      $total_items['total'] += $totals['Total'];
+    }
+    foreach ($public_items_stats as $year=>$totals) {
+      $total_items['public'] += $totals['Total'];
+    }
+    $total_items['private'] = $total_items['total'] - $total_items['public'];
     $firstKey = $this->array_key_first($collection_stats);
     $first_row = $collection_stats[$firstKey];
     $stats_table = [
@@ -44,15 +58,29 @@ echo "<pre>" . print_r($total_file_sizes, true) . "</pre>";
         '#sticky' => true,
         '#caption' => '',
     ];
+    $content_counts_header = ['Mime type','Attachment count','Size'];
+    $content_counts_table = [
+        '#type' => 'table',
+        '#rows' => $total_file_sizes,
+        '#header' => $content_counts_header,
+        '#caption' => '',
+    ];
+    
+///    echo "<pre style='color:black'>" . print_r(array_keys($first_row) , true) . "</pre>";
+//   echo "<pre style='color:purple'>" . print_r($collection_stats, true) . "</pre>";
+//    echo "<pre style='color:black'>" . print_r($content_counts_header , true) . "</pre>";
+//   echo "<pre style='color:green'>" . print_r($total_file_sizes, true) . "</pre>";
+//    
     $summary_row = $total_file_size;
     return [
       '#form' => $form,
       '#show_csv_link' => $show_csv_link,
       '#theme' => 'asu_statistics_chart',
-      '#stats' => print_r($collection_stats, true),
+      '#total_items' => $total_items,
       '#stats_table' => $stats_table,
-      '#mime_type_sums' => $total_file_sizes,
+      '#content_counts_table' => $content_counts_table,
       '#summary_row' => $summary_row,
+      '#collections_by_institution' => (($collection_node_id) ? NULL : true),
     ];
   }
 
@@ -60,8 +88,8 @@ echo "<pre>" . print_r($total_file_sizes, true) . "</pre>";
     return (($node) ? $node->getTitle() . " " : "") . "Statistics";
   }
 
-  public function get_stats($collection_node_id = NULL) {
-    return asu_statistics_get_stats($collection_node_id);
+  public function get_stats($collection_node_id = NULL, $status) {
+    return asu_statistics_get_stats($collection_node_id, $status);
   }
 
   private function array_key_first(array $array) { foreach ($array as $key => $value) { return $key; } }
@@ -97,9 +125,11 @@ echo "<pre>" . print_r($total_file_sizes, true) . "</pre>";
       $stats[$mime_type] = $executed->getStats();
 
       $stats[$mime_type] = $executed->getStats();
-
       foreach ($stats[$mime_type]->getResults() as $field) {
-        $sums[$mime_type] = ['name' => $mime_type, 'value' => $field->getSum(), 'count' => $executed->getNumFound()];
+        $sums[] = [
+          'Mime type' => $mime_type, 
+          'Attachment count' => $executed->getNumFound(), 
+          'Size' => $field->getSum()];
       }
     }
     return $sums;

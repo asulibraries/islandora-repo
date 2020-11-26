@@ -16,8 +16,14 @@ use Drupal\Core\Form\FormStateInterface;
 function asu_statistics_theme($existing, $type, $theme, $path) {
   return [
     'asu_statistics_chart' => [
-      'variables' => ['form' => NULL, 'show_csv_link' => NULL, 'stats' => NULL,
-        'stats_table' => NULL, 'summary_row' => NULL, 'mime_type_sums' => NULL],
+      'variables' => [
+          'form' => NULL, 
+          'show_csv_link' => NULL,
+          'total_items' => NULL,
+          'stats_table' => NULL, 
+          'summary_row' => NULL, 
+          'content_counts_table' => NULL,
+          'collections_by_institution' => NULL],
     ],
     'islandora_repository_reports_tips_block' => [
       'variables' => ['content' => NULL],
@@ -65,7 +71,7 @@ function template_preprocess_asu_statistics_chart(&$variables) {
 
   if ($variables['show_csv_link']) {
     $default_schema = \Drupal::config('system.file')->get('default_scheme');
-    $files_path = \Drupal::service('file_system')->realpath(default_schema . "://");
+    $files_path = \Drupal::service('file_system')->realpath($default_schema . "://");
     $report_type = 'published_nodes_by_month';
     $filename = 'asu_statistics_' . $report_type . '.csv';
     $report_url = file_create_url($default_schema . '://' . $filename);
@@ -158,7 +164,7 @@ function asu_statistics_file_download($uri) {
   return NULL;
 }
 
-function asu_statistics_make_table_rows_from_result($result, $total_file_size = 0) {
+function asu_statistics_make_table_rows_from_result($result) {
   $build_output = $rows = [];
   $month_names = [];
   for ($month = 1; $month < 13; $month++) {
@@ -198,28 +204,32 @@ function asu_statistics_make_table_rows_from_result($result, $total_file_size = 
   }
   // now, add a row total at the end.
   foreach ($build_output as $year => $month_data) {
+  ///  echo "<pre style='font-size:8pt'>" . print_r($month_data, true) . "</pre>";
     $row_total = 0;
     $skip_first_cell = TRUE;
     foreach ($month_data as $month_num => $items) {
       $row_total+= ($skip_first_cell) ? 0 : $items;
       $skip_first_cell = FALSE;
     }
-    $build_output[$year]['total'] = $row_total;
+    
+    $build_output[$year]['Total'] = $row_total;
   }
   return $build_output;
 }
 
-function asu_statistics_get_stats($collection_node_id = NULL) {
+function asu_statistics_get_stats($collection_node_id = NULL, $status = TRUE) {
   $query = \Drupal::database()->select('node_field_data', 'node_field_data');
   $query->addExpression('COUNT(node_field_data.nid)', 'items');
   $query->addExpression('YEAR(FROM_UNIXTIME(node_field_data.created))', 'item_year');
   $query->addExpression('MONTH(FROM_UNIXTIME(node_field_data.created))', 'item_month');
-    if ($collection_node_id) {
+  if ($collection_node_id) {
     $query->join('node__field_member_of', 'node__field_member_of',
         'node__field_member_of.entity_id = node_field_data.nid');
     $query->condition('node__field_member_of.field_member_of_target_id', $collection_node_id);
   }
-
+  if ($status) {
+    $query->condition('node_field_data.status', 1);
+  }  
   // $query->condition('node_field_data.status', 1);
   $query->groupBy('YEAR(FROM_UNIXTIME(node_field_data.created)), MONTH(FROM_UNIXTIME(node_field_data.created))');
   $result = $query->execute()->fetchAll();

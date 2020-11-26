@@ -1,10 +1,13 @@
-asu_statistics.report:
+asu_statistics.settings:
   path: '/admin/reports/asu_statistics'
   defaults:
     _controller: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::main'
     _title: 'ASU Statistics Reports'
   requirements:
-    _permission: 'view asu statistics reports'
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE    
+
 asu_statistics.collection_statistics_view:
   path: '/collections/{node}/statistics'
   defaults:

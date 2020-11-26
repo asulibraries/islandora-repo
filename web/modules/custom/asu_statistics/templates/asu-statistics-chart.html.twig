@@ -2,22 +2,22 @@
   {% if show_csv_link %}
     <div id="islandora-repository-reports-csv_link"><a href="{{ csv_url }}">Download the CSV</a></div>
   {% endif %}
+  <h4>Item Accessions</h4>
+    <b>Total Items</b> {{ total_items.total }} &nbsp; &nbsp;
+    <b>Public Items</b> {{ total_items.public }} &nbsp; &nbsp;
+    <b>Private Items</b> {{ total_items.private }}
   {{ stats_table }}
 
   {% if summary_row %}
+  <h4>Content Counts</h4>
     <label>Space used</label> {{ summary_row|format_bytes }}
-    <table>
-        <tr><th>Mime type</th><th>Attachment count</th><th>Size</th></tr>
-    {% for elem in mime_type_sums %}
-        <tr>
-            <td>{{ elem.name }}</td>
-            <td style="text-align:right">{{ elem.count }}</td>
-            <td>{{ elem.value|format_bytes }}</td>
-        </tr>
-    {% endfor %}
-    </table>
+    {{ content_counts_table }}
   {% endif %}
-  <pre style="color:red">{{ stats }}</pre>
+  
+  {% if collections_by_institution %}
+  <h4>Collections</h4>
+      
+  {% endif %}
   {% if html_content %}
     <div id="islandora-repository-reports-content">
       <div id="s-repository-reports-chart-title"><h3>{{ chart_title }}</h3></div>
