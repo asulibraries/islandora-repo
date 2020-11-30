@@ -62,10 +62,12 @@ class ModsEncoder extends XmlEncoder {
     $return_vals = [];
 
     if (str_contains($field_name, 'field_') || (in_array($field_name, self::MACHINE_FIELDS))) {
-      $field = $data->get($field_name);
-      $vals = $field->getValue();
-      if (is_array($vals) && count($vals) > 0 && array_key_exists('target_id', $vals[0])) {
-        $vals = $field->referencedEntities();
+      if ($data->hasField($field_name)) {
+        $field = $data->get($field_name);
+        $vals = $field->getValue();
+        if (is_array($vals) && count($vals) > 0 && array_key_exists('target_id', $vals[0])) {
+          $vals = $field->referencedEntities();
+        }
       }
     } else {
       $vals = [$field_name];
@@ -95,6 +97,9 @@ class ModsEncoder extends XmlEncoder {
               $field_arr[$ck] = $val;
             }
             else {
+              if (is_array($cv)) {
+                $arr_cv = $cv;
+              }
               $field_arr[$ck] = self::get_field_values($val, $cv, $ck);
             }
           } else {
@@ -107,6 +112,9 @@ class ModsEncoder extends XmlEncoder {
               }
               else {
                 $temp_val = $val;
+              }
+              if (is_array($sub_cv)) {
+                $arr_cv = $sub_cv;
               }
               $field_arr[$ck][$sub_ck] = self::get_field_values($temp_val, $sub_cv, $sub_ck);
             }
@@ -176,6 +184,9 @@ class ModsEncoder extends XmlEncoder {
     $new_data = [];
     foreach ($mods_config->getRawData() as $field_name => $field_config) {
       if (!is_array($field_config)) {
+        if (is_array($field_name)) {
+          $arr_field = $field_name;
+        }
         $simple_data = $this->get_field_values($node, $field_name, $field_config);
         $new_data[$field_config][] = [
           '#' => $simple_data,
@@ -188,6 +199,10 @@ class ModsEncoder extends XmlEncoder {
           }
           unset($field_config['_top']);
         }
+        if (is_array($field_name)) {
+          $arr_field = $field_name;
+        }
+
         $complex_data = $this->get_field_values($node, $field_name, $field_config);
         if (is_array($complex_data)) {
           if (count($complex_data) == 0) {
@@ -243,8 +258,12 @@ class ModsEncoder extends XmlEncoder {
     }
 
     $xml = parent::encode($all_records, $format, $context);
-    $xml = str_replace("<mods>", '<mods xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/mods/v3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd">', $xml);
-    $xml = str_replace("<modsCollection>", '<modsCollection xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/mods/v3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd">',$xml);
+    if (is_array($data)) {
+      $xml = str_replace("<modsCollection>", '<modsCollection xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/mods/v3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd">', $xml);
+    }
+    else {
+      $xml = str_replace("<mods>", '<mods xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/mods/v3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd">', $xml);
+    }
     $search = [
       '<metadata-xml><![CDATA[',
       ']]></metadata-xml>',
