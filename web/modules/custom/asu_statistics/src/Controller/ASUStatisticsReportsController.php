@@ -21,8 +21,8 @@ class ASUStatisticsReportsController extends ControllerBase {
    * @return string
    *   Markup used by the chart and the statistics table.
    */
-  public function main($node = NULL) {
-    // $node = !($node) ? $this->currentRouteMatch->getParameter('node'): $node;
+  public function main() {
+    $node = \Drupal::routeMatch()->getParameter('node');
     $show_csv_link = ($tempstore = \Drupal::service('user.private_tempstore')->get('asu_statistics')) ?
       $tempstore->get('asu_statistics_generate_csv') : FALSE;
     $form = \Drupal::formBuilder()->getForm('Drupal\asu_statistics\Plugin\Form\ASUStatisticsReportsReportSelectorForm');
@@ -41,7 +41,7 @@ class ASUStatisticsReportsController extends ControllerBase {
       $total_file_size += $sum['Size'];
       $total_file_sizes[$mime_type]['Size'] = $asu_utils->formatBytes($sum['Size'], 1);     
     }
-    $total_items = ['total', 'public', 'private'];
+    $total_items = ['total' => 0, 'public' => 0, 'private' => 0];
     foreach ($collection_stats as $year=>$totals) {
       $total_items['total'] += $totals['Total'];
     }
