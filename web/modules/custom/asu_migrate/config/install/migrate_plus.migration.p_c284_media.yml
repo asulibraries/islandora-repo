@@ -29,7 +29,7 @@ source:
 
 process:
 
-  name: title
+  name: item title
   uid: constants/uid
   # todo set to asurite
   bundle: media type
@@ -87,11 +87,12 @@ process:
       migration: p_c284_file
       no_stub: true
 
+  # they are files in this collection
   field_media_file:
     -
       plugin: skip_on_empty
       method: process
-      source: generic file id
+      source: file id
     -
       plugin: migration_lookup
       migration: p_c284_file
