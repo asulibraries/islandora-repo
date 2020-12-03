@@ -230,7 +230,6 @@ function asu_statistics_get_stats($collection_node_id = NULL, $status = TRUE) {
   if ($status) {
     $query->condition('node_field_data.status', 1);
   }  
-  // $query->condition('node_field_data.status', 1);
   $query->groupBy('YEAR(FROM_UNIXTIME(node_field_data.created)), MONTH(FROM_UNIXTIME(node_field_data.created))');
   $result = $query->execute()->fetchAll();
 

@@ -41,12 +41,9 @@ class GroupAccessController {
     foreach ($grps as $grp) {
       if ($grp) {
         $access |= ($grp->hasPermission("view $plugin_id entity", $account));
-        $groups[] = $grp->getGroup();
       }
     }
     return ($access) ?  AccessResult::allowed() : AccessResult::forbidden();
-    // return AccessResult::allowedIf($account->hasPermission('do example things') && $this->someOtherCustomCondition());
-//    return AccessResult::allowedIf($account->hasPermission('view content'));
   }
 
 }

@@ -32,7 +32,6 @@ class ASUStatisticsReportsController extends ControllerBase {
     // Public Items
     $public_items_stats = $this->get_stats($collection_node_id, TRUE);
     
-    
     // Private Items (total only)
     $total_file_sizes = $this->solr_get_sum('its_field_file_size', $collection_node_id);
     $total_file_size = 0;
@@ -111,13 +110,15 @@ class ASUStatisticsReportsController extends ControllerBase {
     $solrConnector = $backend->getSolrConnector();
     // first, run a facets query to get all possible mime_types
     // loop through the mime_types and get their sums
-    $mime_types = ['image/jpeg', 'image/png'];
+    $mime_types = $this->get_collection_mimetypes($solrConnector, $collection_node_id); //[]; //  ['image/jpeg', 'image/png'];
     $sums = [];
     foreach ($mime_types as $mime_type) {
       $solariumQuery = $solrConnector->getSelectQuery();
       $solariumQuery->setRows(0);    
       $solariumQuery->addParam('q', 'its_field_ancestors:' . $collection_node_id);
-      $solariumQuery->addParam('q', 'sm_field_mime_type:' . $mime_type);
+      if ($mime_type) {
+        $solariumQuery->addParam('q', 'sm_field_mime_type:' . $mime_type);
+      }
       $solariumQuery->addParam('rows', '0');
       $stats[$mime_type] = $solariumQuery->getStats();
       $stats[$mime_type]->createField('its_field_file_size');
@@ -133,6 +134,43 @@ class ASUStatisticsReportsController extends ControllerBase {
       }
     }
     return $sums;
+  }
+  
+  public function get_collection_mimetypes($solrConnector, $collection_node_id) {
+    $mime_types = [''];
+    $client = $solrConnector->getSelectQuery();
+    if ($collection_node_id) {
+      $query = $client->createSelect(); //getSelectQuery();
+      $query->setRows(0);
+      $query->addParam('q', 'its_field_ancestors:' . $collection_node_id);
+//      $query->setQuery('its_field_ancestors: ' . $collection_node_id);
+      // get the facetset component
+      $facetSet = $query->getFacetSet();
+
+      // create a facet query instance and set options
+      $facetset->createFacetField('mime_types')->setField('sm_field_mime_type');
+
+      // this executes the query and returns the result
+      $resultset = $solrConnector->select($query);
+
+      // display the total number of documents found by solr
+      echo 'NumFound: '.$resultset->getNumFound();
+
+      // display facet query count
+      $count = $resultset->getFacetSet()->getFacet('mime_types')->getValue();
+      echo '<hr/>Facet query count : ' . $count;
+
+      // show documents using the resultset iterator
+      foreach ($resultset as $document) {
+        echo '<hr/><table>';
+        echo '<tr><th>id</th><td>' . $document->id . '</td></tr>';
+        echo '<tr><th>name</th><td>' . $document->name . '</td></tr>';
+        echo '<tr><th>sm_field_mime_type</th><td>' . $document->sm_field_mime_type . '</td></tr>';
+        echo '</table>';
+        $mime_types[] = $document->sm_field_mime_type;
+      }
+    }
+    return $mime_types;
   }
   
 }
