@@ -75,10 +75,10 @@ display:
           group_type: group
           admin_label: ''
           label: ''
-          exclude: false
+          exclude: true
           alter:
             alter_text: true
-            text: '<div class="col-3">{{field_collection_thumbnail}}</div>'
+            text: '{{field_collection_thumbnail}}'
             make_link: false
             path: ''
             absolute: false
@@ -110,7 +110,7 @@ display:
           element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
-          element_default_classes: true
+          element_default_classes: false
           empty: ''
           hide_empty: false
           empty_zero: false
@@ -323,7 +323,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "<div class=\"col-9\">\r\n{{title}}\r\n{{field_rich_description}}\r\n{{view_node}}\r\n</div>"
+            text: "<div class=\"row\">\r\n<div class=\"col-3\">{{field_collection_thumbnail}}</div>\r\n<div class=\"col-9\">\r\n{{title}}\r\n{{field_rich_description}}\r\n{{view_node}}\r\n</div>\r\n</div>"
             make_link: false
             path: ''
             absolute: false
@@ -355,7 +355,7 @@ display:
           element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
-          element_default_classes: true
+          element_default_classes: false
           empty: ''
           hide_empty: false
           empty_zero: false
