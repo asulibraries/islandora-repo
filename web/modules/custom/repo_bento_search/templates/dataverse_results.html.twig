@@ -25,7 +25,7 @@
     <i>{{ total_results_found | number_format }} result{% if total_results_found != 1 %}s{% endif %} found</i><br>
     {% for key,item in items %}
         <div class="bento_item">
-          <div class="bento_link" title="{{item.name}}">
+          <div class="bento_link" title="{{item.name|raw}}">
         {% if item.global_id %}
             <a href="{{ service_url }}/dataset.xhtml?persistentId={{ item.global_id }}" target="_blank">{{ item.name }}</a>
         {% else %}
