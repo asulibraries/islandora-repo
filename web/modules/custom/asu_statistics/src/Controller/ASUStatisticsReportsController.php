@@ -123,21 +123,19 @@ class ASUStatisticsReportsController extends ControllerBase {
     $query->addField('media__field_mime_type', 'field_mime_type_value');
     $query->addExpression('COUNT(media__field_file_size.field_file_size_value)', '`Attachment_count`');
     $query->addExpression('SUM(media__field_file_size.field_file_size_value)', 'Size');
-//    $query->addExpression('YEAR(FROM_UNIXTIME(node_field_data.created))', 'item_year');
-//    $query->addExpression('MONTH(FROM_UNIXTIME(node_field_data.created))', 'item_month');
+    $query->leftJoin('media__field_media_of', 'media__field_media_of',
+      "(media_field_data.mid = media__field_media_of.entity_id AND " .
+      "media__field_media_of.deleted = '0' AND (media__field_media_of.langcode " .
+      "= media_field_data.langcode OR media__field_media_of.bundle IN " .
+      "('audio', 'document', 'file', 'image', 'video')))");
+    $query->leftJoin('media__field_file_size', 'media__field_file_size',
+      "media_field_data.mid = media__field_file_size.entity_id");
+    $query->leftJoin('media__field_mime_type', 'media__field_mime_type',
+      "media_field_data.mid = media__field_mime_type.entity_id");
     if ($collection_node_id) {
-      $query->leftJoin('media__field_media_of', 'media__field_media_of',
-        "(media_field_data.mid = media__field_media_of.entity_id AND " .
-        "media__field_media_of.deleted = '0' AND (media__field_media_of.langcode " .
-        "= media_field_data.langcode OR media__field_media_of.bundle IN " .
-        "('audio', 'document', 'file', 'image', 'video')))");
-      $query->leftJoin('media__field_file_size', 'media__field_file_size',
-        "media_field_data.mid = media__field_file_size.entity_id");
-      $query->leftJoin('media__field_mime_type', 'media__field_mime_type',
-        "media_field_data.mid = media__field_mime_type.entity_id");
       $query->condition('media__field_media_of.field_media_of_target_id', $nids_arr, 'IN');
-      $query->groupBy('media__field_mime_type.field_mime_type_value');
     }
+    $query->groupBy('media__field_mime_type.field_mime_type_value');
     $result = $query->execute()->fetchAll();
     foreach ($result as $result_obj) {
       $sums[$result_obj->field_mime_type_value] = [
