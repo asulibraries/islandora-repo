@@ -108,69 +108,61 @@ class ASUStatisticsReportsController extends ControllerBase {
     $server = $index->getServerInstance();
     $backend = $server->getBackend();
     $solrConnector = $backend->getSolrConnector();
-    // first, run a facets query to get all possible mime_types
-    // loop through the mime_types and get their sums
-    $mime_types = $this->get_collection_mimetypes($solrConnector, $collection_node_id); //[]; //  ['image/jpeg', 'image/png'];
-    $sums = [];
-    foreach ($mime_types as $mime_type) {
-      $solariumQuery = $solrConnector->getSelectQuery();
-      $solariumQuery->setRows(0);    
-      $solariumQuery->addParam('q', 'its_field_ancestors:' . $collection_node_id);
-      if ($mime_type) {
-        $solariumQuery->addParam('q', 'sm_field_mime_type:' . $mime_type);
-      }
-      $solariumQuery->addParam('rows', '0');
-      $stats[$mime_type] = $solariumQuery->getStats();
-      $stats[$mime_type]->createField('its_field_file_size');
-      $executed = $solrConnector->execute($solariumQuery);
-      $stats[$mime_type] = $executed->getStats();
+    $solariumQuery = $solrConnector->getSelectQuery();
+    $solariumQuery->addParam('q', 'itm_field_ancestors:' . $collection_node_id);
+    $solariumQuery->setFields(array('its_nid'));
 
-      $stats[$mime_type] = $executed->getStats();
-      foreach ($stats[$mime_type]->getResults() as $field) {
-        $sums[] = [
-          'Mime type' => $mime_type, 
-          'Attachment count' => $executed->getNumFound(), 
-          'Size' => $field->getSum()];
-      }
+    $nids = $solrConnector->execute($solariumQuery);
+    $nids_arr = [];
+    foreach ($nids as $nid_doc) {
+      $nids_arr[] = $nid_doc->its_nid;
+    }
+    // take the set of node ids and pass this into a mysql query for the 
+    // node media file_size sum grouped by mime_types
+    $query = \Drupal::database()->select('media_field_data', 'media_field_data');
+    $query->addField('media__field_mime_type', 'field_mime_type_value');
+    $query->addExpression('COUNT(media__field_file_size.field_file_size_value)', '`Attachment_count`');
+    $query->addExpression('SUM(media__field_file_size.field_file_size_value)', 'Size');
+//    $query->addExpression('YEAR(FROM_UNIXTIME(node_field_data.created))', 'item_year');
+//    $query->addExpression('MONTH(FROM_UNIXTIME(node_field_data.created))', 'item_month');
+    if ($collection_node_id) {
+      $query->leftJoin('media__field_media_of', 'media__field_media_of',
+        "(media_field_data.mid = media__field_media_of.entity_id AND " .
+        "media__field_media_of.deleted = '0' AND (media__field_media_of.langcode " .
+        "= media_field_data.langcode OR media__field_media_of.bundle IN " .
+        "('audio', 'document', 'file', 'image', 'video')))");
+      $query->leftJoin('media__field_file_size', 'media__field_file_size',
+        "media_field_data.mid = media__field_file_size.entity_id");
+      $query->leftJoin('media__field_mime_type', 'media__field_mime_type',
+        "media_field_data.mid = media__field_mime_type.entity_id");
+      $query->condition('media__field_media_of.field_media_of_target_id', $nids_arr, 'IN');
+      $query->groupBy('media__field_mime_type.field_mime_type_value');
+    }
+    $result = $query->execute()->fetchAll();
+    foreach ($result as $result_obj) {
+      $sums[$result_obj->field_mime_type_value] = [
+        'Mime type' => $result_obj->field_mime_type_value,
+        'Attachment count' => $result_obj->Attachment_count,
+        'Size' => $result_obj->Size
+      ];
     }
     return $sums;
   }
-  
-  public function get_collection_mimetypes($solrConnector, $collection_node_id) {
-    $mime_types = [''];
-    $client = $solrConnector->getSelectQuery();
-    if ($collection_node_id) {
-      $query = $client->createSelect(); //getSelectQuery();
-      $query->setRows(0);
-      $query->addParam('q', 'its_field_ancestors:' . $collection_node_id);
-//      $query->setQuery('its_field_ancestors: ' . $collection_node_id);
-      // get the facetset component
-      $facetSet = $query->getFacetSet();
-
-      // create a facet query instance and set options
-      $facetset->createFacetField('mime_types')->setField('sm_field_mime_type');
-
-      // this executes the query and returns the result
-      $resultset = $solrConnector->select($query);
-
-      // display the total number of documents found by solr
-      echo 'NumFound: '.$resultset->getNumFound();
-
-      // display facet query count
-      $count = $resultset->getFacetSet()->getFacet('mime_types')->getValue();
-      echo '<hr/>Facet query count : ' . $count;
-
-      // show documents using the resultset iterator
-      foreach ($resultset as $document) {
-        echo '<hr/><table>';
-        echo '<tr><th>id</th><td>' . $document->id . '</td></tr>';
-        echo '<tr><th>name</th><td>' . $document->name . '</td></tr>';
-        echo '<tr><th>sm_field_mime_type</th><td>' . $document->sm_field_mime_type . '</td></tr>';
-        echo '</table>';
-        $mime_types[] = $document->sm_field_mime_type;
-      }
-    }
-    return $mime_types;
-  }
-  
 }
+/**
+ * Run a solr query to get the set of node ids related to the collection by the
+ * itm_field_ancestors and then pass this into a mysql query that is using a 
+ * sum of field_file_size and grouped by field_mime_type.
+ * 
+ * 
+ * 
+SELECT media__field_mime_type.field_mime_type_value, 
+ * COUNT(media__field_file_size.field_file_size_value), 
+ * SUM(media__field_file_size.field_file_size_value)
+FROM media_field_data media_field_data
+LEFT JOIN media__field_media_of media__field_media_of ON media_field_data.mid = media__field_media_of.entity_id AND media__field_media_of.deleted = '0' AND (media__field_media_of.langcode = media_field_data.langcode OR media__field_media_of.bundle IN ( 'audio', 'document', 'file', 'image', 'video' ))
+LEFT JOIN media__field_file_size media__field_file_size ON media_field_data.mid = media__field_file_size.entity_id
+LEFT JOIN media__field_mime_type media__field_mime_type ON media_field_data.mid = media__field_mime_type.entity_id
+WHERE (media__field_media_of.field_media_of_target_id IN (4, 5, 6, 7, 8, 9))
+GROUP BY media__field_mime_type.field_mime_type_value
+*/        
