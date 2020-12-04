@@ -48,10 +48,16 @@ class BentoThisI8 extends BlockBase {
         $total_results_found = 0;
       }
       else {
+        $total_results_found = $results_arr['pager']['count'];
+        if (count($results_arr['search_results']) > $num_results) {
+          for ($p = count($results_arr['search_results']) - 1; $p >= $num_results; $p--) {
+            unset($results_arr['search_results'][$p]);
+          }
+        }
+        // Since this API does not allow for a "how many" parameter, remove extra items.
         $result_items = (array_key_exists('search_results', $results_arr) &&
           is_array($results_arr['search_results'])) ?
             $results_arr['search_results'] : [];
-        $total_results_found = $results_arr['pager']['count'];
       }
     }
     return [

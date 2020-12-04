@@ -96,25 +96,29 @@ function repo_bento_search_block_view_alter(array &$build, \Drupal\Core\Block\Bl
 
 function repo_bento_search_bento_this_i8_results_block_prerender(array $build) {
   $build['#configuration']['label'] = \Drupal::config('repo_bento_search.bentosettings')
-    ->get('titles_this_i8') ?: t('KEEP');
+    ->get('titles_this_i8') ?
+      \Drupal::config('repo_bento_search.bentosettings')->get('titles_this_i8') : t('KEEP');
   return $build;
 }
 
 function repo_bento_search_bento_second_i8_results_block_prerender(array $build) {
   $build['#configuration']['label'] = \Drupal::config('repo_bento_search.bentosettings')
-    ->get('titles_second_i8') ?: t('DIGITAL COLLECTIONS');
+    ->get('titles_second_i8') ?
+      \Drupal::config('repo_bento_search.bentosettings')->get('titles_second_i8'): t('DIGITAL COLLECTIONS');
   return $build;
 }
 
 function repo_bento_search_bento_legacy_repo_results_block_prerender(array $build) {
   $build['#configuration']['label'] = \Drupal::config('repo_bento_search.bentosettings')
-    ->get('titles_legacy_repo') ?: t('Repository');
+    ->get('titles_legacy_repo') ?
+      \Drupal::config('repo_bento_search.bentosettings')->get('titles_legacy_repo'): t('Repository');
   return $build;
 }
 
 function repo_bento_search_bento_dataverse_results_block_prerender(array $build) {
   $build['#configuration']['label'] = \Drupal::config('repo_bento_search.bentosettings')
-    ->get('titles_dataverse') ?: t('Dataverse');
+    ->get('titles_dataverse') ?
+      \Drupal::config('repo_bento_search.bentosettings')->get('titles_dataverse'): t('Dataverse');
   return $build;
 }
 
