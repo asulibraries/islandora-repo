@@ -39,7 +39,7 @@ class BentoSecondI8 extends BlockBase {
       $parsed_url = parse_url($service_api_url);
       $service_url = $parsed_url['scheme'] . '://' . $parsed_url['host'];
       $results_json = ($search_term) ?
-        \Drupal::service('repo_bento_search.this_i8')->getSearchResults($search_term) : '';
+        \Drupal::service('repo_bento_search.second_i8')->getSearchResults($search_term) : '';
       $results_arr = json_decode($results_json, true);
       if (is_null($results_arr)) {
         $result_items = [];
