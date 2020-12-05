@@ -69,9 +69,7 @@ class BentoThisI8 extends BlockBase {
           ],
         ],
       ],
-      '#attributes' => [
-        'class' => [0 => 'bento_box'],
-      ],
+      '#attributes' => ['class' => ['col-md-1', 'bento_box']],
       [
         '#theme' => 'this_i8_results',
         '#service_url' => $service_url,

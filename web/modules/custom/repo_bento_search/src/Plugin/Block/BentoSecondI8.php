@@ -68,9 +68,7 @@ class BentoSecondI8 extends BlockBase {
           ],
         ],
       ],
-      '#attributes' => [
-        'class' => array(0 => 'bento_box'),
-      ],
+      '#attributes' => ['class' => ['col-md-1', 'bento_box']],
       [
         '#theme' => 'second_i8_results',
         '#service_url' => $service_url,
