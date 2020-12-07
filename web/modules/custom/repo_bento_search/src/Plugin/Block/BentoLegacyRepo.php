@@ -70,7 +70,7 @@ class BentoLegacyRepo extends BlockBase {
           ],
         ],
       ],
-      '#attributes' => ['class' => ['col-md-1', 'bento_box']],
+      '#attributes' => ['class' => ['bento_box']],
       [
         '#theme' => 'legacyrepo_results',
         '#service_url' => $service_url,
