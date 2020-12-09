@@ -101,10 +101,14 @@ process:
 
   moderation_state:
     plugin: static_map
-    source: Visibility_x
+    source: Visibility_y
     map:
       Private: draft
       Public: published
+      1.0: published
+      1: published
+      0: draft
+      0.0: draft
 
   field_model:
     source: Model
@@ -125,12 +129,12 @@ process:
 
   field_table_of_contents:
     plugin: skip_on_empty
-    source: Table of Contents_x
+    source: Table of Contents_y
     method: process
 
   field_series:
     plugin: skip_on_empty
-    source: Series_x
+    source: Series_y
     method: process
 
   field_preferred_citation:
