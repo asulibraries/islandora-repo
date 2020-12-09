@@ -42,17 +42,17 @@ class ASUItemIsPartOf extends BlockBase {
         $complex_object_parent = $node->get('field_member_of')->entity;
         if (is_object($complex_object_parent)) {
           $parents_output[] = $this->_make_link_and_label(t('Part of'), $is_metadata_page, $complex_object_parent);
-        }
-        $direct_complex_obj_parent = $complex_object_parent->get('field_member_of')->entity;
-        if (is_object($direct_complex_obj_parent)) {
-          $additional_complex_obj_parents = $complex_object_parent->get('field_additional_memberships')->referencedEntities();
-          // also pass this the field_additional_memberships ($additional_complex_obj_parents)
-          $parents_output[] = $this->_make_link_and_label(
-            t('Collections this item is in'),
-            $is_metadata_page,
-            $direct_complex_obj_parent,
-            $additional_complex_obj_parents
-          );
+          $direct_complex_obj_parent = $complex_object_parent->get('field_member_of')->entity;
+          if (is_object($direct_complex_obj_parent)) {
+            $additional_complex_obj_parents = $complex_object_parent->get('field_additional_memberships')->referencedEntities();
+            // also pass this the field_additional_memberships ($additional_complex_obj_parents)
+            $parents_output[] = $this->_make_link_and_label(
+              t('Collections this item is in'),
+              $is_metadata_page,
+              $direct_complex_obj_parent,
+              $additional_complex_obj_parents
+            );
+          }
         }
       } else {
         $collection_parent = $node->get('field_member_of')->entity;
