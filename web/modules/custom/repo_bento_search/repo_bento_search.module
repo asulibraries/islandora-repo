@@ -14,9 +14,6 @@ function repo_bento_search_help($route_name, RouteMatchInterface $route_match) {
   switch ($route_name) {
     // Main module help for the repo_bento_search module.
     case 'help.page.repo_bento_search':
-      dsm(\Drupal::service('repo_bento_search.legacy_repo')->getSearchResults("test"));
-      dsm(\Drupal::service('repo_bento_search.dataverse')->getSearchResults("test"));
-
       $output = '';
       $output .= '<h3>' . t('About') . '</h3>';
       $output .= '<p>' . t('A module to accomplish bento search across multiple repositories.') . '</p>';
