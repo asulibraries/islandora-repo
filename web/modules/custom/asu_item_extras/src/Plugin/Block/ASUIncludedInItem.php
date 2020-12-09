@@ -16,6 +16,7 @@ use Drupal\media\Entity\Media;
  * )
  */
 class ASUIncludedInItem extends BlockBase {
+// todo use dependency injection for entityTypeManager and routeMatch
 
   /**
    * {@inheritdoc}
@@ -33,7 +34,7 @@ class ASUIncludedInItem extends BlockBase {
       foreach ($children as $child_obj) {
         if ($child_obj->entity_id) {
           $node = \Drupal::entityTypeManager()->getStorage('node')->load($child_obj->entity_id);
-          $build_output[] = node_view($node, 'complex_object_child_box');
+          $build_output[] = \Drupal::entityTypeManager()->getViewBuilder('node')->view($node, 'complex_object_child_box');
         }
       }
       return [
