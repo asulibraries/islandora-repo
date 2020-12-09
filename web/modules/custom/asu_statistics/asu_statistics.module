@@ -23,6 +23,7 @@ function asu_statistics_theme($existing, $type, $theme, $path) {
           'stats_table' => NULL, 
           'summary_row' => NULL, 
           'content_counts_table' => NULL,
+          'total_collections' => NULL,
           'collections_by_institution' => NULL],
     ],
     'islandora_repository_reports_tips_block' => [
@@ -204,7 +205,6 @@ function asu_statistics_make_table_rows_from_result($result) {
   }
   // now, add a row total at the end.
   foreach ($build_output as $year => $month_data) {
-  ///  echo "<pre style='font-size:8pt'>" . print_r($month_data, true) . "</pre>";
     $row_total = 0;
     $skip_first_cell = TRUE;
     foreach ($month_data as $month_num => $items) {
@@ -217,7 +217,7 @@ function asu_statistics_make_table_rows_from_result($result) {
   return $build_output;
 }
 
-function asu_statistics_get_stats($collection_node_id = NULL, $status = TRUE) {
+function asu_statistics_get_stats($collection_node_id = NULL, $status = TRUE, $count_items = TRUE) {
   $query = \Drupal::database()->select('node_field_data', 'node_field_data');
   $query->addExpression('COUNT(node_field_data.nid)', 'items');
   $query->addExpression('YEAR(FROM_UNIXTIME(node_field_data.created))', 'item_year');
@@ -226,6 +226,9 @@ function asu_statistics_get_stats($collection_node_id = NULL, $status = TRUE) {
     $query->join('node__field_member_of', 'node__field_member_of',
         'node__field_member_of.entity_id = node_field_data.nid');
     $query->condition('node__field_member_of.field_member_of_target_id', $collection_node_id);
+  }
+  if (!$count_items) {
+    $query->condition('node_field_data.type', 'collection');
   }
   if ($status) {
     $query->condition('node_field_data.status', 1);

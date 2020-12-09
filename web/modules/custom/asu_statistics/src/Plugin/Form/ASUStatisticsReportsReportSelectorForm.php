@@ -21,13 +21,9 @@ class ASUStatisticsReportsReportSelectorForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-//    $utilities = \Drupal::service('islandora_repository_reports.utilities');
-//    // $report_type = 'published_nodes_by_month'; // $utilities->getFormElementDefault('islandora_repository_reports_report_type', 'mimetype');
-//    $services = $utilities->getServices();
-//    natsort($services);
     $form['asu_statistics_generate_csv'] = [
       '#type' => 'checkbox',
-      '#title' => $this->t('Generate a CSV file of this data'),
+      '#title' => $this->t('Generate a CSV file of the accessions data'),
       '#attributes' => [
         'name' => 'asu_statistics_generate_csv',
       ],
