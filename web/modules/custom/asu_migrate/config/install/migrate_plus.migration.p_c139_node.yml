@@ -100,15 +100,19 @@ process:
       to_timezone: 'UTC'
 
   moderation_state:
-    plugin: static_map
-    source: Visibility_y
-    map:
-      Private: draft
-      Public: published
-      1.0: published
-      1: published
-      0: draft
-      0.0: draft
+    -
+      plugin: static_map
+      source: Visibility_y
+      map:
+        Private: draft
+        Public: published
+        "1.0": published
+        "1": published
+        "0": draft
+        "0.0": draft
+    -
+      plugin: default_value
+      default_value: published
 
   field_model:
     source: Model
