@@ -2,7 +2,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.node.open_seadragon
+    - core.entity_view_mode.node.mirador
     - field.field.node.islandora_object.field_access_terms
     - field.field.node.islandora_object.field_alternative_title
     - field.field.node.islandora_object.field_classification
@@ -49,10 +49,10 @@ dependencies:
     - geolocation
     - text
     - user
-id: node.islandora_object.open_seadragon
+id: node.islandora_object.mirador
 targetEntityType: node
 bundle: islandora_object
-mode: open_seadragon
+mode: mirador
 content:
   display_media_child_thumbnail:
     weight: 10
@@ -73,51 +73,51 @@ content:
       link_to_entity: false
     third_party_settings: {  }
   field_classification:
-    type: string
-    weight: 28
-    region: content
+    weight: 27
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-  field_coordinates:
-    type: geolocation_latlng
-    weight: 22
+    type: string
     region: content
+  field_coordinates:
+    weight: 21
     label: above
     settings: {  }
     third_party_settings: {  }
-  field_coordinates_text:
-    type: string
-    weight: 23
+    type: geolocation_latlng
     region: content
+  field_coordinates_text:
+    weight: 22
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    type: string
+    region: content
   field_description:
     type: basic_string
-    weight: 15
+    weight: 14
     region: content
     label: above
     settings: {  }
     third_party_settings: {  }
   field_dewey_classification:
-    type: string
-    weight: 26
-    region: content
+    weight: 25
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    type: string
+    region: content
   field_edition:
-    type: string
     weight: 9
-    region: content
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    type: string
+    region: content
   field_edtf_date:
     type: edtf_default
     weight: 8
@@ -131,7 +131,7 @@ content:
     third_party_settings: {  }
   field_edtf_date_created:
     type: edtf_default
-    weight: 7
+    weight: 6
     region: content
     label: above
     settings:
@@ -142,7 +142,7 @@ content:
     third_party_settings: {  }
   field_edtf_date_issued:
     type: edtf_default
-    weight: 6
+    weight: 7
     region: content
     label: above
     settings:
@@ -153,33 +153,33 @@ content:
     third_party_settings: {  }
   field_extent:
     type: string
-    weight: 18
+    weight: 17
     region: content
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
   field_gemini_uri:
-    weight: 33
+    weight: 32
     region: content
     settings: {  }
     third_party_settings: {  }
   field_genre:
     type: entity_reference_label
-    weight: 14
+    weight: 13
     region: content
     label: above
     settings:
       link: true
     third_party_settings: {  }
   field_geographic_subject:
-    type: entity_reference_label
-    weight: 21
-    region: content
+    weight: 20
     label: above
     settings:
       link: true
     third_party_settings: {  }
+    type: entity_reference_label
+    region: content
   field_identifier:
     type: string
     weight: 1
@@ -189,142 +189,142 @@ content:
       link_to_entity: false
     third_party_settings: {  }
   field_isbn:
-    type: string
-    weight: 30
-    region: content
+    weight: 29
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    type: string
+    region: content
   field_language:
     type: entity_reference_label
-    weight: 12
+    weight: 11
     region: content
     label: above
     settings:
       link: true
     third_party_settings: {  }
   field_lcc_classification:
-    type: string
-    weight: 27
-    region: content
+    weight: 26
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    type: string
+    region: content
   field_linked_agent:
-    type: typed_relation_default
     weight: 5
-    region: content
     label: above
     settings:
       link: true
     third_party_settings: {  }
-  field_local_identifier:
-    type: string
-    weight: 29
+    type: typed_relation_default
     region: content
+  field_local_identifier:
+    weight: 28
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    type: string
+    region: content
   field_member_of:
+    type: entity_reference_label
     weight: 4
+    region: content
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
-    region: content
   field_note:
-    type: text_default
-    weight: 32
-    region: content
+    weight: 31
     label: above
     settings: {  }
     third_party_settings: {  }
-  field_oclc_number:
-    type: string
-    weight: 31
+    type: text_default
     region: content
+  field_oclc_number:
+    weight: 30
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
+    type: string
+    region: content
   field_physical_form:
     type: entity_reference_label
-    weight: 17
+    weight: 16
     region: content
     label: above
     settings:
       link: true
     third_party_settings: {  }
   field_place_published:
-    type: string
     weight: 10
-    region: content
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-  field_resource_type:
-    type: entity_reference_label
-    weight: 13
+    type: string
     region: content
+  field_resource_type:
+    weight: 12
     label: above
     settings:
       link: true
     third_party_settings: {  }
+    type: entity_reference_label
+    region: content
   field_rights:
     type: string
-    weight: 19
+    weight: 18
     region: content
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
   field_subject:
-    type: entity_reference_label
-    weight: 20
-    region: content
+    weight: 19
     label: above
     settings:
       link: true
     third_party_settings: {  }
+    type: entity_reference_label
+    region: content
   field_subjects_name:
-    type: entity_reference_label
-    weight: 25
-    region: content
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-  field_table_of_contents:
-    type: text_default
-    weight: 16
-    region: content
-    label: above
-    settings: {  }
-    third_party_settings: {  }
-  field_temporal_subject:
-    type: entity_reference_label
     weight: 24
-    region: content
     label: above
     settings:
       link: true
     third_party_settings: {  }
-  islandora_fits_checksum:
-    weight: 100
+    type: entity_reference_label
+    region: content
+  field_table_of_contents:
+    weight: 15
+    label: above
     settings: {  }
     third_party_settings: {  }
+    type: text_default
     region: content
+  field_temporal_subject:
+    weight: 23
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    type: entity_reference_label
+    region: content
+  islandora_fits_checksum:
+    weight: 33
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   links:
     weight: 2
     region: content
     settings: {  }
     third_party_settings: {  }
-  openseadragon_media_evas_entity_view_1:
+  mirador_evas_entity_view_2:
     weight: 3
     region: content
     settings: {  }
@@ -357,6 +357,9 @@ hidden:
   field_source: true
   field_weight: true
   langcode: true
+  mirador_evas_entity_view_1: true
+  mirador_evas_entity_view_3: true
+  openseadragon_media_evas_entity_view_1: true
   openseadragon_media_evas_entity_view_2: true
   openseadragon_media_evas_service_file: true
   pdfjs_media_evas_entity_view_1: true
