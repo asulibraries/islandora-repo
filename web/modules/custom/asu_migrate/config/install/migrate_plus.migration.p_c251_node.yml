@@ -362,13 +362,14 @@ process:
       method: process
 
   corporations:
-    -
-      plugin: skip_on_empty
-      method: process
-      source: Contributors-Corporate
+    # -
+    #   plugin: skip_on_empty
+    #   method: process
+    #   source: Contributors-Corporate
     -
       plugin: explode
       delimiter: '||'
+      source: Contributors-Corporate
     -
       plugin: callback
       callable: trim
@@ -383,13 +384,14 @@ process:
       # relator: 'relators:ctb'
 
   contributors:
-    -
-      plugin: skip_on_empty
-      method: process
-      source: Contributors-Person
+    # -
+    #   plugin: skip_on_empty
+    #   method: process
+    #   source: Contributors-Person
     -
       plugin: explode
       delimiter: '||'
+      source: Contributors-Person
     -
       plugin: callback
       callable: trim
