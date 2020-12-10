@@ -48,7 +48,7 @@ process:
 
   field_edtf_date_created:
     plugin: skip_on_empty
-    source: Date Created
+    source: Date Created_y
     method: process
 
   field_date_digitized:
@@ -75,7 +75,7 @@ process:
   field_reuse_permissions:
     -
       plugin: skip_on_empty
-      source: Reuse
+      source: Reuse Permissions
       method: process
     -
       plugin: entity_lookup
@@ -405,14 +405,13 @@ process:
 
   field_linked_agent:
     -
-      plugin: get
+      plugin: merge
       source:
         - '@contributors'
         - '@corporations'
     -
       plugin: skip_on_empty
       method: process
-
 
   field_history:
     -
@@ -430,9 +429,7 @@ process:
     source: constants/cataloging_standards
     bundle: cataloging_standards
 
-  field_level_of_coding:
-    plugin: default_value
-    default_value: constants/level_of_coding
+  field_level_of_coding: constants/level_of_coding
 
   field_complex_object_child: Complex Object Child
 
