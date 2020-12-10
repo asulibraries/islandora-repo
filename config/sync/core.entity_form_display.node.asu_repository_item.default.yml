@@ -62,7 +62,6 @@ dependencies:
     - datetime
     - field_group
     - geolocation
-    - inline_entity_form
     - jsonb
     - paragraphs
     - path
@@ -602,19 +601,12 @@ content:
   field_subject:
     weight: 32
     settings:
-      form_mode: default
-      label_singular: ''
-      label_plural: ''
-      allow_new: true
-      allow_existing: true
       match_operator: CONTAINS
-      revision: false
-      override_labels: false
-      collapsible: false
-      collapsed: false
-      allow_duplicate: false
+      match_limit: 10
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
-    type: inline_entity_form_complex
+    type: entity_reference_autocomplete
     region: content
   field_subjects_name:
     weight: 36
