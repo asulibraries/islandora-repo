@@ -30,15 +30,20 @@ class MultiEntityLookup extends EntityLookup {
     $item_parent = $arr[0];
     $collection_parent = $arr[1];
     if ($item_parent) {
-      $this->configuration['bundle'] = 'asu_repository_item';
-      $this->configuration['value_key'] = 'title';
+      // $this->configuration['bundle'] = 'asu_repository_item';
+      // $this->configuration['value_key'] = 'title';
       // if (array_key_exists('lookup_field', $this->configuration)) {
+        $this->configuration['lookup_field'] = 'title';
         $par = \Drupal::entityTypeManager()->getStorage('node')->loadByProperties([$this->configuration['lookup_field'] => $item_parent]);
         \Drupal::logger('multientitylookup')->info("has lookupfield " . $this->configuration['lookup_field'] . " with value " . $item_parent);
+
+        $nds = \Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['title' => $item_parent]);
+        dsm($nds);
+
       // $this->configuration['bundle'] = 'asu_repository_item';
       // $this->configuration['value_key'] = 'id';
-        $par = \Drupal::entityTypeManager()->getStorage('node')->load(37543);
-        $par = $par->id();
+        // $par = \Drupal::entityTypeManager()->getStorage('node')->load(37543);
+        // $par = $par->id();
         // $par = parent::transform(37543, $migrate_executable, $row, $destination_property);
         // \Drupal::logger('multientitylookup')->info("par " . print_r(array_keys($par), TRUE));
         // \Drupal::logger('multientitylookup')->info("par " . $par[0]->id());
