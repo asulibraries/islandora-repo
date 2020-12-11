@@ -144,10 +144,17 @@ process:
     method: process
 
   title:
-    plugin: substr
-    source: Title
-    start: 0
-    length: 254
+    -
+      plugin: explode
+      delimiter: '||'
+      source: Title
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: substr
+      start: 0
+      length: 254
 
   field_title:
     -
