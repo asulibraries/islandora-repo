@@ -35,9 +35,11 @@ class MultiEntityLookup extends EntityLookup {
       // if (array_key_exists('lookup_field', $this->configuration)) {
         $par = \Drupal::entityTypeManager()->getStorage('node')->loadByProperties([$this->configuration['lookup_field'] => $item_parent]);
         \Drupal::logger('multientitylookup')->info("has lookupfield " . $this->configuration['lookup_field'] . " with value " . $item_parent);
-      $this->configuration['bundle'] = 'asu_repository_item';
-      $this->configuration['value_key'] = 'id';
-        $par = parent::transform(37543, $migrate_executable, $row, $destination_property);
+      // $this->configuration['bundle'] = 'asu_repository_item';
+      // $this->configuration['value_key'] = 'id';
+        $par = \Drupal::entityTypeManager()->getStorage('node')->load(37543);
+        $par = $par->id();
+        // $par = parent::transform(37543, $migrate_executable, $row, $destination_property);
         // \Drupal::logger('multientitylookup')->info("par " . print_r(array_keys($par), TRUE));
         // \Drupal::logger('multientitylookup')->info("par " . $par[0]->id());
         \Drupal::logger('multientitylookup')->info("par " . $par);
