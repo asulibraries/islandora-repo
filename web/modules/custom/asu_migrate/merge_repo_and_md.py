@@ -11,7 +11,8 @@ cols = ["label", "authority", "uri"]
 loc_df = pandas.DataFrame(columns=cols)
 
 
-def sjoin(x): return '||'.join(x[x.notnull()].astype(str))
+def sjoin(x): return '||'.join(
+    x[x.notnull()].astype(str)) if not x.empty else x
 
 
 def lenzi(df): return len(df.index) == 0
@@ -124,8 +125,9 @@ def main(argv):
     att_df = pandas.read_csv(att_md_file)
     att_df.sort_values(by=['item id'])
     att_df = att_df.loc[:, ~att_df.columns.str.contains('^Unnamed')]
+    del repo_df["Personal Contributors"]
 
-    merge_df = pandas.merge(left=repo_df, right=md_df, left_on='Item ID', right_on='ID', how='right')
+    merge_df = pandas.merge(left=repo_df, right=md_df, left_on='Item ID', right_on='Legacy System ID', how='right')
     merge_df['Model'] = merge_df.apply(lambda row: get_model(row['Attachment Count'], row['Item ID'], att_df, None), axis=1)
     merge_df = merge_df.loc[:, ~merge_df.columns.str.contains('^Unnamed')]
     temp_series = merge_df["History"]
@@ -134,6 +136,9 @@ def main(argv):
         del merge_df["Repository Ingestion Notes"]
     merge_df['Parent Item'] = ""
     att_df['old item id'] = ""
+
+    print(repo_df.iloc[1])
+    col_id = str(int(repo_df.iloc[1]['Collection ID']))
 
     # print(merge_df)
     print("about to print merge_df columns")
@@ -206,8 +211,10 @@ def main(argv):
     contribs = merge_df[merge_df.columns[pandas.Series(
         merge_df.columns).str.startswith('Contributor')]]
     if contribs.empty:
-        contribs = merge_df[merge_df.columns[pandas.Series(merge_df.columns).str.fullmatch('Personal Contributor')]]
+        contribs = merge_df[merge_df.columns[pandas.Series(
+            merge_df.columns).str.match('Personal Contributor([^\s]\.?[0-9]*|$)$')]]
     pci = 0
+    print(contribs)
     for ccc in contribs:
         print("in personal contributors")
         print(ccc)
@@ -219,22 +226,24 @@ def main(argv):
                 role = "Personal Contributor Role"
             else:
                 role = 'Personal Contributor Role.%i' % pci
-            merge_df[ccc] = merge_df[[ccc, role]].apply(lambda x: '|'.join(x.map(str)), axis=1)
+            if role in merge_df:
+                merge_df[ccc] = merge_df[[ccc, role]].apply(lambda x: ('|'.join(x.map(str) if not x.empty else '')), axis=1)
+            # merge_df[ccc].replace('None|nan', '', inplace=True)
             pci = pci+1
     # update contribs
     contribs = merge_df[merge_df.columns[pandas.Series(
         merge_df.columns).str.startswith('Contributor')]]
     if contribs.empty:
         contribs = merge_df[merge_df.columns[pandas.Series(
-            merge_df.columns).str.fullmatch('Personal Contributor')]]
+            merge_df.columns).str.match('Personal Contributor([^\s]\.?[0-9]*|$)$')]]
 
-    merge_df['Contributors-Person'] = contribs.apply(lambda row: sjoin(row), axis=1)
-    merge_df['Contributors-Person'].replace('None|nan', '', inplace=True)
+    merge_df['Contributors-Person'] = contribs.apply(
+        lambda row: sjoin(row), axis=1).str.replace('\|{0,2}None\|nan', '')
 
     corp_contribs = merge_df[merge_df.columns[pandas.Series(merge_df.columns).str.startswith('Corporate contributor')]]
     if corp_contribs.empty:
         corp_contribs = merge_df[merge_df.columns[pandas.Series(
-            merge_df.columns).str.fullmatch('Corporate Contributor')]]
+            merge_df.columns).str.match('Corporate Contributor([^\s]\.?[0-9]*|$)$')]]
     # corp_contribs = corp_contribs.apply(lambda row: loc_lookup("names", row))
     cci = 0
     for corpcc in corp_contribs:
@@ -247,8 +256,9 @@ def main(argv):
                 role = "Corporate Contributor Role"
             else:
                 role = 'Corporate Contributor Role.%i' % cci
-            merge_df[corpcc] = merge_df[[corpcc, role]].apply(
-                lambda x: '|'.join(x.map(str)), axis=1)
+            if role in merge_df:
+                merge_df[corpcc] = merge_df[[corpcc, role]].apply(
+                    lambda x: ('|'.join(x.map(str) if not x.empty else '')), axis=1)
             cci = cci + 1
 
     # update corp contribs
@@ -256,10 +266,10 @@ def main(argv):
             merge_df.columns).str.startswith('Corporate contributor')]]
     if corp_contribs.empty:
         corp_contribs = merge_df[merge_df.columns[pandas.Series(
-            merge_df.columns).str.fullmatch('Corporate Contributor')]]
+            merge_df.columns).str.match('Corporate Contributor([^\s]\.?[0-9]*|$)$')]]
 
-    merge_df['Contributors-Corporate'] = corp_contribs.apply(lambda row: sjoin(row), axis=1)
-    merge_df['Contributors-Corporate'].replace('None|nan', '', inplace=True)
+    merge_df['Contributors-Corporate'] = corp_contribs.apply(
+        lambda row: sjoin(row), axis=1).str.replace('\|{0,2}None\|nan', '')
 
     geo_subs = [col for col in merge_df if col.startswith('Geographic Subject')]
     for gs in geo_subs:
@@ -296,9 +306,8 @@ def main(argv):
     att_df[x_col] = att_df[x_col].replace(-1, None)
     att_df[x_col] = att_df[x_col].replace("-1", "")
 
-    merge_df.to_csv('c' + str(int(merge_df.iloc[0]['Collection ID'])) + '_merged.csv')
-    att_df.to_csv('data/migration_data/att_file_' +
-                  str(int(merge_df.iloc[0]['Collection ID'])) + '.csv')
+    merge_df.to_csv('c' + col_id + '_merged.csv')
+    att_df.to_csv('data/migration_data/att_file_' + col_id + '.csv')
 
 
 if __name__ == '__main__':
