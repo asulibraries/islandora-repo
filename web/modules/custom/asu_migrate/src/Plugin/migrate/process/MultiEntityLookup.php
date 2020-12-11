@@ -35,6 +35,8 @@ class MultiEntityLookup extends EntityLookup {
       if (array_key_exists('lookup_field', $this->configuration)) {
         $par = \Drupal::entityTypeManager()->getStorage('node')->loadByProperties([$this->configuration['lookup_field'] => $item_parent]);
         \Drupal::logger('multientitylookup')->info("has lookupfield " . $this->configuration['lookup_field'] . " with value " . $item_parent);
+        $par =
+        \Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['title' => 'Audiotape Photographs']);
         \Drupal::logger('multientitylookup')->info("par " . print_r(array_keys($par), TRUE));
         \Drupal::logger('multientitylookup')->info("par " . $par[0]->id());
       }
