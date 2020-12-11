@@ -1,7 +1,4 @@
-<div id="islandora-repository-reports-report-type-form">{{ form }}</div>
-  {% if show_csv_link %}
-    <div id="islandora-repository-reports-csv_link"><a href="{{ csv_url }}">Download the CSV</a></div>
-  {% endif %}
+  <a id="asu_statistics_csv_link" href="{{ download_url }}">Download the CSV</a>
   <h3>Item Accessions</h3>
     <b>Total Items</b> {{ total_items.total }} &nbsp; &nbsp;
     <b>Public Items</b> {{ total_items.public }} &nbsp; &nbsp;
@@ -13,20 +10,11 @@
   <h3>Collections</h3>
     <b>Total Collections</b> {{ total_collections.total }} &nbsp; &nbsp;
     <b>Public Collections</b> {{ total_collections.public }} &nbsp; &nbsp;
-    <b>Private Collections</b> {{ total_collections.private }}
+    <b>Private Collections</b> {{ total_collections.private }} &nbsp; &nbsp;
     {% else %}
   <h3>Content Counts</h3>
     {% endif %}
     <b>Space used</b> {{ summary_row|format_bytes }}
     {{ content_counts_table }}
     {% if collections_by_institution %}<I>Only collections that are related to Institutions can be represented above.</i>{% endif %}
-  {% endif %}
-
-  {% if html_content %}
-    <div id="islandora-repository-reports-content">
-      <div id="s-repository-reports-chart-title"><h3>{{ chart_title }}</h3></div>
-      <div style="padding-top: 20px" id="islandora-repository-reports-html">{{ html_content }}</div>
-    </div>
-  {% else %}
-    <div id="islandora-repository-reports-content"><canvas id="islandora-repository-reports-chart"></canvas></div>
   {% endif %}

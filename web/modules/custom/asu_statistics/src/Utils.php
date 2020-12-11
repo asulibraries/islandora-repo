@@ -66,30 +66,6 @@ class Utils {
   }
 
   /**
-   * Determines if the tempstore has been populated within a specific time.
-   *
-   * @param string $key
-   *   The name of the key in the user's tempstore to check.
-   * @param int $bb
-   *   The 'best before' time, in seconds, for the tempstore.
-   *
-   * @return bool
-   *   TRUE if the tempstore has passed its best before, FALSE if not.
-   */
-  public function tempstoreIsStale($key = 'islandora_repository_reports_report_type', $bb = 60) {
-    $tempstore_age = 0;
-    if ($tempstore = \Drupal::service('user.private_tempstore')->get('asu_statistics')) {
-      if (is_null($tempstore->getMetadata($key))) {
-        return TRUE;
-      }
-      $tempstore_age = time() - $tempstore->getMetadata($key)->getUpdated();
-      if ($tempstore_age > $bb) {
-        return TRUE;
-      }
-    }
-  }
-
-  /**
    * Generate a set of random colors to use in the chart.
    *
    * @param int $length
@@ -109,23 +85,6 @@ class Utils {
       $colors[] = 'rgba(' . implode(',', $rgb_color) . ')';
     }
     return $colors;
-  }
-
-  /**
-   * Gets content types from the user's tempstore.
-   *
-   * @return array
-   *   An array containing machine names of the content types for use in
-   *   the content type form widget.
-   */
-  public function getSelectedContentTypes() {
-    $content_types = ['asu_repository_item'];
-//    if ($tempstore = \Drupal::service('user.private_tempstore')->get('asu_statistics')) {
-//      if ($form_state = $tempstore->get('islandora_repaository_reports_report_form_values')) {
-//        $content_types = $form_state->getValue('islandora_repository_reports_content_types');
-//      }
-//    }
-    return (array) $content_types;
   }
 
   /**
@@ -442,20 +401,20 @@ class Utils {
    *   A Chart.js dataset object.
    */
   public function getReportData($report_type) {
-    $utilities = \Drupal::service('asu_statistics.utilities');
-
     $config = \Drupal::config('islandora_repository_reports.settings');
-    $cache_data = $config->get('islandora_repository_reports_cache_report_data');
+    $cache_data = FALSE; // $config->get('islandora_repository_reports_cache_report_data');
 
     $data_element_counts = &drupal_static(__FUNCTION__);
     $cid = 'asu_statistics_data_' . $report_type;
     $data_source_service_id = 'asu_statistics.datasource.' . $report_type;
     $data_source = \Drupal::service($data_source_service_id);
 
+    $collection_id = NULL;
     if ($cache_data && $cache = \Drupal::cache()->get($cid)) {
       $data_element_counts = $cache->data;
     }
     else {
+      // make the report here:
       $data_element_counts = $data_source->getData();
       if ($cache_data) {
         \Drupal::cache()->set($cid, $data_element_counts);
@@ -473,13 +432,6 @@ class Utils {
       }
       else {
         $chart_title = t("No @name data available to report on.", ['@name' => $data_source->getName()]);
-      }
-
-      if ($config->get('islandora_repository_reports_randomize_pie_chart_colors')) {
-        $dataset->backgroundColor = $utilities->getRandomChartColors($num_data_elements);
-      }
-      else {
-        $dataset->backgroundColor = $utilities->getStaticChartColors($num_data_elements);
       }
 
       $chart_data = [
@@ -506,7 +458,7 @@ class Utils {
 
     // Unlike Chart.js reports, HTML reports need to call the writeCsvFile()
     // method explicitly in their getData() method.
-    $this->writeCsvFile($report_type, $data_source->csvData);
+    $this->writeCsvFile($report_type, $data_source->csvData, $collection_node_id);
 
     return $chart_data;
   }
@@ -518,13 +470,18 @@ class Utils {
    *   The report type.
    * @param string $csv_data
    *   An array of arrays corresponding to CSV records.
+   * @param integer $collection_node_id
+   *   Default NULL, if passed, this will be the node id for the given 
+   * collection else the report would be for site-wide report.
    */
-  public function writeCsvFile($report_type, $csv_data) {
+  public function writeCsvFile($report_type, $csv_data, $collection_node_id = NULL) {
     if ($tempstore = \Drupal::service('user.private_tempstore')->get('asu_statistics')) {
       if ($tempstore->get('asu_statistics_generate_csv')) {
         $default_schema = \Drupal::config('system.file')->get('default_scheme');
         $files_path = \Drupal::service('file_system')->realpath($default_schema . "://");
-        $filename = 'asu_statistics_' . $report_type . '.csv';
+        $filename = 'asu_statistics_' .
+         (($collection_node_id) ? 'collection_' . $collection_node_id . '_' : '').
+         $report_type . '.csv';
         $fp = fopen($files_path . '/' . $filename, 'w');
         foreach ($csv_data as $fields) {
           fputcsv($fp, $fields);

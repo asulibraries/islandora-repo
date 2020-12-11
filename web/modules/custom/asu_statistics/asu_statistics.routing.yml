@@ -20,3 +20,16 @@ asu_statistics.collection_statistics_view:
     parameters:
       node:
         type: entity:node
+
+asu_statistics.collection_statistics_download_accessions:
+  path: '/collections/{node}/statistics/download'
+  defaults:
+    _controller: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::download_accessions'
+  requirements:
+    _custom_access: '\Drupal\asu_statistics\Controller\GroupAccessController::access'
+    node: \d+
+  options:
+    parameters:
+      node:
+        type: entity:node
+

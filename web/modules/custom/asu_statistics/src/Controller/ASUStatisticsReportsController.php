@@ -24,12 +24,12 @@ class ASUStatisticsReportsController extends ControllerBase {
    */
   public function main() {
     $node = \Drupal::routeMatch()->getParameter('node');
-    $show_csv_link = ($tempstore = \Drupal::service('user.private_tempstore')->get('asu_statistics')) ?
-      $tempstore->get('asu_statistics_generate_csv') : FALSE;
-    $form = \Drupal::formBuilder()->getForm('Drupal\asu_statistics\Plugin\Form\ASUStatisticsReportsReportSelectorForm');
+    //xxx $form = \Drupal::formBuilder()->getForm('Drupal\asu_statistics\Plugin\Form\ASUStatisticsReportsReportSelectorForm');
     $collection_node_id = ($node) ? $node->id(): NULL;
+    $current_path = \Drupal::request()->getSchemeAndHttpHost() . "/" .
+        \Drupal::service('path.current')->getPath();
+    $download_url = $current_path . '/download'; 
 
-    
     // Private Items (total only)
     $total_file_sizes = $this->solr_get_sum($collection_node_id, TRUE);
     $total_file_size = 0;
@@ -101,8 +101,8 @@ class ASUStatisticsReportsController extends ControllerBase {
     
     $summary_row = $total_file_size;
     return [
-      '#form' => $form,
-      '#show_csv_link' => $show_csv_link,
+      //xxx '#form' => $form,
+      '#download_url' => $download_url,
       '#theme' => 'asu_statistics_chart',
       '#total_items' => $total_items,
       '#stats_table' => $stats_table,
@@ -113,6 +113,15 @@ class ASUStatisticsReportsController extends ControllerBase {
     ];
   }
 
+  public function download_accessions() {
+    // for data, see PublishedNodesByMonth getData method
+    // also for download method, see asu_statistics.module asu_statistics_file_download method.
+    $node = \Drupal::routeMatch()->getParameter('node');
+    $collection_node_id = ($node) ? $node->id(): NULL;
+    $collection_items_stats = $this->get_stats($collection_node_id, FALSE, TRUE);
+    die("<pre>".print_r($collection_items_stats, true));
+  }  
+  
   public function getTitle($node = NULL) {
     return (($node) ? $node->getTitle() . " " : "") . "Statistics";
   }
@@ -273,8 +282,11 @@ class ASUStatisticsReportsController extends ControllerBase {
     // Time to dust off the old bubble sort.
     $ret_total_file_sizes = [];
     $array_keys = array_keys($total_file_sizes);
+    if (count($array_keys) == 1) {
+      $ret_total_file_sizes[$array_keys[0]] = $total_file_sizes[$array_keys[0]];
+    }
     $elem_count = count($total_file_sizes);
-    for ($i = 0; $i < ($elem_count - 1); $i++) {
+    for ($i = 0; $i <= ($elem_count - 1); $i++) {
       for ($j = $i; $j < $elem_count; $j++) {
         $a = array_shift($total_file_sizes[$array_keys[$i]]);
         $b = array_shift($total_file_sizes[$array_keys[$j]]);
