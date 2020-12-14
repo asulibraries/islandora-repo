@@ -56,7 +56,7 @@ function asu_default_fields_node_presave(NodeInterface $node) {
         $nonsort = $item->field_nonsort->value;
         $main = $item->field_main_title->value;
         $sub = $item->field_subtitle->value;
-        $nm = ($nonsort != NULL ? $nonsort . " " : "") .
+        $nm = ($nonsort != NULL || $nonsort != "" || $nonsort != " " ? $nonsort . " " : "") .
           ($main != NULL ? $main : "[untitled]") .
           ($sub != NULL ? ": " . $sub : "");
         $node->setTitle($nm);
