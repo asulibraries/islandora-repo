@@ -177,8 +177,7 @@ class ASUStatisticsReportsController extends ControllerBase {
     ];
     $uri = \Drupal::config('system.file')->get('default_scheme') . "://" . $written_filename;
     // Return and trigger file donwload.
-die("URI = $uri<hr><pre>".print_r($headers,true));
-
+    // die("URI = $uri<hr><pre>".print_r($headers,true));
     return new BinaryFileResponse($uri, 200, $headers, true);
   }
 
