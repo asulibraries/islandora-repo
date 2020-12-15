@@ -34,31 +34,23 @@ class NameURILookup extends ProcessPluginBase {
       $this->name = $thisone[0];
       $this->uri = NULL;
     }
-    // dsm("in name uri lookup");
-    // dsm($this->name);
-    // dsm($this->uri);
     if (!empty($this->uri) && $tid = $this->getTidByURI($this->uri, $uri_field)) {
       $term = Term::load($tid);
     }
     elseif ($tid = $this->getTidByName($this->name)) {
       $term = Term::load($tid);
     }
-    // dsm($term->id());
     return  isset($term) && is_object($term) ? $term->id() : 0 ;
   }
   /**
    * Load term by URI.
    */
   protected function getTidByURI($uri = NULL, $field = NULL) {
-    dsm("get by uri");
-    dsm($uri);
-    dsm($field);
     $properties = [];
     if (!empty($uri) && !empty($field)) {
       $properties[$field] = $uri;
     }
     $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties($properties);
-    dsm(count($terms));
     $term = reset($terms);
     return !empty($term) ? $term->id() : 0;
   }
