@@ -3,21 +3,3 @@ asu_statistics_css:
   css:
     theme:
       css/asu_statistics.css: {}
-
-asu_statistics_loading_message:
-  version: 1.x
-  js:
-    js/asu_statistics_loading_message.js: {}
-  dependencies:
-    - core/jquery
-    - core/jquery.once
-
-asu_statistics_chart:
-  version: 1.x
-  js:
-    https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.js: { type: external }
-    js/asu_statistics_chart.js: {}
-  dependencies:
-    - core/jquery
-    - core/jquery.once
-    - core/drupalSettings

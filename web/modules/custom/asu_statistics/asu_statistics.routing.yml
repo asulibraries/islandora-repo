@@ -1,15 +1,62 @@
-asu_statistics.report:
+asu_statistics.settings:
   path: '/admin/reports/asu_statistics'
   defaults:
     _controller: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::main'
     _title: 'ASU Statistics Reports'
   requirements:
-    _permission: 'view asu statistics reports'
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE    
+
+asu_statistics.statistics_download_accessions:
+  path: '/admin/reports/asu_statistics/download'
+  defaults:
+    _controller: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::download_accessions'
+    _title: 'ASU Statistics Reports'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE    
+
+asu_statistics.statistics_download_stat_summary:
+  path: '/admin/reports/asu_statistics/download_stat_summary'
+  defaults:
+    _controller: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::download_stat_summary'
+    _title: 'ASU Statistics Reports'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE    
+
 asu_statistics.collection_statistics_view:
   path: '/collections/{node}/statistics'
   defaults:
     _title_callback: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::getTitle'
     _controller: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::main'
+  requirements:
+    _custom_access: '\Drupal\asu_statistics\Controller\GroupAccessController::access'
+    node: \d+
+  options:
+    parameters:
+      node:
+        type: entity:node
+
+asu_statistics.collection_statistics_download_accessions:
+  path: '/collections/{node}/statistics/download'
+  defaults:
+    _controller: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::download_accessions'
+  requirements:
+    _custom_access: '\Drupal\asu_statistics\Controller\GroupAccessController::access'
+    node: \d+
+  options:
+    parameters:
+      node:
+        type: entity:node
+
+asu_statistics.collection_statistics_download_stat_summary:
+  path: '/collections/{node}/statistics/download_stat_summary'
+  defaults:
+    _controller: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::download_stat_summary'
   requirements:
     _custom_access: '\Drupal\asu_statistics\Controller\GroupAccessController::access'
     node: \d+
