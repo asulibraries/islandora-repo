@@ -320,13 +320,13 @@ process:
       default_vocabulary: geo_location
 
   pers_names:
-    # -
-    #   plugin: skip_on_empty
-    #   method: process
+    -
+      plugin: skip_on_empty
+      source: Personal Name Subjects
+      method: process
     -
       plugin: explode
       delimiter: '||'
-      source: Personal Name Subjects
     -
       plugin: callback
       callable: trim
@@ -340,13 +340,13 @@ process:
       default_vocabulary: person
 
   corp_names:
-    # -
-      # plugin: skip_on_empty
-      # method: process
+    -
+      plugin: skip_on_empty
+      source: Corporate Name Subjects
+      method: process
     -
       plugin: explode
       delimiter: '||'
-      source: Corporate Name Subjects
     -
       plugin: callback
       callable: trim

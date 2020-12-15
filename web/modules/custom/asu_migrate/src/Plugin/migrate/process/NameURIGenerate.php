@@ -64,6 +64,8 @@ class NameURIGenerate extends NameURILookup {
       elseif ($tid = $this->getTidByName($this->name)) {
         $term = Term::load($tid);
       }
+      dsm($term->id());
+      return $term->id();
     }
     return  0 ;
   }
