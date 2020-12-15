@@ -34,12 +34,16 @@ class NameURILookup extends ProcessPluginBase {
       $this->name = $thisone[0];
       $this->uri = NULL;
     }
+    dsm("in name uri lookup");
+    dsm($this->name);
+    dsm($this->uri);
     if (!empty($this->uri) && $tid = $this->getTidByURI($this->uri, $uri_field)) {
       $term = Term::load($tid);
     }
     elseif ($tid = $this->getTidByName($this->name)) {
       $term = Term::load($tid);
     }
+    dsm($term->id());
     return  isset($term) && is_object($term) ? $term->id() : 0 ;
   }
   /**
