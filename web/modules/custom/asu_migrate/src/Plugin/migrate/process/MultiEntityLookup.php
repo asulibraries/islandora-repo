@@ -31,7 +31,6 @@ class MultiEntityLookup extends EntityLookup {
     $collection_parent = $arr[1];
     if ($item_parent) {
       if (array_key_exists('lookup_field', $this->configuration)) {
-        $item_parent = "Grand Canyon Easter Services";
         $par = \Drupal::entityTypeManager()->getStorage('node')->loadByProperties([$this->configuration['lookup_field'] => $item_parent]);
       }
       else {
