@@ -9,6 +9,8 @@ use Drupal\Core\Entity\Display\EntityViewDisplayInterface;
 use Drupal\taxonomy\Entity\Vocabulary;
 use Drupal\search_api\Entity\Index;
 use Drupal\Core\Url;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Controller.
@@ -28,7 +30,8 @@ class ASUStatisticsReportsController extends ControllerBase {
     $collection_node_id = ($node) ? $node->id(): NULL;
     $current_path = \Drupal::request()->getSchemeAndHttpHost() . "/" .
         \Drupal::service('path.current')->getPath();
-    $download_url = $current_path . '/download'; 
+    $download_url = $current_path . '/download';
+    $download_stat_summary_url = $current_path . '/download_stat_summary';  
 
     // Private Items (total only)
     $total_file_sizes = $this->solr_get_sum($collection_node_id, TRUE);
@@ -47,7 +50,7 @@ class ASUStatisticsReportsController extends ControllerBase {
     else {
       // Total
       $collection_collections_stats = $this->get_stats(NULL, FALSE, FALSE);
-      $collection_collections_stats = $this->collections_filesizes_customsort($collection_collections_stats);
+    //  $total_file_sizes = $this->collections_filesizes_customsort($total_file_sizes);
       // Public Items
       $public_collections_stats = $this->get_stats(NULL, TRUE, FALSE);
       foreach ($total_file_sizes as $tid => $sum_arr) {
@@ -103,6 +106,7 @@ class ASUStatisticsReportsController extends ControllerBase {
     return [
       //xxx '#form' => $form,
       '#download_url' => $download_url,
+      '#download_stat_summary_url' => $download_stat_summary_url,
       '#theme' => 'asu_statistics_chart',
       '#total_items' => $total_items,
       '#stats_table' => $stats_table,
@@ -112,15 +116,93 @@ class ASUStatisticsReportsController extends ControllerBase {
       '#collections_by_institution' => (($collection_node_id) ? NULL : true),
     ];
   }
-
+  
   public function download_accessions() {
     // for data, see PublishedNodesByMonth getData method
     // also for download method, see asu_statistics.module asu_statistics_file_download method.
     $node = \Drupal::routeMatch()->getParameter('node');
     $collection_node_id = ($node) ? $node->id(): NULL;
     $collection_items_stats = $this->get_stats($collection_node_id, FALSE, TRUE);
-    die("<pre>".print_r($collection_items_stats, true));
+    $firstKey = $this->array_key_first($collection_items_stats);
+    $first_row = $collection_items_stats[$firstKey];
+    $written_filename = $this->writeCSV('accessions', $collection_node_id, array_keys($first_row), $collection_items_stats);
+    $this->do_csv_download($written_filename);
+    return $this->redirect_to_statpage($collection_node_id);
+    // die("<pre>".print_r($collection_items_stats, true));
   }  
+  
+  public function download_stat_summary() {
+    // for data, see PublishedNodesByMonth getData method
+    // also for download method, see asu_statistics.module asu_statistics_file_download method.
+    $node = \Drupal::routeMatch()->getParameter('node');
+    $collection_node_id = ($node) ? $node->id(): NULL;
+    $tmp = $this->solr_get_sum($collection_node_id, TRUE);
+    $headers = ($collection_node_id) ?
+      ['Mime type','Attachment count','Size (bytes)'] :
+      ['Institution', '# of Collections','Size (bytes)'];
+    // due to how the site-statistics array has three tiers, we must loop
+    // through and adjust it for output.
+    if (!$collection_node_id) {
+      foreach ($tmp as $tid => $institution_arr) {
+        $institution_name = $this->first_array_key($institution_arr);
+        $inner_arr = [
+          'Institution' => $institution_name,
+          '# of Collections' => $institution_arr[$institution_name][$tid]['# of Collections'] + 0,
+          'Size (bytes)' => $institution_arr[$institution_name][$tid]['Size (bytes)'] + 0,
+        ];
+        $total_file_sizes[] = $inner_arr; 
+      }
+    }
+    else {
+      $total_file_sizes = $tmp;
+    }
+    $written_filename = $this->writeCSV('summary', $collection_node_id, $headers, $total_file_sizes);
+    $this->do_csv_download($written_filename);
+    return $this->redirect_to_statpage($collection_node_id);
+    // die("<pre>".print_r($total_file_sizes, true));
+  }
+
+  public function redirect_to_statpage($collection_node_id) {
+    $url_str = \Drupal::request()->getSchemeAndHttpHost() . 
+      (($collection_node_id) ? '/collections/' . $collection_node_id . '/statistics':
+      '/admin/reports/asu_statistics');
+    return new RedirectResponse($url_str);
+  }
+
+  public function do_csv_download($written_filename) {
+    $headers = [
+      'Content-Type' => 'text/csv',
+      'Content-Description' => 'File Download',
+      'Content-Disposition' => 'attachment; filename=' . $written_filename,
+    ];
+    $uri = \Drupal::config('system.file')->get('default_scheme') . "://" . $written_filename;
+    // Return and trigger file donwload.
+die("URI = $uri<hr><pre>".print_r($headers,true));
+
+    return new BinaryFileResponse($uri, 200, $headers, true);
+  }
+
+  public function first_array_key(array $arr) {
+    foreach($arr as $key => $unused) {
+      return $key;
+    }
+    return NULL;
+  }
+  
+  public function writeCSV($report_type, $collection_node_id, $header_row = array(), $data = array()) {
+    $default_schema = \Drupal::config('system.file')->get('default_scheme');
+    $files_path = \Drupal::service('file_system')->realpath($default_schema . "://");
+    $filename = 'asu_statistics_' .
+      (($collection_node_id) ? 'collection_' . $collection_node_id . '_' : '').
+      $report_type . '.csv';    
+    $fp = fopen($files_path . '/' . $filename, 'w');
+    fputcsv($fp, $header_row);
+    foreach ($data as $key => $fields) {
+      fputcsv($fp, $fields);
+    }
+    fclose($fp);
+    return $filename;
+  }
   
   public function getTitle($node = NULL) {
     return (($node) ? $node->getTitle() . " " : "") . "Statistics";
@@ -290,6 +372,8 @@ class ASUStatisticsReportsController extends ControllerBase {
       for ($j = $i; $j < $elem_count; $j++) {
         $a = array_shift($total_file_sizes[$array_keys[$i]]);
         $b = array_shift($total_file_sizes[$array_keys[$j]]);
+        \Drupal::logger('collections_filesizes_customsort')->notice(t('%a' . "\r" . '%b',
+          ['%a' => print_r($a, true), '%b' => print_r($b, true)]));
         if ($a['Size'] < $b['Size']) {
           $ret_total_file_sizes[$array_keys[$i]] = $total_file_sizes[$array_keys[$j]];
         }
