@@ -50,7 +50,7 @@ class ASUStatisticsReportsController extends ControllerBase {
     else {
       // Total
       $collection_collections_stats = $this->get_stats(NULL, FALSE, FALSE);
-    //  $total_file_sizes = $this->collections_filesizes_customsort($total_file_sizes);
+      $total_file_sizes = $this->collections_filesizes_customsort($total_file_sizes);
       // Public Items
       $public_collections_stats = $this->get_stats(NULL, TRUE, FALSE);
       foreach ($total_file_sizes as $tid => $sum_arr) {
@@ -126,9 +126,8 @@ class ASUStatisticsReportsController extends ControllerBase {
     $firstKey = $this->array_key_first($collection_items_stats);
     $first_row = $collection_items_stats[$firstKey];
     $written_filename = $this->writeCSV('accessions', $collection_node_id, array_keys($first_row), $collection_items_stats);
-    $this->do_csv_download($written_filename);
-    return $this->redirect_to_statpage($collection_node_id);
-    // die("<pre>".print_r($collection_items_stats, true));
+    return $this->do_csv_download($written_filename);
+    // return $this->redirect_to_statpage($collection_node_id);
   }  
   
   public function download_stat_summary() {
@@ -157,9 +156,8 @@ class ASUStatisticsReportsController extends ControllerBase {
       $total_file_sizes = $tmp;
     }
     $written_filename = $this->writeCSV('summary', $collection_node_id, $headers, $total_file_sizes);
-    $this->do_csv_download($written_filename);
-    return $this->redirect_to_statpage($collection_node_id);
-    // die("<pre>".print_r($total_file_sizes, true));
+    return $this->do_csv_download($written_filename);
+    // return $this->redirect_to_statpage($collection_node_id);
   }
 
   public function redirect_to_statpage($collection_node_id) {
@@ -176,8 +174,7 @@ class ASUStatisticsReportsController extends ControllerBase {
       'Content-Disposition' => 'attachment; filename=' . $written_filename,
     ];
     $uri = \Drupal::config('system.file')->get('default_scheme') . "://" . $written_filename;
-    // Return and trigger file donwload.
-    // die("URI = $uri<hr><pre>".print_r($headers,true));
+    // Return and trigger file download.
     return new BinaryFileResponse($uri, 200, $headers, true);
   }
 
@@ -191,7 +188,7 @@ class ASUStatisticsReportsController extends ControllerBase {
   public function writeCSV($report_type, $collection_node_id, $header_row = array(), $data = array()) {
     $default_schema = \Drupal::config('system.file')->get('default_scheme');
     $files_path = \Drupal::service('file_system')->realpath($default_schema . "://");
-    $filename = 'asu_statistics_' .
+    $filename = date('Ymd') . '_asu_statistics_' .
       (($collection_node_id) ? 'collection_' . $collection_node_id . '_' : '').
       $report_type . '.csv';    
     $fp = fopen($files_path . '/' . $filename, 'w');
@@ -275,7 +272,7 @@ class ASUStatisticsReportsController extends ControllerBase {
       else {
         foreach ($result as $result_obj) {
           $sums[] = [
-            '# of Collections' => $result_obj->count,
+            '# of Collections' => $result_obj->Attachment_count,
             'Size' => $result_obj->Size];
         }
       }
@@ -360,27 +357,54 @@ class ASUStatisticsReportsController extends ControllerBase {
     // The usort() method cannot be used because it is not able to compare the
     // deeper elements while shifting around their parent elements.
     // 
-    // Time to dust off the old bubble sort.
     $ret_total_file_sizes = [];
-    $array_keys = array_keys($total_file_sizes);
-    if (count($array_keys) == 1) {
-      $ret_total_file_sizes[$array_keys[0]] = $total_file_sizes[$array_keys[0]];
-    }
+    $institution_tids = array_keys($total_file_sizes);
     $elem_count = count($total_file_sizes);
-    for ($i = 0; $i <= ($elem_count - 1); $i++) {
-      for ($j = $i; $j < $elem_count; $j++) {
-        $a = array_shift($total_file_sizes[$array_keys[$i]]);
-        $b = array_shift($total_file_sizes[$array_keys[$j]]);
-        \Drupal::logger('collections_filesizes_customsort')->notice(t('%a' . "\r" . '%b',
-          ['%a' => print_r($a, true), '%b' => print_r($b, true)]));
-        if ($a['Size'] < $b['Size']) {
-          $ret_total_file_sizes[$array_keys[$i]] = $total_file_sizes[$array_keys[$j]];
-        }
-        else {
-          $ret_total_file_sizes[$array_keys[$j]] = $total_file_sizes[$array_keys[$i]];
+    \Drupal::logger('collections_filesizes_customsort')->notice('total_file_sizes = ' . print_r($total_file_sizes, true));
+    \Drupal::logger('collections_filesizes_customsort')->notice('$elem_count = ' . $elem_count);
+    \Drupal::logger('collections_filesizes_customsort')->notice('$institution_tids = ' . print_r($institution_tids, true));
+    \Drupal::logger('collections_filesizes_customsort')->notice('$ret_total_file_sizes = ' . print_r($ret_total_file_sizes, true));
+
+    $institution_names = $array = [];
+    for ($i = 0; $i < $elem_count; $i++) {
+      $a = $total_file_sizes[$institution_tids[$i]];
+      $first_key = $this->first_array_key($a);
+      $a = array_shift($a)[$institution_tids[$i]];
+      $institution_names[] = $first_key;
+      \Drupal::logger('collections_filesizes_customsort')->notice('a = ' . print_r($a, true));
+      $a['index'] = $i;
+      $array[] = $a;
+    }
+    \Drupal::logger('collections_filesizes_customsort')->notice('BEFORE $array = ' . print_r($array, true));
+
+    // Time to dust off the old bubble sort.
+    $j=0;
+    $flag = true;
+    $temp=0;
+    while ( $flag )
+    {
+      $flag = false;
+      for( $j=0;  $j < count($array)-1; $j++)
+      {
+        if ( $array[$j]["Size"] < $array[$j+1]["Size"] )
+        {
+          $temp = $array[$j];
+          //swap the two between each other
+          $array[$j] = $array[$j+1];
+          $array[$j+1]=$temp;
+          $flag = true; //show that a swap occurred
         }
       }
     }
+    foreach ($array as $index => $inner_arr) {
+      $use_index = $inner_arr['index'];
+      $ret_total_file_sizes[$institution_tids[$use_index]][$institution_names[$use_index]][$institution_tids[$use_index]] = $inner_arr;
+    }
+
+    \Drupal::logger('collections_filesizes_customsort')->notice('$array = ' . print_r($array, true));
+    \Drupal::logger('collections_filesizes_customsort')->notice('$institution_names = ' . print_r($institution_names, true));
+
+    \Drupal::logger('collections_filesizes_customsort')->notice('$ret_total_file_sizes = ' . print_r($ret_total_file_sizes, true));
     return $ret_total_file_sizes;
   }
 }

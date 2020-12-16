@@ -60,7 +60,8 @@ class AboutThisCollectionSidebarBlock extends BlockBase implements ContainerFact
     $link = $link->toRenderable();
     $output_links[] = render($link);
     $current_user = \Drupal::currentUser();
-    $view_statistics = \Drupal\asu_statistics\Controller\GroupAccessController::access($current_user);
+    $access_controller = (new \Drupal\asu_statistics\Controller\GroupAccessController());
+    $view_statistics = $access_controller->access($current_user);
     if ($view_statistics) {
       $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/collections/' . $nid . '/statistics');
       $link = Link::fromTextAndUrl(t('Statistics'), $url);
