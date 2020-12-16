@@ -360,10 +360,6 @@ class ASUStatisticsReportsController extends ControllerBase {
     $ret_total_file_sizes = [];
     $institution_tids = array_keys($total_file_sizes);
     $elem_count = count($total_file_sizes);
-    \Drupal::logger('collections_filesizes_customsort')->notice('total_file_sizes = ' . print_r($total_file_sizes, true));
-    \Drupal::logger('collections_filesizes_customsort')->notice('$elem_count = ' . $elem_count);
-    \Drupal::logger('collections_filesizes_customsort')->notice('$institution_tids = ' . print_r($institution_tids, true));
-    \Drupal::logger('collections_filesizes_customsort')->notice('$ret_total_file_sizes = ' . print_r($ret_total_file_sizes, true));
 
     $institution_names = $array = [];
     for ($i = 0; $i < $elem_count; $i++) {
@@ -371,11 +367,9 @@ class ASUStatisticsReportsController extends ControllerBase {
       $first_key = $this->first_array_key($a);
       $a = array_shift($a)[$institution_tids[$i]];
       $institution_names[] = $first_key;
-      \Drupal::logger('collections_filesizes_customsort')->notice('a = ' . print_r($a, true));
       $a['index'] = $i;
       $array[] = $a;
     }
-    \Drupal::logger('collections_filesizes_customsort')->notice('BEFORE $array = ' . print_r($array, true));
 
     // Time to dust off the old bubble sort.
     $j=0;
@@ -400,11 +394,6 @@ class ASUStatisticsReportsController extends ControllerBase {
       $use_index = $inner_arr['index'];
       $ret_total_file_sizes[$institution_tids[$use_index]][$institution_names[$use_index]][$institution_tids[$use_index]] = $inner_arr;
     }
-
-    \Drupal::logger('collections_filesizes_customsort')->notice('$array = ' . print_r($array, true));
-    \Drupal::logger('collections_filesizes_customsort')->notice('$institution_names = ' . print_r($institution_names, true));
-
-    \Drupal::logger('collections_filesizes_customsort')->notice('$ret_total_file_sizes = ' . print_r($ret_total_file_sizes, true));
     return $ret_total_file_sizes;
   }
 }
