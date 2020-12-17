@@ -73,29 +73,18 @@ process:
   #   to_timezone: 'UTC'
 
   field_access_terms:
-    -
-      plugin: static_map
-      source: Original File Permissions
-      map:
-        1: "Public" #OpenAccess
-        2: "ASU Only" #ASU
-        3: "Private" #Closed
-        "Private": "Private"
-        "Public": "Public"
-        "ASU Only": "ASU Only"
-      default_value: "Private"
-    -
-      plugin: entity_lookup
-      bundle: islandora_access
-      bundle_key: vid
-      entity_type: taxonomy_term
-      value_key: name
+    source: Original File Permissions
+    plugin: entity_lookup
+    bundle: islandora_access
+    bundle_key: vid
+    entity_type: taxonomy_term
+    value_key: name
 
 destination:
   # These are 'document' media we're making. - could this be dynamic?
   # perhaps even just a static map lookup by the mime type
   plugin: 'entity:media'
-  default_bundle: document
+  default_bundle: file
 
 migration_dependencies:
   required:
