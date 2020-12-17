@@ -32,7 +32,7 @@ process:
   name: item title
   uid: constants/uid
   # todo set to asurite
-  bundle: media type
+  bundle: file
   field_original_name: Original File Name
 
   # Make the media an 'Original File'
@@ -51,7 +51,7 @@ process:
     -
       plugin: skip_on_empty
       method: process
-      source: document id
+      source: Original File Name
     -
       plugin: migration_lookup
       migration: p_maps_file
@@ -61,7 +61,7 @@ process:
     -
       plugin: skip_on_empty
       method: process
-      source: image id
+      source: Original File Name
     -
       plugin: migration_lookup
       migration: p_maps_file
@@ -71,7 +71,7 @@ process:
     -
       plugin: skip_on_empty
       method: process
-      source: video id
+      source: Original File Name
     -
       plugin: migration_lookup
       migration: p_maps_file
@@ -81,7 +81,7 @@ process:
     -
       plugin: skip_on_empty
       method: process
-      source: audio id
+      source: Original File Name
     -
       plugin: migration_lookup
       migration: p_maps_file
