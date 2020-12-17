@@ -29,7 +29,7 @@ source:
 
 process:
 
-  name: item title
+  name:  Title
   uid: constants/uid
   # todo set to asurite
   bundle: file
@@ -45,47 +45,6 @@ process:
     bundle: islandora_media_use
 
   # field_legacy_checksum: file checksum
-
-  # Lookup the migrated file in the file migration.
-  field_media_document:
-    -
-      plugin: skip_on_empty
-      method: process
-      source: Original File Name
-    -
-      plugin: migration_lookup
-      migration: p_maps_file
-      no_stub: true
-
-  field_media_image:
-    -
-      plugin: skip_on_empty
-      method: process
-      source: Original File Name
-    -
-      plugin: migration_lookup
-      migration: p_maps_file
-      no_stub: true
-
-  field_media_video_file:
-    -
-      plugin: skip_on_empty
-      method: process
-      source: Original File Name
-    -
-      plugin: migration_lookup
-      migration: p_maps_file
-      no_stub: true
-
-  field_media_audio_file:
-    -
-      plugin: skip_on_empty
-      method: process
-      source: Original File Name
-    -
-      plugin: migration_lookup
-      migration: p_maps_file
-      no_stub: true
 
   # they are files in this collection
   field_media_file:
