@@ -2356,6 +2356,7 @@ display:
         filters: false
         filter_groups: false
         fields: false
+        empty: false
       row:
         type: fields
         options: {  }
@@ -2834,6 +2835,18 @@ display:
           type_custom_false: ''
           not: false
           plugin_id: boolean
+      empty:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content: 'There is no new content in the last day.'
+          plugin_id: text_custom
     cache_metadata:
       max-age: -1
       contexts:
