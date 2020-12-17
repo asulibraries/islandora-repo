@@ -4,7 +4,7 @@ dependencies:
     module:
       - asu_migrate
 
-id: p_cmaps_media
+id: p_maps_media
 label: Import Collection maps Media from CSV
 migration_group: migrate_cmaps_csv
 
@@ -54,7 +54,7 @@ process:
       source: document id
     -
       plugin: migration_lookup
-      migration: p_cmaps_file
+      migration: p_maps_file
       no_stub: true
 
   field_media_image:
@@ -64,7 +64,7 @@ process:
       source: image id
     -
       plugin: migration_lookup
-      migration: p_cmaps_file
+      migration: p_maps_file
       no_stub: true
 
   field_media_video_file:
@@ -74,7 +74,7 @@ process:
       source: video id
     -
       plugin: migration_lookup
-      migration: p_cmaps_file
+      migration: p_maps_file
       no_stub: true
 
   field_media_audio_file:
@@ -84,7 +84,7 @@ process:
       source: audio id
     -
       plugin: migration_lookup
-      migration: p_cmaps_file
+      migration: p_maps_file
       no_stub: true
 
   # they are files in this collection
@@ -95,14 +95,14 @@ process:
       source: Original File Name
     -
       plugin: migration_lookup
-      migration: p_cmaps_file
+      migration: p_maps_file
       no_stub: true
 
   # Lookup the migrated node in the node migration
   field_media_of:
     plugin: migration_lookup
     source: Original File Name
-    migration: p_cmaps_node
+    migration: p_maps_node
     no_stub: true
 
   # created:
@@ -136,6 +136,6 @@ destination:
 
 migration_dependencies:
   required:
-    - migrate_plus.migration.p_cmaps_file
-    - migrate_plus.migration.p_cmaps_node
+    - migrate_plus.migration.p_maps_file
+    - migrate_plus.migration.p_maps_node
   optional: {  }
