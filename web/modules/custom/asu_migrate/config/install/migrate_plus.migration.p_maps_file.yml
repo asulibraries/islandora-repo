@@ -35,6 +35,7 @@ source:
     uid: 1
     baseurl: "https://repository.asu.edu"
     basepath: "/mnt/libfile/Repository/old-repo-data/filestore/"
+    temp_location: "/home/ubuntu/crs"
 
 process:
 
@@ -58,6 +59,13 @@ process:
       search: "'"
       replace: ""
 
+  file_location:
+    plugin: concat
+    delimiter: /
+    source:
+      - constants/temp_location
+      - "@filename"
+
 
   # Construct the destination URI using the file name.
   destination:
@@ -65,13 +73,13 @@ process:
     delimiter: /
     source:
       - constants/destination_dir
-      - '@filename'
+      - Original File Name
     #   - file id
 
   uri:
     plugin: file_copy
     source:
-      - 'File Location'
+      - '@file_location'
       - '@destination' # The destination entry from above
 
 
