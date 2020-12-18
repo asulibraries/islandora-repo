@@ -2,9 +2,8 @@
 
 namespace Drupal\asu_migrate\Plugin\migrate\process;
 
-use Drupal\migrate\MigrateException;
 use Drupal\migrate\MigrateExecutableInterface;
-use Drupal\migrate\ProcessPluginBase;
+use Drupal\migrate_plus\Plugin\migrate\process\Merge;
 use Drupal\migrate\Row;
 
 /**
