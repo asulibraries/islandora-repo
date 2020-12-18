@@ -31,7 +31,6 @@ class NameURIGenerate extends NameURILookup {
     $tid = parent::transform($name_uri_pair, $migrate_executable, $row, $destination_property);
     $default_vocabulary = $this->configuration['default_vocabulary'];
     if (!empty($tid)) {
-      dsm($tid);
       return $tid;
     }
     elseif (!empty($default_vocabulary)) {
@@ -65,7 +64,6 @@ class NameURIGenerate extends NameURILookup {
       elseif ($tid = $this->getTidByName($this->name)) {
         $term = Term::load($tid);
       }
-      dsm($tid);
       return $tid;
     }
     return  0 ;
