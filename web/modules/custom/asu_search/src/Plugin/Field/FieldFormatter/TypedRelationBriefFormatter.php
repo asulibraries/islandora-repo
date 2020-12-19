@@ -35,7 +35,7 @@ class TypedRelationBriefFormatter extends EntityReferenceLabelFormatter {
         $rel_type = preg_replace($re, $subst, $str);
         $elements[$delta]['#suffix'] = ' (' . $rel_type . ')';
       }
-      if (array_key_exists($delta, $elements)) {
+      if (array_key_exists($delta, $elements) && array_key_exists('#title', $elements[$delta])) {
         $url = \Drupal::service('facets.utility.url_generator')->getUrl(['linked_agents' => [$elements[$delta]['#title']]]);
         $elements[$delta]['#url'] = $url;
       }
