@@ -8,7 +8,9 @@ use Drupal\Core\Link;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Session\AccountProxy;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Provides a 'About this collection' Sidebar Block.
@@ -20,15 +22,64 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * )
  */
 class AboutThisCollectionSidebarBlock extends BlockBase implements ContainerFactoryPluginInterface {
-  // TODO add cache tags based on the node id
-
   /**
    * The route match.
    *
    * @var \Drupal\Core\Routing\RouteMatchInterface
    */
   protected $routeMatch;
-  
+
+  /**
+   * The requestStack definition.
+   *
+   * @var \Symfony\Component\HttpFoundation\RequestStack
+   */
+  protected $requestStack;
+
+  /**
+   * Drupal\Core\Session\AccountProxy definition.
+   *
+   * @var \Drupal\Core\Session\AccountProxy
+   */
+  protected $currentUser;
+
+  /**
+   * Constructor for About this Collection Block.
+   *
+   * @param array $configuration
+   *   A configuration array containing information about the plugin instance.
+   * @param string $plugin_id
+   *   The plugin_id for the formatter.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
+   *   The route match.
+   * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
+   *   The request stack.
+   * @param \Drupal\Core\Session\AccountProxy $current_user
+   *   The current user.
+   */
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $route_match, RequestStack $request_stack, AccountProxy $current_user) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->routeMatch = $route_match;
+    $this->requestStack = $request_stack;
+    $this->currentUser = $current_user;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('current_route_match'),
+      $container->get('request_stack'),
+      $container->get('current_user')
+    );
+  }
+
   /**
    * {@inheritdoc}
    */
@@ -44,8 +95,7 @@ class AboutThisCollectionSidebarBlock extends BlockBase implements ContainerFact
     // Since this block should be set to display on node/[nid] pages that are
     // either "Repository Item", "ASU Repository Item", or "Collection",
     // the underlying node can be accessed via the path.
-    // TODO - use dependency injection
-    $node = \Drupal::routeMatch()->getParameter('node');
+    $node = $this->routeMatch->getParameter('node');
     if ($node) {
       $nid = $node->id();
     }
@@ -55,15 +105,13 @@ class AboutThisCollectionSidebarBlock extends BlockBase implements ContainerFact
     $output_links = [];
     // Add a link for the "Overview" of this node.
     $variables['nodeid'] = $nid;
-    $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/collections/' . $nid);
+    $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/collections/' . $nid);
     $link = Link::fromTextAndUrl(t('Overview'), $url);
     $link = $link->toRenderable();
     $output_links[] = render($link);
-    $current_user = \Drupal::currentUser();
-    $access_controller = (new \Drupal\asu_statistics\Controller\GroupAccessController());
-    $view_statistics = $access_controller->access($current_user);
+    $view_statistics = $node->access('update', $this->currentUser);
     if ($view_statistics) {
-      $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/collections/' . $nid . '/statistics');
+      $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/collections/' . $nid . '/statistics');
       $link = Link::fromTextAndUrl(t('Statistics'), $url);
       $link = $link->toRenderable();
       $output_links[] = render($link);
@@ -84,35 +132,6 @@ class AboutThisCollectionSidebarBlock extends BlockBase implements ContainerFact
         ],
       ],
     ];
-  }
-
-  /**
-   * Constructor for About this Collection Block.
-   *
-   * @param array $configuration
-   *   A configuration array containing information about the plugin instance.
-   * @param string $plugin_id
-   *   The plugin_id for the formatter.
-   * @param mixed $plugin_definition
-   *   The plugin implementation definition.
-   * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
-   *   The route match.
-   */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $route_match) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->routeMatch = $route_match;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new static(
-      $configuration,
-      $plugin_id,
-      $plugin_definition,
-      $container->get('current_route_match')
-    );
   }
 
   /**
