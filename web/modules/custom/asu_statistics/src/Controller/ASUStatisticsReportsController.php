@@ -143,15 +143,15 @@ class ASUStatisticsReportsController extends ControllerBase {
       'public' => 0,
       'private' => 0,
     ];
+    foreach ($collection_items_stats as $totals) {
+      $total_items['total'] += $totals['Total'];
+    }
+    foreach ($public_items_stats as $totals) {
+      $total_items['public'] += $totals['Total'];
+    }
+    $total_items['private'] = $total_items['total'] - $total_items['public'];
     if ($collection_node_id) {
       $content_counts_header = ['Mime type', 'Attachment count', 'Size'];
-      foreach ($collection_items_stats as $totals) {
-        $total_items['total'] += $totals['Total'];
-      }
-      foreach ($public_items_stats as $totals) {
-        $total_items['public'] += $totals['Total'];
-      }
-      $total_items['private'] = $total_items['total'] - $total_items['public'];
     }
     else {
       // Institution.
