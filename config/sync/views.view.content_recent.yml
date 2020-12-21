@@ -60,7 +60,7 @@ display:
       pager:
         type: some
         options:
-          items_per_page: 0
+          items_per_page: 5
           offset: 0
       style:
         type: views_bootstrap_list_group
@@ -2358,6 +2358,7 @@ display:
         fields: false
         empty: false
         relationships: false
+        pager: false
       row:
         type: fields
         options: {  }
@@ -2807,6 +2808,10 @@ display:
           content: 'There is no new content in the last day.'
           plugin_id: text_custom
       relationships: {  }
+      pager:
+        type: none
+        options:
+          offset: 0
     cache_metadata:
       max-age: -1
       contexts:
