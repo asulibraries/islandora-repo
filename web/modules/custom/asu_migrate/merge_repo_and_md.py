@@ -292,6 +292,18 @@ def main(argv):
     merge_df['Corporate Name Subjects'] = corp_name_subjects.apply(
         lambda row: sjoin(row), axis=1)
 
+    pers_names = [col for col in merge_df if col.startswith(
+            "Personal Name Subject")]
+    for cn in pers_names:
+        merge_df[cn] = merge_df[cn].apply(
+            lambda row: loc_lookup("names", row)
+        )
+    pers_name_subjects = merge_df[merge_df.columns[pandas.Series(
+        merge_df.columns
+    ).str.startswith('Personal Name Subject')]]
+    merge_df['Personal Name Subjects'] = pers_name_subjects.apply(
+        lambda row: sjoin(row), axis=1)
+
     merge_df['History JSON'] = temp_series
     merge_df['History JSON'] = merge_df['History JSON'].apply(lambda row: row.replace(
         '\n', '').replace('\r\n', '') if not isinstance(row, float) else None)
