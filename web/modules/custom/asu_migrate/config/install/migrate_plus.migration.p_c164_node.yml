@@ -67,10 +67,6 @@ process:
       value_key: name
       bundle_key: vid
       bundle: copyright_statements
-      # plugin: entity_lookup_by_field
-      # lookup_field: field_source/uri
-      # entity_type: taxonomy_term
-      # bundle: copyright_statements
 
   field_reuse_permissions:
     -
@@ -82,9 +78,6 @@ process:
       entity_type: taxonomy_term
       value_key: name
       bundle_key: vid
-      # plugin: entity_lookup_by_field
-      # lookup_field: field_source/uri
-      # entity_type: taxonomy_term
       bundle: reuse_permissions
 
   created:
@@ -128,6 +121,45 @@ process:
     plugin: default_value
     default_value: "description_restricted_items"
 
+  field_genre:
+    -
+      plugin: skip_on_empty
+      source: Genre
+      method: process
+    -
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: name_uri_generate
+      delimiter: '|'
+      uri_field: field_authority_link
+      default_vocabulary: genre
+
+  field_preferred_citation:
+    plugin: skip_on_empty
+    source: Preferred Citation
+    method: process
+
+  uid:
+    plugin: user_lookup
+    source: System Creator
+    default_value: constants/uid
+
+  field_open_access:
+    plugin: skip_on_empty
+    source: Open Access
+    method: process
+
+  field_peer_reviewed:
+    plugin: skip_on_empty
+    source: Peer-reviewed
+    method: process
+
+  field_complex_object_child: Complex Object Child
+
   field_table_of_contents:
     plugin: skip_on_empty
     source: Table of Contents_y
@@ -136,11 +168,6 @@ process:
   field_series:
     plugin: skip_on_empty
     source: Series_y
-    method: process
-
-  field_preferred_citation:
-    plugin: skip_on_empty
-    source: Preferred Citation
     method: process
 
   title:
@@ -219,12 +246,7 @@ process:
           order: 0
           type: text
 
-  uid:
-    plugin: user_lookup
-    source: System Creator
-    default_value: constants/uid
-
-  field_pid: Item ID
+  field_pid: Legacy System ID
 
   field_preservation_state:
     plugin: entity_lookup
@@ -250,26 +272,7 @@ process:
     plugin: concat
     source:
       - constants/handle
-      - Item ID
-
-  # new pattern like term|uri
-  field_genre:
-    -
-      plugin: skip_on_empty
-      source: Genre
-      method: process
-    -
-      plugin: explode
-      delimiter: '||'
-    -
-      plugin: callback
-      callable: trim
-    -
-      plugin: name_uri_generate
-      delimiter: '|'
-      uri_field: field_authority_link
-      default_vocabulary: genre
-
+      - ID
 
   field_member_of:
     -
@@ -306,7 +309,7 @@ process:
   field_geographic_subject:
     -
       plugin: skip_on_empty
-      source: Geographic Subjects
+      source: Geographic Subject
       method: process
     -
       plugin: explode
@@ -441,9 +444,6 @@ process:
     bundle: cataloging_standards
 
   field_level_of_coding: constants/level_of_coding
-
-  field_complex_object_child: Complex Object Child
-
 
 # We're making nodes
 destination:
