@@ -326,7 +326,7 @@ function _walk_membership(NodeInterface $entity, $parents) {
 
   // Find the next in the chain, if there are any.
   if ($entity->hasField('field_member_of') &&
-    !$entity->get('field_member_of')->isEmpty()) {
+    !$entity->get('field_member_of')->isEmpty() && $entity->get('field_member_of') != NULL) {
     $newent = $entity->get('field_member_of')->referencedEntities()[0];
     $parents[] = $newent;
     $new_pars = _walk_membership($newent, $parents);
