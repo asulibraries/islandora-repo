@@ -1,4 +1,4 @@
-#keep-hero, #landing-hero {
+#keep-hero, #landing-hero, #prism-hero {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center, center;
@@ -15,6 +15,10 @@
 }
 #keep-hero {
     background-image: url(https://islandora-drupal-landing-bucket.s3.us-west-2.amazonaws.com/s3fs-public/inline-images/2020_hero_keep.jpg?QuTYpYqxcIwNzQnMw7fhd2O0JAO4PNYL=);
+}
+
+#prism-hero {
+    background-image: url(https://islandora-drupal-landing-bucket.s3.us-west-2.amazonaws.com/s3fs-public/inline-images/20201104_wurzburger-luhrs-stained-glass-prism_1217_aw_1200x380hero.jpg?AzotdgqbxwQhzo73PRxMjPeAf4UG0T0P);
 }
 
 #landing-hero {
@@ -45,6 +49,15 @@
         }
     }
 
+    .view-id-content_recent.view-display-id-block_2 {
+        .view-content {
+            background-color: transparent;
+        }
+        i {
+            color: $gray-5;
+        }
+    }
+
     #block-views-block-content-recent-block-2, #block-views-block-content-recent-block-3,
     #block-views-block-content-recent-block-4,
     #block-views-block-content-recent-block-5 {
@@ -67,6 +80,25 @@
         td:first-of-type {
             padding-right: 0;
             max-width: 60px;
+        }
+    }
+
+    #views-bootstrap-content-recent-block-2 {
+        .views-field-title {
+            padding-top: 10px;
+        }
+    }
+
+    .view-id-featured_collections {
+        .slides > li > div {
+            border: 1px solid #d0d0d0;
+            padding: 22px;
+        }
+        .col-9 > a {
+            @extend h3;
+        }
+        .flex-pauseplay {
+            padding-top: 15px;
         }
     }
 

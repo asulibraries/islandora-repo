@@ -10,22 +10,35 @@ source:
   plugin: url
   data_fetcher_plugin: file
   data_parser_plugin: xml
-  urls: /var/www/html/drupal/web/modules/custom/asu_mods/data/t1mods.xml
+  urls: /var/www/html/drupal/web/modules/custom/asu_mods/data/t2mods.xml
   item_selector: /modsCollection/mods
   fields:
     -
       name: title
       label: title
-      selector: titleInfo/title
+      selector: titleInfo
     -
       name: pid
-      label: Pid
+      label: pid
       selector: 'recordInfo/recordIdentifier[@src="aztes"]'
+    -
+      name: abstract
+      label: abstract
+      selector: 'abstract'
+    -
+      name: extent
+      label: extent
+      selector: 'physicalDescription/extent'
+    -
+      name: date_created
+      label: date created
+      selector: 'originInfo/dateCreated'
   ids:
     pid:
       type: string
   constants:
     uid: 1
+    description_format: description_restricted_items
 
 
 process:
@@ -47,6 +60,36 @@ process:
         field_nonsort: " "
         field_main_title: " "
         field_subtitle: " "
+  field_rich_description/value: abstract
+  field_rich_description/format: constants/description_format
+  field_extent:
+    plugin: skip_on_empty
+    source: extent
+    method: process
+  field_edtf_date_created:
+    plugin: skip_on_empty
+    source: date_created
+    method: process
+  # field_table_of_contents
+  # field_language
+  # field_linked_agent
+  # field_note_para
+  # field_preferred_citation
+  # field_statement_responsibility
+  # field_typed_identifier
+  # field_handle
+  # field_peer_reviewed
+  # field_open_access
+  # field_genre
+  # status - set not from default
+  # created
+  # uid - with callback for asurite -> id
+  # field_copyright_statement
+  # field_reuse_permissions
+  # field_member_of
+  # field_additional_memberships
+  # field_edtf_copyright_date
+
   uid: constants/uid
   status:
     plugin: default_value
@@ -57,11 +100,31 @@ process:
 
 destination:
   plugin: 'entity:node'
+  # list all fields we want to overwrite
   overwrite_properties:
     - field_title
     - field_rich_description
-    # todo list all fields we want to overwrite
-    # examples:
-    # - 'field_address/address_line1'
-    # - field_synchronized_title
+    - field_rich_description/value
+    - field_rich_description/format
+    - field_extent
+    - field_edtf_date_created
+    - field_table_of_contents
+    - field_language
+    - field_linked_agent
+    - field_note_para
+    - field_preferred_citation
+    - field_statement_responsibility
+    - field_typed_identifier
+    - field_handle
+    - field_peer_reviewed
+    - field_open_access
+    - field_genre
+    - status
+    - created
+    - uid
+    - field_copyright_statement
+    - field_reuse_permissions
+    - field_member_of
+    - field_additional_memberships
+    - field_edtf_copyright_date
 

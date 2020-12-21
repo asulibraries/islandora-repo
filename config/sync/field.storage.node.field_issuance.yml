@@ -15,14 +15,17 @@ type: list_string
 settings:
   allowed_values:
     -
-      value: 'one time'
-      label: 'One Time'
-    -
-      value: integrating
+      value: 'http://id.loc.gov/vocabulary/issuance/intg'
       label: Integrating
     -
-      value: ongoing
-      label: Ongoing
+      value: 'http://id.loc.gov/vocabulary/issuance/mono'
+      label: Monograph
+    -
+      value: 'http://id.loc.gov/vocabulary/issuance/mulm'
+      label: 'Multivolume monograph'
+    -
+      value: 'http://id.loc.gov/vocabulary/issuance/serl'
+      label: Serial
   allowed_values_function: ''
 module: options
 locked: false

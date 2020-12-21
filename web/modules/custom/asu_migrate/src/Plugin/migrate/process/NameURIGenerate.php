@@ -64,6 +64,7 @@ class NameURIGenerate extends NameURILookup {
       elseif ($tid = $this->getTidByName($this->name)) {
         $term = Term::load($tid);
       }
+      return $tid;
     }
     return  0 ;
   }

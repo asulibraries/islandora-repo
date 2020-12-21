@@ -40,12 +40,17 @@ class CollectionParents extends ProcessorPluginBase {
           }
         }
 
-        $additional_memberships = $item->getField('field_additional_memberships')->getValues();
-        if (count($additional_memberships) > 0) {
-          $entities = \Drupal::entityTypeManager()->getStorage('node')->loadMultiple($additional_memberships);
-          foreach ($entities as $par) {
-            if ($par->bundle() == 'collection') {
-              $collection_parents[] = $par->label();
+        if ($node->hasField('field_additional_memberships')) {
+          $additional_memberships = $item->getField('field_additional_memberships');
+          if ($additional_memberships) {
+            $additional_memberships = $additional_memberships->getValues();
+            if (count($additional_memberships) > 0) {
+              $entities = \Drupal::entityTypeManager()->getStorage('node')->loadMultiple($additional_memberships);
+              foreach ($entities as $par) {
+                if ($par->bundle() == 'collection') {
+                  $collection_parents[] = $par->label();
+                }
+              }
             }
           }
         }

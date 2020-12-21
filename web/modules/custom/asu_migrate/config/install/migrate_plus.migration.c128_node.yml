@@ -35,6 +35,7 @@ process:
     plugin: skip_on_empty
     source: Extent
     method: process
+    # todo split on ||
 
   field_edtf_date_created:
     plugin: skip_on_empty
@@ -354,7 +355,7 @@ process:
     -
       plugin: typed_relation_generate
       delimiter: '|'
-      url_field: field_authority_link
+      uri_field: field_authority_link
       default_vocabulary: corporate_body
       relator: 'relators:ctb'
 

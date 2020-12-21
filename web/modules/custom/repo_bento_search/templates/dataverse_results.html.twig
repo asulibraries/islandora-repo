@@ -18,18 +18,18 @@
  *  - identifier_of_dataverse: The identifier of the dataverse.
  */
 #}
-
 <div class="bento_box">
     <h2>{{ label }}</h2>
     <i title="Data from our ASU Library contributors." class="fas fa-question-circle"></i>
     <i>{{ total_results_found | number_format }} result{% if total_results_found != 1 %}s{% endif %} found</i><br>
     {% for key,item in items %}
         <div class="bento_item">
+          <div class="bento_link" title="{{item.name|raw}}">
         {% if item.global_id %}
             <a href="{{ service_url }}/dataset.xhtml?persistentId={{ item.global_id }}" target="_blank">{{ item.name }}</a>
         {% else %}
             <a href="{{ item.url }}" target="_blank">{{ item.name|raw }}</a>
-        {% endif %}<br>
+        {% endif %}</div>
             {{ item.description|striptags|slice(0,150)|raw }}
             {% if item.description|length > 150 %}
                 ...

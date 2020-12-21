@@ -51,6 +51,12 @@ class BentoLegacyRepo extends BlockBase {
         $results_arr['count'] = 0;
       }
       else {
+        // Since this API does not allow for a "how many" parameter, remove extra items.
+        if (count($results_arr['results']) > $num_results) {
+          for ($p = count($results_arr['results']) - 1; $p >= $num_results; $p--) {
+            unset($results_arr['results'][$p]);
+          }
+        }
         $result_items = (array_key_exists('results', $results_arr) && is_array($results_arr['results'])) ?
             $results_arr['results'] : [];
       }
@@ -64,9 +70,7 @@ class BentoLegacyRepo extends BlockBase {
           ],
         ],
       ],
-      '#attributes' => [
-        'class' => array(0 => 'bento_box'),
-      ],
+      '#attributes' => ['class' => ['bento_box']],
       [
         '#theme' => 'legacyrepo_results',
         '#service_url' => $service_url,

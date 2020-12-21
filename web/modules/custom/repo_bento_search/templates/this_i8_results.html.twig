@@ -16,14 +16,14 @@
  *  - field_edtf_date_created: The created date for the item
  */
 #}
-
 <div class="bento_box">
     <h2>{{ label }}</h2>
     <i title="Data from our ASU Library contributors." class="fas fa-question-circle"></i>
     <i>{{ total_results_found | number_format }} result{% if total_results_found != 1 %}s{% endif %} found</i><br>
     {% for key,item in items %}
         <div class="bento_item">
-            <a href="{{ service_url }}/items/{{ item.nid }}" target="_blank">{{ item.complex_title|raw }}</a><br>
+          <div class="bento_link" title="{{item.name|raw}}">
+            <a href="{{ service_url }}/items/{{ item.nid }}" target="_blank">{{ item.complex_title|raw }}</a></div>
             {{ item.field_rich_description|striptags|slice(0,150)|raw }}
             {% if item.field_rich_description|length > 150 %}
             ...

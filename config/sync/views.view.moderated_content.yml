@@ -1,12 +1,16 @@
 langcode: en
 status: true
 dependencies:
+  config:
+    - workflows.workflow.ingest
   enforced:
     module:
       - content_moderation
   module:
+    - content_moderation
     - node
     - user
+    - views_bulk_operations
 id: moderated_content
 label: 'Moderated content'
 module: views
@@ -125,6 +129,66 @@ display:
       row:
         type: fields
       fields:
+        views_bulk_operations_bulk_form:
+          id: views_bulk_operations_bulk_form
+          table: views
+          field: views_bulk_operations_bulk_form
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Views bulk operations'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          batch: true
+          batch_size: 10
+          form_step: true
+          buttons: false
+          clear_on_exposed: true
+          action_title: Action
+          selected_actions:
+            19:
+              action_id: views_bulk_edit
+              preconfiguration:
+                get_bundles_from_results: 1
+          plugin_id: views_bulk_operations_bulk_form
         title:
           id: title
           table: node_field_revision
@@ -635,8 +699,13 @@ display:
           admin_label: ''
           operator: in
           value:
-            editorial-draft: editorial-draft
-            editorial-archived: editorial-archived
+            ingest-draft: ingest-draft
+            ingest-initial_triage: ingest-initial_triage
+            ingest-approved_by_content_lead: ingest-approved_by_content_lead
+            ingest-approved_by_metadata_team: ingest-approved_by_metadata_team
+            ingest-published: ingest-published
+            ingest-declined: ingest-declined
+            ingest-soft_delet: ingest-soft_delet
           group: 1
           exposed: true
           expose:
@@ -645,6 +714,8 @@ display:
             description: ''
             use_operator: false
             operator: moderation_state_op
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: moderation_state
             required: false
             remember: false
@@ -653,9 +724,15 @@ display:
               authenticated: authenticated
               anonymous: '0'
               administrator: '0'
+              fedoraadmin: '0'
+              content_approver: '0'
+              depositor: '0'
+              metadata_manager: '0'
+              preservationist: '0'
+              casuser: '0'
+              repositor_manager: '0'
+              collections_staff: '0'
             reduce: true
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -713,47 +790,6 @@ display:
           entity_type: node
           entity_field: langcode
           plugin_id: language
-        moderation_state_1:
-          id: moderation_state_1
-          table: node_field_revision
-          field: moderation_state
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: 'not in'
-          value:
-            editorial-published: editorial-published
-          group: 1
-          exposed: false
-          expose:
-            operator_id: ''
-            label: ''
-            description: ''
-            use_operator: false
-            operator: ''
-            identifier: ''
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            reduce: false
-            operator_limit_selection: false
-            operator_list: {  }
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          entity_type: node
-          plugin_id: moderation_state_filter
       sorts: {  }
       title: 'Moderated content'
       header: {  }
@@ -800,7 +836,7 @@ display:
         groups:
           1: AND
     cache_metadata:
-      max-age: -1
+      max-age: 0
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
@@ -808,7 +844,8 @@ display:
         - url.query_args
         - 'user.node_grants:view'
         - user.permissions
-      tags: {  }
+      tags:
+        - 'config:workflow_list'
   moderated_content:
     display_plugin: page
     id: moderated_content
@@ -819,7 +856,7 @@ display:
       path: admin/content/moderated
       display_description: ''
     cache_metadata:
-      max-age: -1
+      max-age: 0
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
@@ -827,4 +864,5 @@ display:
         - url.query_args
         - 'user.node_grants:view'
         - user.permissions
-      tags: {  }
+      tags:
+        - 'config:workflow_list'

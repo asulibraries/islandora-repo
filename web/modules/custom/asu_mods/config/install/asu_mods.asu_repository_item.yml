@@ -52,8 +52,8 @@ field_open_access:
   '#': field_open_access
 field_genre:
   '_top': genre
-  '@authority': field_authority_source
-  '@valueURI': field_authority_source/uri
+  '@authority': field_authority_link/source
+  '@valueURI': field_authority_link/uri
   '#': name
 field_extent:
   '_top': physicalDescription
@@ -113,19 +113,20 @@ field_issuance:
 field_frequency:
   '_top': originInfo
   frequency: field_frequency
-field_place_of_publication_code:
-  '_top': originInfo
-  place:
-    placeTerm:
-      '#': field_place_of_publication_code
-      '@type': "code"
-      '@authority': "marccountry"
-field_place_published:
-  '_top': originInfo
-  place:
-    placeTerm:
-      '#': field_place_published
-      '@type': 'text'
+# TODO place/placeTerm doesn't work with triple nested
+# field_place_of_publication_code:
+#   '_top': originInfo
+#   place:
+#     placeTerm:
+#       '#': field_place_of_publication_code
+#       '@type': "code"
+#       '@authority': "marccountry"
+# field_place_published:
+#   '_top': originInfo
+#   place:
+#     placeTerm:
+#       '#': field_place_published
+#       '@type': 'text'
 field_embargo_release_date:
   '_top': originInfo
   dateOther:
@@ -134,14 +135,14 @@ field_embargo_release_date:
     '#': 'field_embargo_release_date'
 field_resource_type:
   '_top': typeOfResource
-  '@authority': field_external_authority_link
+  '@authority': field_external_authority_link/source
   '@valueURI': field_external_authority_link/uri
   '#': name
 field_geographic_subject:
   '_top': subject
   geographic:
-    '@authority': field_external_authority_link/source
-    '@valueURI': field_external_authority_link/uri
+    '@authority': field_authority_link/source
+    '@valueURI': field_authority_link/uri
     '#': name
 field_temporal_subject:
   '_top': subject
@@ -176,3 +177,4 @@ field_title_subject:
 # field_date_digitized:
 # field_description_source:
 # field_level_of_coding:
+# TODO handle custom callbacks like transforming dates to the right format, transforming user ids to asurites

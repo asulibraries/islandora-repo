@@ -2,10 +2,10 @@
 
 namespace Drupal\asu_collection_extras\Plugin\Block;
 
-use Drupal\Core\Block\BlockBase;
 use Drupal\media\Entity\Media;
+use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Url;
-use Drupal\Core\Link;
 
 /**
  * Provides a 'About this collection' Block.
@@ -61,7 +61,7 @@ class AboutThisCollectionBlock extends BlockBase {
       ->loadByProperties(['name' => "Original File"]));
     foreach ($children_nids as $child_nid) {
       if ($child_nid) {
-        // @todo load complex objects for this node -- if any... and inner-loop 
+        // @todo load complex objects for this node -- if any... and inner-loop
         // these if deemed to be needed.
         $items++;
         // For "# file (Titles)", get media - extract the and count the original files.
@@ -100,7 +100,6 @@ class AboutThisCollectionBlock extends BlockBase {
     $stat_box_row2[] = $this->makeBox("<strong>" . (($max_timestamp) ? date('M d, Y', $max_timestamp): 'unknown') .
       "</strong><br>last updates</div>");
     return [
-      '#cache' => ['max-age' => 0],
       '#markup' =>
         (count($stat_box_row1) > 0) ?
         // ROW 1
@@ -154,6 +153,26 @@ class AboutThisCollectionBlock extends BlockBase {
       $files += (is_object($media) ? 1 : 0);
     }
     return $files;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheTags()
+  {
+    if ($node = \Drupal::routeMatch()->getParameter('node')) {
+      return Cache::mergeTags(parent::getCacheTags(), ['node:' . $node->id()]);
+    } else {
+      return parent::getCacheTags();
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheContexts()
+  {
+    return Cache::mergeContexts(parent::getCacheContexts(), ['route']);
   }
 
 }

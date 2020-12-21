@@ -39,17 +39,23 @@ class BentoSecondI8 extends BlockBase {
       $parsed_url = parse_url($service_api_url);
       $service_url = $parsed_url['scheme'] . '://' . $parsed_url['host'];
       $results_json = ($search_term) ?
-        \Drupal::service('repo_bento_search.this_i8')->getSearchResults($search_term) : '';
+        \Drupal::service('repo_bento_search.second_i8')->getSearchResults($search_term) : '';
       $results_arr = json_decode($results_json, true);
       if (is_null($results_arr)) {
         $result_items = [];
         $total_results_found = 0;
       }
       else {
+        $total_results_found = $results_arr['pager']['count'];
+        if (count($results_arr['search_results']) > $num_results) {
+          for ($p = count($results_arr['search_results']) - 1; $p >= $num_results; $p--) {
+            unset($results_arr['search_results'][$p]);
+          }
+        }
+        // Since this API does not allow for a "how many" parameter, remove extra items.
         $result_items = (array_key_exists('search_results', $results_arr) &&
           is_array($results_arr['search_results'])) ?
             $results_arr['search_results'] : [];
-        $total_results_found = $results_arr['pager']['count'];
       }
     }
 
@@ -62,9 +68,7 @@ class BentoSecondI8 extends BlockBase {
           ],
         ],
       ],
-      '#attributes' => [
-        'class' => array(0 => 'bento_box'),
-      ],
+      '#attributes' => ['class' => ['bento_box']],
       [
         '#theme' => 'second_i8_results',
         '#service_url' => $service_url,

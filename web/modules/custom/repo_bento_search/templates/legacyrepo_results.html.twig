@@ -16,19 +16,19 @@
  *  - md_created_s: The created date for the item
  */
 #}
-
 <div class="bento_box">
     <h2>{{ label }}</h2>
     <i title="Items from our digital repository, including scholarly papers, theses, university records, historical photographs, music performances, and more." class="fas fa-question-circle"></i>
     <i>{{ total_results_found | number_format }} result{% if total_results_found != 1 %}s{% endif %} found</i><br>
     {% for key,item in items %}
         <div class="bento_item">
+          <div class="bento_link" title="{{item.name|raw}}">
           {% if item.item_id %}
             <a href="{{ service_url }}/items/{{ item.item_id }}" target="_blank">{{ item.item_label|raw }}</a>
           {% else %}
             <a href="{{ service_url }}/collections/{{ item.collection_id }}" target="_blank">{{ item.item_label }}</a>
           {% endif %}
-          <br>
+          </div>
           {{ item.item_description|striptags|slice(0,150)|raw }}
           {% if item.item_description|length > 150 %}
               ...

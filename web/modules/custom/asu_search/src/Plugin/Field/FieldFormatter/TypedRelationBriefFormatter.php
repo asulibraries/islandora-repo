@@ -29,14 +29,16 @@ class TypedRelationBriefFormatter extends EntityReferenceLabelFormatter {
       $rel_types = $item->getRelTypes();
       $rel_type = isset($rel_types[$item->rel_type]) ? $rel_types[$item->rel_type] : $item->rel_type;
       if (isset($elements[$delta])) {
-        $re = '/(\S*) (\S*)/m';
+        $re = '/(.*) \(\S*/m';
         $str = $rel_type;
         $subst = '$1';
         $rel_type = preg_replace($re, $subst, $str);
         $elements[$delta]['#suffix'] = ' (' . $rel_type . ')';
       }
-      $url = \Drupal::service('facets.utility.url_generator')->getUrl(['linked_agents' => [$elements[$delta]['#title']]]);
-      $elements[$delta]['#url'] = $url;
+      if (array_key_exists($delta, $elements) && array_key_exists('#title', $elements[$delta])) {
+        $url = \Drupal::service('facets.utility.url_generator')->getUrl(['linked_agents' => [$elements[$delta]['#title']]]);
+        $elements[$delta]['#url'] = $url;
+      }
     }
 
     return $elements;

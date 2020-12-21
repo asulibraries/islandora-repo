@@ -1,21 +1,18 @@
-import requests
 from urllib.parse import quote
 import sys
-import csv
-import time
 import pandas
 import shlex
 import subprocess
 import re
 import math
-import numpy as np
 
 # example usage merge_repo_and_md.py repo.csv md.csv att_md.csv
 cols = ["label", "authority", "uri"]
 loc_df = pandas.DataFrame(columns=cols)
 
 
-def sjoin(x): return '||'.join(x[x.notnull()].astype(str))
+def sjoin(x): return '||'.join(
+    x[x.notnull()].astype(str)) if not x.empty else x
 
 
 def lenzi(df): return len(df.index) == 0
@@ -24,32 +21,33 @@ def lenzi(df): return len(df.index) == 0
 def loc_lookup(atype, astring):
     # print(atype)
     # print(astring)
-    if not isinstance(astring, str):# or math.isnan(astring):
+    if not isinstance(astring, str): # or math.isnan(astring):
         return None
-    astring = astring.replace('\n', '')
-    astring = astring.strip()
     global loc_df
     loc_base = "https://id.loc.gov/authorities/"
-    authority = atype # subjects, names
-    val_to_query = astring
-    lc = loc_df.query("label == '" + astring + "' & authority == '" + atype + "'")
+    authority = atype.strip() # subjects, names
+    val_to_query = astring.strip()
+    lc = loc_df.query('label == "' + astring + '" & authority == "' + atype + '"')
     if len(lc.index) > 0:
         return astring + "|" + lc.iloc[0].uri
     else:
-        headers = {"User-Agent": "ASU Library"}
+        # headers = {"User-Agent": "ASU Library"}
         url = loc_base + authority + "/label/" + quote(val_to_query)
         # print(url)
         cmd = 'curl -v --user-agent "asu library" ' + url
         args = shlex.split(cmd)
         prc = subprocess.Popen(args, shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         stdout, stderr = prc.communicate()
+        # print(stdout.decode("utf-8"))
         # print(stderr.decode("utf-8"))
         m = re.search("< x-uri:[a-zA-Z:\/\s.0-9]*\\r\\n<", stderr.decode("utf-8"))
         if m is None:
             return astring
         uri = m.group(0).replace("< x-uri: ", "").replace("\r\n<", "")
         # print(uri)
-        loc_df = loc_df.append({"label": astring, "authority": atype, "uri": uri}, ignore_index=True)
+        loc_df = loc_df.append(
+            {"label": astring, "authority": atype, "uri": uri}, ignore_index=True)
+
         return astring + "|" + uri
 
 
@@ -127,22 +125,28 @@ def main(argv):
     att_df = pandas.read_csv(att_md_file)
     att_df.sort_values(by=['item id'])
     att_df = att_df.loc[:, ~att_df.columns.str.contains('^Unnamed')]
+    del repo_df["Personal Contributors"]
 
-    print(att_df)
-    merge_df = pandas.merge(left=repo_df, right=md_df, left_on='Item ID', right_on='ID', how='left')
+    merge_df = pandas.merge(left=repo_df, right=md_df, left_on='Item ID', right_on='Legacy System ID', how='right')
     merge_df['Model'] = merge_df.apply(lambda row: get_model(row['Attachment Count'], row['Item ID'], att_df, None), axis=1)
     merge_df = merge_df.loc[:, ~merge_df.columns.str.contains('^Unnamed')]
     temp_series = merge_df["History"]
     del merge_df['History']
-    del merge_df["Repository Ingestion Notes"]
+    if 'Repository Ingestion Notes' in merge_df:
+        del merge_df["Repository Ingestion Notes"]
     merge_df['Parent Item'] = ""
     att_df['old item id'] = ""
-    merge_df['Complex Object Child'] = 0
 
-    for col in att_df.columns:
+    print(repo_df.iloc[1])
+    col_id = str(int(repo_df.iloc[1]['Collection ID']))
+
+    # print(merge_df)
+    print("about to print merge_df columns")
+    for col in merge_df.columns:
         print(col)
-        if col == 'media type':
-            print("TES")
+    print("end merge df columns")
+    #     if col == 'media type':
+    #         print("TES")
 
     att_df['image id'] = att_df.apply(lambda row: set_file_id(
         row['file mime'], row['media type'], row['file id'], 'image'), axis=1)
@@ -158,9 +162,6 @@ def main(argv):
              'video id', 'audio id', 'generic file id']
     att_df[xcols] = att_df[xcols].replace(".0", "")
 
-    # for col in merge_df.columns:
-        # print(col)
-#    print(merge_df.iloc[0])
     print(merge_df[merge_df['Attachment Count'] != 1].size)
     # print(merge_df.size)
     complex_objects = merge_df[merge_df['Attachment Count'] != 1]
@@ -187,82 +188,128 @@ def main(argv):
                             notes = notes + "|" + a['attachment description']
                         else:
                             notes = a['attachment description']
-                    new_row = {'Item ID': a['attachment id'], 'Item Title': a['attachment label'], 'Notes': a['attachment notes'], 'Model': get_model(1, None, att_df, a['attachment id']), 'Parent Item': a['item id'], 'Visibility': a_status, 'Notes': '|'.join(notes), 'System Created': a['file created'], 'System Updated': a['file created'], 'Attachment Count': 1, 'Complex Object Child': 1}
+                    new_row = {'Item ID': a['attachment id'], 'Item Title': a['attachment label'], 'Notes': a['attachment notes'], 'Model': get_model(1, None, att_df, a['attachment id']), 'Parent Item': a['item id'], 'Visibility': a_status, 'Notes': '|'.join(notes), 'System Created': a['file created'], 'System Updated': a['file created'], 'Attachment Count': 1}
                     print("add att")
                     att_df.at[index, 'old item id'] = a['item id']
                     att_df.at[index, 'item id'] = a['attachment id']
                     merge_df = merge_df.append(new_row, ignore_index=True)
 
-        # print(getattr(c, 'Item ID'))
-        # print(c['ID'])
-        # print(c['Item ID'])
-    # print(merge_df.size)
-    # print(merge_df.iloc[-1])
-    # exit()
-    # print(merge_df.query('Attachment Count > 1'))
-
-    # print(merge_df.iloc[0])
-    # exit()
     tps = [col for col in merge_df if col.startswith('Topical Subject')]
     for x in tps:
         merge_df[x] = merge_df[x].apply(lambda row: loc_lookup("subjects", row))
     topics = merge_df[merge_df.columns[pandas.Series(
         merge_df.columns).str.startswith('Topical Subject')]]
     merge_df['Topical Subjects'] = topics.apply(lambda row: sjoin(row), axis=1)
-
-    corp_name_subs = [col for col in merge_df if col.startswith(
-        'Corporate Name Subject')]
-    for cpn in corp_name_subs:
-        merge_df[cpn] = merge_df[cpn].apply(
-            lambda row: loc_lookup("names", row))
-    corp_name_subjects = merge_df[merge_df.columns[pandas.Series(
-        merge_df.columns).str.startswith('Corporate Name Subject')]]
-    merge_df['Corporate Name Subjects'] = corp_name_subjects.apply(
-        lambda row: sjoin(row), axis=1)
-
-    pers_name_subs = [col for col in merge_df if col.startswith(
-            'Personal Name Subject')]
-    for pns in pers_name_subs:
-        merge_df[pns] = merge_df[pns].apply(
-            lambda row: loc_lookup("names", row))
-    pers_name_subjects = merge_df[merge_df.columns[pandas.Series(
-        merge_df.columns).str.startswith('Personal Name Subject')]]
-    merge_df['Personal Name Subjects'] = pers_name_subjects.apply(
-        lambda row: sjoin(row), axis=1)
-
-    merge_df['Creator'] = merge_df.Creator.apply(lambda row: loc_lookup("names", row))
-    authors = merge_df[merge_df.columns[pandas.Series(
-        merge_df.columns).str.startswith('Creator')]]
-    merge_df['Authors'] = authors.apply(lambda row: sjoin(row), axis=1)
+    if 'Creator' in merge_df:
+        merge_df['Creator'] = merge_df.Creator.apply(lambda row: loc_lookup("names", row))
+        authors = merge_df[merge_df.columns[pandas.Series(
+            merge_df.columns).str.startswith('Creator')]]
+        merge_df['Authors'] = authors.apply(lambda row: sjoin(row), axis=1)
     # merge_df['Contributor'] = merge_df.Contributor.apply(
         # lambda row: loc_lookup("names", row))
     # merge_df['Contributor.1'] = merge_df['Contributor.1'].apply(lambda row: loc_lookup("names", row))
     contribs = merge_df[merge_df.columns[pandas.Series(
         merge_df.columns).str.startswith('Contributor')]]
+    if contribs.empty:
+        contribs = merge_df[merge_df.columns[pandas.Series(
+            merge_df.columns).str.match('Personal Contributor([^\s]\.?[0-9]*|$)$')]]
+    pci = 0
+    print(contribs)
     for ccc in contribs:
+        print("in personal contributors")
         print(ccc)
         # exit()
         merge_df[ccc] = merge_df[ccc].apply(lambda row: loc_lookup("names", row))
-    merge_df['Contributors-Person'] = contribs.apply(lambda row: sjoin(row), axis=1)
+        if 'Personal Contributor Role' in merge_df:
+            print("there is a pc role")
+            if pci == 0:
+                role = "Personal Contributor Role"
+            else:
+                role = 'Personal Contributor Role.%i' % pci
+            if role in merge_df:
+                merge_df[ccc] = merge_df[[ccc, role]].apply(lambda x: ('|'.join(x.map(str) if not x.empty else '')), axis=1)
+            # merge_df[ccc].replace('None|nan', '', inplace=True)
+            pci = pci+1
+    # update contribs
+    contribs = merge_df[merge_df.columns[pandas.Series(
+        merge_df.columns).str.startswith('Contributor')]]
+    if contribs.empty:
+        contribs = merge_df[merge_df.columns[pandas.Series(
+            merge_df.columns).str.match('Personal Contributor([^\s]\.?[0-9]*|$)$')]]
+
+    merge_df['Contributors-Person'] = contribs.apply(
+        lambda row: sjoin(row), axis=1).str.replace('\|{0,2}None\|nan', '')
 
     corp_contribs = merge_df[merge_df.columns[pandas.Series(merge_df.columns).str.startswith('Corporate contributor')]]
+    if corp_contribs.empty:
+        corp_contribs = merge_df[merge_df.columns[pandas.Series(
+            merge_df.columns).str.match('Corporate Contributor([^\s]\.?[0-9]*|$)$')]]
     # corp_contribs = corp_contribs.apply(lambda row: loc_lookup("names", row))
+    cci = 0
     for corpcc in corp_contribs:
         print(corpcc)
         merge_df[corpcc] = merge_df[corpcc].apply(
             lambda row: loc_lookup("names", row))
+        if 'Corporate Contributor Role' in merge_df:
+            print("there is a cc role")
+            if cci == 0:
+                role = "Corporate Contributor Role"
+            else:
+                role = 'Corporate Contributor Role.%i' % cci
+            if role in merge_df:
+                merge_df[corpcc] = merge_df[[corpcc, role]].apply(
+                    lambda x: ('|'.join(x.map(str) if not x.empty else '')), axis=1)
+            cci = cci + 1
 
-    merge_df['Contributors-Corporate'] = corp_contribs.apply(lambda row: sjoin(row), axis=1)
+    # update corp contribs
+    corp_contribs = merge_df[merge_df.columns[pandas.Series(
+            merge_df.columns).str.startswith('Corporate contributor')]]
+    if corp_contribs.empty:
+        corp_contribs = merge_df[merge_df.columns[pandas.Series(
+            merge_df.columns).str.match('Corporate Contributor([^\s]\.?[0-9]*|$)$')]]
 
-    merge_df['Geographic Subject'] = merge_df['Geographic Subject'].apply(
-        lambda row: loc_lookup("subjects", row))
-    # for col in merge_df.columns:
-    #     print(col)
+    merge_df['Contributors-Corporate'] = corp_contribs.apply(
+        lambda row: sjoin(row), axis=1).str.replace('\|{0,2}None\|nan', '')
+
+    geo_subs = [col for col in merge_df if col.startswith('Geographic Subject')]
+    for gs in geo_subs:
+        merge_df[gs] = merge_df[gs].apply(
+            lambda row: loc_lookup("subjects", row)
+        )
+    geo_subjects = merge_df[merge_df.columns[pandas.Series(
+        merge_df.columns
+    ).str.startswith('Geographic Subject')]]
+    merge_df['Geographic Subjects'] = geo_subjects.apply(lambda row: sjoin(row), axis=1)
+
+    corp_names = [col for col in merge_df if col.startswith("Corporate Name Subject")]
+    for cn in corp_names:
+        merge_df[cn] = merge_df[cn].apply(
+            lambda row: loc_lookup("names", row)
+        )
+    corp_name_subjects = merge_df[merge_df.columns[pandas.Series(
+        merge_df.columns
+    ).str.startswith('Corporate Name Subject')]]
+    merge_df['Corporate Name Subjects'] = corp_name_subjects.apply(
+        lambda row: sjoin(row), axis=1)
+
+    pers_names = [col for col in merge_df if col.startswith(
+            "Personal Name Subject")]
+    for cn in pers_names:
+        merge_df[cn] = merge_df[cn].apply(
+            lambda row: loc_lookup("names", row)
+        )
+    pers_name_subjects = merge_df[merge_df.columns[pandas.Series(
+        merge_df.columns
+    ).str.startswith('Personal Name Subject')]]
+    merge_df['Personal Name Subjects'] = pers_name_subjects.apply(
+        lambda row: sjoin(row), axis=1)
+
     merge_df['History JSON'] = temp_series
-    merge_df['History JSON'] = merge_df['History JSON'].apply(lambda row: row.replace('\n', '').replace('\r\n', '') if not isinstance(row, float) else None)
+    merge_df['History JSON'] = merge_df['History JSON'].apply(lambda row: row.replace(
+        '\n', '').replace('\r\n', '') if not isinstance(row, float) else None)
 
     xcols = ['image id', 'document id', 'video id',
-                 'audio id', 'generic file id', 'file id']
+                'audio id', 'generic file id', 'file id']
     # for x_col in xcols:
     x_col = 'file id'
     # att_df[x_col] = att_df[x_col].replace(".0", "")
@@ -270,10 +317,11 @@ def main(argv):
     att_df[x_col] = att_df[x_col].astype('int64')
     att_df[x_col] = att_df[x_col].replace(-1, None)
     att_df[x_col] = att_df[x_col].replace("-1", "")
+    # TODO - if created is empty, populate it with the current date/time
 
-    merge_df.to_csv('c' + str(int(merge_df.iloc[0]['Collection ID'])) + '_merged.csv')
-    att_df.to_csv('data/migration_data/att_file_' +
-                  str(int(merge_df.iloc[0]['Collection ID'])) + '.csv')
+    merge_df.to_csv('c' + col_id + '_merged.csv')
+    att_df.to_csv('data/migration_data/att_file_' + col_id + '.csv')
+
 
 if __name__ == '__main__':
     main(sys.argv)

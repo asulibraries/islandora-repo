@@ -139,10 +139,23 @@
                   <a id="main-content" tabindex="-1"></a>
                   {{ page.content }}
                 </section>
-                {{ drupal_block('bento_this_i8_results_block') }}
-                {# {{ drupal_block('bento_second_i8_results_block') }} #}
-                {{ drupal_block('bento_dataverse_results_block') }}
-                {{ drupal_block('bento_legacy_repo_results_block') }}
+                <br class="clearfloat">
+                <div class="row">
+                  <div class="col-md-6">
+                    {{ drupal_block('bento_this_i8_results_block') }}
+                  </div>
+                  <div class="col-md-6">
+                    {{ drupal_block('bento_second_i8_results_block') }}
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    {{ drupal_block('bento_dataverse_results_block') }}
+                  </div>
+                  <div class="col-md-6">
+                    {{ drupal_block('bento_legacy_repo_results_block') }}
+                  </div>
+                </div>
               </main>
             {% if page.sidebar_first %}
               <div{{ sidebar_first_attributes }}>

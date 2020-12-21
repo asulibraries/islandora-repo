@@ -43,7 +43,7 @@ fieldMappings:
       - 'dcterms:dateCopyrighted'
       - 'mods:dateOfCopyright'
     datatype_callback:
-      callable: 'Drupal\rdf\CommonDataConverter::dateIso8601Value'
+      callable: 'Drupal\controlled_access_terms\EDTFConverter::dateIso8601Value'
   field_preferred_citation:
     properties:
       - 'dcterms:bibliographicCitation'

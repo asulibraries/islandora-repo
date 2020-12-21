@@ -34,6 +34,7 @@ dependencies:
     - field.field.node.islandora_object.field_preservation_state
     - field.field.node.islandora_object.field_resource_type
     - field.field.node.islandora_object.field_rights
+    - field.field.node.islandora_object.field_source
     - field.field.node.islandora_object.field_subject
     - field.field.node.islandora_object.field_subjects_name
     - field.field.node.islandora_object.field_table_of_contents
@@ -53,6 +54,16 @@ targetEntityType: node
 bundle: islandora_object
 mode: pdfjs
 content:
+  display_media_child_thumbnail:
+    weight: 10
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  display_media_entity_view_4:
+    weight: 10
+    settings: {  }
+    third_party_settings: {  }
+    region: content
   field_alternative_title:
     type: string
     weight: 0
@@ -318,6 +329,21 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  video_media_evas_original_file:
+    weight: 10
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  video_media_evas_preservation_master:
+    weight: 10
+    settings: {  }
+    third_party_settings: {  }
+    region: content
+  video_media_evas_service_file:
+    weight: 10
+    settings: {  }
+    third_party_settings: {  }
+    region: content
 hidden:
   display_media_entity_view_1: true
   display_media_entity_view_2: true
@@ -328,6 +354,7 @@ hidden:
   field_model: true
   field_pid: true
   field_preservation_state: true
+  field_source: true
   field_weight: true
   langcode: true
   openseadragon_media_evas_entity_view_1: true
