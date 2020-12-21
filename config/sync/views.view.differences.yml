@@ -903,6 +903,7 @@ display:
       defaults:
         filters: false
         filter_groups: false
+        empty: false
       filters:
         status:
           value: '1'
@@ -1012,6 +1013,18 @@ display:
         operator: AND
         groups:
           1: AND
+      empty:
+        area_text_custom:
+          id: area_text_custom
+          table: views
+          field: area_text_custom
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content: 'There is no content that has been modified in the last day.'
+          plugin_id: text_custom
     cache_metadata:
       max-age: -1
       contexts:

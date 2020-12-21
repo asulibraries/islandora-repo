@@ -4,7 +4,7 @@ use Drupal\views\Views;
 use Drupal\user\Entity\User;
 
 /**
- * 
+ *
  * 1. respond to CRON that runs daily
  * 2. call view code to get that content... log some of that in watchdog.
  * 3. call code that will ultimately generate the emailing.
@@ -14,7 +14,7 @@ function content_change_digest_cron() {
   $cron_config = \Drupal::config('content_change_digest.settings');
   $request_time = \Drupal::time()
     ->getRequestTime();
-  
+
   // Default to a 24 hour interval. Of course, cron has to be running at least
   // each day for this to work.
   $interval = $cron_config
@@ -24,7 +24,7 @@ function content_change_digest_cron() {
   // minute) so keep a time for the next run in the site state.
   $next_execution = \Drupal::state()
     ->get('content_change_digest.next_execution', 0);
-  
+
   // MAKE it run.  TAKE THIS OUT AFTER CRON TESTS ARE NO LONGER NEEDED.
   $next_execution = 0;
 
@@ -39,36 +39,53 @@ function content_change_digest_cron() {
   }
   else {
     \Drupal::logger('content_change_digest')->notice('Did not perform any ' .
-      'digest logic because the next_execution time has still not passed.');      
+      'digest logic because the next_execution time has still not passed.');
   }
 }
 
 /**
- * 
+ * Implements hook_theme().
+ */
+function content_change_digest_theme($existing, $type, $theme, $path) {
+  return [
+    'views_view__content-recent__newcontent1day' => [
+      'render element' => 'elements',
+      'base hook' => 'view'
+    ],
+    'views_view__differences' => [
+      'render element' => 'elements',
+      'base hook' => 'view'
+    ]
+  ];
+}
+
+/**
+ *
  */
 function content_change_digest_perform_daily_digest() {
   // Get a list of recipients for the emailing.
   $email_recipients = content_change_digest_get_recipients();
-  
+
   // Get the view query results and theme it using twig and deliver to recipients.
   // maybe need a web http client
-  $differences_view_html = content_change_digest_get_view_html();
+  $differences_view_html_arr = content_change_digest_get_view_html();
   $output = array();
   $mailManager = \Drupal::service('plugin.manager.mail');
   foreach ($email_recipients as $account) {
     $output[] = '<b>To:</b> ' . $account->getEmail();
     $to = $account->getEmail();
-    $output[] = '<blockquote>' . $differences_view_html . '</blockquote>';
-    $params['message'] = $differences_view_html;
+    $message = implode("<p></p>", $differences_view_html_arr);
+    $output[] = '<blockquote>' . $message . '</blockquote>';
+    $params['message'] = $message;
     $params['account'] = $to;
     $result = $mailManager->mail('content_change_digest', 'notice', $to, 'en', $params, NULL, true);
     if ($result['result'] !== true){
       \Drupal::logger('content_change_digest')->error('problem sending content change digest mail to ' . $to);
     } else {
       \Drupal::logger('content_change_digest')->notice('content change digest sent to ' . $to);
-    }	    
+    }
   }
-  
+
   // Add a watchdog message that this step has been performed.
   \Drupal::logger('content_change_digest')->notice(t('content_change_digest ' .
     'content_change_digest_perform_daily_digest executed at %time',
@@ -121,22 +138,37 @@ function content_change_digest_get_recipients() {
       $accounts[] = $temp_account;
     }
   }
- 
+
   return $accounts;
 }
 
 function content_change_digest_get_view_html() {
   // fetch the html for the view.
-//  \Drupal::logger('content_change_digest')
-//    ->notice('in content_change_digest_mail');
-  
+  $output = [];
   $view = Views::getView('differences');
   if (is_object($view)) {
     $view->setDisplay('page_2');
     $view->execute();
     $render_view = \Drupal::service('renderer')->render($view->render());
-    return $render_view;
+//    \Drupal::logger('content_change_digest')
+//      ->notice('in content_change_digest_mail - created differences with "differences1day" display');
+//    \Drupal::logger('content_change_digest')
+//      ->notice($render_view);
+    $output[] = "<h3>Changed content</h3>" . $render_view;
   }
+
+  $view2 = Views::getView('content_recent');
+  if (is_object($view2)) {
+    $view2->setDisplay('newcontent1day');
+    $view2->execute();
+    $render_view2 = \Drupal::service('renderer')->render($view2->render());
+//    \Drupal::logger('content_change_digest')
+//      ->notice('in content_change_digest_mail - created content_recent with "newcontent1day" display');
+//    \Drupal::logger('content_change_digest')
+//      ->notice($render_view2);
+    $output[] = "<h3>New content</h3>" . $render_view2;
+  }
+  return $output;
 }
 
 function content_change_digest_mail($key, &$message, $params) {
@@ -150,7 +182,7 @@ function content_change_digest_mail($key, &$message, $params) {
     case 'notice':
       $message['headers']['MIME-Version'] = '1.0';
       $message['headers']['Content-Type'] = 'text/html; charset=UTF-8';
-      $message['subject'] = t('Daily report of content changes on @site', $options);
+      $message['subject'] = t('Daily report of new content and content changes on @site', $options);
       $message['body'] = array($params['message']);
       $message['from'] = \Drupal::config('system.site')->get('mail');
       break;
@@ -159,7 +191,7 @@ function content_change_digest_mail($key, &$message, $params) {
 
 /**
  * Implements hook_form_FORM_ID_alter().
- * 
+ *
  * Hide the "Opt out of emailing" checkbox for users who are not selected by the
  * configuration to even get the emailings.
  */
