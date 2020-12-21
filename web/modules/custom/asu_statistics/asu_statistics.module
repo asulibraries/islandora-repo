@@ -1,14 +1,9 @@
 <?php
 
-use Drupal\Core\Form\FormStateInterface;
-
 /**
  * @file
  * Contains asu_statistics.module.
  */
-
-// asu_statistics
-
 
 /**
  * Implements hook_theme().
@@ -17,15 +12,16 @@ function asu_statistics_theme($existing, $type, $theme, $path) {
   return [
     'asu_statistics_chart' => [
       'variables' => [
-          'form' => NULL, 
-          'download_url' => NULL,
-          'download_stat_summary_url' => NULL,
-          'total_items' => NULL,
-          'stats_table' => NULL, 
-          'summary_row' => NULL, 
-          'content_counts_table' => NULL,
-          'total_collections' => NULL,
-          'collections_by_institution' => NULL],
+        'form' => NULL,
+        'download_url' => NULL,
+        'download_stat_summary_url' => NULL,
+        'total_items' => NULL,
+        'stats_table' => NULL,
+        'summary_row' => NULL,
+        'content_counts_table' => NULL,
+        'total_collections' => NULL,
+        'collections_by_institution' => NULL,
+      ],
     ],
   ];
 }
@@ -37,14 +33,6 @@ function template_preprocess_asu_statistics_chart(&$variables) {
   $variables['attributes'] = [
     'id' => ['asu_statistics_chart'],
   ];
-
-  if (!empty(\Drupal::hasService('asu_statistics.datasource.published_nodes_by_month'))) {
-    $data_source = \Drupal::service('asu_statistics.datasource.published_nodes_by_month');
-  }
-  else {
-    \Drupal::messenger()->addMessage(t('The report type you last selected is no longer available. Choose another report type, or contact the site administrator.'), 'warning');
-    return;
-  }
 }
 
 /**
@@ -52,19 +40,6 @@ function template_preprocess_asu_statistics_chart(&$variables) {
  */
 function asu_statistics_page_attachments(array &$attachments) {
   $attachments['#attached']['library'][] = 'asu_statistics/asu_statistics_css';
-  $current_path = \Drupal::service('path.current')->getPath();
-  if ($current_path == '/admin/reports/asu_statistics' || (
-      (substr($current_path, 1, 11) == 'collections') &&
-      (substr($current_path, strlen($current_path) - 10) == 'statistics') )) {
-    $report_type = 'published_nodes_by_month';
-    if (!empty(\Drupal::hasService('asu_statistics.datasource.published_nodes_by_month'))) {
-      $data_source = \Drupal::service('asu_statistics.datasource.published_nodes_by_month');
-    }
-    else {
-      \Drupal::messenger()->addMessage(t('The report type you last selected is no longer available. Choose another report type, or contact the site administrator.'), 'warning');
-      return;
-    }
-  }
 }
 
 /**
@@ -82,13 +57,19 @@ function asu_statistics_file_download($uri) {
   return NULL;
 }
 
-function asu_statistics_make_table_rows_from_result($result) {
+/**
+ * Returns build array from data - filling in any gaps with 0s.
+ *
+ * @param array $result
+ *   The incoming data array that will define the build array.
+ */
+function asu_statistics_make_table_rows_from_result(array $result) {
   $build_output = $rows = [];
   $month_names = [];
   for ($month = 1; $month < 13; $month++) {
     $month_names[$month] = date("F", mktime(0, 0, 0, $month, 10));
   }
-  // get all of the rows into an array where each row contains the results for
+  // Get all of the rows into an array where each row contains the results for
   // the query result which have records with these years / months.
   $earliest_year = PHP_INT_MAX;
   $latest_year = 0;
@@ -99,14 +80,14 @@ function asu_statistics_make_table_rows_from_result($result) {
     if ($child_obj->item_year > $latest_year) {
       $latest_year = $child_obj->item_year;
     }
-    $record_arr = (array)$child_obj;
+    $record_arr = (array) $child_obj;
     $record_arr['created'] = mktime(0, 0, 0, $child_obj->item_month, 10);
     $record_arr['item_month_name'] = $month_names[$child_obj->item_month];
     $pad0_month = (($child_obj->item_month < 10) ? "0" : "") . $child_obj->item_month;
     $rows[$child_obj->item_year . "-" . $pad0_month] = $record_arr;
   }
 
-  // fill any empty months with a 0.
+  // Fill any empty months with a 0.
   for ($year = $earliest_year; $year <= $latest_year; $year++) {
     $build_output[$year]['Year'] = $year;
     for ($month = 1; $month < 13; $month++) {
@@ -115,7 +96,8 @@ function asu_statistics_make_table_rows_from_result($result) {
       $month_key = substr($month_names[$month], 0, 3);
       if (!array_key_exists($year_month_key, $rows)) {
         $build_output[$year][$month_key] = 0;
-      } else {
+      }
+      else {
         $build_output[$year][$month_key] = $rows[$year_month_key]['items'];
       }
     }
@@ -124,16 +106,26 @@ function asu_statistics_make_table_rows_from_result($result) {
   foreach ($build_output as $year => $month_data) {
     $row_total = 0;
     $skip_first_cell = TRUE;
-    foreach ($month_data as $month_num => $items) {
-      $row_total+= ($skip_first_cell) ? 0 : $items;
+    foreach ($month_data as $items) {
+      $row_total += ($skip_first_cell) ? 0 : $items;
       $skip_first_cell = FALSE;
     }
-    
+
     $build_output[$year]['Total'] = $row_total;
   }
   return $build_output;
 }
 
+/**
+ * Returns the collection item accession stats grouped by month and year.
+ *
+ * @param mixed $collection_node_id
+ *   When provided, this integer is the collection's node id.
+ * @param bool $status
+ *   Whether or not to limit the query to published items.
+ * @param bool $count_items
+ *   If not provided, the query will return collections for the site-report.
+ */
 function asu_statistics_get_stats($collection_node_id = NULL, $status = TRUE, $count_items = TRUE) {
   $query = \Drupal::database()->select('node_field_data', 'node_field_data');
   $query->addExpression('COUNT(node_field_data.nid)', 'items');
@@ -149,7 +141,7 @@ function asu_statistics_get_stats($collection_node_id = NULL, $status = TRUE, $c
   }
   if ($status) {
     $query->condition('node_field_data.status', 1);
-  }  
+  }
   $query->groupBy('YEAR(FROM_UNIXTIME(node_field_data.created)), MONTH(FROM_UNIXTIME(node_field_data.created))');
   $result = $query->execute()->fetchAll();
 

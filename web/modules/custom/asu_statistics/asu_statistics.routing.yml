@@ -11,7 +11,7 @@ asu_statistics.settings:
 asu_statistics.statistics_download_accessions:
   path: '/admin/reports/asu_statistics/download'
   defaults:
-    _controller: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::download_accessions'
+    _controller: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::downloadAccessions'
     _title: 'ASU Statistics Reports'
   requirements:
     _permission: 'administer site configuration'
@@ -19,9 +19,9 @@ asu_statistics.statistics_download_accessions:
     _admin_route: TRUE    
 
 asu_statistics.statistics_download_stat_summary:
-  path: '/admin/reports/asu_statistics/download_stat_summary'
+  path: '/admin/reports/asu_statistics/downloadStatSummary'
   defaults:
-    _controller: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::download_stat_summary'
+    _controller: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::downloadStatSummary'
     _title: 'ASU Statistics Reports'
   requirements:
     _permission: 'administer site configuration'
@@ -44,7 +44,7 @@ asu_statistics.collection_statistics_view:
 asu_statistics.collection_statistics_download_accessions:
   path: '/collections/{node}/statistics/download'
   defaults:
-    _controller: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::download_accessions'
+    _controller: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::downloadAccessions'
   requirements:
     _custom_access: '\Drupal\asu_statistics\Controller\GroupAccessController::access'
     node: \d+
@@ -54,9 +54,9 @@ asu_statistics.collection_statistics_download_accessions:
         type: entity:node
 
 asu_statistics.collection_statistics_download_stat_summary:
-  path: '/collections/{node}/statistics/download_stat_summary'
+  path: '/collections/{node}/statistics/downloadStatSummary'
   defaults:
-    _controller: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::download_stat_summary'
+    _controller: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::downloadStatSummary'
   requirements:
     _custom_access: '\Drupal\asu_statistics\Controller\GroupAccessController::access'
     node: \d+
