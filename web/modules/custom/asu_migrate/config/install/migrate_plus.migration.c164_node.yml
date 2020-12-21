@@ -25,7 +25,6 @@ source:
     model: Digital Document
 
     # Everything gets created as admin
-    uid: 1
     collection_title: 'Martin Luther King Jr. at Arizona State University'
     pres_state: '558' # Not Preserved
     handle: "https://hdl.handle.net/2286/R.I."
@@ -34,7 +33,7 @@ process:
   field_extent:
     -
       plugin: skip_on_empty
-      source: Extent
+      source: Extent_y
       method: process
     -
       plugin: explode
@@ -45,49 +44,58 @@ process:
 
   field_edtf_date_created:
     plugin: skip_on_empty
-    source: Date Created
+    source: Date Created_y
+    method: process
+
+  field_date_digitized:
+    plugin: skip_on_empty
+    source: Date Digitized
     method: process
 
   field_copyright_statement:
     -
       plugin: skip_on_empty
-      source: Copyright
+      source: Copyright Statement
       method: process
     -
-      plugin: entity_lookup_by_field
-      lookup_field: field_source/uri
+      plugin: entity_lookup
       entity_type: taxonomy_term
+      value_key: name
+      bundle_key: vid
       bundle: copyright_statements
 
   field_reuse_permissions:
     -
       plugin: skip_on_empty
-      source: Reuse
+      source: Reuse Permissions
       method: process
     -
-      plugin: entity_lookup_by_field
-      lookup_field: field_source/uri
+      plugin: entity_lookup
       entity_type: taxonomy_term
+      value_key: name
+      bundle_key: vid
       bundle: reuse_permissions
 
   created:
-  -
-    plugin: skip_on_empty
-    source: System Created
-    method: process
-  -
-    plugin: format_date
-    from_format: 'Y-m-d G:i:s.uP'
-    to_format: 'U'
-    from_timezone: 'UTC'
-    to_timezone: 'UTC'
+    -
+      plugin: skip_on_empty
+      source: System Created
+      method: process
+    -
+      plugin: format_date
+      from_format: 'Y-m-d G:i:s.uP'
+      to_format: 'U'
+      from_timezone: 'UTC'
+      to_timezone: 'UTC'
 
   moderation_state:
     plugin: static_map
-    source: Visibility
+    source: Visibility_y
     map:
       Private: draft
       Public: published
+      1: published
+      0: draft
 
   field_model:
     source: Model
@@ -99,12 +107,51 @@ process:
 
   field_rich_description/value:
     plugin: skip_on_empty
-    source: Description
+    source: Description_y
     method: process
 
   field_rich_description/format:
     plugin: default_value
     default_value: "description_restricted_items"
+
+  field_genre:
+    -
+      plugin: skip_on_empty
+      source: Genre
+      method: process
+    -
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: name_uri_generate
+      delimiter: '|'
+      uri_field: field_authority_link
+      default_vocabulary: genre
+
+  field_preferred_citation:
+    plugin: skip_on_empty
+    source: Preferred Citation
+    method: process
+
+  uid:
+    plugin: user_lookup
+    source: System Creator
+    default_value: constants/uid
+
+  field_open_access:
+    plugin: skip_on_empty
+    source: Open Access
+    method: process
+
+  field_peer_reviewed:
+    plugin: skip_on_empty
+    source: Peer-reviewed
+    method: process
+
+  field_complex_object_child: Complex Object Child
 
   field_table_of_contents:
     plugin: skip_on_empty
@@ -116,14 +163,9 @@ process:
     source: Series
     method: process
 
-  field_preferred_citation:
-    plugin: skip_on_empty
-    source: Citation
-    method: process
-
   title:
     plugin: substr
-    source: Item Title
+    source: Title
     start: 0
     length: 254
 
@@ -131,7 +173,7 @@ process:
     -
       plugin: explode
       delimiter: '||'
-      source: Item Title
+      source: Title
     -
       plugin: callback
       callable: trim
@@ -172,7 +214,7 @@ process:
   field_note_para:
     -
       plugin: skip_on_empty
-      source: Notes
+      source: Note
       method: process
     -
       plugin: explode
@@ -189,12 +231,7 @@ process:
           order: 0
           type: text
 
-  uid:
-    plugin: user_lookup
-    source: System User
-    default_value: constants/uid
-
-  field_pid: Item ID
+  field_pid: ID
 
   field_preservation_state:
     plugin: entity_lookup
@@ -207,7 +244,7 @@ process:
   field_language:
     -
       plugin: skip_on_empty
-      source: Language
+      source: Language_y
       method: process
     -
       plugin: entity_lookup
@@ -220,7 +257,7 @@ process:
     plugin: concat
     source:
       - constants/handle
-      - Item ID
+      - ID
 
   field_member_of:
     -
@@ -272,9 +309,12 @@ process:
 
   pers_names:
     -
+      plugin: skip_on_empty
+      method: process
+      source: Personal Name Subjects
+    -
       plugin: explode
       delimiter: '||'
-      source: Personal Name Subjects
     -
       plugin: callback
       callable: trim
@@ -289,9 +329,12 @@ process:
 
   corp_names:
     -
+      plugin: skip_on_empty
+      method: process
+      source: Corporate Name Subjects
+    -
       plugin: explode
       delimiter: '||'
-      source: Corporate Name Subjects
     -
       plugin: callback
       callable: trim
@@ -306,15 +349,13 @@ process:
 
   field_subjects_name:
     -
-      plugin: merge
+      plugin: merge_skip_empty
       source:
-        - '@pers_names'
         - '@corp_names'
+        - '@pers_names'
     -
       plugin: skip_on_empty
       method: process
-
-  # TODO "Subjects" -> "Keywords"
 
 
   authors:
@@ -445,7 +486,7 @@ process:
 
   field_linked_agent:
     -
-      plugin: get
+      plugin: merge_skip_empty
       source:
         - '@authors'
         - '@contributors'
