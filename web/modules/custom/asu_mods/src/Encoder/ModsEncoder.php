@@ -4,6 +4,9 @@ namespace Drupal\asu_mods\Encoder;
 
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 
+/**
+ *
+ */
 class ModsEncoder extends XmlEncoder {
 
   const ROOT_NODE_NAME = 'xml_root_node_name';
@@ -69,14 +72,15 @@ class ModsEncoder extends XmlEncoder {
           $vals = $field->referencedEntities();
         }
       }
-    } else {
+    }
+    else {
       $vals = [$field_name];
     }
 
     if (is_array($config) && array_key_exists('#', $config) && $config['#'] == $field_name && count($config) == 1) {
       $vals = $vals;
     }
-    else if (is_array($config)) {
+    elseif (is_array($config)) {
       $i = 0;
       foreach ($vals as $val) {
         $field_arr = [];
@@ -89,7 +93,7 @@ class ModsEncoder extends XmlEncoder {
             $cv = $val->bundle();
           }
           if (!is_array($cv)) {
-            // like nonSort: "field_nonsort"
+            // Like nonSort: "field_nonsort".
             if ($cv == $field_name) {
               if (is_array($val)) {
                 $val = $val['value'];
@@ -102,7 +106,8 @@ class ModsEncoder extends XmlEncoder {
               }
               $field_arr[$ck] = self::get_field_values($val, $cv, $ck);
             }
-          } else {
+          }
+          else {
             foreach ($cv as $sub_ck => $sub_cv) {
               if ($sub_cv == "rel_type") {
                 $sub_cv = $rel_type;
@@ -191,7 +196,8 @@ class ModsEncoder extends XmlEncoder {
         $new_data[$field_config][] = [
           '#' => $simple_data,
         ];
-      } else {
+      }
+      else {
         if (array_key_exists('_top', $field_config)) {
           $top_level_elem = $field_config['_top'];
           if (!array_key_exists($top_level_elem, $new_data)) {
@@ -214,19 +220,21 @@ class ModsEncoder extends XmlEncoder {
                 foreach ($cp as $kk => $vv) {
                   $new_data[$top_level_elem][0][$kk] = $vv;
                 }
-              } else {
+              }
+              else {
                 $new_data[$top_level_elem][] = [
                   '#' => $cp,
                 ];
               }
             }
           }
-        } else {
+        }
+        else {
           if (!$complex_data || $complex_data == "") {
             continue;
           }
           $new_data[$top_level_elem][] = [
-            '#' => $complex_data
+            '#' => $complex_data,
           ];
         }
       }
@@ -238,7 +246,7 @@ class ModsEncoder extends XmlEncoder {
    * {@inheritdoc}
    */
   public function encode($data, $format, array $context = []) {
-    // TODO set mods namespaces
+    // TODO set mods namespaces.
     $mods_config = \Drupal::config('asu_mods.asu_repository_item');
     $all_records = [];
     if (is_array($data)) {
@@ -247,7 +255,7 @@ class ModsEncoder extends XmlEncoder {
         $new_data = $this->process_node($mods_config, $node);
         $all_records['mods'][] =
         [
-          '#' => $new_data
+          '#' => $new_data,
         ];
       }
     }
@@ -277,7 +285,7 @@ class ModsEncoder extends XmlEncoder {
       '',
     ];
 
-
     return str_replace($search, $replace, $xml);
   }
+
 }
