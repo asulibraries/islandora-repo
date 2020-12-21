@@ -67,16 +67,14 @@ class MergeSkipEmpty extends Merge {
       $new_value[] = $item;
     }
 
-    $array = array_merge(...$new_value);
-    // dsm($array);
-    // foreach ($array as $k => $a) {
-      // if ($a == NULL) {
-        // unset($array[$k]);
-      // }
-    // }
-    // dsm("After");
-    // dsm($array);
-    return $array;
+    if ($new_value != NULL) {
+      $array = array_merge(...$new_value);
+      return $array;
+    }
+    else {
+      return NULL;
+    }
+
   }
 
 }
