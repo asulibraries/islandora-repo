@@ -1,14 +1,15 @@
 <?php
 
-namespace Drupal\asu_statistics\Controller;
+namespace Drupal\asu_permissions\Access;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\Core\Routing\Access\AccessInterface;
 
 /**
  * Controller.
  */
-class GroupAccessController {
+class GroupAccessController implements AccessInterface {
 
   /**
    * Checks access for a specific request.
@@ -37,7 +38,7 @@ class GroupAccessController {
     $plugin_id = 'group_node:collection';
     foreach ($grps as $grp) {
       if ($grp) {
-        $access |= ($grp->hasPermission("view $plugin_id entity", $account));
+        $access |= ($grp->hasPermission("edit $plugin_id entity", $account));
       }
     }
     return ($access) ? AccessResult::allowed() : AccessResult::forbidden();

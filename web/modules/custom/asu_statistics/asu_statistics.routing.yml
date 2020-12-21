@@ -6,7 +6,7 @@ asu_statistics.settings:
   requirements:
     _permission: 'administer site configuration'
   options:
-    _admin_route: TRUE    
+    _admin_route: TRUE
 
 asu_statistics.statistics_download_accessions:
   path: '/admin/reports/asu_statistics/download'
@@ -16,7 +16,7 @@ asu_statistics.statistics_download_accessions:
   requirements:
     _permission: 'administer site configuration'
   options:
-    _admin_route: TRUE    
+    _admin_route: TRUE
 
 asu_statistics.statistics_download_stat_summary:
   path: '/admin/reports/asu_statistics/downloadStatSummary'
@@ -26,7 +26,7 @@ asu_statistics.statistics_download_stat_summary:
   requirements:
     _permission: 'administer site configuration'
   options:
-    _admin_route: TRUE    
+    _admin_route: TRUE
 
 asu_statistics.collection_statistics_view:
   path: '/collections/{node}/statistics'
@@ -34,7 +34,7 @@ asu_statistics.collection_statistics_view:
     _title_callback: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::getTitle'
     _controller: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::main'
   requirements:
-    _custom_access: '\Drupal\asu_statistics\Controller\GroupAccessController::access'
+    _custom_access: '\Drupal\asu_permissions\Access\GroupAccessController::access'
     node: \d+
   options:
     parameters:
@@ -46,7 +46,7 @@ asu_statistics.collection_statistics_download_accessions:
   defaults:
     _controller: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::downloadAccessions'
   requirements:
-    _custom_access: '\Drupal\asu_statistics\Controller\GroupAccessController::access'
+    _custom_access: '\Drupal\asu_permissions\Access\GroupAccessController::access'
     node: \d+
   options:
     parameters:
@@ -58,7 +58,7 @@ asu_statistics.collection_statistics_download_stat_summary:
   defaults:
     _controller: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::downloadStatSummary'
   requirements:
-    _custom_access: '\Drupal\asu_statistics\Controller\GroupAccessController::access'
+    _custom_access: '\Drupal\asu_permissions\Access\GroupAccessController::access'
     node: \d+
   options:
     parameters:
