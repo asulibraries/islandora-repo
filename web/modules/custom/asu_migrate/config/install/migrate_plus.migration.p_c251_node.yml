@@ -342,10 +342,10 @@ process:
 
   pers_names:
     -
-      plugin: skip_on_empty
+      # plugin: skip_on_empty
       source: Personal Name Subjects
-      method: process
-    -
+      # method: process
+    # -
       plugin: explode
       delimiter: '||'
     -
@@ -362,10 +362,10 @@ process:
 
   corp_names:
     -
-      plugin: skip_on_empty
+      # plugin: skip_on_empty
       source: Corporate Name Subjects
-      method: process
-    -
+      # method: process
+    # -
       plugin: explode
       delimiter: '||'
     -
