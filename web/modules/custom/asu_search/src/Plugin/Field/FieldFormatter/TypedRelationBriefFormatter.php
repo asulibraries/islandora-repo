@@ -29,10 +29,11 @@ class TypedRelationBriefFormatter extends EntityReferenceLabelFormatter {
       $rel_types = $item->getRelTypes();
       $rel_type = isset($rel_types[$item->rel_type]) ? $rel_types[$item->rel_type] : $item->rel_type;
       if (isset($elements[$delta])) {
-      //   $re = '/(\S*) (\S*)/m';
-      //   $str = $rel_type;
-      //   $subst = '$1';
-      //   $rel_type = preg_replace($re, $subst, $str);
+        // $re = '/(\S*) (\S*)/m';
+        $re = '/(.*) \(\S*/m';
+        $str = $rel_type;
+        $subst = '$1';
+        $rel_type = preg_replace($re, $subst, $str);
         $elements[$delta]['#suffix'] = ' (' . $rel_type . ')';
       }
       if (array_key_exists($delta, $elements) && array_key_exists('#title', $elements[$delta])) {
