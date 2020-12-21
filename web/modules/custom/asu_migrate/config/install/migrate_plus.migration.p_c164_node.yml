@@ -365,7 +365,7 @@ process:
 
   field_subjects_name:
     -
-      plugin: get
+      plugin: merge_skip_empty
       source:
         - '@corp_names'
         - '@pers_names'
@@ -419,7 +419,7 @@ process:
 
   field_linked_agent:
     -
-      plugin: merge
+      plugin: merge_skip_empty
       source:
         - '@contributors'
         - '@corporations'
