@@ -54,8 +54,8 @@ class MergeSkipEmpty extends Merge {
     if (!is_array($value)) {
       throw new MigrateException(sprintf('Merge process failed for destination property (%s): input is not an array.', $destination_property));
     }
-    // dsm("Before");
-    // dsm($value);
+    // Remove empty values.
+    $value = array_filter($value);
     $new_value = [];
     foreach ($value as $i => $item) {
       if ($item == NULL) {
