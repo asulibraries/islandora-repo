@@ -141,14 +141,14 @@ function _get_term_with_rel_type($node, $field_name, $relation_type = '', $remov
           if ($tid['rel_type'] == $relation_type) {
             $term = Term::load($tid['target_id']);
             if ($term) {
-              $matches[] = islandora_tokens_remove_comma($term->getName(), $remove_comma);
+              $matches[] = $term->getName(); // islandora_tokens_remove_comma($term->getName(), $remove_comma);
             }
           }
         }
         else {
           $term = Term::load($tid['target_id']);
           if ($term) {
-            $matches[] = islandora_tokens_remove_comma($term->getName(), $remove_comma);
+            $matches[] = $term->getName(); // islandora_tokens_remove_comma($term->getName(), $remove_comma);
           }
         }
       }
