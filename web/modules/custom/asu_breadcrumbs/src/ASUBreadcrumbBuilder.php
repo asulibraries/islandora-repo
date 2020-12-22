@@ -9,6 +9,7 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Breadcrumb\BreadcrumbBuilderInterface;
 use Drupal\Core\Link;
+use Drupal\Core\Render\Renderer;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 
@@ -55,9 +56,10 @@ class ASUBreadcrumbBuilder implements BreadcrumbBuilderInterface {
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The configuration factory.
    */
-  public function __construct(EntityTypeManagerInterface $entity_manager, ConfigFactoryInterface $config_factory) {
+  public function __construct(EntityTypeManagerInterface $entity_manager, ConfigFactoryInterface $config_factory, Drupal\Core\Render\RendererInterface $renderer) {
     $this->nodeStorage = $entity_manager->getStorage('node');
     $this->config = $config_factory->get('asu_breadcrumbs.breadcrumbs');
+    $this->renderer = $renderer;
   }
  
   /**
