@@ -7,7 +7,7 @@ use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\node\NodeInterface;
 
 /**
- * Class AsuUtils.
+ * Provides commonly used utility functions.
  */
 class AsuUtils {
 
@@ -35,6 +35,7 @@ class AsuUtils {
 
   /**
    * Bases the published state on the moderation state of the latest revision.
+   *
    * Or the node's isPublished() method if it is not moderated content.
    */
   public function isNodePublished(NodeInterface $node) {
@@ -54,22 +55,26 @@ class AsuUtils {
         }
       }
       catch (\Exception $e) {
-        // do nothing special... just allow the node's isPublished state to be
+        // Do nothing special... just allow the node's isPublished state to be
         // returned.
       }
     }
     return $retval;
   }
 
-  public function formatBytes($bytes, $precision = 2) { 
-    $units = array('B', 'KB', 'MB', 'GB', 'TB'); 
+  /**
+   * Formats Bytes into B, KB, MB, GB, TB.
+   */
+  public function formatBytes($bytes, $precision = 2) {
+    $units = ['B', 'KB', 'MB', 'GB', 'TB'];
 
-    $bytes = max($bytes, 0); 
-    $pow = floor(($bytes ? log($bytes) : 0) / log(1024)); 
-    $pow = min($pow, count($units) - 1); 
+    $bytes = max($bytes, 0);
+    $pow = floor(($bytes ? log($bytes) : 0) / log(1024));
+    $pow = min($pow, count($units) - 1);
 
     $bytes /= pow(1024, $pow);
 
-    return round($bytes, $precision) . ' ' . $units[$pow]; 
-  } 
+    return round($bytes, $precision) . ' ' . $units[$pow];
+  }
+
 }
