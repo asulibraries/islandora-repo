@@ -3,9 +3,9 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_additional_memberships
-    - field.storage.node.field_edtf_copyright_date
     - field.storage.node.field_copyright_statement
     - field.storage.node.field_edition
+    - field.storage.node.field_edtf_copyright_date
     - field.storage.node.field_edtf_date
     - field.storage.node.field_edtf_date_created
     - field.storage.node.field_edtf_date_issued
@@ -4601,7 +4601,39 @@ display:
       footer: {  }
       empty: {  }
       relationships: {  }
-      arguments: {  }
+      arguments:
+        field_ancestors:
+          id: field_ancestors
+          table: search_api_index_default_solr_index
+          field: field_ancestors
+          relationship: none
+          group_type: group
+          admin_label: ''
+          default_action: default
+          exception:
+            value: all
+            title_enable: false
+            title: All
+          title_enable: false
+          title: ''
+          default_argument_type: raw
+          default_argument_options:
+            index: 2
+            use_alias: false
+          default_argument_skip_url: false
+          summary_options: {  }
+          summary:
+            sort_order: asc
+            number_of_records: 0
+            format: default_summary
+          specify_validation: false
+          validate:
+            type: none
+            fail: 'not found'
+          validate_options: {  }
+          break_phrase: false
+          not: false
+          plugin_id: search_api
       display_extenders: {  }
     cache_metadata:
       max-age: -1
@@ -4616,9 +4648,9 @@ display:
         - 'user.node_grants:view'
       tags:
         - 'config:field.storage.node.field_additional_memberships'
-        - 'config:field.storage.node.field_edtf_copyright_date'
         - 'config:field.storage.node.field_copyright_statement'
         - 'config:field.storage.node.field_edition'
+        - 'config:field.storage.node.field_edtf_copyright_date'
         - 'config:field.storage.node.field_edtf_date'
         - 'config:field.storage.node.field_edtf_date_created'
         - 'config:field.storage.node.field_edtf_date_issued'
@@ -4855,9 +4887,9 @@ display:
         - 'user.node_grants:view'
       tags:
         - 'config:field.storage.node.field_additional_memberships'
-        - 'config:field.storage.node.field_edtf_copyright_date'
         - 'config:field.storage.node.field_copyright_statement'
         - 'config:field.storage.node.field_edition'
+        - 'config:field.storage.node.field_edtf_copyright_date'
         - 'config:field.storage.node.field_edtf_date'
         - 'config:field.storage.node.field_edtf_date_created'
         - 'config:field.storage.node.field_edtf_date_issued'

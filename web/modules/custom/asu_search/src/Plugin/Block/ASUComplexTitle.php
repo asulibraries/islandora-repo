@@ -49,7 +49,9 @@ class ASUComplexTitle extends BlockBase {
       $view = ['type' => 'complex_title_formatter'];
       $first_title_view = $first_title->view($view);
       $para_render = \Drupal::service('renderer')->render($first_title_view);
-
+      if (\Drupal::routeMatch()->getRouteName() == 'asu_statistics.collection_statistics_view') {
+        $para_render .= ' Statistics';
+      }
       return [
         'complex_title' => [
           '#type' => 'item',

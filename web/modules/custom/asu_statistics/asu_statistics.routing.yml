@@ -1,0 +1,66 @@
+asu_statistics.settings:
+  path: '/admin/reports/asu_statistics'
+  defaults:
+    _controller: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::main'
+    _title: 'ASU Statistics Reports'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE
+
+asu_statistics.statistics_download_accessions:
+  path: '/admin/reports/asu_statistics/download'
+  defaults:
+    _controller: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::downloadAccessions'
+    _title: 'ASU Statistics Reports'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE
+
+asu_statistics.statistics_download_stat_summary:
+  path: '/admin/reports/asu_statistics/downloadStatSummary'
+  defaults:
+    _controller: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::downloadStatSummary'
+    _title: 'ASU Statistics Reports'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE
+
+asu_statistics.collection_statistics_view:
+  path: '/collections/{node}/statistics'
+  defaults:
+    _title_callback: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::getTitle'
+    _controller: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::main'
+  requirements:
+    _custom_access: '\Drupal\asu_permissions\Access\GroupAccessController::access'
+    node: \d+
+  options:
+    parameters:
+      node:
+        type: entity:node
+
+asu_statistics.collection_statistics_download_accessions:
+  path: '/collections/{node}/statistics/download'
+  defaults:
+    _controller: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::downloadAccessions'
+  requirements:
+    _custom_access: '\Drupal\asu_permissions\Access\GroupAccessController::access'
+    node: \d+
+  options:
+    parameters:
+      node:
+        type: entity:node
+
+asu_statistics.collection_statistics_download_stat_summary:
+  path: '/collections/{node}/statistics/downloadStatSummary'
+  defaults:
+    _controller: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::downloadStatSummary'
+  requirements:
+    _custom_access: '\Drupal\asu_permissions\Access\GroupAccessController::access'
+    node: \d+
+  options:
+    parameters:
+      node:
+        type: entity:node
