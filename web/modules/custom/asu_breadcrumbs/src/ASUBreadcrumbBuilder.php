@@ -2,6 +2,7 @@
 
 namespace Drupal\asu_breadcrumbs;
 
+use Drupal\Core\Render\Renderer;
 use Drupal\Core\Url;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -9,7 +10,6 @@ use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Breadcrumb\Breadcrumb;
 use Drupal\Core\Breadcrumb\BreadcrumbBuilderInterface;
 use Drupal\Core\Link;
-use Drupal\Core\Render\Renderer;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 
@@ -37,16 +37,9 @@ class ASUBreadcrumbBuilder implements BreadcrumbBuilderInterface {
   /**
    * Drupal renderer.
    *
-   * @var \Drupal\service
+   * @var \Drupal\Core\Render\Renderer
    */
   protected $renderer;
-
-  /**
-   * Core drupal routeMatch.
-   *
-   * @var \\Drupal\Core\Routing\CurrentRouteMatch
-   */
-  // protected $routeMatch;
 
   /**
    * Constructs a breadcrumb builder.
@@ -55,22 +48,14 @@ class ASUBreadcrumbBuilder implements BreadcrumbBuilderInterface {
    *   Storage to load nodes.
    * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
    *   The configuration factory.
+   * @param \Drupal\\Core\\Render\\Renderer $renderer
+   *   Drupal core renderer.
    */
-  public function __construct(EntityTypeManagerInterface $entity_manager, ConfigFactoryInterface $config_factory, Drupal\Core\Render\RendererInterface $renderer) {
+  public function __construct(EntityTypeManagerInterface $entity_manager, ConfigFactoryInterface $config_factory, Renderer $renderer) {
     $this->nodeStorage = $entity_manager->getStorage('node');
     $this->config = $config_factory->get('asu_breadcrumbs.breadcrumbs');
     $this->renderer = $renderer;
   }
- 
-  /**
-   * {@inheritdoc}
-   */
-//  public static function create(ContainerInterface $container) {
-//    $instance = parent::create($container);
-//    $instance->renderer = $container->get('renderer');
-//    // $instance->routeMatch = $container->get('routeMatch');
-//    return $instance;
-//  }
 
   /**
    * {@inheritdoc}
@@ -166,7 +151,7 @@ class ASUBreadcrumbBuilder implements BreadcrumbBuilderInterface {
    * @return Drupal\Core\Link
    *   The link to the current node.
    */
-  private function getNodeLink(Drupal\Core\Routing\RouteMatchInterface $route_match) {
+  private function getNodeLink(RouteMatchInterface $route_match) {
     $node = $route_match->getParameter('node');
     // No ... $node = $this->routeMatch->getParameter('node');.
     if (is_object($node)) {
