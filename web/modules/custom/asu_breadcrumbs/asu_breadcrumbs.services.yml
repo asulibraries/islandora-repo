@@ -1,0 +1,6 @@
+services:
+  asu_breadcrumbs.breadcrumb:
+    class: Drupal\asu_breadcrumbs\ASUBreadcrumbBuilder
+    arguments: ['@entity_type.manager', '@config.factory', '@renderer']
+    tags:
+      - { name: breadcrumb_builder, priority: 100 }
