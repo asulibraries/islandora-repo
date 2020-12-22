@@ -2,10 +2,8 @@
 
 namespace Drupal\self_deposit\Plugin\WebformHandler;
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\node\Entity\Node;
 use Drupal\media\Entity\Media;
-use Drupal\file\Entity\File;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\webform\Plugin\WebformHandlerBase;
 use Drupal\webform\WebformSubmissionInterface;
@@ -60,8 +58,10 @@ class CreateItemWebformHandler extends WebformHandlerBase {
     $perm_term_arr =
     $taxo_manager->loadByProperties(['name' => $values['file_permissions_select']]);
     $perm_term = reset($perm_term_arr);
+    $paragraph = Paragraph::create(
+      ['type' => 'complex_title', 'field_main_title' => $values['item_title']]
+    );
 
-    $paragraph = Paragraph::create(['type' => 'complex_title', 'field_main_title' => $values['item_title']]);
     $paragraph->save();
 
     $node_args = [

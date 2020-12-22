@@ -24,10 +24,13 @@ function self_deposit_help($route_name, RouteMatchInterface $route_match) {
   }
 }
 
+/**
+ * Implements hook_preprocess_ndoe().
+ */
 function self_deposit_preprocess_node(&$variables) {
   if ($variables['node'] && $variables['node']->getType() == 'asu_repository_item') {
     $current_user = User::load(\Drupal::currentUser()->id());
-    if ($current_user->hasRole('administrator') || $current_user->hasRole('content_approver') || $current_user->hasRole('metadata_manager')){
+    if ($current_user->hasRole('administrator') || $current_user->hasRole('content_approver') || $current_user->hasRole('metadata_manager')) {
       $connection = \Drupal::database();
       $node_id = $variables['node']->id();
       $query = $connection->query("SELECT DISTINCT sid
@@ -35,14 +38,15 @@ function self_deposit_preprocess_node(&$variables) {
      WHERE wsd.webform_id = 'self_deposit'
      AND sid IN (SELECT sid FROM webform_submission_data wsd2
                   WHERE wsd2.name = 'item_node'
-                    AND wsd2.value = :node_id)", [
-        ':node_id' => $node_id
+                    AND wsd2.value = :node_id)",
+      [
+        ':node_id' => $node_id,
       ]);
       $result = $query->fetchAll();
       if (count($result) > 0) {
         $submission_id = $result[0]->sid;
         $url = "/webform/self_deposit/submissions/" . $submission_id;
-        \Drupal::messenger()->addMessage(t('This node is related to a self deposit. <a href="' . $url . '">View original deposit.</a>'));
+        \Drupal::messenger()->addMessage(t('This node is related to a self deposit. <a href="@url">View original deposit.</a>', ['@url' => $url]));
       }
     }
   }

@@ -1,0 +1,58 @@
+<?php
+
+/**
+ * @file
+ * Contains asu_statistics.module.
+ */
+
+/**
+ * Implements hook_theme().
+ */
+function asu_statistics_theme($existing, $type, $theme, $path) {
+  return [
+    'asu_statistics_chart' => [
+      'variables' => [
+        'form' => NULL,
+        'download_url' => NULL,
+        'download_stat_summary_url' => NULL,
+        'total_items' => NULL,
+        'stats_table' => NULL,
+        'summary_row' => NULL,
+        'content_counts_table' => NULL,
+        'total_collections' => NULL,
+        'collections_by_institution' => NULL,
+      ],
+    ],
+  ];
+}
+
+/**
+ * Default preprocessor for the asu_statistics_theme hook.
+ */
+function template_preprocess_asu_statistics_chart(&$variables) {
+  $variables['attributes'] = [
+    'id' => ['asu_statistics_chart'],
+  ];
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function asu_statistics_page_attachments(array &$attachments) {
+  $attachments['#attached']['library'][] = 'asu_statistics/asu_statistics_css';
+}
+
+/**
+ * Implements hook_file_download().
+ */
+function asu_statistics_file_download($uri) {
+  if (preg_match('/asu_statistics_/', $uri)) {
+    if (\Drupal::currentUser()->hasPermission('view islandora repository reports')) {
+      return ['Content-disposition' => 'attachment; filename="' . basename($uri) . '"'];
+    }
+    else {
+      return -1;
+    }
+  }
+  return NULL;
+}

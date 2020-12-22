@@ -7,7 +7,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
- * Class SelfDepositSettings.
+ * Provides settings for the self deposit functionality.
  */
 class SelfDepositSettings extends ConfigFormBase {
 
