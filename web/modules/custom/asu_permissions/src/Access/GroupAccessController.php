@@ -5,11 +5,28 @@ namespace Drupal\asu_permissions\Access;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Routing\Access\AccessInterface;
+use Drupal\group\GroupMembershipLoaderInterface;
 
 /**
  * Controller.
  */
 class GroupAccessController implements AccessInterface {
+  /**
+   * The membership loader service.
+   *
+   * @var \Drupal\group\GroupMembershipLoaderInterface
+   */
+  protected $membershipLoader;
+
+  /**
+   * Constructs a GroupAccessController object.
+   *
+   * @param \Drupal\group\GroupMembershipLoaderInterface $membership_loader
+   *   The group membership loader service.
+   */
+  public function __construct(GroupMembershipLoaderInterface $membership_loader) {
+    $this->membershipLoader = $membership_loader;
+  }
 
   /**
    * Checks access for a specific request.
@@ -32,8 +49,7 @@ class GroupAccessController implements AccessInterface {
      * node members of each group that the user belongs to and see if it
      * contains that collection).
      */
-    $grp_membership_service = \Drupal::service('group.membership_loader');
-    $grps = $grp_membership_service->loadByUser($account);
+    $grps = $this->membershipLoader->loadByUser($account);
     $access = FALSE;
     $plugin_id = 'group_node:collection';
     foreach ($grps as $grp) {

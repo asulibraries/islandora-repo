@@ -1,6 +1,6 @@
 services:
   asu_permissions.group_access_checker:
     class: \Drupal\asu_permissions\Access\GroupAccessController
-    arguments: ['@current_user']
+    arguments: ['@current_user', '@group.membership_loader']
     # tags:
       # - { name: group_access_checker, applies_to: _asu_permissions_group_access_checker}
