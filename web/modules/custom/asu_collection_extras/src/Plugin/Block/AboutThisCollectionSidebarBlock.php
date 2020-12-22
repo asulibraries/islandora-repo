@@ -106,13 +106,13 @@ class AboutThisCollectionSidebarBlock extends BlockBase implements ContainerFact
     // Add a link for the "Overview" of this node.
     $variables['nodeid'] = $nid;
     $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/collections/' . $nid);
-    $link = Link::fromTextAndUrl(t('Overview'), $url);
+    $link = Link::fromTextAndUrl($this->t('Overview'), $url);
     $link = $link->toRenderable();
     $output_links[] = render($link);
     $view_statistics = $node->access('update', $this->currentUser);
     if ($view_statistics) {
       $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/collections/' . $nid . '/statistics');
-      $link = Link::fromTextAndUrl(t('Statistics'), $url);
+      $link = Link::fromTextAndUrl($this->t('Statistics'), $url);
       $link = $link->toRenderable();
       $output_links[] = render($link);
     }
@@ -124,8 +124,8 @@ class AboutThisCollectionSidebarBlock extends BlockBase implements ContainerFact
     }
     return [
       '#markup' => (count($output_links) > 0) ?
-        "<nav><ul class=''><li>" . implode("</li><li>", $output_links) . "</li></ul></nav>" :
-        "",
+      "<nav><ul class=''><li>" . implode("</li><li>", $output_links) . "</li></ul></nav>" :
+      "",
       '#attached' => [
         'library' => [
           'asu_collection_extras/style',
