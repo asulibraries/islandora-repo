@@ -8,7 +8,7 @@ use Drupal\Core\Routing\Access\AccessInterface;
 use Drupal\group\GroupMembershipLoaderInterface;
 
 /**
- * Controller.
+ * Checks access based on group membership.
  */
 class GroupAccessController implements AccessInterface {
   /**
