@@ -366,6 +366,8 @@ class ASUStatisticsReportsController extends ControllerBase {
       $backend = $server->getBackend();
       $solrConnector = $backend->getSolrConnector();
       $solariumQuery = $solrConnector->getSelectQuery();
+      // @todo Fix this so it loops through a reasonable amount of records
+      // instead of setting a dangerously high value.
       $solariumQuery->setRows(2147483630);
       $solariumQuery->addParam('q', 'itm_field_ancestors:' . $collection_node_id);
       $solariumQuery->setFields(['its_nid']);
