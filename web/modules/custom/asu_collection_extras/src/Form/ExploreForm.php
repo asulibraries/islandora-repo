@@ -9,8 +9,29 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Link;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ExploreForm extends FormBase {
+  /**
+   * The requestStack definition.
+   *
+   * @var requestStack
+   */
+  protected $requestStack;
+
+  /**
+   * The urlGenerator definition.
+   *
+   * @var \Drupal::service('url_generator')
+   */
+  protected $urlGenerator;
+
+  public static function create(ContainerInterface $container) {
+    $instance->requestStack = $container->get('request_stack');
+    $instance->urlGenerator = $container->get('url_generator');
+    return $instance;
+  }
+
   /**
    * {@inheritdoc}
    */

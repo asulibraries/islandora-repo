@@ -45,13 +45,14 @@ class AboutThisCollectionBlock extends BlockBase {
     $collection_node = \Drupal::routeMatch()->getParameter('node');
     if ($collection_node) {
       $collection_created = $collection_node->get('revision_timestamp')->getString();
-    } else {
+    }
+    else {
       $collection_created = 0;
     }
     // This needs to only return items that are Published and related to the
     // collection, but there doesn't seem to be a way to have multiple AND / OR
     // conjunctions in a single query.
-    $children_nids = getAllCollectionChildren($collection_node);
+    $children_nids = asu_collection_extras_get_collection_children($collection_node);
 
     $collection_views = $items = $max_timestamp = 0;
     $nodes = $islandora_models = $stat_box_row1 = $stats_box_row2 = [];
@@ -73,7 +74,8 @@ class AboutThisCollectionBlock extends BlockBase {
             $nm = $tp->getName();
             if (array_key_exists($nm, $islandora_models)) {
               $islandora_models[$nm]++;
-            } else {
+            }
+            else {
               $islandora_models[$nm] = 1;
             }
           }
@@ -91,36 +93,39 @@ class AboutThisCollectionBlock extends BlockBase {
     $stat_box_row1[] = $this->makeBox("<strong>" . $items . "</strong><br>items", $items_url);
     // Until I find a way to pass a wildcard filter on resource_type for the files box...
     //    $files_url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/collections/' .
-    //       (($collection_node) ? $collection_node->id() : 0) . '/search/?search_api_fulltext=&f[0]=resource_type:Image');
+    //       (($collection_node) ? $collection_node->id() : 0) . '/search/?search_api_fulltext=&f[0]=resource_type:Image');.
     $stat_box_row1[] = $this->makeBox("<strong>" . $files . "</strong><br>files");
     $stat_box_row1[] = $this->makeBox("<strong>" . count($islandora_models) . "</strong><br>resource types");
     $stat_box_row2[] = $this->makeBox("<strong>" . $collection_views . "</strong><br>usage");
-    $stat_box_row2[] = $this->makeBox("<strong>" . (($collection_created) ? date('Y', $collection_created): 'unknown') .
+    $stat_box_row2[] = $this->makeBox("<strong>" . (($collection_created) ? date('Y', $collection_created) : 'unknown') .
       "</strong><br>collection created");
-    $stat_box_row2[] = $this->makeBox("<strong>" . (($max_timestamp) ? date('M d, Y', $max_timestamp): 'unknown') .
+    $stat_box_row2[] = $this->makeBox("<strong>" . (($max_timestamp) ? date('M d, Y', $max_timestamp) : 'unknown') .
       "</strong><br>last updates</div>");
     return [
       '#markup' =>
-        (count($stat_box_row1) > 0) ?
-        // ROW 1
-        '<div class="container"><div class="row">' .
-        implode('', $stat_box_row1) .
-        '</div>' .
-        // ROW 2
-        '<div class="row">' .
-        implode('', $stat_box_row2) .
-        '</div>' :
-        "",
+      (count($stat_box_row1) > 0) ?
+        // ROW 1.
+      '<div class="container"><div class="row">' .
+      implode('', $stat_box_row1) .
+      '</div>' .
+        // ROW 2.
+      '<div class="row">' .
+      implode('', $stat_box_row2) .
+      '</div>' :
+      "",
       'lib' => [
         '#attached' => [
           'library' => [
             'asu_collection_extras/style',
           ],
         ],
-      ]
+      ],
     ];
   }
 
+  /**
+   *
+   */
   private function makeBox($string, $link_url = NULL) {
     if ($link_url) {
       // Drupal's Link class is escaping the HTML, so this must be done manually.
@@ -130,14 +135,17 @@ class AboutThisCollectionBlock extends BlockBase {
     else {
       return '<div class="stats_box col-4"><div class="stats_border_box">' . $string . '</div></div>';
     }
-}
+  }
 
+  /**
+   *
+   */
   private function getOriginalFileCount($related_nid, $original_file_tid) {
     $files = 0;
-    $collection_children_nids = getAllCollectionChildren($related_nid);
+    $collection_children_nids = asu_collection_extras_get_collection_children($related_nid);
 
     foreach ($collection_children_nids as $collection_child_nid) {
-      // recursively call this to add counts for EACH CHILD of the top level
+      // Recursively call this to add counts for EACH CHILD of the top level
       // object that was referenced by $related_nid.
       $files += $this->getOriginalFileCount($collection_child_nid, $original_file_tid);
     }
@@ -158,11 +166,11 @@ class AboutThisCollectionBlock extends BlockBase {
   /**
    * {@inheritdoc}
    */
-  public function getCacheTags()
-  {
+  public function getCacheTags() {
     if ($node = \Drupal::routeMatch()->getParameter('node')) {
       return Cache::mergeTags(parent::getCacheTags(), ['node:' . $node->id()]);
-    } else {
+    }
+    else {
       return parent::getCacheTags();
     }
   }
@@ -170,8 +178,7 @@ class AboutThisCollectionBlock extends BlockBase {
   /**
    * {@inheritdoc}
    */
-  public function getCacheContexts()
-  {
+  public function getCacheContexts() {
     return Cache::mergeContexts(parent::getCacheContexts(), ['route']);
   }
 

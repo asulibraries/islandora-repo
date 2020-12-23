@@ -3,8 +3,6 @@
 namespace Drupal\asu_collection_extras\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
-use Drupal\Core\Url;
-use Drupal\Core\Link;
 
 /**
  * Provides a 'Explore this Collection' Block.

@@ -3,8 +3,6 @@
 namespace Drupal\asu_collection_extras\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
-use Drupal\Core\Url;
-use Drupal\Core\Link;
 
 /**
  * Provides a 'Latest additions to collection' Block.
@@ -22,15 +20,15 @@ class LatestAdditionsToCollectionBlock extends BlockBase {
    */
   public function build() {
     $collection_node = \Drupal::routeMatch()->getParameter('node');
-    $children_nids = getAllCollectionChildren($collection_node, TRUE, 4);
+    $children_nids = asu_collection_extras_get_collection_children($collection_node, TRUE, 4);
 
     $rendered_nodes = $this->renderNodes($children_nids);
 
     $return = [
       '#cache' => ['max-age' => 0],
       '#markup' =>
-        ((count($children_nids) > 0) ?
-        $rendered_nodes:
+      ((count($children_nids) > 0) ?
+        $rendered_nodes :
         ""),
       'lib' => [
         '#attached' => [
@@ -38,11 +36,14 @@ class LatestAdditionsToCollectionBlock extends BlockBase {
             'asu_collection_extras/style',
           ],
         ],
-      ]
+      ],
     ];
     return $return;
   }
 
+  /**
+   *
+   */
   private function renderNodes($nids) {
     $view_builder = \Drupal::entityTypeManager()->getViewBuilder('node');
     $storage = \Drupal::entityTypeManager()->getStorage('node');
