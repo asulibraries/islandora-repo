@@ -257,7 +257,7 @@ function _url_to_service_file_media_by_mimetype($node, $mime_type) {
           $fid[0]['target_id'] : NULL;
         if (!is_null($fid_value)) {
           $file = File::load($fid_value);
-          $url = $file->url();
+          $url = $file->getFileUri();
           return $url;
         }
       }
