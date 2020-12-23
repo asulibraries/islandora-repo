@@ -45,13 +45,13 @@ class FileVideoCaptionFormatter extends FileVideoFormatter {
       $medias = \Drupal::service('islandora.utils')->getReferencingMedia($file->id());
       $first_media = array_values($medias)[0];
       if ($first_media->get('field_captions')->entity != NULL) {
-        $caption = $first_media->get('field_captions')->entity->url();
+        $caption = $first_media->get('field_captions')->entity->createFileUrl();
       }
       $node = $utils->getParentNode($first_media);
       $thumbn_term = $utils->getTermForUri('http://pcdm.org/use#ThumbnailImage');
       $thumb_media = $utils->getMediaWithTerm($node, $thumbn_term);
       if ($thumb_media) {
-        $poster = $thumb_media->get('field_media_image')->entity->url();
+        $poster = $thumb_media->get('field_media_image')->entity->createFileUrl();
       }
 
       $elements[$delta] = [

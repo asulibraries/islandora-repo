@@ -45,7 +45,7 @@ class FileAudioCaptionFormatter extends FileAudioFormatter {
       $medias = \Drupal::service('islandora.utils')->getReferencingMedia($file->id());
       $first_media = array_values($medias)[0];
       if ($first_media->get('field_captions')->entity != NULL) {
-        $caption = $first_media->get('field_captions')->entity->url();
+        $caption = $first_media->get('field_captions')->entity->createFileUrl();
       }
       $node = $utils->getParentNode($first_media);
 
