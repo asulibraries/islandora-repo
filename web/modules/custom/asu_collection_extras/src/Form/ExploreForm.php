@@ -1,8 +1,5 @@
 <?php
-/**
- * @file
- * Contains \Drupal\asu_collection_extras\Form\WorkForm.
- */
+
 namespace Drupal\asu_collection_extras\Form;
 
 use Drupal\Core\Form\FormBase;
@@ -11,6 +8,9 @@ use Drupal\Core\Url;
 use Drupal\Core\Link;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+/**
+ * ExploreForm to search the collection by calling the search GET address.
+ */
 class ExploreForm extends FormBase {
   /**
    * The requestStack definition.
@@ -20,15 +20,25 @@ class ExploreForm extends FormBase {
   protected $requestStack;
 
   /**
-   * The urlGenerator definition.
+   * The currentRouteMatch definition.
    *
-   * @var \Drupal::service('url_generator')
+   * @var \Drupal\Core\Routing\RouteMatchInterface
    */
-  protected $urlGenerator;
+  protected $currentRouteMatch;
 
+  /**
+   * Initializes an ExploreForm object - set dependency injection variables.
+   *
+   * @param Symfony\Component\DependencyInjection\ContainerInterface $container
+   *   The parent class object.
+   *
+   * @return mixed
+   *   The initialized form object.
+   */
   public static function create(ContainerInterface $container) {
+    $instance = parent::create($container);
     $instance->requestStack = $container->get('request_stack');
-    $instance->urlGenerator = $container->get('url_generator');
+    $instance->currentRouteMatch = $container->get('current_route_match');
     return $instance;
   }
 
@@ -43,42 +53,51 @@ class ExploreForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $node = \Drupal::routeMatch()->getParameter('node');
-    $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/collections/' .
-       (($node) ? $node->id() : 0) . '/search/?search_api_fulltext=');
-    $link = Link::fromTextAndUrl(t('Explore items'), $url);
+    $node = $this->currentRouteMatch->getParameter('node');
+    $url = Url::fromUri(
+      $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
+      '/collections/' . (($node) ? $node->id() : 0) .
+      '/search/?search_api_fulltext=');
+    $link = Link::fromTextAndUrl($this->t('Explore items'), $url);
     $link = $link->toRenderable();
-    $form['explore_link'] = array(
+    $form['explore_link'] = [
       '#markup' =>
-        (($link) ?
-        render($link) . "<hr>":
+      (($link) ?
+        render($link) . "<hr>" :
         ""),
-    );
-    $form['search_api_fulltext'] = array(
+    ];
+    $form['search_api_fulltext'] = [
       '#type' => 'textfield',
-      '#title' => t('Fulltext search'),
+      '#title' => $this->t('Fulltext search'),
       '#title_display' => 'invisible',
-      '#placeholder' => t('Search for items'),
-    );
+      '#placeholder' => $this->t('Search for items'),
+    ];
     $form['actions']['#type'] = 'actions';
-    $form['actions']['submit'] = array(
+    $form['actions']['submit'] = [
       '#type' => 'submit',
       '#value' => $this->t('Search'),
       '#button_type' => 'primary',
-    );
+    ];
     return $form;
   }
 
   /**
-   * {@inheritdoc}
+   * SubmitForm performs a redirect to the GET address for this search page.
+   *
+   * @param array $form
+   *   Drupal $form.
+   * @param Drupal\Core\Form\FormStateInterface $form_state
+   *   Drupal FormStateIterface.
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    // We do need to redirect this to the solr_search_api view to handle the query.
-    $node = \Drupal::routeMatch()->getParameter('node');
+    // Need to redirect this to the solr_search_api view to handle the query.
+    $node = $this->currentRouteMatch->getParameter('node');
     $search_term = $form_state->getValue('search_api_fulltext');
-    $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/collections/' .
-       (($node) ? $node->id() : 0) . '/search/?search_api_fulltext=' . $search_term);
+    $url = Url::fromUri(
+      $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
+       '/collections/' . (($node) ? $node->id() : 0) .
+       '/search/?search_api_fulltext=' . $search_term);
     $form_state->setRedirectUrl($url);
-    return;
   }
+
 }
