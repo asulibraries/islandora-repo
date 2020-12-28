@@ -271,7 +271,7 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
 
     // Now, add the actual number of files that may be related to the provided
     // top level object that is referenced by $related_nid.
-    $mids = $this->entityQuery('media')
+    $mids = $this->entityTypeManager->getStorage('media')->getQuery()
       ->condition('field_media_of', $related_nid)
       ->condition('field_media_use', $original_file_tid)
       ->execute();
