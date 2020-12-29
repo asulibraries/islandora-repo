@@ -1,18 +1,22 @@
 <?php
 
 /**
- * getAllCollectionChildren and is used by the blocks in this module to get all
- * of the child nodes so that the same code does't need to be duplicated.
+ * @file
+ * Contains asu_collection_extras.module.
+ */
+
+/**
+ * This is used by the blocks in this module to get children of a collection.
  *
  * @param mixed $collection_node
- *  can take a node object or the node ID value.
- * @param boolean $sort_by_date
- *  (OPTIONAL) whether or not to sort by date, default is FALSE
- * @param integer $limit
- *  the number of results to return (to provide the recent additions for the
- * block that only displays only 4 items)
+ *   Can take a node object or the node ID value.
+ * @param bool $sort_by_date
+ *   (OPTIONAL) whether or not to sort by date, default is FALSE.
+ * @param int $limit
+ *   The number of results to return (to provide the recent additions for the
+ *   block that only displays only 4 items)
  */
-function getAllCollectionChildren($collection_node, $sort_by_date = false, $limit = 0, $items_only = true) {
+function asu_collection_extras_get_collection_children($collection_node, $sort_by_date = FALSE, $limit = 0, $items_only = TRUE) {
   $collection_nid = (is_object($collection_node) ? $collection_node->id() : $collection_node);
   $childrenQuery = \Drupal::entityQuery('node');
   $orGroup = $childrenQuery
@@ -28,7 +32,7 @@ function getAllCollectionChildren($collection_node, $sort_by_date = false, $limi
   }
   if ($sort_by_date) {
     $childrenQuery
-      ->sort('revision_timestamp' , 'DESC');
+      ->sort('revision_timestamp', 'DESC');
   }
   if ($limit) {
     $childrenQuery
