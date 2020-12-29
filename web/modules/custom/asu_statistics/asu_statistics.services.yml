@@ -1,0 +1,6 @@
+services:
+  asu_statistics.group_access_checker:
+    class: Drupal\asu_statistics\Access\GroupAccessController
+    arguments: ['@current_user', '@group.membership_loader']
+    tags:
+      - { name: access_check, applies_to: _group_access_checker}

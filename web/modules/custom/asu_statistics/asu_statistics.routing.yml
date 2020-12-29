@@ -34,7 +34,8 @@ asu_statistics.collection_statistics_view:
     _title_callback: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::getTitle'
     _controller: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::main'
   requirements:
-    _custom_access: '\Drupal\asu_permissions\Access\GroupAccessController::access'
+    # _custom_access: '\Drupal\asu_statistics\Access\GroupAccessController::access'
+    _group_access_checker: 'TRUE'
     node: \d+
   options:
     parameters:
@@ -46,7 +47,8 @@ asu_statistics.collection_statistics_download_accessions:
   defaults:
     _controller: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::downloadAccessions'
   requirements:
-    _custom_access: '\Drupal\asu_permissions\Access\GroupAccessController::access'
+    # _custom_access: '\Drupal\asu_statistics\Access\GroupAccessController::access'
+    _group_access_checker: 'TRUE'
     node: \d+
   options:
     parameters:
@@ -58,7 +60,8 @@ asu_statistics.collection_statistics_download_stat_summary:
   defaults:
     _controller: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::downloadStatSummary'
   requirements:
-    _custom_access: '\Drupal\asu_permissions\Access\GroupAccessController::access'
+    # _custom_access: '\Drupal\asu_statistics\Access\GroupAccessController::access'
+    _group_access_checker: 'TRUE'
     node: \d+
   options:
     parameters:

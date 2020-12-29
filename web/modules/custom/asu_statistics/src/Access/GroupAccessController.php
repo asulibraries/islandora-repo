@@ -1,30 +1,39 @@
 <?php
 
-namespace Drupal\asu_permissions\Access;
+namespace Drupal\asu_statistics\Access;
 
 use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Session\AccountProxy;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Routing\Access\AccessInterface;
 use Drupal\group\GroupMembershipLoaderInterface;
 
 /**
- * Checks access based on group membership.
+ * Controller.
  */
 class GroupAccessController implements AccessInterface {
+
   /**
-   * The membership loader service.
-   *
-   * @var \Drupal\group\GroupMembershipLoaderInterface
+   * @var Drupal\Core\Session\AccountProxy
+   *   The current account.
+   */
+  protected $account;
+  /**
+   * @var Drupal\group\GroupMembershipLoaderInterface
+   *   The membership loader.
    */
   protected $membershipLoader;
 
   /**
-   * Constructs a GroupAccessController object.
+   * Constructor.
    *
-   * @param \Drupal\group\GroupMembershipLoaderInterface $membership_loader
-   *   The group membership loader service.
+   * @param Drupal\Core\Session\AccountProxy $account
+   *   The current user account.
+   * @param Drupal\group\GroupMembershipLoaderInterface $membership_loader
+   *   The membership loader.
    */
-  public function __construct(GroupMembershipLoaderInterface $membership_loader) {
+  public function __construct(AccountProxy $account, GroupMembershipLoaderInterface $membership_loader) {
+    $this->account = $account;
     $this->membershipLoader = $membership_loader;
   }
 
@@ -49,7 +58,8 @@ class GroupAccessController implements AccessInterface {
      * node members of each group that the user belongs to and see if it
      * contains that collection).
      */
-    $grps = $this->membershipLoader->loadByUser($account);
+    $grp_membership_service = \Drupal::service('group.membership_loader');
+    $grps = $grp_membership_service->loadByUser($account);
     $access = FALSE;
     $plugin_id = 'group_node:collection';
     foreach ($grps as $grp) {

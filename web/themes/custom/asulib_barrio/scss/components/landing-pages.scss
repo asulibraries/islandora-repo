@@ -84,8 +84,15 @@
     }
 
     #views-bootstrap-content-recent-block-2 {
+
         .views-field-title {
             padding-top: 10px;
+        }
+        img {
+            max-width: 150px;
+        }
+        .views-field-field-media-image > div{
+            text-align: center;
         }
     }
 
@@ -94,7 +101,7 @@
             border: 1px solid #d0d0d0;
             padding: 22px;
         }
-        .col-9 > a {
+        .col-9 > a:not(.btn) {
             @extend h3;
         }
         .flex-pauseplay {
