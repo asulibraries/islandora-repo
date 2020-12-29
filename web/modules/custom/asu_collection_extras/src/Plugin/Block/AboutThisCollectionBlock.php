@@ -2,7 +2,6 @@
 
 namespace Drupal\asu_collection_extras\Plugin\Block;
 
-use Drupal\media\Entity\Media;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Routing\CurrentRouteMatch;
@@ -12,7 +11,6 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Url;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Drupal\islandora_matomo\IslandoraMatomoService;
-use Drupal\Core\Entity\Query\QueryFactory;
 
 /**
  * Provides a 'About this collection' Block.
@@ -54,13 +52,6 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
   protected $islandoraMatomo;
 
   /**
-   * The entityQuery definition.
-   *
-   * @var \Drupal\Core\Entity\Query\QueryFactory
-   */
-  protected $entityQuery;
-
-  /**
    * Construct method.
    *
    * @param array $configuration
@@ -77,8 +68,6 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
    *   The currentRouteMatch definition.
    * @param \Drupal\islandora_matomo\IslandoraMatomoService $islandoraMatomo
    *   The islandoraMatomo service.
-   * @param \Drupal\Core\Entity\Query\QueryFactory $entityQuery
-   *   The QueryFactory for performing entity queries.
    */
   public function __construct(
     array $configuration,
@@ -87,15 +76,13 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
     RequestStack $request_stack,
     EntityTypeManager $entityTypeManager,
     CurrentRouteMatch $currentRouteMatch,
-    IslandoraMatomoService $islandoraMatomo,
-    QueryFactory $entityQuery
+    IslandoraMatomoService $islandoraMatomo
     ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->requestStack = $request_stack;
     $this->entityTypeManager = $entityTypeManager;
     $this->currentRouteMatch = $currentRouteMatch;
     $this->islandoraMatomo = $islandoraMatomo;
-    $this->entityQuery = $entityQuery;
   }
 
   /**
@@ -120,8 +107,7 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
       $container->get('request_stack'),
       $container->get('entity_type.manager'),
       $container->get('current_route_match'),
-      $container->get('islandora_matomo.default'),
-      $container->get('entity.query')
+      $container->get('islandora_matomo.default')
     );
   }
 
@@ -170,7 +156,7 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
     foreach ($children_nids as $child_nid) {
       if ($child_nid) {
         $items++;
-        // For "# file (Titles)", get & extract the and the original file count.
+        // For "# file (Titles)", get media & extract original file and count.
         $files += $this->getOriginalFileCount($child_nid, $original_file_tid);
         $node = $this->entityTypeManager->getStorage('node')->load($child_nid);
         if ($node->hasField('field_resource_type') && !$node->get('field_resource_type')->isEmpty()) {
@@ -276,7 +262,7 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
       ->condition('field_media_use', $original_file_tid)
       ->execute();
     foreach ($mids as $mid) {
-      $media = Media::load($mid);
+      $media = $this->entityTypeManager->getStorage('media')->load($mid);
       $files += (is_object($media) ? 1 : 0);
     }
     return $files;
