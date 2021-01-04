@@ -296,14 +296,13 @@ process:
 
   field_subjects_name:
     -
-      plugin: merge
+      plugin: merge_skip_empty
       source:
         - '@pers_names'
         - '@corp_names'
     -
       plugin: skip_on_empty
       method: process
-
 
   authors:
     -
