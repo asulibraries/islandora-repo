@@ -4,7 +4,7 @@ dependencies:
     module:
       - asu_migrate
 
-id: p_c151_media
+id: c151_media
 label: Import Collection 151 Media from CSV
 migration_group: migrate_c151_csv
 
@@ -54,7 +54,7 @@ process:
       source: document id
     -
       plugin: migration_lookup
-      migration: p_c151_file
+      migration: c151_file
       no_stub: true
 
   field_media_image:
@@ -64,7 +64,7 @@ process:
       source: image id
     -
       plugin: migration_lookup
-      migration: p_c151_file
+      migration: c151_file
       no_stub: true
 
   field_media_video_file:
@@ -74,7 +74,7 @@ process:
       source: video id
     -
       plugin: migration_lookup
-      migration: p_c151_file
+      migration: c151_file
       no_stub: true
 
   field_media_audio_file:
@@ -84,7 +84,7 @@ process:
       source: audio id
     -
       plugin: migration_lookup
-      migration: p_c151_file
+      migration: c151_file
       no_stub: true
 
   # they are files in this collection
@@ -95,14 +95,14 @@ process:
       source: file id
     -
       plugin: migration_lookup
-      migration: p_c151_file
+      migration: c151_file
       no_stub: true
 
   # Lookup the migrated node in the node migration
   field_media_of:
     plugin: migration_lookup
     source: item id
-    migration: p_c151_node
+    migration: c151_node
     no_stub: true
 
   created:
@@ -136,6 +136,6 @@ destination:
 
 migration_dependencies:
   required:
-    - migrate_plus.migration.p_c151_file
-    - migrate_plus.migration.p_c151_node
+    - migrate_plus.migration.c151_file
+    - migrate_plus.migration.c151_node
   optional: {  }
