@@ -140,10 +140,10 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
             '/node/add/asu_repository_item?edit[field_member_of][widget][0][target_id]=' .
             $node->id()
         );
-      $link = Link::fromTextAndUrl(t('Add'), $url);
+      $link = Link::fromTextAndUrl(t('Add item'), $url);
       $link = $link->toRenderable();
-      $link_glyph = Link::fromTextAndUrl(t(' &nbsp;<i class="fas fa-plus-circle"></i>'), $url)->toRenderable();
-      $output_links[] = render($link) . render($link_glyph);
+      $link_glyph = Link::fromTextAndUrl(t('<i class="fas fa-plus-circle"></i>'), $url)->toRenderable();
+      $output_links[] = render($link) . " &nbsp;" . render($link_glyph);
     }
 
     if ($canUpdate) {
@@ -155,15 +155,17 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
         );
       $link = Link::fromTextAndUrl(t('Edit'), $url);
       $link = $link->toRenderable();
-      $link_glyph = Link::fromTextAndUrl(t(' &nbsp;<i class="fas fa-pencil-alt"></i>'), $url)->toRenderable();
-      $output_links[] = render($link) . render($link_glyph);
+      $link_glyph = Link::fromTextAndUrl(t('<i class="fas fa-pencil-alt"></i>'), $url)->toRenderable();
+      $output_links[] = render($link) . " &nbsp;" . render($link_glyph);
 
-      // Statistics link.
-      $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/collections/' . $node->id() . '/statistics');
-      $link = Link::fromTextAndUrl($this->t('Statistics'), $url);
-      $link = $link->toRenderable();
-      $link_glyph = Link::fromTextAndUrl(t(' &nbsp;<i class="fas fa-chart-bar"></i>'), $url)->toRenderable();
-      $output_links[] = render($link) . render($link_glyph);
+      if ($is_collection) {
+        // Statistics link.
+        $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/collections/' . $node->id() . '/statistics');
+        $link = Link::fromTextAndUrl($this->t('Statistics'), $url);
+        $link = $link->toRenderable();
+        $link_glyph = Link::fromTextAndUrl(t('<i class="fas fa-chart-bar"></i>'), $url)->toRenderable();
+        $output_links[] = render($link) . " &nbsp;" . render($link_glyph);
+      }
     }
     return [
       '#markup' => (count($output_links) > 0) ?

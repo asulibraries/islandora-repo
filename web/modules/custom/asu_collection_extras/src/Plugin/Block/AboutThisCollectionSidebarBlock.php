@@ -109,13 +109,6 @@ class AboutThisCollectionSidebarBlock extends BlockBase implements ContainerFact
     $link = Link::fromTextAndUrl($this->t('Overview'), $url);
     $link = $link->toRenderable();
     $output_links[] = render($link);
-    $view_statistics = $node->access('update', $this->currentUser);
-    if ($view_statistics) {
-      $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/collections/' . $nid . '/statistics');
-      $link = Link::fromTextAndUrl($this->t('Statistics'), $url);
-      $link = $link->toRenderable();
-      $output_links[] = render($link);
-    }
     // Add a link to get the Permalink for this node. Could this be a javascript
     // event that will send the current node's URL to the copy buffer?
     if ($node->hasField('field_handle') && $node->get('field_handle')->value != NULL) {
