@@ -127,6 +127,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
     // the underlying node can be accessed via the path.
     $node = $this->routeMatch->getParameter('node');
     $is_collection = ($node->bundle() == 'collection');
+    $canUpdate = $node->access('update', $this->currentUser);
     $output_links = [];
     // Add item link.
     $use_can_add_child = $is_collection && $this->canAddChild();
@@ -145,10 +146,9 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
       $output_links[] = render($link) . render($link_glyph);
     }
 
-    // Edit link check edit-any-asu-repository-item-content or
-    // edit-own-asu-repository-item-content permissions.
-    $can_edit = $use_can_add_child || $this->canEdit($is_collection);
-    if ($can_edit) {
+    if ($canUpdate) {
+      // Edit link check edit-any-asu-repository-item-content or
+      // edit-own-asu-repository-item-content permissions.
       $url = Url::fromUri(
             $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
             '/node/' . $node->id() . '/edit'
@@ -157,11 +157,8 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
       $link = $link->toRenderable();
       $link_glyph = Link::fromTextAndUrl(t(' &nbsp;<i class="fas fa-pencil-alt"></i>'), $url)->toRenderable();
       $output_links[] = render($link) . render($link_glyph);
-    }
 
-    // Statistics link.
-    $view_statistics = $node->access('update', $this->currentUser);
-    if ($view_statistics) {
+      // Statistics link.
       $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/collections/' . $node->id() . '/statistics');
       $link = Link::fromTextAndUrl($this->t('Statistics'), $url);
       $link = $link->toRenderable();
@@ -178,35 +175,6 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
         ],
       ],
     ];
-  }
-
-  /**
-   * Checks whether the current user can edit the underlying node.
-   *
-   * @param bool $is_collection
-   *   TRUE when the page is on a collection page.
-   *
-   * @return bool
-   *   Returns whether the user can edit the object.
-   */
-  public function canEdit($is_collection = FALSE) {
-    // When this is a collection, must check the permissions:
-    // "edit any collection content" or "edit own collection content".
-    //
-    // When this is an "asu_repository_item", must check:
-    // "edit any asu repository item content" or
-    // "edit own asu repository item content".
-    //
-    // Make use of the drupal permission checking:
-    // hasPermission("edit any asu repository item content").
-    if ($is_collection) {
-      return $this->currentUser->hasPermission("edit any collection content") ||
-            $this->currentUser->hasPermission("edit own collection content");
-    }
-    else {
-      return $this->currentUser->hasPermission("edit any asu repository item content") ||
-            $this->currentUser->hasPermission("edit own asu repository item content");
-    }
   }
 
   /**
