@@ -11,6 +11,7 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountProxy;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Drupal\group\GroupMembershipLoaderInterface;
 
 /**
  * Provides an 'Admin toolbox' Block.
@@ -45,6 +46,13 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
   protected $currentUser;
 
   /**
+   * The group membership loader.
+   *
+   * @var \Drupal\group\GroupMembershipLoaderInterface
+   */
+  protected $groupMembershipLoader;
+
+  /**
    * Constructor for About this Collection Block.
    *
    * @param array $configuration
@@ -59,6 +67,8 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
    *   The request stack.
    * @param \Drupal\Core\Session\AccountProxy $current_user
    *   The current user.
+   * @param \Drupal\group\GroupMembershipLoaderInterface $group_membership_loader
+   *   The group membership loader.
    */
   public function __construct(
         array $configuration,
@@ -66,12 +76,14 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
         $plugin_definition,
         RouteMatchInterface $route_match,
         RequestStack $request_stack,
-        AccountProxy $current_user
+        AccountProxy $current_user,
+        GroupMembershipLoaderInterface $group_membership_loader
     ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->routeMatch = $route_match;
     $this->requestStack = $request_stack;
     $this->currentUser = $current_user;
+    $this->groupMembershipLoader = $group_membership_loader;
   }
 
   /**
@@ -84,7 +96,8 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
           $plugin_definition,
           $container->get('current_route_match'),
           $container->get('request_stack'),
-          $container->get('current_user')
+          $container->get('current_user'),
+          $container->get('group.membership_loader')
       );
   }
 
@@ -149,7 +162,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
     // Statistics link.
     $view_statistics = $node->access('update', $this->currentUser);
     if ($view_statistics) {
-      $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/collections/' . $nid . '/statistics');
+      $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/collections/' . $node->id() . '/statistics');
       $link = Link::fromTextAndUrl($this->t('Statistics'), $url);
       $link = $link->toRenderable();
       $link_glyph = Link::fromTextAndUrl(t(' &nbsp;<i class="fas fa-chart-bar"></i>'), $url)->toRenderable();
@@ -203,8 +216,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
    *   Returns whether the user can add a child to the object.
    */
   public function canAddChild() {
-    $grp_membership_service = \Drupal::service('group.membership_loader');
-    $grps = $grp_membership_service->loadByUser($this->currentUser);
+    $grps = $this->groupMembershipLoader->loadByUser($this->currentUser);
     $access = FALSE;
     $plugin_id = 'group_node:collection';
     foreach ($grps as $grp) {
