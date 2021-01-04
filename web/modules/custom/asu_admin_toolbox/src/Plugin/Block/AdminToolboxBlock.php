@@ -93,12 +93,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
     // Since this block should be set to display on node/[nid] pages that are
     // either "Repository Item", "ASU Repository Item", or "Collection",
     // the underlying node can be accessed via the path.
-    $collection_node = $this->routeMatch->getParameter('node');
-    if ($collection_node) {
-      $collection_created = $collection_node->get('revision_timestamp')->getString();
-    } else {
-      $collection_created = 0;
-    }
+    $node = $this->routeMatch->getParameter('node');
 
     $output_links = [];
     // Add item link.
@@ -110,28 +105,38 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
       // node/add/asu_repository_item?edit[field_member_of][widget][0][target_id]=10
       $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() .
         '/node/add/asu_repository_item?edit[field_member_of][widget][0][target_id]=' .
-        $collection_node->id());
+        $node->id());
       $link = Link::fromTextAndUrl(t('Add'), $url);
       $link = $link->toRenderable();
-      $link_glyph = Link::fromTextAndUrl(t('<i class="fas fa-chart-bar"></i> '), $url)->toRenderable();
-      $output_links[] = render($link);
+      $link_glyph = Link::fromTextAndUrl(t(' &nbsp;<i class="fas fa-plus-circle"></i>'), $url)->toRenderable();
+      $output_links[] = render($link) . render($link_glyph);
     }
 
-    // Edit link.
-
+    // Edit link check edit-any-asu-repository-item-content or
+    // edit-own-asu-repository-item-content permissions.
     
+    $can_edit = TRUE;
+    if ($can_edit) {
+      $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() .
+        '/node/' . $node->id() . '/edit');
+      $link = Link::fromTextAndUrl(t('Edit'), $url);
+      $link = $link->toRenderable();
+      $link_glyph = Link::fromTextAndUrl(t(' <i class="fas fa-pencil"></i>'), $url)->toRenderable();
+      $output_links[] = render($link) . render($link_glyph);
+    }
+
     // Statistics link.
-    $view_statistics = $collection_node->access('update', $this->currentUser);
+    $view_statistics = $node->access('update', $this->currentUser);
     if ($view_statistics) {
       $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/collections/' . $nid . '/statistics');
       $link = Link::fromTextAndUrl($this->t('Statistics'), $url);
       $link = $link->toRenderable();
-      $link_glyph = Link::fromTextAndUrl(t('<i class="fas fa-chart-bar"></i> '), $url)->toRenderable();
-      $output_links[] = render($link_glyph) . render($link);
+      $link_glyph = Link::fromTextAndUrl(t(' &nbsp;<i class="fas fa-chart-bar"></i>'), $url)->toRenderable();
+      $output_links[] = render($link) . render($link_glyph);
     }
     return [
       '#markup' => (count($output_links) > 0) ?
-      "<div class='pseudo_block'><h2>Admin toolbox</h2><nav><ul class=''><li>" . implode("<hr>", $output_links) . "</li></ul></nav></div>" :
+      "<div class='pseudo_block'><h2>Admin toolbox</h2><nav><ul><li>" . implode("<hr>", $output_links) . "</li></ul></nav></div>" :
       "",
       '#attached' => [
         'library' => [

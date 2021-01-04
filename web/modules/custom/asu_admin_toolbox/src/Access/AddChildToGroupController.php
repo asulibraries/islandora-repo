@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\asu_admin_toolbox\Controller;
+namespace Drupal\asu_admin_toolbox\Access;
 
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Session\AccountProxy;
