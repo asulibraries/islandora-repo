@@ -23,14 +23,14 @@ class UidLookup extends CommonDataConverter {
     if (is_array($data)) {
       if (in_array('target_id', $data)) {
         $user = User::load($data['target_id']);
-        return $user->getUsername();
+        return $user->getDisplayName();
       }
       else {
         // \Drupal::logger('custom rdf')->info(print_r($data, TRUE));
       }
     }
     else {
-      return $data->getUsername();
+      return $data->getDisplayName();
     }
   }
 }
