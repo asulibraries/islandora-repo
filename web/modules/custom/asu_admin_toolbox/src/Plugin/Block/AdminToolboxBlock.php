@@ -2,7 +2,6 @@
 
 namespace Drupal\asu_admin_toolbox\Plugin\Block;
 
-use Drupal\media\Entity\Media;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Url;
@@ -12,7 +11,6 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Session\AccountProxy;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-// use Drupal\Core\Security\TrustedCallbackInterface;
 
 /**
  * Provides an 'Admin toolbox' Block.
@@ -24,13 +22,27 @@ use Symfony\Component\HttpFoundation\RequestStack;
  * )
  */
 class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInterface {
-// class AdminToolboxBlock extends BlockBase implements TrustedCallbackInterface, ContainerFactoryPluginInterface {
+
   /**
    * The route match.
    *
    * @var \Drupal\Core\Routing\RouteMatchInterface
    */
   protected $routeMatch;
+
+  /**
+   * The requestStack definition.
+   *
+   * @var requestStack
+   */
+  protected $requestStack;
+
+  /**
+   * Drupal\Core\Session\AccountProxy definition.
+   *
+   * @var \Drupal\Core\Session\AccountProxy
+   */
+  protected $currentUser;
 
   /**
    * Constructor for About this Collection Block.
@@ -48,7 +60,14 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
    * @param \Drupal\Core\Session\AccountProxy $current_user
    *   The current user.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $route_match, RequestStack $request_stack, AccountProxy $current_user) {
+  public function __construct(
+        array $configuration,
+        $plugin_id,
+        $plugin_definition,
+        RouteMatchInterface $route_match,
+        RequestStack $request_stack,
+        AccountProxy $current_user
+    ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->routeMatch = $route_match;
     $this->requestStack = $request_stack;
@@ -60,13 +79,13 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     return new static(
-      $configuration,
-      $plugin_id,
-      $plugin_definition,
-      $container->get('current_route_match'),
-      $container->get('request_stack'),
-      $container->get('current_user')
-    );
+          $configuration,
+          $plugin_id,
+          $plugin_definition,
+          $container->get('current_route_match'),
+          $container->get('request_stack'),
+          $container->get('current_user')
+      );
   }
 
   /**
@@ -94,18 +113,19 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
     // either "Repository Item", "ASU Repository Item", or "Collection",
     // the underlying node can be accessed via the path.
     $node = $this->routeMatch->getParameter('node');
-
+    $is_collection = ($node->bundle() == 'collection');
     $output_links = [];
     // Add item link.
-    $current_user = $this->currentUser;
-    $use_can_add_child = \Drupal\asu_admin_toolbox\Access\AddChildToGroupController::access($current_user);
+    $use_can_add_child = $is_collection && $this->canAddChild();
     if ($use_can_add_child) {
       // This link is a little bit tricky... it needs to have a fragment like
       // this for example, where the value 10 is the collection id() value.
-      // node/add/asu_repository_item?edit[field_member_of][widget][0][target_id]=10
-      $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() .
-        '/node/add/asu_repository_item?edit[field_member_of][widget][0][target_id]=' .
-        $node->id());
+      // node/add/asu_repository_item?edit[field_member_of][widget][0][target_id]=10.
+      $url = Url::fromUri(
+            $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
+            '/node/add/asu_repository_item?edit[field_member_of][widget][0][target_id]=' .
+            $node->id()
+        );
       $link = Link::fromTextAndUrl(t('Add'), $url);
       $link = $link->toRenderable();
       $link_glyph = Link::fromTextAndUrl(t(' &nbsp;<i class="fas fa-plus-circle"></i>'), $url)->toRenderable();
@@ -114,14 +134,15 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
 
     // Edit link check edit-any-asu-repository-item-content or
     // edit-own-asu-repository-item-content permissions.
-    
-    $can_edit = TRUE;
+    $can_edit = $use_can_add_child || $this->canEdit($is_collection);
     if ($can_edit) {
-      $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() .
-        '/node/' . $node->id() . '/edit');
+      $url = Url::fromUri(
+            $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
+            '/node/' . $node->id() . '/edit'
+        );
       $link = Link::fromTextAndUrl(t('Edit'), $url);
       $link = $link->toRenderable();
-      $link_glyph = Link::fromTextAndUrl(t(' <i class="fas fa-pencil"></i>'), $url)->toRenderable();
+      $link_glyph = Link::fromTextAndUrl(t(' &nbsp;<i class="fas fa-pencil-alt"></i>'), $url)->toRenderable();
       $output_links[] = render($link) . render($link_glyph);
     }
 
@@ -147,13 +168,62 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
   }
 
   /**
+   * Checks whether the current user can edit the underlying node.
+   *
+   * @param bool $is_collection
+   *   TRUE when the page is on a collection page.
+   *
+   * @return bool
+   *   Returns whether the user can edit the object.
+   */
+  public function canEdit($is_collection = FALSE) {
+    // When this is a collection, must check the permissions:
+    // "edit any collection content" or "edit own collection content".
+    //
+    // When this is an "asu_repository_item", must check:
+    // "edit any asu repository item content" or
+    // "edit own asu repository item content".
+    //
+    // Make use of the drupal permission checking:
+    // hasPermission("edit any asu repository item content").
+    if ($is_collection) {
+      return $this->currentUser->hasPermission("edit any collection content") ||
+            $this->currentUser->hasPermission("edit own collection content");
+    }
+    else {
+      return $this->currentUser->hasPermission("edit any asu repository item content") ||
+            $this->currentUser->hasPermission("edit own asu repository item content");
+    }
+  }
+
+  /**
+   * Checks whether the current user can add a child to the collection.
+   *
+   * @return bool
+   *   Returns whether the user can add a child to the object.
+   */
+  public function canAddChild() {
+    $grp_membership_service = \Drupal::service('group.membership_loader');
+    $grps = $grp_membership_service->loadByUser($this->currentUser);
+    $access = FALSE;
+    $plugin_id = 'group_node:collection';
+    foreach ($grps as $grp) {
+      if ($grp) {
+        $access |= ($grp->hasPermission("edit $plugin_id entity", $this->currentUser));
+      }
+    }
+    // ($access) ? AccessResult::allowed() : AccessResult::forbidden();
+    return $access;
+  }
+
+  /**
    * {@inheritdoc}
    */
-  public function getCacheTags()
-  {
+  public function getCacheTags() {
     if ($node = $this->routeMatch->getParameter('node')) {
       return Cache::mergeTags(parent::getCacheTags(), ['node:' . $node->id()]);
-    } else {
+    }
+    else {
       return parent::getCacheTags();
     }
   }
@@ -161,8 +231,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
   /**
    * {@inheritdoc}
    */
-  public function getCacheContexts()
-  {
+  public function getCacheContexts() {
     return Cache::mergeContexts(parent::getCacheContexts(), ['route']);
   }
 

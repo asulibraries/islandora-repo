@@ -1,49 +1,6 @@
 <?php
 
-// use Drupal\Core\Block\BlockPluginInterface;
-
-//functionasu_admin_toolbox_block_view_alter(array &$build, BlockPluginInterface $block)
-//{
-//    // This will uppercase the block title.
-//    $build['#configuration']['label'] = mb_strtoupper($build['#configuration']['label']);
-//
-//}
-//
-//
-//
-//function asu_admin_toolbox_block_view_alter(array &$build, BlockPluginInterface $block) {
-//  // We'll search for the string 'uppercase'.
-//  $definition = $block
-//    ->getPluginDefinition();
-//  if (!empty($build['#configuration']['label']) && !empty($definition['subject'])) {
-//    // This will uppercase the block title.
-//    $build['#configuration']['label'] = strtoupper($build['#configuration']['label']);
-//  }
-//}
-
 /**
- * Implements hook_block_view_BASE_BLOCK_ID_alter().
- *
- * Adds a pre-render callback which allows changing the block content before
- * rendering.
+ * @file
+ * Contains asu_admin_toolbox.module.
  */
-//function asu_admin_toolbox_block_view_admin_toolbox_alter(array &$build, BlockPluginInterface $block) {
-//  $build['#pre_render'][] = 'asu_admin_toolbox_admin_toolbox_pre_render';
-//}
-
-/**
- * Pre-render callback for block user_login_block.
- *
- * Adds a link to the username reminder page.
- */
-//function asu_admin_toolbox_admin_toolbox_pre_render(array $build) {
-//  $user_links = &$build['content']['user_links'];
-//  $items = &$user_links['#items'];
-//  $items['username-reminder'] = \Drupal::l(t('Look up your username'), new Url('username_reminder.reminder', array(), array(
-//    'attributes' => array(
-//      'title' => t('Look up your username.'),
-//      'class' => array('username-reminder'),
-//    ),
-//  )));
-//  return $build;
-//}
