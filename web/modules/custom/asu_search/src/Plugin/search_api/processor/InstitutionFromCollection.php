@@ -50,7 +50,7 @@ class InstitutionFromCollection extends ProcessorPluginBase {
     $node = $item->getOriginalObject()->getValue();
     if ($node->hasField('field_member_of') && $node->field_member_of->entity) {
       $parent = $node->field_member_of->entity;
-      if ($parent->hasField('field_collaborating_institutions') && !$parent->get('field_collaborating_institutions')->isEmpty()){
+      if ($parent->hasField('field_collaborating_institutions') && !$parent->get('field_collaborating_institutions')->isEmpty()) {
         $insts = $parent->get('field_collaborating_institutions')->referencedEntities();
         foreach ($insts as $element) {
           $fields = $item->getFields(FALSE);
