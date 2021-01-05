@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains asu_derivatives.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function asu_derivatives_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the asu_derivatives module.
+    case 'help.page.asu_derivatives':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('A module for generating custom derivatives') . '</p>';
+      return $output;
+
+    default:
+  }
+}
