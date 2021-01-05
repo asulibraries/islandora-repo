@@ -26,9 +26,11 @@ function asu_search_form_views_exposed_form_alter(&$form, \Drupal\Core\Form\Form
  * Implements hook_search_api_solr_field_mapping_alter().
  */
 function asu_search_search_api_solr_field_mapping_alter(IndexInterface $index, array &$fields, string $language_id) {
-  // Make file size and mime type multi-valued.
+  // Make these fields explicitly multi-valued.
   $fields['field_file_size'] = 'itm_field_file_size';
   $fields['field_mime_type'] = 'sm_field_mime_type';
+  $fields['institution_from_collection'] = 'sm_institution_from_collection';
+  $fields['asu_issn'] = 'sm_asu_issn';
 }
 
 function asu_search_preprocess_node(&$variables) {

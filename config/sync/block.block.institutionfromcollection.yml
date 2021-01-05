@@ -1,0 +1,42 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.institution_from_collection
+  module:
+    - context
+    - facets
+    - islandora
+    - system
+  theme:
+    - asulib_barrio
+id: institutionfromcollection
+theme: asulib_barrio
+region: sidebar_first
+weight: 0
+provider: null
+plugin: 'facet_block:institution_from_collection'
+settings:
+  id: 'facet_block:institution_from_collection'
+  label: 'Institution From Collection'
+  provider: facets
+  label_display: visible
+  block_id: institutionfromcollection
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    pages: ''
+    negate: null
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    view_inclusion: {  }
+  media_source_mimetype:
+    id: media_source_mimetype
+    mimetype: ''
+    negate: false
+    context_mapping: {  }
+  request_path:
+    id: request_path
+    pages: '/search*'
+    negate: false
