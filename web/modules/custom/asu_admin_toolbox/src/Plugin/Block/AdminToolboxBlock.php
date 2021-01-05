@@ -188,13 +188,12 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
   public function canAddChild() {
     $grps = $this->groupMembershipLoader->loadByUser($this->currentUser);
     $access = FALSE;
-    $plugin_id = 'group_node:collection';
+    $plugin_id = 'group_node:asu_repository_item';
     foreach ($grps as $grp) {
       if ($grp) {
-        $access |= ($grp->hasPermission("edit $plugin_id entity", $this->currentUser));
+        $access |= ($grp->hasPermission("create $plugin_id entity", $this->currentUser));
       }
     }
-    // ($access) ? AccessResult::allowed() : AccessResult::forbidden();
     return $access;
   }
 
