@@ -53,7 +53,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
   protected $groupMembershipLoader;
 
   /**
-   * Constructor for About this Collection Block.
+   * Constructor for Admin Toolbox Block.
    *
    * @param array $configuration
    *   A configuration array containing information about the plugin instance.
