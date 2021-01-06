@@ -1,17 +1,17 @@
 <div class="asu_statistics">
   <h3>Item Accessions</h3>
-  <b>Total Items</b> {{ total_items.total }} &nbsp; &nbsp;
-  <b>Public Items</b> {{ total_items.public }} &nbsp; &nbsp;
-  <b>Private Items</b> {{ total_items.private }}
+  <b>Total items</b> {{ total_items.total }} &nbsp; &nbsp;
+  <b>Public items</b> {{ total_items.public }} &nbsp; &nbsp;
+  <b>Private items</b> {{ total_items.private }}
   <div class="asu_statistics_csv_link"><a href="{{ download_url }}">Download CSV</a></div>
   {{ stats_table }}
 
   {% if summary_row %}
     {% if collections_by_institution %}
   <h3>Collections</h3>
-  <b>Total Collections</b> {{ total_collections.total }} &nbsp; &nbsp;
-  <b>Public Collections</b> {{ total_collections.public }} &nbsp; &nbsp;
-  <b>Private Collections</b> {{ total_collections.private }} &nbsp; &nbsp;
+  <b>Total collections</b> {{ total_collections.total }} &nbsp; &nbsp;
+  <b>Public collections</b> {{ total_collections.public }} &nbsp; &nbsp;
+  <b>Private collections</b> {{ total_collections.private }} &nbsp; &nbsp;
     {% else %}
   <h3>Content Counts</h3>
     {% endif %}
@@ -19,5 +19,12 @@
   <div class="asu_statistics_csv_link"><a href="{{ download_stat_summary_url }}">Download CSV</a></div>
     {{ content_counts_table }}
     {% if collections_by_institution %}<I>Only collections that are related to Institutions can be represented above.</i>{% endif %}
+  {% endif %}
+  {% if downloads_total %}
+    <h3>Downloads</h3>
+    <b>Total downloadss</b> {{ downloads_total }}
+    <div class="scroll_table">
+        {{ downloads_table }}
+    </div>
   {% endif %}
 </div>

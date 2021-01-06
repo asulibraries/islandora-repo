@@ -6,6 +6,8 @@ use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\search_api\Entity\Index;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Drupal\Core\Url;
+use Drupal\Core\Link;
 
 /**
  * Controller.
@@ -106,6 +108,7 @@ class ASUStatisticsReportsController extends ControllerBase {
     $collection_items_stats = $this->getStats($collection_node_id, FALSE, TRUE);
     // Public Items.
     $public_items_stats = $this->getStats($collection_node_id, TRUE, TRUE);
+    $collection_downloads = $this->getCollectionDownloads($collection_node_id);
     if ($collection_node_id) {
       foreach ($total_file_sizes as $mime_type => $sum) {
         $total_file_size += $sum['Size'];
@@ -170,7 +173,14 @@ class ASUStatisticsReportsController extends ControllerBase {
       '#header' => $content_counts_header,
       '#caption' => '',
     ];
-
+    $downloads_header = ['Item', 'Downloads'];
+    $downloads_table = [
+      '#type' => 'table',
+      '#rows' => $collection_downloads['collection_download_rows'],
+      '#header' => $downloads_header,
+      '#caption' => '',
+    ];
+    $downloads_total = $collection_downloads['collection_downloads'];
     $summary_row = $total_file_size;
     return [
       '#download_url' => $download_url,
@@ -179,6 +189,8 @@ class ASUStatisticsReportsController extends ControllerBase {
       '#total_items' => $total_items,
       '#stats_table' => $stats_table,
       '#content_counts_table' => $content_counts_table,
+      '#downloads_table' => $downloads_table,
+      '#downloads_total' => $downloads_total,
       '#summary_row' => $summary_row,
       '#total_collections' => $total_collections,
       '#collections_by_institution' => (($collection_node_id) ? NULL : TRUE),
@@ -360,23 +372,9 @@ class ASUStatisticsReportsController extends ControllerBase {
    *   Default = TRUE, whether or not to split sums up by the mime_type values.
    */
   public function solrGetSum($collection_node_id = NULL, $mime_type_facet = TRUE) {
+    $sums = [];
     if ($collection_node_id) {
-      $index = Index::load('default_solr_index');
-      $server = $index->getServerInstance();
-      $backend = $server->getBackend();
-      $solrConnector = $backend->getSolrConnector();
-      $solariumQuery = $solrConnector->getSelectQuery();
-      // @todo Fix this so it loops through a reasonable amount of records
-      // instead of setting a dangerously high value.
-      $solariumQuery->setRows(2147483630);
-      $solariumQuery->addParam('q', 'itm_field_ancestors:' . $collection_node_id);
-      $solariumQuery->setFields(['its_nid']);
-
-      $nids = $solrConnector->execute($solariumQuery);
-      $nids_arr = [];
-      foreach ($nids as $nid_doc) {
-        $nids_arr[] = $nid_doc->its_nid;
-      }
+      $nids_arr = $this->getCollectionNids($collection_node_id);
       // Take the set of node ids and pass this into a mysql query for the
       // node media file_size sum grouped by mime_types.
       $query = $this->database->select('media_field_data', 'media_field_data');
@@ -433,6 +431,105 @@ class ASUStatisticsReportsController extends ControllerBase {
       }
     }
     return $sums;
+  }
+
+
+  /**
+   * Gets the Collection Nids using ancestors by running a Solr query.
+   *
+   * @param int $collection_node_id
+   *   Optional parameter to limit the stats to children of a collection.
+   */
+  public function getCollectionNids($collection_node_id = NULL) {
+    $nids_arr = [];
+    if (!is_null($collection_node_id)) {
+      $index = Index::load('default_solr_index');
+      $server = $index->getServerInstance();
+      $backend = $server->getBackend();
+      $solrConnector = $backend->getSolrConnector();
+      $solariumQuery = $solrConnector->getSelectQuery();
+      // @todo Fix this so it loops through a reasonable amount of records
+      // instead of setting a dangerously high value.
+      $solariumQuery->setRows(2147483630);
+      $solariumQuery->addParam('q', 'itm_field_ancestors:' . $collection_node_id);
+      $solariumQuery->setFields(['its_nid']);
+      $nids = $solrConnector->execute($solariumQuery);
+      foreach ($nids as $nid_doc) {
+        $nids_arr[] = $nid_doc->its_nid;
+      }
+    }
+    return $nids_arr;
+  }
+
+  /**
+   * Gets the Collection download sum for.
+   *
+   * @param int $collection_node_id
+   *   Optional parameter to limit the stats to children of a collection.
+   */
+  public function getCollectionDownloads($collection_node_id = NULL) {
+    $collection_downloads = 0;
+    $collection_downloads_arr = $node_labels_arr = $collection_download_rows = [];
+    if ($collection_node_id) {
+      $nids_arr = $this->getCollectionNids($collection_node_id);
+      foreach ($nids_arr as $nid) {
+        if ($nid) {
+          $node_title = $this->getNodeComplexTitle($nid);
+          $node_labels_arr[$nid] = $node_title;
+          $original_file_mids = \Drupal::entityQuery('media')
+            ->condition('field_media_of', $nid)
+            ->execute();
+          $fids = array();
+          foreach ($original_file_mids as $mid) {
+            $fid = \Drupal::service('islandora_matomo.default')->getFileFromMedia($mid);
+            $fids[] = $fid;
+          }
+          $nid_downloads = \Drupal::service('islandora_matomo.default')->getSummedDownloadsForFiles($fids);
+          $collection_downloads_arr[$nid] = $nid_downloads;
+        }
+      }
+    }
+    arsort($collection_downloads_arr);
+
+    $collection_downloads = 0;
+    $options = ['absolute' => TRUE];
+    foreach ($collection_downloads_arr as $nid => $downloads) {
+      $url = \Drupal\Core\Url::fromRoute('entity.node.canonical', ['node' => $nid], $options);
+      $use_title = array_key_exists($nid, $node_labels_arr) ?
+          $node_labels_arr[$nid] : '(title not found)';
+      $link = Link::fromTextAndUrl($use_title, $url);
+      $link = $link->toRenderable();
+      $collection_download_rows[$nid] = [
+        'title' => render($link),
+        'downloads' => $downloads
+      ];
+      $collection_downloads+= $downloads;
+    }
+    return [
+      'collection_downloads' => $collection_downloads,
+      'collection_download_rows' => $collection_download_rows
+    ];
+  }
+
+  /**
+   * Returns the complex title value of a node.
+   *
+   * @param int $nid
+   *   This is the node id() value.
+   *
+   * @return string
+   *   The title value of a node as rendered via complex title field values.
+   */
+  public function getNodeComplexTitle(int $nid) {
+    $title = '';
+    $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
+    if (is_object($node) && $node->bundle() == 'asu_repository_item') {
+      $first_title =  $node->field_title[0];
+      $view = ['type' => 'complex_title_formatter'];
+      $first_title_view = $first_title->view($view);
+      $title = \Drupal::service('renderer')->render($first_title_view);
+    }
+    return $title;
   }
 
   /**
