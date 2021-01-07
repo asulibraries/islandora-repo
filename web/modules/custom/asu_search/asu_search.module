@@ -31,7 +31,13 @@ function asu_search_search_api_solr_field_mapping_alter(IndexInterface $index, a
   $fields['field_mime_type'] = 'sm_field_mime_type';
   $fields['institution_from_collection'] = 'sm_institution_from_collection';
   $fields['asu_issn'] = 'sm_asu_issn';
+  $fields['asu_isbn'] = 'sm_asu_isbn';
+  $fields['asu_local'] = 'sm_asu_local';
+  $fields['asu_doi'] = 'sm_asu_doi';
   $fields['note_value'] = 'sm_note_value';
+  $fields['asu_agent_aut'] = 'sm_asu_agent_aut';
+  $fields['asu_agent_ths'] = 'sm_asu_agent_ths';
+  $fields['asu_identifier'] = 'sm_asu_identifier';
 }
 
 function asu_search_preprocess_node(&$variables) {
