@@ -124,6 +124,11 @@ class FeedbackButton extends BlockBase implements ContainerFactoryPluginInterfac
    *   A node.
    */
   public function getCollectionParent(NodeInterface $node) {
+    // If the node is a collection itself, the code here should return the
+    // id() value of the collection itself.
+    if ($node->bundle() == 'collection') {
+      return $node->id();
+    }
     if (!$node->get('field_member_of')->isEmpty()) {
       $parent = $node->get('field_member_of')->entity;
       if ($parent->bundle() == 'collection') {
