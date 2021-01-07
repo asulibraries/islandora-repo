@@ -44,10 +44,9 @@ class ExploreThisItemBlock extends BlockBase {
       $output_links[] = render($link);
     }
     elseif ($field_model == 'Complex Object') {
-      $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/items/' . $nid . '/members');
-      $link = Link::fromTextAndUrl(t('View all associated media'), $url);
-      $link = $link->toRenderable();
-      $output_links[] = render($link);
+      $search_form = \Drupal::formBuilder()->getForm('Drupal\asu_item_extras\Form\ExploreForm');
+      $renderArray['form'] = $search_form;
+      return $renderArray;
     }
     elseif ($field_model == 'Paged Content' || $field_model == 'Page' ||
       $field_model == 'Digital Document') {
@@ -68,6 +67,7 @@ class ExploreThisItemBlock extends BlockBase {
         ((count($output_links) > 0) ?
         "<nav><ul class=''><li>" . implode("</li><li>", $output_links) . "</li></ul></nav>" :
         ""),
+      'searchform' => $search_form,
     ];
     return $return;
   }

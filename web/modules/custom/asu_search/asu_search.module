@@ -4,6 +4,7 @@ use Drupal\search_api\IndexInterface;
 use Drupal\views\ViewExecutable;
 use Drupal\views\Plugin\views\cache\CachePluginBase;
 use Drupal\user\Entity\User;
+use Drupal\taxonomy\Entity\Term;
 
 /**
  * Implements hook_form_alter().
@@ -12,13 +13,30 @@ use Drupal\user\Entity\User;
  * @param $form_id
  */
 function asu_search_form_views_exposed_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id){
+  $current_path = \Drupal::service('path.current')->getPath();
+  $node = \Drupal::routeMatch()->getParameter('node');
   if ($form['#id'] == 'views-exposed-form-solr-search-content-page-3') {
-    $current_path = \Drupal::service('path.current')->getPath();
-    $node = \Drupal::routeMatch()->getParameter('node');
-    // since this block is configured to only display on content type = "Collection"
+    // Collection searching.
+    // Since this block is configured to only display on content type = "Collection"
     // we don't need to check the node's content type.
     $new_search_path = ($node) ? '/collections/' . $node->id() . '/search/' : $current_path;
     $form['#action'] = $new_search_path;
+  }
+  elseif ($form['#id'] == 'views-exposed-form-solr-search-content-page-2') {
+    // Complex object searching.
+    // Since we cannot configure the block based on the node's model, we need to
+    // check that here.
+    if (!is_object($node)) {
+      $node = \Drupal::entityTypeManager()->getStorage('node')->load($node);
+    }
+    $field_model_tid = $node->get('field_model')->getString();
+    $field_model_term = Term::load($field_model_tid);
+    $field_model = (isset($field_model_term) && is_object($field_model_term)) ?
+      $field_model_term->getName() : '';
+    if ($field_model == 'Complex Object') { 
+      $new_search_path = ($node) ? '/items/' . $node->id() . '/search/' : $current_path;
+      $form['#action'] = $new_search_path;
+    }
   }
 }
 
@@ -26,11 +44,9 @@ function asu_search_form_views_exposed_form_alter(&$form, \Drupal\Core\Form\Form
  * Implements hook_search_api_solr_field_mapping_alter().
  */
 function asu_search_search_api_solr_field_mapping_alter(IndexInterface $index, array &$fields, string $language_id) {
-  // Make these fields explicitly multi-valued.
+  // Make file size and mime type multi-valued.
   $fields['field_file_size'] = 'itm_field_file_size';
   $fields['field_mime_type'] = 'sm_field_mime_type';
-  $fields['institution_from_collection'] = 'sm_institution_from_collection';
-  $fields['asu_issn'] = 'sm_asu_issn';
 }
 
 function asu_search_preprocess_node(&$variables) {
@@ -79,6 +95,6 @@ function asu_search_views_pre_render(ViewExecutable $view) {
     else {
       $view->header['area_1']->options['content']['value'] = "";
     }
-
   }
+  // TODO: may need to handle the complex object search page separately here.
 }
