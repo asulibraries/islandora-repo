@@ -18,15 +18,15 @@
 */
 #}
 {% if poster %}
-  <video controls="controls" width="100%" poster="{{ poster }}">
+  <video controls="controls" width="100%" poster="{{ poster }}" crossorigin="anonymous">
 {% else %}
-  <video controls="controls" width="100%">
+  <video controls="controls" width="100%" crossorigin="anonymous">
 {% endif %}
   {% for file in files %}
     <source {{ file.source_attributes }} />
   {% endfor %}
   {% if caption %}
-    <track src="{{ caption }}" kind="subtitles" >
+    <track src="{{ caption }}" kind="captions" crossorigin="anonymous">
   {% endif %}
 Your browser does not support the video tag. Please <a href="{{path("entity.webform.canonical",  {"webform": "feedback"})}}">
 report this issue</a> with your browser information so we can improve our platform.
