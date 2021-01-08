@@ -38,12 +38,21 @@ function asulib_barrio_preprocess_breadcrumb(&$variables) {
     // Add the node title to breadcrumbs as plain text.
     $node = \Drupal::routeMatch()->getParameter('node');
     $current_route = \Drupal::service('current_route_match')->getRouteName();
+    $search_param_name = ($current_route == 'repo_bento_search.search_page') ?
+      'q' : 'search_api_fulltext';
+    $search_term = \Drupal::request()->query->get($search_param_name);
     if ($node) {
       $request = \Drupal::request();
       $route_match = \Drupal::routeMatch();
       $page_title = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
-
-      if (!empty($page_title)) {
+      if ($current_route == 'view.solr_search_content.page_2') {
+        $search_term = \Drupal::request()->query->get('search_api_fulltext');
+        $variables['breadcrumb'][] = [
+          'text' => 'Search for "' . $search_term . '"',
+          'attributes' => new Attribute(['class' => ['is_active']])
+        ];
+      }
+      elseif (!empty($page_title)) {
         $variables['breadcrumb'][] = [
           'text' => $page_title,
           'attributes' => new Attribute(['class' => ['is_active']])
@@ -56,9 +65,6 @@ function asulib_barrio_preprocess_breadcrumb(&$variables) {
         ];
     } else {
       // Add the search text as a text-breadcrumb as text.
-      $search_param_name = ($current_route == 'repo_bento_search.search_page') ?
-        'q' : 'search_api_fulltext';
-      $search_term = \Drupal::request()->query->get($search_param_name);
       if ($search_term && $search_term != "") {
         $variables['breadcrumb'][] = [
           'text' => 'Search for "' . $search_term . '"',

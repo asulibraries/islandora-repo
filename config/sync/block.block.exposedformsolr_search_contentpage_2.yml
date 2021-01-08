@@ -1,0 +1,45 @@
+langcode: en
+status: false
+dependencies:
+  config:
+    - views.view.solr_search_content
+  module:
+    - context
+    - islandora
+    - node
+    - views
+  theme:
+    - asulib_barrio
+id: exposedformsolr_search_contentpage_2
+theme: asulib_barrio
+region: sidebar_first
+weight: 0
+provider: null
+plugin: 'views_exposed_filter_block:solr_search_content-page_2'
+settings:
+  id: 'views_exposed_filter_block:solr_search_content-page_2'
+  label: ''
+  provider: views
+  label_display: visible
+  views_label: 'Explore this item'
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    pages: ''
+    negate: null
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    view_inclusion: {  }
+  media_source_mimetype:
+    id: media_source_mimetype
+    mimetype: ''
+    negate: false
+    context_mapping: {  }
+  node_type:
+    id: node_type
+    bundles:
+      asu_repository_item: asu_repository_item
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'

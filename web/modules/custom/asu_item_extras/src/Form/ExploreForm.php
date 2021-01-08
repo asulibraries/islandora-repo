@@ -30,10 +30,9 @@ class ExploreForm extends FormBase {
     $link = $link->toRenderable();
     $form['members_link'] = array(
       '#markup' =>
-        "<ul><li>" .
         (($link) ?
-        render($link):
-        "") . "</li>",
+        "<p>" . render($link) . "</p>":
+        ""),
     );
     $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/items/' .
        (($node) ? $node->id() : 0) . '/search/?search_api_fulltext=');
@@ -41,9 +40,8 @@ class ExploreForm extends FormBase {
     $link = $link->toRenderable();
     $form['explore_link'] = array(
       '#markup' =>
-        "<li>" .
         (($link) ?
-        render($link) . "</li></ul><hr>":
+        "<p>" . render($link) . "</p><hr>":
         ""),
     );
     $form['search_api_fulltext'] = array(
