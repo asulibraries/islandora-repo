@@ -184,7 +184,7 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
     $stat_box_row1[] = $this->makeBox("<strong>" . $items . "</strong><br>items", $items_url);
     $stat_box_row1[] = $this->makeBox("<strong>" . $files . "</strong><br>files");
     $stat_box_row1[] = $this->makeBox("<strong>" . count($islandora_models) . "</strong><br>resource types");
-    $stat_box_row2[] = $this->makeBox("<strong>" . $collection_views . "</strong><br>usage");
+    $stat_box_row2[] = $this->makeBox("<strong>" . $collection_views . "</strong><br>views");
     $stat_box_row2[] = $this->makeBox("<strong>" . (($collection_created) ? date('Y', $collection_created) : 'unknown') .
       "</strong><br>collection created");
     $stat_box_row2[] = $this->makeBox("<strong>" . (($max_timestamp) ? date('M d, Y', $max_timestamp) : 'unknown') .
