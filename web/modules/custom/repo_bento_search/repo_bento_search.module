@@ -27,12 +27,13 @@ function repo_bento_search_help($route_name, RouteMatchInterface $route_match) {
  * Implements hook_theme().
  */
 function repo_bento_search_theme() {
+  $config = \Drupal::config('repo_bento_search.bentosettings');
   return [
     'dataverse_results' => [
       'template' => 'dataverse_results',
       'variables' => [
-        'label' => \Drupal::config('repo_bento_search.bentosettings')
-    ->get('titles_dataverse') ?: t('Dataverse'),
+        'label' => $config->get('titles_dataverse') ?: t('Dataverse'),
+        'tooltip_text' => $config->get('dataverse_tooltip') ?: '',
         'service_url' => NULL,
         'items' => NULL,
         'total_results_found' => NULL,
@@ -42,8 +43,8 @@ function repo_bento_search_theme() {
     'legacyrepo_results' => [
       'template' => 'legacyrepo_results',
       'variables' => [
-        'label' => \Drupal::config('repo_bento_search.bentosettings')
-    ->get('titles_legacy_repo') ?: t('Repository'),
+        'label' => $config->get('titles_legacy_repo') ?: t('Repository'),
+        'tooltip_text' => $config->get('legacy_repo_tooltip') ?: '',
         'service_url' => NULL,
         'items' => NULL,
         'total_results_found' => NULL,
@@ -53,8 +54,8 @@ function repo_bento_search_theme() {
     'this_i8_results' => [
       'template' => 'this_i8_results',
       'variables' => [
-        'label' => \Drupal::config('repo_bento_search.bentosettings')
-    ->get('titles_this_i8') ?: t('KEEP'),
+        'label' => $config->get('titles_this_i8') ?: t('KEEP'),
+        'tooltip_text' => $config->get('this_i8_tooltip') ?: '',
         'service_url' => NULL,
         'items' => NULL,
         'total_results_found' => NULL,
@@ -64,8 +65,8 @@ function repo_bento_search_theme() {
     'second_i8_results' => [
       'template' => 'second_i8_results',
       'variables' => [
-        'label' => \Drupal::config('repo_bento_search.bentosettings')
-    ->get('titles_second_i8') ?: t('DIGITAL COLLECTIONS'),
+        'label' => $config->get('titles_second_i8') ?: t('DIGITAL COLLECTIONS'),
+        'tooltip_text' => $config->get('second_i8_tooltip') ?: '',
         'service_url' => NULL,
         'items' => NULL,
         'total_results_found' => NULL,

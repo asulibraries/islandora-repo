@@ -55,12 +55,12 @@ class DataverseApiService implements BentoApiInterface {
       if (!trim($base_url)) {
         $this->logger->warning("No URL set for Dataverse: see /admin/config/bento_search/settings");
         return;
-      } else {
+      }
+      else {
         $request = $this->httpClient->request('GET', $base_url . "?q=" . $term . "&per_page=" . $limit);
         if ($request->getStatusCode() == 200) {
           $body = $request->getBody()->getContents();
           $this->logger->info(print_r($body, TRUE));
-          // dsm(print_r($body, TRUE));
           return $body;
         }
         else {
