@@ -10,56 +10,56 @@ dependencies:
     - search_api
     - asu_search
   config:
-    - field.storage.taxonomy_term.field_person_alternate_names
     - field.storage.node.field_additional_memberships
     - field.storage.node.field_member_of
-    - field.storage.taxonomy_term.field_cat_date_begin
-    - field.storage.taxonomy_term.field_cat_date_end
-    - field.storage.node.field_copyright_statement
-    - field.storage.taxonomy_term.field_corp_alt_name
-    - field.storage.node.field_description
-    - field.storage.node.field_display_hints
-    - field.storage.node.field_edition
     - field.storage.node.field_edtf_copyright_date
+    - field.storage.node.field_copyright_statement
+    - field.storage.node.field_linked_agent
     - field.storage.node.field_edtf_date
     - field.storage.node.field_edtf_date_created
     - field.storage.node.field_edtf_date_issued
+    - field.storage.node.field_description
+    - field.storage.node.field_rich_description
+    - field.storage.node.field_display_hints
+    - field.storage.node.field_edition
     - field.storage.node.field_embargo_release_date
     - field.storage.node.field_extent
     - field.storage.node.field_frequency
-    - field.storage.taxonomy_term.field_geo_alt_name
+    - field.storage.node.field_genre
     - field.storage.node.field_geographic_subject
     - field.storage.node.field_handle
     - field.storage.node.field_typed_identifier
     - field.storage.paragraph.field_identifier_value
     - field.storage.node.field_issuance
     - field.storage.node.field_language
-    - field.storage.node.field_linked_agent
+    - field.storage.node.field_pid
     - field.storage.node.field_local_identifier
-    - field.storage.node.field_title
-    - field.storage.paragraph.field_main_title
     - field.storage.node.field_model
+    - field.storage.node.field_subjects_name
     - field.storage.node.field_note
     - field.storage.node.field_open_access
     - field.storage.node.field_peer_reviewed
-    - field.storage.node.field_pid
+    - field.storage.node.field_place_of_publication_code
     - field.storage.node.field_place_published
     - field.storage.node.field_preferred_citation
     - field.storage.node.field_related_item
+    - field.storage.node.field_resource_type
     - field.storage.node.field_reuse_permissions
-    - field.storage.node.field_rich_description
     - field.storage.node.field_series
     - field.storage.node.field_statement_responsibility
-    - field.storage.node.field_subjects_name
     - field.storage.node.field_table_of_contents
     - field.storage.node.field_tags
     - field.storage.node.field_temporal_subject
+    - field.storage.node.field_title
+    - field.storage.paragraph.field_main_title
     - field.storage.node.field_title_subject
     - field.storage.node.field_subject
-    - field.storage.node.field_genre
-    - field.storage.node.field_place_of_publication_code
+    - field.storage.taxonomy_term.field_geo_alt_name
+    - field.storage.taxonomy_term.field_corp_alt_name
+    - field.storage.taxonomy_term.field_cat_date_end
+    - field.storage.taxonomy_term.field_cat_date_begin
+    - field.storage.taxonomy_term.field_person_alternate_names
     - field.storage.taxonomy_term.field_person_preferred_name
-    - field.storage.node.field_resource_type
     - search_api.server.default_solr_server
     - core.entity_view_mode.node.full_metadata
 third_party_settings:
@@ -632,6 +632,10 @@ field_settings:
     label: 'Note value'
     property_path: note_value
     type: string
+  original_file_count:
+    label: 'Original File Count'
+    property_path: original_file_count
+    type: string
   place_of_publication_code:
     label: 'Place of Publication (Code)'
     datasource_id: 'entity:node'
@@ -831,6 +835,7 @@ processor_settings:
   institution_from_collection: {  }
   language_with_fallback: {  }
   note_value: {  }
+  original_file_count: {  }
   rendered_item:
     weights:
       add_properties: 0

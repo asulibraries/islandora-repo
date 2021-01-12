@@ -157,43 +157,37 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
     }
     // Run a solr query first to get ALL the items under the collection using
     // the ancestors field.
-    $children_nids = asu_collection_extras_solr_get_collection_children($collection_node);
-echo "<pre>".print_r($children_nids, true)."</pre>";
+    $children = asu_collection_extras_solr_get_collection_children($collection_node);
+    \Drupal::logger('asu_collection_extras')->info('<pre><code>' . print_r($children, TRUE) . '</code></pre>');
     $collection_views = $items = $max_timestamp = 0;
     $islandora_models = $stat_box_row1 = [];
-    $files = 0;
-    $original_file_tid = key($this->entityTypeManager
-      ->getStorage('taxonomy_term')
-      ->loadByProperties(['name' => "Original File"]));
 
-    $items = count($children_nids);
-    $files = $this->getOriginalFileCountTotal($children_nids, $original_file_tid);
-    $islandora_models = $this->getDistinctIslandoraModelsOfNodes($children_nids);
-    foreach ($children_nids as $child_nid) {
-      if ($child_nid) {
-//        $items++;
-        // For "# file (Titles)", get media & extract original file and count.
- //       $files += $this->getOriginalFileCount($child_nid, $original_file_tid);
-        $node = $this->entityTypeManager->getStorage('node')->load($child_nid);
-//        if ($node->hasField('field_resource_type') && !$node->get('field_resource_type')->isEmpty()) {
-//          $res_types = $node->get('field_resource_type')->referencedEntities();
-//          foreach ($res_types as $tp) {
-//            $nm = $tp->getName();
-//            if (array_key_exists($nm, $islandora_models)) {
-//              $islandora_models[$nm]++;
-//            }
-//            else {
-//              $islandora_models[$nm] = 1;
-//            }
-//          }
-//        }
-        $this_revisiontimestamp = $node->get('revision_timestamp')->getString();
-        $max_timestamp = ($this_revisiontimestamp > $max_timestamp) ?
-          $this_revisiontimestamp : $max_timestamp;
-        $node_views = $this->islandoraMatomo->getViewsForNode($child_nid);
+    $items = count($children);
+    $files = $max_timestamp = 0;
+
+    // The first $child_arr will have the most recent changed value.
+    foreach ($children as $nid => $child_arr) {
+      if ($nid) {
+        $files += $child_arr['original_file_count'];
+        if (!$max_timestamp) {
+          $max_timestamp = strtotime($child_arr['changed']);
+        }
+        $model = $child_arr['field_model'];
+        // Since it is possible that an asu_repository_item may be indexed w/o
+        // having a field_model value, we must omit any that are set = 0
+        if ($model) {
+          if (array_key_exists($model, $islandora_models)) {
+            $islandora_models[$model]++;
+          }
+          else {
+            $islandora_models[$model] = 1;
+          }
+        }
+        $node_views = $this->islandoraMatomo->getViewsForNode($nid);
         $collection_views += $node_views;
       }
     }
+
     // Calculate the "Items" box link.
     $items_url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/collections/' .
        (($collection_node) ? $collection_node->id() : 0) . '/search/?search_api_fulltext=');
@@ -248,72 +242,6 @@ echo "<pre>".print_r($children_nids, true)."</pre>";
     else {
       return '<div class="stats_box col-4"><div class="stats_border_box">' . $string . '</div></div>';
     }
-  }
-
-  /**
-   * To recursively (including children) query for the node's original files.
-   *
-   * @param int $related_nid
-   *   The node's id() value.
-   * @param int $original_file_tid
-   *   The taxonomy term id.
-   *
-   * @return int
-   *   The count of files for the given file.
-   */
-  private function getOriginalFileCount($related_nid, $original_file_tid) {
-    $files = 0;
-
-// Since the solr query is now used to get the collection nids, this does
-// not need to rescursively call itself.
-//    $collection_children_nids = asu_collection_extras_get_collection_children($related_nid);
-//
-//    foreach ($collection_children_nids as $collection_child_nid) {
-//      // Recursively call this to add counts for EACH CHILD of the top level
-//      // object that was referenced by $related_nid.
-//      $files += $this->getOriginalFileCount($collection_child_nid, $original_file_tid);
-//    }
-
-    // Now, add the actual number of files that may be related to the provided
-    // top level object that is referenced by $related_nid.
-    $mids = $this->entityTypeManager->getStorage('media')->getQuery()
-      ->condition('field_media_of', $related_nid)
-      ->condition('field_media_use', $original_file_tid)
-      ->execute();
-    foreach ($mids as $mid) {
-      $media = $this->entityTypeManager->getStorage('media')->load($mid);
-      $files += (is_object($media) ? 1 : 0);
-    }
-    return $files;
-  }
-
-  /**
-   * To recursively (including children) query for the node's original files.
-   *
-   * @param array $related_nids
-   *   Array of node's id() values.
-   * @param int $original_file_tid
-   *   The taxonomy term id.
-   *
-   * @return int
-   *   The count of files for the given file.
-   */
-  private function getOriginalFileCountTotal(array $related_nids, $original_file_tid) {
-    // Since the solr query is now used to get the collection nids, this does
-    // not need to rescursively call itself.
-    // Now, add the actual number of files that may be related to the provided
-    // top level object that is referenced by $related_nid.
-    $query = $this->connection->select('media', 'media');
-    $query->join('media__field_media_of', 'media__field_media_of', 'media__field_media_of.entity_id = media.mid');
-    $query->join('media__field_media_use', 'media__field_media_use', 'media__field_media_use.entity_id = media.mid');
-    $query->condition('media__field_media_of.field_media_of_target_id', $related_nids, 'IN');
-    $query->condition('media__field_media_use.field_media_use_target_id', $original_file_tid);
-    $query->addExpression('COUNT(*)');
-    return $countnode;
-  }
-
-  public function getDistinctIslandoraModelsOfNodes(array $nids) {
-
   }
 
   /**
