@@ -46,9 +46,8 @@ function asulib_barrio_preprocess_breadcrumb(&$variables) {
       $route_match = \Drupal::routeMatch();
       $page_title = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
       if ($current_route == 'view.solr_search_content.page_2') {
-        $search_term = \Drupal::request()->query->get('search_api_fulltext');
         $variables['breadcrumb'][] = [
-          'text' => 'Search for "' . $search_term . '"',
+          'text' => ($search_term) ? 'Search for "' . $search_term . '"' : 'Explore media',
           'attributes' => new Attribute(['class' => ['is_active']])
         ];
       }

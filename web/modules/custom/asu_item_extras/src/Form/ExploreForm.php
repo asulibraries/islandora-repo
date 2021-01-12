@@ -36,7 +36,7 @@ class ExploreForm extends FormBase {
     );
     $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/items/' .
        (($node) ? $node->id() : 0) . '/search/?search_api_fulltext=');
-    $link = Link::fromTextAndUrl(t('Explore items'), $url);
+    $link = Link::fromTextAndUrl(t('Explore media'), $url);
     $link = $link->toRenderable();
     $form['explore_link'] = array(
       '#markup' =>
