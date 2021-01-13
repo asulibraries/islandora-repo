@@ -49,24 +49,26 @@ class BentoSearchForm extends FormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $search_term = $this->requestStack->getCurrentRequest()->query->get('q');
     $form['#method'] = 'get';
+    $form['#attributes']['class'][] = 'form-inline';
     $form['q'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Search'),
       '#maxlength' => 255,
-      '#size' => 64,
+      '#size' => 80,
       '#value' => $search_term,
+      '#attributes' => ['class' => ['col-md-8']],
+      '#title_display' => 'invisible',
     ];
     // Group submit handlers in an actions element with a key of "actions" so
     // that it gets styled correctly, and so that other modules may add actions
     // to the form. This is not required, but is convention.
-    $form['actions'] = [
-      '#type' => 'actions',
-    ];
-
     // Add a submit button that handles the submission of the form.
     $form['actions']['submit'] = [
       '#type' => 'submit',
-      '#value' => $this->t('Submit'),
+      '#title' => $this->t('Search'),
+      '#weight' => '0',
+      '#value' => 'Search',
+      '#attributes' => ['class' => ['col-md-4', 'form--inline']],
     ];
     return $form;
   }
