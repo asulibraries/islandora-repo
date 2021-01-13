@@ -91,3 +91,57 @@ function asu_collection_extras_solr_get_collection_children($collection_node) {
   }
   return $nids_arr;
 }
+
+/**
+ * This does the actual summary work for the given collection.
+ *
+ * 1. compose requests to the Matomo service to get views and downloads.
+ * 2. parse the response.
+ * 3. delete and insert the record for this collection, views, downloads.
+ * 
+ * @param int $collection_nid
+ *   The collection node id() value.
+ */
+function asu_collection_extras_doCollectionSummary($collection_nid) {
+  $original_file_tid = key(\Drupal::entityTypeManager()
+    ->getStorage('taxonomy_term')
+    ->loadByProperties(['name' => "Original File"]));
+  // echo 'Calculating summary data for collection node id() = ' . $collection_nid;
+  $children = asu_collection_extras_solr_get_collection_children($collection_nid);
+  $collection_views = $collection_downloads = 0;
+  foreach ($children as $child_nid => $child_arr) {
+    $collection_views += \Drupal::service('islandora_matomo.default')->getViewsForNode($child_nid);
+    $mids = \Drupal::entityQuery('media')
+      ->condition('field_media_of', $related_nid)
+      ->condition('field_media_use', $original_file_tid)
+      ->execute();
+    foreach ($mids as $mid) {
+      $collection_downloads +=\Drupal::service('islandora_matomo.default')->getDownloadsForFile($mid);
+    }
+  }
+  // echo print_r($children, TRUE);
+  $views = random_int(0, 950);
+  $downloads = random_int(0, 250);
+  $connection = \Drupal::service('database');
+  $connection
+    ->delete('asu_collection_extras_collection_usage')
+    ->condition('nid', $collection_nid)
+    ->execute();
+  $connection
+    ->insert('asu_collection_extras_collection_usage')
+    ->fields([
+      'nid', 'views', 'downloads'
+    ])
+    ->values([
+      $collection_nid, $collection_views, $collection_downloads
+    ])
+    ->execute();
+}
+
+function asu_collection_extras_all_collections() {
+  $query = \Drupal::entityQuery('node');
+  $query
+    ->condition('status', 1)
+    ->condition('type', 'collection');
+  return $query->execute();
+}

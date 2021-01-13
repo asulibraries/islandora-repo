@@ -159,7 +159,7 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
     // the ancestors field.
     $children = asu_collection_extras_solr_get_collection_children($collection_node);
     \Drupal::logger('asu_collection_extras')->info('<pre><code>' . print_r($children, TRUE) . '</code></pre>');
-    $collection_views = $items = $max_timestamp = 0;
+    $items = $max_timestamp = 0;
     $islandora_models = $stat_box_row1 = [];
 
     $items = count($children);
@@ -174,7 +174,7 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
         }
         $model = $child_arr['field_model'];
         // Since it is possible that an asu_repository_item may be indexed w/o
-        // having a field_model value, we must omit any that are set = 0
+        // having a field_model value, we must omit any that are set = 0.
         if ($model) {
           if (array_key_exists($model, $islandora_models)) {
             $islandora_models[$model]++;
@@ -183,11 +183,10 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
             $islandora_models[$model] = 1;
           }
         }
-        $node_views = $this->islandoraMatomo->getViewsForNode($nid);
-        $collection_views += $node_views;
       }
     }
 
+    $collection_views = $this->getCollectionViews($collection_node);
     // Calculate the "Items" box link.
     $items_url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/collections/' .
        (($collection_node) ? $collection_node->id() : 0) . '/search/?search_api_fulltext=');
@@ -219,6 +218,25 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
         ],
       ],
     ];
+  }
+
+  /**
+   * Loads the collection views from the summary table.
+   *
+   * @param mixed $collection_node
+   *   This could be a node object or the integer id() value of a node.
+   *
+   * @return int
+   *   The number of views for the collection.
+   */
+  private function getCollectionViews($collection_node) {
+    $collection_node_id = (is_object($collection_node) ? $collection_node->id() : $collection_node);
+    $collection_views = $this->connection
+      ->query('SELECT views FROM asu_collection_extras_collection_usage WHERE nid = ' . $collection_node_id)
+      ->fetchAll();
+    foreach ($collection_views as $c_obj) {
+      return $c_obj->views;
+    }
   }
 
   /**

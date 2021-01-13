@@ -1,0 +1,54 @@
+<?php
+
+/**
+ * @file
+ * Update hooks for the ASU Collection Extras module.
+ */
+
+/**
+ * Installs the database schema.
+ */
+//function asu_collection_extras_install() {
+//  drupal_install_schema('asu_collection_extras_collection_usage');
+//}
+
+/**
+ * Uninstalls the database schema.
+ */
+//function asu_collection_extras_uninstall() {
+//  drupal_uninstall_schema('asu_collection_extras_collection_usage');
+//}
+
+/**
+ * Implements hook_schema().
+ *
+ * Creates the tables using the schema API.
+ */
+function asu_collection_extras_schema() {
+  $schema['asu_collection_extras_collection_usage'] = [
+    'description' => 'TODO: please describe this table!',
+    'fields' => [
+      'nid' => [
+        'description' => 'The collection {node}.nid this record affects.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'views' => [
+        'description' => 'View total for all objects in the collection.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'downloads' => [
+        'description' => 'Download total for all objects in the collection.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+    ],
+    'primary key' => ['nid'],
+  ];
+  return $schema;
+}

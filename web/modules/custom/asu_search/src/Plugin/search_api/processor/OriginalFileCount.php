@@ -35,10 +35,10 @@ class OriginalFileCount extends ProcessorPluginBase {
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container) {
-    $instance = parent::create($container);
-    $instance->entityTypeManager = $container->get('entity_type.manager');
-    return $instance;
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    $processor = parent::create($container, $configuration, $plugin_id, $plugin_definition);
+    $processor->entityTypeManager = $container->get('entity_type.manager');
+    return $processor;
   }
 
   /**
