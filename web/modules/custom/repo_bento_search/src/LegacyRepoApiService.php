@@ -8,7 +8,7 @@ use GuzzleHttp\Exception\ClientException;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class LegacyRepoApiService.
+ * Legacy REPO API Service.
  */
 class LegacyRepoApiService implements BentoApiInterface {
 

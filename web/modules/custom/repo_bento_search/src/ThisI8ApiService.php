@@ -8,7 +8,7 @@ use GuzzleHttp\Exception\ClientException;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class ThisI8ApiService.
+ * KEEP API Service.
  */
 class ThisI8ApiService implements BentoApiInterface {
 

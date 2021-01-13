@@ -6,7 +6,7 @@ use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Class BentoSettingsForm.
+ * Settings for Bento Search.
  */
 class BentoSettingsForm extends ConfigFormBase {
 
@@ -33,7 +33,7 @@ class BentoSettingsForm extends ConfigFormBase {
     $config = $this->config('repo_bento_search.bentosettings');
     $form['block_legacy'] = [
       '#type' => 'fieldset',
-      '#title' => t('Legacy Repository settings'),
+      '#title' => $this->t('Legacy Repository settings'),
     ];
     $form['block_legacy']['legacy_repository_api_url'] = [
       '#type' => 'textfield',
@@ -76,8 +76,8 @@ class BentoSettingsForm extends ConfigFormBase {
     ];
     $form['block_dataverse']['dataverse'] = [
       '#type' => 'textfield',
-      '#title' => t('Block title for Dataverse'),
-      '#default_value' => $config->get('titles_dataverse') ?: t('Dataverse'),
+      '#title' => $this->t('Block title for Dataverse'),
+      '#default_value' => $config->get('titles_dataverse') ?: $this->t('Dataverse'),
     ];
     $form['block_dataverse']['dataverse_tooltip'] = [
       "#type" => 'textarea',
@@ -87,7 +87,7 @@ class BentoSettingsForm extends ConfigFormBase {
     ];
     $form['block_this_i8'] = [
       '#type' => 'fieldset',
-      '#title' => t('This Islandora 8 settings'),
+      '#title' => $this->t('This Islandora 8 settings'),
     ];
     $form['block_this_i8']['this_i8_api_url'] = [
       '#type' => 'textfield',
@@ -100,7 +100,7 @@ class BentoSettingsForm extends ConfigFormBase {
     $form['block_this_i8']['titles_this_i8'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Block title for this Islandora 8 site'),
-      '#default_value' => $config->get('titles_this_i8') ?: t('KEEP'),
+      '#default_value' => $config->get('titles_this_i8') ?: $this->t('KEEP'),
     ];
     $form['block_this_i8']['this_i8_tooltip'] = [
       "#type" => 'textarea',

@@ -8,7 +8,7 @@ use GuzzleHttp\Exception\ClientException;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class SecondI8ApiService.
+ * PRISM API Service.
  */
 class SecondI8ApiService implements BentoApiInterface {
 

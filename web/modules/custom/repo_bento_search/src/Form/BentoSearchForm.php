@@ -6,7 +6,7 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Class BentoSearchForm.
+ * Search form for the bento page itself.
  */
 class BentoSearchForm extends FormBase {
 
