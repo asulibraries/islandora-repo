@@ -8,7 +8,7 @@ use GuzzleHttp\Exception\ClientException;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class DataverseApiService.
+ * Class DataverseApiService - communicates with dataverse API.
  */
 class DataverseApiService implements BentoApiInterface {
 

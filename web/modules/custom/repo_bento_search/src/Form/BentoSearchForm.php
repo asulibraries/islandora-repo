@@ -58,9 +58,8 @@ class BentoSearchForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    // this should just display the same form at the top and any blocks
+    // This should just display the same form at the top and any blocks
     // if there is a "q" parameter populated.
-
   }
 
 }

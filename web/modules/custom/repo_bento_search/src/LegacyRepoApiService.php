@@ -66,14 +66,14 @@ class LegacyRepoApiService implements BentoApiInterface {
       if (trim($base_url) <> '') {
         $request = $this->httpClient->request('GET', $base_url . "?q=" . $term .
             "&count=" . $limit, [
-          'headers' => [
-            'Authorization' => 'Token ' . $token,
-          ],
-        ]);
+              'headers' => [
+                'Authorization' => 'Token ' . $token,
+              ],
+            ]);
         if ($request->getStatusCode() == 200) {
           $body = $request->getBody()->getContents();
           $this->logger->info(print_r($body, TRUE));
-          // dsm(print_r($body, TRUE));
+          // dsm(print_r($body, TRUE));.
           return $body;
         }
         else {
