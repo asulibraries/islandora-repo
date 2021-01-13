@@ -4,11 +4,28 @@ namespace Drupal\repo_bento_search\Form;
 
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Search form for the bento page itself.
  */
 class BentoSearchForm extends FormBase {
+
+  /**
+   * Symfony\Component\HttpFoundation\RequestStack definition.
+   *
+   * @var \Symfony\Component\HttpFoundation\RequestStack
+   */
+  protected $requestStack;
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    $instance = parent::create($container);
+    $instance->requestStack = $container->get('request_stack');
+    return $instance;
+  }
 
   /**
    * {@inheritdoc}
@@ -30,7 +47,7 @@ class BentoSearchForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
-    $search_term = \Drupal::request()->query->get('q');
+    $search_term = $this->requestStack->getCurrentRequest()->query->get('q');
     $form['#method'] = 'get';
     $form['q'] = [
       '#type' => 'textfield',
