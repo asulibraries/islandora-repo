@@ -74,6 +74,9 @@ class ASUComplexTitle extends BlockBase {
    */
   public function getCacheTags() {
     if ($node = \Drupal::routeMatch()->getParameter('node')) {
+      if (!is_object($node)) {
+        $node = \Drupal::entityTypeManager()->getStorage('node')->load($node);
+      }
       return Cache::mergeTags(parent::getCacheTags(), ['node:' . $node->id()]);
     } else {
       return parent::getCacheTags();

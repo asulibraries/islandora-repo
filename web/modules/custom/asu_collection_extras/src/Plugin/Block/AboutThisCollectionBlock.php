@@ -11,6 +11,7 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Url;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Drupal\islandora_matomo\IslandoraMatomoService;
+use Drupal\Core\Database\Connection;
 
 /**
  * Provides a 'About this collection' Block.
@@ -52,6 +53,13 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
   protected $islandoraMatomo;
 
   /**
+   * The database connection definition.
+   *
+   * @var Drupal\Core\Database\Connection
+   */
+  protected $connection;
+
+  /**
    * Construct method.
    *
    * @param array $configuration
@@ -68,6 +76,8 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
    *   The currentRouteMatch definition.
    * @param \Drupal\islandora_matomo\IslandoraMatomoService $islandoraMatomo
    *   The islandoraMatomo service.
+   * @param \Drupal\Core\Database\Connection $connection
+   *   The database service.
    */
   public function __construct(
     array $configuration,
@@ -76,13 +86,15 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
     RequestStack $request_stack,
     EntityTypeManager $entityTypeManager,
     CurrentRouteMatch $currentRouteMatch,
-    IslandoraMatomoService $islandoraMatomo
+    IslandoraMatomoService $islandoraMatomo,
+    Connection $connection
     ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->requestStack = $request_stack;
     $this->entityTypeManager = $entityTypeManager;
     $this->currentRouteMatch = $currentRouteMatch;
     $this->islandoraMatomo = $islandoraMatomo;
+    $this->connection = $connection;
   }
 
   /**
@@ -107,7 +119,8 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
       $container->get('request_stack'),
       $container->get('entity_type.manager'),
       $container->get('current_route_match'),
-      $container->get('islandora_matomo.default')
+      $container->get('islandora_matomo.default'),
+      $container->get('database')
     );
   }
 
@@ -142,42 +155,38 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
     else {
       $collection_created = 0;
     }
-    // This needs to only return items that are Published and related to the
-    // collection, but there doesn't seem to be a way to have multiple AND / OR
-    // conjunctions in a single query.
-    $children_nids = asu_collection_extras_get_collection_children($collection_node);
-
-    $collection_views = $items = $max_timestamp = 0;
+    // Run a solr query first to get ALL the items under the collection using
+    // the ancestors field.
+    $children = asu_collection_extras_solr_get_collection_children($collection_node);
+    \Drupal::logger('asu_collection_extras')->info('<pre><code>' . print_r($children, TRUE) . '</code></pre>');
+    $items = $max_timestamp = 0;
     $islandora_models = $stat_box_row1 = [];
-    $files = 0;
-    $original_file_tid = key($this->entityTypeManager
-      ->getStorage('taxonomy_term')
-      ->loadByProperties(['name' => "Original File"]));
-    foreach ($children_nids as $child_nid) {
-      if ($child_nid) {
-        $items++;
-        // For "# file (Titles)", get media & extract original file and count.
-        $files += $this->getOriginalFileCount($child_nid, $original_file_tid);
-        $node = $this->entityTypeManager->getStorage('node')->load($child_nid);
-        if ($node->hasField('field_resource_type') && !$node->get('field_resource_type')->isEmpty()) {
-          $res_types = $node->get('field_resource_type')->referencedEntities();
-          foreach ($res_types as $tp) {
-            $nm = $tp->getName();
-            if (array_key_exists($nm, $islandora_models)) {
-              $islandora_models[$nm]++;
-            }
-            else {
-              $islandora_models[$nm] = 1;
-            }
+
+    $items = count($children);
+    $files = $max_timestamp = 0;
+
+    // The first $child_arr will have the most recent changed value.
+    foreach ($children as $nid => $child_arr) {
+      if ($nid) {
+        $files += $child_arr['original_file_count'];
+        if (!$max_timestamp) {
+          $max_timestamp = strtotime($child_arr['changed']);
+        }
+        $model = $child_arr['field_model'];
+        // Since it is possible that an asu_repository_item may be indexed w/o
+        // having a field_model value, we must omit any that are set = 0.
+        if ($model) {
+          if (array_key_exists($model, $islandora_models)) {
+            $islandora_models[$model]++;
+          }
+          else {
+            $islandora_models[$model] = 1;
           }
         }
-        $this_revisiontimestamp = $node->get('revision_timestamp')->getString();
-        $max_timestamp = ($this_revisiontimestamp > $max_timestamp) ?
-          $this_revisiontimestamp : $max_timestamp;
-        $node_views = $this->islandoraMatomo->getViewsForNode($child_nid);
-        $collection_views += $node_views;
       }
     }
+
+    $collection_views = $this->getCollectionViews($collection_node);
     // Calculate the "Items" box link.
     $items_url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/collections/' .
        (($collection_node) ? $collection_node->id() : 0) . '/search/?search_api_fulltext=');
@@ -212,6 +221,25 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
   }
 
   /**
+   * Loads the collection views from the summary table.
+   *
+   * @param mixed $collection_node
+   *   This could be a node object or the integer id() value of a node.
+   *
+   * @return int
+   *   The number of views for the collection.
+   */
+  private function getCollectionViews($collection_node) {
+    $collection_node_id = (is_object($collection_node) ? $collection_node->id() : $collection_node);
+    $collection_views = $this->connection
+      ->query('SELECT views FROM asu_collection_extras_collection_usage WHERE nid = ' . $collection_node_id)
+      ->fetchAll();
+    foreach ($collection_views as $c_obj) {
+      return $c_obj->views;
+    }
+  }
+
+  /**
    * Makes the markup for a given item's box for the template.
    *
    * @param string $string
@@ -232,40 +260,6 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
     else {
       return '<div class="stats_box col-4"><div class="stats_border_box">' . $string . '</div></div>';
     }
-  }
-
-  /**
-   * To recursively (including children) query for the node's original files.
-   *
-   * @param int $related_nid
-   *   The node's id() value.
-   * @param int $original_file_tid
-   *   The taxonomy term id.
-   *
-   * @return int
-   *   The count of files for the given file.
-   */
-  private function getOriginalFileCount($related_nid, $original_file_tid) {
-    $files = 0;
-    $collection_children_nids = asu_collection_extras_get_collection_children($related_nid);
-
-    foreach ($collection_children_nids as $collection_child_nid) {
-      // Recursively call this to add counts for EACH CHILD of the top level
-      // object that was referenced by $related_nid.
-      $files += $this->getOriginalFileCount($collection_child_nid, $original_file_tid);
-    }
-
-    // Now, add the actual number of files that may be related to the provided
-    // top level object that is referenced by $related_nid.
-    $mids = $this->entityTypeManager->getStorage('media')->getQuery()
-      ->condition('field_media_of', $related_nid)
-      ->condition('field_media_use', $original_file_tid)
-      ->execute();
-    foreach ($mids as $mid) {
-      $media = $this->entityTypeManager->getStorage('media')->load($mid);
-      $files += (is_object($media) ? 1 : 0);
-    }
-    return $files;
   }
 
   /**
