@@ -8,7 +8,7 @@ use GuzzleHttp\Exception\ClientException;
 use Psr\Log\LoggerInterface;
 
 /**
- * Class ThisI8ApiService.
+ * KEEP API Service.
  */
 class ThisI8ApiService implements BentoApiInterface {
 
@@ -55,14 +55,15 @@ class ThisI8ApiService implements BentoApiInterface {
       if (!trim($base_url)) {
         $this->logger->warning("No URL set for Legacy Repository: see /admin/config/bento_search/settings");
         return;
-      } else {
+      }
+      else {
         $request_url = $base_url . '?search_api_fulltext=' . $term . '&q=' . $term .
           '&format=json' . (($limit > 10) ? "items_per_page=" . $limit : "");
         $request = $this->httpClient->request('GET', $request_url);
         if ($request->getStatusCode() == 200) {
           $body = $request->getBody()->getContents();
           $this->logger->info(print_r($body, TRUE));
-          // dsm(print_r($body, TRUE));
+          // dsm(print_r($body, TRUE));.
           return $body;
         }
         else {

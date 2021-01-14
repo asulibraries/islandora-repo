@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Block\BlockPluginInterface;
 
 /**
  * Implements hook_help().
@@ -27,55 +28,59 @@ function repo_bento_search_help($route_name, RouteMatchInterface $route_match) {
  * Implements hook_theme().
  */
 function repo_bento_search_theme() {
+  $config = \Drupal::config('repo_bento_search.bentosettings');
   return [
     'dataverse_results' => [
       'template' => 'dataverse_results',
       'variables' => [
-        'label' => \Drupal::config('repo_bento_search.bentosettings')
-    ->get('titles_dataverse') ?: t('Dataverse'),
+        'label' => $config->get('titles_dataverse') ?: t('Dataverse'),
+        'tooltip_text' => $config->get('dataverse_tooltip') ?: '',
         'service_url' => NULL,
         'items' => NULL,
         'total_results_found' => NULL,
-        'search_term' => NULL
-      ]
+        'search_term' => NULL,
+      ],
     ],
     'legacyrepo_results' => [
       'template' => 'legacyrepo_results',
       'variables' => [
-        'label' => \Drupal::config('repo_bento_search.bentosettings')
-    ->get('titles_legacy_repo') ?: t('Repository'),
+        'label' => $config->get('titles_legacy_repo') ?: t('Repository'),
+        'tooltip_text' => $config->get('legacy_repo_tooltip') ?: '',
         'service_url' => NULL,
         'items' => NULL,
         'total_results_found' => NULL,
-        'search_term' => NULL
-      ]
+        'search_term' => NULL,
+      ],
     ],
     'this_i8_results' => [
       'template' => 'this_i8_results',
       'variables' => [
-        'label' => \Drupal::config('repo_bento_search.bentosettings')
-    ->get('titles_this_i8') ?: t('KEEP'),
+        'label' => $config->get('titles_this_i8') ?: t('KEEP'),
+        'tooltip_text' => $config->get('this_i8_tooltip') ?: '',
         'service_url' => NULL,
         'items' => NULL,
         'total_results_found' => NULL,
-        'search_term' => NULL
-      ]
+        'search_term' => NULL,
+      ],
     ],
     'second_i8_results' => [
       'template' => 'second_i8_results',
       'variables' => [
-        'label' => \Drupal::config('repo_bento_search.bentosettings')
-    ->get('titles_second_i8') ?: t('DIGITAL COLLECTIONS'),
+        'label' => $config->get('titles_second_i8') ?: t('DIGITAL COLLECTIONS'),
+        'tooltip_text' => $config->get('second_i8_tooltip') ?: '',
         'service_url' => NULL,
         'items' => NULL,
         'total_results_found' => NULL,
-        'search_term' => NULL
-      ]
+        'search_term' => NULL,
+      ],
     ],
   ];
 }
 
-function repo_bento_search_block_view_alter(array &$build, \Drupal\Core\Block\BlockPluginInterface $block) {
+/**
+ * Adds prerender to blocks.
+ */
+function repo_bento_search_block_view_alter(array &$build, BlockPluginInterface $block) {
   $block_id = $block->getBaseId();
   if ($block_id === 'bento_this_i8_results_block') {
     $build['#pre_render'][] = 'repo_bento_search_bento_this_i8_results_block_prerender';
@@ -91,6 +96,9 @@ function repo_bento_search_block_view_alter(array &$build, \Drupal\Core\Block\Bl
   }
 }
 
+/**
+ * Prerender for this i8.
+ */
 function repo_bento_search_bento_this_i8_results_block_prerender(array $build) {
   $build['#configuration']['label'] = \Drupal::config('repo_bento_search.bentosettings')
     ->get('titles_this_i8') ?
@@ -98,24 +106,32 @@ function repo_bento_search_bento_this_i8_results_block_prerender(array $build) {
   return $build;
 }
 
+/**
+ * Prerender for second i8.
+ */
 function repo_bento_search_bento_second_i8_results_block_prerender(array $build) {
   $build['#configuration']['label'] = \Drupal::config('repo_bento_search.bentosettings')
     ->get('titles_second_i8') ?
-      \Drupal::config('repo_bento_search.bentosettings')->get('titles_second_i8'): t('DIGITAL COLLECTIONS');
+      \Drupal::config('repo_bento_search.bentosettings')->get('titles_second_i8') : t('DIGITAL COLLECTIONS');
   return $build;
 }
 
+/**
+ * Prerender for legacy repo.
+ */
 function repo_bento_search_bento_legacy_repo_results_block_prerender(array $build) {
   $build['#configuration']['label'] = \Drupal::config('repo_bento_search.bentosettings')
     ->get('titles_legacy_repo') ?
-      \Drupal::config('repo_bento_search.bentosettings')->get('titles_legacy_repo'): t('Repository');
+      \Drupal::config('repo_bento_search.bentosettings')->get('titles_legacy_repo') : t('Repository');
   return $build;
 }
 
+/**
+ * Prerender for dataverse.
+ */
 function repo_bento_search_bento_dataverse_results_block_prerender(array $build) {
   $build['#configuration']['label'] = \Drupal::config('repo_bento_search.bentosettings')
     ->get('titles_dataverse') ?
-      \Drupal::config('repo_bento_search.bentosettings')->get('titles_dataverse'): t('Dataverse');
+      \Drupal::config('repo_bento_search.bentosettings')->get('titles_dataverse') : t('Dataverse');
   return $build;
 }
-
