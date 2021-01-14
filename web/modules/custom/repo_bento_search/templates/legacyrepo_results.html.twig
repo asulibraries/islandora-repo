@@ -16,10 +16,17 @@
  *  - md_created_s: The created date for the item
  */
 #}
+<h2>{{ label }}
+<small>
+<span title="{{ tooltip_text }}" class="fas fa-question-circle" data-toggle="tooltip"></span>
+</small>
+</h2>
+
+<i>{{ total_results_found | number_format }}
+	result{% if total_results_found != 1 %}s{% endif %}
+	found</i><br>
+
 <div class="bento_box">
-    <h2>{{ label }}</h2>
-    <i title="Items from our digital repository, including scholarly papers, theses, university records, historical photographs, music performances, and more." class="fas fa-question-circle"></i>
-    <i>{{ total_results_found | number_format }} result{% if total_results_found != 1 %}s{% endif %} found</i><br>
     {% for key,item in items %}
         <div class="bento_item">
           <div class="bento_link" title="{{item.name|raw}}">

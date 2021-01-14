@@ -59,7 +59,12 @@ class IdentifierByType extends ProcessorPluginBase {
         $paragraph = Paragraph::load($element['target_id']);
         $ix = $paragraph->get('field_identifier_type');
         if (isset($ix) && isset($ix->first()->entity)) {
-          $ident_type = $paragraph->get('field_identifier_type')->first()->entity->get('field_identifier_predicate')->getValue()[0]['value'];
+          if ($paragraph->get('field_identifier_type')->first()->entity->hasField('field_identifier_predicate')) {
+            $ident_type = $paragraph->get('field_identifier_type')->first()->entity->get('field_identifier_predicate')->getValue()[0]['value'];
+          }
+          else {
+            $ident_type = "identifier";
+          }
           $fields = $this->getFieldsHelper()
             ->filterForPropertyPath($fields, NULL, 'asu_' . strtolower($ident_type));
           foreach ($fields as $field) {

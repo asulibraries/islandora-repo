@@ -93,16 +93,16 @@ process:
       to_timezone: 'UTC'
 
   moderation_state:
-      plugin: static_map
-      source: Visibility
-      map:
-        Private: draft
-        Public: published
-        1.0: published
-        1: published
-        0: draft
-        0.0: draft
-      default_value: published
+    plugin: static_map
+    source: Visibility
+    map:
+      Private: draft
+      Public: published
+      1.0: published
+      1: published
+      0: draft
+      0.0: draft
+    default_value: published
 
   field_model:
     source: Model
@@ -140,9 +140,13 @@ process:
     method: process
 
   uid:
-    plugin: user_lookup
-    source: System User
-    default_value: constants/uid
+    -
+      plugin: skip_on_empty
+      source: System User
+      method: process
+    -
+      plugin: user_lookup
+      default_value: constants/uid
 
   field_open_access:
     plugin: skip_on_empty
@@ -154,7 +158,11 @@ process:
     source: Peer-reviewed
     method: process
 
-  field_complex_object_child: Complex Object Child
+  field_complex_object_child:
+    plugin: skip_on_empty
+    source: Complex Object Child
+    method: process
+    default_value: 0
 
   field_table_of_contents:
     plugin: skip_on_empty
@@ -170,7 +178,7 @@ process:
     -
       plugin: explode
       delimiter: '||'
-      source: Title
+      source: Item Title
     -
       plugin: callback
       callable: trim

@@ -6,7 +6,7 @@ use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 
 /**
- * Class BentoSettingsForm.
+ * Settings for Bento Search.
  */
 class BentoSettingsForm extends ConfigFormBase {
 
@@ -33,7 +33,8 @@ class BentoSettingsForm extends ConfigFormBase {
     $config = $this->config('repo_bento_search.bentosettings');
     $form['block_legacy'] = [
       '#type' => 'fieldset',
-      '#title' => t('Legacy Repository settings')];
+      '#title' => $this->t('Legacy Repository settings'),
+    ];
     $form['block_legacy']['legacy_repository_api_url'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Legacy Repository API URL'),
@@ -52,12 +53,19 @@ class BentoSettingsForm extends ConfigFormBase {
     ];
     $form['block_legacy']['legacy_repo'] = [
       '#type' => 'textfield',
-      '#title' => t('Block title for Legacy repository'),
-      '#default_value' => $config->get('titles_legacy_repo') ?: t('Repository'),
+      '#title' => $this->t('Block title for Legacy repository'),
+      '#default_value' => $config->get('titles_legacy_repo') ?: $this->t('Repository'),
+    ];
+    $form['block_legacy']['legacy_repo_tooltip'] = [
+      "#type" => 'textarea',
+      '#title' => $this->t('Tooltip text'),
+      '#description' => $this->t('The text to display in the info icon tooltip describing this system'),
+      '#default_value' => $config->get('legacy_repo_tooltip') ?: '',
     ];
     $form['block_dataverse'] = [
       '#type' => 'fieldset',
-      '#title' => t('Dataverse settings')];
+      '#title' => $this->t('Dataverse settings'),
+    ];
     $form['block_dataverse']['dataverse_api_url'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Dataverse API URL'),
@@ -68,12 +76,19 @@ class BentoSettingsForm extends ConfigFormBase {
     ];
     $form['block_dataverse']['dataverse'] = [
       '#type' => 'textfield',
-      '#title' => t('Block title for Dataverse'),
-      '#default_value' => $config->get('titles_dataverse') ?: t('Dataverse'),
+      '#title' => $this->t('Block title for Dataverse'),
+      '#default_value' => $config->get('titles_dataverse') ?: $this->t('Dataverse'),
+    ];
+    $form['block_dataverse']['dataverse_tooltip'] = [
+      "#type" => 'textarea',
+      '#title' => $this->t('Tooltip text'),
+      '#description' => $this->t('The text to display in the info icon tooltip describing this system'),
+      '#default_value' => $config->get('dataverse_tooltip') ?: '',
     ];
     $form['block_this_i8'] = [
       '#type' => 'fieldset',
-      '#title' => t('This Islandora 8 settings')];
+      '#title' => $this->t('This Islandora 8 settings'),
+    ];
     $form['block_this_i8']['this_i8_api_url'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Islandora 8 site API URL'),
@@ -84,12 +99,19 @@ class BentoSettingsForm extends ConfigFormBase {
     ];
     $form['block_this_i8']['titles_this_i8'] = [
       '#type' => 'textfield',
-      '#title' => t('Block title for this Islandora 8 site'),
-      '#default_value' => $config->get('titles_this_i8') ?: t('KEEP'),
+      '#title' => $this->t('Block title for this Islandora 8 site'),
+      '#default_value' => $config->get('titles_this_i8') ?: $this->t('KEEP'),
+    ];
+    $form['block_this_i8']['this_i8_tooltip'] = [
+      "#type" => 'textarea',
+      '#title' => $this->t('Tooltip text'),
+      '#description' => $this->t('The text to display in the info icon tooltip describing this system'),
+      '#default_value' => $config->get('this_i8_tooltip') ?: '',
     ];
     $form['block_second_i8'] = [
       '#type' => 'fieldset',
-      '#title' => t('Second Islandora 8 settings')];
+      '#title' => $this->t('Second Islandora 8 settings'),
+    ];
     $form['block_second_i8']['second_i8_api_url'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Islandora 8 site API URL'),
@@ -100,8 +122,14 @@ class BentoSettingsForm extends ConfigFormBase {
     ];
     $form['block_second_i8']['titles_second_i8'] = [
       '#type' => 'textfield',
-      '#title' => t('Block title for second Islandora 8 site'),
-      '#default_value' => $config->get('titles_second_i8') ?: t('DIGITAL COLLECTIONS'),
+      '#title' => $this->t('Block title for second Islandora 8 site'),
+      '#default_value' => $config->get('titles_second_i8') ?: $this->t('PRISM'),
+    ];
+    $form['block_second_i8']['second_i8_tooltip'] = [
+      "#type" => 'textarea',
+      '#title' => $this->t('Tooltip text'),
+      '#description' => $this->t('The text to display in the info icon tooltip describing this system'),
+      '#default_value' => $config->get('second_i8_tooltip') ?: '',
     ];
     $form['num_results'] = [
       '#type' => 'number',
@@ -136,6 +164,10 @@ class BentoSettingsForm extends ConfigFormBase {
       ->set('titles_legacy_repo', $form_state->getValue('legacy_repo'))
       ->set('titles_dataverse', $form_state->getValue('dataverse'))
       ->set('recent_items_api', $form_state->getValue('recent_items_api'))
+      ->set('dataverse_tooltip', $form_state->getValue('dataverse_tooltip'))
+      ->set('legacy_repo_tooltip', $form_state->getValue('legacy_repo_tooltip'))
+      ->set('this_i8_tooltip', $form_state->getValue('this_i8_tooltip'))
+      ->set('second_i8_tooltip', $form_state->getValue('second_i8_tooltip'))
       ->save();
   }
 
