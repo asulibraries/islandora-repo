@@ -10,7 +10,7 @@ migration_group: migrate_c125_csv
 
 source:
   plugin: csv
-  path: /var/www/html/drupal/web/modules/custom/asu_migrate/data/migration_data/att_file_125.csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/data/migration_data/att_file_125_generic.csv
 
   # 1 means you have a header row, 0 means you don't
   header_row_count: 1
@@ -87,12 +87,11 @@ process:
       migration: p_c125_file
       no_stub: true
 
-  # they are files in this collection
   field_media_file:
     -
       plugin: skip_on_empty
       method: process
-      source: file id
+      source: generic file id
     -
       plugin: migration_lookup
       migration: p_c125_file

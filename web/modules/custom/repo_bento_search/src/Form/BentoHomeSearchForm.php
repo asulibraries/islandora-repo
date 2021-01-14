@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Url;
 
 /**
- * Class BentoHomeSearchForm.
+ * Search Form for the landing page.
  */
 class BentoHomeSearchForm extends FormBase {
 
@@ -63,13 +63,6 @@ class BentoHomeSearchForm extends FormBase {
       '#attributes' => ['class' => ['col-md-1', 'align-self-end']],
     ];
     return $form;
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function validateForm(array &$form, FormStateInterface $form_state) {
-    parent::validateForm($form, $form_state);
   }
 
   /**
