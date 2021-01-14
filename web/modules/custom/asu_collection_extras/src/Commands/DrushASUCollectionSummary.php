@@ -1,5 +1,8 @@
 <?php
 
+// When this runs, it may take a long time to complete.			
+set_time_limit(0);
+
 namespace Drupal\asu_collection_extras\Commands;
 
 use Drush\Commands\DrushCommands;
