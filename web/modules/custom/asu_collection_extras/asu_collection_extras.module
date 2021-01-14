@@ -84,7 +84,7 @@ function asu_collection_extras_solr_get_collection_children($collection_node) {
       $nids_arr[$nid_doc->its_nid] = [
         'changed' => $nid_doc->ds_changed,
         'original_file_count' => $nid_doc->ss_original_file_count,
-        'field_model' => array_key_exists(0, $nid_doc->itm_field_model) ?
+        'field_model' => (!is_null($nid_doc->itm_field_model) && array_key_exists(0, $nid_doc->itm_field_model)) ?
           $nid_doc->itm_field_model[0] : 0
       ]; 
     }
@@ -116,7 +116,9 @@ function asu_collection_extras_doCollectionSummary($collection_nid) {
       ->condition('field_media_use', $original_file_tid)
       ->execute();
     foreach ($mids as $mid) {
-      $collection_downloads +=\Drupal::service('islandora_matomo.default')->getDownloadsForFile($mid);
+      $media = Media::load($mid);
+      $fid = \Drupal::service('islandora_matomo.default')->getFileFromMedia($mid);
+      $collection_downloads +=\Drupal::service('islandora_matomo.default')->getDownloadsForFile($fid);
     }
   }
   // echo print_r($children, TRUE);
