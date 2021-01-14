@@ -1,8 +1,5 @@
 <?php
 
-// When this runs, it may take a long time to complete.			
-set_time_limit(0);
-
 namespace Drupal\asu_collection_extras\Commands;
 
 use Drush\Commands\DrushCommands;
@@ -26,6 +23,8 @@ class DrushASUCollectionSummary extends DrushCommands {
    * @usage asu_collection_extras:collection_summary 30
    */
   public function collection_summary($collection_nid = 0) {
+    // When this runs, it may take a long time to complete.                 
+    set_time_limit(0);
     if ($collection_nid > 0) {
       asu_collection_extras_doCollectionSummary($collection_nid, $this);
     } else {
