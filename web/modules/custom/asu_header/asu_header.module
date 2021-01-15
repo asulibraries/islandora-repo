@@ -1,0 +1,164 @@
+<?php
+
+/**
+ * @file
+ * Contains asu_header.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function asu_header_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the asu_header module.
+    case 'help.page.asu_header':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('Global header and footer for ASU web standards') . '</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_menu_links_discovered_alter().
+ */
+function asu_header_menu_links_discovered_alter(&$links) {
+  $links['asu_header.logout']['class'] = 'Drupal\asu_header\Plugin\Menu\SigninSignoutMenuLink';
+}
+
+/**
+ * Implements hook_preprocess_menu
+ *
+ * Make username available to menu twigs
+ */
+/* don't need this since user.account.name works, keep it for now just in case */
+/*function asu_header_preprocess_menu(&$variables) {
+  $currentAccount = \Drupal::currentUser();
+  $variables['username'] = $currentAccount->getAccountName();
+}*/
+
+/**
+ * Implements hook_theme().
+ */
+function asu_header_theme($existing, $type, $theme, $path) {
+  $templates = $path . '/templates';
+  return [
+    'asu_footer' => [
+      'template' => 'asu-footer',
+      'variables' => [
+          'module_path' => NULL,
+      ],
+    ],
+    'menu__asu_global' => [
+      'base hook' => 'menu',
+      'render element' => 'menu',
+    ],
+    'menu__main__mainnavigation' => [
+      'base hook' => 'menu',
+      'render element' => 'menu',
+    ],
+    // The whole thing as one block doesn't quite work
+    // maybe mess with it later but it *works* with the
+    // separate templates so ignore it for now.
+//    'asu_header' => [
+//      'template' => 'asu-header',
+//      'variables' => [
+//        'module_path' => NULL,
+//        'site_name' => NULL,
+//        'site_slogan' => NULL,
+//      ],
+//    ],
+    'region__top_header' => [
+      'template' => 'region--top-header',
+      'render element' => 'content',
+      'path' => $templates,
+      'base hook' => 'region',
+    ],
+    'block__asuglobalmenu' => [
+      'template' => 'block--asuglobalmenu',
+      'path' => $templates,
+      'base hook' => 'block',
+      'render element' => 'content',
+    ],
+    'region__header' => [
+      'template' => 'region--header',
+      'render element' => 'content',
+      'path' => $templates,
+      'base hook' => 'region',
+    ],
+    'block__system_menu_block__main' => [
+      'template' => 'block--system-menu-block--main',
+      'render element' => 'content',
+      'path' => $templates,
+      'base hook' => 'block',
+      'variables' => [
+        'module_path' => NULL,
+        'site_name' => NULL,
+        'site_slogan' => NULL,
+      ],
+    ],
+  ];
+}
+
+
+/**
+ * Implements hook_preprocess_*()
+ * Pass the module path as a variable
+ */
+function asu_header_preprocess_asu_footer(&$variables, $hook) {
+  $module_handler = Drupal::service('module_handler');
+  $path = $module_handler->getModule('asu_header')->getPath();
+
+  $variables['module_path'] = $path;
+}
+
+/**
+ * Implements hook_preprocess_*()
+ * Pass the module path as a variable
+ */
+function asu_header_preprocess_block__system_menu_block__main(&$variables) {
+  /* Get module path and pass it as a variable */
+  $module_handler = Drupal::service('module_handler');
+  $path = $module_handler->getModule('asu_header')->getPath();
+  $variables['module_path'] = $path;
+
+  /* Get site info and pass those as variables */
+  $config = \Drupal::config('system.site');
+  $variables['site_name'] = $config->get('name');
+  $variables['site_slogan'] = $config->get('slogan');
+
+}
+
+/**
+ * Implements hook_preprocess_*()
+ * Pass is_front to menu template
+ */
+function asu_header_preprocess_menu(&$variables) {
+  try {
+    $variables['is_front'] = \Drupal::service('path.matcher')->isFrontPage();
+  }
+  catch (Exception $e) {
+    $variables['is_front'] = FALSE;
+  }
+}
+
+/**
+ * Implements hook_preprocess_*()
+ * Pass the module path as a variable
+ */
+//function asu_header_preprocess_asu_header(&$variables, $hook) {
+//  /* Get module path and pass it as a variable */
+//  $module_handler = Drupal::service('module_handler');
+//  $path = $module_handler->getModule('asu_header')->getPath();
+//  $variables['module_path'] = $path;
+//
+//  /* Get site info and pass those as variables */
+//  $config = \Drupal::config('system.site');
+//  $variables['site_name'] = $config->get('name');
+//  $variables['site_slogan'] = $config->get('slogan');
+//
+//}

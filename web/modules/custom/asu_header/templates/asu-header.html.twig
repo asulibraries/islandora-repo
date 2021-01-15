@@ -1,0 +1,71 @@
+<header id="asu-header" class="fixed-top header" role="banner" aria-label="{{ 'Site header'|t}}">
+
+  <div id="wrapper-header-top">
+    <div class="container-xl">
+      <div class="row">
+        <div id="header-top" class="col-12">
+          <nav class="nav" aria-label="Top">
+            {{ drupal_menu('asu_global') }}
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="wrapper-header-main">
+    <div class="container-xl">
+      <div class="row">
+        <div id="header-main" class="col-12">
+          <nav class="navbar navbar-expand-xl" aria-label="Main" >
+
+            <a href="{{ path('<front>') }}" title="{{ 'Home'|t }}" rel="home" class="navbar-brand">
+              <img class="vert" src="/{{ module_path }}/images/arizona-state-university-logo-vertical.png" alt="Arizona State University" />
+              <img class="horiz" src="/{{ module_path }}/images/arizona-state-university-logo.png" alt="Arizona State University" />
+            </a>
+
+            <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#menubar" aria-controls="menubar" aria-expanded="false" aria-label="Toggle navigation">
+              <span title="Open mobile menu" class="fa fa-bars"></span>
+              <span title="Close mobile menu" class="fa-stack">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-times fa-stack-1x"></i>
+                </span>
+            </button>
+
+            <div class="navbar-container">
+
+              <div class="title subdomain-name">{{ site_name }}</div>
+
+              <div class="collapse navbar-collapse w-100 justify-content-between" id="menubar">
+                <div class="navbar-nav">
+
+                  {{ drupal_menu('main') }}
+
+                </div><!-- end .navbar-nav -->
+
+
+                <div class="navbar-mobile-footer">
+                  <form class="form-inline navbar-mobile-search" action="https://search.asu.edu/search" method="get" name="gs">
+                    <input class="form-control" type="search" name="q" aria-label="Search" placeholder="Search ASU">
+                    <input name="site" value="default_collection" type="hidden">
+                    <input name="sort" value="date:D:L:d1" type="hidden">
+                    <input name="output" value="xml_no_dtd" type="hidden">
+                    <input name="ie" value="UTF-8" type="hidden">
+                    <input name="oe" value="UTF-8" type="hidden">
+                    <input name="client" value="asu_frontend" type="hidden">
+                    <input name="proxystylesheet" value="asu_frontend" type="hidden">
+                  </form>
+                  <div class="nav-grid">
+                    {{ drupal_menu('asu_global') }}
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>

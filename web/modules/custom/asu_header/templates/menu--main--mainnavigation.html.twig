@@ -1,0 +1,83 @@
+{#
+/**
+ * @file
+ * Bootstrap Barrio's override to display a menu.
+ *
+ * Available variables:
+ * - menu_name: The machine name of the menu.
+ * - items: A nested list of menu items. Each menu item contains:
+ *   - attributes: HTML attributes for the menu item.
+ *   - below: The menu item child items.
+ *   - title: The menu link title.
+ *   - url: The menu link url, instance of \Drupal\Core\Url
+ *   - localized_options: Menu link localized options.
+ *   - is_expanded: TRUE if the link has visible children within the current
+ *     menu tree.
+ *   - is_collapsed: TRUE if the link has children within the current menu tree
+ *     that are not currently visible.
+ *   - in_active_trail: TRUE if the link is in the active trail.
+ */
+#}
+{% import _self as menus %}
+
+{#
+  We call a macro which calls itself to render the full tree.
+  @see http://twig.sensiolabs.org/doc/tags/macro.html
+#}
+{{ menus.menu_links(items, is_front, attributes, 0) }}
+
+{% macro menu_links(items, is_front, attributes, menu_level) %}
+  {% import _self as menus %}
+  {% if items %}
+    {% if is_expanded %}
+      <div class="nav-item dropdown">
+    {% endif %}
+    {% for item in items %}
+      {%
+        set classes = [
+          menu_level ? 'dropdown-item' : 'nav-item',
+          item.is_expanded ? 'menu-item--expanded',
+          item.is_collapsed ? 'menu-item--collapsed',
+          item.in_active_trail ? 'active',
+          item.below ? 'dropdown',
+        ]
+      %}
+
+        {%
+          set link_classes = [
+            not menu_level ? 'nav-link',
+            item.in_active_trail ? 'active',
+            item.below ? 'dropdown-toggle',
+            item.url.getOption('attributes').class ? item.url.getOption('attributes').class | join(' '),
+            'nav-link-' ~ item.url.toString() | clean_class,
+          ]
+        %}
+        {# Change out the home link for an icon #}
+        {% if item.title == 'Home' %}
+          {%
+            set home_classes = [
+              'nav-link-home',
+              'nav-link',
+            ]
+          %}
+          {% if is_front %}
+            <a{{ item.attributes.addClass(home_classes).addClass('active') }} href="{{ item.url }}">
+          {% else %}
+            <a{{ item.attributes.addClass(home_classes) }} href="{{ item.url }}">
+          {% endif %}
+            <span class="d-xl-none">Home</span>
+            <span title="Home" class="fas fa-fw fa-home"></span>
+          </a>
+        {% elseif item.below %}
+          {{ link(item.title, item.url, {'class': link_classes, 'data-toggle': 'dropdown', 'aria-expanded': 'false', 'aria-haspopup': 'true' }) }}
+          {{ menus.menu_links(item.below, attributes, menu_level + 1) }}
+        {% else %}
+          {{ link(item.title, item.url, {'class': link_classes}) }}
+        {% endif %}
+
+    {% endfor %}
+    {% if is_expanded %}
+      </div>
+    {% endif %}
+  {% endif %}
+{% endmacro %}
