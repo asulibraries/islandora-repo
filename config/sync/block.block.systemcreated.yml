@@ -2,38 +2,44 @@ langcode: en
 status: true
 dependencies:
   config:
-    - system.menu.main
+    - facets.facet.system_created
   module:
     - context
+    - facets
     - islandora
     - system
   theme:
     - asulib_barrio
-id: mainnavigation
+id: systemcreated
 theme: asulib_barrio
-region: header
-weight: -29
+region: sidebar_first
+weight: -21
 provider: null
-plugin: 'system_menu_block:main'
+plugin: 'facet_block:system_created'
 settings:
-  id: 'system_menu_block:main'
-  label: 'Main navigation'
-  provider: system
-  label_display: '0'
-  level: 1
-  depth: 0
-  expand_all_items: false
+  id: 'facet_block:system_created'
+  label: 'System Created'
+  provider: facets
+  label_display: visible
+  block_id: systemcreated
 visibility:
   request_path_exclusion:
     id: request_path_exclusion
     pages: ''
     negate: null
+    context_mapping: {  }
   view_inclusion:
     id: view_inclusion
     negate: null
     view_inclusion: {  }
+    context_mapping: {  }
   media_source_mimetype:
     id: media_source_mimetype
     mimetype: ''
+    negate: false
+    context_mapping: {  }
+  request_path:
+    id: request_path
+    pages: '/search*'
     negate: false
     context_mapping: {  }

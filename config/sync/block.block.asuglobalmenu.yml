@@ -2,22 +2,22 @@ langcode: en
 status: true
 dependencies:
   config:
-    - system.menu.main
+    - system.menu.asu_global
   module:
     - context
     - islandora
     - system
   theme:
     - asulib_barrio
-id: mainnavigation
+id: asuglobalmenu
 theme: asulib_barrio
-region: header
-weight: -29
+region: top_header
+weight: -30
 provider: null
-plugin: 'system_menu_block:main'
+plugin: 'system_menu_block:asu_global'
 settings:
-  id: 'system_menu_block:main'
-  label: 'Main navigation'
+  id: 'system_menu_block:asu_global'
+  label: 'ASU Global menu'
   provider: system
   label_display: '0'
   level: 1
