@@ -2,38 +2,41 @@ langcode: en
 status: true
 dependencies:
   config:
-    - facets.facet.member_of
+    - facets.facet.creators_cpx
   module:
     - context
     - facets
+    - islandora
     - system
   theme:
     - asulib_barrio
-id: memberofcollectionsonly
+id: creatorscpx
 theme: asulib_barrio
 region: sidebar_first
-weight: -31
+weight: -28
 provider: null
-plugin: 'facet_block:member_of'
+plugin: 'facet_block:creators_cpx'
 settings:
-  id: 'facet_block:member_of'
-  label: Collection
+  id: 'facet_block:creators_cpx'
+  label: Creators
   provider: facets
   label_display: visible
-  block_id: memberofcollectionsonly
+  block_id: creatorscpx
 visibility:
   request_path_exclusion:
     id: request_path_exclusion
     pages: ''
     negate: null
-    context_mapping: {  }
   view_inclusion:
     id: view_inclusion
     negate: null
     view_inclusion: {  }
+  media_source_mimetype:
+    id: media_source_mimetype
+    mimetype: ''
+    negate: false
     context_mapping: {  }
   request_path:
     id: request_path
-    pages: '/search*'
+    pages: '/items/*/search*'
     negate: false
-    context_mapping: {  }
