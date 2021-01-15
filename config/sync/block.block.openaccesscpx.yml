@@ -1,0 +1,37 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.open_access_cpx
+  module:
+    - context
+    - facets
+    - islandora
+  theme:
+    - asulib_barrio
+id: openaccesscpx
+theme: asulib_barrio
+region: sidebar_first
+weight: -19
+provider: null
+plugin: 'facet_block:open_access_cpx'
+settings:
+  id: 'facet_block:open_access_cpx'
+  label: 'Open Access'
+  provider: facets
+  label_display: visible
+  block_id: openaccesscpx
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    pages: ''
+    negate: null
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    view_inclusion: {  }
+  media_source_mimetype:
+    id: media_source_mimetype
+    mimetype: ''
+    negate: false
+    context_mapping: {  }

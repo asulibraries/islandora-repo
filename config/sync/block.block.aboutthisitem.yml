@@ -11,7 +11,7 @@ dependencies:
 id: aboutthisitem
 theme: asulib_barrio
 region: sidebar_first
-weight: -29
+weight: -36
 provider: null
 plugin: about_this_item_block
 settings:
@@ -20,6 +20,13 @@ settings:
   provider: asu_item_extras
   label_display: visible
 visibility:
+  node_type:
+    id: node_type
+    bundles:
+      asu_repository_item: asu_repository_item
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
   request_path_exclusion:
     id: request_path_exclusion
     pages: ''
@@ -35,10 +42,3 @@ visibility:
     negate: null
     view_inclusion: {  }
     context_mapping: {  }
-  node_type:
-    id: node_type
-    bundles:
-      asu_repository_item: asu_repository_item
-    negate: false
-    context_mapping:
-      node: '@node.node_route_context:node'

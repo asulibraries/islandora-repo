@@ -49,7 +49,7 @@ class ASUComplexTitle extends BlockBase {
       $first_title = $node->field_title[0];
       $view = ['type' => 'complex_title_formatter'];
       $first_title_view = $first_title->view($view);
-      $para_render = \Drupal::service('renderer')->render($first_title_view);
+      $para_render = trim(\Drupal::service('renderer')->render($first_title_view));
       if ($current_route_name == 'asu_statistics.collection_statistics_view') {
         $para_render .= ' Statistics';
       } elseif ($current_route_name == 'view.solr_search_content.page_2') {
