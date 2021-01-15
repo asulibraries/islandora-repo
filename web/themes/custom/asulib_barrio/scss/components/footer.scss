@@ -2,35 +2,15 @@
 
 #block-asubrandfooter, #block-asulibraryfooterblock {
     width: 100%;
+    h5 {
+        font-weight: 700;
+        font-size: 1rem;
+    }
 }
 .site-footer .container-fluid {
     margin: 0;
 }
-.asulib-footer {
-    width: 100%;
-    padding: 30px;
-    background-color: rgba(30, 30, 30, 1);
-    a {
-        color: #A9A9A9;
-    }
-    a:hover, a:focus {
-        color: #fff;
-    }
-    .list-inline {
-        padding-left: 10px;
-    }
-    .list-unstyled.links li{
-        margin-top: 15px;
-        margin-bottom: 15px;
-        a {
-            border-bottom: 1px dotted;
-            border-bottom-color: #a9a9a9;
-        }
-    }
-    i {
-        font-size: 2.4em;
-    }
-}
+
 #block-asulibraryfooterblock {
     margin-bottom: -16px;
 }
@@ -42,4 +22,13 @@
             max-width: 50%;
         }
     }
+}
+
+@media (min-width: 1260px) {
+    .card-foldable.desktop-disable-xl .card-header i {
+        display: none;
+    }
+}
+.card-foldable .card-header h4 a.collapsed i.fa-chevron-up, .card-foldable .card-header h5 a.collapsed i.fa-chevron-up {
+    transform: rotate(180deg);
 }

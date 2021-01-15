@@ -281,3 +281,137 @@ extends/_cards.scss
     padding-right: 24px;
   }
 }
+
+/*------------------------------------------------------------------
+5. Foldable Cards
+--------------------------------------------------------------------*/
+@mixin btn-transparent {
+  border-color: transparent;
+  background-color: transparent;
+}
+
+.card-foldable {
+  border-color: $gray-3;
+  border-left: $uds-size-spacing-1 solid $uds-color-base-gold;
+  height: auto;
+
+  .card-header {
+    padding: $uds-size-spacing-1;
+
+    &:hover {
+      background-color: $uds-color-base-gray-1;
+    }
+
+    h4,
+    h5 {
+      margin: 0;
+
+      a {
+        padding: $uds-size-spacing-1 $uds-size-spacing-3;
+        color: $uds-color-base-gray-7;
+        text-decoration: none;
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: space-between;
+        align-items: center;
+
+        svg.fa-chevron-up {
+          margin-left: $uds-size-spacing-3;
+          transition-duration: $uds-time-transition-base;
+        }
+
+        &.collapsed svg.fa-chevron-up {
+          transform: rotate(180deg);
+        }
+      }
+    }
+
+    +.card-body {
+      border-top: 1px solid $gray-3;
+    }
+  }
+
+  .card-body {
+    background-color: $uds-color-base-gray-1;
+
+    >p:first-child {
+      margin-top: $uds-size-spacing-2;
+    }
+
+    >p:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+/*------------------------------------------------------------------
+6. Foldable - Desktop Disable
+--------------------------------------------------------------------*/
+@mixin desktop-disable {
+  border-left: 1px solid $gray-3;
+
+  .card-header {
+    h4 a {
+      padding-top: $uds-size-spacing-4;
+      padding-bottom: $uds-size-spacing-4;
+
+      &:hover {
+        background-color: transparent;
+      }
+    }
+
+    svg {
+      display: none;
+    }
+
+    span {
+      display: none;
+    }
+  }
+
+  .card-header+.card-body {
+    border-top: 0;
+  }
+
+  .card-body {
+    background-color: transparent;
+
+    >p:first-child {
+      margin-top: 0;
+    }
+  }
+
+  .collapse {
+    display: block;
+    height: auto !important;
+    visibility: visible;
+
+    &:not(.show) {
+      display: block;
+    }
+  }
+
+  .collapsing {
+    position: relative;
+    height: unset !important;
+    overflow: hidden;
+  }
+}
+
+@include media-breakpoint-up(xl) {
+  .card-foldable.desktop-disable-xl {
+    @include desktop-disable;
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  .card-foldable.desktop-disable-lg {
+    @include desktop-disable;
+  }
+}
+
+@include media-breakpoint-up(md) {
+  .card-foldable.desktop-disable-md {
+    @include desktop-disable;
+  }
+}
