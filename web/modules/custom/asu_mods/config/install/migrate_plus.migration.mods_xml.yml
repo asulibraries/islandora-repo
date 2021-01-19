@@ -14,9 +14,17 @@ source:
   item_selector: /modsCollection/mods
   fields:
     -
-      name: title
+      name: main_title
       label: title
-      selector: titleInfo
+      selector: titleInfo/title
+    -
+      name: nonsort
+      label: nonsort
+      selector: titleInfo/nonSort
+    -
+      name: subtitle
+      label: subtitle
+      selector: titleInfo/subTitle
     -
       name: pid
       label: pid
@@ -39,6 +47,7 @@ source:
   constants:
     uid: 1
     description_format: description_restricted_items
+    model: Digital Document
 
 
 process:
@@ -47,11 +56,19 @@ process:
     plugin: skip_on_empty
     method: process
     source: pid
-  field_title:
+  title_temp:
     -
-      plugin: callback
-      callable: trim
-      source: title
+      plugin: concat
+      source:
+        - nonsort
+        - main_title
+      delimiter: ' '
+  field_title:
+    - plugin: concat
+      source:
+        - '@title_temp'
+        - subtitle
+      delimiter: ': '
     -
       plugin: paragraph_title_generate
       paragraph_type: 'complex_title'
@@ -60,7 +77,16 @@ process:
         field_nonsort: " "
         field_main_title: " "
         field_subtitle: " "
-  field_rich_description/value: abstract
+  title:
+    - plugin: concat
+      source:
+        - '@title_temp'
+        - subtitle
+      delimiter: ': '
+  field_rich_description/value:
+    plugin: skip_on_empty
+    method: process
+    source: abstract
   field_rich_description/format: constants/description_format
   field_extent:
     plugin: skip_on_empty
@@ -97,9 +123,17 @@ process:
   type:
     plugin: default_value
     default_value: asu_repository_item
+  field_model:
+    source: constants/model
+    plugin: entity_lookup
+    entity_type: taxonomy_term
+    value_key: name
+    bundle_key: vid
+    bundle: islandora_models
 
 destination:
   plugin: 'entity:node'
+  default_bundle: asu_repository_item
   # list all fields we want to overwrite
   overwrite_properties:
     - field_title
@@ -120,7 +154,7 @@ destination:
     - field_open_access
     - field_genre
     - status
-    - created
+    # - created
     - uid
     - field_copyright_statement
     - field_reuse_permissions
