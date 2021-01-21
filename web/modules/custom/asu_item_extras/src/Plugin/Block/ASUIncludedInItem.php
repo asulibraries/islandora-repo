@@ -4,7 +4,6 @@ namespace Drupal\asu_item_extras\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Render\Markup;
-use Drupal\media\Entity\Media;
 
 /**
  * Provides an 'Included in this item' Block.
@@ -16,7 +15,7 @@ use Drupal\media\Entity\Media;
  * )
  */
 class ASUIncludedInItem extends BlockBase {
-// todo use dependency injection for entityTypeManager and routeMatch
+  // Todo use dependency injection for entityTypeManager and routeMatch.
 
   /**
    * {@inheritdoc}
@@ -39,7 +38,7 @@ class ASUIncludedInItem extends BlockBase {
       }
       return [
         '#cache' => ['max-age' => 0],
-        $build_output
+        $build_output,
       ];
     }
     else {
@@ -48,4 +47,5 @@ class ASUIncludedInItem extends BlockBase {
       ];
     }
   }
+
 }

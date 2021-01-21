@@ -4,7 +4,6 @@ namespace Drupal\asu_item_extras\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Url;
-use Drupal\Core\Link;
 
 /**
  * Provides a 'International Image Interoperability Framework' Block.
@@ -35,18 +34,23 @@ class ASUItemIIIF extends BlockBase {
     $node = \Drupal::routeMatch()->getParameter('node');
     if ($node) {
       $nid = $node->id();
-    } else {
+    }
+    else {
       $nid = 0;
     }
-    $node_url = Url::fromRoute('<current>', array());
+    $node_url = Url::fromRoute('<current>', []);
     $iiif_section = $this->get_IIIF_section($node_url);
     return [
       'iiif-section' => [
         '#type' => 'container',
-        $iiif_section
-      ]];
+        $iiif_section,
+      ],
+    ];
   }
 
+  /**
+   *
+   */
   private function get_IIIF_section($url) {
     static $id_suffix;
     $id_suffix = !($id_suffix) ? '' : $id_suffix + 1;
@@ -62,8 +66,8 @@ class ASUItemIIIF extends BlockBase {
             '#suffix' => '</div>',
             '#markup' => '            <a class="icon-link" href="https://iiif.io/technical-details/" target="_blank">
                 <img class="img" src="' .
-                \Drupal::request()->getSchemeAndHttpHost() . "/" .
-                drupal_get_path("module", "asu_item_extras") . '/images/IIIF-logo-colored-text.svg">
+            \Drupal::request()->getSchemeAndHttpHost() . "/" .
+            drupal_get_path("module", "asu_item_extras") . '/images/IIIF-logo-colored-text.svg">
               </a>',
           ],
           // Drupal requires javascript to be attached to the render elements.
@@ -89,8 +93,8 @@ class ASUItemIIIF extends BlockBase {
             </div>
           </div>',
           ],
-        ]
-      ]
+        ],
+      ],
     ];
   }
 

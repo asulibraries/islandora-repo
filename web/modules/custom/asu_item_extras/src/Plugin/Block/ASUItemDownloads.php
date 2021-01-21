@@ -30,11 +30,10 @@ class ASUItemDownloads extends BlockBase {
       $node_id = $block_config['child_node_id'];
     }
     else {
-    // Since this block should be set to display on node/[nid] pages that are
-    // "ASU Repository Item", the underlying node can be accessed via the path.
-
-    // When this block appears on the items/{nid}/members view, each node.id value
-    // is passed as a parameter.
+      // Since this block should be set to display on node/[nid] pages that are
+      // "ASU Repository Item", the underlying node can be accessed via the path.
+      // When this block appears on the items/{nid}/members view, each node.id value
+      // is passed as a parameter.
       if (\Drupal::routeMatch()->getParameter('node')) {
         $node = \Drupal::routeMatch()->getParameter('node');
         $node_id = (is_string($node) ? $node : $node->id());
@@ -62,4 +61,5 @@ class ASUItemDownloads extends BlockBase {
       ];
     }
   }
+
 }

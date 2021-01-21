@@ -35,12 +35,13 @@ class ASUItemCitations extends BlockBase {
     $node = \Drupal::routeMatch()->getParameter('node');
     if ($node) {
       $nid = $node->id();
-    } else {
+    }
+    else {
       $nid = 0;
     }
-    $node_url = Url::fromRoute('<current>', array());
+    $node_url = Url::fromRoute('<current>', []);
     $url_string = \Drupal::request()->getSchemeAndHttpHost() . $node_url->toString();
-    $output_links = array();
+    $output_links = [];
     $url = Url::fromUri($url_string . '/citation/#citing');
     $link = Link::fromTextAndUrl(t('Citing this image'), $url)->toRenderable();
     $output_links[] = render($link);
@@ -58,7 +59,7 @@ class ASUItemCitations extends BlockBase {
     $output_links[] = render($link);
     $render_this = [
       '#markup' =>
-        ((count($output_links) > 0) ?
+      ((count($output_links) > 0) ?
           "<nav><ul class=''><li>" . implode("</li><li>", $output_links) . "</li></ul></nav>" :
           ""),
     ];
@@ -70,7 +71,11 @@ class ASUItemCitations extends BlockBase {
           '#type' => 'container',
           'the-items' => [
             '#type' => 'item',
-            $render_this
-          ]]]];
+            $render_this,
+          ],
+        ],
+      ],
+    ];
   }
+
 }

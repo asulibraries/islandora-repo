@@ -16,8 +16,7 @@ use Drupal\Core\Link;
  * )
  */
 class AboutThisItemBlock extends BlockBase {
-  // TODO add cache tags based on the node id
-
+  // TODO add cache tags based on the node id.
 
   /**
    * {@inheritdoc}
@@ -35,11 +34,12 @@ class AboutThisItemBlock extends BlockBase {
     // Since this block should be set to display on node/[nid] pages that are
     // either "Repository Item", "ASU Repository Item", or "Collection",
     // the underlying node can be accessed via the path.
-    // TODO - use dependency injection
+    // TODO - use dependency injection.
     $node = \Drupal::routeMatch()->getParameter('node');
     if ($node) {
       $nid = $node->id();
-    } else {
+    }
+    else {
       $nid = 0;
     }
     $output_links = [];
@@ -67,9 +67,9 @@ class AboutThisItemBlock extends BlockBase {
     return [
       '#cache' => ['max-age' => 0],
       '#markup' =>
-        (count($output_links) > 0) ?
-        "<nav><ul class=''><li>" . implode("</li><li>", $output_links) . "</li></ul></nav>" :
-        "",
+      (count($output_links) > 0) ?
+      "<nav><ul class=''><li>" . implode("</li><li>", $output_links) . "</li></ul></nav>" :
+      "",
       '#attached' => [
         'library' => [
           'asu_item_extras/interact',

@@ -22,11 +22,12 @@ class ExploreThisItemBlock extends BlockBase {
    * {@inheritdoc}
    */
   public function build() {
-    // depending on what the islandora_object model is, the links will differ.
+    // Depending on what the islandora_object model is, the links will differ.
     $node = \Drupal::routeMatch()->getParameter('node');
     if ($node) {
       $nid = $node->id();
-    } else {
+    }
+    else {
       $nid = 0;
     }
 
@@ -35,11 +36,11 @@ class ExploreThisItemBlock extends BlockBase {
     $field_model = (isset($field_model_term) && is_object($field_model_term)) ?
       $field_model_term->getName() : '';
 
-    $output_links = array();
+    $output_links = [];
     if ($field_model == 'Image') {
       $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/items/' . $nid . '/view');
       $link = Link::fromTextAndUrl(t('View Image'), $url);
-      // get the node's service file information from the node - just use the openseadragon view
+      // Get the node's service file information from the node - just use the openseadragon view.
       $link = $link->toRenderable();
       $output_links[] = render($link);
     }
@@ -65,7 +66,7 @@ class ExploreThisItemBlock extends BlockBase {
     $return = [
       '#cache' => ['max-age' => 0],
       '#markup' =>
-        ((count($output_links) > 0) ?
+      ((count($output_links) > 0) ?
         "<nav><ul class=''><li>" . implode("</li><li>", $output_links) . "</li></ul></nav>" :
         ""),
     ];

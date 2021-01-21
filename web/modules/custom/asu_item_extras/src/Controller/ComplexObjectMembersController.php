@@ -14,7 +14,6 @@ class ComplexObjectMembersController extends ControllerBase {
 
   /**
    * Constructs a ComplexObjectMembersController object.
-   *
    */
   public function __construct() {
     // DO NOTHING SPECIAL?
@@ -49,7 +48,7 @@ class ComplexObjectMembersController extends ControllerBase {
       $field_model = (isset($field_model_term) && is_object($field_model_term)) ?
         $field_model_term->getName() : '';
 
-      // check that the model for this node is set to "Complex Object".
+      // Check that the model for this node is set to "Complex Object".
       if (($content_type == 'asu_repository_item') && $field_model == 'Complex Object') {
         $children = asu_item_extras_get_complex_object_child_nodes($node->id());
         foreach ($children as $child_obj) {
