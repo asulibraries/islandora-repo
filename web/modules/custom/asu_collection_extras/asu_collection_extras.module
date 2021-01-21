@@ -103,10 +103,20 @@ function asu_collection_extras_solr_get_collection_children($collection_node) {
  *   The collection node id() value.
  */
 function asu_collection_extras_doCollectionSummary($collection_nid) {
+  $connection = \Drupal::service('database');
+  if (!$connection->schema()->tableExists('asu_collection_extras_collection_usage')) {
+    \Drupal::logger('asu_collection_extras')->warning('asu_collection_extras_collection_usage table does not exist. Re-install asu_collection_extras module or run SQL:
+' . "CREATE TABLE `asu_collection_extras_collection_usage` (
+  `nid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'The collection \"node\".nid this record affects.',
+  `views` int(11) NOT NULL DEFAULT '0' COMMENT 'View total for all objects in the collection.',
+  `downloads` int(11) NOT NULL DEFAULT '0' COMMENT 'Download total for all objects in the collection.',
+  PRIMARY KEY (`nid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+    return;
+  }
   $original_file_tid = key(\Drupal::entityTypeManager()
     ->getStorage('taxonomy_term')
     ->loadByProperties(['name' => "Original File"]));
-  // echo 'Calculating summary data for collection node id() = ' . $collection_nid;
   $children = asu_collection_extras_solr_get_collection_children($collection_nid);
   $collection_views = $collection_downloads = 0;
   foreach ($children as $child_nid => $child_arr) {
@@ -121,10 +131,7 @@ function asu_collection_extras_doCollectionSummary($collection_nid) {
       $collection_downloads +=\Drupal::service('islandora_matomo.default')->getDownloadsForFile($fid);
     }
   }
-  // echo print_r($children, TRUE);
-  $views = random_int(0, 950);
-  $downloads = random_int(0, 250);
-  $connection = \Drupal::service('database');
+
   $connection
     ->delete('asu_collection_extras_collection_usage')
     ->condition('nid', $collection_nid)
