@@ -61,9 +61,9 @@ class ComplexObjectMembersController extends ControllerBase {
       }
     }
     return [
-      '#markup' => '<h2>' . t('Included in this item') . '</h2>',
+      '#markup' => '<h2>' . $this->t('Included in this item') . '</h2>',
       '#cache' => ['max-age' => 0],
-      $build_output,
+      'build_output' => $build_output,
     ];
   }
 

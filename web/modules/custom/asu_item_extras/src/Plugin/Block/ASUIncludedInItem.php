@@ -15,7 +15,6 @@ use Drupal\Core\Render\Markup;
  * )
  */
 class ASUIncludedInItem extends BlockBase {
-  // Todo use dependency injection for entityTypeManager and routeMatch.
 
   /**
    * {@inheritdoc}
@@ -38,7 +37,7 @@ class ASUIncludedInItem extends BlockBase {
       }
       return [
         '#cache' => ['max-age' => 0],
-        $build_output,
+        'build_output' => $build_output,
       ];
     }
     else {

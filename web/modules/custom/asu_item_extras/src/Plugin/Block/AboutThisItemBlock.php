@@ -16,7 +16,6 @@ use Drupal\Core\Link;
  * )
  */
 class AboutThisItemBlock extends BlockBase {
-  // TODO add cache tags based on the node id.
 
   /**
    * {@inheritdoc}
@@ -46,17 +45,12 @@ class AboutThisItemBlock extends BlockBase {
     // Add a link for the "Overview" of this node.
     $variables['nodeid'] = $nid;
     $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/items/' . $nid);
-    $link = Link::fromTextAndUrl(t('Overview'), $url);
+    $link = Link::fromTextAndUrl($this->t('Overview'), $url);
     $link = $link->toRenderable();
     $output_links[] = render($link);
     // The link to "Full metadata" has been taken out of this block and moved
     // to the bottom of the page - and as long as there are tabs for nodes to
     // "View" and "Full metadata", the link in this block is extra.
-    //    // Add a link to the "View full metadata" anchor for this node.
-    //    $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/items/' . $nid . '/metadata');
-    //    $link = Link::fromTextAndUrl(t('View full metadata'), $url);
-    //    $link = $link->toRenderable();
-    //    $output_links[] = render($link);
     // Add a link to get the Permalink for this node. Could this be a javascript
     // event that will send the current node's URL to the copy buffer?
     if ($node->hasField('field_handle') && $node->get('field_handle')->value != NULL) {

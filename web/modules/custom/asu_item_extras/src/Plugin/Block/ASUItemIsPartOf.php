@@ -33,13 +33,12 @@ class ASUItemIsPartOf extends BlockBase {
         // First look at the node's field_member_of.
         $complex_object_parent = $node->get('field_member_of')->entity;
         if (is_object($complex_object_parent)) {
-          $parents_output[] = $this->_make_link_and_label(t('Part of'), $is_metadata_page, $complex_object_parent);
+          $parents_output[] = $this->makeLinkAndLabel($this->t('Part of'), $is_metadata_page, $complex_object_parent);
           $direct_complex_obj_parent = $complex_object_parent->get('field_member_of')->entity;
           if (is_object($direct_complex_obj_parent)) {
             $additional_complex_obj_parents = $complex_object_parent->get('field_additional_memberships')->referencedEntities();
-            // Also pass this the field_additional_memberships ($additional_complex_obj_parents)
-            $parents_output[] = $this->_make_link_and_label(
-              t('Collections this item is in'),
+            $parents_output[] = $this->makeLinkAndLabel(
+              $this->t('Collections this item is in'),
               $is_metadata_page,
               $direct_complex_obj_parent,
               $additional_complex_obj_parents
@@ -51,9 +50,8 @@ class ASUItemIsPartOf extends BlockBase {
         $collection_parent = $node->get('field_member_of')->entity;
         if (is_object($collection_parent)) {
           $additional_parents = $node->get('field_additional_memberships')->referencedEntities();
-          // Also pass this the field_additional_memberships ($additional_complex_obj_parents)
-          $parents_output[] = $this->_make_link_and_label(
-            t('Collections this item is in'),
+          $parents_output[] = $this->makeLinkAndLabel(
+            $this->t('Collections this item is in'),
             $is_metadata_page,
             $collection_parent,
             $additional_parents
@@ -84,13 +82,13 @@ class ASUItemIsPartOf extends BlockBase {
    *   field_additional_memberships->referencedEntities().
    *
    * @return string
-   *   The HTML that represents the label div and the link to the provided node/s.
+   *   HTML that represents the label div and the link to the provided node/s.
    */
-  private function _make_link_and_label($label_text, $is_metadata_page, $parent_node, $additional_parents = NULL) {
-    $html_of_links[] = $this->_get_html_of_entity($parent_node);
+  private function makeLinkAndLabel($label_text, $is_metadata_page, $parent_node, array $additional_parents = NULL) {
+    $html_of_links[] = $this->getHtmlOfEntity($parent_node);
     if (is_array($additional_parents)) {
       foreach ($additional_parents as $additional_parent) {
-        $html_of_links[] = $this->_get_html_of_entity($additional_parent);
+        $html_of_links[] = $this->getHtmlOfEntity($additional_parent);
       }
     }
     return '  <div class="field__label' . (($is_metadata_page) ? ' col-sm-2' : '') . '">' . $label_text . '</div>' .
@@ -107,13 +105,11 @@ class ASUItemIsPartOf extends BlockBase {
    * @return string
    *   This is the link for the node.
    */
-  private function _get_html_of_entity($entity) {
+  private function getHtmlOfEntity($entity) {
     $first_title = $entity->field_title[0];
     $view = ['type' => 'complex_title_formatter'];
     $first_title_view = $first_title->view($view);
     $title = \Drupal::service('renderer')->render($first_title_view);
-
-    // Make the link and set the title according to the $parent_title derived above.
     $link = $entity->toLink();
     $link->setText($title);
     return $link->toString();

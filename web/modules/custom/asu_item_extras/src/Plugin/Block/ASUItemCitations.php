@@ -32,30 +32,23 @@ class ASUItemCitations extends BlockBase {
     // Since this block should be set to display on node/[nid] pages that are
     // "ASU Repository Item", or possibly "Collection", the underlying
     // node can be accessed via the path.
-    $node = \Drupal::routeMatch()->getParameter('node');
-    if ($node) {
-      $nid = $node->id();
-    }
-    else {
-      $nid = 0;
-    }
     $node_url = Url::fromRoute('<current>', []);
     $url_string = \Drupal::request()->getSchemeAndHttpHost() . $node_url->toString();
     $output_links = [];
     $url = Url::fromUri($url_string . '/citation/#citing');
-    $link = Link::fromTextAndUrl(t('Citing this image'), $url)->toRenderable();
+    $link = Link::fromTextAndUrl($this->t('Citing this image'), $url)->toRenderable();
     $output_links[] = render($link);
     $url = Url::fromUri($url_string . '/citation/#responsibilities');
-    $link = Link::fromTextAndUrl(t('Responsibilities of use'), $url)->toRenderable();
+    $link = Link::fromTextAndUrl($this->t('Responsibilities of use'), $url)->toRenderable();
     $output_links[] = render($link);
     $url = Url::fromUri($url_string . '/citation/#licensing');
-    $link = Link::fromTextAndUrl(t('Licensing and Permissions'), $url)->toRenderable();
+    $link = Link::fromTextAndUrl($this->t('Licensing and Permissions'), $url)->toRenderable();
     $output_links[] = render($link);
     $url = Url::fromUri($url_string . '/citation/#linking');
-    $link = Link::fromTextAndUrl(t('Linking and Embedding'), $url)->toRenderable();
+    $link = Link::fromTextAndUrl($this->t('Linking and Embedding'), $url)->toRenderable();
     $output_links[] = render($link);
     $url = Url::fromUri($url_string . '/citation/#copies');
-    $link = Link::fromTextAndUrl(t('Copies and Reproductions'), $url)->toRenderable();
+    $link = Link::fromTextAndUrl($this->t('Copies and Reproductions'), $url)->toRenderable();
     $output_links[] = render($link);
     $render_this = [
       '#markup' =>
@@ -71,7 +64,7 @@ class ASUItemCitations extends BlockBase {
           '#type' => 'container',
           'the-items' => [
             '#type' => 'item',
-            $render_this,
+            'render_this' => $render_this,
           ],
         ],
       ],

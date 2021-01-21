@@ -31,28 +31,28 @@ class ASUItemIIIF extends BlockBase {
     // Since this block should be set to display on node/[nid] pages that are
     // "ASU Repository Item", or possibly "Collection", the underlying
     // node can be accessed via the path.
-    $node = \Drupal::routeMatch()->getParameter('node');
-    if ($node) {
-      $nid = $node->id();
-    }
-    else {
-      $nid = 0;
-    }
     $node_url = Url::fromRoute('<current>', []);
-    $iiif_section = $this->get_IIIF_section($node_url);
+    $iiif_section = $this->getIiifSection($node_url);
     return [
       'iiif-section' => [
         '#type' => 'container',
-        $iiif_section,
+        'section' => $iiif_section,
       ],
     ];
   }
 
   /**
+   * This will get a block for IIIF manifest for a given object.
    *
+   * @param string $url
+   *   The given object's url.
+   *
+   * @return array
+   *   The build array to insert into the block build function.
    */
-  private function get_IIIF_section($url) {
+  private function getIiifSection($url) {
     static $id_suffix;
+    // Need to increment if there are multiple instances of this block.
     $id_suffix = !($id_suffix) ? '' : $id_suffix + 1;
     return [
       'iiif-container' => [
