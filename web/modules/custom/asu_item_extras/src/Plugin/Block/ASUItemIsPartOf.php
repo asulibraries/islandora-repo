@@ -3,6 +3,9 @@
 namespace Drupal\asu_item_extras\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Render\Renderer;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a 'Part of {parent_complex_object:pid}' Block.
@@ -13,7 +16,50 @@ use Drupal\Core\Block\BlockBase;
  *   category = @Translation("Views"),
  * )
  */
-class ASUItemIsPartOf extends BlockBase {
+class ASUItemIsPartOf extends BlockBase implements ContainerFactoryPluginInterface {
+
+  /**
+   * Drupal renderer.
+   *
+   * @var \Drupal\Core\Render\Renderer
+   */
+  protected $renderer;
+
+  /**
+   * Constructs a StringFormatter instance.
+   *
+   * @param array $configuration
+   *   A configuration array containing information about the plugin instance.
+   * @param string $plugin_id
+   *   The plugin_id for the formatter.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   * @param \Drupal\Core\Render\Renderer $renderer
+   *   The renderer class.
+   */
+  public function __construct(array $configuration,
+    $plugin_id,
+    $plugin_definition,
+    Renderer $renderer) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->renderer = $renderer;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(
+    ContainerInterface $container,
+    array $configuration,
+    $plugin_id,
+    $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('renderer')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -109,7 +155,7 @@ class ASUItemIsPartOf extends BlockBase {
     $first_title = $entity->field_title[0];
     $view = ['type' => 'complex_title_formatter'];
     $first_title_view = $first_title->view($view);
-    $title = \Drupal::service('renderer')->render($first_title_view);
+    $title = $this->renderer->render($first_title_view);
     $link = $entity->toLink();
     $link->setText($title);
     return $link->toString();

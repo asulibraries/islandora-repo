@@ -5,6 +5,10 @@ namespace Drupal\asu_item_extras\Plugin\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Url;
 use Drupal\Core\Link;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Provides a 'About this item' Block.
@@ -15,7 +19,54 @@ use Drupal\Core\Link;
  *   category = @Translation("Views"),
  * )
  */
-class AboutThisItemBlock extends BlockBase {
+class AboutThisItemBlock extends BlockBase implements ContainerFactoryPluginInterface {
+
+  /**
+   * The routeMatch definition.
+   *
+   * @var \Drupal\Core\Routing\RouteMatchInterface
+   */
+  protected $routeMatch;
+
+  /**
+   * The requestStack definition.
+   *
+   * @var requestStack
+   */
+  protected $requestStack;
+
+  /**
+   * Constructor for About this Collection Block.
+   *
+   * @param array $configuration
+   *   A configuration array containing information about the plugin instance.
+   * @param string $plugin_id
+   *   The plugin_id for the formatter.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
+   *   The route match.
+   * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
+   *   The request stack.
+   */
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $route_match, RequestStack $request_stack) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->routeMatch = $route_match;
+    $this->requestStack = $request_stack;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('current_route_match'),
+      $container->get('request_stack'),
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -34,7 +85,7 @@ class AboutThisItemBlock extends BlockBase {
     // either "Repository Item", "ASU Repository Item", or "Collection",
     // the underlying node can be accessed via the path.
     // TODO - use dependency injection.
-    $node = \Drupal::routeMatch()->getParameter('node');
+    $node = $this->routeMatch->getParameter('node');
     if ($node) {
       $nid = $node->id();
     }
@@ -44,7 +95,7 @@ class AboutThisItemBlock extends BlockBase {
     $output_links = [];
     // Add a link for the "Overview" of this node.
     $variables['nodeid'] = $nid;
-    $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/items/' . $nid);
+    $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/items/' . $nid);
     $link = Link::fromTextAndUrl($this->t('Overview'), $url);
     $link = $link->toRenderable();
     $output_links[] = render($link);

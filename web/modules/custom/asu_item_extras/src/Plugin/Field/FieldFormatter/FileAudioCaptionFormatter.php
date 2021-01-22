@@ -5,6 +5,7 @@ namespace Drupal\asu_item_extras\Plugin\Field\FieldFormatter;
 use Drupal\file\Plugin\Field\FieldFormatter\FileAudioFormatter;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Cache\Cache;
+use Drupal\islandora\IslandoraUtils;
 
 /**
  * Plugin implementation of the 'file_audio_caption' formatter.
@@ -32,8 +33,6 @@ class FileAudioCaptionFormatter extends FileAudioFormatter {
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = [];
-    $utils = \Drupal::service('islandora.utils');
-
     $source_files = $this->getSourceFiles($items, $langcode);
     if (empty($source_files)) {
       return $elements;
@@ -42,7 +41,7 @@ class FileAudioCaptionFormatter extends FileAudioFormatter {
     $attributes = $this->prepareAttributes();
     foreach ($source_files as $delta => $files) {
       $file = $files[0]['file'];
-      $medias = $utils->getReferencingMedia($file->id());
+      $medias = $this->islandora_utils->getReferencingMedia($file->id());
       $first_media = array_values($medias)[0];
       if ($first_media->get('field_captions')->entity != NULL) {
         $caption = $first_media->get('field_captions')->entity->createFileUrl();

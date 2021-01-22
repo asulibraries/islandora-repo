@@ -5,6 +5,9 @@ namespace Drupal\asu_item_extras\Plugin\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Url;
 use Drupal\Core\Link;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Routing\CurrentRouteMatch;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a 'Citations, Rights and Reuse' Block.
@@ -15,7 +18,50 @@ use Drupal\Core\Link;
  *   category = @Translation("Views"),
  * )
  */
-class ASUItemCitations extends BlockBase {
+class ASUItemCitations extends BlockBase implements ContainerFactoryPluginInterface {
+
+  /**
+   * The requestStack definition.
+   *
+   * @var requestStack
+   */
+  protected $requestStack;
+
+  /**
+   * Construct method.
+   *
+   * @param array $configuration
+   *   A configuration array containing information about the plugin instance.
+   * @param string $plugin_id
+   *   The plugin_id for the formatter.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   * @param \Drupal\Core\Routing\CurrentRouteMatch $currentRouteMatch
+   *   The currentRouteMatch definition.
+   */
+  public function __construct(
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
+    CurrentRouteMatch $currentRouteMatch) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->currentRouteMatch = $currentRouteMatch;
+  }
+
+  /**
+   * Initializes an ExploreForm object - set dependency injection variables.
+   *
+   * @param Symfony\Component\DependencyInjection\ContainerInterface $container
+   *   The parent class object.
+   *
+   * @return mixed
+   *   The initialized form object.
+   */
+  public static function create(ContainerInterface $container) {
+    $instance = parent::create($container);
+    $instance->requestStack = $container->get('request_stack');
+    return $instance;
+  }
 
   /**
    * {@inheritdoc}
@@ -33,7 +79,7 @@ class ASUItemCitations extends BlockBase {
     // "ASU Repository Item", or possibly "Collection", the underlying
     // node can be accessed via the path.
     $node_url = Url::fromRoute('<current>', []);
-    $url_string = \Drupal::request()->getSchemeAndHttpHost() . $node_url->toString();
+    $url_string = $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . $node_url->toString();
     $output_links = [];
     $url = Url::fromUri($url_string . '/citation/#citing');
     $link = Link::fromTextAndUrl($this->t('Citing this image'), $url)->toRenderable();
