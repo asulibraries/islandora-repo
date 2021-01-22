@@ -72,13 +72,18 @@ function asu_collection_extras_solr_get_collection_children($collection_node) {
     $server = $index->getServerInstance();
     $backend = $server->getBackend();
     $solrConnector = $backend->getSolrConnector();
+
     $solariumQuery = $solrConnector->getSelectQuery();
+
+
     // @todo Fix this so it loops through a reasonable amount of records
     // instead of setting a dangerously high value.
     $solariumQuery->setRows(2147483630);
-    $solariumQuery->addParam('q', 'itm_field_ancestors:' . $collection_node_id);
+    $solariumQuery->addParam('q', '(itm_field_ancestors:' . $collection_node_id .
+      ' OR itm_field_combined_member_of:' . $collection_node_id . ')');
     $solariumQuery->setFields(['its_nid', 'ds_changed', 'ss_original_file_count', 'itm_field_model']);
     $solariumQuery->addSort('ds_changed', 'desc');
+
     $nids = $solrConnector->execute($solariumQuery);
     foreach ($nids as $nid_doc) {
       $nids_arr[$nid_doc->its_nid] = [
