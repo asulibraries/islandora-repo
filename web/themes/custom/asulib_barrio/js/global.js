@@ -9,6 +9,9 @@
 
   Drupal.behaviors.bootstrap_barrio_subtheme = {
     attach: function(context, settings) {
+      $('[data-toggle="tooltip"]').tooltip({
+        placement: 'top'
+      });
       var position = $(window).scrollTop();
       $(window).scroll(function () {
         if ($(this).scrollTop() > 50) {
