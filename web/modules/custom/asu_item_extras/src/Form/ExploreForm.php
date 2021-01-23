@@ -34,6 +34,7 @@ class ExploreForm extends FormBase {
         "<p>" . render($link) . "</p>":
         ""),
     );
+    /* No longer need this link according to design.
     $url = Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/items/' .
        (($node) ? $node->id() : 0) . '/search/?search_api_fulltext=');
     $link = Link::fromTextAndUrl(t('Explore media'), $url);
@@ -43,12 +44,12 @@ class ExploreForm extends FormBase {
         (($link) ?
         "<p>" . render($link) . "</p><hr>":
         ""),
-    );
+    ); */
     $form['search_api_fulltext'] = array(
       '#type' => 'textfield',
       '#title' => t('Fulltext search'),
       '#title_display' => 'invisible',
-      '#placeholder' => t('Search for items'),
+      '#placeholder' => t('Enter search terms'),
     );
     $form['actions']['#type'] = 'actions';
     $form['actions']['submit'] = array(
