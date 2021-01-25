@@ -52,7 +52,7 @@ class SearchHomeForm extends FormBase {
     $form['#attributes']['class'][] = 'repo-search';
     $form['search_api_fulltext'] = [
       '#type' => 'textfield',
-      '#title' => $this->t('Search ' . $this->config('system.site')->get('slogan')),
+      '#title' => $this->t('Search ' . $this->config('system.site')->get('name')),
       '#size' => 80,
       '#weight' => '0',
       '#attributes' => ['placeholder' => 'Enter keyword(s) here'],
