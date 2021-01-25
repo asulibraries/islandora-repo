@@ -5,7 +5,7 @@ namespace Drupal\asu_item_extras\Plugin\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Url;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Routing\CurrentRouteMatch;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
@@ -35,31 +35,40 @@ class ASUItemIIIF extends BlockBase implements ContainerFactoryPluginInterface {
    *   The plugin_id for the formatter.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\Core\Routing\CurrentRouteMatch $currentRouteMatch
-   *   The currentRouteMatch definition.
+   * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
+   *   The request_stack service.
    */
   public function __construct(
     array $configuration,
     $plugin_id,
     $plugin_definition,
-    CurrentRouteMatch $currentRouteMatch) {
+    RequestStack $request_stack) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->currentRouteMatch = $currentRouteMatch;
+    $this->requestStack = $request_stack;
   }
 
   /**
-   * Initializes an ExploreForm object - set dependency injection variables.
+   * Initializes the block and set dependency injection variables.
    *
    * @param Symfony\Component\DependencyInjection\ContainerInterface $container
    *   The parent class object.
+   * @param array $configuration
+   *   A configuration array containing information about the plugin instance.
+   * @param string $plugin_id
+   *   The plugin_id for the formatter.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
    *
    * @return mixed
    *   The initialized form object.
    */
-  public static function create(ContainerInterface $container) {
-    $instance = parent::create($container);
-    $instance->requestStack = $container->get('request_stack');
-    return $instance;
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('request_stack')
+    );
   }
 
   /**

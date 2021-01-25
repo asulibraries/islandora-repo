@@ -49,13 +49,13 @@ class ASUItemCitations extends BlockBase implements ContainerFactoryPluginInterf
   }
 
   /**
-   * Initializes an ExploreForm object - set dependency injection variables.
+   * Initializes the block and set dependency injection variables.
    *
    * @param Symfony\Component\DependencyInjection\ContainerInterface $container
    *   The parent class object.
    *
    * @return mixed
-   *   The initialized form object.
+   *   The initialized block object.
    */
   public static function create(ContainerInterface $container) {
     $instance = parent::create($container);
