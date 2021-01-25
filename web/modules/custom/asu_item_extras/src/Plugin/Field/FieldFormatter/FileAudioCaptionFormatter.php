@@ -5,7 +5,6 @@ namespace Drupal\asu_item_extras\Plugin\Field\FieldFormatter;
 use Drupal\file\Plugin\Field\FieldFormatter\FileAudioFormatter;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Cache\Cache;
-use Drupal\islandora\IslandoraUtils;
 
 /**
  * Plugin implementation of the 'file_audio_caption' formatter.

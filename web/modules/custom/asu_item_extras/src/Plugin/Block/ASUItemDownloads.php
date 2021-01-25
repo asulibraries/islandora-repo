@@ -103,7 +103,6 @@ class ASUItemDownloads extends BlockBase implements ContainerFactoryPluginInterf
     if ($node_id) {
       // $mids = \Drupal::entityQuery('media')
       $mids = $this->entityTypeManager->getStorage('media')->getQuery()
-      //  $mids = $this->entityQuery->get('media')
         ->condition('field_media_of', $node_id)
         ->execute();
       $download_count = 0;
