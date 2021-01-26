@@ -42,6 +42,9 @@ class ASUComplexTitle extends BlockBase {
     if (!is_object($node)) {
       $node = \Drupal::entityTypeManager()->getStorage('node')->load($node);
     }
+    if (!$node) {
+      return [];
+    }
     if ($node->bundle() == "asu_repository_item" || $node->bundle() == "collection") {
       $asu_utils = \Drupal::service('asu_utils');
       $node_is_published = $asu_utils->isNodePublished($node);
