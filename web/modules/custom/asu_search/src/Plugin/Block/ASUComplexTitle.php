@@ -32,15 +32,15 @@ class ASUComplexTitle extends BlockBase {
     $current_route = \Drupal::routeMatch();
     if ($current_route->getParameter('node')) {
       $node = $current_route->getParameter('node');
-      if (!is_object($node)) {
-        $node = \Drupal::entityTypeManager()->getStorage('node')->load($node);
-      }
     }
     elseif ($current_route->getParameter('arg_0')) {
       $node = \Drupal::entityTypeManager()->getStorage('node')->load($current_route->getParameter('arg_0'));
     }
     else {
       return [];
+    }
+    if (!is_object($node)) {
+      $node = \Drupal::entityTypeManager()->getStorage('node')->load($node);
     }
     if ($node->bundle() == "asu_repository_item" || $node->bundle() == "collection") {
       $asu_utils = \Drupal::service('asu_utils');
