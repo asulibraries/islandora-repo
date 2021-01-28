@@ -2,15 +2,14 @@ dependencies:
   enforced:
     module:
       - asu_mods
-id: mods_xml
-label: Import/Update Nodes from MODS XML
+id: mods_xml_update
+label: Update Nodes from MODS XML
 migration_group: mods_xml
 
 source:
   plugin: url
   data_fetcher_plugin: file
   data_parser_plugin: xml
-  urls: /var/www/html/drupal/web/modules/custom/asu_mods/data/t2mods.xml
   item_selector: /modsCollection/mods
   fields:
     -
@@ -51,9 +50,9 @@ source:
 
 
 process:
-  # setting the nid allows you to update nodes which were not originally created by this migration - if we skip_on_empty it should create new nodes
+  # setting the nid for update is required, so no skip_on_empty because
+  # nodes created by this migration should not be duplicated
   nid:
-    plugin: skip_on_empty
     method: process
     source: pid
   title_temp:
