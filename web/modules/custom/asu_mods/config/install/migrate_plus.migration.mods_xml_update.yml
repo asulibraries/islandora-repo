@@ -40,6 +40,10 @@ source:
       name: date_created
       label: date created
       selector: 'originInfo/dateCreated'
+    -
+      name: field_handle
+      label: field handle
+      selector: 'relatedItem[@type="host"]/*[local-name()="href"]'
   ids:
     pid:
       type: string
@@ -111,7 +115,16 @@ process:
   # uid - with callback for asurite -> id
   # field_copyright_statement
   # field_reuse_permissions
-  # field_member_of
+  field_member_of:
+    plugin: multi_entity_lookup
+    source: 
+      - collection_handle
+    lookup_field: field_handle
+    entity_type: node
+    access_check: 0
+    bundle_key: type
+    bundle: collection
+  
   # field_additional_memberships
   # field_edtf_copyright_date
 
