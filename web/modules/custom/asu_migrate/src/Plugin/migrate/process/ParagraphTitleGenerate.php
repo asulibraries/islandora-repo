@@ -34,7 +34,6 @@ class ParagraphTitleGenerate extends ParagraphGenerate {
    * {@inheritdoc}
    */
   public function transform($title_string, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
-    \Drupal::logger('asu mods')->info(print_r($title_string, TRUE));
     $split = $this->configuration['split_into_parts'];
     $fields = $this->configuration['fields'];
     $fields['field_main_title'] = trim($title_string);
