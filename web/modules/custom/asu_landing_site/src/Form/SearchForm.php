@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\asu_search\Form;
+namespace Drupal\asu_landing_site\Form;
 
 use Drupal\Component\Utility\Html;
 use Drupal\Component\Render\FormattableMarkup;

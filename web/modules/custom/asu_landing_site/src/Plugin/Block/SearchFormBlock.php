@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\asu_search\Plugin\Block;
+namespace Drupal\asu_landing_site\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 
@@ -19,7 +19,7 @@ class SearchFormBlock extends BlockBase {
    * {@inheritdoc}
    */
   public function build() {
-    $search_form = \Drupal::formBuilder()->getForm('Drupal\asu_search\Form\SearchForm');
+    $search_form = \Drupal::formBuilder()->getForm('Drupal\asu_landing_site\Form\SearchForm');
     return $search_form;
   }
 
