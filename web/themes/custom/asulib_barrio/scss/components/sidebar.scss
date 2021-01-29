@@ -27,6 +27,33 @@
       line-height: $line-height-sm;
     }
   }
+  nav {
+    ul {
+      padding: 0;
+      margin: 0;
+    }
+    li {
+      padding: 1rem;
+      list-style: none;
+      /*border-top: 1px solid $white;*/
+    }
+    /*li:not(:last-child) {
+      border-bottom: 1px solid $white;
+    }
+    li:hover {
+      background-color: $gray-2;
+      border-top: 1px solid $border-color;
+    }
+    li:not(:last-child):hover {
+      border-bottom: 1px solid $border-color;
+    }*/
+    a:hover,
+    a:focus {
+      color: $maroon;
+      font-weight: bold;
+      text-decoration: underline;
+    }
+  }
   nav.block {
     border-color: $uds-color-base-gray-2;
   }
@@ -50,9 +77,9 @@
     background: none;
     border-bottom: $border-width solid $border-color;
   }
-  // nav ul.nav {
-  //   margin: 0 -($spacer);
-  // }
+  nav ul.nav {
+    margin: 0 -($spacer);
+  }
   .btn-link {
     border-bottom: none;
   }
