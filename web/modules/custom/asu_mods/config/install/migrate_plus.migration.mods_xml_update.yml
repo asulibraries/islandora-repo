@@ -60,9 +60,7 @@ source:
 process:
   # setting the nid for update is required, so no skip_on_empty because
   # nodes created by this migration should not be duplicated
-  nid:
-    method: process
-    source: pid
+  nid: pid
   title_temp:
     -
       plugin: concat
