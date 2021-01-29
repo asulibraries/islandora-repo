@@ -5,12 +5,13 @@ dependencies:
 id: mods_xml_import
 label: Import Nodes from MODS XML
 migration_group: mods_xml
-
 source:
   plugin: url
   data_fetcher_plugin: file
   data_parser_plugin: xml
   urls: /var/www/html/drupal/web/modules/custom/asu_mods/data/t2mods.xml
+  namespaces:
+    xlink: "http://www.w3.org/1999/xlink"
   item_selector: /modsCollection/mods
   fields:
     -
@@ -41,6 +42,14 @@ source:
       name: date_created
       label: date created
       selector: 'originInfo/dateCreated'
+    -
+      name: collection_handle
+      label: collection
+      selector: 'relatedItem[@type="host"]/@xlink:href'
+    -
+      name: handle
+      label: handle
+      selector: 'identifier[@type="hdl"]'
   ids:
     pid:
       type: string
@@ -48,8 +57,6 @@ source:
     uid: 1
     description_format: description_restricted_items
     model: Digital Document
-
-
 process:
   # setting the nid allows you to update nodes which were not originally created by this migration - if we skip_on_empty it should create new nodes
   nid:
@@ -130,7 +137,18 @@ process:
     value_key: name
     bundle_key: vid
     bundle: islandora_models
-
+  field_member_of:
+    plugin: multi_entity_lookup
+    source:
+      - collection_handle
+    lookup_field: field_handle
+    entity_type: node
+    access_check: 0
+    bundle_key: type
+    bundle: collection
+  field_handle:
+    method: process
+    source: handle
 destination:
   plugin: 'entity:node'
   default_bundle: asu_repository_item

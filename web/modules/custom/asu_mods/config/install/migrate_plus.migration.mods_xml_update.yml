@@ -5,11 +5,13 @@ dependencies:
 id: mods_xml_update
 label: Update Nodes from MODS XML
 migration_group: mods_xml
-
 source:
   plugin: url
   data_fetcher_plugin: file
   data_parser_plugin: xml
+  urls: /var/www/html/drupal/web/modules/custom/asu_mods/data/t2mods.xml
+  namespaces:
+    xlink: "http://www.w3.org/1999/xlink"
   item_selector: /modsCollection/mods
   fields:
     -
@@ -41,9 +43,13 @@ source:
       label: date created
       selector: 'originInfo/dateCreated'
     -
-      name: field_handle
-      label: field handle
-      selector: 'relatedItem[@type="host"]/*[local-name()="href"]'
+      name: collection_handle
+      label: collection
+      selector: 'relatedItem[@type="host"]/@xlink:href'
+    -
+      name: handle
+      label: handle
+      selector: 'identifier[@type="hdl"]'
   ids:
     pid:
       type: string
@@ -51,8 +57,6 @@ source:
     uid: 1
     description_format: description_restricted_items
     model: Digital Document
-
-
 process:
   # setting the nid for update is required, so no skip_on_empty because
   # nodes created by this migration should not be duplicated
@@ -115,19 +119,9 @@ process:
   # uid - with callback for asurite -> id
   # field_copyright_statement
   # field_reuse_permissions
-  field_member_of:
-    plugin: multi_entity_lookup
-    source: 
-      - collection_handle
-    lookup_field: field_handle
-    entity_type: node
-    access_check: 0
-    bundle_key: type
-    bundle: collection
-  
+  # field_member_of
   # field_additional_memberships
   # field_edtf_copyright_date
-
   uid: constants/uid
   status:
     plugin: default_value
@@ -142,7 +136,19 @@ process:
     value_key: name
     bundle_key: vid
     bundle: islandora_models
-
+  field_member_of:
+    plugin: multi_entity_lookup
+    source:
+      - collection_handle
+    lookup_field: field_handle
+    entity_type: node
+    access_check: 0
+    bundle_key: type
+    bundle: collection
+  field_handle:
+    plugin: skip_on_empty
+    source: handle
+    method: process
 destination:
   plugin: 'entity:node'
   default_bundle: asu_repository_item
@@ -173,4 +179,3 @@ destination:
     - field_member_of
     - field_additional_memberships
     - field_edtf_copyright_date
-
