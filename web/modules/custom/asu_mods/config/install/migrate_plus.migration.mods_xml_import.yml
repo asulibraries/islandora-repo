@@ -50,6 +50,22 @@ source:
       name: handle
       label: handle
       selector: 'identifier[@type="hdl"]'
+    -
+      name: loc_genre_name
+      label: local genre name
+      selector: 'genre[@authority="local"]'
+    -
+      name: loc_genre_uri
+      label: local genre uri
+      selector: 'genre[@authority="local"]/@valueURI'
+    -
+      name: getty_genre_name
+      label: getty genre name
+      selector: 'genre[@authority="getty"]'
+    -
+      name: getty_genre_uri
+      label: getty genre uri
+      selector: 'genre[@authority="getty"]/@valueURI'
   ids:
     pid:
       type: string
@@ -110,7 +126,6 @@ process:
   # field_preferred_citation
   # field_statement_responsibility
   # field_typed_identifier
-  # field_handle
   # field_peer_reviewed
   # field_open_access
   # field_genre
@@ -137,6 +152,38 @@ process:
     value_key: name
     bundle_key: vid
     bundle: islandora_models
+  field_genre:
+    -
+      plugin: skip_on_empty
+      source: loc_genre_name
+      method: process  
+    -
+      plugin: concat
+      source:
+        - loc_genre_name
+        - loc_genre_uri
+      delimiter: '|'
+    -
+      plugin: name_uri_generate
+      delimiter: '|'
+      uri_field: field_authority_link
+      default_vocabulary: genre
+  field_genre:
+    -
+      plugin: skip_on_empty
+      source: getty_genre_name
+      method: process  
+    -
+      plugin: concat
+      source:
+        - getty_genre_name
+        - getty_genre_uri
+      delimiter: '|'
+    -
+      plugin: name_uri_generate
+      delimiter: '|'
+      uri_field: field_authority_link
+      default_vocabulary: genre      
   field_member_of:
     plugin: multi_entity_lookup
     source:
