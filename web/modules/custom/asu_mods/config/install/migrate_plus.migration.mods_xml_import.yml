@@ -62,6 +62,9 @@ source:
       name: note
       label: note
       selector: 'note[not(@*)]'
+    - name: pref_citation
+      label: preferred citation
+      selector: 'note[@type="preferred citation"]'
   ids:
     pid:
       type: string
@@ -179,9 +182,6 @@ process:
       source: note
       method: process
     -
-      plugin: explode
-      delimiter: '||'
-    -
       plugin: callback
       callable: trim
     -
@@ -192,7 +192,23 @@ process:
         field_note_text:
           order: 0
           type: text
-
+  field_preferred_citation:
+    -
+      plugin: skip_on_empty
+      source: pref_citation
+      method: process
+    -
+      plugin: callback
+      callable: trim
+  field_statement_responsibility:
+    -
+      plugin: skip_on_empty
+      source: note
+      method: process
+    -
+      plugin: callback
+      callable: trim
+      
 destination:
   plugin: 'entity:node'
   default_bundle: asu_repository_item

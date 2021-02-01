@@ -2,8 +2,8 @@ dependencies:
   enforced:
     module:
       - asu_mods
-id: mods_xml_update
-label: Update Nodes from MODS XML
+id: mods_xml
+label: Import/Update Nodes from MODS XML
 migration_group: mods_xml
 source:
   plugin: url
@@ -46,26 +46,6 @@ source:
       name: collection_handle
       label: collection
       selector: 'relatedItem[@type="host"]/@xlink:href'
-    -
-      name: handle
-      label: handle
-      selector: 'identifier[@type="hdl"]'
-#    -
-#      name: genre_name
-#      label: genre name
-#      selector: 'genre'
-#    -
-#      name: genre_uri
-#      label: genre uri
-#      selector: 'genre/@valueURI'
-    -
-      name: note
-      label: note
-      selector: 'note[not(@*)]'
-    - name: pref_citation
-      label: preferred citation
-      selector: 'note[@type="preferred citation"]'
-
   ids:
     pid:
       type: string
@@ -74,9 +54,11 @@ source:
     description_format: description_restricted_items
     model: Digital Document
 process:
-  # setting the nid for update is required, so no skip_on_empty because
-  # nodes created by this migration should not be duplicated
-  nid: pid
+  # setting the nid allows you to update nodes which were not originally created by this migration - if we skip_on_empty it should create new nodes
+  nid:
+    plugin: skip_on_empty
+    method: process
+    source: pid
   title_temp:
     -
       plugin: concat
@@ -150,18 +132,6 @@ process:
     value_key: name
     bundle_key: vid
     bundle: islandora_models
-#  field_genre:
-#    -
-#      plugin: concat
-#      source:
-#        - genre_name
-#        - genre_uri
-#      delimiter: '|'
-#    -
-#      plugin: name_uri_generate
-#      delimiter: '|'
-#      uri_field: field_authority_link
-#      default_vocabulary: genre
   field_member_of:
     plugin: multi_entity_lookup
     source:
@@ -171,43 +141,6 @@ process:
     access_check: 0
     bundle_key: type
     bundle: collection
-  field_handle:
-    plugin: skip_on_empty
-    source: handle
-    method: process
-  field_note_para:
-    -
-      plugin: skip_on_empty
-      source: note
-      method: process
-    -
-      plugin: callback
-      callable: trim
-    -
-      plugin: paragraph_generate
-      paragraph_type: 'complex_note'
-      delimiter: '|'
-      fields:
-        field_note_text:
-          order: 0
-          type: text
-  field_preferred_citation:
-    -
-      plugin: skip_on_empty
-      source: pref_citation
-      method: process
-    -
-      plugin: callback
-      callable: trim
-  field_statement_responsibility:
-    -
-      plugin: skip_on_empty
-      source: note
-      method: process
-    -
-      plugin: callback
-      callable: trim
-
 destination:
   plugin: 'entity:node'
   default_bundle: asu_repository_item
