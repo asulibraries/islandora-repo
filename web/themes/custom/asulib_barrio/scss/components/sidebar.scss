@@ -1,5 +1,20 @@
 /* ------------------ Sidebar ----------------- */
 
+@mixin like-an-h4 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.5rem;
+  letter-spacing: -0.037rem;
+}
+
+@mixin like-an-h5 {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1rem;
+  letter-spacing: -0.015em;
+}
+
+
 .sidebar {
   .block {
     border-style: solid;
@@ -12,33 +27,7 @@
       line-height: $line-height-sm;
     }
   }
-  .block-asu-feedback-button {
-    border: none;
-  }
-  h2 {
-    margin: 0;
-    padding: 1rem ($spacer * .5);
-    border: $border-width solid $header-dark;
-    font-size: $font-size-lg;
-    line-height: $headings-line-height;
-    background-color: $header-dark;
-    color: $gray-1;
-  }
-  tbody {
-    border: none;
-  }
-  tr.even,
-  tr.odd {
-    background: none;
-    border-bottom: $border-width solid $border-color;
-  }
-  nav ul.nav {
-    margin: 0 -($spacer);
-  }
-  .btn-link {
-    border-bottom: none;
-  }
-  nav {
+  nav:not(#block-about) {
     ul {
       padding: 0;
       margin: 0;
@@ -64,6 +53,42 @@
       font-weight: bold;
       text-decoration: underline;
     }
+    ul.nav {
+      margin: 0 -($spacer);
+    }
+  }
+  nav.block {
+    border-color: $uds-color-base-gray-2;
+  }
+  .block-asu-feedback-button {
+    border: none;
+  }
+  h2 {
+    margin: 0;
+    padding: 1rem ($spacer * .5);
+    border: $border-width solid $header-dark;
+    font-size: $font-size-lg;
+    line-height: $headings-line-height;
+    background-color: $header-dark;
+    color: $gray-1;
+  }
+  tbody {
+    border: none;
+  }
+  tr.even,
+  tr.odd {
+    background: none;
+    border-bottom: $border-width solid $border-color;
+  }
+  .btn-link {
+    border-bottom: none;
+  }
+  .nav-item {
+    width: 100%;
+    border-bottom: 1px solid $uds-color-base-gray-2;
+    &:last-of-type {
+      border-bottom: none;
+    }
   }
   .block-explore-this-collection-block .content {
     padding: 12px;
@@ -73,6 +98,92 @@
   }
   .block-facets-summary {
     display: none;
+  }
+
+  .nav-text {
+    @include like-an-h5;
+    color: $uds-color-base-gray-7;
+    padding: $uds-size-spacing-2;
+    border: 1px solid $uds-color-base-gray-2;
+
+    &:not(:last-child) {
+      border-bottom: 0;
+    }
+  }
+
+  .nav-link {
+    color: $uds-color-base-gray-7;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &:visited {
+      color: $uds-color-base-gray-7;
+    }
+
+    &.active {
+      text-decoration: none;
+      padding-bottom: 0;
+    }
+
+    &.active:after {
+      content: '';
+      position: relative;
+      display: block;
+      margin-top: $uds-size-spacing-2;
+      height: $uds-size-spacing-1;
+      width: 100%;
+      background-color: $uds-color-base-gold;
+      text-decoration: none;
+    }
+    // border: 1px solid $uds-color-base-gray-2;
+    padding: $uds-size-spacing-3 $uds-size-spacing-2;
+    overflow: hidden;
+    color: $uds-color-base-gray-7;
+
+    @include like-an-h4;
+
+    &:not(:last-child) {
+      border-bottom: 0;
+    }
+  }
+
+  .card-foldable {
+    border: 1px solid $uds-color-base-gray-2;
+
+    .card-header a {
+      padding: $uds-size-spacing-2 $uds-size-spacing-1;
+    }
+
+    .card-header,
+    .card-body {
+      background-color: transparent;
+    }
+
+    .card-header ~ .card-body {
+      border-top: 0;
+    }
+
+    .card-body {
+      padding: 0 $uds-size-spacing-2 $uds-size-spacing-2 $uds-size-spacing-2;
+    }
+
+    .card-body > .nav-link {
+      padding: 0 $uds-size-spacing-5 0 $uds-size-spacing-3;
+
+      &:after {
+        margin-top: $uds-size-spacing-1;
+      }
+
+      + .nav-link {
+        padding-top: $uds-size-spacing-2;
+      }
+    }
+
+    &:not(:last-child) {
+      border-bottom: 0;
+    }
   }
 }
 

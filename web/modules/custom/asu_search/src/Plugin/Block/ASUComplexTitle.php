@@ -33,14 +33,17 @@ class ASUComplexTitle extends BlockBase {
     $current_route_name = \Drupal::routeMatch()->getRouteName();
     if ($current_route->getParameter('node')) {
       $node = $current_route->getParameter('node');
-      if (!is_object($node)) {
-        $node = \Drupal::entityTypeManager()->getStorage('node')->load($node);
-      }
     }
     elseif ($current_route->getParameter('arg_0')) {
       $node = \Drupal::entityTypeManager()->getStorage('node')->load($current_route->getParameter('arg_0'));
     }
     elseif ($current_route_name <> 'view.solr_search_content.page_2') {
+      return [];
+    }
+    if (!is_object($node)) {
+      $node = \Drupal::entityTypeManager()->getStorage('node')->load($node);
+    }
+    if (!$node) {
       return [];
     }
     if ($node->bundle() == "asu_repository_item" || $node->bundle() == "collection") {
