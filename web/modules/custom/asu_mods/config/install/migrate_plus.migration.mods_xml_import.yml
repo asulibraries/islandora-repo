@@ -50,22 +50,18 @@ source:
       name: handle
       label: handle
       selector: 'identifier[@type="hdl"]'
+#    -
+#      name: genre_name
+#      label: genre name
+#      selector: 'genre'
+#    -
+#      name: genre_uri
+#      label: genre uri
+#      selector: 'genre/@valueURI'
     -
-      name: loc_genre_name
-      label: local genre name
-      selector: 'genre[@authority="local"]'
-    -
-      name: loc_genre_uri
-      label: local genre uri
-      selector: 'genre[@authority="local"]/@valueURI'
-    -
-      name: getty_genre_name
-      label: getty genre name
-      selector: 'genre[@authority="getty"]'
-    -
-      name: getty_genre_uri
-      label: getty genre uri
-      selector: 'genre[@authority="getty"]/@valueURI'
+      name: note
+      label: note
+      selector: 'note[not(@*)]'
   ids:
     pid:
       type: string
@@ -152,38 +148,18 @@ process:
     value_key: name
     bundle_key: vid
     bundle: islandora_models
-  field_genre:
-    -
-      plugin: skip_on_empty
-      source: loc_genre_name
-      method: process  
-    -
-      plugin: concat
-      source:
-        - loc_genre_name
-        - loc_genre_uri
-      delimiter: '|'
-    -
-      plugin: name_uri_generate
-      delimiter: '|'
-      uri_field: field_authority_link
-      default_vocabulary: genre
-  field_genre:
-    -
-      plugin: skip_on_empty
-      source: getty_genre_name
-      method: process  
-    -
-      plugin: concat
-      source:
-        - getty_genre_name
-        - getty_genre_uri
-      delimiter: '|'
-    -
-      plugin: name_uri_generate
-      delimiter: '|'
-      uri_field: field_authority_link
-      default_vocabulary: genre      
+#  field_genre:
+#    -
+#      plugin: concat
+#      source:
+#        - genre_name
+#        - genre_uri
+#      delimiter: '|'
+#    -
+#      plugin: name_uri_generate
+#      delimiter: '|'
+#      uri_field: field_authority_link
+#      default_vocabulary: genre
   field_member_of:
     plugin: multi_entity_lookup
     source:
@@ -197,6 +173,26 @@ process:
     plugin: skip_on_empty
     method: process
     source: handle
+  field_note_para:
+    -
+      plugin: skip_on_empty
+      source: note
+      method: process
+    -
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: paragraph_generate
+      paragraph_type: 'complex_note'
+      delimiter: '|'
+      fields:
+        field_note_text:
+          order: 0
+          type: text
+
 destination:
   plugin: 'entity:node'
   default_bundle: asu_repository_item
