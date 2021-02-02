@@ -63,6 +63,27 @@ function asu_search_preprocess_node(&$variables) {
   if ($variables['node'] && $variables['node']->getType() == 'asu_repository_item') {
     $asu_utils = \Drupal::service('asu_utils');
     $variables['is_published'] = $asu_utils->isNodePublished($variables['node']);
+    if ($variables['view_mode'] == "search_result") {
+      if ($variables['node']->get('field_model') != NULL && count($variables['node']->get('field_model')) > 0) {
+        $model = $variables['node']->get('field_model')->referencedEntities()[0]->getName();
+        if ($model == "Complex Object") {
+          $complex_obj_child = \Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['field_member_of' => $variables['node']->id()]);
+          $utils = \Drupal::service('islandora.utils');
+          // loop through the children
+          foreach ($complex_obj_child as $child) {
+            // for each child, get the thumbnail media
+            // if no thumbnail media continue
+            // if found, return and set that thumbnail as a variable
+            $thumbn_term = $utils->getTermForUri('http://pcdm.org/use#ThumbnailImage');
+            $thumb_media = $utils->getMediaWithTerm($child, $thumbn_term);
+            if ($thumb_media) {
+              $variables['complex_obj_thumb'] = $thumb_media->get('field_media_image')->entity->createFileUrl();
+              break;
+            }
+          }
+        }
+      }
+    }
   }
 }
 
