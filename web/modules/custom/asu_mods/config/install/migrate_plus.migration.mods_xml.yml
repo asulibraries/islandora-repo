@@ -48,6 +48,10 @@ source:
       label: collection
       selector: 'relatedItem[@type="host"]/@xlink:href'
     -
+      name: handle
+      label: handle
+      selector: 'identifier[@type="hdl"]'
+    -
       name: genre_labels
       label: genre labels
       selector: 'genre[@valueURI]'
@@ -59,6 +63,19 @@ source:
       name: genre_wo_uris
       label: genre without uris
       selector: 'genre[not(@valueURI)]'
+    -
+      name: note
+      label: note
+      selector: 'note[not(@*)]'
+    - name: pref_citation
+      label: preferred citation
+      selector: 'note[@type="preferred citation"]'
+    - name: reuse_permissions
+      label: reuse permission
+      selector: 'accessCondition[@type="use and reproduction" and not(text()="In Copyright" or text()="No Copyright - United States" or text()="No Known Copyright")]'
+    - name: copyright
+      label: copyright
+      selector: 'accessCondition[@type="use and reproduction" and (text()="In Copyright" or text()="No Copyright - United States" or text()="No Known Copyright")]'
   ids:
     pid:
       type: string
@@ -157,6 +174,10 @@ process:
     access_check: 0
     bundle_key: type
     bundle: collection
+  field_handle:
+    plugin: skip_on_empty
+    method: process
+    source: handle
   genres:
     plugin: make_array_groups
     source:
@@ -183,6 +204,57 @@ process:
     name_array_key: name
     uri_array_key: uri
     source: '@all_the_genres'
+  field_note_para:
+    -
+      plugin: skip_on_empty
+      source: note
+      method: process
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: paragraph_generate
+      paragraph_type: 'complex_note'
+      delimiter: '|'
+      fields:
+        field_note_text:
+          order: 0
+          type: text
+  field_preferred_citation/value:
+    plugin: skip_on_empty
+    method: process
+    source: pref_citation
+  field_preferred_citation/format: constants/description_format
+  field_statement_responsibility:
+    -
+      plugin: skip_on_empty
+      source: note
+      method: process
+    -
+      plugin: callback
+      callable: trim
+  field_reuse_permissions:
+    -
+      plugin: skip_on_empty
+      source: reuse_permissions
+      method: process
+    -
+      plugin: entity_lookup
+      entity_type: taxonomy_term
+      value_key: name
+      bundle_key: vid
+      bundle: reuse_permissions
+  field_copyright_statement:
+    -
+      plugin: skip_on_empty
+      source: copyright
+      method: process
+    -
+      plugin: entity_lookup
+      entity_type: taxonomy_term
+      value_key: name
+      bundle_key: vid
+      bundle: copyright_statements    
 
 destination:
   plugin: 'entity:node'
