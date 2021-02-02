@@ -65,7 +65,19 @@ source:
     - name: pref_citation
       label: preferred citation
       selector: 'note[@type="preferred citation"]'
+    - name: reuse_permissions
+      label: reuse permission
+      selector: 'accessCondition[@type="use and reproduction" and not(text()="In Copyright" or text()="No Copyright - United States" or text()="No Known Copyright")]'
+    - name: copyright
+      label: copyright
+      selector: 'accessCondition[@type="use and reproduction" and (text()="In Copyright" or text()="No Copyright - United States" or text()="No Known Copyright")]'
 
+#    - name: person_agent_name
+#      label: person agent name
+#      selector: 'name[@type="person" or @type="personal"][roleTerm[@type="code"]]/namePart'
+#    - name: person_agent_uri
+#      label: person_agent uri
+#      selector: 'name[@type="person" or @type="personal"][roleTerm[@type="code"]]/@valueUri'
   ids:
     pid:
       type: string
@@ -207,7 +219,49 @@ process:
     -
       plugin: callback
       callable: trim
+  field_reuse_permissions:
+    -
+      plugin: skip_on_empty
+      source: reuse_permissions
+      method: process
+    -
+      plugin: entity_lookup
+      entity_type: taxonomy_term
+      value_key: name
+      bundle_key: vid
+      bundle: reuse_permissions
+  field_copyright_statement:
+    -
+      plugin: skip_on_empty
+      source: copyright
+      method: process
+    -
+      plugin: entity_lookup
+      entity_type: taxonomy_term
+      value_key: name
+      bundle_key: vid
+      bundle: copyright_statements
 
+#  field_linked_agent:
+#    -
+#      plugin: skip_on_empty
+#      source: person_agent_name
+#      method: process
+#    -
+#      plugin: callback
+#      callable: trim
+#    -
+#      plugin: concat
+#      source:
+#        - person_agent_name
+#        - person_agent_uri
+#      delimiter: '|'
+#    -
+#      plugin: typed_relation_generate
+#      delimiter: '|'
+#      uri_field: field_authority_link
+#      default_vocabulary: person
+      
 destination:
   plugin: 'entity:node'
   default_bundle: asu_repository_item
