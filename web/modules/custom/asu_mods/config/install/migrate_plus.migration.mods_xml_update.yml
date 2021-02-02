@@ -203,14 +203,11 @@ process:
         field_note_text:
           order: 0
           type: text
-  field_preferred_citation:
-    -
-      plugin: skip_on_empty
-      source: pref_citation
-      method: process
-    -
-      plugin: callback
-      callable: trim
+  field_preferred_citation/value:
+    plugin: skip_on_empty
+    method: process
+    source: pref_citation
+  field_preferred_citation/format: constants/description_format      
   field_statement_responsibility:
     -
       plugin: skip_on_empty
@@ -278,6 +275,8 @@ destination:
     - field_linked_agent
     - field_note_para
     - field_preferred_citation
+    - field_preferred_citation/value
+    - field_preferred_citation/format
     - field_statement_responsibility
     - field_typed_identifier
     - field_handle
