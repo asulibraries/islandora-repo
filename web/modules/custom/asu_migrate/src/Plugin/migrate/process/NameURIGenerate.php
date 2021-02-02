@@ -22,6 +22,8 @@ class NameURIGenerate extends NameURILookup {
     'naf' => '|https?://lccn.loc.gov/n.+|',
     'lcsh' => '|https?://id.loc.gov/authorities/subjects/.+|',
     'lcnaf' => '|https?://id.loc.gov/authorities/names/.+|',
+    'aat' => '|https?://vocab.getty.edu/page/aat/.+|',
+    'lcgft' => '|https?://id.loc.gov/authorities/genreForms/.+|',
   ];
   /**
    * {@inheritdoc}

@@ -22,17 +22,22 @@ class NameURILookup extends ProcessPluginBase {
    */
   public function transform($name_uri_pair, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
     $uri_field = $this->configuration['uri_field'];
-    $delimiter = $this->configuration['delimiter'];
-    if (empty($name_uri_pair) || empty($delimiter)) {
-      throw new MigrateSkipProcessException();
-    }
-    $thisone = array_map('trim', explode($delimiter, $name_uri_pair));
-    if (count($thisone) > 1) {
-      list($this->name, $this->uri) = $thisone;
+    if (is_array($name_uri_pair)) {
+      $this->name = $name_uri_pair[$this->configuration['name_array_key']];
+      $this->uri = $name_uri_pair[$this->configuration['uri_array_key']];
     }
     else {
-      $this->name = $thisone[0];
-      $this->uri = NULL;
+      $delimiter = $this->configuration['delimiter'];
+      if (empty($name_uri_pair) || empty($delimiter)) {
+        throw new MigrateSkipProcessException();
+      }
+      $thisone = array_map('trim', explode($delimiter, $name_uri_pair));
+      if (count($thisone) > 1) {
+        list($this->name, $this->uri) = $thisone;
+      } else {
+        $this->name = $thisone[0];
+        $this->uri = NULL;
+      }
     }
     if (!empty($this->uri) && $tid = $this->getTidByURI($this->uri, $uri_field)) {
       $term = Term::load($tid);
