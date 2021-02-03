@@ -7,6 +7,7 @@ use Drupal\Core\Url;
 use Drupal\Core\Link;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\Core\Form\FormBuilderInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -44,6 +45,13 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
   protected $entityTypeManager;
 
   /**
+   * The form builder.
+   *
+   * @var \Drupal\Core\Form\FormBuilderInterface
+   */
+  protected $formBuilder;
+
+  /**
    * Constructor for About this Collection Block.
    *
    * @param array $configuration
@@ -58,12 +66,15 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
    *   The request stack.
    * @param \Drupal\Core\Entity\EntityTypeManager $entityTypeManager
    *   The entityTypeManager definition.
+   * @param \Drupal\Core\Form\FormBuilderInterface $formBuilder
+   *   The Drupal form builder.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $route_match, RequestStack $request_stack, EntityTypeManager $entityTypeManager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $route_match, RequestStack $request_stack, EntityTypeManager $entityTypeManager, FormBuilderInterface $formBuilder) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->routeMatch = $route_match;
     $this->requestStack = $request_stack;
     $this->entityTypeManager = $entityTypeManager;
+    $this->formBuilder = $formBuilder;
   }
 
   /**
@@ -77,6 +88,7 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
       $container->get('current_route_match'),
       $container->get('request_stack'),
       $container->get('entity_type.manager'),
+      $container->get('form_builder')
     );
   }
 
@@ -108,10 +120,9 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
       $output_links[] = render($link);
     }
     elseif ($field_model == 'Complex Object') {
-      $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/items/' . $nid . '/members');
-      $link = Link::fromTextAndUrl($this->t('View all associated media'), $url);
-      $link = $link->toRenderable();
-      $output_links[] = render($link);
+      $search_form = $this->formBuilder->getForm('Drupal\asu_item_extras\Form\ExploreForm');
+      $renderArray['form'] = $search_form;
+      return $renderArray;
     }
     elseif ($field_model == 'Paged Content' || $field_model == 'Page' ||
       $field_model == 'Digital Document') {
@@ -128,6 +139,7 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
       ((count($output_links) > 0) ?
         "<nav><ul class=''><li>" . implode("</li><li>", $output_links) . "</li></ul></nav>" :
         ""),
+      'searchform' => $search_form,
     ];
     return $return;
   }

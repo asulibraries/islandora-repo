@@ -55,6 +55,7 @@
  *   current user is a logged-in member.
  * - is_admin: Flag for admin user status. Will be true when the current user
  *   is an administrator.
+ * - complex_obj_thumb: complex object thumbnail path
  *
  * @see template_preprocess_node()
  */
@@ -88,7 +89,9 @@
 <article{{ attributes.addClass(classes) }}>
   <div{{ content_attributes.addClass('node__content', 'clearfix', 'row', 'item-result') }}>
     <div class="col-md-2">
-      {% if drupal_view_result('display_media', 'thumbnail', node.id) is empty %}
+      {% if complex_obj_thumb is not empty %}
+        <img src=" {{ complex_obj_thumb }}"/>
+      {% elseif drupal_view_result('display_media', 'thumbnail', node.id) is empty %}
         {% set mod = content.field_model[0]|render|trim %}
         {% for k, v in model_icons|filter((v, k) => k == mod) -%}
           <div class="icon-container">
