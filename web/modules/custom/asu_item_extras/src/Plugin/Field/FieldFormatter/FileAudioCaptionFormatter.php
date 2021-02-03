@@ -32,8 +32,6 @@ class FileAudioCaptionFormatter extends FileAudioFormatter {
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = [];
-    $utils = \Drupal::service('islandora.utils');
-
     $source_files = $this->getSourceFiles($items, $langcode);
     if (empty($source_files)) {
       return $elements;
@@ -42,13 +40,11 @@ class FileAudioCaptionFormatter extends FileAudioFormatter {
     $attributes = $this->prepareAttributes();
     foreach ($source_files as $delta => $files) {
       $file = $files[0]['file'];
-      $medias = \Drupal::service('islandora.utils')->getReferencingMedia($file->id());
+      $medias = $this->islandora_utils->getReferencingMedia($file->id());
       $first_media = array_values($medias)[0];
       if ($first_media->get('field_captions')->entity != NULL) {
         $caption = $first_media->get('field_captions')->entity->createFileUrl();
       }
-      $node = $utils->getParentNode($first_media);
-
       $elements[$delta] = [
         '#theme' => 'file_audio_with_caption',
         '#attributes' => $attributes,

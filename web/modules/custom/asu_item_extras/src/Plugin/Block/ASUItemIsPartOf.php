@@ -3,9 +3,9 @@
 namespace Drupal\asu_item_extras\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
-use Drupal\taxonomy\Entity\Term;
-use Drupal\Core\Url;
-use Drupal\Core\Link;
+use Drupal\Core\Render\Renderer;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a 'Part of {parent_complex_object:pid}' Block.
@@ -16,7 +16,50 @@ use Drupal\Core\Link;
  *   category = @Translation("Views"),
  * )
  */
-class ASUItemIsPartOf extends BlockBase {
+class ASUItemIsPartOf extends BlockBase implements ContainerFactoryPluginInterface {
+
+  /**
+   * Drupal renderer.
+   *
+   * @var \Drupal\Core\Render\Renderer
+   */
+  protected $renderer;
+
+  /**
+   * Constructs a StringFormatter instance.
+   *
+   * @param array $configuration
+   *   A configuration array containing information about the plugin instance.
+   * @param string $plugin_id
+   *   The plugin_id for the formatter.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   * @param \Drupal\Core\Render\Renderer $renderer
+   *   The renderer class.
+   */
+  public function __construct(array $configuration,
+    $plugin_id,
+    $plugin_definition,
+    Renderer $renderer) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->renderer = $renderer;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(
+    ContainerInterface $container,
+    array $configuration,
+    $plugin_id,
+    $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('renderer')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -33,29 +76,28 @@ class ASUItemIsPartOf extends BlockBase {
       $node = $block_config['node'];
       $field_complex_object_child = $node->get('field_complex_object_child')->getString();
       if ($field_complex_object_child) {
-        // first look at the node's field_member_of
+        // First look at the node's field_member_of.
         $complex_object_parent = $node->get('field_member_of')->entity;
         if (is_object($complex_object_parent)) {
-          $parents_output[] = $this->_make_link_and_label(t('Part of'), $is_metadata_page, $complex_object_parent);
+          $parents_output[] = $this->makeLinkAndLabel($this->t('Part of'), $is_metadata_page, $complex_object_parent);
           $direct_complex_obj_parent = $complex_object_parent->get('field_member_of')->entity;
           if (is_object($direct_complex_obj_parent)) {
             $additional_complex_obj_parents = $complex_object_parent->get('field_additional_memberships')->referencedEntities();
-            // also pass this the field_additional_memberships ($additional_complex_obj_parents)
-            $parents_output[] = $this->_make_link_and_label(
-              t('Collections this item is in'),
+            $parents_output[] = $this->makeLinkAndLabel(
+              $this->t('Collections this item is in'),
               $is_metadata_page,
               $direct_complex_obj_parent,
               $additional_complex_obj_parents
             );
           }
         }
-      } else {
+      }
+      else {
         $collection_parent = $node->get('field_member_of')->entity;
         if (is_object($collection_parent)) {
           $additional_parents = $node->get('field_additional_memberships')->referencedEntities();
-          // also pass this the field_additional_memberships ($additional_complex_obj_parents)
-          $parents_output[] = $this->_make_link_and_label(
-            t('Collections this item is in'),
+          $parents_output[] = $this->makeLinkAndLabel(
+            $this->t('Collections this item is in'),
             $is_metadata_page,
             $collection_parent,
             $additional_parents
@@ -67,8 +109,8 @@ class ASUItemIsPartOf extends BlockBase {
     return [
       '#cache' => ['max-age' => 0],
       '#markup' => (($is_metadata_page) ? '<div class="field--label-inline row field">' : '<div>') .
-        implode($split_html, $parents_output) .
-        '</div>',
+      implode($split_html, $parents_output) .
+      '</div>',
     ];
   }
 
@@ -76,26 +118,26 @@ class ASUItemIsPartOf extends BlockBase {
    * Helper function to make a label and a link to the related entity.
    *
    * @param string $label_text
-   *  The lable div to output before the link.
-   * @param boolean $is_metadata_page
-   *  Whether or not the display is being wrapped with a field row class
+   *   The lable div to output before the link.
+   * @param bool $is_metadata_page
+   *   Whether or not the display is being wrapped with a field row class.
    * @param object $parent_node
-   *  The referenced entity by way of the node's field_member_of->entity.
+   *   The referenced entity by way of the node's field_member_of->entity.
    * @param array $additional_parents
-   *  Array of additional entites by way of the node's
-   * field_additional_memberships->referencedEntities().
+   *   Array of additional entites by way of the node's
+   *   field_additional_memberships->referencedEntities().
+   *
    * @return string
-   *  The HTML that represents the label div and the link to the provided node/s.
+   *   HTML that represents the label div and the link to the provided node/s.
    */
-  private function _make_link_and_label($label_text, $is_metadata_page, $parent_node, $additional_parents = NULL) {
-    $html_of_links[] = $this->_get_html_of_entity($parent_node);
+  private function makeLinkAndLabel($label_text, $is_metadata_page, $parent_node, array $additional_parents = NULL) {
+    $html_of_links[] = $this->getHtmlOfEntity($parent_node);
     if (is_array($additional_parents)) {
       foreach ($additional_parents as $additional_parent) {
-        $html_of_links[] = $this->_get_html_of_entity($additional_parent);
+        $html_of_links[] = $this->getHtmlOfEntity($additional_parent);
       }
     }
-    return
-      '  <div class="field__label' . (($is_metadata_page) ? ' col-sm-2' : '') . '">' . $label_text . '</div>' .
+    return '  <div class="field__label' . (($is_metadata_page) ? ' col-sm-2' : '') . '">' . $label_text . '</div>' .
       '  <div class="field__item' . (($is_metadata_page) ? ' col-sm-9' : '') . '">' . implode(", ", $html_of_links) . '</div>';
   }
 
@@ -103,18 +145,17 @@ class ASUItemIsPartOf extends BlockBase {
    * Helper function to return HTML for link to the provided entity.
    *
    * @param object $entity
-   *  The referenced entity by way of the node's field_member_of->entity or one
-   * of the referecedEntities().
+   *   The referenced entity by way of the node's field_member_of->entity or one
+   *   of the referecedEntities().
+   *
    * @return string
-   *  This is the link for the node.
+   *   This is the link for the node.
    */
-  private function _get_html_of_entity($entity) {
+  private function getHtmlOfEntity($entity) {
     $first_title = $entity->field_title[0];
     $view = ['type' => 'complex_title_formatter'];
     $first_title_view = $first_title->view($view);
-    $title = \Drupal::service('renderer')->render($first_title_view);
-
-    // make the link and set the title according to the $parent_title derived above.
+    $title = $this->renderer->render($first_title_view);
     $link = $entity->toLink();
     $link->setText($title);
     return $link->toString();

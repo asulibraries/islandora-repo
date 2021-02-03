@@ -8,7 +8,7 @@ use Drupal\Core\Url;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
- * Class ViewerController.
+ * Class ViewerController will handle the renderView for the associated route.
  */
 class ViewerController extends ControllerBase {
 
@@ -37,12 +37,12 @@ class ViewerController extends ControllerBase {
   }
 
   /**
-   * Render_view.
+   * This will potentially do different things for various islandora models.
    *
    * @return string
    *   Return a view.
    */
-  public function render_view($node) {
+  public function renderView($node) {
     $node = $this->currentRouteMatch->getParameter('node');
     if ($node) {
       $routeName = 'entity.node.canonical';

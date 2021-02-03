@@ -89,7 +89,7 @@ class FeedbackButton extends BlockBase implements ContainerFactoryPluginInterfac
     else {
       $feedback_url = Url::fromUri($url_base . '/form/feedback?source_entity_type=node&source_entity_id=' . $nid . '&item=' . $nid . '&collection=' . $cid . '&primary_element=item');
     }
-    $link = Link::fromTextAndUrl(t('<i class="fas fa-comments"></i> Feedback'), $feedback_url)->toRenderable();
+    $link = Link::fromTextAndUrl($this->t('<i class="fas fa-comments"></i> Feedback'), $feedback_url)->toRenderable();
     $link['#attributes'] = ['class' => $class];
     $markup = [
       '#markup' => render($link),
