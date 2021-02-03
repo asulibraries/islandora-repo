@@ -5,14 +5,14 @@ namespace Drupal\asu_item_extras\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\user\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Entity\EntityTypeManager;
 
 /**
  * Controller for Complex Object Members "Included in this item" view page.
  */
-class ComplexObjectMembersController extends ControllerBase implements ContainerFactoryPluginInterface {
+class ComplexObjectMembersController extends ControllerBase implements ContainerInjectionInterface {
   /**
    * The route match.
    *
@@ -30,19 +30,12 @@ class ComplexObjectMembersController extends ControllerBase implements Container
   /**
    * Constructs a ComplexObjectMembersController object.
    *
-   * @param array $configuration
-   *   A configuration array containing information about the plugin instance.
-   * @param string $plugin_id
-   *   The plugin_id for the formatter.
-   * @param mixed $plugin_definition
-   *   The plugin implementation definition.
    * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
    *   The route match.
    * @param Drupal\Core\Entity\EntityTypeManager $entityTypeManager
    *   A drupal entity type manager object.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $route_match, EntityTypeManager $entityTypeManager) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
+  public function __construct(RouteMatchInterface $route_match, EntityTypeManager $entityTypeManager) {
     $this->routeMatch = $route_match;
     $this->entityTypeManager = $entityTypeManager;
   }
@@ -50,11 +43,8 @@ class ComplexObjectMembersController extends ControllerBase implements Container
   /**
    * {@inheritdoc}
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+  public static function create(ContainerInterface $container) {
     return new static(
-      $configuration,
-      $plugin_id,
-      $plugin_definition,
       $container->get('current_route_match'),
       $container->get('entity_type.manager'),
     );
@@ -77,7 +67,7 @@ class ComplexObjectMembersController extends ControllerBase implements Container
       $content_type = $node->getType();
 
       // What is the model for this node?
-      $field_model_tid = $parent_node->get('field_model')->getString();
+      $field_model_tid = $node->get('field_model')->getString();
       $field_model_term = $this->entityTypeManager->getStorage('taxonomy_term')->load($field_model_tid);
       $field_model = (isset($field_model_term) && is_object($field_model_term)) ?
         $field_model_term->getName() : '';
