@@ -23,7 +23,7 @@
   <video controls="controls" width="100%" crossorigin="anonymous">
 {% endif %}
   {% for file in files %}
-    <source {{ file.source_attributes }} />
+    <source {{ file.source_attributes }} crossorigin="anonymous" />
   {% endfor %}
   {% if caption %}
     <track src="{{ caption }}" kind="captions" crossorigin="anonymous">
