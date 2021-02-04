@@ -105,23 +105,35 @@ source:
     -
       name: agent_person_name
       label: agents (person) name
-      selector: 'name[@type="person" and @valueUri and roleTerm[@type="code"]]/namePart'
+      selector: 'name[@type="person" and @valueURI and roleTerm[@type="code"]]/namePart'
     -
       name: agent_person_uris
       label: agents (person) name uri
-      selector: 'name[@type="person" and @valueUri and roleTerm[@type="code"]]/@valueUri'
+      selector: 'name[@type="person" and @valueURI and roleTerm[@type="code"]]/@valueURI'
     -
       name: agent_person_code
       label: agent (person) role code
-      selector: 'name[@type="person" and not(@valueUri)]/roleTerm[@type="code"]'
+      selector: 'name[@type="person" and @valueURI and roleTerm[@type="code"]]/roleTerm[@type="code"]'
     -
       name: agent_person_name_wo_uris
       label: agents (person, without uri) name
-      selector: 'name[@type="person" and not(@valueUri) and roleTerm[@type="code"]]/namePart'
+      selector: 'name[@type="person" and not(@valueURI) and roleTerm[@type="code"]]/namePart'
     -
       name: agent_person_code_wo_uris
       label: agent (person, without uri) role code
-      selector: 'name[@type="person" and not(@valueUri)]/roleTerm[@type="code"]'      
+      selector: 'name[@type="person" and not(@valueURI)]/roleTerm[@type="code"]'
+    -
+      name: subject_person_name
+      label: subject (person) name
+      selector: 'subject[name[@valueURI]/namePart]/name/namePart'
+    -
+      name: subject_person_uris
+      label: subject (person) name uri
+      selector: 'subject[name[@valueURI]/namePart]/@valueURI'
+    -
+      name: subject_person_name_wo_uris
+      label: subject (person, without uri)
+      selector: 'subject[name[not(@valueURI)]/namePart]/name/namePart'
   ids:
     pid:
       type: string
@@ -322,28 +334,59 @@ process:
     source:
       - agent_person_name
       - agent_person_uris
+      - agent_person_code
     keys:
       - name
       - uri
+      - rel
   agents_without_uris:
     plugin: make_array_groups
     source:
       - agent_person_name_wo_uris
+      - agent_person_code_wo_uris
     keys:
       - name
+      - rel
   all_the_agents:
     plugin: merge_skip_empty
     source:
       - '@agents_without_uris'
       - '@agents'
-  field_linked_agents:
-    -
-      plugin: typed_relation_generate
-      uri_field: field_authority_link
-      default_vocabulary: Person
-      name_array_key: name
-      uri_array_key: uri
-      source: '@all_the_agents'
+  field_linked_agent:
+    plugin: typed_relation_generate
+    delimiter: '|'
+    uri_field: field_authority_link
+    default_vocabulary: person
+    name_array_key: name
+    uri_array_key: uri
+    source: '@all_the_agents'
+  subject_names:
+    plugin: make_array_groups
+    source:
+      - subject_person_name
+      - subject_person_uris
+    keys:
+      - name
+      - uri
+  subject_names_without_uris:
+    plugin: make_array_groups
+    source:
+      - subject_person_name_wo_uris
+    keys:
+      - name
+  all_the_subject_names:
+    plugin: merge_skip_empty
+    source:
+      - '@subject_names_without_uris'
+      - '@subject_names'
+  field_subjects_name:
+    plugin: name_uri_generate
+    uri_field: field_authority_link
+    default_vocabulary: person
+    name_array_key: name
+    uri_array_key: uri
+    source: '@all_the_subject_names'
+
 destination:
   plugin: 'entity:node'
   default_bundle: asu_repository_item

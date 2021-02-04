@@ -293,21 +293,31 @@ class TypedRelationGenerate extends NameURIGenerate {
   /**
    * {@inheritdoc}
    */
-  public function transform($name_uri_pair, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
-    if (array_key_exists('relator', $this->configuration)) {
-      $relator = $this->configuration['relator'];
+  public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
+    if (is_array($value)) {
+      $name = $value['name'];
+      $uri = (array_key_exists('uri', $value) ? $value['uri'] : '');
+      $relator = (array_key_exists('rel', $value) ?
+        (strstr($value['rel'], 'relators:') ? $value['rel'] : 'relators:' . $value['rel']) : '');
+      unset($value['rel']);
     }
     else {
-      $parts = explode($this->configuration['delimiter'], $name_uri_pair);
-      $relator_string = array_pop($parts);
-      $relator = $this->look_up_relator($relator_string);
-      $name_uri_pair = implode($this->configuration['delimiter'], $parts);
+      if (array_key_exists('relator', $this->configuration)) {
+        $relator = $this->configuration['relator'];
+      }
+      else {
+        $parts = explode($this->configuration['delimiter'], $value);
+        $relator_string = array_pop($parts);
+        $relator = $this->look_up_relator($relator_string);
+        $value = implode($this->configuration['delimiter'], $parts);
+      }
     }
-    $term = parent::transform($name_uri_pair, $migrate_executable, $row, $destination_property);
+    $term = parent::transform($value, $migrate_executable, $row, $destination_property);
     $typed_relation = [
       'rel_type' => $relator,
       'target_id' => $term
     ];
+
     return $typed_relation;
   }
 

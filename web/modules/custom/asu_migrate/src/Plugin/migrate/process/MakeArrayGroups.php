@@ -46,7 +46,6 @@ class MakeArrayGroups extends ProcessPluginBase {
     if (!is_array($value)) {
 	    throw new MigrateException('Plugin make_array_groups requires a array input.');
     }
-    \Drupal::logger('make array groups')->info(print_r($value, TRUE));
     $new_array = [];
     $labels = $value[0];
     if (count($value) > 1) {
@@ -55,6 +54,13 @@ class MakeArrayGroups extends ProcessPluginBase {
     else {
       $uris = NULL;
     }
+    if (count($value) > 2) {
+      $rel = $value[2];
+    }
+    else {
+      $rel = NULL;
+    }
+
     $keys = $this->configuration['keys'];
     if (is_array($labels)){
       foreach ($labels as $index => $label) {
@@ -63,6 +69,9 @@ class MakeArrayGroups extends ProcessPluginBase {
         ];
         if (count($keys) > 1) {
           $obj[$keys[1]] = $uris[$index];
+        }
+        if (count($keys) > 2) {
+          $obj[$keys[2]] = $uris[$index];
         }
         $new_array[] = $obj;
       }
@@ -74,11 +83,12 @@ class MakeArrayGroups extends ProcessPluginBase {
       if ($uris) {
         $new_obj[$keys[1]] = $uris;
       }
+      if ($rel) {
+        $new_obj[$keys[2]] = $rel;
+      }
       $new_array[] = $new_obj;
     }
 
-
-    \Drupal::logger('make array groups')->info(print_r($new_array, TRUE));
     return $new_array;
   }
 }
