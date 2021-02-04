@@ -6,6 +6,21 @@ id: mods_xml
 label: Import/Update Nodes from MODS XML
 migration_group: mods_xml
 
+# everything that goes in field_linked_agent will be a name top level element.
+# they will contain a type attribute which maps to the bundle of the taxonomy term
+# (ie. person). those names will also contain the roleTerm element for the role.
+# the name itself will be in the namePart sub-element of the name . Names may or
+# may not have URIs
+#
+# For subjects, all subjects will be in subject top level elements, but depending
+# on what type of subject will determine what's inside that element.
+#    field_geographic_subject have geographic sub-elements to the subject element
+#    field_temporal_subject have temporal sub-elements
+#    field_subject have topic sub-elements
+#    field_subjects_name have name sub-elements
+#    field_title_subject have title/titleInfo sub-elements
+# All of the subjects have the potential to have uris, but may not
+# ----------------------------------------------------------------------------
 source:
   plugin: url
   data_fetcher_plugin: file
@@ -67,15 +82,46 @@ source:
       name: note
       label: note
       selector: 'note[not(@*)]'
-    - name: pref_citation
+    -
+      name: pref_citation
       label: preferred citation
       selector: 'note[@type="preferred citation"]'
-    - name: reuse_permissions
+    -
+      name: reuse_permissions
       label: reuse permission
       selector: 'accessCondition[@type="use and reproduction" and not(text()="In Copyright" or text()="No Copyright - United States" or text()="No Known Copyright")]'
-    - name: copyright
+    -
+      name: copyright
       label: copyright
       selector: 'accessCondition[@type="use and reproduction" and (text()="In Copyright" or text()="No Copyright - United States" or text()="No Known Copyright")]'
+    -
+      name: edtf_created_date
+      label: edtf date
+      selector: 'originInfo/dateCreated'
+    -
+      name: visibility
+      label: record visibility
+      selector: 'recordInfo/recordInfoNote[@type="visibility"]'
+    -
+      name: agent_person_name
+      label: agents (person) name
+      selector: 'name[@type="person" and @valueUri and roleTerm[@type="code"]]/namePart'
+    -
+      name: agent_person_uris
+      label: agents (person) name uri
+      selector: 'name[@type="person" and @valueUri and roleTerm[@type="code"]]/@valueUri'
+    -
+      name: agent_person_code
+      label: agent (person) role code
+      selector: 'name[@type="person" and not(@valueUri)]/roleTerm[@type="code"]'
+    -
+      name: agent_person_name_wo_uris
+      label: agents (person, without uri) name
+      selector: 'name[@type="person" and not(@valueUri) and roleTerm[@type="code"]]/namePart'
+    -
+      name: agent_person_code_wo_uris
+      label: agent (person, without uri) role code
+      selector: 'name[@type="person" and not(@valueUri)]/roleTerm[@type="code"]'      
   ids:
     pid:
       type: string
@@ -134,27 +180,39 @@ process:
   # field_table_of_contents
   # field_language
   # field_linked_agent
-  # field_note_para
-  # field_preferred_citation
-  # field_statement_responsibility
+  # ✓ field_note_para
+  # ✓ field_preferred_citation
+  # ✓ field_statement_responsibility
   # field_typed_identifier
-  # field_handle
+  # ✓ field_handle
   # field_peer_reviewed
   # field_open_access
-  # field_genre
-  # status - set not from default
+  # ✓ field_genre
+  # ✓ status - set not from default
+  # ✓ moderation_state
   # created
   # uid - with callback for asurite -> id
-  # field_copyright_statement
-  # field_reuse_permissions
-  # field_member_of
+  # ✓ field_copyright_statement
+  # ✓ field_reuse_permissions
+  # ✓ field_member_of
   # field_additional_memberships
-  # field_edtf_copyright_date
+  # ✓ field_edtf_copyright_date
 
   uid: constants/uid
   status:
     plugin: default_value
     default_value: 1
+  moderation_state:
+    plugin: static_map
+    source: visibility
+    map:
+      Private: draft
+      Public: published
+      1.0: published
+      1: published
+      0: draft
+      0.0: draft
+    default_value: published
   type:
     plugin: default_value
     default_value: asu_repository_item
@@ -254,8 +312,38 @@ process:
       entity_type: taxonomy_term
       value_key: name
       bundle_key: vid
-      bundle: copyright_statements    
-
+      bundle: copyright_statements
+  field_edtf_date_created:
+    plugin: skip_on_empty
+    method: process
+    source: edtf_created_date
+  agents:
+    plugin: make_array_groups
+    source:
+      - agent_person_name
+      - agent_person_uris
+    keys:
+      - name
+      - uri
+  agents_without_uris:
+    plugin: make_array_groups
+    source:
+      - agent_person_name_wo_uris
+    keys:
+      - name
+  all_the_agents:
+    plugin: merge_skip_empty
+    source:
+      - '@agents_without_uris'
+      - '@agents'
+  field_linked_agents:
+    -
+      plugin: typed_relation_generate
+      uri_field: field_authority_link
+      default_vocabulary: Person
+      name_array_key: name
+      uri_array_key: uri
+      source: '@all_the_agents'
 destination:
   plugin: 'entity:node'
   default_bundle: asu_repository_item
