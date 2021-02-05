@@ -17,7 +17,7 @@ migration_group: mods_xml
 #    field_geographic_subject have geographic sub-elements to the subject element
 #    field_temporal_subject have temporal sub-elements
 #    field_subject have topic sub-elements
-#    field_subjects_name have name sub-elements
+#  ✓ field_subjects_name have name sub-elements
 #    field_title_subject have title/titleInfo sub-elements
 # All of the subjects have the potential to have uris, but may not
 # ----------------------------------------------------------------------------
@@ -125,15 +125,28 @@ source:
     -
       name: subject_person_name
       label: subject (person) name
-      selector: 'subject[name[@valueURI]/namePart]/name/namePart'
+      selector: 'subject[name[boolean(@valueURI)]/namePart]/name/namePart'
     -
       name: subject_person_uris
       label: subject (person) name uri
-      selector: 'subject[name[@valueURI]/namePart]/@valueURI'
+      selector: 'subject[name[boolean(@valueURI)]/namePart]/name/@valueURI'
     -
       name: subject_person_name_wo_uris
       label: subject (person, without uri)
       selector: 'subject[name[not(@valueURI)]/namePart]/name/namePart'
+    -
+      name: subject_title_title
+      label: subject (title) title
+      selector: 'subject[titleInfo[@valueURI]/title]/titleInfo/title'
+    -
+      name: subject_title_title_uri
+      label: subject (title) title uri
+      selector: 'subject[titleInfo[@valueURI]/title]/titleInfo/@valueURI'
+    -
+      name: subject_title_title_wo_uris
+      label: subject (title, without uri)
+      selector: 'subject[titleInfo[not(@valueURI)]/title]/titleInfo/title'
+   
   ids:
     pid:
       type: string
@@ -191,7 +204,7 @@ process:
     method: process
   # field_table_of_contents
   # field_language
-  # field_linked_agent
+  # ✓ field_linked_agent
   # ✓ field_note_para
   # ✓ field_preferred_citation
   # ✓ field_statement_responsibility
@@ -209,6 +222,7 @@ process:
   # ✓ field_member_of
   # field_additional_memberships
   # ✓ field_edtf_copyright_date
+  # ✓ field_subjects_name
 
   uid: constants/uid
   status:
@@ -387,6 +401,34 @@ process:
     uri_array_key: uri
     source: '@all_the_subject_names'
 
+
+  titles:
+    plugin: make_array_groups
+    source:
+      - subject_title_title
+      - subject_title_title_uri
+    keys:
+      - name
+      - uri
+  titles_without_uris:
+    plugin: make_array_groups
+    source:
+      - subject_title_title_wo_uris
+    keys:
+      - name
+  all_the_titles:
+    plugin: merge_skip_empty
+    source:
+      - '@titles_without_uris'
+      - '@titles'
+  field_title_subject:
+    plugin: name_uri_generate
+    uri_field: field_authority_link
+    default_vocabulary: titles
+    name_array_key: name
+    uri_array_key: uri
+    source: '@all_the_titles'
+      
 destination:
   plugin: 'entity:node'
   default_bundle: asu_repository_item
@@ -417,4 +459,3 @@ destination:
     - field_member_of
     - field_additional_memberships
     - field_edtf_copyright_date
-
