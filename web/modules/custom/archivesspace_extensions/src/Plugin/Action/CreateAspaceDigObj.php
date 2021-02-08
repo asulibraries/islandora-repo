@@ -93,6 +93,7 @@ class CreateAspaceDigObj extends ActionBase implements ContainerFactoryPluginInt
 
         $archival_obj = $entity->get('field_source')->referencedEntities();
         if ($archival_obj) {
+            // TODO - get repository id from configuration?
             $archival_obj = $archival_obj[0];
             $archival_obj_ref_id = $archival_obj->get('field_as_ref_id')->value;
             \Drupal::logger('aspace_digital_obj_action')->info("ref id is " . $archival_obj_ref_id);
@@ -102,6 +103,28 @@ class CreateAspaceDigObj extends ActionBase implements ContainerFactoryPluginInt
             \Drupal::logger('aspace_digital_obj_action')->info($this->archivesspaceSession->getSession());
             $ao_results = $this->archivesspaceSession->request('GET', '/repositories/2/find_by_id/archival_objects', $params);
             \Drupal::logger('aspace_digital_obj_action')->info(print_r($ao_results, TRUE));
+            $ao_json = $ao_results->json();
+            $ao_id = $ao_json['archival_objects'][0]['ref'];
+            $ao_info = $this->archivesspaceSession->request('GET', $ao_id);
+            \Drupal::logger('aspace_digital_obj_action')->info(print_r($ao_info, TRUE));
+
+
+            if ($entity->get('field_digital_object_id')->value != NULL) {
+                $do_results = $this->archivesspaceSession->request('GET', '/repositories/2/digital_object_components/' . $entity->get('field_digital_object_id')->value);
+                // TODO - this is untested
+                // update digital object with the repository item URI
+                $do_json = $do_results->json();
+                $do_json['file_versions'][0]['file_uri'] = $entity->getUri();
+                $do_post_request = $this->archivesspaceSession->request('POST', '/repositories/2/digital_objects/' . $do_json['digital_object_id'], $do_json);
+            }
+            else {
+                $ao_children_results = $this->archivesspaceSession->request('GET', '/repositories/2/archival_objects/' . $ao_id . '/children');
+                $ao_children_json = $ao_children_results->json();
+                \Drupal::logger('aspace_digital_obj_action')->info(print_r($ao_children_json, TRUE));
+                foreach ($ao_children_json as $ao_child) {
+
+                }
+            }
 
         }
 
