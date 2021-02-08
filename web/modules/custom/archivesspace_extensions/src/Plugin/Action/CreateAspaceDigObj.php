@@ -94,6 +94,7 @@ class CreateAspaceDigObj extends ActionBase implements ContainerFactoryPluginInt
         $archival_obj = $entity->get('field_source')->referencedEntities();
         if ($archival_obj) {
             // TODO - get repository id from configuration?
+            $entity_uri = $entity->createFileUrl(FALSE);
             $archival_obj = $archival_obj[0];
             $archival_obj_ref_id = $archival_obj->get('field_as_ref_id')->value;
             \Drupal::logger('aspace_digital_obj_action')->info("ref id is " . $archival_obj_ref_id);
@@ -109,20 +110,56 @@ class CreateAspaceDigObj extends ActionBase implements ContainerFactoryPluginInt
 
 
             if ($entity->get('field_digital_object_id')->value != NULL) {
-                $do_results = $this->archivesspaceSession->request('GET', '/repositories/2/digital_object_components/' . $entity->get('field_digital_object_id')->value);
+                $do_results = $this->archivesspaceSession->request('GET', '/repositories/2/digital_objects/' . $entity->get('field_digital_object_id')->value);
                 // TODO - this is untested
                 // update digital object with the repository item URI
-                $do_results['file_versions'][0]['file_uri'] = $entity->getUri();
+                $do_results['file_versions'][0]['file_uri'] = $entity_uri;
                 $do_post_request = $this->archivesspaceSession->request('POST', '/repositories/2/digital_objects/' . $do_results['digital_object_id'], $do_results);
             }
             else {
-                $ao_children_results = $this->archivesspaceSession->request('GET', $ao_id . '/children');
-                \Drupal::logger('aspace_digital_obj_action')->info(print_r($ao_children_results, TRUE));
-                foreach ($ao_children_results as $ao_child) {
-
+                $ao_instances = $ao_info['instances'];
+                \Drupal::logger('aspace_digital_obj_action')->info(print_r($ao_instances, TRUE));
+                if (count($ao_instances) > 0) {
+                    foreach ($ao_instances as $ao_child) {
+                        // TODO - this is untested
+                        $do_ref = $ao_child['digital_object']['ref'];
+                        $do_results = $this->archivesspaceSession->request('GET', $do_ref);
+                        if (count($do_result['file_versions']) > 0 && $do_result['file_versions'][0]['file_uri'] != NULL) {
+                            $file_uri = $do_result['file_versions'][0]['file_uri'];
+                            // if it has a file version
+                            // update the URI with the repository URI
+                            $do_results['file_versions'][0]['file_uri'] = $entity_uri;
+                        }
+                        else {
+                            // if it does not have a file version
+                                // create a file version with repository URI
+                            $do_results['file_versions'][0]['file_uri'] = $entity_uri;
+                        }
+                        // post back response
+                        $do_post_request = $this->archivesspaceSession->request('POST', '/repositories/2/digital_objects/' . $do_results['digital_object_id'], $do_results);
+                        \Drupal::logger('aspace_digital_obj_action')->info(print_r($do_post_request, TRUE));
+                    }
+                } else {
+                    // create a digital object with a file version with the repository URI
+                    \Drupal::logger('aspace_digital_obj_action')->info("create new digital object");
+                    $constructed_json = [
+                        'jsonmodel_type' => 'digital_object',
+                        'file_versions' => [
+                            [
+                                'file_uri' => $entity_uri
+                            ]
+                        ],
+                        'linked_instances' => [
+                            [
+                                'ref' => $ao_id
+                            ]
+                        ]
+                    ];
+                    $create_response = $this->archivesspaceSession->request('POST', '/repositories/2/digital_objects', $constructed_json);
+                    \Drupal::logger('aspace_digital_obj_action')->info(print_r($create_response, TRUE));
                 }
             }
-
+            // store the digital object id on the entity
         }
 
     }
