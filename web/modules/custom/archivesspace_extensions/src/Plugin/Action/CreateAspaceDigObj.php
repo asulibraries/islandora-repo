@@ -118,7 +118,7 @@ class CreateAspaceDigObj extends ActionBase implements ContainerFactoryPluginInt
                 $do_post_request = $this->archivesspaceSession->request('POST', '/repositories/2/digital_objects/' . $do_json['digital_object_id'], $do_json);
             }
             else {
-                $ao_children_results = $this->archivesspaceSession->request('GET', '/repositories/2/archival_objects/' . $ao_id . '/children');
+                $ao_children_results = $this->archivesspaceSession->request('GET', $ao_id . '/children');
                 $ao_children_json = $ao_children_results->json();
                 \Drupal::logger('aspace_digital_obj_action')->info(print_r($ao_children_json, TRUE));
                 foreach ($ao_children_json as $ao_child) {
