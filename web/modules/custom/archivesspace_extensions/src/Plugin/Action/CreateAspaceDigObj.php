@@ -97,7 +97,7 @@ class CreateAspaceDigObj extends ActionBase implements ContainerFactoryPluginInt
             $archival_obj_ref_id = $archival_obj->get('field_as_ref_id')->value;
             \Drupal::logger('aspace_digital_obj_action')->info("ref id is " . $archival_obj_ref_id);
             $params = [
-                "ref_id" => $archival_obj_ref_id,
+                "ref_id" => strval($archival_obj_ref_id),
             ];
             $ao_results = $this->archivesspaceSession->request('GET','/repositories/2/find_by_id/archival_objects', $params);
             \Drupal::logger('aspace_digital_obj_action')->info(print_r($ao_results, TRUE));
