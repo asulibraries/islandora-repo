@@ -94,7 +94,7 @@ class CreateAspaceDigObj extends ActionBase implements ContainerFactoryPluginInt
         $archival_obj = $entity->get('field_source')->referencedEntities();
         if ($archival_obj) {
             // TODO - get repository id from configuration?
-            $entity_uri = $entity->createFileUrl(FALSE);
+            $entity_uri = $entity->toUrl()->toString();
             $archival_obj = $archival_obj[0];
             $archival_obj_ref_id = $archival_obj->get('field_as_ref_id')->value;
             \Drupal::logger('aspace_digital_obj_action')->info("ref id is " . $archival_obj_ref_id);
