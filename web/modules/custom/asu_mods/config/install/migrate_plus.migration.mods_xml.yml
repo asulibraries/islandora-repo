@@ -158,6 +158,10 @@ source:
       name: peer_review
       label: peer review
       selector: 'genre[@valueURI="http://vocab.getty.edu/page/aat/300380321"]'
+    -
+      name: System User
+      label: System User
+      selector: 'recordInfo/recordContentSource'
 
   ids:
     pid:
@@ -255,7 +259,14 @@ process:
   # field_geographic_subject
   # field_temporal_subject
 
-  uid: constants/uid
+  uid:
+    -
+      plugin: skip_on_empty
+      source: System User
+      method: process
+    -
+      plugin: user_lookup
+      default_value: constants/uid
   status:
     plugin: default_value
     default_value: 1
@@ -476,10 +487,14 @@ destination:
     - field_extent
     - field_edtf_date_created
     - field_table_of_contents
+    - field_table_of_contents/value
+    - field_table_of_contents/format
     - field_language
     - field_linked_agent
     - field_note_para
     - field_preferred_citation
+    - field_preferred_citation/value
+    - field_preferred_citation/format
     - field_statement_responsibility
     - field_typed_identifier
     - field_handle
