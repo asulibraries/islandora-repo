@@ -94,7 +94,7 @@ class CreateAspaceDigObj extends ActionBase implements ContainerFactoryPluginInt
         $archival_obj = $entity->get('field_source')->referencedEntities();
         if ($archival_obj) {
             // TODO - get repository id from configuration?
-            $entity_uri = $entity->toUrl()->toString();
+            $entity_uri = $entity->toUrl($options=['https'=>TRUE,'absolute'=>TRUE])->toString();
             $archival_obj = $archival_obj[0];
             $archival_obj_ref_id = $archival_obj->get('field_as_ref_id')->value;
             \Drupal::logger('aspace_digital_obj_action')->info("ref id is " . $archival_obj_ref_id);
@@ -138,6 +138,9 @@ class CreateAspaceDigObj extends ActionBase implements ContainerFactoryPluginInt
                             // post back response
                             $do_post_request = $this->archivesspaceSession->request('POST', '/repositories/2/digital_objects/' . $do_results['digital_object_id'], $do_results);
                             \Drupal::logger('aspace_digital_obj_action')->info(print_r($do_post_request, TRUE));
+                            if ($do_post_request['status'] == 'Created') {
+                                $this->messenger()->addStatus('Archivesspace digital object updated');
+                            }
                         }
                     }
                 } else {
@@ -162,6 +165,9 @@ class CreateAspaceDigObj extends ActionBase implements ContainerFactoryPluginInt
                     ];
                     $create_response = $this->archivesspaceSession->request('POST', '/repositories/2/digital_objects', $constructed_json);
                     \Drupal::logger('aspace_digital_obj_action')->info(print_r($create_response, TRUE));
+                    if ($create_response['status'] == 'Created') {
+                        $this->messenger()->addStatus('Archivesspace digital object created');
+                    }
                 }
             }
             // store the digital object id on the entity
