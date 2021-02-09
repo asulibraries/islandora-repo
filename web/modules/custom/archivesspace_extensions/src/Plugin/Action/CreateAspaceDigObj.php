@@ -142,6 +142,8 @@ class CreateAspaceDigObj extends ActionBase implements ContainerFactoryPluginInt
                     }
                 } else {
                     // create a digital object with a file version with the repository URI
+                    $identifiers = $entity->get('field_typed_identifier')->referencedEntities();
+                    $item_id = $identifiers[0]->get('field_identifier_value');
                     \Drupal::logger('aspace_digital_obj_action')->info("create new digital object");
                     $constructed_json = [
                         'jsonmodel_type' => 'digital_object',
@@ -156,6 +158,7 @@ class CreateAspaceDigObj extends ActionBase implements ContainerFactoryPluginInt
                                 'ref' => $ao_id
                             ]
                         ],
+                        'digital_object_id' => str_replace(' ', '_', $item_id)
                     ];
                     $create_response = $this->archivesspaceSession->request('POST', '/repositories/2/digital_objects', $constructed_json);
                     \Drupal::logger('aspace_digital_obj_action')->info(print_r($create_response, TRUE));
