@@ -28,7 +28,7 @@ class AspaceTraverseFormatter extends EntityReferenceLabelFormatter
         // field source is limited to 1 value
         // foreach ($items as $delta => $item) {
             $entity = $items[0]->entity;
-            $title = $entity->get('title')->value;
+            $title = $entity->get('field_as_title')->value;
             $id = $entity->id();
             $member_of = $entity->get('field_member_of')->referencedEntities();
             $resource = $entity->get('field_resource')->referencedEntities();
