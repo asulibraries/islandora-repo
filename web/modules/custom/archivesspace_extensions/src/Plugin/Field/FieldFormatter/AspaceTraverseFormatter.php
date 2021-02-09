@@ -31,7 +31,7 @@ class AspaceTraverseFormatter extends EntityReferenceLabelFormatter
             $title = $entity->get('field_as_title')->value;
             $id = $entity->id();
             $member_of = $entity->get('field_member_of')->referencedEntities();
-            $resource = $entity->get('field_resource')->referencedEntities();
+            $resource = $entity->get('field_as_resource')->referencedEntities();
             if ($resource == $member_of) {
 
             }
