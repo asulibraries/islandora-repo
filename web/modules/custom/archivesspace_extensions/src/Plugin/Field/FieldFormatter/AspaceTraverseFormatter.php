@@ -27,7 +27,7 @@ class AspaceTraverseFormatter extends EntityReferenceLabelFormatter
         $elements = parent::viewElements($items, $langcode);
 
         foreach ($items as $delta => $item) {
-            \Drupal::logger('aspace_traverse')->info($item->entity->get('title'));
+            \Drupal::logger('aspace_traverse')->info($item->get('title'));
             // $rel_types = $item->getRelTypes();
             // $rel_type = isset($rel_types[$item->rel_type]) ? $rel_types[$item->rel_type] : $item->rel_type;
             // if (isset($elements[$delta])) {
