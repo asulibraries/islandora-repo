@@ -25,9 +25,16 @@ class AspaceTraverseFormatter extends EntityReferenceLabelFormatter
     public function viewElements(FieldItemListInterface $items, $langcode)
     {
         $elements = parent::viewElements($items, $langcode);
+        // field source is limited to 1 value
+        // foreach ($items as $delta => $item) {
+            $entity = $items[0]->entity;
+            $title = $entity->get('title')->value;
+            $id = $entity->id();
+            $member_of = $entity->get('field_member_of')->referencedEntities();
+            $resource = $entity->get('field_resource')->referencedEntities();
+            if ($resource == $member_of) {
 
-        foreach ($items as $delta => $item) {
-            \Drupal::logger('aspace_traverse')->info($item->get('title'));
+            }
             // $rel_types = $item->getRelTypes();
             // $rel_type = isset($rel_types[$item->rel_type]) ? $rel_types[$item->rel_type] : $item->rel_type;
             // if (isset($elements[$delta])) {
@@ -41,7 +48,7 @@ class AspaceTraverseFormatter extends EntityReferenceLabelFormatter
             //     $url = \Drupal::service('facets.utility.url_generator')->getUrl(['linked_agents' => [$elements[$delta]['#title']]]);
             //     $elements[$delta]['#url'] = $url;
             // }
-        }
+        // }
 
         return $elements;
     }
