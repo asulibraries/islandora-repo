@@ -35,7 +35,8 @@ class AspaceTraverseFormatter extends EntityReferenceLabelFormatter
             if ($resource == $member_of) {
                 $elements[] = [
                     '#url' => $member_of->toUrl()->toString(),
-                    '#text' => $member_of->get('field_as_title')->value,
+                    '#title' => $member_of->get('field_as_title')->value,
+                    '#type' => 'link'
                 ];
             }
             // $rel_types = $item->getRelTypes();
