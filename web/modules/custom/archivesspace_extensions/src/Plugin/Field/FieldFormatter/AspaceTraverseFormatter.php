@@ -25,6 +25,7 @@ class AspaceTraverseFormatter extends EntityReferenceLabelFormatter
     public function viewElements(FieldItemListInterface $items, $langcode)
     {
         $elements = parent::viewElements($items, $langcode);
+        \Drupal::logger('aspace traverse')->info(print_r($elements, TRUE));
         // field source is limited to 1 value
         // foreach ($items as $delta => $item) {
             $entity = $items[0]->entity;
@@ -33,7 +34,10 @@ class AspaceTraverseFormatter extends EntityReferenceLabelFormatter
             $member_of = $entity->get('field_member_of')->referencedEntities();
             $resource = $entity->get('field_as_resource')->referencedEntities();
             if ($resource == $member_of) {
-
+                $elements[] = [
+                    '#url' => $member_of->toUrl()->toString(),
+                    '#text' => $member_of->get('field_as_title')->value,
+                ];
             }
             // $rel_types = $item->getRelTypes();
             // $rel_type = isset($rel_types[$item->rel_type]) ? $rel_types[$item->rel_type] : $item->rel_type;
@@ -51,5 +55,9 @@ class AspaceTraverseFormatter extends EntityReferenceLabelFormatter
         // }
 
         return $elements;
+    }
+
+    private function traverseAspaceTree($node) {
+
     }
 }
