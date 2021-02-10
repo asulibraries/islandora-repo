@@ -30,8 +30,8 @@ class AspaceTraverseFormatter extends EntityReferenceLabelFormatter
             $entity = $items[0]->entity;
             $title = $entity->get('field_as_title')->value;
             $id = $entity->id();
-            $member_of = $entity->get('field_member_of')->referencedEntities();
-            $resource = $entity->get('field_as_resource')->referencedEntities();
+            $member_of = $entity->get('field_member_of')->referencedEntities()[0];
+            $resource = $entity->get('field_as_resource')->referencedEntities()[0];
             if ($resource == $member_of) {
                 $elements[] = [
                     '#url' => $member_of->toUrl()->toString(),
