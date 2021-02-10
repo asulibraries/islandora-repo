@@ -115,50 +115,30 @@ class CreateAspaceDigObj extends ActionBase implements ContainerFactoryPluginInt
             else {
                 $ao_instances = $ao_info['instances'];
                 \Drupal::logger('aspace_digital_obj_action')->info(print_r($ao_instances, TRUE));
-                if (count($ao_instances) > 0) {
-                    foreach ($ao_instances as $ao_child) {
-                        // TODO - this is untested
-                        if (array_key_exists('digital_object', $ao_child)) {
-                            $do_ref = $ao_child['digital_object']['ref'];
-                            $do_results = $this->getDigitalObject($do_ref, TRUE);
-                            $do_id = $this->getIdFromJson($do_results);
-                            \Drupal::logger('aspace_digital_obj_action')->info(print_r($do_results, TRUE));
-                            if (count($do_results['file_versions']) > 0 && $do_results['file_versions'][0]['file_uri'] != NULL) {
-                                $file_uri = $do_results['file_versions'][0]['file_uri'];
-                                // if it has a file version update the URI with the repository URI
-                                $do_results['file_versions'][0]['file_uri'] = $entity_uri;
-                            } else {
-                                // if it does not have a file version create a file version with repository URI
-                                $do_results['file_versions'][0]['file_uri'] = $entity_uri;
-                            }
-                            // post back response
-                            $do_post_request = $this->createUpdateDigitalObject($do_results, $do_id);
-                        }
-                    }
-                } else {
-                    // create a digital object with a file version with the repository URI
-                    $identifiers = $entity->get('field_typed_identifier')->referencedEntities();
-                    $item_id = $identifiers[0]->get('field_identifier_value')->value;
-                    $do_id = str_replace(' ', '_', $item_id);
-                    \Drupal::logger('aspace_digital_obj_action')->info("create new digital object");
-                    $do_json = [
-                        'jsonmodel_type' => 'digital_object',
-                        'title' => $entity->getTitle(),
-                        'file_versions' => [
-                            [
-                                'file_uri' => $entity_uri
-                            ]
-                        ],
-                        'linked_instances' => [
-                            [
-                                'ref' => $ao_uri
-                            ]
-                        ],
-                        'digital_object_id' => $do_id
-                    ];
-                    $create_response = $this->createUpdateDigitalObject($do_json);
-                    $this->updateArchivalObject($ao_uri, $ao_info, $do_id);
-                }
+
+                // create a digital object with a file version with the repository URI
+                $identifiers = $entity->get('field_typed_identifier')->referencedEntities();
+                $item_id = $identifiers[0]->get('field_identifier_value')->value;
+                $do_id = str_replace(' ', '_', $item_id);
+                \Drupal::logger('aspace_digital_obj_action')->info("create new digital object");
+                $do_json = [
+                    'jsonmodel_type' => 'digital_object',
+                    'title' => $entity->getTitle(),
+                    'file_versions' => [
+                        [
+                            'file_uri' => $entity_uri
+                        ]
+                    ],
+                    'linked_instances' => [
+                        [
+                            'ref' => $ao_uri
+                        ]
+                    ],
+                    'digital_object_id' => $do_id
+                ];
+                $create_response = $this->createUpdateDigitalObject($do_json);
+                $this->updateArchivalObject($ao_uri, $ao_info, $do_id);
+
             }
             // store the digital object id on the entity
             $entity->set('field_digital_object_id', [
