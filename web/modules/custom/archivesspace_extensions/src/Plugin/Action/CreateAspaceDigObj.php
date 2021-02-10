@@ -97,24 +97,20 @@ class CreateAspaceDigObj extends ActionBase implements ContainerFactoryPluginInt
             $entity_uri = $entity->toUrl('canonical', ['https'=>TRUE,'absolute'=>TRUE])->toString();
             $archival_obj = $archival_obj[0];
             $archival_obj_ref_id = $archival_obj->get('field_as_ref_id')->value;
-            \Drupal::logger('aspace_digital_obj_action')->info("ref id is " . $archival_obj_ref_id);
             $params = [
                 "ref_id" => [$archival_obj_ref_id],
             ];
-            \Drupal::logger('aspace_digital_obj_action')->info($this->archivesspaceSession->getSession());
             $ao_results = $this->archivesspaceSession->request('GET', '/repositories/2/find_by_id/archival_objects', $params);
-            \Drupal::logger('aspace_digital_obj_action')->info(print_r($ao_results, TRUE));
-            $ao_id = $ao_results['archival_objects'][0]['ref'];
-            $ao_info = $this->archivesspaceSession->request('GET', $ao_id);
-            \Drupal::logger('aspace_digital_obj_action')->info(print_r($ao_info, TRUE));
+            $ao_uri = $ao_results['archival_objects'][0]['ref'];
+            $ao_info = $this->archivesspaceSession->request('GET', $ao_uri);
+            // \Drupal::logger('aspace_digital_obj_action')->info(print_r($ao_info, TRUE));
 
 
             if ($entity->get('field_digital_object_id')->value != NULL) {
-                $do_results = $this->archivesspaceSession->request('GET', '/repositories/2/digital_objects/' . $entity->get('field_digital_object_id')->value);
-                // TODO - this is untested
-                // update digital object with the repository item URI
+                $do_id = $entity->get('field_digital_object_id')->value;
+                $do_results = $this->getDigitalObject($do_id, FALSE);
                 $do_results['file_versions'][0]['file_uri'] = $entity_uri;
-                $do_post_request = $this->archivesspaceSession->request('POST', '/repositories/2/digital_objects/' . $do_results['digital_object_id'], $do_results);
+                $do_post_request = $this->createUpdateDigitalObject($do_results, $do_id);
             }
             else {
                 $ao_instances = $ao_info['instances'];
@@ -124,31 +120,28 @@ class CreateAspaceDigObj extends ActionBase implements ContainerFactoryPluginInt
                         // TODO - this is untested
                         if (array_key_exists('digital_object', $ao_child)) {
                             $do_ref = $ao_child['digital_object']['ref'];
-                            $do_results = $this->archivesspaceSession->request('GET', $do_ref);
+                            $do_results = $this->getDigitalObject($do_ref, TRUE);
+                            $do_id = $this->getIdFromJson($do_results);
+                            \Drupal::logger('aspace_digital_obj_action')->info(print_r($do_results, TRUE));
                             if (count($do_results['file_versions']) > 0 && $do_results['file_versions'][0]['file_uri'] != NULL) {
                                 $file_uri = $do_results['file_versions'][0]['file_uri'];
-                                // if it has a file version
-                                // update the URI with the repository URI
+                                // if it has a file version update the URI with the repository URI
                                 $do_results['file_versions'][0]['file_uri'] = $entity_uri;
                             } else {
-                                // if it does not have a file version
-                                // create a file version with repository URI
+                                // if it does not have a file version create a file version with repository URI
                                 $do_results['file_versions'][0]['file_uri'] = $entity_uri;
                             }
                             // post back response
-                            $do_post_request = $this->archivesspaceSession->request('POST', '/repositories/2/digital_objects/' . $do_results['digital_object_id'], $do_results);
-                            \Drupal::logger('aspace_digital_obj_action')->info(print_r($do_post_request, TRUE));
-                            if ($do_post_request['status'] == 'Created') {
-                                $this->messenger()->addStatus('Archivesspace digital object updated');
-                            }
+                            $do_post_request = $this->createUpdateDigitalObject($do_results, $do_id);
                         }
                     }
                 } else {
                     // create a digital object with a file version with the repository URI
                     $identifiers = $entity->get('field_typed_identifier')->referencedEntities();
                     $item_id = $identifiers[0]->get('field_identifier_value')->value;
+                    $do_id = str_replace(' ', '_', $item_id);
                     \Drupal::logger('aspace_digital_obj_action')->info("create new digital object");
-                    $constructed_json = [
+                    $do_json = [
                         'jsonmodel_type' => 'digital_object',
                         'title' => $entity->getTitle(),
                         'file_versions' => [
@@ -158,19 +151,20 @@ class CreateAspaceDigObj extends ActionBase implements ContainerFactoryPluginInt
                         ],
                         'linked_instances' => [
                             [
-                                'ref' => $ao_id
+                                'ref' => $ao_uri
                             ]
                         ],
-                        'digital_object_id' => str_replace(' ', '_', $item_id)
+                        'digital_object_id' => $do_id
                     ];
-                    $create_response = $this->archivesspaceSession->request('POST', '/repositories/2/digital_objects', $constructed_json);
-                    \Drupal::logger('aspace_digital_obj_action')->info(print_r($create_response, TRUE));
-                    if ($create_response['status'] == 'Created') {
-                        $this->messenger()->addStatus('Archivesspace digital object created');
-                    }
+                    $create_response = $this->createUpdateDigitalObject($do_json);
+                    $this->updateArchivalObject($ao_uri, $ao_info, $do_id);
                 }
             }
             // store the digital object id on the entity
+            $entity->set('field_digital_object_id', [
+                'value' => $do_id
+            ]);
+            $entity->save();
         }
 
     }
@@ -182,6 +176,63 @@ class CreateAspaceDigObj extends ActionBase implements ContainerFactoryPluginInt
     {
         $result = AccessResult::allowed();
         return $return_as_object ? $result : $result->isAllowed();
+    }
+
+    /**
+     *
+     */
+    private function createUpdateDigitalObject($do_json, $do_id = NULL) {
+        $url = '/repositories/2/digital_objects';
+        if ($do_id) {
+            $url .= "/" . $do_id;
+        }
+        $response = $this->archivesspaceSession->request('POST', $url, $do_json);
+        \Drupal::logger('aspace_digital_obj_action')->info(print_r($response, TRUE));
+        if ($response['status'] == 'Created') {
+            $this->messenger()->addStatus('Archivesspace digital object created');
+        }
+        if ($response['status'] == 'Updated') {
+            $this->messenger()->addStatus('Archivesspace digital object updated');
+        }
+        return $response;
+    }
+
+    /**
+     *
+     */
+    private function updateArchivalObject($ao_uri, $ao_json, $do_id) {
+        foreach ($ao_json['instances'] as $key => $instance) {
+            if ($instance['instance_type'] == 'digital_object') {
+                // BUT WHAT ABOUT WHEN THERE ARE MULTIPLE DIGITAL OBJECTS?
+                $ao_json['instances'][$key][''] = $do_id;
+            }
+        }
+        $response = $this->archivesspaceSession->request('POST', $ao_uri, $ao_json);
+        return $response;
+    }
+
+    /**
+     *
+     *
+     */
+    private function getDigitalObject($do_id, $full_uri=FALSE) {
+        if (!$full_uri) {
+            $full_uri = "/repositories/2/digital_objects/" . $do_id;
+        }
+        else {
+            $full_uri = $do_id;
+        }
+        $response = $this->archivesspaceSession->request('GET', $full_uri);
+        return $response;
+    }
+
+    /**
+     *
+     */
+    private function getIdFromJson($do_json) {
+        $uri = $do_json['uri'];
+        $parts = explode('/', $uri);
+        return $parts[count($parts)-1];
     }
 
 }
