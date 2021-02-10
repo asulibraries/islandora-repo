@@ -25,7 +25,6 @@ class AspaceTraverseFormatter extends EntityReferenceLabelFormatter
     public function viewElements(FieldItemListInterface $items, $langcode)
     {
         $elements = parent::viewElements($items, $langcode);
-        \Drupal::logger('aspace traverse')->info(print_r($elements, TRUE));
         // field source is limited to 1 value
         // foreach ($items as $delta => $item) {
             $entity = $items[0]->entity;
