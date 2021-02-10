@@ -28,31 +28,59 @@ use Drupal\paragraphs\Entity\Paragraph;
  *      order: 1
  *      type: taxonomy_term
  *      lookup_field: field_identifier_predicate
+ * zzzzz
+ *   plugin: paragraph_generate
+ *   paragraph_type: 'typed_identifier'
+ *   delimiter: '|'
+ *   fields:
+ *    field_identifier_value:
+ *      order: 0
+ *      type: text
+ *    field_identifier_type:
+ *      order: 1
+ *      type: taxonomy_term
+ *      lookup_field: field_identifier_predicate
  */
 class ParagraphGenerate extends ProcessPluginBase {
 
   /**
    * {@inheritdoc}
    */
-  public function transform($string, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
+  public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
     $delimeter = $this->configuration['delimiter'];
     $fields = $this->configuration['fields'];
-    if ($delimeter) {
-      if (str_contains($string, $delimeter)) {
-        $tparts = explode($delimeter, $string);
+    \Drupal::logger('ParagraphGenerate')->info("\$value = <pre>" . print_r($value, true) . "</pre>");
+
+    \Drupal::logger('ParagraphGenerate')->info("\$fields = <pre>" . print_r($fields, true) . "</pre>");
+
+    if (!is_array($value) && $delimeter) {
+      if (str_contains($value, $delimeter)) {
+        $tparts = explode($delimeter, $value);
         $tparts = array_map('trim', $tparts);
       }
       else {
-        $tparts = [$string];
+        $tparts = [$value];
       }
     }
+    elseif (is_array($value)) {
+      $tparts = $value;
+    }
+    \Drupal::logger('ParagraphGenerate')->info("\$tparts = <pre>" . print_r($tparts, true) . "</pre>");
     foreach ($fields as $k => $field) {
+      \Drupal::logger('ParagraphGenerate')->info("\$field[$k] = <pre>" . print_r($field, true) . "</pre>");
+
       if (is_array($field)) {
+        if (array_key_exists('key', $field)) {
+          $order_or_key = $tparts[$field['key']];
+        } else {
+          $order_or_key = $tparts[$field['order']];
+        }
         if ($field['type'] == "text") {
-          $fields[$k] = ["value" => $tparts[$field['order']]];
+          $fields[$k] = ["value" => $order_or_key];
         }
         elseif ($field['type'] == "taxonomy_term") {
-          $fields[$k] = ["target_id" => $this->getTidByValue($tparts[$field['order']], $field['lookup_field'])];
+          \Drupal::logger('ParagraphGenerate')->info("getting target_id value using \$order_or_key = <pre>" . print_r($order_or_key, true) . "</pre>");
+          $fields[$k] = ["target_id" => $this->getTidByValue($order_or_key, $field['lookup_field'])];
         }
       }
       else {
@@ -63,8 +91,12 @@ class ParagraphGenerate extends ProcessPluginBase {
           $fields[$k] = ["value" => $tparts[$field]];
         }
       }
+      \Drupal::logger('ParagraphGenerate')->info("\$fields[\$k] = <pre>" . print_r($fields[$k], true) . "</pre>");
     }
+    \Drupal::logger('ParagraphGenerate')->info("\$fields = <pre>" . print_r($fields, true) . "</pre>");
     $paragraph = $this->createParagraph($this->configuration['paragraph_type'], $fields);
+    \Drupal::logger('ParagraphGenerate')->info("\$paragraph = <pre>" . print_r($paragraph, true) . "</pre>");
+
     return $paragraph;
   }
 
