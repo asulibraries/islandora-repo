@@ -24,6 +24,7 @@ class AspaceTraverseFormatter extends EntityReferenceLabelFormatter
      */
     public function viewElements(FieldItemListInterface $items, $langcode)
     {
+        $elements_to_add = [];
         $elements = parent::viewElements($items, $langcode);
         // field source is limited to 1 value
         // foreach ($items as $delta => $item) {
@@ -33,7 +34,7 @@ class AspaceTraverseFormatter extends EntityReferenceLabelFormatter
             $member_of = $entity->get('field_member_of')->referencedEntities()[0];
             $resource = $entity->get('field_as_resource')->referencedEntities()[0];
             if ($resource == $member_of) {
-                $elements[] = [
+                $elements_to_add[] = [
                     '#url' => $member_of->toUrl()->toString(),
                     '#title' => $member_of->get('title')->value,
                     '#type' => 'link'
@@ -53,6 +54,8 @@ class AspaceTraverseFormatter extends EntityReferenceLabelFormatter
             //     $elements[$delta]['#url'] = $url;
             // }
         // }
+        \Drupal::logger('aspace_traverse')->info(print_r($elements_to_add, TRUE));
+
 
         return $elements;
     }
