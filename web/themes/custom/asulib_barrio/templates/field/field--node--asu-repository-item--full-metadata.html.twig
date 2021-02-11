@@ -57,7 +57,7 @@
 <div{{ attributes.addClass(classes, 'row').removeClass('field--type-entity-reference') }}>
   {% if (field_name == 'field_linked_agent') or (field_name == 'field_subject') or (field_name ==
     'field_geographic_subject') or (field_name == 'field_subjects_name') or (field_name == 'field_temporal_subject') or
-    (field_name == 'field_title_subject') %}
+    (field_name == 'field_title_subject') or (field_name == 'field_source') %}
     {% if not label_hidden %}
       <div{{ title_attributes.addClass(title_classes, label_col) }}>{{ label }}</div>
     {% endif %}
