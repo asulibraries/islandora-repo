@@ -1,8 +1,7 @@
 <?php
+
 namespace Drupal\asu_item_extras\Controller;
 
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\node\Controller\NodeViewController;
 

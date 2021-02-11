@@ -12,6 +12,7 @@ use Drupal\Core\Session\AccountProxy;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Drupal\group\GroupMembershipLoaderInterface;
+use Drupal\Core\Entity\EntityTypeManager;
 
 /**
  * Provides an 'Admin toolbox' Block.
@@ -53,6 +54,13 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
   protected $groupMembershipLoader;
 
   /**
+   * The entityTypeManager definition.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManager
+   */
+  protected $entityTypeManager;
+
+  /**
    * Constructor for Admin Toolbox Block.
    *
    * @param array $configuration
@@ -69,6 +77,8 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
    *   The current user.
    * @param \Drupal\group\GroupMembershipLoaderInterface $group_membership_loader
    *   The group membership loader.
+   * @param \Drupal\Core\Entity\EntityTypeManager $entityTypeManager
+   *   The entityTypeManager definition.
    */
   public function __construct(
         array $configuration,
@@ -77,13 +87,15 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
         RouteMatchInterface $route_match,
         RequestStack $request_stack,
         AccountProxy $current_user,
-        GroupMembershipLoaderInterface $group_membership_loader
+        GroupMembershipLoaderInterface $group_membership_loader,
+        EntityTypeManager $entityTypeManager
     ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->routeMatch = $route_match;
     $this->requestStack = $request_stack;
     $this->currentUser = $current_user;
     $this->groupMembershipLoader = $group_membership_loader;
+    $this->entityTypeManager = $entityTypeManager;
   }
 
   /**
@@ -97,7 +109,8 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
           $container->get('current_route_match'),
           $container->get('request_stack'),
           $container->get('current_user'),
-          $container->get('group.membership_loader')
+          $container->get('group.membership_loader'),
+          $container->get('entity_type.manager')
       );
   }
 
@@ -127,22 +140,39 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
     // the underlying node can be accessed via the path.
     $node = $this->routeMatch->getParameter('node');
     $is_collection = ($node->bundle() == 'collection');
+    $is_complex_object = FALSE;
+    if ($node->bundle() == 'asu_repository_item') {
+      $field_model_tid = $node->get('field_model')->getString();
+      $field_model_term = $this->entityTypeManager
+        ->getStorage('taxonomy_term')
+        ->load($field_model_tid);
+      $is_complex_object = (((isset($field_model_term) && is_object($field_model_term)) ?
+        $field_model_term->getName() : '') == 'Complex Object');
+    }
     $canUpdate = $node->access('update', $this->currentUser);
     $output_links = [];
     // Add item link.
-    $use_can_add_child = $is_collection && $this->canAddChild();
+    $use_can_add_child = ($is_complex_object || $is_collection) && $this->canAddChild();
     if ($use_can_add_child) {
       // This link is a little bit tricky... it needs to have a fragment like
       // this for example, where the value 10 is the collection id() value.
       // node/add/asu_repository_item?edit[field_member_of][widget][0][target_id]=10.
+      // In the case of a complex object child, the checkbox "Complex Object
+      // Child" is also checked. This is done by adding that field to the
+      // GET url like: &edit[field_complex_object_child][value]=1.
       $url = Url::fromUri(
             $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
             '/node/add/asu_repository_item?edit[field_member_of][widget][0][target_id]=' .
-            $node->id()
+            $node->id() . ($is_complex_object ? '&edit[field_complex_object_child][value]=1' : '')
         );
-      $link = Link::fromTextAndUrl(t('Add item'), $url);
+      if ($is_complex_object) {
+        $link = Link::fromTextAndUrl($this->t('Add media'), $url);
+      }
+      else {
+        $link = Link::fromTextAndUrl($this->t('Add item'), $url);
+      }
       $link = $link->toRenderable();
-      $link_glyph = Link::fromTextAndUrl(t('<i class="fas fa-plus-circle"></i>'), $url)->toRenderable();
+      $link_glyph = Link::fromTextAndUrl($this->t('<i class="fas fa-plus-circle"></i>'), $url)->toRenderable();
       $output_links[] = render($link) . " &nbsp;" . render($link_glyph);
     }
 
@@ -153,9 +183,9 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
             $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
             '/node/' . $node->id() . '/edit'
         );
-      $link = Link::fromTextAndUrl(t('Edit'), $url);
+      $link = Link::fromTextAndUrl($this->t('Edit'), $url);
       $link = $link->toRenderable();
-      $link_glyph = Link::fromTextAndUrl(t('<i class="fas fa-pencil-alt"></i>'), $url)->toRenderable();
+      $link_glyph = Link::fromTextAndUrl($this->t('<i class="fas fa-pencil-alt"></i>'), $url)->toRenderable();
       $output_links[] = render($link) . " &nbsp;" . render($link_glyph);
 
       if ($is_collection) {
@@ -163,7 +193,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
         $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/collections/' . $node->id() . '/statistics');
         $link = Link::fromTextAndUrl($this->t('Statistics'), $url);
         $link = $link->toRenderable();
-        $link_glyph = Link::fromTextAndUrl(t('<i class="fas fa-chart-bar"></i>'), $url)->toRenderable();
+        $link_glyph = Link::fromTextAndUrl($this->t('<i class="fas fa-chart-bar"></i>'), $url)->toRenderable();
         $output_links[] = render($link) . " &nbsp;" . render($link_glyph);
       }
     }

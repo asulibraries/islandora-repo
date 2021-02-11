@@ -4,7 +4,9 @@ namespace Drupal\asu_item_extras\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Url;
-use Drupal\Core\Link;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a 'International Image Interoperability Framework' Block.
@@ -15,7 +17,59 @@ use Drupal\Core\Link;
  *   category = @Translation("Views"),
  * )
  */
-class ASUItemIIIF extends BlockBase {
+class ASUItemIIIF extends BlockBase implements ContainerFactoryPluginInterface {
+
+  /**
+   * The requestStack definition.
+   *
+   * @var requestStack
+   */
+  protected $requestStack;
+
+  /**
+   * Construct method.
+   *
+   * @param array $configuration
+   *   A configuration array containing information about the plugin instance.
+   * @param string $plugin_id
+   *   The plugin_id for the formatter.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
+   *   The request_stack service.
+   */
+  public function __construct(
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
+    RequestStack $request_stack) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->requestStack = $request_stack;
+  }
+
+  /**
+   * Initializes the block and set dependency injection variables.
+   *
+   * @param Symfony\Component\DependencyInjection\ContainerInterface $container
+   *   The parent class object.
+   * @param array $configuration
+   *   A configuration array containing information about the plugin instance.
+   * @param string $plugin_id
+   *   The plugin_id for the formatter.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   *
+   * @return mixed
+   *   The initialized form object.
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('request_stack')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -32,23 +86,28 @@ class ASUItemIIIF extends BlockBase {
     // Since this block should be set to display on node/[nid] pages that are
     // "ASU Repository Item", or possibly "Collection", the underlying
     // node can be accessed via the path.
-    $node = \Drupal::routeMatch()->getParameter('node');
-    if ($node) {
-      $nid = $node->id();
-    } else {
-      $nid = 0;
-    }
-    $node_url = Url::fromRoute('<current>', array());
-    $iiif_section = $this->get_IIIF_section($node_url);
+    $node_url = Url::fromRoute('<current>', []);
+    $iiif_section = $this->getIiifSection($node_url);
     return [
       'iiif-section' => [
         '#type' => 'container',
-        $iiif_section
-      ]];
+        'section' => $iiif_section,
+      ],
+    ];
   }
 
-  private function get_IIIF_section($url) {
+  /**
+   * This will get a block for IIIF manifest for a given object.
+   *
+   * @param string $url
+   *   The given object's url.
+   *
+   * @return array
+   *   The build array to insert into the block build function.
+   */
+  private function getIiifSection($url) {
     static $id_suffix;
+    // Need to increment if there are multiple instances of this block.
     $id_suffix = !($id_suffix) ? '' : $id_suffix + 1;
     return [
       'iiif-container' => [
@@ -62,8 +121,8 @@ class ASUItemIIIF extends BlockBase {
             '#suffix' => '</div>',
             '#markup' => '            <a class="icon-link" href="https://iiif.io/technical-details/" target="_blank">
                 <img class="img" src="' .
-                \Drupal::request()->getSchemeAndHttpHost() . "/" .
-                drupal_get_path("module", "asu_item_extras") . '/images/IIIF-logo-colored-text.svg">
+            $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . "/" .
+            drupal_get_path("module", "asu_item_extras") . '/images/IIIF-logo-colored-text.svg">
               </a>',
           ],
           // Drupal requires javascript to be attached to the render elements.
@@ -77,7 +136,7 @@ class ASUItemIIIF extends BlockBase {
             'input-box' => [
               '#type' => 'textfield',
               '#id' => 'iiif_editbox' . $id_suffix,
-              '#value' => \Drupal::request()->getSchemeAndHttpHost() . $url->toString() . '/manifest',
+              '#value' => $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . $url->toString() . '/manifest',
             ],
             '#prefix' => '<div class="col-md-6 offset-md-1"><p>We support the <a href="https://iiif.io/technical-details/" target="_blank">IIIF</a> Presentation API</p><div class="row no-gutters"><div class="col-9">',
             '#suffix' => '<!-- Unnamed (Rectangle) -->
@@ -89,8 +148,8 @@ class ASUItemIIIF extends BlockBase {
             </div>
           </div>',
           ],
-        ]
-      ]
+        ],
+      ],
     ];
   }
 

@@ -1,0 +1,79 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - search_api.index.default_solr_index
+    - views.view.solr_search_content
+  module:
+    - search_api
+id: facet_summary_col
+name: 'Facet Summary (col)'
+facets:
+  all_subjects_col:
+    checked: true
+    label: 'All Subjects'
+    separator: ', '
+    weight: 0
+    show_count: false
+  date_created_year_col:
+    checked: true
+    label: 'Date Created'
+    separator: ', '
+    weight: 0
+    show_count: false
+  genre_col:
+    checked: true
+    label: Genre
+    separator: ', '
+    weight: 0
+    show_count: false
+  language_col:
+    checked: true
+    label: Language
+    separator: ', '
+    weight: 0
+    show_count: false
+  linked_agents_col:
+    checked: true
+    label: Creators
+    separator: ', '
+    weight: 0
+    show_count: false
+  open_access_col:
+    checked: true
+    label: 'Open Access'
+    separator: ', '
+    weight: 0
+    show_count: false
+  peer_reviewed_col:
+    checked: true
+    label: Peer-reviewed
+    separator: ', '
+    weight: 0
+    show_count: false
+  place_of_publication_code_col:
+    checked: true
+    label: 'Place of Publication'
+    separator: ', '
+    weight: 0
+    show_count: false
+  resource_type_col:
+    checked: true
+    label: 'Resource Type'
+    separator: ', '
+    weight: 0
+    show_count: false
+  status_col:
+    checked: true
+    label: Status
+    separator: ', '
+    weight: 0
+    show_count: false
+facet_source_id: 'search_api:views_page__solr_search_content__page_3'
+processor_configs:
+  reset_facets:
+    processor_id: reset_facets
+    weights:
+      build: '30'
+    settings:
+      link_text: Reset
