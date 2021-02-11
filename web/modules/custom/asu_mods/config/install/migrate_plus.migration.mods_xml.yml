@@ -360,7 +360,7 @@ process:
 #    keys:
 #      - note_text
 #      - type
-#    
+#
 #  field_note_para:
 ##    -
 ##      plugin: skip_on_empty
@@ -381,7 +381,7 @@ process:
 #              type: text
 #            field_note_type:
 #              type: taxonomy_term
-#      
+#
 ##    -
 ##      plugin: callback
 ##      callable: trim
@@ -394,7 +394,6 @@ process:
 ##          type: text
 ##        field_note_type:
 ##          type: taxonomy_term
-
   notes:
     plugin: make_array_groups
     source:
@@ -415,24 +414,21 @@ process:
       - '@notes_without_type'
       - '@notes'
   field_note_para:
-        complex_note:
-          plugin: paragraph_generate
-          source: '@all_the_notes'
-          paragraph_type: 'complex_note'
-          fields:
-            field_note_text:
-              key: 'field_note_text'
-              type: text
-            field_note_type:
-              key: 'field_note_type'
-              type: taxonomy_term
-              lookup_field: field_identifier_predicate
-#              type: taxonomy_term
-#              lookup_field: field_identifier_predicate
+    -
+      plugin: multiple_values
+      source: '@all_the_notes'
+    -
+      plugin: paragraph_generate
+      paragraph_type: 'complex_note'
+      fields:
+        field_note_text:
+          key: 'field_note_text'
+          type: text
+        field_note_type:
+          key: 'field_note_type'
+          type: taxonomy_term
+          lookup_field: name
 
-#            field_note_type:
-#              type: taxonomy_term
-              
 
   field_preferred_citation/value:
     plugin: skip_on_empty
@@ -559,7 +555,7 @@ process:
 #    name_array_key: name
 #    uri_array_key: uri
 #    source: '@all_the_titles'
-      
+
 destination:
   plugin: 'entity:node'
   default_bundle: asu_repository_item
