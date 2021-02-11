@@ -49,7 +49,7 @@ source:
     -
       name: typed_identifier
       label: typed identifier
-      selector: 'recordInfo/recordIdentifier[@src="aztes"]'
+      selector: 'identifier[not(@type="hdl")]'
     -
       name: abstract
       label: abstract
@@ -324,76 +324,32 @@ process:
     plugin: skip_on_empty
     method: process
     source: peer_review
-# wgg
-#  genres:
-#    plugin: make_array_groups
-#    source:
-#      - genre_labels
-#      - genre_uris
-#    keys:
-#      - name
-#      - uri
-#  genres_without_uris:
-#    plugin: make_array_groups
-#    source:
-#      - genre_wo_uris
-#    keys:
-#      - name
-#  all_the_genres:
-#    plugin: merge_skip_empty
-#    source:
-#      - '@genres_without_uris'
-#      - '@genres'
-#  field_genre:
-#    plugin: name_uri_generate
-#    uri_field: field_authority_link
-#    default_vocabulary: genre
-#    name_array_key: name
-#    uri_array_key: uri
-#    source: '@all_the_genres'
-
-#  notes_arr:
-#    plugin: make_array_groups
-#    source:
-#      - note
-#      - note_type
-#    keys:
-#      - note_text
-#      - type
-#
-#  field_note_para:
-##    -
-##      plugin: skip_on_empty
-##      method: process
-##      source:
-##        - '@notes_arr'
-#    -
-#      plugin: sub_process
-#      source:
-#        - '@notes_arr'
-#      process:
-#        complex_note:
-#          plugin: paragraph_generate
-#          paragraph_type: 'complex_note'
-#          fields:
-#            field_note_text:
-#              key: 'note_text'
-#              type: text
-#            field_note_type:
-#              type: taxonomy_term
-#
-##    -
-##      plugin: callback
-##      callable: trim
-##    -
-##      plugin: paragraph_generate
-##      paragraph_type: 'complex_note'
-##      fields:
-##        field_note_text:
-##          key: 'note_text'
-##          type: text
-##        field_note_type:
-##          type: taxonomy_term
+  genres:
+    plugin: make_array_groups
+    source:
+      - genre_labels
+      - genre_uris
+    keys:
+      - name
+      - uri
+  genres_without_uris:
+    plugin: make_array_groups
+    source:
+      - genre_wo_uris
+    keys:
+      - name
+  all_the_genres:
+    plugin: merge_skip_empty
+    source:
+      - '@genres_without_uris'
+      - '@genres'
+  field_genre:
+    plugin: name_uri_generate
+    uri_field: field_authority_link
+    default_vocabulary: genre
+    name_array_key: name
+    uri_array_key: uri
+    source: '@all_the_genres'
   notes:
     plugin: make_array_groups
     source:
@@ -469,92 +425,89 @@ process:
     plugin: skip_on_empty
     method: process
     source: edtf_created_date
-  # wgg
-#  agents:
-#    plugin: make_array_groups
-#    source:
-#      - agent_person_name
-#      - agent_person_uris
-#      - agent_person_code
-#    keys:
-#      - name
-#      - uri
-#      - rel
-#  agents_without_uris:
-#    plugin: make_array_groups
-#    source:
-#      - agent_person_name_wo_uris
-#      - agent_person_code_wo_uris
-#    keys:
-#      - name
-#      - rel
-#  all_the_agents:
-#    plugin: merge_skip_empty
-#    source:
-#      - '@agents_without_uris'
-#      - '@agents'
-#  field_linked_agent:
-#    plugin: typed_relation_generate
-#    delimiter: '|'
-#    uri_field: field_authority_link
-#    default_vocabulary: person
-#    name_array_key: name
-#    uri_array_key: uri
-#    source: '@all_the_agents'
-#  subject_names:
-#    plugin: make_array_groups
-#    source:
-#      - subject_person_name
-#      - subject_person_uris
-#    keys:
-#      - name
-#      - uri
-#  subject_names_without_uris:
-#    plugin: make_array_groups
-#    source:
-#      - subject_person_name_wo_uris
-#    keys:
-#      - name
-#  all_the_subject_names:
-#    plugin: merge_skip_empty
-#    source:
-#      - '@subject_names_without_uris'
-#      - '@subject_names'
-#  field_subjects_name:
-#    plugin: name_uri_generate
-#    uri_field: field_authority_link
-#    default_vocabulary: person
-#    name_array_key: name
-#    uri_array_key: uri
-#    source: '@all_the_subject_names'
-
-  # wgg
-#  titles:
-#    plugin: make_array_groups
-#    source:
-#      - subject_title_title
-#      - subject_title_title_uri
-#    keys:
-#      - name
-#      - uri
-#  titles_without_uris:
-#    plugin: make_array_groups
-#    source:
-#      - subject_title_title_wo_uris
-#    keys:
-#      - name
-#  all_the_titles:
-#    plugin: merge_skip_empty
-#    source:
-#      - '@titles_without_uris'
-#      - '@titles'
-#  field_title_subject:
-#    plugin: name_uri_generate
-#    uri_field: field_authority_link
-#    default_vocabulary: titles
-#    name_array_key: name
-#    uri_array_key: uri
-#    source: '@all_the_titles'
+  agents:
+    plugin: make_array_groups
+    source:
+      - agent_person_name
+      - agent_person_uris
+      - agent_person_code
+    keys:
+      - name
+      - uri
+      - rel
+  agents_without_uris:
+    plugin: make_array_groups
+    source:
+      - agent_person_name_wo_uris
+      - agent_person_code_wo_uris
+    keys:
+      - name
+      - rel
+  all_the_agents:
+    plugin: merge_skip_empty
+    source:
+      - '@agents_without_uris'
+      - '@agents'
+  field_linked_agent:
+    plugin: typed_relation_generate
+    delimiter: '|'
+    uri_field: field_authority_link
+    default_vocabulary: person
+    name_array_key: name
+    uri_array_key: uri
+    source: '@all_the_agents'
+  subject_names:
+    plugin: make_array_groups
+    source:
+      - subject_person_name
+      - subject_person_uris
+    keys:
+      - name
+      - uri
+  subject_names_without_uris:
+    plugin: make_array_groups
+    source:
+      - subject_person_name_wo_uris
+    keys:
+      - name
+  all_the_subject_names:
+    plugin: merge_skip_empty
+    source:
+      - '@subject_names_without_uris'
+      - '@subject_names'
+  field_subjects_name:
+    plugin: name_uri_generate
+    uri_field: field_authority_link
+    default_vocabulary: person
+    name_array_key: name
+    uri_array_key: uri
+    source: '@all_the_subject_names'
+  titles:
+    plugin: make_array_groups
+    source:
+      - subject_title_title
+      - subject_title_title_uri
+    keys:
+      - name
+      - uri
+  titles_without_uris:
+    plugin: make_array_groups
+    source:
+      - subject_title_title_wo_uris
+    keys:
+      - name
+  all_the_titles:
+    plugin: merge_skip_empty
+    source:
+      - '@titles_without_uris'
+      - '@titles'
+  field_title_subject:
+    plugin: name_uri_generate
+    uri_field: field_authority_link
+    default_vocabulary: titles
+    name_array_key: name
+    uri_array_key: uri
+    source: '@all_the_titles'
 
 destination:
   plugin: 'entity:node'
