@@ -111,6 +111,7 @@ class CreateAspaceDigObj extends ActionBase implements ContainerFactoryPluginInt
                 $do_results = $this->getDigitalObject($do_id, FALSE);
                 $do_results['file_versions'][0]['file_uri'] = $entity_uri;
                 $do_post_request = $this->createUpdateDigitalObject($do_results, $do_id);
+                $do_uri = $do_post_request['uri'];
             }
             else {
                 $ao_instances = $ao_info['instances'];
@@ -138,9 +139,10 @@ class CreateAspaceDigObj extends ActionBase implements ContainerFactoryPluginInt
                 ];
                 $create_response = $this->createUpdateDigitalObject($do_json);
                 $do_uri = $create_response['uri'];
-                $this->updateArchivalObject($ao_uri, $ao_info, $do_id, $do_uri);
+
 
             }
+            $this->updateArchivalObject($ao_uri, $ao_info, $do_id, $do_uri);
             // store the digital object id on the entity
             $entity->set('field_digital_object_id', [
                 'value' => $do_uri
