@@ -43,7 +43,6 @@ class AspaceTraverseFormatter extends EntityReferenceLabelFormatter
         }
 
         $elements = array_merge($elements, $elements_to_add);
-        $elements = array_reverse($elements);
 
         return $elements;
     }
