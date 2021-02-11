@@ -49,11 +49,6 @@ class MakeArrayGroups extends ProcessPluginBase {
 \Drupal::logger('MakeArrayGroups')->info("<pre>" . print_r($value, true) . "</pre>");
     $new_array = [];
     $labels = $value[0];
-    if (!is_array($labels)) {
-\Drupal::logger('MakeArrayGroups')->info("<b>jumping out \$labels (which is \$value[0]) is not an array</b>");
-
-      return NULL;
-    }
     if (count($value) > 1) {
       $uris = $value[1];
     }
@@ -86,17 +81,19 @@ class MakeArrayGroups extends ProcessPluginBase {
     }
     else {
 \Drupal::logger('MakeArrayGroups')->info("in else, \$keys = <pre>" . print_r($keys, true) . "</pre>");
+      if ($labels) {
+        $new_obj = [
+          $keys[0] => $labels
+        ];
+        if ($uris) {
+          $new_obj[$keys[1]] = $uris;
+        }
+        if ($rel) {
+          $new_obj[$keys[2]] = $rel;
+        }
+        $new_array[] = $new_obj;
+      }
 
-      $new_obj = [
-        $keys[0] => $labels
-      ];
-      if ($uris) {
-        $new_obj[$keys[1]] = $uris;
-      }
-      if ($rel) {
-        $new_obj[$keys[2]] = $rel;
-      }
-      $new_array[] = $new_obj;
     }
 \Drupal::logger('MakeArrayGroups')->info("\$new_array = <pre>" . print_r($new_array, true) . "</pre>");
 
