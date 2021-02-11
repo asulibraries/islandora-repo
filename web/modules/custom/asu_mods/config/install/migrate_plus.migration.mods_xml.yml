@@ -49,7 +49,15 @@ source:
     -
       name: typed_identifier
       label: typed identifier
-      selector: 'identifier[not(@type="hdl")]'
+      selector: 'identifier[not(@type="hdl") and @type]'
+    -
+      name: typed_identifier_type
+      label: typed identifier type
+      selector: 'identifier[not(@type="hdl") and @type]/@type'
+    -
+      name: typed_identifier_wo_type
+      lable: typed identifier without type
+      selector: 'identifier[not(@type)]'
     -
       name: abstract
       label: abstract
@@ -97,11 +105,11 @@ source:
     -
       name: note
       label: note
-      selector: 'note[not(@type="preferred citation") and @type]'
+      selector: 'note[not(@type="preferred citation") and not(@type="statement of responsibility") and @type]'
     -
       name: note_type
       label: note type
-      selector: 'note[not(@type="preferred citation") and @type]/@type'
+      selector: 'note[not(@type="preferred citation") and not(@type="statement of responsibility") and @type]/@type'
     -
       name: notes_wo_type
       lable: notes without type
@@ -110,6 +118,10 @@ source:
       name: pref_citation
       label: preferred citation
       selector: 'note[@type="preferred citation"]'
+    -
+      name: statement_of_responsbility
+      label: statement of responsibility
+      selector: 'note[@type="statement of responsibility"]'
     -
       name: reuse_permissions
       label: reuse permission
@@ -256,7 +268,7 @@ process:
   # ✓ field_note_para
   # ✓ field_preferred_citation
   # ✓ field_statement_responsibility
-  # field_typed_identifier
+  # ✓ field_typed_identifier
   # ✓ field_handle
   # ✓ field_peer_reviewed
   # field_open_access
@@ -384,21 +396,53 @@ process:
           key: 'field_note_type'
           type: taxonomy_term
           lookup_field: name
-
-
+  typed_identifiers:
+    plugin: make_array_groups
+    source:
+      - typed_identifier
+      - typed_identifier_type
+    keys:
+      - field_identifier_value
+      - field_identifier_type
+  typed_identifiers_without_type:
+    plugin: make_array_groups
+    source:
+      - typed_identifier_wo_type
+    keys:
+      - field_identifier_value
+  all_the_typed_identifiers:
+    plugin: merge_skip_empty
+    source:
+      - '@typed_identifiers_without_type'
+      - '@typed_identifiers'
+  field_typed_identifier:
+    -
+      plugin: multiple_values
+      source: '@all_the_typed_identifiers'
+    -
+      plugin: paragraph_generate
+      paragraph_type: 'typed_identifier'
+      fields:
+        field_identifier_value:
+          key: 'field_identifier_value'
+          type: text
+        field_identifier_type:
+          key: 'field_identifier_type'
+          type: taxonomy_term
+          lookup_field: field_identifier_predicate
   field_preferred_citation/value:
     plugin: skip_on_empty
     method: process
     source: pref_citation
   field_preferred_citation/format: constants/description_format
-#  field_statement_responsibility:
-#    -
-#      plugin: skip_on_empty
-#      source: note
-#      method: process
-#    -
-#      plugin: callback
-#      callable: trim
+  field_statement_responsibility:
+    -
+      plugin: skip_on_empty
+      source: statement_of_responsbility
+      method: process
+    -
+      plugin: callback
+      callable: trim
   field_reuse_permissions:
     -
       plugin: skip_on_empty
