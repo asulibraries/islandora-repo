@@ -78,7 +78,7 @@ class ParagraphGenerate extends ProcessPluginBase {
         if ($field['type'] == "text") {
           $fields[$k] = ["value" => $order_or_key];
         }
-        elseif ($field['type'] == "taxonomy_term") {
+        elseif ($field['type'] == "taxonomy_term" && $order_or_key != NULL) {
           \Drupal::logger('ParagraphGenerate')->info("getting target_id value using \$order_or_key = <pre>" . print_r($order_or_key, true) . "</pre>");
           $fields[$k] = ["target_id" => $this->getTidByValue($order_or_key, $field['lookup_field'])];
         }
