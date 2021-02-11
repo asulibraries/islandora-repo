@@ -143,7 +143,7 @@ class CreateAspaceDigObj extends ActionBase implements ContainerFactoryPluginInt
             }
             // store the digital object id on the entity
             $entity->set('field_digital_object_id', [
-                'value' => $do_id
+                'value' => $do_uri
             ]);
             $entity->save();
         }
@@ -193,8 +193,11 @@ class CreateAspaceDigObj extends ActionBase implements ContainerFactoryPluginInt
         }
         if (!$set_uri) {
             $ao_json['instances'][] = [
+                'lock_version' => 0,
                 'instance_type' => 'digital_object',
                 'jsonmodel_type' => 'instance',
+                'created_by' => 'admin',
+                'is_representative' => false,
                 'digital_object' => [
                     'ref' => $do_uri
                 ]
