@@ -29,25 +29,40 @@ class AspaceTraverseFormatter extends EntityReferenceLabelFormatter
         foreach ($this->getEntitiesToView($items, $langcode) as $delta => $entity) {
             // field source is limited to 1 value
             // $entity = $items[0]->entity;
-            $title = $entity->get('field_as_title')->value;
             $id = $entity->id();
-            $member_of = $entity->get('field_member_of')->referencedEntities()[0];
-            $resource = $entity->get('field_as_resource')->referencedEntities()[0];
-            if ($resource == $member_of) {
-                $elements_to_add[] = [
-                    '#url' => $member_of->toUrl(),
-                    '#title' => $member_of->get('title')->value,
-                    '#type' => 'link'
-                ];
-            }
+            $elements_to_add[] = [
+                '#url' => $entity->toUrl(),
+                '#title' => $this->getTitle($entity),
+                '#type' => 'link'
+            ];
+
+            $this->traverseAspaceTree($entity, $elements_to_add);
         }
 
         $elements = array_merge($elements, $elements_to_add);
 
-        return $elements;
+        return $elements_to_add;
     }
 
-    private function traverseAspaceTree($node) {
+    private function traverseAspaceTree($entity, $elements_to_add) {
+        $member_of = $entity->get('field_member_of')->referencedEntities()[0];
+        $resource = $entity->get('field_as_resource')->referencedEntities()[0];
+        $elements_to_add[] = [
+            '#url' => $member_of->toUrl(),
+            '#title' => $this->getTitle($member_of),
+            '#type' => 'link'
+        ];
+        if ($resource == $member_of) {
+            return;
+        } else {
+            $this->traverseAspaceTree($member_of, $elements_to_add);
+        }
+    }
 
+    private function getTitle($entity) {
+        if ($entity->hasField('field_as_title')) {
+            return $entity->get('field_as_title')->value;
+        }
+        return $entity->get('title')->value;
     }
 }
