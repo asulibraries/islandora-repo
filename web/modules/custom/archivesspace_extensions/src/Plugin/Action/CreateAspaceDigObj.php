@@ -137,7 +137,8 @@ class CreateAspaceDigObj extends ActionBase implements ContainerFactoryPluginInt
                     'digital_object_id' => $do_id
                 ];
                 $create_response = $this->createUpdateDigitalObject($do_json);
-                $this->updateArchivalObject($ao_uri, $ao_info, $do_id);
+                $do_uri = $create_response['uri'];
+                $this->updateArchivalObject($ao_uri, $ao_info, $do_id, $do_uri);
 
             }
             // store the digital object id on the entity
@@ -180,14 +181,28 @@ class CreateAspaceDigObj extends ActionBase implements ContainerFactoryPluginInt
     /**
      *
      */
-    private function updateArchivalObject($ao_uri, $ao_json, $do_id) {
-        foreach ($ao_json['instances'] as $key => $instance) {
-            if ($instance['instance_type'] == 'digital_object') {
-                // BUT WHAT ABOUT WHEN THERE ARE MULTIPLE DIGITAL OBJECTS?
-                $ao_json['instances'][$key][''] = $do_id;
+    private function updateArchivalObject($ao_uri, $ao_json, $do_id, $do_uri) {
+        $set_uri = FALSE;
+        if (count($ao_json['instances']) > 0) {
+            foreach ($ao_json['instances'] as $key => $instance) {
+                if ($instance['instance_type'] == 'digital_object' && $instance['digital_object']['ref'] == $do_uri) {
+                    $ao_json['instances'][$key]['digital_object']['ref'] = $do_uri;
+                    $set_uri = TRUE;
+                }
             }
         }
+        if (!$set_uri) {
+            $ao_json['instances'][] = [
+                'instance_type' => 'digital_object',
+                'jsonmodel_type' => 'instance',
+                'digital_object' => [
+                    'ref' => $do_uri
+                ]
+            ];
+        }
+
         $response = $this->archivesspaceSession->request('POST', $ao_uri, $ao_json);
+        \Drupal::logger('aspace_action_update_ao_object')->info(print_r($response, TRUE));
         return $response;
     }
 
