@@ -104,7 +104,13 @@ class ModsEncoder extends XmlEncoder {
               if (is_array($cv)) {
                 $arr_cv = $cv;
               }
-              $field_arr[$ck] = self::get_field_values($val, $cv, $ck);
+              if (str_contains($cv, "/name")) {
+                $cv = str_replace('/name', '', $cv);
+                $field_arr[$ck] = self::get_field_values($val, $cv, $ck, 'name');
+              }
+              else {
+                $field_arr[$ck] = self::get_field_values($val, $cv, $ck);
+              }
             }
           }
           else {
