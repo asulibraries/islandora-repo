@@ -205,15 +205,15 @@ source:
     -
       name: subject_temporal_name
       label: subject (temporal) name
-      selector: 'subject[topic[boolean(@valueURI)]]/topic'
+      selector: 'subject[temporal[boolean(@valueURI)]]/temporal'
     -
       name: subject_temporal_uris
       label: subject (temporal) name uri
-      selector: 'subject[topic[boolean(@valueURI)]]/topic/@valueURI'
+      selector: 'subject[temporal[boolean(@valueURI)]]/temporal/@valueURI'
     -
       name: subject_temporal_name_wo_uris
       label: subject (temporal, without uri)
-      selector: 'subject[topic[not(@valueURI)]]/topic'
+      selector: 'subject[temporal[not(@valueURI)]]/temporal'
 
   ids:
     pid:
@@ -560,25 +560,25 @@ process:
     name_array_key: name
     uri_array_key: uri
     source: '@all_the_subject_names'
-#  titles:
-#    plugin: make_array_groups
-#    source:
-#      - subject_title_title
-#      - subject_title_title_uri
-#    keys:
-#      - name
-#      - uri
-#  titles_without_uris:
-#    plugin: make_array_groups
-#    source:
-#      - subject_title_title_wo_uris
-#    keys:
-#      - name
-#  all_the_titles:
-#    plugin: merge_skip_empty
-#    source:
-#      - '@titles_without_uris'
-#      - '@titles'
+  titles:
+    plugin: make_array_groups
+    source:
+      - subject_title_title
+      - subject_title_title_uri
+    keys:
+      - name
+      - uri
+  titles_without_uris:
+    plugin: make_array_groups
+    source:
+      - subject_title_title_wo_uris
+    keys:
+      - name
+  all_the_titles:
+    plugin: merge_skip_empty
+    source:
+      - '@titles_without_uris'
+      - '@titles'
   field_title_subject:
     plugin: name_uri_generate
     uri_field: field_authority_link
@@ -608,15 +608,37 @@ process:
   field_geographic_subject:
     plugin: name_uri_generate
     uri_field: field_authority_link
-    default_vocabulary: person
+    default_vocabulary: geo_location
     name_array_key: name
     uri_array_key: uri
     source: '@all_the_subject_geographic'
-#
-#  field_temporal_subject:
-#      name: subject_temporal_name
-#      name: subject_temporal_uris
-#      name: subject_temporal_name_wo_uris
+
+  subject_temporal:
+    plugin: make_array_groups
+    source:
+      - subject_temporal_name
+      - subject_temporal_uris
+    keys:
+      - name
+      - uri
+  subject_temporal_without_uris:
+    plugin: make_array_groups
+    source:
+      - subject_temporal_name_wo_uris
+    keys:
+      - name
+  all_the_subject_temporal:
+    plugin: merge_skip_empty
+    source:
+      - '@subject_temporal_without_uris'
+      - '@subject_temporal'
+  field_temporal_subject:
+    plugin: name_uri_generate
+    uri_field: field_authority_link
+    default_vocabulary: temporal
+    name_array_key: name
+    uri_array_key: uri
+    source: '@all_the_subject_temporal'
 
 destination:
   plugin: 'entity:node'
