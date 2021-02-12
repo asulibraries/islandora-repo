@@ -268,7 +268,7 @@ class ModsEncoder extends XmlEncoder {
     else {
       $context[self::ROOT_NODE_NAME] = 'mods';
       $new_data = $this->process_node($mods_config, $data);
-      $all_records[] = $new_data;
+      $all_records['#'] = $new_data;
     }
 
     $xml = parent::encode($all_records, $format, $context);
