@@ -3,7 +3,7 @@
 namespace Drupal\repo_bento_search;
 
 /**
- * Interface BentoApiInterface.
+ * Interface for bento api services.
  */
 interface BentoApiInterface {
 

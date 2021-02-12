@@ -83,8 +83,13 @@ class FeedbackButton extends BlockBase implements ContainerFactoryPluginInterfac
     $cid = $this->getCollectionParent($node);
     $url_base = $this->currentRequest->getSchemeAndHttpHost();
     $class = 'btn btn-primary';
-    $feedback_url = Url::fromUri($url_base . '/form/feedback?source_entity_type=node&source_entity_id=' . $nid . '&item=' . $nid . '&collection=' . $cid);
-    $link = Link::fromTextAndUrl(t('<i class="fas fa-comments"></i> Feedback'), $feedback_url)->toRenderable();
+    if ($cid == $nid) {
+      $feedback_url = Url::fromUri($url_base . '/form/feedback?source_entity_type=node&source_entity_id=' . $nid . '&collection=' . $cid . '&primary_element=collection');
+    }
+    else {
+      $feedback_url = Url::fromUri($url_base . '/form/feedback?source_entity_type=node&source_entity_id=' . $nid . '&item=' . $nid . '&collection=' . $cid . '&primary_element=item');
+    }
+    $link = Link::fromTextAndUrl($this->t('<i class="fas fa-comments"></i> Feedback'), $feedback_url)->toRenderable();
     $link['#attributes'] = ['class' => $class];
     $markup = [
       '#markup' => render($link),
@@ -124,6 +129,11 @@ class FeedbackButton extends BlockBase implements ContainerFactoryPluginInterfac
    *   A node.
    */
   public function getCollectionParent(NodeInterface $node) {
+    // If the node is a collection itself, the code here should return the
+    // id() value of the collection itself.
+    if ($node->bundle() == 'collection') {
+      return $node->id();
+    }
     if (!$node->get('field_member_of')->isEmpty()) {
       $parent = $node->get('field_member_of')->entity;
       if ($parent->bundle() == 'collection') {

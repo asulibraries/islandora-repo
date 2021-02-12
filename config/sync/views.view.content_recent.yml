@@ -461,6 +461,84 @@ display:
           entity_type: node
           entity_field: type
           plugin_id: bundle
+        status:
+          id: status
+          table: node_field_data
+          field: status
+          relationship: field_member_of
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: '1'
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: node
+          entity_field: status
+          plugin_id: boolean
+        field_complex_object_child_value:
+          id: field_complex_object_child_value
+          table: node__field_complex_object_child
+          field: field_complex_object_child_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: '0'
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: boolean
       defaults:
         filters: false
         filter_groups: false
@@ -504,6 +582,15 @@ display:
           required: true
           entity_type: node
           entity_field: uid
+          plugin_id: standard
+        field_member_of:
+          id: field_member_of
+          table: node__field_member_of
+          field: field_member_of
+          relationship: none
+          group_type: group
+          admin_label: 'field_member_of: Content'
+          required: false
           plugin_id: standard
       fields:
         changed:
@@ -1403,6 +1490,46 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           plugin_id: boolean
+        status:
+          id: status
+          table: node_field_data
+          field: status
+          relationship: field_member_of
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: '1'
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: node
+          entity_field: status
+          plugin_id: boolean
       defaults:
         filters: false
         filter_groups: false
@@ -1411,6 +1538,7 @@ display:
         style: false
         row: false
         title: false
+        relationships: false
       filter_groups:
         operator: AND
         groups:
@@ -1788,6 +1916,27 @@ display:
         type: fields
         options: {  }
       title: 'Recent items'
+      relationships:
+        uid:
+          id: uid
+          table: node_field_data
+          field: uid
+          relationship: none
+          group_type: group
+          admin_label: author
+          required: true
+          entity_type: node
+          entity_field: uid
+          plugin_id: standard
+        field_member_of:
+          id: field_member_of
+          table: node__field_member_of
+          field: field_member_of
+          relationship: none
+          group_type: group
+          admin_label: 'field_member_of: Content'
+          required: false
+          plugin_id: standard
     cache_metadata:
       max-age: -1
       contexts:

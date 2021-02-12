@@ -4,6 +4,7 @@ use Drupal\search_api\IndexInterface;
 use Drupal\views\ViewExecutable;
 use Drupal\views\Plugin\views\cache\CachePluginBase;
 use Drupal\user\Entity\User;
+use Drupal\taxonomy\Entity\Term;
 
 /**
  * Implements hook_form_alter().
@@ -12,13 +13,31 @@ use Drupal\user\Entity\User;
  * @param $form_id
  */
 function asu_search_form_views_exposed_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id){
+  $current_path = \Drupal::service('path.current')->getPath();
+  $node = \Drupal::routeMatch()->getParameter('node');
+  if (!is_object($node) && $node) {
+    $node = \Drupal::entityTypeManager()->getStorage('node')->load($node);
+  }
   if ($form['#id'] == 'views-exposed-form-solr-search-content-page-3') {
-    $current_path = \Drupal::service('path.current')->getPath();
-    $node = \Drupal::routeMatch()->getParameter('node');
-    // since this block is configured to only display on content type = "Collection"
+
+    // Collection searching.
+    // Since this block is configured to only display on content type = "Collection"
     // we don't need to check the node's content type.
     $new_search_path = ($node) ? '/collections/' . $node->id() . '/search/' : $current_path;
     $form['#action'] = $new_search_path;
+  }
+  elseif ($form['#id'] == 'views-exposed-form-solr-search-content-page-2') {
+    // Complex object searching.
+    // Since we cannot configure the block based on the node's model, we need to
+    // check that here.
+    $field_model_tid = $node->get('field_model')->getString();
+    $field_model_term = Term::load($field_model_tid);
+    $field_model = (isset($field_model_term) && is_object($field_model_term)) ?
+      $field_model_term->getName() : '';
+    if ($field_model == 'Complex Object') {
+      $new_search_path = ($node) ? '/items/' . $node->id() . '/search/' : $current_path;
+      $form['#action'] = $new_search_path;
+    }
   }
 }
 
@@ -29,12 +48,42 @@ function asu_search_search_api_solr_field_mapping_alter(IndexInterface $index, a
   // Make file size and mime type multi-valued.
   $fields['field_file_size'] = 'itm_field_file_size';
   $fields['field_mime_type'] = 'sm_field_mime_type';
+  $fields['institution_from_collection'] = 'sm_institution_from_collection';
+  $fields['asu_issn'] = 'sm_asu_issn';
+  $fields['asu_isbn'] = 'sm_asu_isbn';
+  $fields['asu_local'] = 'sm_asu_local';
+  $fields['asu_doi'] = 'sm_asu_doi';
+  $fields['note_value'] = 'sm_note_value';
+  $fields['asu_agent_aut'] = 'sm_asu_agent_aut';
+  $fields['asu_agent_ths'] = 'sm_asu_agent_ths';
+  $fields['asu_identifier'] = 'sm_asu_identifier';
 }
 
 function asu_search_preprocess_node(&$variables) {
   if ($variables['node'] && $variables['node']->getType() == 'asu_repository_item') {
     $asu_utils = \Drupal::service('asu_utils');
     $variables['is_published'] = $asu_utils->isNodePublished($variables['node']);
+    if ($variables['view_mode'] == "search_result") {
+      if ($variables['node']->get('field_model') != NULL && count($variables['node']->get('field_model')) > 0) {
+        $model = $variables['node']->get('field_model')->referencedEntities()[0]->getName();
+        if ($model == "Complex Object") {
+          $complex_obj_child = \Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['field_member_of' => $variables['node']->id()]);
+          $utils = \Drupal::service('islandora.utils');
+          // loop through the children
+          foreach ($complex_obj_child as $child) {
+            // for each child, get the thumbnail media
+            // if no thumbnail media continue
+            // if found, return and set that thumbnail as a variable
+            $thumbn_term = $utils->getTermForUri('http://pcdm.org/use#ThumbnailImage');
+            $thumb_media = $utils->getMediaWithTerm($child, $thumbn_term);
+            if ($thumb_media) {
+              $variables['complex_obj_thumb'] = $thumb_media->get('field_media_image')->entity->createFileUrl();
+              break;
+            }
+          }
+        }
+      }
+    }
   }
 }
 
@@ -77,6 +126,6 @@ function asu_search_views_pre_render(ViewExecutable $view) {
     else {
       $view->header['area_1']->options['content']['value'] = "";
     }
-
   }
+  // TODO: may need to handle the complex object search page separately here.
 }

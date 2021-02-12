@@ -176,7 +176,7 @@ function content_change_digest_mail($key, &$message, $params) {
   $config = \Drupal::config('system.site');
   $site_name = $config->get('name');
   $site_slogan = $config->get('slogan');
-  $options['@site'] = $site_name . (($site_slogan) ? " | " . $site_slogan : "");
+  $options['@site'] = $site_slogan . (($site_name) ? " | " . $site_name : "");
   $options['langcode'] = $message['langcode'];
   switch ($key) {
     case 'notice':

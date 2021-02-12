@@ -94,6 +94,18 @@
       </div>
     {% endif %}
     <div class="field row">
+      <div class="field__label {{ label_col }}">{{ 'System Created'|t }}</div>
+      <ul class="inline-list field__items {{ item_col }}">
+        <li>{{ node.created.value|format_date('custom', 'Y-m-d h:i:s') }}</li>
+      </ul>
+    </div>
+    <div class="field row">
+      <div class="field__label {{ label_col }}">{{ 'System Modified'|t }}</div>
+      <ul class="inline-list field__items {{ item_col }}">
+        <li>{{ node.changed.value|format_date('custom', 'Y-m-d h:i:s') }}</li>
+      </ul>
+    </div>
+    <div class="field row">
       <div class="field__label {{ label_col }}">{{ 'Additional Formats'|t }}</div>
       <ul class="inline-list field__items {{ item_col }}">
         <li><a href="{{ oai_base_url ~ node.id }}">OAI Dublin Core</a></li>

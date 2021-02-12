@@ -53,7 +53,7 @@ class SearchForm extends FormBase {
     $form['search_api_fulltext'] = [
       '#type' => 'textfield',
       '#title' => $this->t('keyword'),
-      '#size' => 50,
+      '#size' => 30,
       '#weight' => '0',
       '#title_display' => 'invisible',
     ];

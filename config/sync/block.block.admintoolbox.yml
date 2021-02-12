@@ -1,0 +1,48 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - asu_admin_toolbox
+    - context
+    - islandora
+    - node
+    - system
+  theme:
+    - asulib_barrio
+id: admintoolbox
+theme: asulib_barrio
+region: sidebar_first
+weight: -38
+provider: null
+plugin: admin_toolbox
+settings:
+  id: admin_toolbox
+  label: 'Admin toolbox'
+  provider: asu_admin_toolbox
+  label_display: '0'
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    pages: ''
+    negate: null
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    view_inclusion: {  }
+  media_source_mimetype:
+    id: media_source_mimetype
+    mimetype: ''
+    negate: false
+    context_mapping: {  }
+  node_type:
+    id: node_type
+    bundles:
+      asu_repository_item: asu_repository_item
+      collection: collection
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+  request_path:
+    id: request_path
+    pages: "/node/add*\r\n/node/*/edit*"
+    negate: true

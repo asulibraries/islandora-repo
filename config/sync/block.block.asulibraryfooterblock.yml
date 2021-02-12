@@ -4,12 +4,13 @@ dependencies:
   module:
     - asu_brand
     - context
+    - islandora
   theme:
     - asulib_barrio
 id: asulibraryfooterblock
 theme: asulib_barrio
-region: footer_fourth
-weight: -29
+region: footer_fifth
+weight: 0
 provider: null
 plugin: asu_lib_footer_block
 settings:
@@ -22,9 +23,12 @@ visibility:
     id: request_path_exclusion
     pages: ''
     negate: null
-    context_mapping: {  }
   view_inclusion:
     id: view_inclusion
     negate: null
     view_inclusion: {  }
+  media_source_mimetype:
+    id: media_source_mimetype
+    mimetype: ''
+    negate: false
     context_mapping: {  }

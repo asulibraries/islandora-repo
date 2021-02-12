@@ -1,5 +1,7 @@
 <?php
 
+use Drupal\search_api\Entity\Index;
+
 /**
  * @file
  * Contains asu_collection_extras.module.
@@ -39,4 +41,121 @@ function asu_collection_extras_get_collection_children($collection_node, $sort_b
       ->range(0, $limit);
   }
   return $childrenQuery->execute();
+}
+
+/**
+ * This is also used by the blocks in this module to get collection items.
+ * 
+ * The main difference between this and asu_collection_extras_get_collection_children
+ * is that this will get all children in one go without having to recursively
+ * call thanks to the ancestors field.
+ *
+ * @param mixed $collection_node
+ *   Can take a node object or the node ID value.
+ * @param bool $sort_by_date
+ *   (OPTIONAL) whether or not to sort by date, default is FALSE.
+ * @param int $limit
+ *   The number of results to return (to provide the recent additions for the
+ *   block that only displays only 4 items)
+ *
+ * @return array
+ *   Multidimensional array that contains the nid, changed, and 
+ * original_file_count for each child of the collection. The key of the top
+ * array is the nid. This array should be sorted by the changed timestamps
+ * so that the first element's changed value would be the most recent.
+ */
+function asu_collection_extras_solr_get_collection_children($collection_node) {
+  $collection_node_id = (is_object($collection_node) ? $collection_node->id() : $collection_node);
+  $nids_arr = [];
+  if (!is_null($collection_node_id)) {
+    $index = Index::load('default_solr_index');
+    $server = $index->getServerInstance();
+    $backend = $server->getBackend();
+    $solrConnector = $backend->getSolrConnector();
+
+    $solariumQuery = $solrConnector->getSelectQuery();
+
+
+    // @todo Fix this so it loops through a reasonable amount of records
+    // instead of setting a dangerously high value.
+    $solariumQuery->setRows(2147483630);
+    $solariumQuery->addParam('q', '(itm_field_ancestors:' . $collection_node_id .
+      ' OR itm_field_combined_member_of:' . $collection_node_id . ')');
+    $solariumQuery->setFields(['its_nid', 'ds_changed', 'ss_original_file_count', 'itm_field_model']);
+    $solariumQuery->addSort('ds_changed', 'desc');
+
+    $nids = $solrConnector->execute($solariumQuery);
+    foreach ($nids as $nid_doc) {
+      $nids_arr[$nid_doc->its_nid] = [
+        'changed' => $nid_doc->ds_changed,
+        'original_file_count' => $nid_doc->ss_original_file_count,
+        'field_model' => (!is_null($nid_doc->itm_field_model) && array_key_exists(0, $nid_doc->itm_field_model)) ?
+          $nid_doc->itm_field_model[0] : 0
+      ]; 
+    }
+  }
+  return $nids_arr;
+}
+
+/**
+ * This does the actual summary work for the given collection.
+ *
+ * 1. compose requests to the Matomo service to get views and downloads.
+ * 2. parse the response.
+ * 3. delete and insert the record for this collection, views, downloads.
+ * 
+ * @param int $collection_nid
+ *   The collection node id() value.
+ */
+function asu_collection_extras_doCollectionSummary($collection_nid) {
+  $connection = \Drupal::service('database');
+  if (!$connection->schema()->tableExists('asu_collection_extras_collection_usage')) {
+    \Drupal::logger('asu_collection_extras')->warning('asu_collection_extras_collection_usage table does not exist. Re-install asu_collection_extras module or run SQL:
+' . "CREATE TABLE `asu_collection_extras_collection_usage` (
+  `nid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'The collection \"node\".nid this record affects.',
+  `views` int(11) NOT NULL DEFAULT '0' COMMENT 'View total for all objects in the collection.',
+  `downloads` int(11) NOT NULL DEFAULT '0' COMMENT 'Download total for all objects in the collection.',
+  PRIMARY KEY (`nid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+    return;
+  }
+  $original_file_tid = key(\Drupal::entityTypeManager()
+    ->getStorage('taxonomy_term')
+    ->loadByProperties(['name' => "Original File"]));
+  $children = asu_collection_extras_solr_get_collection_children($collection_nid);
+  $collection_views = $collection_downloads = 0;
+  foreach ($children as $child_nid => $child_arr) {
+    $collection_views += \Drupal::service('islandora_matomo.default')->getViewsForNode($child_nid);
+    $mids = \Drupal::entityQuery('media')
+      ->condition('field_media_of', $related_nid)
+      ->condition('field_media_use', $original_file_tid)
+      ->execute();
+    foreach ($mids as $mid) {
+      $media = Media::load($mid);
+      $fid = \Drupal::service('islandora_matomo.default')->getFileFromMedia($mid);
+      $collection_downloads +=\Drupal::service('islandora_matomo.default')->getDownloadsForFile($fid);
+    }
+  }
+
+  $connection
+    ->delete('asu_collection_extras_collection_usage')
+    ->condition('nid', $collection_nid)
+    ->execute();
+  $connection
+    ->insert('asu_collection_extras_collection_usage')
+    ->fields([
+      'nid', 'views', 'downloads'
+    ])
+    ->values([
+      $collection_nid, $collection_views, $collection_downloads
+    ])
+    ->execute();
+}
+
+function asu_collection_extras_all_collections() {
+  $query = \Drupal::entityQuery('node');
+  $query
+    ->condition('status', 1)
+    ->condition('type', 'collection');
+  return $query->execute();
 }

@@ -17,15 +17,19 @@ header #search-block-form {
 }
 
 nav #search-form {
+    text-align: right;
     fieldset.form-group {
         display: inline-block;
         @extend .col-md-7;
-        margin: .5rem 0;
-        padding-right: 0;
+        margin: 0;
+        padding: 0;
+    }
+    .form-control {
+        @extend .form-control-sm;
     }
     .button {
         vertical-align: top;
-        margin-top: 10px;
+        @extend .btn-sm;
     }
 }
 
@@ -58,8 +62,8 @@ nav #search-form {
     }
     .form-submit {
         border: 0;
-        background: url(/themes/custom/asulib_barrio/images/search-white.svg) center center / 1.25rem no-repeat content-box $maroon;
-        text-indent: -5555px;
+        // background: url(/themes/custom/asulib_barrio/images/search-white.svg) center center / 1.25rem no-repeat content-box $maroon;
+        // text-indent: -5555px;
         padding: unset;
     }
     form {
