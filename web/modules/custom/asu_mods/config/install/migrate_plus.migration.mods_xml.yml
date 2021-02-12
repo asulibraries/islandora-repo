@@ -77,7 +77,7 @@ source:
     -
       name: date_created
       label: date created
-      selector: 'originInfo/dateCreated'
+      selector: 'recordInfo/recordCreationDate'
     -
       name: collection_handle
       label: collection
@@ -190,6 +190,30 @@ source:
       name: System User
       label: System User
       selector: 'recordInfo/recordContentSource'
+    -
+      name: subject_geographic_name
+      label: subject (geographic) name
+      selector: 'subject[geographic[boolean(@valueURI)]]/geographic'
+    -
+      name: subject_geographic_uris
+      label: subject (geographic) name uri
+      selector: 'subject[geographic[boolean(@valueURI)]]/geographic/@valueURI'
+    -
+      name: subject_geographic_name_wo_uris
+      label: subject (geographic, without uri)
+      selector: 'subject[geographic[not(@valueURI)]]/geographic'
+    -
+      name: subject_temporal_name
+      label: subject (temporal) name
+      selector: 'subject[topic[boolean(@valueURI)]]/topic'
+    -
+      name: subject_temporal_uris
+      label: subject (temporal) name uri
+      selector: 'subject[topic[boolean(@valueURI)]]/topic/@valueURI'
+    -
+      name: subject_temporal_name_wo_uris
+      label: subject (temporal, without uri)
+      selector: 'subject[topic[not(@valueURI)]]/topic'
 
   ids:
     pid:
@@ -258,10 +282,7 @@ process:
       value_key: name
       bundle_key: vid
       bundle: language
-  field_edtf_date_created:
-    plugin: skip_on_empty
-    source: date_created
-    method: process
+
   # ✓ field_table_of_contents
   # ✓ field_language
   # ✓ field_linked_agent
@@ -275,16 +296,16 @@ process:
   # ✓ field_genre
   # ✓ status - set not from default
   # ✓ moderation_state
-  # created
+  # ✓ created
   # ✓ uid - with callback for asurite -> id
   # ✓ field_copyright_statement
   # ✓ field_reuse_permissions
   # ✓ field_member_of
-  # field_additional_memberships
+  # ✓ field_additional_memberships
   # ✓ field_edtf_copyright_date
   # ✓ field_subjects_name
   # ✓ field_title_subject
-  # field_geographic_subject
+  # ✓ field_geographic_subject
   # field_temporal_subject
 
   uid:
@@ -323,6 +344,15 @@ process:
     plugin: multi_entity_lookup
     source:
       - collection_handle
+    lookup_field: field_handle
+    entity_type: node
+    access_check: 0
+    bundle_key: type
+    bundle: collection
+  field_additional_memberships:
+    plugin: multi_entity_lookup
+    source:
+      - additional_collection_handle
     lookup_field: field_handle
     entity_type: node
     access_check: 0
@@ -469,6 +499,10 @@ process:
     plugin: skip_on_empty
     method: process
     source: edtf_created_date
+  created:
+    plugin: skip_on_empty
+    method: process
+    source: date_created
   agents:
     plugin: make_array_groups
     source:
@@ -526,25 +560,25 @@ process:
     name_array_key: name
     uri_array_key: uri
     source: '@all_the_subject_names'
-  titles:
-    plugin: make_array_groups
-    source:
-      - subject_title_title
-      - subject_title_title_uri
-    keys:
-      - name
-      - uri
-  titles_without_uris:
-    plugin: make_array_groups
-    source:
-      - subject_title_title_wo_uris
-    keys:
-      - name
-  all_the_titles:
-    plugin: merge_skip_empty
-    source:
-      - '@titles_without_uris'
-      - '@titles'
+#  titles:
+#    plugin: make_array_groups
+#    source:
+#      - subject_title_title
+#      - subject_title_title_uri
+#    keys:
+#      - name
+#      - uri
+#  titles_without_uris:
+#    plugin: make_array_groups
+#    source:
+#      - subject_title_title_wo_uris
+#    keys:
+#      - name
+#  all_the_titles:
+#    plugin: merge_skip_empty
+#    source:
+#      - '@titles_without_uris'
+#      - '@titles'
   field_title_subject:
     plugin: name_uri_generate
     uri_field: field_authority_link
@@ -552,6 +586,37 @@ process:
     name_array_key: name
     uri_array_key: uri
     source: '@all_the_titles'
+  subject_geographic:
+    plugin: make_array_groups
+    source:
+      - subject_geographic_name
+      - subject_geographic_uris
+    keys:
+      - name
+      - uri
+  subject_geographic_without_uris:
+    plugin: make_array_groups
+    source:
+      - subject_geographic_name_wo_uris
+    keys:
+      - name
+  all_the_subject_geographic:
+    plugin: merge_skip_empty
+    source:
+      - '@subject_geographic_without_uris'
+      - '@subject_geographic'
+  field_geographic_subject:
+    plugin: name_uri_generate
+    uri_field: field_authority_link
+    default_vocabulary: person
+    name_array_key: name
+    uri_array_key: uri
+    source: '@all_the_subject_geographic'
+#
+#  field_temporal_subject:
+#      name: subject_temporal_name
+#      name: subject_temporal_uris
+#      name: subject_temporal_name_wo_uris
 
 destination:
   plugin: 'entity:node'
@@ -580,7 +645,7 @@ destination:
     - field_open_access
     - field_genre
     - status
-    # - created
+    - created
     - uid
     - field_copyright_statement
     - field_reuse_permissions
