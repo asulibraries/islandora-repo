@@ -214,6 +214,18 @@ source:
       name: subject_temporal_name_wo_uris
       label: subject (temporal, without uri)
       selector: 'subject[temporal[not(@valueURI)]]/temporal'
+    -
+      name: subject_topics
+      label: subject (topic)
+      selector: 'subject[topic[boolean(@valueURI)]]/topic'
+    -
+      name: subject_uris
+      label: subject (topic) name uri
+      selector: 'subject[topic[boolean(@valueURI)]]/topic/@valueURI'
+    -
+      name: subject_topics_wo_uris
+      label: subject (topic, without uri)
+      selector: 'subject[topic[not(@valueURI)]]/topic'
 
   ids:
     pid:
@@ -306,7 +318,8 @@ process:
   # ✓ field_subjects_name
   # ✓ field_title_subject
   # ✓ field_geographic_subject
-  # field_temporal_subject
+  # ✓ field_temporal_subject
+  # ✓ field_subject
 
   uid:
     -
@@ -639,6 +652,32 @@ process:
     name_array_key: name
     uri_array_key: uri
     source: '@all_the_subject_temporal'
+  subjects:
+    plugin: make_array_groups
+    source:
+      - subject_topics
+      - subject_uris
+    keys:
+      - name
+      - uri
+  subjects_without_uris:
+    plugin: make_array_groups
+    source:
+      - subject_topics_wo_uris
+    keys:
+      - name
+  all_the_subjects:
+    plugin: merge_skip_empty
+    source:
+      - '@subjects_without_uris'
+      - '@subjects'
+  field_subject:
+    plugin: name_uri_generate
+    uri_field: field_authority_link
+    default_vocabulary: subject
+    name_array_key: name
+    uri_array_key: uri
+    source: '@all_the_subjects'
 
 destination:
   plugin: 'entity:node'
