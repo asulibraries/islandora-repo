@@ -1,6 +1,7 @@
 <?php
 
 use Drupal\search_api\Entity\Index;
+use Drupal\media\Entity\Media;
 
 /**
  * @file
@@ -125,15 +126,34 @@ function asu_collection_extras_doCollectionSummary($collection_nid) {
   $children = asu_collection_extras_solr_get_collection_children($collection_nid);
   $collection_views = $collection_downloads = 0;
   foreach ($children as $child_nid => $child_arr) {
-    $collection_views += \Drupal::service('islandora_matomo.default')->getViewsForNode($child_nid);
-    $mids = \Drupal::entityQuery('media')
-      ->condition('field_media_of', $related_nid)
-      ->condition('field_media_use', $original_file_tid)
-      ->execute();
-    foreach ($mids as $mid) {
-      $media = Media::load($mid);
-      $fid = \Drupal::service('islandora_matomo.default')->getFileFromMedia($mid);
-      $collection_downloads +=\Drupal::service('islandora_matomo.default')->getDownloadsForFile($fid);
+    if ($child_nid) {
+      $collection_views += \Drupal::service('islandora_matomo.default')->getViewsForNode($child_nid);
+      $mids = \Drupal::entityQuery('media')
+        ->condition('field_media_of', $child_nid)
+    //    ->condition('field_media_use', $original_file_tid)
+        ->execute();
+      \Drupal::logger('asu_collection_extras')->info('downlods & views for ' . $child_nid);
+      \Drupal::logger('asu_collection_extras')->info('for ' . $child_nid . ", media mids = " . print_r($mids, true));
+      foreach ($mids as $mid) {
+        $media = Media::load($mid);
+        $fid = \Drupal::service('islandora_matomo.default')->getFileFromMedia($mid);
+        $collection_downloads +=\Drupal::service('islandora_matomo.default')->getDownloadsForFile($fid);
+      }
+      echo $child_nid . ": V=" . $collection_views . ", D=" . $collection_downloads . "\n";
+      $connection
+        ->delete('asu_collection_extras_item_downloads')
+        ->condition('collection_nid', $collection_nid)
+        ->condition('nid', $child_nid)
+        ->execute();
+      $connection
+        ->insert('asu_collection_extras_item_downloads')
+        ->fields([
+          'collection_nid', 'nid', 'views', 'downloads'
+        ])
+        ->values([
+          $collection_nid, $child_nid, $collection_views, $collection_downloads
+        ])
+        ->execute();
     }
   }
 

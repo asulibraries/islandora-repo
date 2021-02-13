@@ -12,7 +12,7 @@
  */
 function asu_collection_extras_schema() {
   $schema['asu_collection_extras_collection_usage'] = [
-    'description' => 'TODO: please describe this table!',
+    'description' => 'Store each collection\'s view and download total',
     'fields' => [
       'nid' => [
         'description' => 'The collection {node}.nid this record affects.',
@@ -35,6 +35,39 @@ function asu_collection_extras_schema() {
       ],
     ],
     'primary key' => ['nid'],
+  ];
+
+  $schema['asu_collection_extras_item_downloads'] = [
+    'description' => 'Store the # of downloads for each asu_repository_item',
+    'fields' => [
+      'collection_nid' => [
+        'description' => 'The collection {node}.nid this record affects.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'nid' => [
+        'description' => 'The item {node}.nid this record affects.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'views' => [
+        'description' => 'View total for all objects in the collection.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'downloads' => [
+        'description' => 'Download total for all objects in the collection.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+    ],
+    'primary key' => ['collection_nid', 'nid'],
   ];
   return $schema;
 }
