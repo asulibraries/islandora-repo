@@ -68,6 +68,14 @@ function asu_collection_extras_schema() {
       ],
     ],
     'primary key' => ['collection_nid', 'nid'],
+    'indexes' => [
+      'downloads' => [
+        'downloads',
+      ],
+      'collection_nid' => [
+        'collection_nid',
+      ],
+    ],
   ];
   return $schema;
 }
