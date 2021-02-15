@@ -51,7 +51,6 @@ class MergeSkipEmpty extends Merge {
    * {@inheritdoc}
    */
   public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
-\Drupal::logger('MergeSkipEmpty')->info("<pre>" . print_r($value, true) . "</pre>");
 
     if (!is_array($value)) {
       throw new MigrateException(sprintf('Merge process failed for destination property (%s): input is not an array.', $destination_property));

@@ -43,16 +43,12 @@ class NameURIGenerate extends NameURILookup {
       if (!empty($this->uri)) {
         $source = 'other';
         foreach ($this->authority_uris as $code => $pattern) {
-        //   \Drupal::logger('name uri generate')->info($pattern);
           $matches = NULL;
           $return = preg_match($pattern, $this->uri, $matches);
           if (count($matches) > 0) {
             $source = $code;
             break;
           }
-        //   else {
-        //     \Drupal::logger('name uri generate')->info("no pregmatch on " . $this->uri);
-        //   }
         }
         $term_array[$uri_field] = [
           'uri' => $this->uri,

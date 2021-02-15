@@ -28,7 +28,7 @@ use Drupal\paragraphs\Entity\Paragraph;
  *      order: 1
  *      type: taxonomy_term
  *      lookup_field: field_identifier_predicate
- * zzzzz
+ * @code
  *   plugin: paragraph_generate
  *   paragraph_type: 'typed_identifier'
  *   delimiter: '|'
@@ -49,10 +49,6 @@ class ParagraphGenerate extends ProcessPluginBase {
   public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
     $delimeter = $this->configuration['delimiter'];
     $fields = $this->configuration['fields'];
-    \Drupal::logger('ParagraphGenerate')->info("\$value = <pre>" . print_r($value, true) . "</pre>");
-
-    \Drupal::logger('ParagraphGenerate')->info("\$fields = <pre>" . print_r($fields, true) . "</pre>");
-
     if (!is_array($value) && $delimeter) {
       if (str_contains($value, $delimeter)) {
         $tparts = explode($delimeter, $value);
@@ -65,9 +61,7 @@ class ParagraphGenerate extends ProcessPluginBase {
     elseif (is_array($value)) {
       $tparts = $value;
     }
-    \Drupal::logger('ParagraphGenerate')->info("\$tparts = <pre>" . print_r($tparts, true) . "</pre>");
     foreach ($fields as $k => $field) {
-      \Drupal::logger('ParagraphGenerate')->info("\$field[$k] = <pre>" . print_r($field, true) . "</pre>");
 
       if (is_array($field)) {
         if (array_key_exists('key', $field)) {
@@ -79,7 +73,6 @@ class ParagraphGenerate extends ProcessPluginBase {
           $fields[$k] = ["value" => $order_or_key];
         }
         elseif ($field['type'] == "taxonomy_term" && $order_or_key != NULL) {
-          \Drupal::logger('ParagraphGenerate')->info("getting target_id value using \$order_or_key = <pre>" . print_r($order_or_key, true) . "</pre>");
           $fields[$k] = ["target_id" => $this->getTidByValue($order_or_key, $field['lookup_field'])];
         }
       }
@@ -91,11 +84,8 @@ class ParagraphGenerate extends ProcessPluginBase {
           $fields[$k] = ["value" => $tparts[$field]];
         }
       }
-      \Drupal::logger('ParagraphGenerate')->info("\$fields[\$k] = <pre>" . print_r($fields[$k], true) . "</pre>");
     }
-    \Drupal::logger('ParagraphGenerate')->info("\$fields = <pre>" . print_r($fields, true) . "</pre>");
     $paragraph = $this->createParagraph($this->configuration['paragraph_type'], $fields);
-    \Drupal::logger('ParagraphGenerate')->info("\$paragraph = <pre>" . print_r($paragraph, true) . "</pre>");
 
     return $paragraph;
   }
