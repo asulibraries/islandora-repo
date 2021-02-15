@@ -317,7 +317,6 @@ class TypedRelationGenerate extends NameURIGenerate {
       'rel_type' => $relator,
       'target_id' => $term
     ];
-
     return $typed_relation;
   }
 

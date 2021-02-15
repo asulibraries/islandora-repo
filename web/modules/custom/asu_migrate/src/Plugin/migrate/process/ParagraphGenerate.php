@@ -86,7 +86,6 @@ class ParagraphGenerate extends ProcessPluginBase {
       }
     }
     $paragraph = $this->createParagraph($this->configuration['paragraph_type'], $fields);
-
     return $paragraph;
   }
 
