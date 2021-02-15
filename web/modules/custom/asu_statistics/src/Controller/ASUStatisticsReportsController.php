@@ -469,42 +469,39 @@ class ASUStatisticsReportsController extends ControllerBase {
    */
   public function getCollectionDownloads($collection_node_id = NULL) {
     $collection_downloads = 0;
-    $collection_downloads_arr = $node_labels_arr = $collection_download_rows = [];
-    if ($collection_node_id) {
-      $nids_arr = $this->getCollectionNids($collection_node_id);
-      foreach ($nids_arr as $nid) {
-        if ($nid) {
-          $node_title = $this->getNodeComplexTitle($nid);
-          $node_labels_arr[$nid] = $node_title;
-          $original_file_mids = \Drupal::entityQuery('media')
-            ->condition('field_media_of', $nid)
-            ->execute();
-          $fids = array();
-          foreach ($original_file_mids as $mid) {
-            $fid = \Drupal::service('islandora_matomo.default')->getFileFromMedia($mid);
-            $fids[] = $fid;
-          }
-          $nid_downloads = \Drupal::service('islandora_matomo.default')->getSummedDownloadsForFiles($fids);
-          $collection_downloads_arr[$nid] = $nid_downloads;
-        }
-      }
+    $collection_download_rows = [];
+    if (!$connection->schema()->tableExists('asu_collection_extras_item_downloads')) {
+      \Drupal::logger('asu_collection_extras')->warning('asu_collection_extras_item_downloads table does not exist. Re-install asu_collection_extras module or run SQL:
+  ' . "CREATE TABLE `asu_collection_extras_item_downloads` (
+  `collection_nid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'The collection \"node\".nid this record affects.',
+  `nid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'The item \"node\".nid this record affects.',
+  `views` int(11) NOT NULL DEFAULT '0' COMMENT 'View total for all objects in the collection.',
+  `downloads` int(11) NOT NULL DEFAULT '0' COMMENT 'Download total for all objects in the collection.',
+  PRIMARY KEY (`collection_nid`,`nid`),
+  KEY `downloads` (`downloads`),
+  KEY `collection_nid` (`collection_nid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Store the # of downloads for each asu_repository_item'");
+      return;
     }
-    arsort($collection_downloads_arr);
-
-    $collection_downloads = 0;
+    // Query the mysql summary table and order by downloads.
+    $collection_item_views = $this->database
+      ->query('SELECT downloads, nid FROM asu_collection_extras_item_downloads ' .
+      'WHERE downloads > 0 AND collection_nid = ' . $collection_node_id . " " .
+      'ORDER BY downloads DESC LIMIT 0,25')
+      ->fetchAll();
     $options = ['absolute' => TRUE];
-    foreach ($collection_downloads_arr as $nid => $downloads) {
+    foreach ($collection_item_views as $c_obj) {
+      $nid = $c_obj->nid;
       $url = \Drupal\Core\Url::fromRoute('entity.node.canonical', ['node' => $nid], $options);
-      $use_title = array_key_exists($nid, $node_labels_arr) ?
-          $node_labels_arr[$nid] : '(title not found)';
-      $link = Link::fromTextAndUrl($use_title, $url);
+      $node_title = $this->getNodeComplexTitle($nid);
+      $link = Link::fromTextAndUrl($node_title, $url);
       $link = $link->toRenderable();
       $collection_download_rows[$nid] = [
         'title' => render($link),
-        'downloads' => $downloads
+        'downloads' => $c_obj->downloads
       ];
-      $collection_downloads+= $downloads;
-    }
+      $collection_downloads += $c_obj->downloads;
+   }
     return [
       'collection_downloads' => $collection_downloads,
       'collection_download_rows' => $collection_download_rows

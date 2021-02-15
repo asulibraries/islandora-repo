@@ -234,15 +234,12 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
     $collection_node_id = (is_object($collection_node) ? $collection_node->id() : $collection_node);
     if (!$this->connection->schema()->tableExists('asu_collection_extras_collection_usage')) {
       \Drupal::logger('asu_collection_extras')->warning('asu_collection_extras_collection_usage table does not exist. Re-install asu_collection_extras module or run SQL:' . 
-      "<code>CREATE TABLE `asu_collection_extras_item_downloads` (
-  `collection_nid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'The collection \"node\".nid this record affects.',
-  `nid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'The item \"node\".nid this record affects.',
-  `views` int(11) NOT NULL DEFAULT '0' COMMENT 'View total for all objects in the collection.',
-  `downloads` int(11) NOT NULL DEFAULT '0' COMMENT 'Download total for all objects in the collection.',
-  PRIMARY KEY (`collection_nid`,`nid`),
-  KEY `downloads` (`downloads`),
-  KEY `collection_nid` (`collection_nid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Store the # of downloads for each asu_repository_item'</code>");
+      "<code>CREATE TABLE `asu_collection_extras_collection_usage` (
+    `nid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'The collection \"node\".nid this record affects.',
+    `views` int(11) NOT NULL DEFAULT '0' COMMENT 'View total for all objects in the collection.',
+    `downloads` int(11) NOT NULL DEFAULT '0' COMMENT 'Download total for all objects in the collection.',
+    PRIMARY KEY (`nid`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4</code>");
       return 0;
     }
     $collection_views = $this->connection
