@@ -154,7 +154,9 @@ class ASUStatisticsReportsController extends ControllerBase {
     }
     $total_items['private'] = $total_items['total'] - $total_items['public'];
     if ($collection_node_id) {
-      unset($collection_downloads['collection_download_rows']['raw_title']);
+      foreach ($collection_downloads['collection_download_rows'] as $nid => $arr) {
+        unset($collection_downloads['collection_download_rows'][$nid]['raw_title']);
+      }
       $downloads_header = ['Title', 'Downloads', 'URL'];
       $downloads_table = [
         '#type' => 'table',
@@ -518,10 +520,17 @@ class ASUStatisticsReportsController extends ControllerBase {
       return;
     }
     // Query the mysql summary table and order by downloads.
-    $collection_item_views = $this->database
-      ->query('SELECT downloads, nid FROM asu_collection_extras_item_downloads ' .
-      'WHERE downloads > 0 AND collection_nid = ' . $collection_node_id . " " .
-      'ORDER BY downloads DESC' . ($limited_display ? ' LIMIT 0,50' : ''))
+    $query = $this->database
+      ->select('asu_collection_extras_item_downloads', 'a')
+      ->fields('a', ['nid', 'downloads'])
+      ->condition('a.collection_nid', $collection_node_id);
+    if ($limited_display) {
+      $query->condition('a.downloads', 0, '>');
+      $query->range(0, 50);
+    }
+    $query->orderBy('a.downloads', 'DESC');
+    $collection_item_views = $query
+      ->execute()
       ->fetchAll();
     $options = ['absolute' => TRUE];
     foreach ($collection_item_views as $c_obj) {
