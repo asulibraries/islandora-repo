@@ -124,11 +124,8 @@ function asu_collection_extras_doCollectionSummary($collection_nid) {
     return;
   }
   // Seems that matomo is not tracking thumbnails at all, so the media query
-  // in the loop will not reduce the media objects to those with field_media_use =
-  // "Original file".
-  //  $original_file_tid = key(\Drupal::entityTypeManager()
-  //    ->getStorage('taxonomy_term')
-  //    ->loadByProperties(['name' => "Original File"]));
+  // in the loop will not reduce the media objects in the media query below
+  // to those with field_media_use = "Original file".
   $children = asu_collection_extras_solr_get_collection_children($collection_nid);
   $collection_views = $collection_downloads = 0;
   foreach ($children as $child_nid => $child_arr) {
@@ -137,7 +134,6 @@ function asu_collection_extras_doCollectionSummary($collection_nid) {
       $item_views += \Drupal::service('islandora_matomo.default')->getViewsForNode($child_nid);
       $mids = \Drupal::entityQuery('media')
         ->condition('field_media_of', $child_nid)
-        // ->condition('field_media_use', $original_file_tid)
         ->execute();
       foreach ($mids as $mid) {
         $fid = \Drupal::service('islandora_matomo.default')->getFileFromMedia($mid);

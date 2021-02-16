@@ -100,7 +100,7 @@ class ASUStatisticsReportsController extends ControllerBase {
         $this->pathCurrent->getPath();
     $download_url = $current_path . '/download';
     $download_stat_summary_url = $current_path . '/downloadStatSummary';
-
+    $download_downloads_url = $current_path . '/downloadDownloadStats';
     // Private Items (total only)
     $total_file_sizes = $this->solrGetSum($collection_node_id, TRUE);
     $total_file_size = 0;
@@ -108,8 +108,8 @@ class ASUStatisticsReportsController extends ControllerBase {
     $collection_items_stats = $this->getStats($collection_node_id, FALSE, TRUE);
     // Public Items.
     $public_items_stats = $this->getStats($collection_node_id, TRUE, TRUE);
-    $collection_downloads = $this->getCollectionDownloads($collection_node_id);
     if ($collection_node_id) {
+      $collection_downloads = $this->getCollectionDownloads($collection_node_id);
       foreach ($total_file_sizes as $mime_type => $sum) {
         $total_file_size += $sum['Size'];
         $total_file_sizes[$mime_type]['Size'] = $this->asuUtils->formatBytes($sum['Size'], 1);
@@ -154,9 +154,19 @@ class ASUStatisticsReportsController extends ControllerBase {
     }
     $total_items['private'] = $total_items['total'] - $total_items['public'];
     if ($collection_node_id) {
+      unset($collection_downloads['collection_download_rows']['raw_title']);
+      $downloads_header = ['Title', 'Downloads', 'URL'];
+      $downloads_table = [
+        '#type' => 'table',
+        '#rows' => $collection_downloads['collection_download_rows'],
+        '#header' => $downloads_header,
+        '#caption' => '',
+      ];
+      $downloads_total = $collection_downloads['collection_downloads'];
       $content_counts_header = ['Mime type', 'Attachment count', 'Size'];
     }
     else {
+      $downloads_table = $downloads_total = '';
       // Institution.
       $content_counts_header = ['Institution', '# of Collections', 'Size'];
       foreach ($collection_collections_stats as $totals) {
@@ -173,18 +183,11 @@ class ASUStatisticsReportsController extends ControllerBase {
       '#header' => $content_counts_header,
       '#caption' => '',
     ];
-    $downloads_header = ['Item', 'Downloads'];
-    $downloads_table = [
-      '#type' => 'table',
-      '#rows' => $collection_downloads['collection_download_rows'],
-      '#header' => $downloads_header,
-      '#caption' => '',
-    ];
-    $downloads_total = $collection_downloads['collection_downloads'];
     $summary_row = $total_file_size;
     return [
       '#download_url' => $download_url,
       '#download_stat_summary_url' => $download_stat_summary_url,
+      '#download_downloads_url' => $download_downloads_url,
       '#theme' => 'asu_statistics_chart',
       '#total_items' => $total_items,
       '#stats_table' => $stats_table,
@@ -214,12 +217,13 @@ class ASUStatisticsReportsController extends ControllerBase {
   }
 
   /**
-   * The download summary method for the controller.
+   * The download downloads method for the controller.
    *
    * @return binary
    *   Stream of the summary CSV file.
    */
   public function downloadStatSummary() {
+    $total_file_sizes = [];
     $node = $this->currentRouteMatch->getParameter('node');
     $collection_node_id = ($node) ? $node->id() : NULL;
     $tmp = $this->solrGetSum($collection_node_id, TRUE);
@@ -245,6 +249,34 @@ class ASUStatisticsReportsController extends ControllerBase {
     $written_filename = $this->writeCsv('summary', $collection_node_id, $headers, $total_file_sizes);
     return $this->doCsvDownload($written_filename);
   }
+
+  /**
+   * The download summary method for the controller.
+   *
+   * @return binary
+   *   Stream of the summary CSV file.
+   */
+  function downloadDownloadStats() {
+    $rows = [];
+    $node = $this->currentRouteMatch->getParameter('node');
+    $collection_node_id = ($node) ? $node->id() : NULL;
+    $tmp = $this->getCollectionDownloads($collection_node_id, FALSE);
+    $headers = ['Title', 'Downloads', 'URL'];
+    // Due to how the site-statistics array has three tiers, we must loop
+    // through and adjust it for output.
+    foreach ($tmp['collection_download_rows'] as $nid => $arr) {
+      unset($tmp['collection_download_rows'][$nid]['title']);
+      $inner_arr = [
+        'Title' => trim($arr['raw_title']),
+        'Downloads' => $arr['downloads'] + 0,
+        'URL' => $arr['url'],
+      ];
+      $rows[] = $inner_arr;
+    }
+    $written_filename = $this->writeCsv('downloads', $collection_node_id, $headers, $rows);
+    return $this->doCsvDownload($written_filename);
+  }
+
 
   /**
    * Will cause the browser to download the given file.
@@ -466,11 +498,13 @@ class ASUStatisticsReportsController extends ControllerBase {
    *
    * @param int $collection_node_id
    *   Optional parameter to limit the stats to children of a collection.
+   * @param bool $limited_display
+   *   Default is TRUE when FALSE all results for the collection are returned.
    */
-  public function getCollectionDownloads($collection_node_id = NULL) {
+  public function getCollectionDownloads($collection_node_id = NULL, $limited_display = TRUE) {
     $collection_downloads = 0;
     $collection_download_rows = [];
-    if (!$connection->schema()->tableExists('asu_collection_extras_item_downloads')) {
+    if (!$this->database->schema()->tableExists('asu_collection_extras_item_downloads')) {
       \Drupal::logger('asu_collection_extras')->warning('asu_collection_extras_item_downloads table does not exist. Re-install asu_collection_extras module or run SQL:
   ' . "CREATE TABLE `asu_collection_extras_item_downloads` (
   `collection_nid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'The collection \"node\".nid this record affects.',
@@ -487,7 +521,7 @@ class ASUStatisticsReportsController extends ControllerBase {
     $collection_item_views = $this->database
       ->query('SELECT downloads, nid FROM asu_collection_extras_item_downloads ' .
       'WHERE downloads > 0 AND collection_nid = ' . $collection_node_id . " " .
-      'ORDER BY downloads DESC LIMIT 0,25')
+      'ORDER BY downloads DESC' . ($limited_display ? ' LIMIT 0,50' : ''))
       ->fetchAll();
     $options = ['absolute' => TRUE];
     foreach ($collection_item_views as $c_obj) {
@@ -497,8 +531,10 @@ class ASUStatisticsReportsController extends ControllerBase {
       $link = Link::fromTextAndUrl($node_title, $url);
       $link = $link->toRenderable();
       $collection_download_rows[$nid] = [
+        'raw_title' => $node_title,
         'title' => render($link),
-        'downloads' => $c_obj->downloads
+        'downloads' => $c_obj->downloads,
+        'url' => $url->toString()
       ];
       $collection_downloads += $c_obj->downloads;
    }
