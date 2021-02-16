@@ -63,8 +63,6 @@ def get_model_from_mime(mime):
         model = "Video"
     elif "pdf" in mime:
         model = "Digital Document"
-    elif "powerpoint" in mime:
-        model = "Digital Document"
     else:
         model = "Binary"
     return model
