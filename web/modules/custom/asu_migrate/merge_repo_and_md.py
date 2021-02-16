@@ -63,6 +63,8 @@ def get_model_from_mime(mime):
         model = "Video"
     elif "pdf" in mime:
         model = "Digital Document"
+    elif "powerpoint" in mime:
+        model = "Digital Document"
     else:
         model = "Binary"
     return model
@@ -135,6 +137,7 @@ def main(argv):
     if 'Repository Ingestion Notes' in merge_df:
         del merge_df["Repository Ingestion Notes"]
     merge_df['Parent Item'] = ""
+    merge_df['Complex Object Child'] = 0
     att_df['old item id'] = ""
 
     print(repo_df.iloc[1])
@@ -188,7 +191,7 @@ def main(argv):
                             notes = notes + "|" + a['attachment description']
                         else:
                             notes = a['attachment description']
-                    new_row = {'Item ID': a['attachment id'], 'Item Title': a['attachment label'], 'Notes': a['attachment notes'], 'Model': get_model(1, None, att_df, a['attachment id']), 'Parent Item': a['item id'], 'Visibility': a_status, 'Notes': '|'.join(notes), 'System Created': a['file created'], 'System Updated': a['file created'], 'Attachment Count': 1}
+                    new_row = {'Item ID': a['attachment id'], 'Item Title': a['attachment label'], 'Notes': a['attachment notes'], 'Model': get_model(1, None, att_df, a['attachment id']), 'Parent Item': a['item id'], 'Visibility': a_status, 'Notes': '|'.join(notes), 'System Created': a['file created'], 'System Updated': a['file created'], 'Attachment Count': 1, 'Complex Object Child': 1}
                     print("add att")
                     att_df.at[index, 'old item id'] = a['item id']
                     att_df.at[index, 'item id'] = a['attachment id']
@@ -320,7 +323,7 @@ def main(argv):
     # TODO - if created is empty, populate it with the current date/time
 
     merge_df.to_csv('c' + col_id + '_merged.csv')
-    att_df.to_csv('data/migration_data/att_file_' + col_id + '.csv')
+    att_df.to_csv('data/migration_data/att_file_' + col_id + '_cleaned.csv')
 
 
 if __name__ == '__main__':
