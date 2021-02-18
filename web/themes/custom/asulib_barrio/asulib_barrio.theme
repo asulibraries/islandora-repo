@@ -110,5 +110,7 @@ function asulib_barrio_theme_suggestions_field_alter(&$suggestions, $variables) 
  * Process block content
  */
 function asulib_barrio_preprocess_block(&$variables) {
-  $variables['is_metadata_page'] = (\Drupal::routeMatch()->getRouteName() == "asu_item_extras.full_metadata_view");
+  if ($variables['plugin_id'] == 'asu_item_is_part_of') {
+    $variables['is_metadata_page'] = (\Drupal::routeMatch()->getRouteName() == "asu_item_extras.full_metadata_view");
+  }
 }
