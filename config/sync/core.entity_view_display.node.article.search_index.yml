@@ -2,15 +2,12 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_display.comment.comment.default
     - core.entity_view_mode.node.search_index
     - field.field.node.article.body
-    - field.field.node.article.comment
     - field.field.node.article.field_image
     - field.field.node.article.field_tags
     - node.type.article
   module:
-    - comment
     - text
     - user
 id: node.article.search_index
@@ -22,14 +19,6 @@ content:
     type: text_default
     weight: 0
     settings: {  }
-    third_party_settings: {  }
-    label: hidden
-    region: content
-  comment:
-    type: comment_default
-    weight: 2
-    settings:
-      pager_id: 0
     third_party_settings: {  }
     label: hidden
     region: content
