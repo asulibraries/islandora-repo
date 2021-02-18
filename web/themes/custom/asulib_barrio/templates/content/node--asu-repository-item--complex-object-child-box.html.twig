@@ -82,8 +82,7 @@
         "Paged Content": "complex-object-icon",
     }
 %}
-
-<div class="complex-object-child-box">
+<div class="complex-object-child-box col-lg-4 col-md-6">
     <article{{ attributes.addClass(classes) }}>
       <header>
         <div class="col-md-12">
@@ -110,7 +109,7 @@
         </div>
         <br class="clearfloat">
         <div>Download count:
-	          {{ drupal_block('asu_item_downloads', {'child_node_id': node.id}) }}
+            {{ drupal_block('asu_item_downloads', {'child_node_id': node.id}) }}
         </div>
         <br/>
         <div class="download-options">{{ drupal_view('display_media', 'download_button', node.id) }}</div>
@@ -120,6 +119,6 @@
             <span class="copy_permalink_link far fa-copy fa-lg" title="{{node.field_handle[0].value}}">&nbsp;</span>
         {% endif %}
 
-     </header>
+    </header>
     </article>
 </div>
