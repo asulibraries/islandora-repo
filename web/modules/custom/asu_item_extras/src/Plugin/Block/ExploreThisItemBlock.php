@@ -3,6 +3,7 @@
 namespace Drupal\asu_item_extras\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Cache\Cache;
 use Drupal\Core\Url;
 use Drupal\Core\Link;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
@@ -134,7 +135,6 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
       $output_links[] = render($link);
     }
     $return = [
-      '#cache' => ['max-age' => 0],
       '#markup' =>
       ((count($output_links) > 0) ?
         "<nav><ul class=''><li>" . implode("</li><li>", $output_links) . "</li></ul></nav>" :
@@ -142,6 +142,31 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
       'searchform' => $search_form,
     ];
     return $return;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheTags() {
+    // With this when your node change your block will rebuild.
+    if ($node = $this->routeMatch->getParameter('node')) {
+      // If there is node add its cachetag.
+      return Cache::mergeTags(parent::getCacheTags(), ['node:' . $node->id()]);
+    }
+    else {
+      // Return default tags instead.
+      return parent::getCacheTags();
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheContexts() {
+    // If you depends on \Drupal::routeMatch().
+    // You must set context of this block with 'route' context tag.
+    // Every new route this block will rebuild.
+    return Cache::mergeContexts(parent::getCacheContexts(), ['route']);
   }
 
 }
