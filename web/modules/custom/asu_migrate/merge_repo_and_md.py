@@ -138,8 +138,8 @@ def main(argv):
     merge_df['Complex Object Child'] = 0
     att_df['old item id'] = ""
 
-    print(repo_df.iloc[1])
-    col_id = str(int(repo_df.iloc[1]['Collection ID']))
+    print(repo_df.iloc[0])
+    col_id = str(int(repo_df.iloc[0]['Collection ID']))
 
     # print(merge_df)
     print("about to print merge_df columns")
@@ -237,9 +237,9 @@ def main(argv):
     if contribs.empty:
         contribs = merge_df[merge_df.columns[pandas.Series(
             merge_df.columns).str.match('Personal Contributor([^\s]\.?[0-9]*|$)$')]]
-
-    merge_df['Contributors-Person'] = contribs.apply(
-        lambda row: sjoin(row), axis=1).str.replace('\|{0,2}None\|nan', '')
+    if not contribs.empty:
+        merge_df['Contributors-Person'] = contribs.apply(
+            lambda row: sjoin(row), axis=1).str.replace('\|{0,2}None\|nan', '')
 
     corp_contribs = merge_df[merge_df.columns[pandas.Series(merge_df.columns).str.startswith('Corporate contributor')]]
     if corp_contribs.empty:
