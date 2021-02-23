@@ -213,7 +213,7 @@ def main(argv):
         merge_df.columns).str.startswith('Contributor')]]
     if contribs.empty:
         contribs = merge_df[merge_df.columns[pandas.Series(
-            merge_df.columns).str.match('Personal Contributor([^\s]\.?[0-9]*|$)$')]]
+            merge_df.columns).str.match('Personal Contributor([^\s]\.?[0-9]*|$)$', case=False)]]
     pci = 0
     print(contribs)
     for ccc in contribs:
@@ -236,7 +236,8 @@ def main(argv):
         merge_df.columns).str.startswith('Contributor')]]
     if contribs.empty:
         contribs = merge_df[merge_df.columns[pandas.Series(
-            merge_df.columns).str.match('Personal Contributor([^\s]\.?[0-9]*|$)$')]]
+            merge_df.columns).str.match('Personal Contributor([^\s]\.?[0-9]*|$)$', case=False)]]
+
     if not contribs.empty:
         merge_df['Contributors-Person'] = contribs.apply(
             lambda row: sjoin(row), axis=1).str.replace('\|{0,2}None\|nan', '')
