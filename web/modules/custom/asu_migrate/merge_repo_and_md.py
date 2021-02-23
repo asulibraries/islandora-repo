@@ -84,6 +84,8 @@ def get_model(att_count, item_id, att_df, att_id):
             model = get_model_from_mime(mime)
             # print(model)
             return model
+    elif att_count == 0:
+        return "Binary"
     else:
         # print("Paged Content")
         return "Complex Object"
