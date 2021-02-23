@@ -138,8 +138,8 @@ def main(argv):
     merge_df['Complex Object Child'] = 0
     att_df['old item id'] = ""
 
-    print(repo_df.iloc[1])
-    col_id = str(int(repo_df.iloc[1]['Collection ID']))
+    print(repo_df.iloc[0])
+    col_id = str(int(repo_df.iloc[0]['Collection ID']))
 
     # print(merge_df)
     print("about to print merge_df columns")

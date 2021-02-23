@@ -4,13 +4,13 @@ dependencies:
     module:
       - asu_migrate
 
-id: c214_node
-label: Import Collection 214 from CSV
-migration_group: migrate_c214_csv
+id: c188_node
+label: Import Collection 188 from CSV
+migration_group: migrate_c188_csv
 
 source:
   plugin: csv
-  path: /var/www/html/drupal/web/modules/custom/asu_migrate/c214_merged.csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/c188_merged.csv
 
   # 1 means you have a header row, 0 means you don't
   header_row_count: 1
@@ -25,7 +25,7 @@ source:
     model: Digital Document
 
     # Everything gets created as admin
-    collection_title: "Dorn, Sherman"
+    collection_title: "Carol J Stevens Collection"
     pres_state: '558' # Not Preserved
     handle: "https://hdl.handle.net/2286/R.I."
     cataloging_standards: "asu1"
