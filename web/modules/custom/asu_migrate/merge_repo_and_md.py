@@ -75,9 +75,9 @@ def get_model(att_count, item_id, att_df, att_id):
     if att_count == 1:
         # print("row is 1")
         if item_id is not None:
-            atts = att_df[att_df['item id'] == item_id]
+            atts = att_df[att_df['item id'] == int(item_id)]
         else:
-            atts = att_df[att_df['attachment id'] == att_id]
+            atts = att_df[att_df['attachment id'] == int(att_id)]
         # print(atts)
         for index, a in atts.iterrows():
             mime = a['file mime']
@@ -140,8 +140,8 @@ def main(argv):
     merge_df['Complex Object Child'] = 0
     att_df['old item id'] = ""
 
-    print(repo_df.iloc[1])
-    col_id = str(int(repo_df.iloc[1]['Collection ID']))
+    print(repo_df.iloc[0])
+    col_id = str(int(repo_df.iloc[0]['Collection ID']))
 
     # print(merge_df)
     print("about to print merge_df columns")

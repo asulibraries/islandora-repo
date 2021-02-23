@@ -60,7 +60,8 @@ class GroupAccessController implements AccessInterface {
      */
     $grp_membership_service = \Drupal::service('group.membership_loader');
     $grps = $grp_membership_service->loadByUser($account);
-    $access = FALSE;
+    $roles = $account->getRoles();
+    $access = (in_array('administrator', $roles));
     $plugin_id = 'group_node:collection';
     foreach ($grps as $grp) {
       if ($grp) {

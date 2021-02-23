@@ -120,15 +120,16 @@ process:
     default_value: "description_restricted_items"
 
   field_genre:
-    -
-      plugin: skip_on_empty
-      source: Genre
-      method: process
-    -
-      plugin: entity_lookup_by_field
-      lookup_field: field_authority_link/uri
-      entity_type: taxonomy_term
-      bundle: genre
+    # -
+    #   plugin: skip_on_empty
+    #   source: Genre
+    #   method: process
+    # -
+    plugin: entity_lookup_by_field
+    lookup_field: field_authority_link/uri
+    entity_type: taxonomy_term
+    bundle: genre
+    source: constants/genre
 
   field_preferred_citation:
     plugin: skip_on_empty

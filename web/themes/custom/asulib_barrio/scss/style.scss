@@ -76,15 +76,31 @@ a:focus {
       height: auto;
     }
     .node__title {
-      word-break: break-all;
-    }
-    .node__title {
-      word-break: break-all;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+      hyphens: auto;
     }
     > article {
-      padding: 15px;
+      padding: 15px 0;
+    }
+    margin-right: 2%;
+    &:last-of-type {
+      margin-right: 0;
     }
 }
+
+@media screen and (min-width: 992px) {
+  .complex-object-child-box.col-lg-4 {
+    max-width: 32%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .complex-object-child-box.col-md-6 {
+    max-width: 48%;
+  }
+}
+
 .block-asu-included-in-item{
   padding-left: 15px;
   padding-right: 15px;

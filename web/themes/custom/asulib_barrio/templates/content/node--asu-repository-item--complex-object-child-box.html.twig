@@ -85,7 +85,6 @@
 <div class="complex-object-child-box col-lg-4 col-md-6">
     <article{{ attributes.addClass(classes) }}>
       <header>
-        <div class="col-md-12">
           {% if drupal_view_result('display_media', 'thumbnail', node.id) is empty %}
             {% set mod = content.field_model[0]|render|trim %}
             {% for k, v in model_icons|filter((v, k) => k == mod) -%}
@@ -96,8 +95,6 @@
           {% else %}
             {{ drupal_view('display_media', 'thumbnail', node.id) }}
           {% endif %}
-        </div>
-        <div class="col-md-12">
             {{ title_prefix }}
             {% if label %}
               <h5{{ title_attributes.addClass('node__title') }}>
@@ -106,7 +103,6 @@
               </h5>
             {% endif %}
             {{ title_suffix }}
-        </div>
         <br class="clearfloat">
         <div>Download count:
             {{ drupal_block('asu_item_downloads', {'child_node_id': node.id}) }}
