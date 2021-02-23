@@ -240,8 +240,9 @@ def main(argv):
         contribs = merge_df[merge_df.columns[pandas.Series(
             merge_df.columns).str.match('Personal Contributor([^\s]\.?[0-9]*|$)$')]]
 
-    merge_df['Contributors-Person'] = contribs.apply(
-        lambda row: sjoin(row), axis=1).str.replace('\|{0,2}None\|nan', '')
+    if not contribs.empty:
+        merge_df['Contributors-Person'] = contribs.apply(
+            lambda row: sjoin(row), axis=1).str.replace('\|{0,2}None\|nan', '')
 
     corp_contribs = merge_df[merge_df.columns[pandas.Series(merge_df.columns).str.startswith('Corporate contributor')]]
     if corp_contribs.empty:
