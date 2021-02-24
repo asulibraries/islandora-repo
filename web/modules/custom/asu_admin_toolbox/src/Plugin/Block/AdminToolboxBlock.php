@@ -197,6 +197,16 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
         $output_links[] = render($link) . " &nbsp;" . render($link_glyph);
       }
     }
+    if (!($is_complex_object)) {
+      $url = Url::fromUri(
+            $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
+            '/node/' . $node->id() . '/media/add'
+        );
+      $link = Link::fromTextAndUrl($this->t('Add media'), $url);
+      $link = $link->toRenderable();
+      $link_glyph = Link::fromTextAndUrl($this->t('<i class="fas fa-plus-circle"></i>'), $url)->toRenderable();
+      $output_links[] = render($link) . " &nbsp;" . render($link_glyph);
+    }
     return [
       '#markup' => (count($output_links) > 0) ?
       "<div class='pseudo_block'><h2>Admin toolbox</h2><nav><ul><li>" . implode("<hr>", $output_links) . "</li></ul></nav></div>" :
