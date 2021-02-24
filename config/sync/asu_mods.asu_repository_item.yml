@@ -22,7 +22,7 @@ field_language:
     '#': name
 field_note_para:
   _top: note
-  '@type': field_note_type
+  '@type': field_note_type/name
   '#': field_note_text
 field_preferred_citation:
   _top: note
@@ -34,7 +34,7 @@ field_statement_responsibility:
   '#': field_statement_responsibility
 field_typed_identifier:
   _top: identifier
-  '@type': field_identifier_type
+  '@type': field_identifier_type/name
   '#': field_identifier_value
 field_handle:
   _top: identifier
@@ -43,7 +43,7 @@ field_handle:
 field_peer_reviewed:
   _top: genre
   '@authority': getty
-  '@valueURI': urigoeshere
+  '@valueURI': 'http://vocab.getty.edu/page/aat/300380321'
   '#': field_peer_reviewed
 field_open_access:
   _top: genre
@@ -57,8 +57,7 @@ field_genre:
   '#': name
 field_extent:
   _top: physicalDescription
-  extent:
-    '#': field_extent
+  extent: field_extent
 status:
   _top: recordInfo
   recordInfoNote:
@@ -151,5 +150,6 @@ field_subjects_name:
 field_title_subject:
   _top: subject
   title:
-    titleInfo:
-      '#': name
+    '@authority': field_authority_link/source
+    '@valueURI': field_authority_link/uri
+    titleInfo: name
