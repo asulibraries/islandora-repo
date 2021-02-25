@@ -75,15 +75,17 @@ def get_model(att_count, item_id, att_df, att_id):
     if att_count == 1:
         # print("row is 1")
         if item_id is not None:
-            atts = att_df[att_df['item id'] == item_id]
+            atts = att_df[att_df['item id'] == int(item_id)]
         else:
-            atts = att_df[att_df['attachment id'] == att_id]
+            atts = att_df[att_df['attachment id'] == int(att_id)]
         # print(atts)
         for index, a in atts.iterrows():
             mime = a['file mime']
             model = get_model_from_mime(mime)
             # print(model)
             return model
+    elif att_count == 0:
+        return "Binary"
     else:
         # print("Paged Content")
         return "Complex Object"
@@ -135,10 +137,11 @@ def main(argv):
     if 'Repository Ingestion Notes' in merge_df:
         del merge_df["Repository Ingestion Notes"]
     merge_df['Parent Item'] = ""
+    merge_df['Complex Object Child'] = 0
     att_df['old item id'] = ""
 
-    print(repo_df.iloc[1])
-    col_id = str(int(repo_df.iloc[1]['Collection ID']))
+    print(repo_df.iloc[0])
+    col_id = str(int(repo_df.iloc[0]['Collection ID']))
 
     # print(merge_df)
     print("about to print merge_df columns")
@@ -188,7 +191,7 @@ def main(argv):
                             notes = notes + "|" + a['attachment description']
                         else:
                             notes = a['attachment description']
-                    new_row = {'Item ID': a['attachment id'], 'Item Title': a['attachment label'], 'Notes': a['attachment notes'], 'Model': get_model(1, None, att_df, a['attachment id']), 'Parent Item': a['item id'], 'Visibility': a_status, 'Notes': '|'.join(notes), 'System Created': a['file created'], 'System Updated': a['file created'], 'Attachment Count': 1}
+                    new_row = {'Item ID': a['attachment id'], 'Item Title': a['attachment label'], 'Notes': a['attachment notes'], 'Model': get_model(1, None, att_df, a['attachment id']), 'Parent Item': a['item id'], 'Visibility': a_status, 'Notes': '|'.join(notes), 'System Created': a['file created'], 'System Updated': a['file created'], 'Attachment Count': 1, 'Complex Object Child': 1}
                     print("add att")
                     att_df.at[index, 'old item id'] = a['item id']
                     att_df.at[index, 'item id'] = a['attachment id']
@@ -212,7 +215,7 @@ def main(argv):
         merge_df.columns).str.startswith('Contributor')]]
     if contribs.empty:
         contribs = merge_df[merge_df.columns[pandas.Series(
-            merge_df.columns).str.match('Personal Contributor([^\s]\.?[0-9]*|$)$')]]
+            merge_df.columns).str.match('Personal Contributor([^\s]\.?[0-9]*|$)$', case=False)]]
     pci = 0
     print(contribs)
     for ccc in contribs:
@@ -235,10 +238,11 @@ def main(argv):
         merge_df.columns).str.startswith('Contributor')]]
     if contribs.empty:
         contribs = merge_df[merge_df.columns[pandas.Series(
-            merge_df.columns).str.match('Personal Contributor([^\s]\.?[0-9]*|$)$')]]
+            merge_df.columns).str.match('Personal Contributor([^\s]\.?[0-9]*|$)$', case=False)]]
 
-    merge_df['Contributors-Person'] = contribs.apply(
-        lambda row: sjoin(row), axis=1).str.replace('\|{0,2}None\|nan', '')
+    if not contribs.empty:
+        merge_df['Contributors-Person'] = contribs.apply(
+            lambda row: sjoin(row), axis=1).str.replace('\|{0,2}None\|nan', '')
 
     corp_contribs = merge_df[merge_df.columns[pandas.Series(merge_df.columns).str.startswith('Corporate contributor')]]
     if corp_contribs.empty:
@@ -320,7 +324,7 @@ def main(argv):
     # TODO - if created is empty, populate it with the current date/time
 
     merge_df.to_csv('c' + col_id + '_merged.csv')
-    att_df.to_csv('data/migration_data/att_file_' + col_id + '.csv')
+    att_df.to_csv('data/migration_data/att_file_' + col_id + '_cleaned.csv')
 
 
 if __name__ == '__main__':
