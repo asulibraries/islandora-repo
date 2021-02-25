@@ -125,12 +125,12 @@ function content_change_digest_get_recipients() {
     }
   }
 
-  \Drupal::logger('content_change_digest')
-    ->notice('roles = ' . print_r($config_roles, true));
-  \Drupal::logger('content_change_digest')
-    ->notice('users = ' . print_r($config_users_ids, true));
-  \Drupal::logger('content_change_digest')
-    ->notice('userlist = ' . print_r($userlist, true));
+  // \Drupal::logger('content_change_digest')
+    // ->notice('roles = ' . print_r($config_roles, true));
+  // \Drupal::logger('content_change_digest')
+    // ->notice('users = ' . print_r($config_users_ids, true));
+  // \Drupal::logger('content_change_digest')
+    // ->notice('userlist = ' . print_r($userlist, true));
   foreach ($userlist as $user_id => $user_name) {
     // loading the users must be with the Entity user load method such as
     $temp_account = \Drupal\user\Entity\User::load($user_id);
@@ -149,7 +149,8 @@ function content_change_digest_get_view_html() {
   if (is_object($view)) {
     $view->setDisplay('page_2');
     $view->execute();
-    $render_view = \Drupal::service('renderer')->render($view->render());
+    $el = $view->render();
+    $render_view = \Drupal::service('renderer')->render($el);
 //    \Drupal::logger('content_change_digest')
 //      ->notice('in content_change_digest_mail - created differences with "differences1day" display');
 //    \Drupal::logger('content_change_digest')
