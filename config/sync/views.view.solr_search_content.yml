@@ -995,6 +995,7 @@ display:
         pager: false
         exposed_form: false
         cache: false
+        empty: false
       filters:
         type:
           id: type
@@ -1224,6 +1225,20 @@ display:
           plugin_id: text
       cache:
         type: none
+      empty:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: true
+          tokenize: false
+          content:
+            value: '<h3>No results were found. Please try an alternate search.</h3>'
+            format: basic_html
+          plugin_id: text
     cache_metadata:
       contexts:
         - 'languages:language_content'
@@ -1770,4 +1785,3 @@ display:
         - 'config:field.storage.node.field_collection_thumbnail'
         - 'config:field.storage.node.field_title'
         - 'config:search_api.index.default_solr_index'
-

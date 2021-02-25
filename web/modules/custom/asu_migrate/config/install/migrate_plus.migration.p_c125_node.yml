@@ -74,6 +74,10 @@ process:
       source: Reuse
       method: process
     -
+      plugin: str_replace
+      search: "CC0"
+      replace: "Public Domain"
+    -
       plugin: entity_lookup
       entity_type: taxonomy_term
       value_key: name
