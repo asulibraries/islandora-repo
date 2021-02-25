@@ -197,7 +197,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
         $output_links[] = render($link) . " &nbsp;" . render($link_glyph);
       }
     }
-    if (!($is_complex_object)) {
+    if (!($is_complex_object) && (!$is_collection)) {
       $url = Url::fromUri(
             $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
             '/node/' . $node->id() . '/media/add'
