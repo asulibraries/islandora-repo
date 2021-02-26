@@ -155,7 +155,7 @@ class ModsEncoder extends XmlEncoder {
         if ($sub_field && (str_contains($sub_field, 'field_') || (in_array($sub_field, self::MACHINE_FIELDS)))) {
           if (str_contains($sub_field, '/')) {
             $sub_field_name_parts = explode('/', $sub_field);
-            $sub_field_temp = $val->get($sub_field_name_parts[0])->getValue()[$sub_field_name_parts[1]];
+            $sub_field_temp = (!is_null($sub_field) ? $val->get($sub_field_name_parts[0])->getValue()[$sub_field_name_parts[1]] : "");
             $val = $sub_field_temp;
           }
           else {
