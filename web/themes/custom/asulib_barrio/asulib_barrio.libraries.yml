@@ -1,9 +1,8 @@
 global-styling:
   version: VERSION
-  js: 
+  js:
     js/popper.min.js: {}
     js/bootstrap.min.js: {}
-    js/global.js: {}
   css:
     component:
       css/style.css: {}
@@ -14,3 +13,11 @@ toggle-more:
   version: 1.x
   js:
     js/toggle-more-less.js: {}
+global-js:
+  version: VERSION
+  js:
+    js/global.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - asulib_barrio/global-styling
