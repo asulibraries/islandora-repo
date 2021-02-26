@@ -59,11 +59,17 @@
             margin: 15px;
         }
         .collection-result {
-            margin: 10px;
+            margin: 10px 10px 10px 0;
             background: #FFF;
             border: 1px solid rgba(0,0,0,0.125);
             display: flex;
             flex-direction: column;
+            @media screen and (min-width: 992px) {
+                max-width: calc(33.33% - 15px);
+            }
+            @media screen and (max-width: 768px) {
+                max-width: calc(50% - 15px);
+            }
             .views-field-field-collection-thumbnail {
                 // margin-left: auto;
                 // margin-right: auto;
@@ -77,6 +83,12 @@
                 padding-top: 10px;
                 padding-bottom: 10px;
                 align-self: baseline;
+            }
+            &:first-of-type {
+                margin-left: 10px;
+            }
+            &:last-of-type {
+                margin-right: 0;
             }
         }
         .view-header {
