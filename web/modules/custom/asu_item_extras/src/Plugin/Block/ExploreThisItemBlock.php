@@ -112,6 +112,7 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
       $field_model_term->getName() : '';
 
     $output_links = [];
+    $search_form = NULL;
     if ($field_model == 'Image') {
       $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/items/' . $nid . '/view');
       $link = Link::fromTextAndUrl($this->t('View Image'), $url);
