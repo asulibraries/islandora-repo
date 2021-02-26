@@ -169,7 +169,7 @@ class ModsEncoder extends XmlEncoder {
       if (is_array($val) && array_key_exists('value', $val)) {
         $val = $val['value'];
       }
-      elseif (is_array($val) && is_array($val[0])) {
+      elseif (is_array($val) && array_key_exists(0, $val) && is_array($val[0])) {
         if (array_key_exists('value', $val[0])) {
           $val = $val[0]['value'];
         }
@@ -180,7 +180,7 @@ class ModsEncoder extends XmlEncoder {
       elseif (is_array($val) && count($val) == 1) {
         $val = $val[0];
       }
-      if (isset($sub_part)) {
+      if (isset($sub_part) && is_array($val) && array_key_exists($sub_part, $val)) {
         $return_vals[] = $val[$sub_part];
       }
       else {
@@ -188,7 +188,7 @@ class ModsEncoder extends XmlEncoder {
       }
     }
     if (count($return_vals) == 1) {
-      $return_vals = $return_vals[0];
+      $return_vals = (is_array($return_vals[0]) ? $return_vals[0] : '');
     }
     return $return_vals;
   }
