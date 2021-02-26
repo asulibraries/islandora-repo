@@ -71,6 +71,11 @@ class ModsEncoder extends XmlEncoder {
         if (is_array($vals) && count($vals) > 0 && array_key_exists('target_id', $vals[0])) {
           $vals = $field->referencedEntities();
         }
+        if ($field_name == "uid") {
+          if (get_class($data) == 'Drupal\user\Entity\User' ) {
+            $vals = [$data->getAccountName()];
+          }
+        }
       }
     }
     else {

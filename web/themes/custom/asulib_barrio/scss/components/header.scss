@@ -183,12 +183,29 @@ a.menuparent:hover .sf-sub-indicator::after {
 
 @media (max-width: 1260px) {
     .navbar-nav .block-asu-search {
-        margin-left: -15px;
+        margin-left: 0;
         margin-right: 0;
-        padding: 15px 0 8px 0;
+        padding: 15px 0px 8px 0;
         border-top: 1px solid $gray-3;
+        > .content > .content {
+            width: 100%;
+            padding-right: 6%;
+        }
     }
-    .navbar-mobile-search input.form-control {
+    nav #search-form input.form-control {
         max-width: 100%;
     }
+    nav #search-form {
+        padding-left: 33px;
+    }
+}
+
+#header-main .navbar-toggler .fa-circle {
+    font-size: 2rem;
+    margin-left: -8px;
+    margin-top: 2px;
+}
+
+#header-main .navbar-toggler .fa-times {
+    margin-left: 0;
 }
