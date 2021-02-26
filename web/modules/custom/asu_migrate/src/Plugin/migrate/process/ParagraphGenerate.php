@@ -28,31 +28,52 @@ use Drupal\paragraphs\Entity\Paragraph;
  *      order: 1
  *      type: taxonomy_term
  *      lookup_field: field_identifier_predicate
+ * @code
+ *   plugin: paragraph_generate
+ *   paragraph_type: 'typed_identifier'
+ *   delimiter: '|'
+ *   fields:
+ *    field_identifier_value:
+ *      order: 0
+ *      type: text
+ *    field_identifier_type:
+ *      order: 1
+ *      type: taxonomy_term
+ *      lookup_field: field_identifier_predicate
  */
 class ParagraphGenerate extends ProcessPluginBase {
 
   /**
    * {@inheritdoc}
    */
-  public function transform($string, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
+  public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
     $delimeter = $this->configuration['delimiter'];
     $fields = $this->configuration['fields'];
-    if ($delimeter) {
-      if (str_contains($string, $delimeter)) {
-        $tparts = explode($delimeter, $string);
+    if (!is_array($value) && $delimeter) {
+      if (str_contains($value, $delimeter)) {
+        $tparts = explode($delimeter, $value);
         $tparts = array_map('trim', $tparts);
       }
       else {
-        $tparts = [$string];
+        $tparts = [$value];
       }
     }
+    elseif (is_array($value)) {
+      $tparts = $value;
+    }
     foreach ($fields as $k => $field) {
+
       if (is_array($field)) {
-        if ($field['type'] == "text") {
-          $fields[$k] = ["value" => $tparts[$field['order']]];
+        if (array_key_exists('key', $field)) {
+          $order_or_key = $tparts[$field['key']];
+        } else {
+          $order_or_key = $tparts[$field['order']];
         }
-        elseif ($field['type'] == "taxonomy_term") {
-          $fields[$k] = ["target_id" => $this->getTidByValue($tparts[$field['order']], $field['lookup_field'])];
+        if ($field['type'] == "text") {
+          $fields[$k] = ["value" => $order_or_key];
+        }
+        elseif ($field['type'] == "taxonomy_term" && $order_or_key != NULL) {
+          $fields[$k] = ["target_id" => $this->getTidByValue($order_or_key, $field['lookup_field'])];
         }
       }
       else {

@@ -89,6 +89,21 @@
       {{ drupal_block('search_form_block')}}
 
       </div>
+      <div class="navbar-mobile-footer">
+        <form class="form-inline navbar-mobile-search" action="https://search.asu.edu/search" method="get" name="gs">
+          <input class="form-control" type="search" name="q" aria-label="Search" placeholder="Search ASU">
+          <input name="site" value="default_collection" type="hidden">
+          <input name="sort" value="date:D:L:d1" type="hidden">
+          <input name="output" value="xml_no_dtd" type="hidden">
+          <input name="ie" value="UTF-8" type="hidden">
+          <input name="oe" value="UTF-8" type="hidden">
+          <input name="client" value="asu_frontend" type="hidden">
+          <input name="proxystylesheet" value="asu_frontend" type="hidden">
+        </form>
+        <div class="nav-grid">
+          {{ drupal_menu('asu_global') }}
+        </div>
+      </div>
     </div>
   </div>
 </nav>

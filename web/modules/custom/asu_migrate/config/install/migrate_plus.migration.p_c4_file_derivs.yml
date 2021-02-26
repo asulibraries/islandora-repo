@@ -1,0 +1,68 @@
+# Uninstall this config when the feature is uninstalled
+dependencies:
+  enforced:
+    module:
+      - asu_migrate
+
+id: p_c4_file_derivs
+label: Import Collection 4 Derivative Files
+migration_group: migrate_c4_csv
+
+source:
+  plugin: csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/data/migration_data/c4_derivs.csv
+  delimiter: ','
+
+  # 1 means you have a header row, 0 means you don't
+  header_row_count: 1
+
+  # Each migration needs a unique key per row in the csv.  Here we're using the file path.
+  ids:
+    - derivative id
+
+  # You can't enter string literals into a process plugin, but you can give it a constant as a 'source'.
+  constants:
+    # Islandora uses flysystem and stream wrappers to work with files.  What we're really saying here is
+    # to put these files in Fedora in a 'csv_migration' folder.  It doesn't matter if the directory
+    # doesn't exist yet, it will get created for you automatically.
+    destination_dir: 'fedora://c4'
+
+    # Hard-code mime type to jpeg.  This could easily come from a column in the CSV if you have
+    # different mimetypes.
+    # mime: image/jpeg
+
+    # Everything gets created as admin
+    uid: 1
+    baseurl: "https://repository.asu.edu"
+    basepath: "/mnt/libfile/Repository/old-repo-data/filestore/"
+
+process:
+  uid: constants/uid
+  type: file type
+
+  # field_original_name/value: file original_filename
+  filename:
+    -
+      plugin: concat
+      delimiter: "."
+      source:
+        - derivative id
+        - "mp3"
+
+  # Construct the destination URI using the file name.
+  destination:
+    plugin: concat
+    delimiter: /
+    source:
+      - constants/destination_dir
+      - "@filename"
+
+  uri:
+    plugin: file_copy
+    source:
+      - file url
+      - '@destination' # The destination entry from above
+
+
+destination:
+  plugin: 'entity:file'

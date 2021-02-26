@@ -74,7 +74,7 @@ function islandora_tokens_tokens($type, $tokens, array $data, array $options, Bu
         case 'agent_author':
           // For the Linked agent field, the Author/s are specified
           // by the relationship "aut" for Author.
-          $replacements[$original] = _get_term_with_rel_type($data['node'], 'field_linked_agent', 'relators:aut');
+          $replacements[$original] = _get_term_with_rel_type($data['node'], 'field_linked_agent', 'relators:aut', TRUE);
           break;
 
         case 'agent_contributor':

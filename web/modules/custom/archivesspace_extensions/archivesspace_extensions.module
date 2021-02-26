@@ -1,0 +1,24 @@
+<?php
+
+/**
+ * @file
+ * Contains archivesspace_extensions.module.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function archivesspace_extensions_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    // Main module help for the archivesspace_extensions module.
+    case 'help.page.archivesspace_extensions':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('A module to provide extensions to the archivesspace module, such as a system action to generate digital objects in Archivesspace.') . '</p>';
+      return $output;
+
+    default:
+  }
+}

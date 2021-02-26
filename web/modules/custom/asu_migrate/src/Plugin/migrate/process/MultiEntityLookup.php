@@ -28,7 +28,9 @@ class MultiEntityLookup extends EntityLookup {
   /** @inheritdoc */
   public function transform($arr, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
     $item_parent = $arr[0];
-    $collection_parent = $arr[1];
+    if (count($arr) > 1) {
+      $collection_parent = $arr[1];
+    }
     if ($item_parent) {
       if (array_key_exists('lookup_field', $this->configuration)) {
         $par = \Drupal::entityTypeManager()->getStorage('node')->loadByProperties([$this->configuration['lookup_field'] => $item_parent]);

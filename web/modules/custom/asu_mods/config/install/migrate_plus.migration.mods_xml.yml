@@ -6,11 +6,28 @@ id: mods_xml
 label: Import/Update Nodes from MODS XML
 migration_group: mods_xml
 
+# everything that goes in field_linked_agent will be a name top level element.
+# they will contain a type attribute which maps to the bundle of the taxonomy term
+# (ie. person). those names will also contain the roleTerm element for the role.
+# the name itself will be in the namePart sub-element of the name . Names may or
+# may not have URIs
+#
+# For subjects, all subjects will be in subject top level elements, but depending
+# on what type of subject will determine what's inside that element.
+#    field_geographic_subject have geographic sub-elements to the subject element
+#    field_temporal_subject have temporal sub-elements
+#    field_subject have topic sub-elements
+#  ✓ field_subjects_name have name sub-elements
+#  ✓ field_title_subject have title/titleInfo sub-elements
+# All of the subjects have the potential to have uris, but may not
+# ----------------------------------------------------------------------------
 source:
   plugin: url
   data_fetcher_plugin: file
   data_parser_plugin: xml
   urls: /var/www/html/drupal/web/modules/custom/asu_mods/data/t2mods.xml
+  namespaces:
+    xlink: "http://www.w3.org/1999/xlink"
   item_selector: /modsCollection/mods
   fields:
     -
@@ -30,9 +47,29 @@ source:
       label: pid
       selector: 'recordInfo/recordIdentifier[@src="aztes"]'
     -
+      name: typed_identifier
+      label: typed identifier
+      selector: 'identifier[not(@type="hdl") and @type]'
+    -
+      name: typed_identifier_type
+      label: typed identifier type
+      selector: 'identifier[not(@type="hdl") and @type]/@type'
+    -
+      name: typed_identifier_wo_type
+      lable: typed identifier without type
+      selector: 'identifier[not(@type)]'
+    -
       name: abstract
       label: abstract
       selector: 'abstract'
+    -
+      name: language
+      label: language
+      selector: 'language[languageTerm[@type="code"]]/languageTerm'
+    -
+      name: toc
+      label: table of contents
+      selector: 'tableOfContents'
     -
       name: extent
       label: extent
@@ -40,7 +77,156 @@ source:
     -
       name: date_created
       label: date created
+      selector: 'recordInfo/recordCreationDate'
+    -
+      name: collection_handle
+      label: collection
+      selector: 'relatedItem[@type="host"][1]/@xlink:href'
+    -
+      name: additional_collection_handle
+      label: additional collection handle
+      selector: 'relatedItem[@type="host"][not(position()<2)]/@xlink:href'
+    -
+      name: handle
+      label: handle
+      selector: 'identifier[@type="hdl"]'
+    -
+      name: genre_labels
+      label: genre labels
+      selector: 'genre[@valueURI and not(@valueURI="http://vocab.getty.edu/page/aat/300380321")]'
+    -
+      name: genre_uris
+      label: genre_uris
+      selector: 'genre[not(@valueURI="http://vocab.getty.edu/page/aat/300380321")]/@valueURI'
+    -
+      name: genre_wo_uris
+      label: genre without uris
+      selector: 'genre[not(@valueURI)]'
+    -
+      name: note
+      label: note
+      selector: 'note[not(@type="preferred citation") and not(@type="statement of responsibility") and @type]'
+    -
+      name: note_type
+      label: note type
+      selector: 'note[not(@type="preferred citation") and not(@type="statement of responsibility") and @type]/@type'
+    -
+      name: notes_wo_type
+      lable: notes without type
+      selector: 'note[not(@type)]'
+    -
+      name: pref_citation
+      label: preferred citation
+      selector: 'note[@type="preferred citation"]'
+    -
+      name: statement_of_responsbility
+      label: statement of responsibility
+      selector: 'note[@type="statement of responsibility"]'
+    -
+      name: reuse_permissions
+      label: reuse permission
+      selector: 'accessCondition[@type="use and reproduction" and not(text()="In Copyright" or text()="No Copyright - United States" or text()="No Known Copyright")]'
+    -
+      name: copyright
+      label: copyright
+      selector: 'accessCondition[@type="use and reproduction" and (text()="In Copyright" or text()="No Copyright - United States" or text()="No Known Copyright")]'
+    -
+      name: edtf_created_date
+      label: edtf date
       selector: 'originInfo/dateCreated'
+    -
+      name: visibility
+      label: record visibility
+      selector: 'recordInfo/recordInfoNote[@type="visibility"]'
+    -
+      name: agent_person_name
+      label: agents (person) name
+      selector: 'name[@type="person" and @valueURI and roleTerm[@type="code"]]/namePart'
+    -
+      name: agent_person_uris
+      label: agents (person) name uri
+      selector: 'name[@type="person" and @valueURI and roleTerm[@type="code"]]/@valueURI'
+    -
+      name: agent_person_code
+      label: agent (person) role code
+      selector: 'name[@type="person" and @valueURI and roleTerm[@type="code"]]/roleTerm[@type="code"]'
+    -
+      name: agent_person_name_wo_uris
+      label: agents (person, without uri) name
+      selector: 'name[@type="person" and not(@valueURI) and roleTerm[@type="code"]]/namePart'
+    -
+      name: agent_person_code_wo_uris
+      label: agent (person, without uri) role code
+      selector: 'name[@type="person" and not(@valueURI)]/roleTerm[@type="code"]'
+    -
+      name: subject_person_name
+      label: subject (person) name
+      selector: 'subject[name[boolean(@valueURI)]/namePart]/name/namePart'
+    -
+      name: subject_person_uris
+      label: subject (person) name uri
+      selector: 'subject[name[boolean(@valueURI)]/namePart]/name/@valueURI'
+    -
+      name: subject_person_name_wo_uris
+      label: subject (person, without uri)
+      selector: 'subject[name[not(@valueURI)]/namePart]/name/namePart'
+    -
+      name: subject_title_title
+      label: subject (title) title
+      selector: 'subject[titleInfo[@valueURI]/title]/titleInfo/title'
+    -
+      name: subject_title_title_uri
+      label: subject (title) title uri
+      selector: 'subject[titleInfo[@valueURI]/title]/titleInfo/@valueURI'
+    -
+      name: subject_title_title_wo_uris
+      label: subject (title, without uri)
+      selector: 'subject[titleInfo[not(@valueURI)]/title]/titleInfo/title'
+    -
+      name: peer_review
+      label: peer review
+      selector: 'genre[@valueURI="http://vocab.getty.edu/page/aat/300380321"]'
+    -
+      name: System User
+      label: System User
+      selector: 'recordInfo/recordContentSource'
+    -
+      name: subject_geographic_name
+      label: subject (geographic) name
+      selector: 'subject[geographic[boolean(@valueURI)]]/geographic'
+    -
+      name: subject_geographic_uris
+      label: subject (geographic) name uri
+      selector: 'subject[geographic[boolean(@valueURI)]]/geographic/@valueURI'
+    -
+      name: subject_geographic_name_wo_uris
+      label: subject (geographic, without uri)
+      selector: 'subject[geographic[not(@valueURI)]]/geographic'
+    -
+      name: subject_temporal_name
+      label: subject (temporal) name
+      selector: 'subject[temporal[boolean(@valueURI)]]/temporal'
+    -
+      name: subject_temporal_uris
+      label: subject (temporal) name uri
+      selector: 'subject[temporal[boolean(@valueURI)]]/temporal/@valueURI'
+    -
+      name: subject_temporal_name_wo_uris
+      label: subject (temporal, without uri)
+      selector: 'subject[temporal[not(@valueURI)]]/temporal'
+    -
+      name: subject_topics
+      label: subject (topic)
+      selector: 'subject[topic[boolean(@valueURI)]]/topic'
+    -
+      name: subject_uris
+      label: subject (topic) name uri
+      selector: 'subject[topic[boolean(@valueURI)]]/topic/@valueURI'
+    -
+      name: subject_topics_wo_uris
+      label: subject (topic, without uri)
+      selector: 'subject[topic[not(@valueURI)]]/topic'
+
   ids:
     pid:
       type: string
@@ -88,38 +274,73 @@ process:
     method: process
     source: abstract
   field_rich_description/format: constants/description_format
+  field_table_of_contents/value:
+    plugin: skip_on_empty
+    method: process
+    source: toc
+  field_table_of_contents/format: constants/description_format
   field_extent:
     plugin: skip_on_empty
     source: extent
     method: process
-  field_edtf_date_created:
-    plugin: skip_on_empty
-    source: date_created
-    method: process
-  # field_table_of_contents
-  # field_language
-  # field_linked_agent
-  # field_note_para
-  # field_preferred_citation
-  # field_statement_responsibility
-  # field_typed_identifier
-  # field_handle
-  # field_peer_reviewed
-  # field_open_access
-  # field_genre
-  # status - set not from default
-  # created
-  # uid - with callback for asurite -> id
-  # field_copyright_statement
-  # field_reuse_permissions
-  # field_member_of
-  # field_additional_memberships
-  # field_edtf_copyright_date
+  field_language:
+    -
+      plugin: skip_on_empty
+      source: language
+      method: process
+    -
+      plugin: entity_lookup
+      entity_type: taxonomy_term
+      value_key: name
+      bundle_key: vid
+      bundle: language
 
-  uid: constants/uid
+  # ✓ field_table_of_contents
+  # ✓ field_language
+  # ✓ field_linked_agent
+  # ✓ field_note_para
+  # ✓ field_preferred_citation
+  # ✓ field_statement_responsibility
+  # ✓ field_typed_identifier
+  # ✓ field_handle
+  # ✓ field_peer_reviewed
+  # field_open_access
+  # ✓ field_genre
+  # ✓ status - set not from default
+  # ✓ moderation_state
+  # ✓ created
+  # ✓ uid - with callback for asurite -> id
+  # ✓ field_copyright_statement
+  # ✓ field_reuse_permissions
+  # ✓ field_member_of
+  # ✓ field_additional_memberships
+  # ✓ field_edtf_copyright_date
+  # ✓ field_subjects_name
+  # ✓ field_title_subject
+  # ✓ field_geographic_subject
+  # ✓ field_temporal_subject
+  # ✓ field_subject
+
+  uid:
+    -
+      plugin: skip_on_empty
+      source: System User
+      method: process
+    -
+      plugin: user_lookup
+      default_value: constants/uid
   status:
     plugin: default_value
     default_value: 1
+  moderation_state:
+    plugin: static_map
+    source: visibility
+    map:
+      Private: draft
+      Public: published
+      "1": published
+      "0": draft
+    default_value: published
   type:
     plugin: default_value
     default_value: asu_repository_item
@@ -130,6 +351,331 @@ process:
     value_key: name
     bundle_key: vid
     bundle: islandora_models
+  field_member_of:
+    plugin: multi_entity_lookup
+    source:
+      - collection_handle
+    lookup_field: field_handle
+    entity_type: node
+    access_check: 0
+    bundle_key: type
+    bundle: collection
+  field_additional_memberships:
+    plugin: multi_entity_lookup
+    source:
+      - additional_collection_handle
+    lookup_field: field_handle
+    entity_type: node
+    access_check: 0
+    bundle_key: type
+    bundle: collection
+  field_handle:
+    plugin: skip_on_empty
+    method: process
+    source: handle
+  field_peer_reviewed:
+    plugin: skip_on_empty
+    method: process
+    source: peer_review
+  genres:
+    plugin: make_array_groups
+    source:
+      - genre_labels
+      - genre_uris
+    keys:
+      - name
+      - uri
+  genres_without_uris:
+    plugin: make_array_groups
+    source:
+      - genre_wo_uris
+    keys:
+      - name
+  all_the_genres:
+    plugin: merge_skip_empty
+    source:
+      - '@genres_without_uris'
+      - '@genres'
+  field_genre:
+    plugin: name_uri_generate
+    uri_field: field_authority_link
+    default_vocabulary: genre
+    name_array_key: name
+    uri_array_key: uri
+    source: '@all_the_genres'
+  notes:
+    plugin: make_array_groups
+    source:
+      - note
+      - note_type
+    keys:
+      - field_note_text
+      - field_note_type
+  notes_without_type:
+    plugin: make_array_groups
+    source:
+      - notes_wo_type
+    keys:
+      - field_note_text
+  all_the_notes:
+    plugin: merge_skip_empty
+    source:
+      - '@notes_without_type'
+      - '@notes'
+  field_note_para:
+    -
+      plugin: multiple_values
+      source: '@all_the_notes'
+    -
+      plugin: paragraph_generate
+      paragraph_type: 'complex_note'
+      fields:
+        field_note_text:
+          key: 'field_note_text'
+          type: text
+        field_note_type:
+          key: 'field_note_type'
+          type: taxonomy_term
+          lookup_field: name
+  typed_identifiers:
+    plugin: make_array_groups
+    source:
+      - typed_identifier
+      - typed_identifier_type
+    keys:
+      - field_identifier_value
+      - field_identifier_type
+  typed_identifiers_without_type:
+    plugin: make_array_groups
+    source:
+      - typed_identifier_wo_type
+    keys:
+      - field_identifier_value
+  all_the_typed_identifiers:
+    plugin: merge_skip_empty
+    source:
+      - '@typed_identifiers_without_type'
+      - '@typed_identifiers'
+  field_typed_identifier:
+    -
+      plugin: multiple_values
+      source: '@all_the_typed_identifiers'
+    -
+      plugin: paragraph_generate
+      paragraph_type: 'typed_identifier'
+      fields:
+        field_identifier_value:
+          key: 'field_identifier_value'
+          type: text
+        field_identifier_type:
+          key: 'field_identifier_type'
+          type: taxonomy_term
+          lookup_field: field_identifier_predicate
+  field_preferred_citation/value:
+    plugin: skip_on_empty
+    method: process
+    source: pref_citation
+  field_preferred_citation/format: constants/description_format
+  field_statement_responsibility:
+    -
+      plugin: skip_on_empty
+      source: statement_of_responsbility
+      method: process
+    -
+      plugin: callback
+      callable: trim
+  field_reuse_permissions:
+    -
+      plugin: skip_on_empty
+      source: reuse_permissions
+      method: process
+    -
+      plugin: entity_lookup
+      entity_type: taxonomy_term
+      value_key: name
+      bundle_key: vid
+      bundle: reuse_permissions
+  field_copyright_statement:
+    -
+      plugin: skip_on_empty
+      source: copyright
+      method: process
+    -
+      plugin: entity_lookup
+      entity_type: taxonomy_term
+      value_key: name
+      bundle_key: vid
+      bundle: copyright_statements
+  field_edtf_date_created:
+    plugin: skip_on_empty
+    method: process
+    source: edtf_created_date
+  created:
+    plugin: skip_on_empty
+    method: process
+    source: date_created
+  agents:
+    plugin: make_array_groups
+    source:
+      - agent_person_name
+      - agent_person_uris
+      - agent_person_code
+    keys:
+      - name
+      - uri
+      - rel
+  agents_without_uris:
+    plugin: make_array_groups
+    source:
+      - agent_person_name_wo_uris
+      - agent_person_code_wo_uris
+    keys:
+      - name
+      - rel
+  all_the_agents:
+    plugin: merge_skip_empty
+    source:
+      - '@agents_without_uris'
+      - '@agents'
+  field_linked_agent:
+    plugin: typed_relation_generate
+    delimiter: '|'
+    uri_field: field_authority_link
+    default_vocabulary: person
+    name_array_key: name
+    uri_array_key: uri
+    source: '@all_the_agents'
+  subject_names:
+    plugin: make_array_groups
+    source:
+      - subject_person_name
+      - subject_person_uris
+    keys:
+      - name
+      - uri
+  subject_names_without_uris:
+    plugin: make_array_groups
+    source:
+      - subject_person_name_wo_uris
+    keys:
+      - name
+  all_the_subject_names:
+    plugin: merge_skip_empty
+    source:
+      - '@subject_names_without_uris'
+      - '@subject_names'
+  field_subjects_name:
+    plugin: name_uri_generate
+    uri_field: field_authority_link
+    default_vocabulary: person
+    name_array_key: name
+    uri_array_key: uri
+    source: '@all_the_subject_names'
+  titles:
+    plugin: make_array_groups
+    source:
+      - subject_title_title
+      - subject_title_title_uri
+    keys:
+      - name
+      - uri
+  titles_without_uris:
+    plugin: make_array_groups
+    source:
+      - subject_title_title_wo_uris
+    keys:
+      - name
+  all_the_titles:
+    plugin: merge_skip_empty
+    source:
+      - '@titles_without_uris'
+      - '@titles'
+  field_title_subject:
+    plugin: name_uri_generate
+    uri_field: field_authority_link
+    default_vocabulary: titles
+    name_array_key: name
+    uri_array_key: uri
+    source: '@all_the_titles'
+  subject_geographic:
+    plugin: make_array_groups
+    source:
+      - subject_geographic_name
+      - subject_geographic_uris
+    keys:
+      - name
+      - uri
+  subject_geographic_without_uris:
+    plugin: make_array_groups
+    source:
+      - subject_geographic_name_wo_uris
+    keys:
+      - name
+  all_the_subject_geographic:
+    plugin: merge_skip_empty
+    source:
+      - '@subject_geographic_without_uris'
+      - '@subject_geographic'
+  field_geographic_subject:
+    plugin: name_uri_generate
+    uri_field: field_authority_link
+    default_vocabulary: geo_location
+    name_array_key: name
+    uri_array_key: uri
+    source: '@all_the_subject_geographic'
+
+  subject_temporal:
+    plugin: make_array_groups
+    source:
+      - subject_temporal_name
+      - subject_temporal_uris
+    keys:
+      - name
+      - uri
+  subject_temporal_without_uris:
+    plugin: make_array_groups
+    source:
+      - subject_temporal_name_wo_uris
+    keys:
+      - name
+  all_the_subject_temporal:
+    plugin: merge_skip_empty
+    source:
+      - '@subject_temporal_without_uris'
+      - '@subject_temporal'
+  field_temporal_subject:
+    plugin: name_uri_generate
+    uri_field: field_authority_link
+    default_vocabulary: temporal
+    name_array_key: name
+    uri_array_key: uri
+    source: '@all_the_subject_temporal'
+  subjects:
+    plugin: make_array_groups
+    source:
+      - subject_topics
+      - subject_uris
+    keys:
+      - name
+      - uri
+  subjects_without_uris:
+    plugin: make_array_groups
+    source:
+      - subject_topics_wo_uris
+    keys:
+      - name
+  all_the_subjects:
+    plugin: merge_skip_empty
+    source:
+      - '@subjects_without_uris'
+      - '@subjects'
+  field_subject:
+    plugin: name_uri_generate
+    uri_field: field_authority_link
+    default_vocabulary: subject
+    name_array_key: name
+    uri_array_key: uri
+    source: '@all_the_subjects'
 
 destination:
   plugin: 'entity:node'
@@ -143,10 +689,14 @@ destination:
     - field_extent
     - field_edtf_date_created
     - field_table_of_contents
+    - field_table_of_contents/value
+    - field_table_of_contents/format
     - field_language
     - field_linked_agent
     - field_note_para
     - field_preferred_citation
+    - field_preferred_citation/value
+    - field_preferred_citation/format
     - field_statement_responsibility
     - field_typed_identifier
     - field_handle
@@ -154,11 +704,10 @@ destination:
     - field_open_access
     - field_genre
     - status
-    # - created
+    - created
     - uid
     - field_copyright_statement
     - field_reuse_permissions
     - field_member_of
     - field_additional_memberships
     - field_edtf_copyright_date
-

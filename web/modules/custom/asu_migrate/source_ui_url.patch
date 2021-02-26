@@ -1,0 +1,48 @@
+diff --git a/src/Form/MigrateSourceUiForm.php b/src/Form/MigrateSourceUiForm.php
+index d429fcd..61c5d73 100644
+--- a/src/Form/MigrateSourceUiForm.php
++++ b/src/Form/MigrateSourceUiForm.php
+@@ -11,6 +11,7 @@ use Drupal\migrate\Plugin\MigrationInterface;
+ use Drupal\migrate_plus\Plugin\migrate_plus\data_parser\Json;
+ use Drupal\migrate_plus\Plugin\migrate_plus\data_parser\Xml;
+ use Drupal\migrate_source_csv\Plugin\migrate\source\CSV;
++use Drupal\migrate_plus\Plugin\migrate\source\Url;
+ use Drupal\migrate_source_ui\StubMigrationMessage;
+ use Drupal\migrate_source_ui\MigrateBatchExecutable;
+ use Symfony\Component\DependencyInjection\ContainerInterface;
+@@ -80,7 +81,7 @@ class MigrateSourceUiForm extends FormBase {
+     $options = [];
+     foreach ($this->definitions as $definition) {
+       $migrationInstance = $this->pluginManagerMigration->createStubMigration($definition);
+-      if ($migrationInstance->getSourcePlugin() instanceof CSV || $migrationInstance->getSourcePlugin() instanceof Json || $migrationInstance->getSourcePlugin() instanceof Xml) {
++      if ($migrationInstance->getSourcePlugin() instanceof CSV || $migrationInstance->getSourcePlugin() instanceof Json || $migrationInstance->getSourcePlugin() instanceof Xml || $migrationInstance->getSourcePlugin() instanceof Url) {
+         $id = $definition['id'];
+         $options[$id] = $this->t('%id (supports %file_type)', [
+           '%id' => $definition['label'] ?? $id,
+@@ -189,7 +190,7 @@ class MigrateSourceUiForm extends FormBase {
+     elseif ($migrationInstance->getSourcePlugin() instanceof Json) {
+       $extension = 'json';
+     }
+-    elseif ($migrationInstance->getSourcePlugin() instanceof Xml) {
++    elseif ($migrationInstance->getSourcePlugin() instanceof Xml || $migrationInstance->getSourcePlugin() instanceOf Url) {
+       $extension = 'xml';
+     }
+
+diff --git a/src/MigrateBatchExecutable.php b/src/MigrateBatchExecutable.php
+index 5f121b1..6f20e3a 100644
+--- a/src/MigrateBatchExecutable.php
++++ b/src/MigrateBatchExecutable.php
+@@ -95,7 +95,12 @@ class MigrateBatchExecutable extends BaseMigrateBatchExecutable {
+     $message = new StubMigrationMessage();
+     $definition = \Drupal::getContainer()->get('plugin.manager.migration')->getDefinition($migration_id);
+     // Override the file path.
+-    $definition['source']['path'] = $options['file_path'];
++    if ($definition['source']['plugin'] == 'url') {
++      $definition['source']['urls'] = $options['file_path'];
++    }
++    else {
++      $definition['source']['path'] = $options['file_path'];
++    }
+     /** @var \Drupal\migrate\Plugin\MigrationInterface $migration */
+     $migration = \Drupal::getContainer()->get('plugin.manager.migration')->createStubMigration($definition);
+

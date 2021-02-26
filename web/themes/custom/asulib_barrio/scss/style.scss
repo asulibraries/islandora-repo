@@ -68,26 +68,45 @@ a:focus {
 
 .complex-object-child {
     border: 1px solid #d7d7d7;
-    padding: 15px;
-    padding-top: 0.5em;
 }
 
 .complex-object-child-box {
     border: 1px solid #d7d7d7;
-    padding: 15px;
-    padding-top: 0.5em;
-    margin: 0 0.4%;
-    width: 32.5%;
-    float: left;
     img {
       height: auto;
     }
     .node__title {
-      word-break: break-all;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+      hyphens: auto;
     }
-    .node__title {
-      word-break: break-all;
+    > article {
+      padding: 15px 0;
     }
+    margin-right: 2%;
+    &:last-of-type {
+      margin-right: 0;
+    }
+}
+
+@media screen and (min-width: 992px) {
+  .complex-object-child-box.col-lg-4 {
+    max-width: 32%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .complex-object-child-box.col-md-6 {
+    max-width: 48%;
+  }
+}
+
+.block-asu-included-in-item{
+  padding-left: 15px;
+  padding-right: 15px;
+  > .content {
+    @extend .row;
+  }
 }
 
 /* remove padding from inside some views on repo item displays */
@@ -220,3 +239,16 @@ a.image-link:focus { border: none; }
     margin-bottom: 1rem;
   }
 }
+
+
+// start of trying to fix overflowing width on mobile
+// @media (min-width: 768px) {
+//   .row {
+//     margin-left: 0;
+//     margin-right: 0;
+//   }
+//   .container {
+//     padding-left: 0;
+//     padding-right: 0;
+//   }
+// }

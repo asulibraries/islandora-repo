@@ -322,7 +322,8 @@ def main(argv):
     att_df[x_col] = att_df[x_col].replace(-1, None)
     att_df[x_col] = att_df[x_col].replace("-1", "")
     # TODO - if created is empty, populate it with the current date/time
-
+    merge_df['Item ID'] = merge_df['Item ID'].astype(str)
+    merge_df['Item ID'] = merge_df['Item ID'].str.replace(".0", "", regex=False)
     merge_df.to_csv('c' + col_id + '_merged.csv')
     att_df.to_csv('data/migration_data/att_file_' + col_id + '_cleaned.csv')
 

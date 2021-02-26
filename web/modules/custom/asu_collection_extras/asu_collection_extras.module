@@ -1,6 +1,7 @@
 <?php
 
 use Drupal\search_api\Entity\Index;
+use Drupal\media\Entity\Media;
 
 /**
  * @file
@@ -72,13 +73,18 @@ function asu_collection_extras_solr_get_collection_children($collection_node) {
     $server = $index->getServerInstance();
     $backend = $server->getBackend();
     $solrConnector = $backend->getSolrConnector();
+
     $solariumQuery = $solrConnector->getSelectQuery();
+
+
     // @todo Fix this so it loops through a reasonable amount of records
     // instead of setting a dangerously high value.
     $solariumQuery->setRows(2147483630);
-    $solariumQuery->addParam('q', 'itm_field_ancestors:' . $collection_node_id);
+    $solariumQuery->addParam('q', '(itm_field_ancestors:' . $collection_node_id .
+      ' OR itm_field_combined_member_of:' . $collection_node_id . ')');
     $solariumQuery->setFields(['its_nid', 'ds_changed', 'ss_original_file_count', 'itm_field_model']);
     $solariumQuery->addSort('ds_changed', 'desc');
+
     $nids = $solrConnector->execute($solariumQuery);
     foreach ($nids as $nid_doc) {
       $nids_arr[$nid_doc->its_nid] = [
@@ -106,31 +112,51 @@ function asu_collection_extras_doCollectionSummary($collection_nid) {
   $connection = \Drupal::service('database');
   if (!$connection->schema()->tableExists('asu_collection_extras_collection_usage')) {
     \Drupal::logger('asu_collection_extras')->warning('asu_collection_extras_collection_usage table does not exist. Re-install asu_collection_extras module or run SQL:
-' . "CREATE TABLE `asu_collection_extras_collection_usage` (
-  `nid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'The collection \"node\".nid this record affects.',
+' . "CREATE TABLE `asu_collection_extras_item_downloads` (
+  `collection_nid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'The collection \"node\".nid this record affects.',
+  `nid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'The item \"node\".nid this record affects.',
   `views` int(11) NOT NULL DEFAULT '0' COMMENT 'View total for all objects in the collection.',
   `downloads` int(11) NOT NULL DEFAULT '0' COMMENT 'Download total for all objects in the collection.',
-  PRIMARY KEY (`nid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;");
+  PRIMARY KEY (`collection_nid`,`nid`),
+  KEY `downloads` (`downloads`),
+  KEY `collection_nid` (`collection_nid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Store the # of downloads for each asu_repository_item'");
     return;
   }
-  $original_file_tid = key(\Drupal::entityTypeManager()
-    ->getStorage('taxonomy_term')
-    ->loadByProperties(['name' => "Original File"]));
+  // Seems that matomo is not tracking thumbnails at all, so the media query
+  // in the loop will not reduce the media objects in the media query below
+  // to those with field_media_use = "Original file".
   $children = asu_collection_extras_solr_get_collection_children($collection_nid);
   $collection_views = $collection_downloads = 0;
   foreach ($children as $child_nid => $child_arr) {
-    $collection_views += \Drupal::service('islandora_matomo.default')->getViewsForNode($child_nid);
-    $mids = \Drupal::entityQuery('media')
-      ->condition('field_media_of', $related_nid)
-      ->condition('field_media_use', $original_file_tid)
-      ->execute();
-    foreach ($mids as $mid) {
-      $media = Media::load($mid);
-      $fid = \Drupal::service('islandora_matomo.default')->getFileFromMedia($mid);
-      $collection_downloads +=\Drupal::service('islandora_matomo.default')->getDownloadsForFile($fid);
+    $item_views = $item_downloads = 0;
+    if ($child_nid) {
+      $item_views += \Drupal::service('islandora_matomo.default')->getViewsForNode($child_nid);
+      $mids = \Drupal::entityQuery('media')
+        ->condition('field_media_of', $child_nid)
+        ->execute();
+      foreach ($mids as $mid) {
+        $fid = \Drupal::service('islandora_matomo.default')->getFileFromMedia($mid);
+        $item_downloads += \Drupal::service('islandora_matomo.default')->getDownloadsForFile($fid);
+      }
+      $connection
+        ->delete('asu_collection_extras_item_downloads')
+        ->condition('collection_nid', $collection_nid)
+        ->condition('nid', $child_nid)
+        ->execute();
+      $connection
+        ->insert('asu_collection_extras_item_downloads')
+        ->fields([
+          'collection_nid', 'nid', 'views', 'downloads'
+        ])
+        ->values([
+          $collection_nid, $child_nid, $item_views, $item_downloads
+        ])
+        ->execute();
     }
   }
+  $collection_views += $item_views;
+  $collection_downloads += $item_downloads;
 
   $connection
     ->delete('asu_collection_extras_collection_usage')
