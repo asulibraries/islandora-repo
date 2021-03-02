@@ -57,9 +57,6 @@ class ModsEncoder extends XmlEncoder {
    * Plucks the data out of a field.
    */
   private static function get_field_values($data, $field_name, $config, $sub_field = NULL) {
-    \Drupal::logger('MODS encoder')->info('<pre>'.print_r($field_name, TRUE).'</pre>');
-    \Drupal::logger('MODS encoder')->info('<pre>'.print_r($config, TRUE).'</pre>');
-
     if (!is_array($field_name) && str_contains($field_name, '/')) {
       $field_name_parts = explode('/', $field_name);
       $field_name = $field_name_parts[0];
@@ -118,7 +115,6 @@ class ModsEncoder extends XmlEncoder {
             else {
               if (is_array($cv)) {
                 $arr_cv = $cv;
-                // array_pop($cv);
               }
               if (str_contains($cv, "/name")) {
                 $cv = str_replace('/name', '', $cv);
@@ -183,7 +179,6 @@ class ModsEncoder extends XmlEncoder {
         $val = $val['value'];
       }
       elseif (is_array($val) && array_key_exists(0, $val) && is_array($val[0])) {
-      // elseif (is_array($val) && is_array($val[0])) {
         if (array_key_exists('value', $val[0])) {
           $val = $val[0]['value'];
         }
@@ -232,7 +227,6 @@ class ModsEncoder extends XmlEncoder {
         }
         if (is_array($field_name)) {
           $arr_field = $field_name;
-          // array_pop($field_name);
         }
 
         $complex_data = $this->get_field_values($node, $field_name, $field_config);
@@ -290,8 +284,6 @@ class ModsEncoder extends XmlEncoder {
       $new_data = $this->process_node($mods_config, $data);
       $all_records['#'] = $new_data;
     }
-    // \Drupal::logger('MODS encoder')->info('<pre>'.print_r($all_records, TRUE).'</pre>');
-    \Drupal::logger('MODS encoder')->info('<pre>'.print_r($format, TRUE).'</pre>');
 
     $xml = parent::encode($all_records, $format, $context);
     if (is_array($data)) {
