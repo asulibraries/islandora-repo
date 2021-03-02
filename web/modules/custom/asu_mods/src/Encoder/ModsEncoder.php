@@ -60,14 +60,14 @@ class ModsEncoder extends XmlEncoder {
     \Drupal::logger('MODS encoder')->info('<pre>'.print_r($field_name, TRUE).'</pre>');
     \Drupal::logger('MODS encoder')->info('<pre>'.print_r($config, TRUE).'</pre>');
 
-    if (str_contains($field_name, '/')) {
+    if (!is_array($field_name) && str_contains($field_name, '/')) {
       $field_name_parts = explode('/', $field_name);
       $field_name = $field_name_parts[0];
       $sub_part = $field_name_parts[1];
     }
     $return_vals = [];
 
-    if (str_contains($field_name, 'field_') || (in_array($field_name, self::MACHINE_FIELDS))) {
+    if ((!is_array($field_name) && str_contains($field_name, 'field_')) || (in_array($field_name, self::MACHINE_FIELDS))) {
       if ($data->hasField($field_name)) {
         $field = $data->get($field_name);
         $vals = $field->getValue();
@@ -103,8 +103,8 @@ class ModsEncoder extends XmlEncoder {
               $cv = 'personal';
             }
           }
-          elseif ($cv == "supplied") {
-            $cv = $val->supplied();
+          elseif ($ck == "@supplied") {
+            $cv = $field->value;
             $cv = ($cv) ? "yes" : "no";
           }
           if (!is_array($cv)) {
@@ -125,14 +125,16 @@ class ModsEncoder extends XmlEncoder {
                 $field_arr[$ck] = self::get_field_values($val, $cv, $ck, 'name');
               }
               else {
-                $field_arr[$ck] = self::get_field_values($val, $cv, $ck);
+                if ($ck == "@supplied" && $cv == 'yes') {
+                  $field_arr[$ck] = self::get_field_values($val, $cv, $ck);
+                }
               }
             }
           }
           else {
             foreach ($cv as $sub_ck => $sub_cv) {
-              if ($sub_cv == "rel_type") {
-                $sub_cv = $rel_type;
+              if ($sub_ck == "roleTerm") {
+                $sub_cv['#'] = $rel_type;
               }
               if (is_array($val)) {
                 $temp_val = $data;
@@ -142,7 +144,6 @@ class ModsEncoder extends XmlEncoder {
               }
               if (is_array($sub_cv)) {
                 $arr_cv = $sub_cv;
-                array_pop($sub_cv);
               }
               $field_arr[$ck][$sub_ck] = self::get_field_values($temp_val, $sub_cv, $sub_ck);
             }
@@ -181,7 +182,8 @@ class ModsEncoder extends XmlEncoder {
       if (is_array($val) && array_key_exists('value', $val)) {
         $val = $val['value'];
       }
-      elseif (is_array($val) && is_array($val[0])) {
+      elseif (is_array($val) && array_key_exists(0, $val) && is_array($val[0])) {
+      // elseif (is_array($val) && is_array($val[0])) {
         if (array_key_exists('value', $val[0])) {
           $val = $val[0]['value'];
         }
@@ -288,6 +290,8 @@ class ModsEncoder extends XmlEncoder {
       $new_data = $this->process_node($mods_config, $data);
       $all_records['#'] = $new_data;
     }
+    // \Drupal::logger('MODS encoder')->info('<pre>'.print_r($all_records, TRUE).'</pre>');
+    \Drupal::logger('MODS encoder')->info('<pre>'.print_r($format, TRUE).'</pre>');
 
     $xml = parent::encode($all_records, $format, $context);
     if (is_array($data)) {
