@@ -57,6 +57,9 @@ class ModsEncoder extends XmlEncoder {
    * Plucks the data out of a field.
    */
   private static function get_field_values($data, $field_name, $config, $sub_field = NULL) {
+    \Drupal::logger('MODS encoder')->info('<pre>'.print_r($field_name, TRUE).'</pre>');
+    \Drupal::logger('MODS encoder')->info('<pre>'.print_r($config, TRUE).'</pre>');
+
     if (str_contains($field_name, '/')) {
       $field_name_parts = explode('/', $field_name);
       $field_name = $field_name_parts[0];
@@ -96,6 +99,13 @@ class ModsEncoder extends XmlEncoder {
           }
           if ($cv == "bundle") {
             $cv = $val->bundle();
+            if ($cv == 'person') {
+              $cv = 'personal';
+            }
+          }
+          elseif ($cv == "supplied") {
+            $cv = $val->supplied();
+            $cv = ($cv) ? "yes" : "no";
           }
           if (!is_array($cv)) {
             // Like nonSort: "field_nonsort".
@@ -108,6 +118,7 @@ class ModsEncoder extends XmlEncoder {
             else {
               if (is_array($cv)) {
                 $arr_cv = $cv;
+                // array_pop($cv);
               }
               if (str_contains($cv, "/name")) {
                 $cv = str_replace('/name', '', $cv);
@@ -131,6 +142,7 @@ class ModsEncoder extends XmlEncoder {
               }
               if (is_array($sub_cv)) {
                 $arr_cv = $sub_cv;
+                array_pop($sub_cv);
               }
               $field_arr[$ck][$sub_ck] = self::get_field_values($temp_val, $sub_cv, $sub_ck);
             }
@@ -155,7 +167,7 @@ class ModsEncoder extends XmlEncoder {
         if ($sub_field && (str_contains($sub_field, 'field_') || (in_array($sub_field, self::MACHINE_FIELDS)))) {
           if (str_contains($sub_field, '/')) {
             $sub_field_name_parts = explode('/', $sub_field);
-            $sub_field_temp = (!is_null($sub_field) ? $val->get($sub_field_name_parts[0])->getValue()[$sub_field_name_parts[1]] : "");
+            $sub_field_temp = $val->get($sub_field_name_parts[0])->getValue()[$sub_field_name_parts[1]];
             $val = $sub_field_temp;
           }
           else {
@@ -169,7 +181,7 @@ class ModsEncoder extends XmlEncoder {
       if (is_array($val) && array_key_exists('value', $val)) {
         $val = $val['value'];
       }
-      elseif (is_array($val) && array_key_exists(0, $val) && is_array($val[0])) {
+      elseif (is_array($val) && is_array($val[0])) {
         if (array_key_exists('value', $val[0])) {
           $val = $val[0]['value'];
         }
@@ -180,7 +192,7 @@ class ModsEncoder extends XmlEncoder {
       elseif (is_array($val) && count($val) == 1) {
         $val = $val[0];
       }
-      if (isset($sub_part) && is_array($val) && array_key_exists($sub_part, $val)) {
+      if (isset($sub_part)) {
         $return_vals[] = $val[$sub_part];
       }
       else {
@@ -188,7 +200,7 @@ class ModsEncoder extends XmlEncoder {
       }
     }
     if (count($return_vals) == 1) {
-      $return_vals = (is_array($return_vals[0]) ? $return_vals[0] : '');
+      $return_vals = $return_vals[0];
     }
     return $return_vals;
   }
@@ -218,6 +230,7 @@ class ModsEncoder extends XmlEncoder {
         }
         if (is_array($field_name)) {
           $arr_field = $field_name;
+          // array_pop($field_name);
         }
 
         $complex_data = $this->get_field_values($node, $field_name, $field_config);
@@ -278,10 +291,10 @@ class ModsEncoder extends XmlEncoder {
 
     $xml = parent::encode($all_records, $format, $context);
     if (is_array($data)) {
-      $xml = str_replace("<modsCollection>", '<modsCollection xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/mods/v3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd">', $xml);
+      $xml = str_replace("<modsCollection>", '<modsCollection xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/mods/v3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">', $xml);
     }
     else {
-      $xml = str_replace("<mods>", '<mods xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/mods/v3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd">', $xml);
+      $xml = str_replace("<mods>", '<mods xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/mods/v3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">', $xml);
     }
     $search = [
       '<metadata-xml><![CDATA[',

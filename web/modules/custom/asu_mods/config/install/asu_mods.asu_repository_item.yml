@@ -1,7 +1,8 @@
 field_title:
   '_top': titleInfo
+  #todo map supplied value to yes/no
+  # '@supplied': field_supplied
   title:
-    '@supplied': field_supplied #todo map to yes/no
     '#': field_main_title
   nonSort: field_nonsort
   subTitle: field_subtitle
@@ -10,6 +11,8 @@ field_table_of_contents: tableOfContents
 field_linked_agent:
   '_top': name
   '@type': bundle
+  # HOW do I wrap roleTerm with a role element? like: <role><roleTerm type=...></roleTerm></role>
+  # role:
   roleTerm:
     '@type': 'code'
     '#': rel_type
@@ -134,8 +137,8 @@ field_embargo_release_date:
     '#': 'field_embargo_release_date'
 field_resource_type:
   '_top': typeOfResource
-  '@authority': field_resource_type/source
-  '@valueURI': field_resource_type/uri
+  '@authority': field_external_authority_link/source
+  '@valueURI': field_external_authority_link/uri
   '#': name
 field_geographic_subject:
   '_top': subject

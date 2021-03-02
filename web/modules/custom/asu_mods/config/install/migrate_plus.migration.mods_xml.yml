@@ -141,23 +141,23 @@ source:
     -
       name: agent_person_name
       label: agents (person) name
-      selector: 'name[@type="person" and @valueURI and roleTerm[@type="code"]]/namePart'
+      selector: 'name[@type="personal" and @valueURI and roleTerm[@type="code"]]/namePart'
     -
       name: agent_person_uris
       label: agents (person) name uri
-      selector: 'name[@type="person" and @valueURI and roleTerm[@type="code"]]/@valueURI'
+      selector: 'name[@type="personal" and @valueURI and roleTerm[@type="code"]]/@valueURI'
     -
       name: agent_person_code
       label: agent (person) role code
-      selector: 'name[@type="person" and @valueURI and roleTerm[@type="code"]]/roleTerm[@type="code"]'
+      selector: 'name[@type="personal" and @valueURI and roleTerm[@type="code"]]/roleTerm[@type="code"]'
     -
       name: agent_person_name_wo_uris
       label: agents (person, without uri) name
-      selector: 'name[@type="person" and not(@valueURI) and roleTerm[@type="code"]]/namePart'
+      selector: 'name[@type="personal" and not(@valueURI) and roleTerm[@type="code"]]/namePart'
     -
       name: agent_person_code_wo_uris
       label: agent (person, without uri) role code
-      selector: 'name[@type="person" and not(@valueURI)]/roleTerm[@type="code"]'
+      selector: 'name[@type="personal" and not(@valueURI)]/roleTerm[@type="code"]'
     -
       name: subject_person_name
       label: subject (person) name
