@@ -37,7 +37,7 @@ class AspaceTraverseFormatter extends EntityReferenceLabelFormatter
                 '#type' => 'link'
             ];
 
-            $this->traverseAspaceTree($entity, $elements_to_add);
+            $elements_to_add = $this->traverseAspaceTree($entity, $elements_to_add);
         }
 
         $elements = array_merge($elements, $elements_to_add);
