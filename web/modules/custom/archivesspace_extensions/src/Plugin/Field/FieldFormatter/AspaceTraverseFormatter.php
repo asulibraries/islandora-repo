@@ -32,9 +32,10 @@ class AspaceTraverseFormatter extends EntityReferenceLabelFormatter
             $id = $entity->id();
             \Drupal::logger('aspacetravers')->info("item is " . $this->getTitle($entity));
             $elements_to_add[] = [
-                '#url' => '#',
-                '#title' => $this->getTitle($entity),
-                '#type' => 'link'
+                // '#url' => $entity->toUrl(),
+                // '#title' => $this->getTitle($entity),
+                // '#type' => 'link'
+                '#markup' => '<span>' . $this->getTitle($entity) . '</span>'
             ];
 
             $elements_to_add = $this->traverseAspaceTree($entity, $elements_to_add);
