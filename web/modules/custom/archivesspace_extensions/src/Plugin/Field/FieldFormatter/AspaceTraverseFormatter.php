@@ -55,7 +55,7 @@ class AspaceTraverseFormatter extends EntityReferenceLabelFormatter
         ];
         \Drupal::logger('aspacetravers')->info("add " . $this->getTitle($member_of));
         if ($resource == $member_of) {
-            return;
+            return $elements_to_add;
         } else {
             $this->traverseAspaceTree($member_of, $elements_to_add);
         }
