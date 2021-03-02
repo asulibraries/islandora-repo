@@ -30,7 +30,7 @@ class AspaceTraverseFormatter extends EntityReferenceLabelFormatter
             // field source is limited to 1 value
             // $entity = $items[0]->entity;
             $id = $entity->id();
-            \Drupal::logger('aspacetravers')->info("item has id " . $id);
+            \Drupal::logger('aspacetravers')->info("item is " . $this->getTitle($entity));
             $elements_to_add[] = [
                 '#url' => $entity->toUrl(),
                 '#title' => $this->getTitle($entity),
@@ -53,7 +53,7 @@ class AspaceTraverseFormatter extends EntityReferenceLabelFormatter
             '#title' => $this->getTitle($member_of),
             '#type' => 'link'
         ];
-        \Drupal::logger('aspacetravers')->info(print_r($elements_to_add, TRUE));
+        \Drupal::logger('aspacetravers')->info("add " . $this->getTitle($member_of));
         if ($resource == $member_of) {
             return;
         } else {
