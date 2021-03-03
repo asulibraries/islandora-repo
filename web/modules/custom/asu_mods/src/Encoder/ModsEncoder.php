@@ -141,7 +141,10 @@ class ModsEncoder extends XmlEncoder {
               if (is_array($sub_cv)) {
                 $arr_cv = $sub_cv;
               }
-              $field_arr[$ck][$sub_ck] = self::get_field_values($temp_val, $sub_cv, $sub_ck);
+              $returned = self::get_field_values($temp_val, $sub_cv, $sub_ck);
+              if (!empty($returned)) {
+                $field_arr[$ck][$sub_ck] = $returned;
+              }
             }
           }
           $other_arr[] = $field_arr;
