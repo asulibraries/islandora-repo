@@ -153,7 +153,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
     $output_links = [];
     // Add item link.
     $use_can_add_child = ($is_complex_object || $is_collection) && $this->canAddChild();
-    if ($canUpdate) {
+    if ($canUpdate && ($is_complex_object || $is_collection)) {
       // This link is a little bit tricky... it needs to have a fragment like
       // this for example, where the value 10 is the collection id() value.
       // node/add/asu_repository_item?edit[field_member_of][widget][0][target_id]=10.
