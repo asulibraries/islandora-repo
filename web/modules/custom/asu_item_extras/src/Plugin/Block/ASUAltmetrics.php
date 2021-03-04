@@ -3,10 +3,10 @@
 namespace Drupal\asu_item_extras\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
-use Drupal\Core\Url;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\taxonomy\Entity\Term;
 
 /**
  * Provides an 'Altmetrics' Block.
@@ -20,13 +20,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class ASUAltmetrics extends BlockBase implements ContainerFactoryPluginInterface {
 
   /**
-   * The requestStack definition.
-   *
-   * @var requestStack
-   */
-  protected $requestStack;
-
-  /**
    * Construct method.
    *
    * @param array $configuration
@@ -35,16 +28,12 @@ class ASUAltmetrics extends BlockBase implements ContainerFactoryPluginInterface
    *   The plugin_id for the formatter.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
-   * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
-   *   The request_stack service.
    */
   public function __construct(
     array $configuration,
     $plugin_id,
-    $plugin_definition,
-    RequestStack $request_stack) {
+    $plugin_definition) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->requestStack = $request_stack;
   }
 
   /**
@@ -66,8 +55,7 @@ class ASUAltmetrics extends BlockBase implements ContainerFactoryPluginInterface
     return new static(
       $configuration,
       $plugin_id,
-      $plugin_definition,
-      $container->get('request_stack')
+      $plugin_definition
     );
   }
 
@@ -86,38 +74,37 @@ class ASUAltmetrics extends BlockBase implements ContainerFactoryPluginInterface
     // Since this block should be set to display on node/[nid] pages that are
     // "ASU Repository Item", or possibly "Collection", the underlying
     // node can be accessed via the path.
-    $node_url = Url::fromRoute('<current>', []);
-    $altmetrics_section = $this->getAltmetricsSection($node_url);
-    return $altmetrics_section;
-  }
-
-  /**
-   * This will get a block for the altmetrics embed for a given object.
-   *
-   * @param string $url
-   *   The given object's url.
-   *
-   * @return array
-   *   The build array to insert into the block build function.
-   */
-  private function getAltmetricsSection($url) {
-    static $id_suffix;
-    // Need to increment if there are multiple instances of this block.
-    $id_suffix = !($id_suffix) ? '' : $id_suffix + 1;
-    // look up the Typed Identifier : Digi
-    $doi = "10.3389/fpls.2016.00200";
-    $handle = "https://hdl.handle.net/2286/R.I.28324";
-    if ($doi) {
-      // 1. reference node typed_identifier field 
-      // 2. get one that has the type 'Digital object identifier'
-
-      // identifier'.
-      $altmetrics_embed = ' data-doi="' . $doi . '"';
+    $current_route = \Drupal::routeMatch();
+    if ($current_route->getParameter('node')) {
+      $node = $current_route->getParameter('node');
+    }
+    if (!is_object($node)) {
+      $node = \Drupal::entityTypeManager()->getStorage('node')->load($node);
+    }
+    if (!$node) {
+      return [];
+    }
+    $doi_val = "";
+    $typed_idents = $node->field_typed_identifier;
+    foreach ($typed_idents as $typed_ident) {
+      if (!$doi_val) {
+        $typed_target_id = $typed_ident->get("target_id")->getCastedValue();
+        $paragraph = Paragraph::load($typed_target_id);
+        $typed_ident_target_id = $paragraph->field_identifier_type->target_id;
+        $typed_ident_type = Term::load($typed_ident_target_id)->get('field_identifier_predicate')->value;
+        if ($typed_ident_type == 'doi') {
+          $doi_val = $paragraph->get('field_identifier_value')->value;
+        }
+      }
+    }
+    $handle = $node->field_handle->value;
+    if ($doi_val) {
+      $altmetrics_embed = ' data-doi="' . $doi_val . '"';
     } elseif ($handle) {
       $altmetrics_embed = ' data-handle="' . $handle . '"';
     } else {
       $altmetrics_embed = '';
-    } 
+    }
     return (($altmetrics_embed) ? 
       [
         '#type' => 'container',
@@ -131,7 +118,7 @@ class ASUAltmetrics extends BlockBase implements ContainerFactoryPluginInterface
                 '#markup' => '<div data-badge-popover="right" data-badge-type="2"' .
                   $altmetrics_embed . ' data-hide-no-mentions="true" class="altmetric-embed"></div>',
               ],
-              // Drupal requires javascript to be attached to the render elements.
+              // Need the javascript to be attached to the render elements.
               'right-block' => [
                 '#type' => 'item',
                 '#attached' => [
@@ -142,7 +129,7 @@ class ASUAltmetrics extends BlockBase implements ContainerFactoryPluginInterface
               ],
             ],
           ],
-      ] : []);
+      ] : []);;
   }
 
 }
