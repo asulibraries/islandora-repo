@@ -107,6 +107,9 @@
         <div>Download count:
             {{ drupal_block('asu_item_downloads', {'child_node_id': node.id}) }}
         </div>
+        <div class="altmetrics-info">
+          {{ drupal_block('asu_altmetrics', wrapper=false) }}
+        </div>
         <br/>
         <div class="download-options">{{ drupal_view('display_media', 'download_button', node.id) }}</div>
         <a href="/items/{{ node.id }}">Preview</a><br/>

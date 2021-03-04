@@ -88,12 +88,7 @@ class ASUAltmetrics extends BlockBase implements ContainerFactoryPluginInterface
     // node can be accessed via the path.
     $node_url = Url::fromRoute('<current>', []);
     $altmetrics_section = $this->getAltmetricsSection($node_url);
-    return [
-      'altmetrics-section' => [
-        '#type' => 'container',
-        'section' => $altmetrics_section,
-      ],
-    ];
+    return $altmetrics_section;
   }
 
   /**
@@ -109,10 +104,13 @@ class ASUAltmetrics extends BlockBase implements ContainerFactoryPluginInterface
     static $id_suffix;
     // Need to increment if there are multiple instances of this block.
     $id_suffix = !($id_suffix) ? '' : $id_suffix + 1;
-    $doi = // "10.1038/nature.2014.14583";
-    $handle = "https://hdl.handle.net/2286/R.I.28324.0";
+    // look up the Typed Identifier : Digi
+    $doi = "10.3389/fpls.2016.00200";
+    $handle = "https://hdl.handle.net/2286/R.I.28324";
     if ($doi) {
-      // in the node "Typed identifier field" with the type of 'Digital object
+      // 1. reference node typed_identifier field 
+      // 2. get one that has the type 'Digital object identifier'
+
       // identifier'.
       $altmetrics_embed = ' data-doi="' . $doi . '"';
     } elseif ($handle) {
@@ -120,31 +118,31 @@ class ASUAltmetrics extends BlockBase implements ContainerFactoryPluginInterface
     } else {
       $altmetrics_embed = '';
     } 
-    return (($altmetrics_embed) ? [
-      'altmetrics-container' => [
-        '#type' => 'item',
-        '#id' => 'altmetrics_box',
-        'container' => [
-          '#type' => 'container',
-          'left-block' => [
+    return (($altmetrics_embed) ? 
+      [
+        '#type' => 'container',
+          'altmetrics-container' => [
             '#type' => 'item',
-            '#prefix' => '<div class="row"><div class="col-md-2">',
-            '#suffix' => '</div>',
-            '#markup' => '<div data-badge-popover="right" data-badge-type="2"' .
-              $altmetrics_embed . ' data-hide-no-mentions="true" class="altmetric-embed"></div>',
+            '#id' => 'altmetrics_box',
+            'container' => [
+              '#type' => 'container',
+              'left-block' => [
+                '#type' => 'item',
+                '#markup' => '<div data-badge-popover="right" data-badge-type="2"' .
+                  $altmetrics_embed . ' data-hide-no-mentions="true" class="altmetric-embed"></div>',
+              ],
+              // Drupal requires javascript to be attached to the render elements.
+              'right-block' => [
+                '#type' => 'item',
+                '#attached' => [
+                  'library' => [
+                    'asu_item_extras/altmetrics',
+                  ],
+                ],
+              ],
+            ],
           ],
-//          // Drupal requires javascript to be attached to the render elements.
-//          'right-block' => [
-//            '#type' => 'item',
-//            '#attached' => [
-//              'library' => [
-//                'asu_item_extras/interact',
-//              ],
-//            ],
-//          ],
-        ],
-      ],
-    ] : []);
+      ] : []);
   }
 
 }
