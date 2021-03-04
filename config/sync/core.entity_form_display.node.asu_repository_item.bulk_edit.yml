@@ -46,6 +46,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_reuse_permissions
     - field.field.node.asu_repository_item.field_rich_description
     - field.field.node.asu_repository_item.field_series
+    - field.field.node.asu_repository_item.field_source
     - field.field.node.asu_repository_item.field_statement_responsibility
     - field.field.node.asu_repository_item.field_subject
     - field.field.node.asu_repository_item.field_subjects_name
@@ -56,7 +57,6 @@ dependencies:
     - field.field.node.asu_repository_item.field_typed_identifier
     - field.field.node.asu_repository_item.field_weight
     - node.type.asu_repository_item
-    - workflows.workflow.ingest
   module:
     - content_moderation
     - controlled_access_terms
@@ -724,4 +724,5 @@ content:
 hidden:
   field_display_hints: true
   field_keyword: true
+  field_source: true
   title: true

@@ -6,6 +6,7 @@ dependencies:
   module:
     - context
     - facets
+    - islandora
     - system
   theme:
     - asulib_barrio
@@ -17,7 +18,7 @@ provider: null
 plugin: 'facet_block:linked_agents'
 settings:
   id: 'facet_block:linked_agents'
-  label: Creators
+  label: Contributors
   provider: facets
   label_display: visible
   block_id: creators
@@ -30,5 +31,14 @@ visibility:
   request_path:
     id: request_path
     pages: '/search*'
+    negate: false
+    context_mapping: {  }
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    view_inclusion: {  }
+  media_source_mimetype:
+    id: media_source_mimetype
+    mimetype: ''
     negate: false
     context_mapping: {  }

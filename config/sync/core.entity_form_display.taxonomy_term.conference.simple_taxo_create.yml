@@ -1,0 +1,36 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.taxonomy_term.simple_taxo_create
+    - field.field.taxonomy_term.conference.field_authority_link
+    - taxonomy.vocabulary.conference
+  module:
+    - asu_item_extras
+id: taxonomy_term.conference.simple_taxo_create
+targetEntityType: taxonomy_term
+bundle: conference
+mode: simple_taxo_create
+content:
+  field_authority_link:
+    weight: 1
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+    type: authority_link_brief
+    region: content
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  description: true
+  langcode: true
+  path: true
+  status: true
+  translation: true
