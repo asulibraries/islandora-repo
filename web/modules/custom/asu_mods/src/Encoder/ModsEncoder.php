@@ -57,14 +57,14 @@ class ModsEncoder extends XmlEncoder {
    * Plucks the data out of a field.
    */
   private static function get_field_values($data, $field_name, $config, $sub_field = NULL) {
-    if (str_contains($field_name, '/')) {
+    if (!is_array($field_name) && str_contains($field_name, '/')) {
       $field_name_parts = explode('/', $field_name);
       $field_name = $field_name_parts[0];
       $sub_part = $field_name_parts[1];
     }
     $return_vals = [];
 
-    if (str_contains($field_name, 'field_') || (in_array($field_name, self::MACHINE_FIELDS))) {
+    if ((!is_array($field_name) && str_contains($field_name, 'field_')) || (in_array($field_name, self::MACHINE_FIELDS))) {
       if ($data->hasField($field_name)) {
         $field = $data->get($field_name);
         $vals = $field->getValue();
@@ -96,6 +96,13 @@ class ModsEncoder extends XmlEncoder {
           }
           if ($cv == "bundle") {
             $cv = $val->bundle();
+            if ($cv == 'person') {
+              $cv = 'personal';
+            }
+          }
+          elseif ($ck == "@supplied") {
+            $cv = $field->value;
+            $cv = ($cv) ? "yes" : "no";
           }
           if (!is_array($cv)) {
             // Like nonSort: "field_nonsort".
@@ -114,14 +121,21 @@ class ModsEncoder extends XmlEncoder {
                 $field_arr[$ck] = self::get_field_values($val, $cv, $ck, 'name');
               }
               else {
-                $field_arr[$ck] = self::get_field_values($val, $cv, $ck);
+                if ($ck == "@supplied") {
+                  if ($cv == 'yes') {
+                    $field_arr[$ck] = self::get_field_values($val, $cv, $ck);
+                  }
+                }
+                else {
+                  $field_arr[$ck] = self::get_field_values($val, $cv, $ck);
+                }
               }
             }
           }
           else {
             foreach ($cv as $sub_ck => $sub_cv) {
-              if ($sub_cv == "rel_type") {
-                $sub_cv = $rel_type;
+              if ($sub_ck == "roleTerm") {
+                $sub_cv['#'] = $rel_type;
               }
               if (is_array($val)) {
                 $temp_val = $data;
@@ -132,7 +146,10 @@ class ModsEncoder extends XmlEncoder {
               if (is_array($sub_cv)) {
                 $arr_cv = $sub_cv;
               }
-              $field_arr[$ck][$sub_ck] = self::get_field_values($temp_val, $sub_cv, $sub_ck);
+              $returned = self::get_field_values($temp_val, $sub_cv, $sub_ck);
+              if (!empty($returned)) {
+                $field_arr[$ck][$sub_ck] = $returned;
+              }
             }
           }
           $other_arr[] = $field_arr;
@@ -169,7 +186,7 @@ class ModsEncoder extends XmlEncoder {
       if (is_array($val) && array_key_exists('value', $val)) {
         $val = $val['value'];
       }
-      elseif (is_array($val) && is_array($val[0])) {
+      elseif (is_array($val) && array_key_exists(0, $val) && is_array($val[0])) {
         if (array_key_exists('value', $val[0])) {
           $val = $val[0]['value'];
         }
@@ -278,10 +295,10 @@ class ModsEncoder extends XmlEncoder {
 
     $xml = parent::encode($all_records, $format, $context);
     if (is_array($data)) {
-      $xml = str_replace("<modsCollection>", '<modsCollection xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/mods/v3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd">', $xml);
+      $xml = str_replace("<modsCollection>", '<modsCollection xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/mods/v3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">', $xml);
     }
     else {
-      $xml = str_replace("<mods>", '<mods xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/mods/v3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd">', $xml);
+      $xml = str_replace("<mods>", '<mods xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/mods/v3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">', $xml);
     }
     $search = [
       '<metadata-xml><![CDATA[',

@@ -1,7 +1,7 @@
 field_title:
   '_top': titleInfo
+  '@supplied': field_supplied
   title:
-    '@supplied': field_supplied #todo map to yes/no
     '#': field_main_title
   nonSort: field_nonsort
   subTitle: field_subtitle
@@ -10,9 +10,12 @@ field_table_of_contents: tableOfContents
 field_linked_agent:
   '_top': name
   '@type': bundle
-  roleTerm:
-    '@type': 'code'
-    '#': rel_type
+  '@authority': field_authority_link/source
+  '@valueURI': field_authority_link/uri
+  role:
+    roleTerm:
+      '@type': 'code'
+      '#': rel_type
   namePart: name
 field_language:
   '_top': language
@@ -75,7 +78,7 @@ changed:
 nid:
   '_top': recordInfo
   recordIdentifier:
-    '@src': 'aztes'
+    '@source': 'aztes'
     '#': nid
 uid:
   '_top': recordInfo
