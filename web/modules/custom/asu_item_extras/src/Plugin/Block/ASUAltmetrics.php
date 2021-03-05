@@ -112,12 +112,13 @@ class ASUAltmetrics extends BlockBase implements ContainerFactoryPluginInterface
     foreach ($typed_idents as $typed_ident) {
       if (!$doi_val) {
         $typed_target_id = $typed_ident->get("target_id")->getCastedValue();
-        // $paragraph = Paragraph::load($typed_target_id);
         $paragraph = $this->entityTypeManager->getStorage('paragraph')->load($typed_target_id);
         $typed_ident_target_id = $paragraph->field_identifier_type->target_id;
-        $typed_ident_type = $this->entityTypeManager->getStorage('taxonomy_term')->load($typed_ident_target_id)->get('field_identifier_predicate')->value;
-        if ($typed_ident_type == 'doi') {
-          $doi_val = $paragraph->get('field_identifier_value')->value;
+        if ($typed_ident_target_id) {
+          $typed_ident_type = $this->entityTypeManager->getStorage('taxonomy_term')->load($typed_ident_target_id)->get('field_identifier_predicate')->value;
+          if ($typed_ident_type == 'doi') {
+            $doi_val = $paragraph->get('field_identifier_value')->value;
+          }
         }
       }
     }
