@@ -121,7 +121,12 @@ class ModsEncoder extends XmlEncoder {
                 $field_arr[$ck] = self::get_field_values($val, $cv, $ck, 'name');
               }
               else {
-                if ($ck == "@supplied" && $cv == 'yes') {
+                if ($ck == "@supplied") {
+                  if ($cv == 'yes') {
+                    $field_arr[$ck] = self::get_field_values($val, $cv, $ck);
+                  }
+                }
+                else {
                   $field_arr[$ck] = self::get_field_values($val, $cv, $ck);
                 }
               }
