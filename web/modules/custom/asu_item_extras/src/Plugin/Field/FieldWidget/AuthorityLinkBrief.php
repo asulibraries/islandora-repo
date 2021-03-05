@@ -17,49 +17,49 @@ use Drupal\link\Plugin\Field\FieldWidget\LinkWidget;
  *   }
  * )
  */
-class AuthorityLinkBrief extends LinkWidget
-{
+class AuthorityLinkBrief extends LinkWidget {
 
-    /**
-     * {@inheritdoc}
-     */
-    public function formElement(
+  /**
+   * {@inheritdoc}
+   */
+  public function formElement(
         FieldItemListInterface $items,
         $delta,
         array $element,
         array &$form,
         FormStateInterface $form_state
     ) {
-        // Item of interest.
-        $item = &$items[$delta];
-        $settings = $item->getFieldDefinition()->getSettings();
+    // Item of interest.
+    $item = &$items[$delta];
+    $settings = $item->getFieldDefinition()->getSettings();
 
-        // Load up the form fields.
-        $element += [
-            '#type' => 'fieldset',
-        ];
-        $element['source'] = [
-            '#title' => t('Source'),
-            '#type' => 'select',
-            '#options' => $settings['authority_sources'],
-            '#default_value' => isset($item->source) ? $item->source : '',
-        ];
-        $element['uri'] = [
-            '#type' => 'url',
-            '#title' => $this->t('URI'),
-            '#placeholder' => $this
-                ->getSetting('placeholder_url'),
-            '#default_value' => !$item
-                ->isEmpty() ? static::getUriAsDisplayableString($item->uri) : NULL,
-            '#element_validate' => [
-                [
-                    get_called_class(),
-                    'validateUriElement',
-                ],
-            ],
-            '#maxlength' => 2048,
-            '#required' => $element['#required'],
-        ];
-        return $element;
-    }
+    // Load up the form fields.
+    $element += [
+      '#type' => 'fieldset',
+    ];
+    $element['source'] = [
+      '#title' => $this->t('Source'),
+      '#type' => 'select',
+      '#options' => $settings['authority_sources'],
+      '#default_value' => isset($item->source) ? $item->source : '',
+    ];
+    $element['uri'] = [
+      '#type' => 'url',
+      '#title' => $this->t('URI'),
+      '#placeholder' => $this
+        ->getSetting('placeholder_url'),
+      '#default_value' => !$item
+        ->isEmpty() ? static::getUriAsDisplayableString($item->uri) : NULL,
+      '#element_validate' => [
+              [
+                get_called_class(),
+                'validateUriElement',
+              ],
+      ],
+      '#maxlength' => 2048,
+      '#required' => $element['#required'],
+    ];
+    return $element;
+  }
+
 }
