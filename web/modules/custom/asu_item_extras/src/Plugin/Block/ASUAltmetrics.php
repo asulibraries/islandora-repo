@@ -127,6 +127,13 @@ class ASUAltmetrics extends BlockBase implements ContainerFactoryPluginInterface
       $altmetrics_embed = ' data-doi="' . $doi_val . '"';
     }
     elseif ($handle) {
+      if (strstr($handle, "://")) {
+        // We only want the ID part of the handle value.
+        $urlparts = parse_url($handle);
+        $handle = (array_key_exists('path', $urlparts) ?
+          $urlparts['path'] : "");
+        $handle = ltrim($handle, "/");
+      }
       $altmetrics_embed = ' data-handle="' . $handle . '"';
     }
     else {
