@@ -383,7 +383,7 @@ process:
     -
       plugin: skip_on_empty
       method: process
-      source: Contributors-Person
+      source: Personal Contributors
     -
       plugin: explode
       delimiter: '||'
@@ -398,7 +398,6 @@ process:
       delimiter: '|'
       uri_field: field_authority_link
       default_vocabulary: person
-      relator: 'relators:ctb'
 
   corporations:
     -
