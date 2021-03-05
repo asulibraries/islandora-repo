@@ -88,7 +88,7 @@ class ComplexObjectMembersController extends ControllerBase implements Container
       '#markup' => '<h2>' . $this->t('Included in this item') . '</h2><div class="row">',
       '#cache' => ['max-age' => 0],
       'build_output' => $build_output,
-      '#suffix' => '</div>'
+      '#suffix' => '</div>',
     ];
   }
 
