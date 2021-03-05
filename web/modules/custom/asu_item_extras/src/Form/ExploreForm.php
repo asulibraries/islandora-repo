@@ -6,12 +6,12 @@ use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Link;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides an 'Explore item' (search form) Block.
  */
 class ExploreForm extends FormBase {
-
   /**
    * The requestStack definition.
    *
@@ -20,57 +20,26 @@ class ExploreForm extends FormBase {
   protected $requestStack;
 
   /**
-   * Drupal\Core\Routing\CurrentRouteMatch definition.
+   * The currentRouteMatch definition.
    *
-   * @var \Drupal\Core\Routing\CurrentRouteMatch
+   * @var \Drupal\Core\Routing\RouteMatchInterface
    */
   protected $currentRouteMatch;
 
   /**
-   * Construct method.
-   *
-   * @param array $configuration
-   *   A configuration array containing information about the plugin instance.
-   * @param string $plugin_id
-   *   The plugin_id for the formatter.
-   * @param mixed $plugin_definition
-   *   The plugin implementation definition.
-   * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
-   *   The request_stack service.
-   */
-  public function __construct(
-    array $configuration,
-    $plugin_id,
-    $plugin_definition,
-    RequestStack $request_stack) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
-    $this->requestStack = $request_stack;
-    $this->currentRouteMatch = $currentRouteMatch;
-  }
-
-  /**
-   * Initializes the block and set dependency injection variables.
+   * Initializes an ExploreForm object - set dependency injection variables.
    *
    * @param Symfony\Component\DependencyInjection\ContainerInterface $container
    *   The parent class object.
-   * @param array $configuration
-   *   A configuration array containing information about the plugin instance.
-   * @param string $plugin_id
-   *   The plugin_id for the formatter.
-   * @param mixed $plugin_definition
-   *   The plugin implementation definition.
    *
    * @return mixed
    *   The initialized form object.
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
-    return new static(
-      $configuration,
-      $plugin_id,
-      $plugin_definition,
-      $container->get('request_stack'),
-      $container->get('current_route_match')
-    );
+  public static function create(ContainerInterface $container) {
+    $instance = parent::create($container);
+    $instance->requestStack = $container->get('request_stack');
+    $instance->currentRouteMatch = $container->get('current_route_match');
+    return $instance;
   }
 
   /**
