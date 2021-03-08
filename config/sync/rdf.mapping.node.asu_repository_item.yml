@@ -14,6 +14,11 @@ bundle: asu_repository_item
 types:
   - 'pcdm:Object'
 fieldMappings:
+  field_handle:
+    properties:
+      - 'dcterms:identifier'
+      - 'mods:identifier'
+      - 'identifiers:hdl'
   nid:
     properties:
       - 'dcterms:identifier'
@@ -62,7 +67,7 @@ fieldMappings:
     datatype_callback:
       callable: 'Drupal\jsonld\EntityReferenceConverter::linkFieldPassthrough'
       arguments:
-        link_field: field_external_authority_link
+        link_field: 'field_external_authority_link'
   field_genre:
     properties:
       - 'dcterms:type'
@@ -133,10 +138,6 @@ fieldMappings:
   field_weight:
     properties:
       - 'co:index'
-  title:
-    properties:
-      - 'dcterms:title'
-      - 'mods:title'
   created:
     properties:
       - 'bf:creationDate'
@@ -155,11 +156,6 @@ fieldMappings:
     mapping_type: property
     datatype_callback:
       callable: 'Drupal\asu_custom_rdf\UidLookup::username'
-  field_handle:
-    properties:
-      - 'dcterms:identifier'
-      - 'mods:identifier'
-      - 'identifiers:hdl'
   field_open_access:
     properties:
       - 'dcterms:accessRights'
