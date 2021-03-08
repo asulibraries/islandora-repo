@@ -1,0 +1,40 @@
+diff --git a/src/Plugin/OaiMetadataMap/DublinCoreRdf.php b/src/Plugin/OaiMetadataMap/DublinCoreRdf.php
+index 0e361c4..470388f 100644
+--- a/src/Plugin/OaiMetadataMap/DublinCoreRdf.php
++++ b/src/Plugin/OaiMetadataMap/DublinCoreRdf.php
+@@ -113,7 +113,9 @@ class DublinCoreRdf extends OaiMetadataMapBase {
+           else {
+             $value = $item->getValue()[$index];
+           }
+-          $render_array['elements'][$element][] = $value;
++          if ($value) {
++            $render_array['elements'][$element][] = $value;
++          }
+         }
+       }
+ 
+diff --git a/src/Plugin/rest/resource/OaiPmh.php b/src/Plugin/rest/resource/OaiPmh.php
+index b0dabd5..ae9b907 100644
+--- a/src/Plugin/rest/resource/OaiPmh.php
++++ b/src/Plugin/rest/resource/OaiPmh.php
+@@ -396,11 +396,15 @@ class OaiPmh extends ResourceBase {
+     $context = new RenderContext();
+     $result = \Drupal::service('renderer')->executeInRenderContext(
+         $context, function () {
+-            $mapping_plugin = $this->getMetadataPlugin($this->metadataPrefix);
+-            $record = $mapping_plugin->transformRecord($this->entity);
+-            $metadata = $mapping_plugin->getMetadataWrapper();
+-            $metadata[$this->metadataPrefix]['metadata-xml'] = trim($record);
+-            return $metadata;
++          $mapping_plugin = $this->getMetadataPlugin($this->metadataPrefix);
++          $record = $mapping_plugin->transformRecord($this->entity);
++          $metadata = $mapping_plugin->getMetadataWrapper();
++          $metadata[$this->metadataPrefix]['metadata-xml'] = trim($record);
++          if ($this->metadataPrefix == 'oai_dc') {
++            $metadata['oai_dc:dc'] = $metadata['oai_dc'];
++            unset($metadata['oai_dc']);
++          }
++          return $metadata;
+         }
+     );
+     return $result;
