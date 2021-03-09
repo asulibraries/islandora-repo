@@ -3,11 +3,21 @@
 namespace Drupal\asu_mods\Encoder;
 
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Drupal\Core\Config\ConfigFactory;
 
 /**
- *
+ * Provides a 'MODS format` handler.
  */
 class ModsEncoder extends XmlEncoder {
+
+  /**
+   * The configuration.
+   *
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
+   */
+  protected $configFactory;
 
   const ROOT_NODE_NAME = 'xml_root_node_name';
   const MACHINE_FIELDS = [
@@ -26,6 +36,14 @@ class ModsEncoder extends XmlEncoder {
    * @var string
    */
   protected $format = 'mods';
+
+  /**
+   * Constructs a breadcrumb builder.
+   *
+   */
+  public function __construct(ConfigFactory $config_factory) {
+    $this->configFactory = $config_factory;
+  }
 
   /**
    * {@inheritdoc}
@@ -56,7 +74,7 @@ class ModsEncoder extends XmlEncoder {
   /**
    * Plucks the data out of a field.
    */
-  private static function get_field_values($data, $field_name, $config, $sub_field = NULL) {
+  private static function getFieldValues($data, $field_name, $config, $sub_field = NULL) {
     if (!is_array($field_name) && str_contains($field_name, '/')) {
       $field_name_parts = explode('/', $field_name);
       $field_name = $field_name_parts[0];
@@ -72,7 +90,7 @@ class ModsEncoder extends XmlEncoder {
           $vals = $field->referencedEntities();
         }
         if ($field_name == "uid") {
-          if (get_class($data) == 'Drupal\user\Entity\User' ) {
+          if (get_class($data) == 'Drupal\user\Entity\User') {
             $vals = [$data->getAccountName()];
           }
         }
@@ -113,21 +131,18 @@ class ModsEncoder extends XmlEncoder {
               $field_arr[$ck] = $val;
             }
             else {
-              if (is_array($cv)) {
-                $arr_cv = $cv;
-              }
               if (str_contains($cv, "/name")) {
                 $cv = str_replace('/name', '', $cv);
-                $field_arr[$ck] = self::get_field_values($val, $cv, $ck, 'name');
+                $field_arr[$ck] = self::getFieldValues($val, $cv, $ck, 'name');
               }
               else {
                 if ($ck == "@supplied") {
                   if ($cv == 'yes') {
-                    $field_arr[$ck] = self::get_field_values($val, $cv, $ck);
+                    $field_arr[$ck] = self::getFieldValues($val, $cv, $ck);
                   }
                 }
                 else {
-                  $field_arr[$ck] = self::get_field_values($val, $cv, $ck);
+                  $field_arr[$ck] = self::getFieldValues($val, $cv, $ck);
                 }
               }
             }
@@ -143,10 +158,7 @@ class ModsEncoder extends XmlEncoder {
               else {
                 $temp_val = $val;
               }
-              if (is_array($sub_cv)) {
-                $arr_cv = $sub_cv;
-              }
-              $returned = self::get_field_values($temp_val, $sub_cv, $sub_ck);
+              $returned = self::getFieldValues($temp_val, $sub_cv, $sub_ck);
               if (!empty($returned)) {
                 $field_arr[$ck][$sub_ck] = $returned;
               }
@@ -213,14 +225,11 @@ class ModsEncoder extends XmlEncoder {
   /**
    * Processes the data of a single node.
    */
-  public function process_node($mods_config, $node) {
+  public function processNode($mods_config, $node) {
     $new_data = [];
     foreach ($mods_config->getRawData() as $field_name => $field_config) {
       if (!is_array($field_config)) {
-        if (is_array($field_name)) {
-          $arr_field = $field_name;
-        }
-        $simple_data = $this->get_field_values($node, $field_name, $field_config);
+        $simple_data = $this->getFieldValues($node, $field_name, $field_config);
         $new_data[$field_config][] = [
           '#' => $simple_data,
         ];
@@ -233,11 +242,7 @@ class ModsEncoder extends XmlEncoder {
           }
           unset($field_config['_top']);
         }
-        if (is_array($field_name)) {
-          $arr_field = $field_name;
-        }
-
-        $complex_data = $this->get_field_values($node, $field_name, $field_config);
+        $complex_data = $this->getFieldValues($node, $field_name, $field_config);
         if (is_array($complex_data)) {
           if (count($complex_data) == 0) {
             continue;
@@ -275,12 +280,13 @@ class ModsEncoder extends XmlEncoder {
    */
   public function encode($data, $format, array $context = []) {
     // TODO set mods namespaces.
-    $mods_config = \Drupal::config('asu_mods.asu_repository_item');
+    $mods_config = $this->configFactory->get('asu_mods.asu_repository_item');
+    // $mods_config = \Drupal::config('asu_mods.asu_repository_item');
     $all_records = [];
     if (is_array($data)) {
       $context[self::ROOT_NODE_NAME] = 'modsCollection';
       foreach ($data as $node) {
-        $new_data = $this->process_node($mods_config, $node);
+        $new_data = $this->processNode($mods_config, $node);
         $all_records['mods'][] =
         [
           '#' => $new_data,
@@ -289,7 +295,7 @@ class ModsEncoder extends XmlEncoder {
     }
     else {
       $context[self::ROOT_NODE_NAME] = 'mods';
-      $new_data = $this->process_node($mods_config, $data);
+      $new_data = $this->processNode($mods_config, $data);
       $all_records['#'] = $new_data;
     }
 
