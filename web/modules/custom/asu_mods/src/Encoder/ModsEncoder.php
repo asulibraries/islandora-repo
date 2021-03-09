@@ -197,7 +197,7 @@ class ModsEncoder extends XmlEncoder {
       elseif (is_array($val) && count($val) == 1) {
         $val = $val[0];
       }
-      if (isset($sub_part)) {
+      if (!empty($sub_part)) {
         $return_vals[] = $val[$sub_part];
       }
       else {
