@@ -10,7 +10,7 @@ migration_group: migrate_c329_csv
 
 source:
   plugin: csv
-  path: /var/www/html/drupal/web/modules/custom/asu_migrate/c329_merged_v2.csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/c329_merged_v3.csv
 
   # 1 means you have a header row, 0 means you don't
   header_row_count: 1
@@ -46,7 +46,7 @@ process:
 
   field_edtf_date_created:
     plugin: skip_on_empty
-    source: Date Created
+    source: new_date
     method: process
 
   field_date_digitized:
@@ -107,7 +107,7 @@ process:
 
   field_rich_description/value:
     plugin: skip_on_empty
-    source: Description
+    source: cleaned_description
     method: process
 
   field_rich_description/format:
