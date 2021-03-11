@@ -62,10 +62,10 @@ dependencies:
     - text
     - user
     - views_data_export
-id: test_export
-label: test_export
+id: csv_export
+label: 'CSV Export'
 module: views
-description: ''
+description: 'View for exporting CSV according to ASU migration specifications.'
 tag: ''
 base_table: node_field_data
 base_field: nid
@@ -3470,9 +3470,9 @@ display:
         - 'config:field.storage.node.field_title_subject'
         - 'config:field.storage.node.field_typed_identifier'
         - 'config:field.storage.node.field_weight'
-  data_export_1:
+  data_export:
     display_plugin: data_export
-    id: data_export_1
+    id: data_export
     display_title: 'Data export'
     position: 1
     display_options:
