@@ -32,11 +32,8 @@ class LibauthExceptionSubscriber implements EventSubscriberInterface {
    */
   public function onException(GetResponseForExceptionEvent $event) {
     $exception = $event->getException();
-    $this->logger->get('hello')->info("in libauthsubscriber");
-    $class = get_class($exception);
     if ($exception instanceof LibauthException) {
       $this->logger->get('libauth')->error($exception->getMessage());
-      // $content = file_get_contents(DRUPAL_ROOT . '/../500-error.html');
       $build = [
         '#theme' => 'exception_template',
         '#name' => 'Error',
@@ -44,7 +41,6 @@ class LibauthExceptionSubscriber implements EventSubscriberInterface {
         '#cache' => ['max-age' => 0],
       ];
       $content = \Drupal::service('renderer')->renderRoot($build);
-      // $response = new Response($exception->getMessage(), 500);
       $response = new Response($content, 500);
       $event->setResponse($response);
     }
