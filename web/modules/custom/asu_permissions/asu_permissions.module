@@ -401,13 +401,19 @@ function _get_groups_from_node(EntityInterface $node) {
  * Implements hook_entity_type_create().
  * Implements hook_user_create().
  */
-function asu_permissions_user_create(EntityInterface $entity) {
+function asu_permissions_user_insert(UserInterface $entity) {
   \Drupal::logger('asu_perms_user_insert')->info("going to presave user");
+  \Drupal::logger('example')->info('ENTITY_TYPE created: @label', ['@label' => $entity->label()]);
+  $lab = $entity->label();
   $url = "http://authprod.lib.asu.edu/asurite/ezoller.json";
   $client = \Drupal::httpClient();
   // TODO if the user will have the CAS User role set.
-  \Drupal::logger('asu permissions')->info(print_r($entity->get('roles')->value, TRUE));
-  \Drupal::logger('asu permissions')->info(print_r($entity->get('name')->value, TRUE));
+  \Drupal::logger('asu permissions')->info(print_r($entity->getDisplayName(), TRUE));
+  \Drupal::logger('asu permissions')->info(print_r($entity->getRoles(), TRUE));
+  $roles = $entity->getRoles();
+  if (!(in_array('casuser', $entity->getRoles()))) {
+    return;
+  }
   try {
     $request = $client->request('GET', $url);
     if ($request->getStatusCode() == 200) {
@@ -416,7 +422,7 @@ function asu_permissions_user_create(EntityInterface $entity) {
       \Drupal::logger('asu permissions')->info(print_r($json, TRUE));
       if (array_key_exists('in_headcount', $json) && $json['in_headcount'] == TRUE) {
         \Drupal::logger('asu permissions')->info("proceed to creating user");
-        $fname = $json['preferred_first_name'] != '' ? $json['preferred_first_name'] : $json['first_name'];
+        $fname = $json['person']['preferred_first_name'] != '' ? $json['person']['preferred_first_name'] : $json['person']['first_name'];
         // $entity->set('');
         // set the users first and last name
       }
@@ -437,6 +443,10 @@ function asu_permissions_user_create(EntityInterface $entity) {
     throw new LibauthException('There was an issue validating this user at ASU. If you think this is an error, <a href="/contact">please contact us</a>.');
   }
   catch (ConnectException $e) {
+    throw new LibauthException('There was an issue validating this user at ASU. If you think this is an error, <a href="/contact">please contact us</a>.');
+  } catch (EntityStorageException $e) {
+    throw new LibauthException('There was an issue validating this user at ASU. If you think this is an error, <a href="/contact">please contact us</a>.');
+  } catch (\Exception $e) {
     throw new LibauthException('There was an issue validating this user at ASU. If you think this is an error, <a href="/contact">please contact us</a>.');
   }
 }

@@ -35,7 +35,7 @@ class LibauthExceptionSubscriber implements EventSubscriberInterface {
     $this->logger->get('hello')->info("in libauthsubscriber");
     $class = get_class($exception);
     if ($exception instanceof LibauthException) {
-      $this->logger->get('php')->error($exception->getMessage());
+      $this->logger->get('libauth')->error($exception->getMessage());
       // $content = file_get_contents(DRUPAL_ROOT . '/../500-error.html');
       $build = [
         '#theme' => 'exception_template',
