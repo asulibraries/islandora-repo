@@ -11,13 +11,17 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
  *
  * @FieldFormatter(
  *   id = "taxonomy_with_uri_formatter",
- *   label = @Translation("Taxonomy with URI Formatter"),
+ *   label = @Translation("Taxonomy with URI Formatter - CSV export"),
  *   field_types = {
  *     "entity_reference"
  *   }
  * )
  */
 class TaxonomyWithURIFormatter extends EntityReferenceLabelFormatter {
+
+// @todo - write a settings form to allow setting the field name of the URI 
+// field... taxonomy such as "Copyright Statement" would have a diff field name
+// than "field_authority_link"
 
   /**
    * {@inheritdoc}
