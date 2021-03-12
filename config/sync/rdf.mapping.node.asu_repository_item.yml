@@ -26,6 +26,10 @@ fieldMappings:
     properties:
       - 'dcterms:identifier'
       - 'mods:identifier'
+    datatype_callback:
+      callable: 'Drupal\asu_custom_rdf\StringManipulater::prependString'
+      arguments:
+        prefix: 'system_id:'
   field_coordinates:
     properties:
       - 'dcterms:spatial'
@@ -70,7 +74,7 @@ fieldMappings:
     datatype_callback:
       callable: 'Drupal\jsonld\EntityReferenceConverter::linkFieldPassthrough'
       arguments:
-        link_field: 'field_external_authority_link'
+        link_field: field_external_authority_link
   field_genre:
     properties:
       - 'dcterms:type'
