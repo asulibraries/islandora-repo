@@ -406,8 +406,8 @@ function asu_permissions_user_create(EntityInterface $entity) {
   $url = "http://authprod.lib.asu.edu/asurite/ezoller.json";
   $client = \Drupal::httpClient();
   // TODO if the user will have the CAS User role set.
-  \Drupal::logger('asu permissions')->info(print_r($entity->get('roles')));
-  \Drupal::logger('asu permissions')->info(print_r($entity->get('name')));
+  \Drupal::logger('asu permissions')->info(print_r($entity->get('roles')->value, TRUE));
+  \Drupal::logger('asu permissions')->info(print_r($entity->get('name')->value, TRUE));
   try {
     $request = $client->request('GET', $url);
     if ($request->getStatusCode() == 200) {
