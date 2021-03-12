@@ -35,3 +35,16 @@ asu_item_extras.viewer_controller_render_view:
     parameters:
       node:
         type: entity:node
+
+asu_item_extras.thumbnail_controller_get_thumbnail:
+  path: '/items/{node}/thumbnail'
+  defaults:
+    _controller: '\Drupal\asu_item_extras\Controller\ThumbnailController::getThumbnail'
+    _title: 'Thumbnail'
+  requirements:
+    _entity_access: 'node.view'
+    node: \d+
+  options:
+    parameters:
+      node:
+        type: entity:node
