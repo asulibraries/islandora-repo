@@ -5,9 +5,8 @@ namespace Drupal\asu_item_extras\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Url;
-use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Routing\TrustedRedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
 
 /**
  * Class ThumbnailController.
@@ -61,7 +60,7 @@ class ThumbnailController extends ControllerBase {
           $file = $thumb_media->get('field_media_image')->entity;
           // $thumb_response = $this->entityTypeManager->getViewBuilder('file')->view(, 'full');
           $file_uri = file_create_url($file->getFileUri());
-          return new RedirectResponse($file_uri);
+          return new TrustedRedirectResponse($file_uri);
         }
         else {
 
@@ -72,7 +71,7 @@ class ThumbnailController extends ControllerBase {
               if ($thumb_media) {
                 $file = $thumb_media->get('field_media_image')->entity;
                 $file_uri = file_create_url($file->getFileUri());
-                return new RedirectResponse($file_uri);
+                return new TrustedRedirectResponse($file_uri);
               }
             }
           }
