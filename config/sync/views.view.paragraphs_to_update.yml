@@ -4,8 +4,10 @@ dependencies:
   config:
     - field.storage.paragraph.field_identifier_type
     - field.storage.paragraph.field_identifier_value
+    - user.role.administrator
   module:
     - paragraphs
+    - user
     - views_bulk_operations
 id: paragraphs_to_update
 label: 'Paragraphs to Update'
@@ -22,8 +24,10 @@ display:
     position: 0
     display_options:
       access:
-        type: none
-        options: {  }
+        type: role
+        options:
+          role:
+            administrator: administrator
       cache:
         type: tag
         options: {  }
@@ -186,16 +190,13 @@ display:
                 get_bundles_from_results: 1
           plugin_id: views_bulk_operations_bulk_form
         id:
+          id: id
           table: paragraphs_item_field_data
           field: id
-          id: id
-          entity_type: null
-          entity_field: id
-          plugin_id: field
           relationship: none
           group_type: group
           admin_label: ''
-          label: ''
+          label: ID
           exclude: false
           alter:
             alter_text: false
@@ -238,7 +239,9 @@ display:
           hide_alter_empty: true
           click_sort_column: value
           type: number_integer
-          settings: {  }
+          settings:
+            thousand_separator: ''
+            prefix_suffix: true
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -249,6 +252,9 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+          entity_type: null
+          entity_field: id
+          plugin_id: field
         field_identifier_type:
           id: field_identifier_type
           table: paragraph__field_identifier_type
@@ -256,7 +262,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          label: ''
+          label: 'Identifier Type'
           exclude: false
           alter:
             alter_text: false
@@ -319,7 +325,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          label: ''
+          label: Value
           exclude: false
           alter:
             alter_text: false
@@ -381,7 +387,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          label: ''
+          label: 'Paragraph Type'
           exclude: false
           alter:
             alter_text: false
@@ -446,7 +452,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          label: ''
+          label: 'Parent Type'
           exclude: false
           alter:
             alter_text: false
@@ -634,6 +640,96 @@ display:
           entity_type: paragraph
           entity_field: type
           plugin_id: bundle
+        parent_type:
+          id: parent_type
+          table: paragraphs_item_field_data
+          field: parent_type
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '='
+          value: node
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: paragraph
+          entity_field: parent_type
+          plugin_id: string
+        field_identifier_value_value:
+          id: field_identifier_value_value
+          table: paragraph__field_identifier_value
+          field: field_identifier_value_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: starts
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: field_identifier_value_value_op
+            label: 'Identifier Value'
+            description: ''
+            use_operator: false
+            operator: field_identifier_value_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_identifier_value_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              fedoraadmin: '0'
+              content_approver: '0'
+              depositor: '0'
+              metadata_manager: '0'
+              preservationist: '0'
+              casuser: '0'
+              repositor_manager: '0'
+              collections_staff: '0'
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: string
       sorts: {  }
       title: 'Paragraphs to Update'
       header: {  }
@@ -649,6 +745,7 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user.roles
       tags:
         - 'config:field.storage.paragraph.field_identifier_type'
         - 'config:field.storage.paragraph.field_identifier_value'
@@ -667,6 +764,7 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - user.roles
       tags:
         - 'config:field.storage.paragraph.field_identifier_type'
         - 'config:field.storage.paragraph.field_identifier_value'
