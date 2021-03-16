@@ -13,6 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Drupal\group\GroupMembershipLoaderInterface;
 use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\Core\Site\Settings;
 
 /**
  * Provides an 'Admin toolbox' Block.
@@ -196,6 +197,10 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
         $link_glyph = Link::fromTextAndUrl($this->t('<i class="fas fa-chart-bar"></i>'), $url)->toRenderable();
         $output_links[] = render($link) . " &nbsp;" . render($link_glyph);
       }
+      if ($node->hasField('field_model') && $node->get('field_model')->entity != NULL
+      ) {
+        $output_links[] = "<div class='field--label-inline'><div class='field__label'>Model</div>: " . $node->get('field_model')->entity->getName() . "</div>";
+      }
     }
     if (!($is_complex_object) && (!$is_collection) && $canUpdate) {
       $url = Url::fromUri(
@@ -206,6 +211,19 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
       $link = $link->toRenderable();
       $link_glyph = Link::fromTextAndUrl($this->t('<i class="fas fa-plus-circle"></i>'), $url)->toRenderable();
       $output_links[] = render($link) . " &nbsp;" . render($link_glyph);
+    }
+    if (in_array('administrator', $this->currentUser->getRoles())) {
+      $mapper = \Drupal::service('islandora.entity_mapper');
+      $flysystem_config = Settings::get('flysystem');
+      $fedora_root = $flysystem_config['fedora']['config']['root'];
+      $fedora_root = rtrim($fedora_root, '/');
+      $path = $mapper->getFedoraPath($node->uuid());
+      $path = trim($path, '/');
+      $fedora_uri = "$fedora_root/$path";
+      $url = Url::fromUri($fedora_uri, ['attributes' => ['target' => '_blank']]);
+      $link = Link::fromTextAndUrl($this->t('Fedora URI'), $url);
+      $link = $link->toRenderable();
+      $output_links[] = render($link);
     }
     return [
       '#markup' => (count($output_links) > 0) ?
