@@ -206,7 +206,7 @@ function asu_permissions_node_access(NodeInterface $node, $op, AccountInterface 
         case 'view':
           foreach ($groups as $group) {
             if ($node->isPublished()) {
-              if ($group->hasPermission("view $plugin_id entity", $account)) {
+              if ($group->hasPermission("view $plugin_id entity", $account) && $group->getMember($account)) {
                 if (count($parents) > 0) {
                   foreach ($parents as $par) {
                     if ($par->uuid() != $node->uuid()) {
@@ -226,7 +226,7 @@ function asu_permissions_node_access(NodeInterface $node, $op, AccountInterface 
                 }
               }
             }
-            elseif ($group->hasPermission("view unpublished $plugin_id entity", $account)) {
+            elseif ($group->hasPermission("view unpublished $plugin_id entity", $account) && $group->getMember($account)) {
               // This is what gives metadata managers and admins their power.
               $access_result = AccessResult::allowed();
             }
