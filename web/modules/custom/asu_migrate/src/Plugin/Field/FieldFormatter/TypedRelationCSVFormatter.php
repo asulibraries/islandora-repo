@@ -4,6 +4,7 @@ namespace Drupal\asu_migrate\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\Plugin\Field\FieldFormatter\EntityReferenceLabelFormatter;
 use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Plugin implementation of the 'TypedRelationCSVFormatter'.
@@ -18,32 +19,90 @@ use Drupal\Core\Field\FieldItemListInterface;
  */
 class TypedRelationCSVFormatter extends EntityReferenceLabelFormatter {
 
+    /**
+     * {@inheritdoc}
+     */
+    public static function defaultSettings() {
+      return [
+        'agent_type' => 'person',
+      ] + parent::defaultSettings();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function settingsForm(array $form, FormStateInterface $form_state) {
+      $default_value = $this->getSetting('agent_type') ?
+        $this->getSetting('agent_type') : 'person';
+      $element['agent_type'] = [
+        '#title' => t('URI field name'),
+        '#type' => 'select',
+        '#options' => [
+          'person' => 'Personal Contributor',
+          'corporate_body' => 'Corporate Contributor',
+          'conference' => 'Event Contributor'
+        ],
+        '#default_value' => $default_value,
+        '#required' => TRUE,
+      ];
+      return $element;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function settingsSummary() {
+      $summary = [];
+      $summary[] = t('Contributor type: @agent_type', ['@agent_type' => $this->getSetting('agent_type')]);
+      return $summary;
+    }
+
   /**
    * {@inheritdoc}
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = parent::viewElements($items, $langcode);
-
+    $agent_vocab = $this->getSetting('agent_type');
     foreach ($items as $delta => $item) {
-
-      $rel_types = $item->getRelTypes();
-      $rel_type = isset($rel_types[$item->rel_type]) ? $rel_types[$item->rel_type] : $item->rel_type;
-      if (isset($elements[$delta])) {
-        $re = '/(.*) \(\S*/m';
-        $str = $rel_type;
-        $subst = '$1';
-        $rel_type = preg_replace($re, $subst, $str);
-        $string_value = $elements[$delta]['#plain_text'];
-        $str = str_replace(array(" (",")"), array("|", ""), $str);
-        $elements[$delta]['#markup'] = $string_value . "|" .  $rel_type;
+      $term = $item->entity;
+      if ($term->bundle() == $agent_vocab) {
+        if (isset($elements[$delta])) {
+          if (array_key_exists("#title", $elements[$delta])) {
+            $elements[$delta]["#markup"] = $elements[$delta]["#title"];
+            unset($elements[$delta]["#url"]);
+            unset($elements[$delta]["#options"]);
+            unset($elements[$delta]["#type"]);
+          }
+          $uri_field_name = $this->getAuthorityLinkFieldName($term);
+          $uri_field = $term->hasField($uri_field_name) ? $term->get($uri_field_name) : NULL;
+          $rel_uri = (is_object($uri_field) ? $uri_field->uri : "");
+          $rel_types = $item->getRelTypes();
+          $rel_type = isset($rel_types[$item->rel_type]) ? $rel_types[$item->rel_type] : $item->rel_type;
+          $re = '/(.*) \(\S*/m';
+          $str = $rel_type;
+          $subst = '$1';
+          $rel_type = preg_replace($re, $subst, $str);
+          $string_value = (array_key_exists("#plain_text", $elements[$delta]) ?
+            $elements[$delta]['#plain_text'] : $elements[$delta]["#title"]);
+          $elements[$delta]['#markup'] = $string_value . "|" . $rel_uri . '|' .
+            $rel_type;
+          if (array_key_exists("#plain_text", $elements[$delta])) {
+            unset($elements[$delta]["#plain_text"]);
+          }
+        }
       }
-      if (array_key_exists($delta, $elements) && array_key_exists('#title', $elements[$delta])) {
-        $url = \Drupal::service('facets.utility.url_generator')->getUrl(['linked_agents' => [$elements[$delta]['#title']]]);
-        $elements[$delta]['#url'] = $url;
+      else {
+        unset($elements[$delta]);
       }
     }
 
     return $elements;
   }
 
+  private function getAuthorityLinkFieldName($term) {
+    // Inspect all fields on this term until one that contains "authority_link"
+    // is found.
+    $fields = $term->getFields();
+    return 'field_authority_link';
+  }
 }
