@@ -67,6 +67,8 @@ class TypedRelationCSVFormatter extends EntityReferenceLabelFormatter {
       $term = $item->entity;
       if ($term->bundle() == $agent_vocab) {
         if (isset($elements[$delta])) {
+          // Even if the config is to output links, this is not ever intended
+          // for CSV output of these.
           if (array_key_exists("#title", $elements[$delta])) {
             $elements[$delta]["#markup"] = $elements[$delta]["#title"];
             unset($elements[$delta]["#url"]);
