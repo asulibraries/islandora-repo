@@ -39,48 +39,46 @@
 #}
 {%
   set classes = [
-  'field',
-  'field--name-' ~ field_name|clean_class,
-  'field--type-' ~ field_type|clean_class,
-  'field--label-' ~ label_display,
-]
+    'field',
+    'field--name-' ~ field_name|clean_class,
+    'field--type-' ~ field_type|clean_class,
+    'field--label-' ~ label_display,
+  ]
 %}
 {%
   set title_classes = [
-  'field__label',
-  label_display == 'visually_hidden' ? 'visually-hidden',
-]
+    'field__label',
+    label_display == 'visually_hidden' ? 'visually-hidden',
+  ]
 %}
 {% set label_col = 'col-sm-2' %}
 {% set item_col = 'col-sm-9' %}
 
-<div{{ attributes.addClass(classes, 'row').removeClass('field--type-entity-reference') }}>
-  {% if (field_name == 'field_linked_agent') or (field_name == 'field_subject') or (field_name ==
-    'field_geographic_subject') or (field_name == 'field_subjects_name') or (field_name == 'field_temporal_subject') or
-    (field_name == 'field_title_subject') or (field_name == 'field_source') %}
-    {% if not label_hidden %}
-      {% if label == "Agent" %}
-        {% set label = "Contributors" %}
-      {% endif %}
-      <div{{ title_attributes.addClass(title_classes, label_col) }}>{{ label }}</div>
-    {% endif %}
-    <ul class="inline-list field__items {{ item_col }}">
-      {% for item in items %}
-        <li{{ item.attributes.addClass('field__item') }}>{{ item.content }}</li>
-      {% endfor %}
-    </ul>
-  {% else %}
-      <div{{ title_attributes.addClass(title_classes, label_col) }}>{{ label }}</div>
-      {% if multiple %}
-        <div class="field__items {{ item_col }}">
-          {% for item in items %}
-            <div{{ item.attributes.addClass('field__item') }}>{{ item.content }}</div>
-          {% endfor %}
-        </div>
-      {% else %}
-        {% for item in items %}
-          <div{{ item.attributes.addClass('field__item', item_col) }}>{{ item.content }}</div>
-        {% endfor %}
-      {% endif %}
-  {% endif %}
-</div>
+
+{% if label_hidden %}
+	{% if multiple %}
+		<div{{attributes.addClass(classes,'field__items')}}>
+			{% for item in items %}
+				<div{{item.attributes.addClass('field__item')}}>{{ item.content }}</div>
+			{% endfor %}
+		</div>
+	{% else %}
+		{% for item in items %}
+			<div{{attributes.addClass(classes,'field__item')}}>{{ item.content }}</div>
+		{% endfor %}
+	{% endif %}
+{% else %}
+	<div{{attributes.addClass(classes)}}>
+		<div{{title_attributes.addClass(title_classes, label_col)}}>{{ label }}</div>
+		{% if multiple %}
+			<div class='field__items'>
+			{% endif %}
+			{% for item in items %}
+				<div{{item.attributes.addClass('field__item')}}>{{ item.content }}</div>
+			{% endfor %}
+			{% if multiple %}
+			</div>
+		{% endif %}
+	</div>
+{% endif %}
+
