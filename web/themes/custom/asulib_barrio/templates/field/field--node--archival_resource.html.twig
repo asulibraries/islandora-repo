@@ -67,7 +67,7 @@
 		{% endfor %}
 	{% endif %}
 {% else %}
-	<div{{attributes.addClass(classes)}}>
+	<div{{attributes.addClass(classes, 'row')}}>
 		<div{{title_attributes.addClass(title_classes, label_col)}}>{{ label }}</div>
 		{% if multiple %}
 			<div class='field__items {{ item_col }}' >
