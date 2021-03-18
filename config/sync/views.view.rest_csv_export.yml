@@ -4,10 +4,16 @@ dependencies:
   config:
     - field.storage.node.field_additional_memberships
     - field.storage.node.field_copyright_statement
+    - field.storage.node.field_date_digitized
+    - field.storage.node.field_edition
+    - field.storage.node.field_edtf_copyright_date
+    - field.storage.node.field_edtf_date_created
     - field.storage.node.field_extent
+    - field.storage.node.field_frequency
     - field.storage.node.field_genre
     - field.storage.node.field_geographic_subject
     - field.storage.node.field_handle
+    - field.storage.node.field_issuance
     - field.storage.node.field_linked_agent
     - field.storage.node.field_member_of
     - field.storage.node.field_name_title_subject
@@ -15,6 +21,7 @@ dependencies:
     - field.storage.node.field_peer_reviewed
     - field.storage.node.field_pid
     - field.storage.node.field_preferred_citation
+    - field.storage.node.field_related_item
     - field.storage.node.field_reuse_permissions
     - field.storage.node.field_rich_description
     - field.storage.node.field_series
@@ -23,12 +30,15 @@ dependencies:
     - field.storage.node.field_table_of_contents
     - field.storage.node.field_temporal_subject
     - field.storage.node.field_title
+    - field.storage.taxonomy_term.field_relationships
     - node.type.asu_repository_item
     - node.type.collection
     - search_api.index.default_solr_index
   module:
     - asu_migrate
+    - controlled_access_terms
     - csv_serialization
+    - options
     - rest
     - search_api
     - serialization
@@ -2635,6 +2645,756 @@ display:
             multi_separator: ', '
           entity_type: node
           plugin_id: search_api_field
+        field_edtf_date_created:
+          id: field_edtf_date_created
+          table: search_api_datasource_default_solr_index_entity_node
+          field: field_edtf_date_created
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Date Created'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: edtf_default
+          settings:
+            relationship: none
+            field_rendering: 1
+            fieldsets:
+              - more
+              - admin_label
+            custom_label: 1
+            label: 'Date Created'
+            element_label_colon: 1
+            exclude: 0
+            element_type_enable: 0
+            element_type: ''
+            element_class_enable: 0
+            element_class: ''
+            element_label_type_enable: 0
+            element_label_type: ''
+            element_label_class_enable: 0
+            element_label_class: ''
+            element_wrapper_type_enable: 0
+            element_wrapper_type: ''
+            element_wrapper_class_enable: 0
+            element_wrapper_class: ''
+            element_default_classes: 1
+            alter:
+              alter_text: 0
+              text: ''
+              make_link: 0
+              path: ''
+              absolute: 0
+              replace_spaces: 0
+              external: 0
+              path_case: none
+              link_class: ''
+              alt: ''
+              rel: ''
+              prefix: ''
+              suffix: ''
+              target: ''
+              trim: 0
+              max_length: '0'
+              word_boundary: 1
+              ellipsis: 1
+              more_link: 0
+              more_link_text: ''
+              more_link_path: ''
+              html: 0
+              strip_tags: 0
+              preserve_tags: ''
+              trim_whitespace: 0
+              nl2br: 0
+            empty: ''
+            empty_zero: 0
+            hide_empty: 0
+            hide_alter_empty: 1
+            group_rows: 1
+            multi_type: separator
+            separator: ', '
+            delta_limit: '0'
+            delta_offset: '0'
+            delta_reversed: 0
+            delta_first_last: 0
+            click_sort_column: value
+            type: edtf_default
+            field_api_classes: 0
+            date_separator: dash
+            date_order: big_endian
+            month_format: mm
+            day_format: dd
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          field_rendering: true
+          fallback_handler: search_api
+          fallback_options:
+            link_to_item: false
+            use_highlighting: false
+            multi_type: separator
+            multi_separator: ', '
+          entity_type: node
+          plugin_id: search_api_field
+        field_edtf_copyright_date:
+          id: field_edtf_copyright_date
+          table: search_api_datasource_default_solr_index_entity_node
+          field: field_edtf_copyright_date
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Copyright Date'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: edtf_default
+          settings:
+            relationship: none
+            field_rendering: 1
+            fieldsets:
+              - more
+              - admin_label
+            custom_label: 1
+            label: 'Copyright Date'
+            element_label_colon: 1
+            exclude: 0
+            element_type_enable: 0
+            element_type: ''
+            element_class_enable: 0
+            element_class: ''
+            element_label_type_enable: 0
+            element_label_type: ''
+            element_label_class_enable: 0
+            element_label_class: ''
+            element_wrapper_type_enable: 0
+            element_wrapper_type: ''
+            element_wrapper_class_enable: 0
+            element_wrapper_class: ''
+            element_default_classes: 1
+            alter:
+              alter_text: 0
+              text: ''
+              make_link: 0
+              path: ''
+              absolute: 0
+              replace_spaces: 0
+              external: 0
+              path_case: none
+              link_class: ''
+              alt: ''
+              rel: ''
+              prefix: ''
+              suffix: ''
+              target: ''
+              trim: 0
+              max_length: '0'
+              word_boundary: 1
+              ellipsis: 1
+              more_link: 0
+              more_link_text: ''
+              more_link_path: ''
+              html: 0
+              strip_tags: 0
+              preserve_tags: ''
+              trim_whitespace: 0
+              nl2br: 0
+            empty: ''
+            empty_zero: 0
+            hide_empty: 0
+            hide_alter_empty: 1
+            click_sort_column: value
+            type: edtf_default
+            field_api_classes: 0
+            date_separator: dash
+            date_order: big_endian
+            month_format: mm
+            day_format: dd
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          field_rendering: true
+          fallback_handler: search_api
+          fallback_options:
+            link_to_item: false
+            use_highlighting: false
+            multi_type: separator
+            multi_separator: ', '
+          entity_type: node
+          plugin_id: search_api_field
+        field_date_digitized:
+          id: field_date_digitized
+          table: search_api_datasource_default_solr_index_entity_node
+          field: field_date_digitized
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Date Digitized'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: edtf_default
+          settings:
+            relationship: none
+            field_rendering: 1
+            fieldsets:
+              - more
+              - admin_label
+            custom_label: 1
+            label: 'Date Digitized'
+            element_label_colon: 1
+            exclude: 0
+            element_type_enable: 0
+            element_type: ''
+            element_class_enable: 0
+            element_class: ''
+            element_label_type_enable: 0
+            element_label_type: ''
+            element_label_class_enable: 0
+            element_label_class: ''
+            element_wrapper_type_enable: 0
+            element_wrapper_type: ''
+            element_wrapper_class_enable: 0
+            element_wrapper_class: ''
+            element_default_classes: 1
+            alter:
+              alter_text: 0
+              text: ''
+              make_link: 0
+              path: ''
+              absolute: 0
+              replace_spaces: 0
+              external: 0
+              path_case: none
+              link_class: ''
+              alt: ''
+              rel: ''
+              prefix: ''
+              suffix: ''
+              target: ''
+              trim: 0
+              max_length: '0'
+              word_boundary: 1
+              ellipsis: 1
+              more_link: 0
+              more_link_text: ''
+              more_link_path: ''
+              html: 0
+              strip_tags: 0
+              preserve_tags: ''
+              trim_whitespace: 0
+              nl2br: 0
+            empty: ''
+            empty_zero: 0
+            hide_empty: 0
+            hide_alter_empty: 1
+            click_sort_column: value
+            type: edtf_default
+            field_api_classes: 0
+            date_separator: dash
+            date_order: big_endian
+            month_format: mm
+            day_format: dd
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          field_rendering: true
+          fallback_handler: search_api
+          fallback_options:
+            link_to_item: false
+            use_highlighting: false
+            multi_type: separator
+            multi_separator: ', '
+          entity_type: node
+          plugin_id: search_api_field
+        field_edition:
+          id: field_edition
+          table: search_api_datasource_default_solr_index_entity_node
+          field: field_edition
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: Edition
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: false
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ' || '
+          field_api_classes: false
+          field_rendering: true
+          fallback_handler: search_api
+          fallback_options:
+            link_to_item: false
+            use_highlighting: false
+            multi_type: separator
+            multi_separator: ', '
+          entity_type: node
+          plugin_id: search_api_field
+        field_frequency:
+          id: field_frequency
+          table: search_api_datasource_default_solr_index_entity_node
+          field: field_frequency
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: Frequency
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: list_default
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          field_rendering: true
+          fallback_handler: search_api
+          fallback_options:
+            link_to_item: false
+            use_highlighting: false
+            multi_type: separator
+            multi_separator: ', '
+          entity_type: node
+          plugin_id: search_api_field
+        field_issuance:
+          id: field_issuance
+          table: search_api_datasource_default_solr_index_entity_node
+          field: field_issuance
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: Issuance
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: list_default
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          field_rendering: true
+          fallback_handler: search_api
+          fallback_options:
+            link_to_item: false
+            use_highlighting: false
+            multi_type: separator
+            multi_separator: ', '
+          entity_type: node
+          plugin_id: search_api_field
+        field_related_item:
+          id: field_related_item
+          table: search_api_datasource_default_solr_index_entity_node
+          field: field_related_item
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Related Item'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: typed_relation_default
+          settings:
+            link: 0
+          group_column: ''
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ' || '
+          field_api_classes: false
+          field_rendering: true
+          fallback_handler: search_api
+          fallback_options:
+            link_to_item: false
+            use_highlighting: false
+            multi_type: separator
+            multi_separator: ', '
+          entity_type: node
+          plugin_id: search_api_field
+        field_relationships:
+          id: field_relationships
+          table: search_api_datasource_default_solr_index_entity_taxonomy_term
+          field: field_relationships
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Related Entities'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: typed_relation_default
+          settings:
+            link: 0
+          group_column: ''
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ' || '
+          field_api_classes: false
+          field_rendering: true
+          fallback_handler: search_api
+          fallback_options:
+            link_to_item: false
+            use_highlighting: false
+            multi_type: separator
+            multi_separator: ', '
+          entity_type: taxonomy_term
+          plugin_id: search_api_field
       filters:
         type:
           id: type
@@ -2785,10 +3545,16 @@ display:
       tags:
         - 'config:field.storage.node.field_additional_memberships'
         - 'config:field.storage.node.field_copyright_statement'
+        - 'config:field.storage.node.field_date_digitized'
+        - 'config:field.storage.node.field_edition'
+        - 'config:field.storage.node.field_edtf_copyright_date'
+        - 'config:field.storage.node.field_edtf_date_created'
         - 'config:field.storage.node.field_extent'
+        - 'config:field.storage.node.field_frequency'
         - 'config:field.storage.node.field_genre'
         - 'config:field.storage.node.field_geographic_subject'
         - 'config:field.storage.node.field_handle'
+        - 'config:field.storage.node.field_issuance'
         - 'config:field.storage.node.field_linked_agent'
         - 'config:field.storage.node.field_member_of'
         - 'config:field.storage.node.field_name_title_subject'
@@ -2796,6 +3562,7 @@ display:
         - 'config:field.storage.node.field_peer_reviewed'
         - 'config:field.storage.node.field_pid'
         - 'config:field.storage.node.field_preferred_citation'
+        - 'config:field.storage.node.field_related_item'
         - 'config:field.storage.node.field_reuse_permissions'
         - 'config:field.storage.node.field_rich_description'
         - 'config:field.storage.node.field_series'
@@ -2804,6 +3571,7 @@ display:
         - 'config:field.storage.node.field_table_of_contents'
         - 'config:field.storage.node.field_temporal_subject'
         - 'config:field.storage.node.field_title'
+        - 'config:field.storage.taxonomy_term.field_relationships'
         - 'config:search_api.index.default_solr_index'
   rest_export_1:
     display_plugin: rest_export
@@ -2850,10 +3618,16 @@ display:
       tags:
         - 'config:field.storage.node.field_additional_memberships'
         - 'config:field.storage.node.field_copyright_statement'
+        - 'config:field.storage.node.field_date_digitized'
+        - 'config:field.storage.node.field_edition'
+        - 'config:field.storage.node.field_edtf_copyright_date'
+        - 'config:field.storage.node.field_edtf_date_created'
         - 'config:field.storage.node.field_extent'
+        - 'config:field.storage.node.field_frequency'
         - 'config:field.storage.node.field_genre'
         - 'config:field.storage.node.field_geographic_subject'
         - 'config:field.storage.node.field_handle'
+        - 'config:field.storage.node.field_issuance'
         - 'config:field.storage.node.field_linked_agent'
         - 'config:field.storage.node.field_member_of'
         - 'config:field.storage.node.field_name_title_subject'
@@ -2861,6 +3635,7 @@ display:
         - 'config:field.storage.node.field_peer_reviewed'
         - 'config:field.storage.node.field_pid'
         - 'config:field.storage.node.field_preferred_citation'
+        - 'config:field.storage.node.field_related_item'
         - 'config:field.storage.node.field_reuse_permissions'
         - 'config:field.storage.node.field_rich_description'
         - 'config:field.storage.node.field_series'
@@ -2869,6 +3644,7 @@ display:
         - 'config:field.storage.node.field_table_of_contents'
         - 'config:field.storage.node.field_temporal_subject'
         - 'config:field.storage.node.field_title'
+        - 'config:field.storage.taxonomy_term.field_relationships'
         - 'config:search_api.index.default_solr_index'
   rest_export_2:
     display_plugin: rest_export
@@ -3029,10 +3805,16 @@ display:
       tags:
         - 'config:field.storage.node.field_additional_memberships'
         - 'config:field.storage.node.field_copyright_statement'
+        - 'config:field.storage.node.field_date_digitized'
+        - 'config:field.storage.node.field_edition'
+        - 'config:field.storage.node.field_edtf_copyright_date'
+        - 'config:field.storage.node.field_edtf_date_created'
         - 'config:field.storage.node.field_extent'
+        - 'config:field.storage.node.field_frequency'
         - 'config:field.storage.node.field_genre'
         - 'config:field.storage.node.field_geographic_subject'
         - 'config:field.storage.node.field_handle'
+        - 'config:field.storage.node.field_issuance'
         - 'config:field.storage.node.field_linked_agent'
         - 'config:field.storage.node.field_member_of'
         - 'config:field.storage.node.field_name_title_subject'
@@ -3040,6 +3822,7 @@ display:
         - 'config:field.storage.node.field_peer_reviewed'
         - 'config:field.storage.node.field_pid'
         - 'config:field.storage.node.field_preferred_citation'
+        - 'config:field.storage.node.field_related_item'
         - 'config:field.storage.node.field_reuse_permissions'
         - 'config:field.storage.node.field_rich_description'
         - 'config:field.storage.node.field_series'
@@ -3048,4 +3831,5 @@ display:
         - 'config:field.storage.node.field_table_of_contents'
         - 'config:field.storage.node.field_temporal_subject'
         - 'config:field.storage.node.field_title'
+        - 'config:field.storage.taxonomy_term.field_relationships'
         - 'config:search_api.index.default_solr_index'
