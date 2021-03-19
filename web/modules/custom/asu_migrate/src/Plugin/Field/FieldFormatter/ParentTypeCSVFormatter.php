@@ -67,7 +67,8 @@ class ParentTypeCSVFormatter extends EntityReferenceLabelFormatter {
       $item_entity = $item->entity;
       $item_entity_model_tid = $item_entity->get('field_model')->getString();
       $item_entity_model_term = Term::load($item_entity_model_tid);
-//      $item_entity_model_term = $this->entityTypeManager->getStorage('taxonomy_term')->load($field_model_tid);
+      // For dependency injection, call it like this...
+      // $item_entity_model = $this->entityTypeManager->getStorage('taxonomy_term')->load($item_entity_model_term);
       $item_entity_model = (isset($item_entity_model_term) && is_object($item_entity_model_term)) ?
         $item_entity_model_term->getName() : '';
 
