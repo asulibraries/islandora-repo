@@ -23,7 +23,6 @@ class ComplexNoteCSVFormatter extends EntityReferenceLabelFormatter {
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = parent::viewElements($items, $langcode);
-    // This takes each node and converts the moderation_state of it into the
     foreach ($items as $delta => $item) {
       $paragraph = $item->entity;
       $note_text = $paragraph->field_note_text->value . '';
