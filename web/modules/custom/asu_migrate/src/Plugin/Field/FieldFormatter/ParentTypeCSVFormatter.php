@@ -75,7 +75,7 @@ class ParentTypeCSVFormatter extends EntityReferenceLabelFormatter {
       // Depending on which parent type is configured, this may return either
       // Collection nodes, or asu_repository_item nodes that have the "Complex
       // object" model.
-      if (($parent_type == "collection" && $item_entity->bundle()) ||
+      if (($parent_type == "collection" && $item_entity->bundle() == "collection") ||
         ($parent_type == 'complex_object' && $item_entity_model == "Complex Object")) {
         if (isset($elements[$delta])) {
           // Even if the config is to output links, this is not ever intended
