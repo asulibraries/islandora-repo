@@ -58,10 +58,9 @@ process:
       - "@filename"
 
   uri:
-    plugin: file_copy
-    source:
-      - file url
-      - '@destination' # The destination entry from above
+    plugin: file_remote_url
+    source: file url
+      # - '@destination' # The destination entry from above
 
 
 destination:
