@@ -26,10 +26,6 @@ fieldMappings:
     properties:
       - 'dcterms:identifier'
       - 'mods:identifier'
-    datatype_callback:
-      callable: 'Drupal\asu_custom_rdf\StringManipulater::prependString'
-      arguments:
-        prefix: 'system_id:'
   field_coordinates:
     properties:
       - 'dcterms:spatial'
@@ -70,7 +66,7 @@ fieldMappings:
   field_genre:
     properties:
       - 'dcterms:type'
-      - 'mods:genre'        
+      - 'mods:genre'
   field_resource_type:
     properties:
       - 'dcterms:type'
