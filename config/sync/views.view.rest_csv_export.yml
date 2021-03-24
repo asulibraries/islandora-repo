@@ -13,7 +13,6 @@ dependencies:
     - field.storage.node.field_description_source
     - field.storage.node.field_edition
     - field.storage.node.field_edtf_copyright_date
-    - field.storage.node.field_edtf_date_created
     - field.storage.node.field_embargo_release_date
     - field.storage.node.field_extent
     - field.storage.node.field_frequency
@@ -276,93 +275,6 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-          entity_type: node
-          plugin_id: search_api_field
-        field_additional_memberships:
-          id: field_additional_memberships
-          table: search_api_datasource_default_solr_index_entity_node
-          field: field_additional_memberships
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: 'Additional Memberships'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: target_id
-          type: entity_reference_label
-          settings:
-            link: true
-          group_column: target_id
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: '||'
-          field_api_classes: false
-          field_rendering: false
-          fallback_handler: search_api_entity
-          fallback_options:
-            link_to_item: false
-            use_highlighting: false
-            multi_type: separator
-            multi_separator: ', '
-            display_methods:
-              article:
-                display_method: label
-                view_mode: default
-              asu_repository_item:
-                display_method: label
-                view_mode: default
-              collection:
-                display_method: label
-                view_mode: default
-              islandora_object:
-                display_method: label
-                view_mode: default
-              page:
-                display_method: label
-                view_mode: default
           entity_type: node
           plugin_id: search_api_field
         field_rich_description:
@@ -2324,7 +2236,7 @@ display:
           click_sort_column: target_id
           type: entity_reference_label
           settings:
-            link: true
+            link: false
           group_column: target_id
           group_columns: {  }
           group_rows: true
@@ -2335,7 +2247,7 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: false
+          field_rendering: true
           fallback_handler: search_api_entity
           fallback_options:
             link_to_item: false
@@ -2346,6 +2258,82 @@ display:
               user:
                 display_method: label
                 view_mode: default
+          entity_type: node
+          plugin_id: search_api_field
+        created:
+          id: created
+          table: search_api_datasource_default_solr_index_entity_node
+          field: created
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: 'Date Created'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: timestamp
+          settings:
+            date_format: short
+            custom_date_format: ''
+            timezone: ''
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          field_rendering: true
+          fallback_handler: search_api_date
+          fallback_options:
+            date_format: fallback
+            custom_date_format: ''
+            timezone: ''
+            link_to_item: false
+            use_highlighting: false
+            multi_type: separator
+            multi_separator: ', '
           entity_type: node
           plugin_id: search_api_field
         field_peer_reviewed:
@@ -2563,143 +2551,6 @@ display:
           delta_first_last: false
           multi_type: separator
           separator: ' || '
-          field_api_classes: false
-          field_rendering: true
-          fallback_handler: search_api
-          fallback_options:
-            link_to_item: false
-            use_highlighting: false
-            multi_type: separator
-            multi_separator: ', '
-          entity_type: node
-          plugin_id: search_api_field
-        field_edtf_date_created:
-          id: field_edtf_date_created
-          table: search_api_datasource_default_solr_index_entity_node
-          field: field_edtf_date_created
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: 'Date Created'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: edtf_default
-          settings:
-            relationship: none
-            field_rendering: 1
-            fieldsets:
-              - more
-              - admin_label
-            custom_label: 1
-            label: 'Date Created'
-            element_label_colon: 1
-            exclude: 0
-            element_type_enable: 0
-            element_type: ''
-            element_class_enable: 0
-            element_class: ''
-            element_label_type_enable: 0
-            element_label_type: ''
-            element_label_class_enable: 0
-            element_label_class: ''
-            element_wrapper_type_enable: 0
-            element_wrapper_type: ''
-            element_wrapper_class_enable: 0
-            element_wrapper_class: ''
-            element_default_classes: 1
-            alter:
-              alter_text: 0
-              text: ''
-              make_link: 0
-              path: ''
-              absolute: 0
-              replace_spaces: 0
-              external: 0
-              path_case: none
-              link_class: ''
-              alt: ''
-              rel: ''
-              prefix: ''
-              suffix: ''
-              target: ''
-              trim: 0
-              max_length: '0'
-              word_boundary: 1
-              ellipsis: 1
-              more_link: 0
-              more_link_text: ''
-              more_link_path: ''
-              html: 0
-              strip_tags: 0
-              preserve_tags: ''
-              trim_whitespace: 0
-              nl2br: 0
-            empty: ''
-            empty_zero: 0
-            hide_empty: 0
-            hide_alter_empty: 1
-            group_rows: 1
-            multi_type: separator
-            separator: ', '
-            delta_limit: '0'
-            delta_offset: '0'
-            delta_reversed: 0
-            delta_first_last: 0
-            click_sort_column: value
-            type: edtf_default
-            field_api_classes: 0
-            date_separator: dash
-            date_order: big_endian
-            month_format: mm
-            day_format: dd
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
           field_api_classes: false
           field_rendering: true
           fallback_handler: search_api
@@ -4958,6 +4809,60 @@ display:
             multi_separator: ', '
           entity_type: node
           plugin_id: search_api_field
+        moderation_state:
+          id: moderation_state
+          table: search_api_datasource_default_solr_index_entity_node
+          field: moderation_state
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: Visibility
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          link_to_item: false
+          use_highlighting: false
+          multi_type: separator
+          multi_separator: ', '
+          entity_type: node
+          plugin_id: search_api
       filters:
         type:
           id: type
@@ -5117,7 +5022,6 @@ display:
         - 'config:field.storage.node.field_description_source'
         - 'config:field.storage.node.field_edition'
         - 'config:field.storage.node.field_edtf_copyright_date'
-        - 'config:field.storage.node.field_edtf_date_created'
         - 'config:field.storage.node.field_embargo_release_date'
         - 'config:field.storage.node.field_extent'
         - 'config:field.storage.node.field_frequency'
@@ -5203,7 +5107,6 @@ display:
         - 'config:field.storage.node.field_description_source'
         - 'config:field.storage.node.field_edition'
         - 'config:field.storage.node.field_edtf_copyright_date'
-        - 'config:field.storage.node.field_edtf_date_created'
         - 'config:field.storage.node.field_embargo_release_date'
         - 'config:field.storage.node.field_extent'
         - 'config:field.storage.node.field_frequency'
@@ -5403,7 +5306,6 @@ display:
         - 'config:field.storage.node.field_description_source'
         - 'config:field.storage.node.field_edition'
         - 'config:field.storage.node.field_edtf_copyright_date'
-        - 'config:field.storage.node.field_edtf_date_created'
         - 'config:field.storage.node.field_embargo_release_date'
         - 'config:field.storage.node.field_extent'
         - 'config:field.storage.node.field_frequency'

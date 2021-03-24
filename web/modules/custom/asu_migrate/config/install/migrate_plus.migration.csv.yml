@@ -1,0 +1,378 @@
+dependencies:
+  enforced:
+    module:
+      - asu_migrate
+      
+id: csv
+label: Import/Update Nodes from CSV
+migration_group: csv_upload
+
+source:
+  plugin: csv
+  # data_fetcher_plugin: file
+  # data_parser_plugin: csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/data/csv.csv
+  header_row_count: 1
+  ids:
+    - ID
+  constants:
+    uid: 1
+    description_format: description_restricted_items
+    model: Digital Document
+
+process:
+  nid: ID
+    
+  field_extent:
+    plugin: skip_on_empty
+    source: Extent
+    method: process
+
+# wgg - Date Created should not be the EDTF field.
+#  field_edtf_date_created:
+#    plugin: skip_on_empty
+#    source: Date Created
+#    method: process
+
+  field_copyright_statement:
+    -
+      plugin: skip_on_empty
+      source: Copyright Statement
+      method: process
+    -
+      plugin: entity_lookup_by_field
+      lookup_field: field_source/uri
+      entity_type: taxonomy_term
+      bundle: copyright_statements
+
+  field_reuse_permissions:
+    -
+      plugin: skip_on_empty
+      source: Reuse Permissions
+      method: process
+    -
+      plugin: entity_lookup_by_field
+      lookup_field: field_source/uri
+      entity_type: taxonomy_term
+      bundle: reuse_permissions
+
+  created:
+    plugin: format_date
+    source: Date Created
+    from_format: 'd/m/Y - H:i'
+    to_format: 'U'
+    from_timezone: 'UTC'
+    to_timezone: 'UTC'
+
+  moderation_state: Visibility
+
+  field_model:      
+    source: Model
+    plugin: entity_lookup
+    entity_type: taxonomy_term
+    value_key: name
+    bundle_key: vid
+    bundle: islandora_models
+
+  field_rich_description/value:
+    plugin: skip_on_empty
+    source: Description
+    method: process
+
+  field_rich_description/format:
+    plugin: default_value
+    default_value: "description_restricted_items"
+
+  field_table_of_contents:
+    plugin: skip_on_empty
+    source: Table of Contents
+    method: process
+
+  field_series:
+    plugin: skip_on_empty
+    source: Series
+    method: process
+
+  field_preferred_citation:
+    plugin: skip_on_empty
+    source: Preferred Citation
+    method: process
+
+# wgg - this needs to be provided separately from the first title and without
+# any delimiters.
+  title:
+    plugin: substr
+    source: Title
+    start: 0
+    length: 254
+
+  field_title:
+    -
+      plugin: explode
+      delimiter: '||'
+      source: Title
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: paragraph_title_generate
+      paragraph_type: 'complex_title'
+      split_into_parts: true
+      fields:
+        field_nonsort: " "
+        field_main_title: " "
+        field_subtitle: " "
+
+
+  field_typed_identifier:
+    -
+      plugin: skip_on_empty
+      source: Identifier
+      method: process
+    -
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: paragraph_generate
+      paragraph_type: 'typed_identifier'
+      delimiter: '|'
+      fields:
+        field_identifier_value:
+          order: 0
+          type: text
+        field_identifier_type:
+          order: 1
+          type: taxonomy_term
+          lookup_field: field_identifier_predicate
+
+  field_note_para:
+    -
+      plugin: skip_on_empty
+      source: Note
+      method: process
+    -
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: paragraph_generate
+      paragraph_type: 'complex_note'
+      delimiter: '|'
+      fields:
+        field_note_text:
+          order: 0
+          type: text
+
+  uid:
+    plugin: user_lookup
+    source: System User
+    default_value: constants/uid
+
+  field_pid: Legacy Identifier
+
+  field_preservation_state:
+    plugin: entity_lookup
+    source: constants/pres_state
+    entity_type: taxonomy_term
+    bundle_key: vid
+    value_key: tid
+    bundle: preservation_states
+
+  field_language:
+    plugin: entity_lookup
+    source: Language
+    entity_type: taxonomy_term
+    value_key: name
+    bundle_key: vid
+    bundle: language
+
+  field_handle:
+    plugin: concat
+    source:
+      - constants/handle
+      - ID
+
+  field_member_of:
+    -
+      plugin: get
+      source:
+        - 'Parent Item'
+        - 'Parent Collection'
+    -
+      plugin: multi_entity_lookup
+      entity_type: node
+      access_check: 0
+      bundle_key: type
+      bundle: collection
+      value_key: title
+
+  field_subject:
+    -
+      plugin: skip_on_empty
+      source: Topical Subject
+      method: process
+    -
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: name_uri_generate
+      delimiter: '|'
+      uri_field: field_authority_link
+      default_vocabulary: subject
+
+  field_geographic_subject:
+    -
+      plugin: skip_on_empty
+      source: Geographic Subject
+      method: process
+    -
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: name_uri_generate
+      delimiter: '|'
+      uri_field: field_authority_link
+      default_vocabulary: geo_location
+
+  pers_names:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: Personal Name Subject
+    -
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: skip_on_empty
+      method: process
+    -
+      plugin: name_uri_generate
+      delimiter: '|'
+      uri_field: field_authority_link
+      default_vocabulary: person
+
+# wgg - not in the current CSV.
+#  corp_names:
+#    -
+#      plugin: skip_on_empty
+#      method: process
+#      source: Corporate Name Subjects
+#    -
+#      plugin: explode
+#      delimiter: '||'
+#    -
+#      plugin: callback
+#      callable: trim
+#    -
+#      plugin: skip_on_empty
+#      method: process
+#    -
+#      plugin: name_uri_generate
+#      delimiter: '|'
+#      uri_field: field_authority_link
+#      default_vocabulary: corporate_body
+
+  field_subjects_name:
+    -
+      plugin: merge_skip_empty
+      source:
+# wgg - not coming from the exported CSV.
+#        - '@corp_names'
+        - '@pers_names'
+    -
+      plugin: skip_on_empty
+      method: process
+
+# wgg - not being supplied in exported CSV.
+#  authors:
+#    -
+#      plugin: explode
+#      delimiter: '||'
+#      source: Authors
+#    -
+#      plugin: callback
+#      callable: trim
+#    -
+#      plugin: skip_on_empty
+#      method: process
+#    -
+#      plugin: typed_relation_generate
+#      delimiter: '|'
+#      uri_field: field_authority_link
+#      default_vocabulary: person
+#      relator: 'relators:aut'
+#
+#  contributors:
+#    -
+#      plugin: explode
+#      delimiter: '||'
+#      source: Contributors-Person
+#    -
+#      plugin: callback
+#      callable: trim
+#    -
+#      plugin: skip_on_empty
+#      method: process
+#    -
+#      plugin: typed_relation_generate
+#      delimiter: '|'
+#      uri_field: field_authority_link
+#      default_vocabulary: person
+#      relator: 'relators:ctb'
+#
+#  field_linked_agent:
+#    plugin: merge
+#    source:
+#      - '@authors'
+#      - '@contributors'
+
+# We're making nodes
+destination:
+  plugin: 'entity:node'
+  default_bundle: asu_repository_item
+  # list all fields we want to overwrite
+  overwrite_properties:
+    - field_title
+    - field_rich_description
+    - field_rich_description/value
+    - field_rich_description/format
+    - field_extent
+    - field_edtf_date_created
+    - field_table_of_contents
+    - field_table_of_contents/value
+    - field_table_of_contents/format
+    - field_language
+    - field_linked_agent
+    - field_note_para
+    - field_preferred_citation
+    - field_preferred_citation/value
+    - field_preferred_citation/format
+    - field_statement_responsibility
+    - field_typed_identifier
+    - field_handle
+    - field_peer_reviewed
+    - field_open_access
+    - field_genre
+    - status
+    - created
+    - uid
+    - field_copyright_statement
+    - field_reuse_permissions
+    - field_member_of
+    - field_additional_memberships
+    - field_edtf_copyright_date
+  
