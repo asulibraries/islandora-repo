@@ -9,8 +9,6 @@ migration_group: csv_upload
 
 source:
   plugin: csv
-  # data_fetcher_plugin: file
-  # data_parser_plugin: csv
   path: /var/www/html/drupal/web/modules/custom/asu_migrate/data/csv.csv
   header_row_count: 1
   ids:
@@ -33,6 +31,14 @@ process:
 #    plugin: skip_on_empty
 #    source: Date Created
 #    method: process
+  field_edtf_copyright_date:
+    plugin: skip_on_empty
+    source: Copyright Date
+    method: process
+  field_date_digitized:
+    plugin: skip_on_empty
+    source: Date Digitized
+    method: process
 
   field_copyright_statement:
     -
@@ -109,7 +115,7 @@ process:
   field_title:
     -
       plugin: explode
-      delimiter: '||'
+      delimiter: ' || '
       source: Title
     -
       plugin: callback
@@ -131,7 +137,7 @@ process:
       method: process
     -
       plugin: explode
-      delimiter: '||'
+      delimiter: ' || '
     -
       plugin: callback
       callable: trim
@@ -191,11 +197,24 @@ process:
     bundle_key: vid
     bundle: language
 
-  field_handle:
-    plugin: concat
-    source:
-      - constants/handle
-      - ID
+  field_handle: Handle
+
+  field_genre:
+    -
+      plugin: skip_on_empty
+      source: Genre
+      method: process
+    -
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: name_uri_generate
+      delimiter: '|'
+      uri_field: field_authority_link
+      default_vocabulary: genre
 
   field_member_of:
     -
@@ -218,7 +237,7 @@ process:
       method: process
     -
       plugin: explode
-      delimiter: '||'
+      delimiter: ' || '
     -
       plugin: callback
       callable: trim
@@ -235,7 +254,7 @@ process:
       method: process
     -
       plugin: explode
-      delimiter: '||'
+      delimiter: ' || '
     -
       plugin: callback
       callable: trim
@@ -252,7 +271,7 @@ process:
       source: Personal Name Subject
     -
       plugin: explode
-      delimiter: '||'
+      delimiter: ' || '
     -
       plugin: callback
       callable: trim
@@ -273,7 +292,7 @@ process:
 #      source: Corporate Name Subjects
 #    -
 #      plugin: explode
-#      delimiter: '||'
+#      delimiter: ' || '
 #    -
 #      plugin: callback
 #      callable: trim
@@ -297,49 +316,68 @@ process:
       plugin: skip_on_empty
       method: process
 
-# wgg - not being supplied in exported CSV.
-#  authors:
-#    -
-#      plugin: explode
-#      delimiter: '||'
-#      source: Authors
-#    -
-#      plugin: callback
-#      callable: trim
-#    -
-#      plugin: skip_on_empty
-#      method: process
-#    -
-#      plugin: typed_relation_generate
-#      delimiter: '|'
-#      uri_field: field_authority_link
-#      default_vocabulary: person
-#      relator: 'relators:aut'
-#
-#  contributors:
-#    -
-#      plugin: explode
-#      delimiter: '||'
-#      source: Contributors-Person
-#    -
-#      plugin: callback
-#      callable: trim
-#    -
-#      plugin: skip_on_empty
-#      method: process
-#    -
-#      plugin: typed_relation_generate
-#      delimiter: '|'
-#      uri_field: field_authority_link
-#      default_vocabulary: person
-#      relator: 'relators:ctb'
-#
-#  field_linked_agent:
-#    plugin: merge
-#    source:
-#      - '@authors'
-#      - '@contributors'
+  contributors:
+    -
+      plugin: explode
+      delimiter: ' || '
+      source: Personal Contributor
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: skip_on_empty
+      method: process
+    -
+      plugin: typed_relation_generate
+      delimiter: '|'
+      uri_field: field_authority_link
+      default_vocabulary: person
+      # relator: 'relators:ctb'
 
+  corporate_body:
+    -
+      plugin: explode
+      delimiter: ' || '
+      source: Corporate Contributor
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: skip_on_empty
+      method: process
+    -
+      plugin: typed_relation_generate
+      delimiter: '|'
+      uri_field: field_authority_link
+      default_vocabulary: corporate_body
+      # relator: 'relators:ctb'
+
+# Event Contributor      
+  event_contrib:
+    -
+      plugin: explode
+      delimiter: ' || '
+      source: Event Contributor
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: skip_on_empty
+      method: process
+    -
+      plugin: typed_relation_generate
+      delimiter: '|'
+      uri_field: field_authority_link
+      default_vocabulary: conference
+      # relator: 'relators:ctb'
+      
+  field_linked_agent:
+    plugin: merge
+    source:
+      - '@corporate_body'
+      - '@contributors'
+      - '@event_contrib'
+      
 # We're making nodes
 destination:
   plugin: 'entity:node'
@@ -375,4 +413,7 @@ destination:
     - field_member_of
     - field_additional_memberships
     - field_edtf_copyright_date
-  
+    - field_temporal_subject
+    - field_title_subject
+    - field_edtf_copyright_date
+    - field_date_digitized
