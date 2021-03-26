@@ -2311,8 +2311,8 @@ display:
           click_sort_column: value
           type: timestamp
           settings:
-            date_format: short
-            custom_date_format: ''
+            date_format: custom
+            custom_date_format: 'Y-m-d G:i:s.uP'
             timezone: ''
           group_column: value
           group_columns: {  }
@@ -5056,7 +5056,7 @@ display:
   rest_export_1:
     display_plugin: rest_export
     id: rest_export_1
-    display_title: 'REST export'
+    display_title: 'Collection CSV Export'
     position: 1
     display_options:
       display_extenders: {  }
@@ -5087,6 +5087,7 @@ display:
             all_subjects:
               alias: ''
               raw_output: false
+      display_description: ''
     cache_metadata:
       max-age: -1
       contexts:
@@ -5141,7 +5142,7 @@ display:
   rest_export_2:
     display_plugin: rest_export
     id: rest_export_2
-    display_title: 'REST export 2'
+    display_title: 'Item CSV Export'
     position: 2
     display_options:
       display_extenders: {  }
@@ -5284,6 +5285,96 @@ display:
           break_phrase: false
           not: false
           plugin_id: search_api
+      defaults:
+        arguments: false
+      display_description: ''
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - request_format
+        - url
+        - 'user.node_grants:view'
+      tags:
+        - 'config:field.storage.node.field_additional_memberships'
+        - 'config:field.storage.node.field_cataloging_standards'
+        - 'config:field.storage.node.field_complex_object_child'
+        - 'config:field.storage.node.field_coordinates'
+        - 'config:field.storage.node.field_copyright_statement'
+        - 'config:field.storage.node.field_date_digitized'
+        - 'config:field.storage.node.field_default_derivative_file_pe'
+        - 'config:field.storage.node.field_default_original_file_perm'
+        - 'config:field.storage.node.field_description_source'
+        - 'config:field.storage.node.field_edition'
+        - 'config:field.storage.node.field_edtf_copyright_date'
+        - 'config:field.storage.node.field_embargo_release_date'
+        - 'config:field.storage.node.field_extent'
+        - 'config:field.storage.node.field_frequency'
+        - 'config:field.storage.node.field_genre'
+        - 'config:field.storage.node.field_geographic_subject'
+        - 'config:field.storage.node.field_handle'
+        - 'config:field.storage.node.field_issuance'
+        - 'config:field.storage.node.field_level_of_coding'
+        - 'config:field.storage.node.field_linked_agent'
+        - 'config:field.storage.node.field_member_of'
+        - 'config:field.storage.node.field_model'
+        - 'config:field.storage.node.field_name_title_subject'
+        - 'config:field.storage.node.field_note_para'
+        - 'config:field.storage.node.field_open_access'
+        - 'config:field.storage.node.field_peer_reviewed'
+        - 'config:field.storage.node.field_pid'
+        - 'config:field.storage.node.field_place_of_publication_code'
+        - 'config:field.storage.node.field_place_published'
+        - 'config:field.storage.node.field_preferred_citation'
+        - 'config:field.storage.node.field_related_item'
+        - 'config:field.storage.node.field_reuse_permissions'
+        - 'config:field.storage.node.field_rich_description'
+        - 'config:field.storage.node.field_series'
+        - 'config:field.storage.node.field_statement_responsibility'
+        - 'config:field.storage.node.field_subject'
+        - 'config:field.storage.node.field_subjects_name'
+        - 'config:field.storage.node.field_table_of_contents'
+        - 'config:field.storage.node.field_temporal_subject'
+        - 'config:field.storage.node.field_title'
+        - 'config:field.storage.node.field_typed_identifier'
+        - 'config:search_api.index.default_solr_index'
+  rest_export_3:
+    display_plugin: rest_export
+    id: rest_export_3
+    display_title: 'Search CSV Export'
+    position: 1
+    display_options:
+      display_extenders: {  }
+      path: search/csv
+      pager:
+        type: some
+        options:
+          items_per_page: 99999
+          offset: 0
+      style:
+        type: data_export
+        options:
+          formats:
+            csv: csv
+          csv_settings:
+            delimiter: ','
+            enclosure: '"'
+            escape_char: \
+            strip_tags: false
+            trim: true
+            encoding: utf8
+            utf8_bom: '0'
+            use_serializer_encode_only: false
+      row:
+        type: data_field
+        options:
+          field_options:
+            all_subjects:
+              alias: ''
+              raw_output: false
+      display_description: ''
+      arguments: {  }
       defaults:
         arguments: false
     cache_metadata:
