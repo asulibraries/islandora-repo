@@ -29,8 +29,8 @@ class ComplexTitleCSVFormatter extends EntityReferenceLabelFormatter {
       $nonsort = $item->entity->field_nonsort->value . '';
       $main = $item->entity->field_main_title->value;
       $sub = $item->entity->field_subtitle->value . '';
-      $nm = $nonsort . "|" .
-        ($main != NULL ? $main : "[untitled]") . "|" .
+      $nm = $nonsort . ":" .
+        ($main != NULL ? $main : "[untitled]") . ":" .
         $sub;
       $elements[$delta]['#plain_text'] = $nm;
     }
