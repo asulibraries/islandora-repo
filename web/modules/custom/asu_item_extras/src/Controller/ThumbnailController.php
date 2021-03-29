@@ -61,7 +61,7 @@ class ThumbnailController extends ControllerBase {
           $file = $thumb_media->get('field_media_image')->entity;
           // $thumb_response = $this->entityTypeManager->getViewBuilder('file')->view(, 'full');
           $file_uri = file_create_url($file->getFileUri());
-          return (new TrustedRedirectResponse($file_url))
+          return (new TrustedRedirectResponse($file_uri))
             ->addCacheableDependency((new CacheableMetadata())->setCacheMaxAge(0));        }
         else {
 
@@ -72,7 +72,7 @@ class ThumbnailController extends ControllerBase {
               if ($thumb_media) {
                 $file = $thumb_media->get('field_media_image')->entity;
                 $file_uri = file_create_url($file->getFileUri());
-                return (new TrustedRedirectResponse($file_url))
+                return (new TrustedRedirectResponse($file_uri))
                 ->addCacheableDependency((new CacheableMetadata())->setCacheMaxAge(0));
               }
             }
