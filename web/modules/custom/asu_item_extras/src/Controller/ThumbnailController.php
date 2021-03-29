@@ -4,9 +4,10 @@ namespace Drupal\asu_item_extras\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Url;
 use Drupal\Core\Routing\TrustedRedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Drupal\Core\Cache\CacheableMetadata;
+
 
 /**
  * Class ThumbnailController.
@@ -60,8 +61,8 @@ class ThumbnailController extends ControllerBase {
           $file = $thumb_media->get('field_media_image')->entity;
           // $thumb_response = $this->entityTypeManager->getViewBuilder('file')->view(, 'full');
           $file_uri = file_create_url($file->getFileUri());
-          return new TrustedRedirectResponse($file_uri);
-        }
+          return (new TrustedRedirectResponse($file_url))
+            ->addCacheableDependency((new CacheableMetadata())->setCacheMaxAge(0));        }
         else {
 
           if ($node->get('field_model') != NULL && count($node->get('field_model')) > 0 && $node->get('field_model')->referencedEntities()[0]->getName() == "Complex Object") {
@@ -71,7 +72,8 @@ class ThumbnailController extends ControllerBase {
               if ($thumb_media) {
                 $file = $thumb_media->get('field_media_image')->entity;
                 $file_uri = file_create_url($file->getFileUri());
-                return new TrustedRedirectResponse($file_uri);
+                return (new TrustedRedirectResponse($file_url))
+                ->addCacheableDependency((new CacheableMetadata())->setCacheMaxAge(0));
               }
             }
           }
