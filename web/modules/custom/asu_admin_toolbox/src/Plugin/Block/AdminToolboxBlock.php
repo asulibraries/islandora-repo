@@ -5,6 +5,7 @@ namespace Drupal\asu_admin_toolbox\Plugin\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Url;
+use Drupal\user\Entity\User;
 use Drupal\Core\Link;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -141,7 +142,11 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
     $node = $this->routeMatch->getParameter('node');
     $is_collection = ($node->bundle() == 'collection');
     $is_complex_object = FALSE;
-    if ($node->bundle() == 'asu_repository_item') {
+    $is_asu_repository_item = ($node->bundle() == 'asu_repository_item');
+    $user = User::load(\Drupal::currentUser()->id());
+    $user_roles = $user->getRoles();
+    $user_is_admin_or_metadata_manager = (in_array("administrator", $user_roles) || in_array("metadata_manager", $user_roles));
+    if ($is_asu_repository_item) {
       $field_model_tid = $node->get('field_model')->getString();
       $field_model_term = $this->entityTypeManager
         ->getStorage('taxonomy_term')
@@ -153,7 +158,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
     $output_links = [];
     // Add item link.
     $use_can_add_child = ($is_complex_object || $is_collection) && $this->canAddChild();
-    if ($canUpdate && ($is_complex_object || $is_collection)) {
+    if ($use_can_add_child) {
       // This link is a little bit tricky... it needs to have a fragment like
       // this for example, where the value 10 is the collection id() value.
       // node/add/asu_repository_item?edit[field_member_of][widget][0][target_id]=10.
@@ -197,7 +202,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
         $output_links[] = render($link) . " &nbsp;" . render($link_glyph);
       }
     }
-    if (!($is_complex_object) && (!$is_collection) && $canUpdate) {
+    if (!($is_complex_object) && (!$is_collection)) {
       $url = Url::fromUri(
             $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
             '/node/' . $node->id() . '/media/add'
@@ -205,6 +210,18 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
       $link = Link::fromTextAndUrl($this->t('Add media'), $url);
       $link = $link->toRenderable();
       $link_glyph = Link::fromTextAndUrl($this->t('<i class="fas fa-plus-circle"></i>'), $url)->toRenderable();
+      $output_links[] = render($link) . " &nbsp;" . render($link_glyph);
+    }
+
+    if ($user_is_admin_or_metadata_manager && ($is_collection || ($is_asu_repository_item && !($is_complex_object)))) {
+      $route_part = ($is_collection) ? 'collections' : 'items';
+      $url = Url::fromUri(
+            $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
+            '/' . $route_part . '/' . $node->id() . '/csv'
+        );
+      $link = Link::fromTextAndUrl($this->t('Download CSV'), $url);
+      $link = $link->toRenderable();
+      $link_glyph = Link::fromTextAndUrl($this->t("<i class='fas fa-file-export'></i>"), $url)->toRenderable();
       $output_links[] = render($link) . " &nbsp;" . render($link_glyph);
     }
     return [

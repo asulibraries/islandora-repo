@@ -248,6 +248,37 @@ process:
       uri_field: field_authority_link
       default_vocabulary: subject
 
+  field_title_subject:
+    plugin: name_uri_generate
+    uri_field: field_authority_link
+    default_vocabulary: titles
+    name_array_key: name
+    uri_array_key: uri
+    source: Title Subject
+    
+  field_temporal_subject:
+    plugin: name_uri_generate
+    uri_field: field_authority_link
+    default_vocabulary: temporal
+    name_array_key: name
+    uri_array_key: uri
+    source: Temporal Subject
+
+  # wgg - several boolean fields with 0 or 1 as values.
+  field_peer_reviewed: Peer-reviewed
+  field_open_access: Open Access
+  field_complex_object_child: Complex Object Child
+
+  field_edition: Edition
+  field_statement_responsibility: Statement of Responsibility
+  field_level_of_coding: Level of Coding
+
+  # wgg - these are List (text) fields... can the value just go in?
+  field_frequency: Frequency
+  field_issuance: Issuance
+
+  field_coordinates: Coordinates
+
   field_geographic_subject:
     -
       plugin: skip_on_empty
@@ -285,33 +316,10 @@ process:
       uri_field: field_authority_link
       default_vocabulary: person
 
-# wgg - not in the current CSV.
-#  corp_names:
-#    -
-#      plugin: skip_on_empty
-#      method: process
-#      source: Corporate Name Subjects
-#    -
-#      plugin: explode
-#      delimiter: ' || '
-#    -
-#      plugin: callback
-#      callable: trim
-#    -
-#      plugin: skip_on_empty
-#      method: process
-#    -
-#      plugin: name_uri_generate
-#      delimiter: '|'
-#      uri_field: field_authority_link
-#      default_vocabulary: corporate_body
-
   field_subjects_name:
     -
       plugin: merge_skip_empty
       source:
-# wgg - not coming from the exported CSV.
-#        - '@corp_names'
         - '@pers_names'
     -
       plugin: skip_on_empty

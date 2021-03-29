@@ -43,6 +43,7 @@ dependencies:
     - field.storage.node.field_temporal_subject
     - field.storage.node.field_title
     - field.storage.node.field_typed_identifier
+    - filter.format.restricted_html
     - node.type.asu_repository_item
     - node.type.collection
     - search_api.index.default_solr_index
@@ -3746,7 +3747,7 @@ display:
             more_link: false
             more_link_text: ''
             more_link_path: ''
-            strip_tags: false
+            strip_tags: true
             trim: false
             preserve_tags: ''
             html: false
@@ -3763,8 +3764,13 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: lat
-          type: geolocation_latlng
-          settings: {  }
+          type: geolocation_token
+          settings:
+            tokenized_text:
+              value: '[geolocation_current_item:lat], [geolocation_current_item:lng]'
+              format: restricted_html
+            token_help:
+              token_items: ''
           group_column: ''
           group_columns: {  }
           group_rows: true
