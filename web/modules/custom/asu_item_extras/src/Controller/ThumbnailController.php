@@ -65,7 +65,11 @@ class ThumbnailController extends ControllerBase {
           // return (new TrustedRedirectResponse($file_uri))
           // ->addCacheableDependency((new CacheableMetadata())->setCacheMaxAge(0));        }
           $url = file_create_url($file->getFileUri());
-          $response = new RedirectResponse($url);
+          if (str_contains($url, "keep.lib") || str_contains($url, "prism.lib")) {
+            $response = new RedirectResponse($url);
+          } else {
+            $response = (new TrustedRedirectResponse($url))->addCacheableDependency((new CacheableMetadata())->setCacheMaxAge(0));
+          }
           \Drupal::logger('thumbnail controller')->info('thumbnail uri is ' . $url);
           return $response;
         }
@@ -82,7 +86,12 @@ class ThumbnailController extends ControllerBase {
                 // return (new TrustedRedirectResponse($file_uri))
                 // ->addCacheableDependency((new CacheableMetadata())->setCacheMaxAge(0));
                 $url = file_create_url($file->getFileUri());
-                $response = new RedirectResponse($url);
+                if (str_contains($url, "keep.lib") || str_contains($url, "prism.lib")) {
+                  $response = new RedirectResponse($url);
+                }
+                else {
+                  $response = (new TrustedRedirectResponse($url))->addCacheableDependency((new CacheableMetadata())->setCacheMaxAge(0));
+                }
                 \Drupal::logger('thumbnail controller')->info('thumbnail uri is ' . $url);
                 return $response;
               }
