@@ -7,7 +7,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Url;
 use Drupal\Core\Routing\TrustedRedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Drupal\rest\ModifiedResourceResponse;
 
 /**
  * Class ThumbnailController.
@@ -49,7 +48,7 @@ class ThumbnailController extends ControllerBase {
     if ($node) {
       $routeName = 'entity.node.canonical';
       $routeParameters = ['node' => $node->id()];
-      $url = Url::fromRoute($routeName, $routeParameters);
+      // $url = Url::fromRoute($routeName, $routeParameters);
       $content_type = $node->bundle();
       if ($content_type == 'asu_repository_item') {
         $utils = \Drupal::service('islandora.utils');
@@ -61,7 +60,7 @@ class ThumbnailController extends ControllerBase {
           $file = $thumb_media->get('field_media_image')->entity;
           // $thumb_response = $this->entityTypeManager->getViewBuilder('file')->view(, 'full');
           $file_uri = file_create_url($file->getFileUri());
-          return new ModifiedResourceResponse($file_uri);
+          return new TrustedRedirectResponse($file_uri);
         }
         else {
 
@@ -72,7 +71,7 @@ class ThumbnailController extends ControllerBase {
               if ($thumb_media) {
                 $file = $thumb_media->get('field_media_image')->entity;
                 $file_uri = file_create_url($file->getFileUri());
-                return new ModifiedResourceResponse($file_uri);
+                return new TrustedRedirectResponse($file_uri);
               }
             }
           }
