@@ -66,6 +66,7 @@ class ThumbnailController extends ControllerBase {
           // ->addCacheableDependency((new CacheableMetadata())->setCacheMaxAge(0));        }
           $url = file_create_url($file->getFileUri());
           $response = new RedirectResponse($url);
+          \Drupal::logger('thumbnail controller')->info('thumbnail uri is ' . $url);
           return $response;
         }
         else {
@@ -82,6 +83,7 @@ class ThumbnailController extends ControllerBase {
                 // ->addCacheableDependency((new CacheableMetadata())->setCacheMaxAge(0));
                 $url = file_create_url($file->getFileUri());
                 $response = new RedirectResponse($url);
+                \Drupal::logger('thumbnail controller')->info('thumbnail uri is ' . $url);
                 return $response;
               }
             }
