@@ -277,7 +277,11 @@ process:
   field_frequency: Frequency
   field_issuance: Issuance
 
-  field_coordinates: Coordinates
+  field_coordinates: 
+    -
+      plugin: str_to_geolocation
+      source: Coordinates
+      method: process
 
   field_geographic_subject:
     -
