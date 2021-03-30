@@ -37,7 +37,7 @@ class ParagraphTitleGenerate extends ParagraphGenerate {
     $split = $this->configuration['split_into_parts'];
     $delimiter = $this->configuration['delimiter'];
     $fields = $this->configuration['fields'];
-    $fields['field_main_title'] = trim($title_string);
+    $fields['field_main_title'] = html_entity_decode(trim($title_string));
     if ($split) {
       if ($delimiter) {
         $tparts = explode($delimiter, $fields['field_main_title']);
