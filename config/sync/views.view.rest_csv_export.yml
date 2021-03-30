@@ -49,6 +49,7 @@ dependencies:
     - search_api.index.default_solr_index
   module:
     - asu_migrate
+    - asu_search
     - controlled_access_terms
     - csv_serialization
     - datetime
@@ -239,7 +240,7 @@ display:
             more_link: false
             more_link_text: ''
             more_link_path: ''
-            strip_tags: false
+            strip_tags: true
             trim: false
             preserve_tags: ''
             html: false
@@ -256,7 +257,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: complex_title_csv
+          type: complex_title_formatter
           settings:
             link: 0
           group_column: ''
@@ -5059,10 +5060,10 @@ display:
         - 'config:field.storage.node.field_title'
         - 'config:field.storage.node.field_typed_identifier'
         - 'config:search_api.index.default_solr_index'
-  rest_export_1:
-    display_plugin: rest_export
-    id: rest_export_1
-    display_title: 'Collection CSV Export'
+  data_export_1:
+    display_plugin: data_export
+    id: data_export_1
+    display_title: 'Data export : Collection'
     position: 1
     display_options:
       display_extenders: {  }
@@ -5094,6 +5095,12 @@ display:
               alias: ''
               raw_output: false
       display_description: ''
+      filename: 'collection_[date:html_date].csv'
+      automatic_download: false
+      store_in_public_file_directory: false
+      redirect_to_display: none
+      custom_redirect_path: false
+      include_query_params: false
     cache_metadata:
       max-age: -1
       contexts:
@@ -5145,10 +5152,10 @@ display:
         - 'config:field.storage.node.field_title'
         - 'config:field.storage.node.field_typed_identifier'
         - 'config:search_api.index.default_solr_index'
-  rest_export_2:
-    display_plugin: rest_export
-    id: rest_export_2
-    display_title: 'Item CSV Export'
+  data_export_2:
+    display_plugin: data_export
+    id: data_export_2
+    display_title: 'Data export : Item'
     position: 2
     display_options:
       display_extenders: {  }
@@ -5161,7 +5168,6 @@ display:
       style:
         type: data_export
         options:
-          uses_fields: false
           formats:
             csv: csv
           csv_settings:
@@ -5173,6 +5179,7 @@ display:
             encoding: utf8
             utf8_bom: '0'
             use_serializer_encode_only: false
+            decode_html_entities: 0
       row:
         type: data_field
         options:
@@ -5181,12 +5188,6 @@ display:
               alias: ''
               raw_output: false
             field_title:
-              alias: ''
-              raw_output: false
-            field_member_of:
-              alias: ''
-              raw_output: false
-            field_additional_memberships:
               alias: ''
               raw_output: false
             field_rich_description:
@@ -5246,6 +5247,9 @@ display:
             uid:
               alias: ''
               raw_output: false
+            created:
+              alias: ''
+              raw_output: false
             field_peer_reviewed:
               alias: ''
               raw_output: false
@@ -5253,6 +5257,81 @@ display:
               alias: ''
               raw_output: false
             field_series:
+              alias: ''
+              raw_output: false
+            field_edtf_copyright_date:
+              alias: ''
+              raw_output: false
+            field_date_digitized:
+              alias: ''
+              raw_output: false
+            field_edition:
+              alias: ''
+              raw_output: false
+            field_frequency:
+              alias: ''
+              raw_output: false
+            field_issuance:
+              alias: ''
+              raw_output: false
+            field_related_item:
+              alias: ''
+              raw_output: false
+            institution_from_collection:
+              alias: ''
+              raw_output: false
+            field_complex_object_child:
+              alias: ''
+              raw_output: false
+            field_model:
+              alias: ''
+              raw_output: false
+            field_statement_responsibility:
+              alias: ''
+              raw_output: false
+            field_member_of_2:
+              alias: ''
+              raw_output: false
+            field_member_of_3:
+              alias: ''
+              raw_output: false
+            field_additional_memberships_1:
+              alias: ''
+              raw_output: false
+            field_coordinates:
+              alias: ''
+              raw_output: false
+            field_note_para:
+              alias: ''
+              raw_output: false
+            field_place_of_publication_code:
+              alias: ''
+              raw_output: false
+            field_place_published:
+              alias: ''
+              raw_output: false
+            field_typed_identifier:
+              alias: ''
+              raw_output: false
+            field_cataloging_standards:
+              alias: ''
+              raw_output: false
+            field_default_derivative_file_pe:
+              alias: ''
+              raw_output: false
+            field_default_original_file_perm:
+              alias: ''
+              raw_output: false
+            field_description_source:
+              alias: ''
+              raw_output: false
+            field_embargo_release_date:
+              alias: ''
+              raw_output: false
+            field_level_of_coding:
+              alias: ''
+              raw_output: false
+            moderation_state:
               alias: ''
               raw_output: false
       arguments:
@@ -5294,6 +5373,107 @@ display:
       defaults:
         arguments: false
       display_description: ''
+      filename: 'item_[date:html_date].csv'
+      automatic_download: false
+      store_in_public_file_directory: false
+      redirect_to_display: none
+      custom_redirect_path: false
+      include_query_params: false
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - request_format
+        - url
+        - 'user.node_grants:view'
+      tags:
+        - 'config:field.storage.node.field_additional_memberships'
+        - 'config:field.storage.node.field_cataloging_standards'
+        - 'config:field.storage.node.field_complex_object_child'
+        - 'config:field.storage.node.field_coordinates'
+        - 'config:field.storage.node.field_copyright_statement'
+        - 'config:field.storage.node.field_date_digitized'
+        - 'config:field.storage.node.field_default_derivative_file_pe'
+        - 'config:field.storage.node.field_default_original_file_perm'
+        - 'config:field.storage.node.field_description_source'
+        - 'config:field.storage.node.field_edition'
+        - 'config:field.storage.node.field_edtf_copyright_date'
+        - 'config:field.storage.node.field_embargo_release_date'
+        - 'config:field.storage.node.field_extent'
+        - 'config:field.storage.node.field_frequency'
+        - 'config:field.storage.node.field_genre'
+        - 'config:field.storage.node.field_geographic_subject'
+        - 'config:field.storage.node.field_handle'
+        - 'config:field.storage.node.field_issuance'
+        - 'config:field.storage.node.field_level_of_coding'
+        - 'config:field.storage.node.field_linked_agent'
+        - 'config:field.storage.node.field_member_of'
+        - 'config:field.storage.node.field_model'
+        - 'config:field.storage.node.field_name_title_subject'
+        - 'config:field.storage.node.field_note_para'
+        - 'config:field.storage.node.field_open_access'
+        - 'config:field.storage.node.field_peer_reviewed'
+        - 'config:field.storage.node.field_pid'
+        - 'config:field.storage.node.field_place_of_publication_code'
+        - 'config:field.storage.node.field_place_published'
+        - 'config:field.storage.node.field_preferred_citation'
+        - 'config:field.storage.node.field_related_item'
+        - 'config:field.storage.node.field_reuse_permissions'
+        - 'config:field.storage.node.field_rich_description'
+        - 'config:field.storage.node.field_series'
+        - 'config:field.storage.node.field_statement_responsibility'
+        - 'config:field.storage.node.field_subject'
+        - 'config:field.storage.node.field_subjects_name'
+        - 'config:field.storage.node.field_table_of_contents'
+        - 'config:field.storage.node.field_temporal_subject'
+        - 'config:field.storage.node.field_title'
+        - 'config:field.storage.node.field_typed_identifier'
+        - 'config:search_api.index.default_solr_index'
+  data_export_3:
+    display_plugin: data_export
+    id: data_export_3
+    display_title: 'Data export : Search'
+    position: 1
+    display_options:
+      display_extenders: {  }
+      path: search/csv
+      pager:
+        type: some
+        options:
+          items_per_page: 99999
+          offset: 0
+      style:
+        type: data_export
+        options:
+          formats:
+            csv: csv
+          csv_settings:
+            delimiter: ','
+            enclosure: '"'
+            escape_char: \
+            strip_tags: false
+            trim: true
+            encoding: utf8
+            utf8_bom: '0'
+            use_serializer_encode_only: false
+      row:
+        type: data_field
+        options:
+          field_options:
+            all_subjects:
+              alias: ''
+              raw_output: false
+      display_description: ''
+      arguments: {  }
+      defaults:
+        arguments: false
+      filename: 'search_[date:html_date].csv'
+      automatic_download: false
+      store_in_public_file_directory: false
+      redirect_to_display: none
+      custom_redirect_path: false
+      include_query_params: false
     cache_metadata:
       max-age: -1
       contexts:
