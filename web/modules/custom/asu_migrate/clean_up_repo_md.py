@@ -19,6 +19,8 @@ def lenzi(df): return len(df.index) == 0
 
 
 def loc_lookup(atype, astring):
+    return astring
+    # BASICALLY IGNORING ALL OF THIS BECAUSE PEOPLE DO NOT WANT US TO AUTOMATE THIS
     # print(atype)
     # print(astring)
     if not isinstance(astring, str):  # or math.isnan(astring):
@@ -36,22 +38,27 @@ def loc_lookup(atype, astring):
 
     if atype.strip() == "names":
         # split on the "$$"
-        for i, n in nstring:
+        i = 0
+        for n in nstring:
             if '$$' in n:
                 nameparts = n.split("|")
                 nm = nameparts[0]
                 roles = nameparts[1]
                 roles = nameparts[1].split("$$")
-                for x, r in roles:
+                x = 0
+                for r in roles:
                     if x == 0:
                         nstring[i] = nm + "|" + r
                     else:
                         nstring.append(nm + "|" + r)
+                    x = x+1
+            i = i+1
 
     for n in nstring:
         print(n)
         authority = atype.strip()  # subjects, names
         val_to_query = n.strip()
+        val_to_query.replace('"', "")
         lc = loc_df.query('label == "' + val_to_query +
                         '" & authority == "' + authority + '"')
         print(len(lc.index))
@@ -222,7 +229,7 @@ def main(argv):
                     notes = ""
                     if a['attachment notes'] and not math.isnan(a['attachment notes']):
                         notes = notes + str(a['attachment notes'])
-                    if a['attachment description'] and not math.isnan(a['attachment description']):
+                    if a['attachment description'] and isinstance(a['attachment description'], str):# and not math.isnan(a['attachment description']):
                         if notes:
                             notes = notes + "|" + a['attachment description']
                         else:
