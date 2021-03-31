@@ -391,6 +391,14 @@ process:
       - '@contributors'
       - '@event_contrib'
       
+  field_additional_memberships:
+    source: Additional Memberships
+    plugin: entity_lookup
+    entity_type: node
+    bundle_key: type
+    bundle: collection
+    value_key: nid
+
 # We're making nodes
 destination:
   plugin: 'entity:node'

@@ -54,6 +54,11 @@ class NameURILookup extends ProcessPluginBase {
     $properties = [];
     if (!empty($uri) && !empty($field)) {
       $properties[$field] = $uri;
+      // This value may come from an inherited class NameURIGenerate.
+      $default_vocabulary = $this->configuration['default_vocabulary'];
+      if ($default_vocabulary) {
+        $properties['vid'] = $default_vocabulary;
+      }
     }
     $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties($properties);
     $term = reset($terms);
@@ -66,6 +71,11 @@ class NameURILookup extends ProcessPluginBase {
     $properties = [];
     if (!empty($name)) {
       $properties['name'] = $name;
+      // This value may come from an inherited class NameURIGenerate.
+      $default_vocabulary = $this->configuration['default_vocabulary'];
+      if ($default_vocabulary) {
+        $properties['vid'] = $default_vocabulary;
+      }
     }
     $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties($properties);
     $term = reset($terms);
