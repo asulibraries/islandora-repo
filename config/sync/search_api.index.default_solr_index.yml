@@ -12,54 +12,52 @@ dependencies:
   config:
     - field.storage.node.field_additional_memberships
     - field.storage.node.field_member_of
-    - field.storage.node.field_edtf_copyright_date
+    - field.storage.taxonomy_term.field_cat_date_begin
+    - field.storage.taxonomy_term.field_cat_date_end
     - field.storage.node.field_copyright_statement
-    - field.storage.node.field_linked_agent
+    - field.storage.taxonomy_term.field_corp_alt_name
+    - field.storage.node.field_description
+    - field.storage.node.field_display_hints
+    - field.storage.node.field_edition
+    - field.storage.node.field_edtf_copyright_date
     - field.storage.node.field_edtf_date
     - field.storage.node.field_edtf_date_created
     - field.storage.node.field_edtf_date_issued
-    - field.storage.node.field_description
-    - field.storage.node.field_rich_description
-    - field.storage.node.field_display_hints
-    - field.storage.node.field_edition
     - field.storage.node.field_embargo_release_date
     - field.storage.node.field_extent
     - field.storage.node.field_frequency
-    - field.storage.node.field_genre
+    - field.storage.taxonomy_term.field_geo_alt_name
     - field.storage.node.field_geographic_subject
     - field.storage.node.field_handle
     - field.storage.node.field_typed_identifier
     - field.storage.paragraph.field_identifier_value
     - field.storage.node.field_issuance
     - field.storage.node.field_language
-    - field.storage.node.field_pid
+    - field.storage.node.field_linked_agent
     - field.storage.node.field_local_identifier
+    - field.storage.node.field_title
+    - field.storage.paragraph.field_main_title
     - field.storage.node.field_model
-    - field.storage.node.field_subjects_name
     - field.storage.node.field_note
     - field.storage.node.field_open_access
     - field.storage.node.field_peer_reviewed
-    - field.storage.node.field_place_of_publication_code
+    - field.storage.node.field_pid
     - field.storage.node.field_place_published
     - field.storage.node.field_preferred_citation
     - field.storage.node.field_related_item
-    - field.storage.node.field_resource_type
     - field.storage.node.field_reuse_permissions
+    - field.storage.node.field_rich_description
     - field.storage.node.field_series
     - field.storage.node.field_statement_responsibility
+    - field.storage.node.field_subjects_name
     - field.storage.node.field_table_of_contents
     - field.storage.node.field_tags
     - field.storage.node.field_temporal_subject
-    - field.storage.node.field_title
-    - field.storage.paragraph.field_main_title
     - field.storage.node.field_title_subject
     - field.storage.node.field_subject
-    - field.storage.taxonomy_term.field_geo_alt_name
-    - field.storage.taxonomy_term.field_corp_alt_name
-    - field.storage.taxonomy_term.field_cat_date_end
-    - field.storage.taxonomy_term.field_cat_date_begin
-    - field.storage.taxonomy_term.field_person_alternate_names
-    - field.storage.taxonomy_term.field_person_preferred_name
+    - field.storage.node.field_genre
+    - field.storage.node.field_place_of_publication_code
+    - field.storage.node.field_resource_type
     - search_api.server.default_solr_server
     - core.entity_view_mode.node.full_metadata
 third_party_settings:
@@ -104,30 +102,6 @@ field_settings:
         - 'entity:node/field_subjects_name'
         - 'entity:node/field_temporal_subject'
         - 'entity:node/field_title_subject'
-  alternate_family_name:
-    label: 'Person Alternate Family Name'
-    datasource_id: 'entity:taxonomy_term'
-    property_path: 'field_person_alternate_names:family'
-    type: string
-    dependencies:
-      config:
-        - field.storage.taxonomy_term.field_person_alternate_names
-  alternate_given_name:
-    label: 'Person Alternate Given Name'
-    datasource_id: 'entity:taxonomy_term'
-    property_path: 'field_person_alternate_names:given'
-    type: string
-    dependencies:
-      config:
-        - field.storage.taxonomy_term.field_person_alternate_names
-  alternate_middle_name:
-    label: 'Person Alternate Middle Names'
-    datasource_id: 'entity:taxonomy_term'
-    property_path: 'field_person_alternate_names:middle'
-    type: string
-    dependencies:
-      config:
-        - field.storage.taxonomy_term.field_person_alternate_names
   asu_agent_aut:
     label: 'Authors (Agent By Role)'
     property_path: asu_agent_aut
@@ -604,6 +578,22 @@ field_settings:
     label: 'Institution From Collection'
     property_path: institution_from_collection
     type: string
+  media_of_count:
+    label: 'Media Count'
+    property_path: aggregated_field
+    type: string
+    configuration:
+      type: count
+      fields:
+        - 'entity:node/search_api_reverse_entity_references_media__field_media_of'
+  member_of_count:
+    label: 'Member Count'
+    property_path: aggregated_field
+    type: string
+    configuration:
+      type: count
+      fields:
+        - 'entity:node/search_api_reverse_entity_references_node__field_member_of'
   name:
     label: Name
     datasource_id: 'entity:taxonomy_term'
@@ -646,30 +636,6 @@ field_settings:
         - field.storage.node.field_place_of_publication_code
       module:
         - taxonomy
-  preferred_family_name:
-    label: 'Person Preferred Family Name'
-    datasource_id: 'entity:taxonomy_term'
-    property_path: 'field_person_preferred_name:family'
-    type: string
-    dependencies:
-      config:
-        - field.storage.taxonomy_term.field_person_preferred_name
-  preferred_given_name:
-    label: 'Person Preferred Given Name'
-    datasource_id: 'entity:taxonomy_term'
-    property_path: 'field_person_preferred_name:given'
-    type: string
-    dependencies:
-      config:
-        - field.storage.taxonomy_term.field_person_preferred_name
-  preferred_middle_name:
-    label: 'Person Preferred Middle Names'
-    datasource_id: 'entity:taxonomy_term'
-    property_path: 'field_person_preferred_name:middle'
-    type: string
-    dependencies:
-      config:
-        - field.storage.taxonomy_term.field_person_preferred_name
   rendered_item:
     label: 'Rendered Item'
     property_path: rendered_item
