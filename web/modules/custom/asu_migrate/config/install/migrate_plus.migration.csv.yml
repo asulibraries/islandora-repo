@@ -399,6 +399,60 @@ process:
     bundle: collection
     value_key: nid
 
+  field_place_of_publication_code:
+    -
+      plugin: skip_on_empty
+      source: Place of Publication Code
+      method: process
+    -
+      plugin: entity_lookup_by_field
+      lookup_field: field_source/uri
+      entity_type: taxonomy_term
+      bundle: country_codes
+
+  field_place_of_publication_text: Place of Publication Text
+  field_cataloging_standards:
+    -
+      plugin: skip_on_empty
+      source: Cataloging Standards
+      method: process
+    -
+      plugin: entity_lookup_by_field
+      lookup_field: field_source/uri
+      entity_type: taxonomy_term
+      bundle: cataloging_standards
+
+  field_default_derivative_file_pe:
+    -
+      plugin: skip_on_empty
+      source: Derivative File Permissions
+      method: process
+    -
+      plugin: entity_lookup_by_field
+      lookup_field: field_source/uri
+      entity_type: taxonomy_term
+      bundle: islandora_access
+
+  field_default_original_file_perm:
+    -
+      plugin: skip_on_empty
+      source: Original File Permissions
+      method: process
+    -
+      plugin: entity_lookup_by_field
+      lookup_field: field_source/uri
+      entity_type: taxonomy_term
+      bundle: islandora_access
+
+  field_description_source: Description Source
+  field_embargo_release_date:
+    plugin: format_date
+    source: Embargo Release Date
+    from_format: 'Y-m-d G:i:s.uP'
+    to_format: 'U'
+    from_timezone: 'UTC'
+    to_timezone: 'UTC'
+
 # We're making nodes
 destination:
   plugin: 'entity:node'
