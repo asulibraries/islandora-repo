@@ -32,6 +32,18 @@ source:
     level_of_coding: "intermediate"
 
 process:
+  field_embargo_release_date:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: Embargo Date
+    -
+      plugin: format_date
+      from_format: 'Y-m-d'
+      to_format: 'U'
+      from_timezone: 'UTC'
+      to_timezone: 'UTC'
+
   field_extent:
     -
       plugin: skip_on_empty
