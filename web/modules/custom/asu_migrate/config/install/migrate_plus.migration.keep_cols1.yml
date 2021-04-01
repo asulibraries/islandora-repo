@@ -22,7 +22,7 @@ process:
   field_default_derivative_file_pe:
     -
       plugin: static_map
-      source: attachment file access
+      source: default_df_perms
       map:
         1: "Public" #OpenAccess
         2: "ASU Only" #ASU
@@ -37,7 +37,7 @@ process:
   field_default_original_file_perm:
     -
       plugin: static_map
-      source: attachment file access
+      source: default_of_perms
       map:
         1: "Public" #OpenAccess
         2: "ASU Only" #ASU
