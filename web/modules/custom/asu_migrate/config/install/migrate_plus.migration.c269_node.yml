@@ -61,10 +61,9 @@ process:
       source: Copyright
       method: process
     -
-      plugin: entity_lookup
+      plugin: entity_lookup_by_field
+      lookup_field: field_source/uri
       entity_type: taxonomy_term
-      value_key: name
-      bundle_key: vid
       bundle: copyright_statements
 
   field_reuse_permissions:
@@ -73,14 +72,9 @@ process:
       source: Reuse
       method: process
     -
-      plugin: str_replace
-      search: "CC0"
-      replace: "Public Domain"
-    -
-      plugin: entity_lookup
+      plugin: entity_lookup_by_field
+      lookup_field: field_source/uri
       entity_type: taxonomy_term
-      value_key: name
-      bundle_key: vid
       bundle: reuse_permissions
 
   created:
@@ -432,14 +426,10 @@ process:
       # relator: 'relators:ctb'
 
   contributors:
-    # -
-    #   plugin: skip_on_empty
-    #   method: process
-    #   source: Contributors-Person
     -
       plugin: explode
-      delimiter: ' || '
-      source: Personal Contributors
+      delimiter: '||'
+      source: Contributors-Person
     -
       plugin: callback
       callable: trim
