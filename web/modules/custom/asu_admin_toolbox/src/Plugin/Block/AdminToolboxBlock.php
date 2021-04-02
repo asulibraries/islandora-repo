@@ -142,7 +142,10 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
     $node = $this->routeMatch->getParameter('node');
     $is_collection = ($node->bundle() == 'collection');
     $is_complex_object = FALSE;
-    if ($node->bundle() == 'asu_repository_item') {
+    $is_asu_repository_item = ($node->bundle() == 'asu_repository_item');
+    $user_roles = $this->currentUser->getRoles();
+    $user_is_admin_or_metadata_manager = (in_array("administrator", $user_roles) || in_array("metadata_manager", $user_roles));
+    if ($is_asu_repository_item) {
       $field_model_tid = $node->get('field_model')->getString();
       $field_model_term = $this->entityTypeManager
         ->getStorage('taxonomy_term')
@@ -212,6 +215,22 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
       $link_glyph = Link::fromTextAndUrl($this->t('<i class="fas fa-plus-circle"></i>'), $url)->toRenderable();
       $output_links[] = render($link) . " &nbsp;" . render($link_glyph);
     }
+    if ($user_is_admin_or_metadata_manager && $is_asu_repository_item) {
+      // Legacy item link... look up the node's field_pid value and if the
+      // first character is not an "a"
+      // If both of these are true, then the link would be to:
+      // repository.asu.edu/items/{node.field_pid}
+      $field_pid = $node->get('field_pid')->getString();
+      if ($field_pid && (strtolower(substr($field_pid, 0, 1)) <> "a")) {
+        $legacy_uri = "https://repository.asu.edu/items/" . $field_pid;
+        $url = Url::fromUri($legacy_uri, ['attributes' => ['target' => '_blank']]);
+        $link = Link::fromTextAndUrl($this->t('Legacy URI'), $url);
+        $link_glyph = Link::fromTextAndUrl($this->t('<i class="fas fa-external-link-alt"></i>'), $url);
+        $link = $link->toRenderable();
+        $link_glyph = $link_glyph->toRenderable();
+        $output_links[] = render($link) . ' &nbsp;' . render($link_glyph); 
+      }
+    }
     if (in_array('administrator', $this->currentUser->getRoles())) {
       $mapper = \Drupal::service('islandora.entity_mapper');
       $flysystem_config = Settings::get('flysystem');
@@ -223,7 +242,9 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
       $url = Url::fromUri($fedora_uri, ['attributes' => ['target' => '_blank']]);
       $link = Link::fromTextAndUrl($this->t('Fedora URI'), $url);
       $link = $link->toRenderable();
-      $output_links[] = render($link);
+      $link_glyph = Link::fromTextAndUrl($this->t('<i class="fas fa-external-link-alt"></i>'), $url);
+      $link_glyph = $link_glyph->toRenderable();
+      $output_links[] = render($link) . ' &nbsp;' . render($link_glyph); 
     }
     return [
       '#markup' => (count($output_links) > 0) ?
