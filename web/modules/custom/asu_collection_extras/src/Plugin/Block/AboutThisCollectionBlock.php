@@ -238,6 +238,7 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
     `nid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'The collection \"node\".nid this record affects.',
     `views` int(11) NOT NULL DEFAULT '0' COMMENT 'View total for all objects in the collection.',
     `downloads` int(11) NOT NULL DEFAULT '0' COMMENT 'Download total for all objects in the collection.',
+    `modified` int(11) NOT NULL DEFAULT '0' COMMENT 'Timestamp for when the record is updated'
     PRIMARY KEY (`nid`)
   ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4</code>");
       return 0;

@@ -1,5 +1,7 @@
 <?php
 
+use Drupal\Core\Database\Database;
+
 /**
  * @file
  * Update hooks for the ASU Collection Extras module.
@@ -29,6 +31,12 @@ function asu_collection_extras_schema() {
       ],
       'downloads' => [
         'description' => 'Download total for all objects in the collection.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'modified' => [
+        'description' => 'Timestamp for when the record is updated',
         'type' => 'int',
         'not null' => TRUE,
         'default' => 0,
@@ -66,6 +74,12 @@ function asu_collection_extras_schema() {
         'not null' => TRUE,
         'default' => 0,
       ],
+      'modified' => [
+        'description' => 'Timestamp for when the record is updated',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
     ],
     'primary key' => ['collection_nid', 'nid'],
     'indexes' => [
@@ -78,4 +92,20 @@ function asu_collection_extras_schema() {
     ],
   ];
   return $schema;
+}
+
+/**
+ * Implements hook_update_8001() to add modified field.
+ */
+function asu_collection_extras_update_8001() {
+  // Add the modified field to the two tables.
+  $spec = [
+    'type' => 'int',
+    'description' => 'Timestamp for when the record is updated',
+    'not null' => TRUE,
+    'default' => 0,
+  ];
+  $schema = Database::getConnection()->schema();
+  $schema->addField('asu_collection_extras_item_downloads', 'modified', $spec);
+  $schema->addField('asu_collection_extras_collection_usage', 'modified', $spec);
 }
