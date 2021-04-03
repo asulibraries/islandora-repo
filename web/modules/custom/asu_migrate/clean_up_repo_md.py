@@ -252,7 +252,7 @@ def main(argv):
     )
     xcols = ["image id", "document id",
              "video id", "audio id", "generic file id"]
-    att_df[xcols] = att_df[xcols].replace(".0", "")
+    att_df[xcols] = att_df[xcols].replace(".0", "", regex=False)
     att_df["item id"] = att_df["item id"].astype(str)
     att_df["attachment id"] = att_df["attachment id"].astype(str)
     att_df["attachment id"] = "a_" + att_df["attachment id"]
@@ -281,16 +281,16 @@ def main(argv):
                         a_status = "Public"
                     else:
                         a_status = "Private"
-                    notes = ""
-                    if a["attachment notes"] and not math.isnan(a["attachment notes"]):
-                        notes = notes + str(a["attachment notes"])
-                    if a["attachment description"] and isinstance(
-                        a["attachment description"], str
-                    ):  # and not math.isnan(a['attachment description']):
-                        if notes:
-                            notes = notes + "|" + a["attachment description"]
-                        else:
-                            notes = a["attachment description"]
+                    # notes = ""
+                    # if a["attachment notes"] and not math.isnan(a["attachment notes"]):
+                    #     notes = notes + str(a["attachment notes"])
+                    # if a["attachment description"] and isinstance(
+                    #     a["attachment description"], str
+                    # ):  # and not math.isnan(a['attachment description']):
+                    #     if notes:
+                    #         notes = notes + "|" + a["attachment description"]
+                    #     else:
+                    #         notes = a["attachment description"]
                     new_row = {
                         "Item ID": str(a["attachment id"]),
                         "Item Title": a["attachment label"],
@@ -516,6 +516,8 @@ def main(argv):
     # for x_col in xcols:
     x_col = "file id"
     # att_df[x_col] = att_df[x_col].replace(".0", "")
+    merge_df['Date Created'] = merge_df['Date Created'].astype(str)
+    merge_df['Date Created'] = merge_df['Date Created'].str.replace('.0', "", regex=False)
     att_df[x_col] = att_df[x_col].fillna(-1)
     att_df[x_col] = att_df[x_col].astype("int64")
     att_df[x_col] = att_df[x_col].replace(-1, None)
