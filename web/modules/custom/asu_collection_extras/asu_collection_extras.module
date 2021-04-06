@@ -120,6 +120,7 @@ function asu_collection_extras_doCollectionSummary($collection_nid) {
   `nid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'The item \"node\".nid this record affects.',
   `views` int(11) NOT NULL DEFAULT '0' COMMENT 'View total for all objects in the collection.',
   `downloads` int(11) NOT NULL DEFAULT '0' COMMENT 'Download total for all objects in the collection.',
+  `modified` int(11) NOT NULL DEFAULT '0' COMMENT 'Timestamp for when the record is updated',
   PRIMARY KEY (`collection_nid`,`nid`),
   KEY `downloads` (`downloads`),
   KEY `collection_nid` (`collection_nid`)
@@ -150,10 +151,10 @@ function asu_collection_extras_doCollectionSummary($collection_nid) {
       $connection
         ->insert('asu_collection_extras_item_downloads')
         ->fields([
-          'collection_nid', 'nid', 'views', 'downloads'
+          'collection_nid', 'nid', 'views', 'downloads', 'modified'
         ])
         ->values([
-          $collection_nid, $child_nid, $item_views, $item_downloads
+          $collection_nid, $child_nid, $item_views, $item_downloads, time()
         ])
         ->execute();
     }
@@ -168,10 +169,10 @@ function asu_collection_extras_doCollectionSummary($collection_nid) {
   $connection
     ->insert('asu_collection_extras_collection_usage')
     ->fields([
-      'nid', 'views', 'downloads'
+      'nid', 'views', 'downloads', 'modified'
     ])
     ->values([
-      $collection_nid, $collection_views, $collection_downloads
+      $collection_nid, $collection_views, $collection_downloads, time()
     ])
     ->execute();
 }
