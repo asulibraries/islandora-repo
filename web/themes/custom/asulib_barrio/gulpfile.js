@@ -25,14 +25,14 @@ const paths = {
     src: './scss/style.scss',
     dest: './css',
     watch: './scss/**/*.scss',
-    bootstrap: './node_modules/bootstrap/scss/bootstrap.scss',
+    bootstrap: './node_modules/@asu-design-system/bootstrap4-theme/src/scss/bootstrap-asu.scss',
   },
   js: {
     bootstrap: './node_modules/bootstrap/dist/js/bootstrap.min.js',
     jquery: './node_modules/jquery/dist/jquery.min.js',
     popper: './node_modules/popper.js/dist/umd/popper.min.js',
+    barrio: '../../contrib/bootstrap_barrio/js/barrio.js',
     poppermap: './node_modules/popper.js/dist/umd/popper.min.js.map',
-    // barrio: '../../contrib/bootstrap_barrio/js/barrio.js',
     asuheader: './node_modules/@asu-design-system/bootstrap4-theme/src/js/global-header.js',
     dest: './js'
   },
@@ -43,6 +43,7 @@ const paths = {
     dest: './images'
   }
 }
+//     // barrio: '../../contrib/bootstrap_barrio/js/barrio.js',
 
 // Compile sass into CSS & auto-inject into browsers
 function styles() {
