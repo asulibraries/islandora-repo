@@ -274,7 +274,7 @@ class ModsEncoder extends XmlEncoder {
     foreach ($data as $k => $v) {
       if (is_array($v)) {
         if (count($v) < 1) {
-          $data[$k] = '';
+          unset($data[$k]);
         } else {
           $data[$k] = $this->fixData($v);
         }
