@@ -33,6 +33,10 @@ function asu_item_extras_get_complex_object_child_nodes($node_id, $howmany = 0) 
       'node_field_data.nid = node__field_title.entity_id AND ' .
       'node__field_title.deleted = 0 AND ' .
       '(node__field_title.langcode = node_field_data.langcode OR node__field_title.bundle = \'asu_repository_item\')');
+  $query->leftJoin('node__field_weight', 'node__field_weight',
+      'node_field_data.nid = node__field_weight.entity_id AND ' .
+      'node__field_weight.deleted = 0 AND ' .
+      '(node__field_weight.langcode = node_field_data.langcode OR node__field_weight.bundle = \'asu_repository_item\')');
   $query->join('paragraphs_item_field_data', 'paragraphs_item_field_data',
       'node__field_title.field_title_target_revision_id = paragraphs_item_field_data.revision_id');
   $query->join('paragraph__field_main_title', 'paragraph__field_main_title',
@@ -40,7 +44,7 @@ function asu_item_extras_get_complex_object_child_nodes($node_id, $howmany = 0) 
       'paragraph__field_main_title.deleted = 0');
   $query->condition('node_field_data.nid', $node_id);
   $query->condition('node_field_data.status', 1);
-  $query->orderBy('paragraph__field_main_title.field_main_title_value' , 'ASC');
+  $query->orderBy('node__field_weight.field_weight_value', 'ASC');
   if ($howmany) {
     $query->range(0, $howmany);
   }

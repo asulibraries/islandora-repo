@@ -198,7 +198,7 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
     $stat_box_row2[] = $this->makeBox("<strong>" . (($collection_created) ? date('Y', $collection_created) : 'unknown') .
       "</strong><br>collection created");
     $stat_box_row2[] = $this->makeBox("<strong>" . (($max_timestamp) ? date('M d, Y', $max_timestamp) : 'unknown') .
-      "</strong><br>last updates</div>");
+      "</strong><br>last updated</div>");
     return [
       '#markup' =>
       (count($stat_box_row1) > 0) ?

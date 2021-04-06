@@ -129,7 +129,7 @@ def main(argv):
     att_df = att_df.loc[:, ~att_df.columns.str.contains('^Unnamed')]
     del repo_df["Personal Contributors"]
 
-    merge_df = pandas.merge(left=repo_df, right=md_df, left_on='Item ID', right_on='Legacy System ID', how='right')
+    merge_df = pandas.merge(left=repo_df, right=md_df, left_on='Item ID', right_on='Legacy System ID', how='left')
     merge_df['Model'] = merge_df.apply(lambda row: get_model(row['Attachment Count'], row['Item ID'], att_df, None), axis=1)
     merge_df = merge_df.loc[:, ~merge_df.columns.str.contains('^Unnamed')]
     temp_series = merge_df["History"]

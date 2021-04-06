@@ -70,7 +70,6 @@ class ThumbnailController extends ControllerBase {
           } else {
             $response = (new TrustedRedirectResponse($url))->addCacheableDependency((new CacheableMetadata())->setCacheMaxAge(0));
           }
-          \Drupal::logger('thumbnail controller')->info('thumbnail uri is ' . $url);
           return $response;
         }
         else {
@@ -92,7 +91,6 @@ class ThumbnailController extends ControllerBase {
                 else {
                   $response = (new TrustedRedirectResponse($url))->addCacheableDependency((new CacheableMetadata())->setCacheMaxAge(0));
                 }
-                \Drupal::logger('thumbnail controller')->info('thumbnail uri is ' . $url);
                 return $response;
               }
             }
