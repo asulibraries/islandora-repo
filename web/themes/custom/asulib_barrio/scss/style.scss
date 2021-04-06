@@ -6,246 +6,234 @@ Description: Bootstrap 4 with Sass
 // import files
 @import "import";
 
-/* GENERAL STYLES
--------------------------------------------------*/
+// /* GENERAL STYLES
+// -------------------------------------------------*/
 
-body {
-    background: $white;
-}
-
-
-/* COLORS
---------------------------------------------------*/
-
-a {
-    color: $accent-shade;
-}
-a:hover,
-a:focus {
-  color: $brightmaroon;
-  text-decoration: none;
-}
-
-.bg-inverse {
-    background: $primary-shade !important;
-}
-
-// .site-footer {
-//     background: $accent-shade !important;
+// body {
+//     background: $white;
 // }
 
-.menu--main li a {
-    color: $primary-shade;
-}
 
-.menu--account li a {
-    color: $primary-shade;
-}
+// /* COLORS
+// --------------------------------------------------*/
 
-.site-name-slogan a {
-    text-decoration: none;
-}
+// a {
+//     color: $accent-shade;
+// }
+// a:hover,
+// a:focus {
+//   color: $brightmaroon;
+//   text-decoration: none;
+// }
 
-.card-group img {
-    margin: 0;
-    width: 100%;
-    height: auto;
-}
+// .bg-inverse {
+//     background: $primary-shade !important;
+// }
 
-.card-group .field--type-image {
-    margin: 0
-}
+// // .site-footer {
+// //     background: $accent-shade !important;
+// // }
 
-.slick {
-    width: 100%;
-}
+// .menu--main li a {
+//     color: $primary-shade;
+// }
 
-.slick>div {
-    margin: 0 15px;
-}
+// .menu--account li a {
+//     color: $primary-shade;
+// }
 
-/** classes for complex object elements display **/
+// .site-name-slogan a {
+//     text-decoration: none;
+// }
 
-.complex-object-child {
-    border: 1px solid #d7d7d7;
-}
+// .card-group img {
+//     margin: 0;
+//     width: 100%;
+//     height: auto;
+// }
 
-.complex-object-child-box {
-    border: 1px solid #d7d7d7;
-    img {
-      height: auto;
-    }
-    .node__title {
-      overflow-wrap: break-word;
-      word-wrap: break-word;
-      hyphens: auto;
-    }
-    > article {
-      padding: 15px 0;
-    }
-    margin-right: 2%;
-    &:last-of-type {
-      margin-right: 0;
-    }
-}
+// .card-group .field--type-image {
+//     margin: 0
+// }
 
-@media screen and (min-width: 992px) {
-  .complex-object-child-box.col-lg-4 {
-    max-width: 32%;
-  }
-}
+// .slick {
+//     width: 100%;
+// }
 
-@media screen and (max-width: 768px) {
-  .complex-object-child-box.col-md-6 {
-    max-width: 48%;
-  }
-}
+// .slick>div {
+//     margin: 0 15px;
+// }
 
-.block-asu-included-in-item{
-  padding-left: 15px;
-  padding-right: 15px;
-  > .content {
-    @extend .row;
-  }
-}
+// /** classes for complex object elements display **/
 
-/* remove padding from inside some views on repo item displays */
-.file-container .views-row { padding: 0; }
+// .complex-object-child {
+//     border: 1px solid #d7d7d7;
+// }
 
-.repo-item, .node--type-collection.node--view-mode-full {
-  h2 {
-    padding: 1.5rem 1rem;
-    background: $gray-2;
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 1.75rem;
-  }
-  h3 {
-    font-size: 1.25rem;
-    margin-bottom: 1rem;
-    font-weight: bold;
-  }
-  .field--name-field-rich-description {
-    margin-bottom: $spacer;
-  }
-  .content-section {
-    margin-bottom: ($spacer * 2);
-  }
-}
+// .complex-object-child-box {
+//     border: 1px solid #d7d7d7;
+//     img {
+//       height: auto;
+//     }
+//     .node__title {
+//       overflow-wrap: break-word;
+//       word-wrap: break-word;
+//       hyphens: auto;
+//     }
+//     > article {
+//       padding: 15px 0;
+//     }
+//     margin-right: 2%;
+//     &:last-of-type {
+//       margin-right: 0;
+//     }
+// }
 
-.main-content a {
-  border-bottom: 1px dotted $maroon;
-}
-
-.social-icons a {
-  border-bottom: none;
-}
-
-a.icon-link {
-  border-bottom: none;
-}
-.icon-link i {
-     margin-right: .75rem;
-   }
-.icon-link span {
-  border-bottom: 1px dotted $maroon;
-}
-
-/* This might be too general */
-img { width: 100%; }
-
-/* Remove main content padding */
-.node__content.container {
-  padding: 0;
-}
-.node--type-collection .col-md-12 {
-  padding: 0;
-}
-
-.file-container {
-  margin-bottom: 1rem;
-}
-
-.download-options {
-  .btn-group {
-    margin-bottom: 1rem;
-  }
-  .dropdown-item {
-    border: 0;
-  }
-  .views-row {
-    padding: 0;
-  }
-  word-wrap: break-word;
-}
-
-.details > div {
-  margin-bottom: 1.5rem;
-}
-.interact > div {
-  margin-bottom: 2.5rem;
-}
-
-.citation ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-/* Subjects and Linked Agent, and Collaborating institutions */
-article:not(.node--view-mode-full-metadata) .inline-list {
-  list-style: none;
-  padding: 0;
-}
-
-.all-subjects .inline-list,
-.all-memberships .inline-list,
-.inline-list li {
-  display: inline;
-}
-
-.inline-list li:not(:last-child)::after,
-.all-subjects ul:not(:first-of-type)::before,
-.all-memberships ul:not(:first-of-type)::before {
-  content: '/';
-  margin-left: 5px;
-  margin-right: 5px;
-}
-
-/* Handling icon fallbacks for items */
-.icon-container {
-  margin: auto;
-  text-align: center;
-  i.far, i.fa {
-    text-align: center;
-    color: $gray-5;
-  }
-}
-.card.node--type-asu-repository-item {
-  .card-body {
-    display: flex;
-  }
-}
-a.image-link,
-a.image-link:hover,
-a.image-link:focus { border: none; }
-
-/* Mobile breakpoint */
-@media (max-width: 990px) {
-  .order-first {
-    margin-bottom: 1rem;
-  }
-}
-
-
-// start of trying to fix overflowing width on mobile
-// @media (min-width: 768px) {
-//   .row {
-//     margin-left: 0;
-//     margin-right: 0;
-//   }
-//   .container {
-//     padding-left: 0;
-//     padding-right: 0;
+// @media screen and (min-width: 992px) {
+//   .complex-object-child-box.col-lg-4 {
+//     max-width: 32%;
 //   }
 // }
+
+// @media screen and (max-width: 768px) {
+//   .complex-object-child-box.col-md-6 {
+//     max-width: 48%;
+//   }
+// }
+
+// .block-asu-included-in-item{
+//   padding-left: 15px;
+//   padding-right: 15px;
+//   > .content {
+//     @extend .row;
+//   }
+// }
+
+// /* remove padding from inside some views on repo item displays */
+// .file-container .views-row { padding: 0; }
+
+// .repo-item, .node--type-collection.node--view-mode-full {
+//   h2 {
+//     padding: 1.5rem 1rem;
+//     background: $gray-2;
+//     font-size: 1.5rem;
+//     font-weight: bold;
+//     margin-bottom: 1.75rem;
+//   }
+//   h3 {
+//     font-size: 1.25rem;
+//     margin-bottom: 1rem;
+//     font-weight: bold;
+//   }
+//   .field--name-field-rich-description {
+//     margin-bottom: $spacer;
+//   }
+//   .content-section {
+//     margin-bottom: ($spacer * 2);
+//   }
+// }
+
+// .main-content a {
+//   border-bottom: 1px dotted $maroon;
+// }
+
+// .social-icons a {
+//   border-bottom: none;
+// }
+
+// a.icon-link {
+//   border-bottom: none;
+// }
+// .icon-link i {
+//      margin-right: .75rem;
+//    }
+// .icon-link span {
+//   border-bottom: 1px dotted $maroon;
+// }
+
+// /* This might be too general */
+// img { width: 100%; }
+
+// /* Remove main content padding */
+// .node__content.container {
+//   padding: 0;
+// }
+// .node--type-collection .col-md-12 {
+//   padding: 0;
+// }
+
+// .file-container {
+//   margin-bottom: 1rem;
+// }
+
+// .download-options {
+//   .btn-group {
+//     margin-bottom: 1rem;
+//   }
+//   .dropdown-item {
+//     border: 0;
+//   }
+//   .views-row {
+//     padding: 0;
+//   }
+//   word-wrap: break-word;
+// }
+
+// .details > div {
+//   margin-bottom: 1.5rem;
+// }
+// .interact > div {
+//   margin-bottom: 2.5rem;
+// }
+
+// .citation ul {
+//   list-style: none;
+//   padding: 0;
+//   margin: 0;
+// }
+
+// /* Subjects and Linked Agent, and Collaborating institutions */
+// article:not(.node--view-mode-full-metadata) .inline-list {
+//   list-style: none;
+//   padding: 0;
+// }
+
+// .all-subjects .inline-list,
+// .all-memberships .inline-list,
+// .inline-list li {
+//   display: inline;
+// }
+
+// .inline-list li:not(:last-child)::after,
+// .all-subjects ul:not(:first-of-type)::before,
+// .all-memberships ul:not(:first-of-type)::before {
+//   content: '/';
+//   margin-left: 5px;
+//   margin-right: 5px;
+// }
+
+// /* Handling icon fallbacks for items */
+// .icon-container {
+//   margin: auto;
+//   text-align: center;
+//   i.far, i.fa {
+//     text-align: center;
+//     color: $gray-5;
+//   }
+// }
+// .card.node--type-asu-repository-item {
+//   .card-body {
+//     display: flex;
+//   }
+// }
+// a.image-link,
+// a.image-link:hover,
+// a.image-link:focus { border: none; }
+
+// /* Mobile breakpoint */
+// @media (max-width: 990px) {
+//   .order-first {
+//     margin-bottom: 1rem;
+//   }
+// }
+
