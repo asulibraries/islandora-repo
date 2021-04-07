@@ -45,6 +45,7 @@ function asu_item_extras_get_complex_object_child_nodes($node_id, $howmany = 0) 
   $query->condition('node_field_data.nid', $node_id);
   $query->condition('node_field_data.status', 1);
   $query->orderBy('node__field_weight.field_weight_value', 'ASC');
+  $query->orderBy('paragraph__field_main_title.field_main_title_value' , 'ASC');
   if ($howmany) {
     $query->range(0, $howmany);
   }
