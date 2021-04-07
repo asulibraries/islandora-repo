@@ -34,7 +34,7 @@ function asu_item_extras_get_complex_object_child_nodes($node_id, $howmany = 0) 
       'node__field_title.deleted = 0 AND ' .
       '(node__field_title.langcode = node_field_data.langcode OR node__field_title.bundle = \'asu_repository_item\')');
   $query->leftJoin('node__field_weight', 'node__field_weight',
-      'node_field_data.nid = node__field_weight.entity_id AND ' .
+      'node__field_member_of.entity_id = node__field_weight.entity_id AND ' .
       'node__field_weight.deleted = 0 AND ' .
       '(node__field_weight.langcode = node_field_data.langcode OR node__field_weight.bundle = \'asu_repository_item\')');
   $query->join('paragraphs_item_field_data', 'paragraphs_item_field_data',
