@@ -1,0 +1,267 @@
+# Uninstall this config when the feature is uninstalled
+dependencies:
+  enforced:
+    module:
+      - asu_migrate
+
+id: soleri_node
+label: Import Soleri Collection from CSV
+migration_group: migrate_soleri_csv
+
+source:
+  plugin: csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/data/migration_data/soleri.csv
+
+  # 1 means you have a header row, 0 means you don't
+  header_row_count: 1
+
+  # Each migration needs a unique key per row in the csv.  Here we're using the file path.
+  ids:
+    - File name
+
+  # You can't enter string literals into a process plugin, but you can give it a constant as a 'source'.
+  constants:
+    # We're tagging our nodes as Images
+    model: Digital Document
+
+    # Everything gets created as admin
+    collection_title: "Paolo Soleri Collection"
+    pres_state: '558' # Not Preserved
+    handle: "https://hdl.handle.net/2286/R.I.2."
+    cataloging_standards: "asu2"
+    level_of_coding: "minimal"
+    uid: saskia
+
+process:
+  field_extent:
+    -
+      plugin: skip_on_empty
+      source: Extent
+      method: process
+    -
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: callback
+      callable: trim
+
+  field_edtf_date_created:
+    plugin: skip_on_empty
+    source: Date Created EDTF
+    method: process
+
+  field_copyright_statement:
+    -
+      plugin: skip_on_empty
+      source: Copyright Status
+      method: process
+    -
+      plugin: entity_lookup_by_field
+      lookup_field: field_source/uri
+      entity_type: taxonomy_term
+      bundle: copyright_statements
+
+  field_reuse_permissions:
+    -
+      plugin: skip_on_empty
+      source: Reuse Permission
+      method: process
+    -
+      plugin: entity_lookup_by_field
+      lookup_field: field_source/uri
+      entity_type: taxonomy_term
+      bundle: reuse_permissions
+
+  moderation_state:
+    plugin: static_map
+    source: "Public/Private"
+    map:
+      Private: draft
+      Public: published
+      1: published
+      0: draft
+
+  field_model:
+    source: Model
+    plugin: entity_lookup
+    entity_type: taxonomy_term
+    value_key: name
+    bundle_key: vid
+    bundle: islandora_models
+
+  field_rich_description/value:
+    plugin: skip_on_empty
+    source: Description
+    method: process
+
+  field_rich_description/format:
+    plugin: default_value
+    default_value: "description_restricted_items"
+
+  uid:
+    plugin: user_lookup
+    source: constants/uid
+
+  title:
+    plugin: substr
+    source: Title
+    start: 0
+    length: 254
+
+  field_title:
+    -
+      plugin: explode
+      delimiter: '||'
+      source: Title
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: paragraph_title_generate
+      paragraph_type: 'complex_title'
+      split_into_parts: true
+      fields:
+        field_nonsort: " "
+        field_main_title: " "
+        field_subtitle: " "
+
+  field_preservation_state:
+    plugin: entity_lookup
+    source: constants/pres_state
+    entity_type: taxonomy_term
+    bundle_key: vid
+    value_key: tid
+    bundle: preservation_states
+
+  field_language:
+    -
+      plugin: skip_on_empty
+      source: Language
+      method: process
+    -
+      plugin: entity_lookup
+      entity_type: taxonomy_term
+      value_key: name
+      bundle_key: vid
+      bundle: language
+
+  field_pid: File name
+
+  field_member_of:
+    -
+      plugin: get
+      source:
+        - 'Parent Item'
+        - 'constants/collection_title'
+    -
+      plugin: multi_entity_lookup
+      entity_type: node
+      access_check: 0
+      bundle_key: type
+      bundle: collection
+      value_key: title
+      lookup_field: field_pid
+
+  field_subject:
+    -
+      plugin: skip_on_empty
+      source: Subject
+      method: process
+    -
+      plugin: explode
+      delimiter: ' || '
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: name_uri_generate
+      delimiter: ' | '
+      uri_field: field_authority_link
+      default_vocabulary: subject
+
+  corp_contribs:
+    -
+      plugin: explode
+      delimiter: ','
+      source: Institutional Contributor
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: skip_on_empty
+      method: process
+    -
+      plugin: typed_relation_generate
+      delimiter: '|'
+      uri_field: field_authority_link
+      default_vocabulary: corporate_body
+      relator: 'relators:ctb'
+
+  pers_contribs:
+    -
+      plugin: explode
+      delimiter: ' || '
+      source: Personal Contributor
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: skip_on_empty
+      method: process
+    -
+      plugin: typed_relation_generate
+      delimiter: '|'
+      uri_field: field_authority_link
+      default_vocabulary: person
+      relator: 'relators:ctb'
+
+  field_linked_agent:
+    -
+      plugin: merge_skip_empty
+      source:
+        - '@corp_contribs'
+        - '@pers_contribs'
+    -
+      plugin: skip_on_empty
+      method: process
+
+  field_cataloging_standards:
+    plugin: entity_generate
+    entity_type: taxonomy_term
+    value_key: name
+    bundle_key: vid
+    source: constants/cataloging_standards
+    bundle: cataloging_standards
+
+  field_level_of_coding: constants/level_of_coding
+  field_complex_object_child: Complex Object Child
+
+  field_typed_identifier:
+    -
+      plugin: skip_on_empty
+      source: Identifier
+      method: process
+    -
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: paragraph_generate
+      paragraph_type: 'typed_identifier'
+      delimiter: '|'
+      fields:
+        field_identifier_value:
+          order: 0
+          type: text
+        field_identifier_type:
+          order: 1
+          type: taxonomy_term
+          lookup_field: field_identifier_predicate
+
+
+# We're making nodes
+destination:
+  plugin: 'entity:node'
+  default_bundle: asu_repository_item
