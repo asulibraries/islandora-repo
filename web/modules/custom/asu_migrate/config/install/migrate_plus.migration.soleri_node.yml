@@ -72,14 +72,19 @@ process:
       entity_type: taxonomy_term
       bundle: reuse_permissions
 
+  status:
+    source: Status
+    plugin: static_map
+    map:
+      Private: 0
+      Public: 1
+
   moderation_state:
     plugin: static_map
     source: Status
     map:
       Private: draft
       Public: published
-      1: published
-      0: draft
 
   field_model:
     source: Model
