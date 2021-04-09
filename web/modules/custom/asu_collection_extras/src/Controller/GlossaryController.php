@@ -5,6 +5,7 @@ namespace Drupal\asu_collection_extras\Controller;
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\views\Views;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Class GlossaryController.
@@ -19,11 +20,11 @@ class GlossaryController extends ControllerBase {
   protected $loggerFactory;
 
   /**
-   * Drupal\Core\Routing\CurrentRouteMatch definition.
+   * Symfony\Component\HttpFoundation\RequestStack definition.
    *
-   * @var \Drupal\Core\Routing\CurrentRouteMatch
+   * @var \Symfony\Component\HttpFoundation\RequestStack
    */
-  protected $currentRouteMatch;
+  protected $requestStack;
 
   /**
    * Drupal\Core\Session\AccountProxyInterface definition.
@@ -38,7 +39,7 @@ class GlossaryController extends ControllerBase {
   public static function create(ContainerInterface $container) {
     $instance = parent::create($container);
     $instance->loggerFactory = $container->get('logger.factory');
-    $instance->currentRouteMatch = $container->get('current_route_match');
+    $instance->requestStack = $container->get('request_stack');
     $instance->currentUser = $container->get('current_user');
     return $instance;
   }
@@ -55,6 +56,8 @@ class GlossaryController extends ControllerBase {
     if (is_object($view)) {
       $view->setArguments($args);
       $view->setDisplay('page_1');
+      $combine_value = $this->requestStack->getCurrentRequest()->query->get('combine');
+      $view->setExposedInput(['combine' => $combine_value]);
       $view->preExecute();
       $view->execute();
       $content = $view->buildRenderable('page_1', $args);
