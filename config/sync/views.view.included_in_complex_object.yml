@@ -7,6 +7,7 @@ dependencies:
   module:
     - node
     - user
+    - views_bootstrap
 id: included_in_complex_object
 label: 'Included in complex object'
 module: views
@@ -65,7 +66,16 @@ display:
             previous: ‹‹
             next: ››
       style:
-        type: default
+        type: views_bootstrap_grid
+        options:
+          row_class: complex-object-child-box
+          default_row_class: true
+          uses_fields: false
+          col_xs: none
+          col_sm: col-sm-12
+          col_md: col-md-6
+          col_lg: col-lg-4
+          col_xl: col-xl-4
       row:
         type: 'entity:node'
         options:
@@ -249,7 +259,16 @@ display:
     display_options:
       display_extenders: {  }
       style:
-        type: default
+        type: views_bootstrap_grid
+        options:
+          row_class: complex-object-child-box
+          default_row_class: true
+          uses_fields: false
+          col_xs: none
+          col_sm: col-sm-12
+          col_md: col-md-6
+          col_lg: col-lg-4
+          col_xl: col-xl-4
       defaults:
         style: false
         row: false
