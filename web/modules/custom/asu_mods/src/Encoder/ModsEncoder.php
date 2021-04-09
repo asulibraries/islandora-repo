@@ -62,7 +62,7 @@ class ModsEncoder extends XmlEncoder {
       $field_name = $field_name_parts[0];
       $sub_part = $field_name_parts[1];
     }
-    $return_vals = [];
+    $return_vals = $vals = [];
 
     if ((!is_array($field_name) && str_contains($field_name, 'field_')) || (in_array($field_name, self::MACHINE_FIELDS))) {
       if ($data->hasField($field_name)) {
@@ -126,8 +126,11 @@ class ModsEncoder extends XmlEncoder {
                     $field_arr[$ck] = self::get_field_values($val, $cv, $ck);
                   }
                 }
-                else {
+                else if (str_contains($cv, 'field_') || (in_array($cv, self::MACHINE_FIELDS))) {
                   $field_arr[$ck] = self::get_field_values($val, $cv, $ck);
+                }
+                else {
+                  $field_arr[$ck] = $cv;
                 }
               }
             }
@@ -267,7 +270,20 @@ class ModsEncoder extends XmlEncoder {
         }
       }
     }
-    return $new_data;
+    return $this->fixData($new_data);
+  }
+
+  private function fixData($data) {
+    foreach ($data as $k => $v) {
+      if (is_array($v)) {
+        if (count($v) < 1) {
+          unset($data[$k]);
+        } else {
+          $data[$k] = $this->fixData($v);
+        }
+      }
+    }
+    return $data;
   }
 
   /**

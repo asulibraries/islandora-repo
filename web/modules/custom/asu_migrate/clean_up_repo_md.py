@@ -106,7 +106,7 @@ def loc_lookup(atype, astring):
 
 
 def get_model_from_mime(mime):
-    # print("mime is %s" % mime)
+    print("mime is %s" % mime)
     if isinstance(mime, float):
         return 0
     if "image" in mime:
@@ -129,12 +129,12 @@ def get_model(att_count, item_id, att_df, att_id):
     if att_count == 1:
         # print("row is 1")
         if item_id is not None:
-            atts = att_df[att_df["item id"] == str(item_id)]
+            atts = att_df[att_df['item id'] == int(item_id)]
         else:
-            atts = att_df[att_df["attachment id"] == str(att_id)]
+            atts = att_df[att_df['attachment id'] == str(att_id)]
         # print(atts)
         for index, a in atts.iterrows():
-            mime = a["file mime"]
+            mime = a['file mime']
             model = get_model_from_mime(mime)
             # print(model)
             return model

@@ -230,9 +230,9 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
       $field_pid = $node->get('field_pid')->getString();
       if ($field_pid && (strtolower(substr($field_pid, 0, 1)) <> "a")) {
         $legacy_uri = "https://repository.asu.edu/items/" . $field_pid;
-        $url = Url::fromUri($legacy_uri, ['attributes' => ['target' => '_blank']]);
-        $link = Link::fromTextAndUrl($this->t('Legacy URI'), $url);
-        $link_glyph = Link::fromTextAndUrl($this->t('<i class="fas fa-external-link-alt"></i>'), $url);
+        $url = Url::fromUri($legacy_uri, ['attributes' => ['target' => '_blank', 'rel' => 'noopener']]);
+        $link = Link::fromTextAndUrl($this->t('Legacy URI<span class="visually-hidden">, opens in a new window</span>'), $url);
+        $link_glyph = Link::fromTextAndUrl($this->t('<span class="visually-hidden">Legacy URI, opens in a new window</span><i class="fas fa-external-link-alt"></i>'), $url);
         $link = $link->toRenderable();
         $link_glyph = $link_glyph->toRenderable();
         $output_links[] = render($link) . ' &nbsp;' . render($link_glyph); 
@@ -246,10 +246,10 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
       $path = $mapper->getFedoraPath($node->uuid());
       $path = trim($path, '/');
       $fedora_uri = "$fedora_root/$path";
-      $url = Url::fromUri($fedora_uri, ['attributes' => ['target' => '_blank']]);
-      $link = Link::fromTextAndUrl($this->t('Fedora URI'), $url);
+      $url = Url::fromUri($fedora_uri, ['attributes' => ['target' => '_blank', 'rel' => 'noopener']]);
+      $link = Link::fromTextAndUrl($this->t('Fedora URI<span class="visually-hidden">, opens in a new window</span>'), $url);
       $link = $link->toRenderable();
-      $link_glyph = Link::fromTextAndUrl($this->t('<i class="fas fa-external-link-alt"></i>'), $url);
+      $link_glyph = Link::fromTextAndUrl($this->t('<span class="visually-hidden">Fedora URI, opens in a new window</span><i class="fas fa-external-link-alt"></i>'), $url);
       $link_glyph = $link_glyph->toRenderable();
       $output_links[] = render($link) . ' &nbsp;' . render($link_glyph); 
     }
