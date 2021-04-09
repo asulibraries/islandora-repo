@@ -70,8 +70,18 @@ a:focus {
     border: 1px solid #d7d7d7;
 }
 
-.complex-object-child-box {
+.space-border-box {
     border: 1px solid #d7d7d7;
+    padding-left: 15px;
+    padding-right: 15px;
+    height: 100%;
+}
+
+.space-border-box article {
+    padding-top: 15px;
+}
+
+.complex-object-child-box {
     img {
       height: auto;
     }
@@ -83,20 +93,11 @@ a:focus {
     > article {
       padding: 15px 0;
     }
-    margin-right: 2%;
-    &:last-of-type {
-      margin-right: 0;
-    }
 }
 
-.block-asu-included-in-item{
+.view-included-in-complex-object {
   padding-left: 15px;
   padding-right: 15px;
-  margin-left: 0px !important;
-  margin-right: 0px !important;
-  > .content {
-    @extend .row;
-  }
 }
 
 /* remove padding from inside some views on repo item displays */
