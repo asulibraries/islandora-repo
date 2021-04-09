@@ -21,8 +21,6 @@ class ContentDigestChangeViewsFilter extends FilterPluginBase {
    * Helper function that builds the query.
    */
   public function query() {
-     \Drupal::logger('content_change_digest')->notice('in the query method for the plugin');
-
     $configuration = [
       'table' => 'node_field_data',
       'field' => 'nid',

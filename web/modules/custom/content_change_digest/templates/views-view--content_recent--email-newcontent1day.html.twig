@@ -69,21 +69,20 @@
         default_row_class ? 'views-row',
       ] %}
       {% if (last_nid != view.style_plugin.getField(nested_row, 'nid')) %}
-        <br>
-        {% if (view.style_plugin.getField(nested_row, 'nid')) %}
-        <div class="field_title">
-          <strong>Changes to {{ view.style_plugin.getField(nested_row, 'title') }}</strong>
-        </div>
-        {% endif %}
+      {% if (view.style_plugin.getField(nested_row, 'title')) %}
+      <br>
+      <div class="field_title">
+        <strong>New content {{ view.style_plugin.getField(nested_row, 'title') }}</strong>{% if (1 != view.style_plugin.getField(nested_row, 'tracker_node_published')) %} <i>- unpublished</i>{% endif %}
+      </div>
       {% endif %}
       <div class="field_changed-2">
-        {{ view.style_plugin.getField(nested_row, 'revision_uid') }}
-        {{ view.style_plugin.getField(nested_row, 'changed_2') }}
+        {{ view.style_plugin.getField(nested_row, 'uid') }}
+        {{ view.style_plugin.getField(nested_row, 'changed') }}
       </div>
       <div class="field_nothing">
-        {{ view.style_plugin.getField(nested_row, 'nothing') }}
       </div>
       <br>
+      {% endif %}
       {% set last_nid = view.style_plugin.getField(nested_row, 'nid') %}
     {% endfor %}
   {% elseif empty %}
@@ -92,8 +91,9 @@
     </div>
   {% endif %}
   {% if pager %}
-    {{ pager }}
+    <p><i>There are more items changed for the given day than allowed for the email view.</i></p>
   {% endif %}
+  <a href="{{ content_change_digest_url }}">View report online</a>
   {% if attachment_after %}
     <div class="attachment attachment-after">
       {{ attachment_after }}

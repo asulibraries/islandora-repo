@@ -91,10 +91,10 @@
       {{ empty }}
     </div>
   {% endif %}
-
   {% if pager %}
-    {{ pager }}
+    <p><i>There are more items changed for the given day than allowed for the email view.</i></p>
   {% endif %}
+  <a href="{{ content_change_digest_url }}">View report online</a>
   {% if attachment_after %}
     <div class="attachment attachment-after">
       {{ attachment_after }}

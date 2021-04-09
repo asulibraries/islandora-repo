@@ -52,7 +52,15 @@ function content_change_digest_theme($existing, $type, $theme, $path) {
       'render element' => 'elements',
       'base hook' => 'view'
     ],
-    'views_view__differences' => [
+    'views_view__differences__givenday' => [
+      'render element' => 'elements',
+      'base hook' => 'view'
+    ],
+    'views_view__content-recent__email_newcontent1day' => [
+      'render element' => 'elements',
+      'base hook' => 'view'
+    ],
+    'views_view__differences__email_givenday' => [
       'render element' => 'elements',
       'base hook' => 'view'
     ]
@@ -139,24 +147,22 @@ function content_change_digest_get_recipients() {
 function content_change_digest_get_view_html() {
   // fetch the html for the view.
   $output = [];
+  $date = date('Y-m-d');
   $view = Views::getView('differences');
   if (is_object($view)) {
     $view->setDisplay('email_givenday');
-    $view->setArguments([date('Y-m-d')]);
-
+    $view->setArguments([$date]);
     $view->execute();
     $args = $view->args;
-    \Drupal::logger('content changed digest')->info("\$args = <pre>".print_r($args, true)."</pre>");
     $el = $view->render();
     $render_view = \Drupal::service('renderer')->render($el);
-    \Drupal::logger('content changed digest')->info("<pre>".htmlspecialchars($render_view)."</pre>");
     $output[] = "<h3>Changed content</h3>" . $render_view;
   }
 
   $view2 = Views::getView('content_recent');
   if (is_object($view2)) {
     $view2->setDisplay('email_givenday');
-    $view2->setArguments([date('Y-m-d')]);
+    $view2->setArguments([$date]);
     $view2->execute();
     $el2 = $view2->render();
     $render_view2 = \Drupal::service('renderer')->render($el2);
@@ -223,10 +229,13 @@ function content_change_digest_preprocess_views_view(&$variables) {
   $view = $variables['view'];
   $id = $view->storage
     ->id();
-  if ($id == 'differences' || $id == 'content_recent') {
-    \Drupal::logger('content_change_digest')->info('view id ' . $id);
-    $day = date('Y-m-d');
-    $site_url = \Drupal::request()->getSchemeAndHttpHost();
+  $day = date('Y-m-d');
+  $site_url = \Drupal::request()->getSchemeAndHttpHost();
+  // This variable is only rendered for the email display mode for the view.
+  // Because of this, each email is coded with the day that it was run.
+  if ($id == 'differences') {
     $variables['content_change_digest_url'] = $site_url . '/differences/day/' . $day;
+  } elseif ($id == 'content_recent') {
+    $variables['content_change_digest_url'] = $site_url . '/newcontent/day/' . $day;
   }
 }
