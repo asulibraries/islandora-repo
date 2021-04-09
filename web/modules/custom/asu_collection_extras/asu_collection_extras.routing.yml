@@ -1,0 +1,9 @@
+
+asu_collection_extras.glossary_controller_getglossary:
+  path: '/collections/{letter}'
+  defaults:
+    _controller: '\Drupal\asu_collection_extras\Controller\GlossaryController::getglossary'
+    _title: 'getglossary'
+  requirements:
+    _permission: 'access content'
+    letter: '[a-zA-Z]'
