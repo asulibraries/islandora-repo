@@ -1242,7 +1242,7 @@ display:
     position: 1
     display_options:
       display_extenders: {  }
-      path: collections/glossary/%
+      path: collections/%
       menu:
         type: normal
         title: 'Browse Collections'
@@ -1971,9 +1971,13 @@ display:
             format: default_summary
           specify_validation: true
           validate:
-            type: none
+            type: 'entity:field_config'
             fail: 'not found'
-          validate_options: {  }
+          validate_options:
+            operation: view
+            multiple: 0
+            access: false
+            bundles: {  }
           glossary: true
           limit: 1
           case: upper
