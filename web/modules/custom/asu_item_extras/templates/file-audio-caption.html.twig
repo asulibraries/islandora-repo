@@ -17,12 +17,16 @@
 */
 #}
 <video controls width="100%" poster="https://prism.lib.asu.edu/modules/custom/asu_header/images/arizona-state-university-logo-vertical.png">
-  {% for file in files %}
-    <source {{ file.source_attributes }} crossorigin="anonymous" />
-  {% endfor %}
-  {% if caption %}
-    <track src="{{ caption }}" kind="captions" crossorigin="anonymous">
-  {% endif %}
-Your browser does not support the audio tag. Please <a href="{{path("entity.webform.canonical",  {"webform": "feedback"})}}">
-report this issue</a> with your browser information so we can improve our platform.
+{% for file in files %}
+	<source {{ file.source_attributes }} crossorigin="anonymous"/>
+{% endfor %}
+{% if caption %}
+	<track src="{{ caption }}" kind="captions" crossorigin="anonymous">
+	{% endif %}
+	Your browser does not support the video tag. Please
+	<a href="{{path("entity.webform.canonical", {"webform": "feedback"})}}">
+		report this issue</a>
+	with your browser information so we can improve our platform.
 </video>
+
+
