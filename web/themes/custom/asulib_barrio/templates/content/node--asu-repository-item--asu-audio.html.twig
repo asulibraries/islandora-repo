@@ -100,10 +100,10 @@
   </header>
   <div{{content_attributes.addClass('node__content','clearfix','container')}}>
     <div class="row">
-      <div class="col-md-5 file-container">
+      <div class="col-md-12 file-container">
         {{ drupal_view('video_media_evas', 'original_file', node.id) }}
       </div>
-      <div class="col-md-7 info-container">
+      <div class="col-md-12 info-container">
         <div>{{ content.field_rich_description }}</div>
         <div class="row">
           <div class="col-md-6">{{ content.field_copyright_statement }}</div>
