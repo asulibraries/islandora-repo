@@ -21,7 +21,7 @@
     <source {{ file.source_attributes }} crossorigin="anonymous" />
   {% endfor %}
   {% if caption %}
-    <track src="{{ caption }}" kind="subtitles" crossorigin="anonymous">
+    <track src="{{ caption }}" kind="captions" crossorigin="anonymous">
   {% endif %}
 Your browser does not support the audio tag. Please <a href="{{path("entity.webform.canonical",  {"webform": "feedback"})}}">
 report this issue</a> with your browser information so we can improve our platform.
