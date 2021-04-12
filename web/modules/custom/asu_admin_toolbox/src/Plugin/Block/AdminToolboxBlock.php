@@ -5,7 +5,6 @@ namespace Drupal\asu_admin_toolbox\Plugin\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Url;
-use Drupal\user\Entity\User;
 use Drupal\Core\Link;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -143,8 +142,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
     $is_collection = ($node->bundle() == 'collection');
     $is_complex_object = FALSE;
     $is_asu_repository_item = ($node->bundle() == 'asu_repository_item');
-    $user = User::load(\Drupal::currentUser()->id());
-    $user_roles = $user->getRoles();
+    $user_roles = $this->currentUser->getRoles();
     $user_is_admin_or_metadata_manager = (in_array("administrator", $user_roles) || in_array("metadata_manager", $user_roles));
     if ($is_asu_repository_item) {
       $field_model_tid = $node->get('field_model')->getString();
@@ -213,7 +211,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
       $output_links[] = render($link) . " &nbsp;" . render($link_glyph);
     }
 
-    if ($user_is_admin_or_metadata_manager && ($is_collection || ($is_asu_repository_item && !($is_complex_object)))) {
+    if ($user_is_admin_or_metadata_manager && ($is_collection || $is_asu_repository_item)) {
       $route_part = ($is_collection) ? 'collections' : 'items';
       $url = Url::fromUri(
             $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .

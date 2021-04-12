@@ -8,6 +8,8 @@ use Drupal\migrate\MigrateSkipProcessException;
 use Drupal\migrate\Row;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Create new paragraph.
@@ -41,7 +43,39 @@ use Drupal\paragraphs\Entity\Paragraph;
  *      type: taxonomy_term
  *      lookup_field: field_identifier_predicate
  */
-class ParagraphGenerate extends ProcessPluginBase {
+class ParagraphGenerate extends ProcessPluginBase implements ContainerFactoryPluginInterface {
+
+  /**
+   * The entityTypeManager definition.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManager
+   */
+  protected $entityTypeManager;
+
+  /**
+   * Constructs a ParagraphGenerate object.
+   *
+   * @param Drupal\Core\Entity\EntityTypeManager $entityTypeManager
+   *   A drupal entity type manager object.
+   */
+  public function __construct(
+      array $configuration,
+      $plugin_id,
+      $plugin_definition,
+      EntityTypeManager $entityTypeManager
+    ) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->entityTypeManager = $entityTypeManager;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $container->get('entity_type.manager'),
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -108,7 +142,7 @@ class ParagraphGenerate extends ProcessPluginBase {
     if (!empty($value) && !empty($field)) {
       $properties[$field] = $value;
     }
-    $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties($properties);
+    $terms = $this->entityTypeManager->getStorage('taxonomy_term')->loadByProperties($properties);
     $term = reset($terms);
     return !empty($term) ? $term->id() : 0;
   }

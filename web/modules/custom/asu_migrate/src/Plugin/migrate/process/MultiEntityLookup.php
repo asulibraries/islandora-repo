@@ -8,6 +8,8 @@ use Drupal\migrate\MigrateSkipProcessException;
 use Drupal\migrate\Row;
 use Drupal\migrate_plus\Plugin\migrate\process\EntityLookup;
 use Drupal\taxonomy\Entity\Term;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Check if term exists and create new if doesn't.
@@ -24,7 +26,40 @@ use Drupal\taxonomy\Entity\Term;
  *        - Collection Title
  *      entity_type: node
  */
-class MultiEntityLookup extends EntityLookup {
+class MultiEntityLookup extends EntityLookup implements ContainerFactoryPluginInterface {
+
+  /**
+   * The entityTypeManager definition.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManager
+   */
+  protected $entityTypeManager;
+
+  /**
+   * Constructs a MultiEntityLookup object.
+   *
+   * @param Drupal\Core\Entity\EntityTypeManager $entityTypeManager
+   *   A drupal entity type manager object.
+   */
+  public function __construct(
+      array $configuration,
+      $plugin_id,
+      $plugin_definition,
+      EntityTypeManager $entityTypeManager
+    ) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->entityTypeManager = $entityTypeManager;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $container->get('entity_type.manager'),
+    );
+  }
+
   /** @inheritdoc */
   public function transform($arr, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
     $item_parent = $arr[0];
@@ -33,11 +68,11 @@ class MultiEntityLookup extends EntityLookup {
     }
     if ($item_parent) {
       if (array_key_exists('lookup_field', $this->configuration)) {
-        $par = \Drupal::entityTypeManager()->getStorage('node')->loadByProperties([$this->configuration['lookup_field'] => $item_parent]);
+        $par = $this->entityTypeManager->getStorage('node')->loadByProperties([$this->configuration['lookup_field'] => $item_parent]);
       }
       else {
         // default is the pid field
-        $par = \Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['field_pid' => $item_parent]);
+        $par = $this->entityTypeManager->getStorage('node')->loadByProperties(['field_pid' => $item_parent]);
       }
       $par = array_keys($par)[0];
     }
