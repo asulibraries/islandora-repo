@@ -136,7 +136,7 @@ class ASUItemIIIF extends BlockBase implements ContainerFactoryPluginInterface {
             'input-box' => [
               '#type' => 'textfield',
               '#id' => 'iiif_editbox' . $id_suffix,
-              '#value' => $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . $url->toString() . '/manifest',
+              '#value' => str_replace('/items', '/node', $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . $url->toString()) . '/manifest',
             ],
             '#prefix' => '<div class="col-md-6 offset-md-1"><p>We support the <a href="https://iiif.io/technical-details/" target="_blank">IIIF</a> Presentation API</p><div class="row no-gutters"><div class="col-9">',
             '#suffix' => '<!-- Unnamed (Rectangle) -->

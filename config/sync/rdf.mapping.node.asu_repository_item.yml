@@ -63,22 +63,14 @@ fieldMappings:
     properties:
       - 'mods:frequency'
       - 'rdau:P60538'
-  field_resource_type:
-    properties:
-      - 'dcterms:type'
-      - 'mods:genre'
-    datatype_callback:
-      callable: 'Drupal\jsonld\EntityReferenceConverter::linkFieldPassthrough'
-      arguments:
-        link_field: 'field_external_authority_link'
   field_genre:
     properties:
       - 'dcterms:type'
       - 'mods:genre'
-    datatype_callback:
-      callable: 'Drupal\jsonld\EntityReferenceConverter::linkFieldPassthrough'
-      arguments:
-        link_field: field_authority_link
+  field_resource_type:
+    properties:
+      - 'dcterms:type'
+      - 'mods:genre'
   field_statement_responsibility:
     properties:
       - 'mods:statementOfResponsibility'
@@ -196,7 +188,6 @@ fieldMappings:
         - published
   field_peer_reviewed:
     properties:
-      - 'dcterms:type'
       - 'mods:genre'
     datatype_callback:
       callable: 'Drupal\asu_custom_rdf\ParseBoolean::touri'

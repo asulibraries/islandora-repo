@@ -300,6 +300,18 @@ process:
       value_key: title
       lookup_field: field_pid
 
+  field_embargo_release_date:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: Embargo Date
+    -
+      plugin: format_date
+      from_format: 'Y-m-d'
+      to_format: 'Y-m-d\TH:i:s'
+      from_timezone: 'America/Phoenix'
+      to_timezone: 'America/Phoenix'
+
   field_subject:
     -
       plugin: skip_on_empty

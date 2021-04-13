@@ -296,3 +296,23 @@
         height: auto;
     }
 }
+
+
+.view-reorder-children {
+    .views-form {
+        width: 100%;
+    }
+}
+.view-manage-members {
+    .form-no-label > label {
+        display: none;
+    }
+}
+
+.views-manage-members, .views-reorder-children {
+   .js-form-type-checkbox input[type="checkbox"], .js-form-type-radio input[type="radio"] {
+    padding-top: 0;
+    opacity: 1;
+    margin-top: 0;
+  }
+}

@@ -57,6 +57,24 @@ class AsuLibFooter extends BlockBase {
               <div class="card card-foldable desktop-disable-xl">
                 <div class="card-header">
                   <h5>
+                    <a id="footlink-header-two" data-toggle="collapse" href="#footlink-two" role="button" aria-expanded="false" aria-controls="footlink-two">Repository Services
+                      <i class="fas fa-chevron-up"></i>
+                    </a>
+                  </h5>
+                </div>
+                <div id="footlink-two" class="collapse card-body show" aria-labelledby="footlink-header-two">
+                  <a class="nav-link" href="https://repository.lib.asu.edu" title="Repository Services Home">Home</a>
+                  <a class="nav-link" href="https://keep.lib.asu.edu" title="KEEP">KEEP</a>
+                  <a class="nav-link" href="https://prism.lib.asu.edu" title="PRISM">PRISM</a>
+                  <a class="nav-link" href="https://dataverse.asu.edu" title="Dataverse">Dataverse</a>
+                </div>
+              </div>
+            </div>
+
+            <div class="col-xl flex-footer">
+              <div class="card card-foldable desktop-disable-xl">
+                <div class="card-header">
+                  <h5>
                     <a id="footlink-header-two" data-toggle="collapse" href="#footlink-two" role="button" aria-expanded="false" aria-controls="footlink-two">Resources
                       <i class="fas fa-chevron-up"></i>
                     </a>

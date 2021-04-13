@@ -18,9 +18,9 @@
 */
 #}
 {% if poster %}
-  <video controls="controls" width="100%" poster="{{ poster }}" crossorigin="anonymous">
+  <video controls width="100%" poster="{{ poster }}" crossorigin="anonymous">
 {% else %}
-  <video controls="controls" width="100%" crossorigin="anonymous">
+  <video controls width="100%" crossorigin="anonymous">
 {% endif %}
   {% for file in files %}
     <source {{ file.source_attributes }} crossorigin="anonymous" />

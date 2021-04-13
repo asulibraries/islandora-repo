@@ -46,7 +46,7 @@ function asu_collection_extras_get_collection_children($collection_node, $sort_b
 
 /**
  * This is also used by the blocks in this module to get collection items.
- * 
+ *
  * The main difference between this and asu_collection_extras_get_collection_children
  * is that this will get all children in one go without having to recursively
  * call thanks to the ancestors field.
@@ -60,7 +60,7 @@ function asu_collection_extras_get_collection_children($collection_node, $sort_b
  *   block that only displays only 4 items)
  *
  * @return array
- *   Multidimensional array that contains the nid, changed, and 
+ *   Multidimensional array that contains the nid, changed, and
  * original_file_count for each child of the collection. The key of the top
  * array is the nid. This array should be sorted by the changed timestamps
  * so that the first element's changed value would be the most recent.
@@ -73,27 +73,30 @@ function asu_collection_extras_solr_get_collection_children($collection_node) {
     $server = $index->getServerInstance();
     $backend = $server->getBackend();
     $solrConnector = $backend->getSolrConnector();
-
     $solariumQuery = $solrConnector->getSelectQuery();
+    $count = 0;
+    while(TRUE) {
+      $solariumQuery->setStart($count)->setRows(50000);
+      $solariumQuery->addParam('q', '(itm_field_ancestors:' . $collection_node_id .
+        ' OR itm_field_combined_member_of:' . $collection_node_id . ')');
+      $solariumQuery->setFields(['its_nid', 'ds_changed', 'ss_original_file_count', 'itm_field_model']);
+      $solariumQuery->addSort('ds_changed', 'desc');
 
-
-    // @todo Fix this so it loops through a reasonable amount of records
-    // instead of setting a dangerously high value.
-    $solariumQuery->setRows(2147483630);
-    $solariumQuery->addParam('q', '(itm_field_ancestors:' . $collection_node_id .
-      ' OR itm_field_combined_member_of:' . $collection_node_id . ')');
-    $solariumQuery->setFields(['its_nid', 'ds_changed', 'ss_original_file_count', 'itm_field_model']);
-    $solariumQuery->addSort('ds_changed', 'desc');
-
-    $nids = $solrConnector->execute($solariumQuery);
-    foreach ($nids as $nid_doc) {
-      $nids_arr[$nid_doc->its_nid] = [
-        'changed' => $nid_doc->ds_changed,
-        'original_file_count' => $nid_doc->ss_original_file_count,
-        'field_model' => (!is_null($nid_doc->itm_field_model) && array_key_exists(0, $nid_doc->itm_field_model)) ?
-          $nid_doc->itm_field_model[0] : 0
-      ]; 
+      $nids = $solrConnector->execute($solariumQuery);
+      foreach ($nids as $nid_doc) {
+        $nids_arr[$nid_doc->its_nid] = [
+          'changed' => $nid_doc->ds_changed,
+          'original_file_count' => $nid_doc->ss_original_file_count,
+          'field_model' => (!is_null($nid_doc->itm_field_model) && array_key_exists(0, $nid_doc->itm_field_model)) ?
+            $nid_doc->itm_field_model[0] : 0
+        ];
+      }
+      $count = $count + $nids->count();
+      if ($nids->getNumFound() <= $count) {
+        break;
+      }
     }
+
   }
   return $nids_arr;
 }
@@ -104,7 +107,7 @@ function asu_collection_extras_solr_get_collection_children($collection_node) {
  * 1. compose requests to the Matomo service to get views and downloads.
  * 2. parse the response.
  * 3. delete and insert the record for this collection, views, downloads.
- * 
+ *
  * @param int $collection_nid
  *   The collection node id() value.
  */
@@ -117,6 +120,7 @@ function asu_collection_extras_doCollectionSummary($collection_nid) {
   `nid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'The item \"node\".nid this record affects.',
   `views` int(11) NOT NULL DEFAULT '0' COMMENT 'View total for all objects in the collection.',
   `downloads` int(11) NOT NULL DEFAULT '0' COMMENT 'Download total for all objects in the collection.',
+  `modified` int(11) NOT NULL DEFAULT '0' COMMENT 'Timestamp for when the record is updated',
   PRIMARY KEY (`collection_nid`,`nid`),
   KEY `downloads` (`downloads`),
   KEY `collection_nid` (`collection_nid`)
@@ -147,10 +151,10 @@ function asu_collection_extras_doCollectionSummary($collection_nid) {
       $connection
         ->insert('asu_collection_extras_item_downloads')
         ->fields([
-          'collection_nid', 'nid', 'views', 'downloads'
+          'collection_nid', 'nid', 'views', 'downloads', 'modified'
         ])
         ->values([
-          $collection_nid, $child_nid, $item_views, $item_downloads
+          $collection_nid, $child_nid, $item_views, $item_downloads, time()
         ])
         ->execute();
     }
@@ -165,10 +169,10 @@ function asu_collection_extras_doCollectionSummary($collection_nid) {
   $connection
     ->insert('asu_collection_extras_collection_usage')
     ->fields([
-      'nid', 'views', 'downloads'
+      'nid', 'views', 'downloads', 'modified'
     ])
     ->values([
-      $collection_nid, $collection_views, $collection_downloads
+      $collection_nid, $collection_views, $collection_downloads, time()
     ])
     ->execute();
 }

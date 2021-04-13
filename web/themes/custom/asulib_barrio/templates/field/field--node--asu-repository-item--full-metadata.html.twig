@@ -59,6 +59,9 @@
     'field_geographic_subject') or (field_name == 'field_subjects_name') or (field_name == 'field_temporal_subject') or
     (field_name == 'field_title_subject') or (field_name == 'field_source') %}
     {% if not label_hidden %}
+      {% if label == "Agent" %}
+        {% set label = "Contributors" %}
+      {% endif %}
       <div{{ title_attributes.addClass(title_classes, label_col) }}>{{ label }}</div>
     {% endif %}
     <ul class="inline-list field__items {{ item_col }}">

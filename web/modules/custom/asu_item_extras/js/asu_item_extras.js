@@ -47,6 +47,16 @@ Drupal.behaviors.asu_item_extras = {
       }
       return;
     });
+
+    var video = document.getElementsByTagName('video')[0];
+    if (video) {
+      var tracks = video.textTracks; // returns a TextTrackList
+      if (tracks) {
+        var track = tracks[0]; // returns TextTrack
+        track.activeCues[0].line = 1;
+        track.activeCues[0].align = "start";
+      }
+    }
   }
 };
 

@@ -13,6 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Drupal\group\GroupMembershipLoaderInterface;
 use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\Core\Site\Settings;
 
 /**
  * Provides an 'Admin toolbox' Block.
@@ -139,6 +140,13 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
     // either "Repository Item", "ASU Repository Item", or "Collection",
     // the underlying node can be accessed via the path.
     $node = $this->routeMatch->getParameter('node');
+    if (!is_object($node)) {
+      $nid = $this->routeMatch->getParameter('arg_0');
+      $node = $this->entityTypeManager->getStorage('node')->load($nid);
+      if (!is_object($node)) {
+        return;
+      }
+    }
     $is_collection = ($node->bundle() == 'collection');
     $is_complex_object = FALSE;
     $is_asu_repository_item = ($node->bundle() == 'asu_repository_item');
@@ -199,6 +207,10 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
         $link_glyph = Link::fromTextAndUrl($this->t('<i class="fas fa-chart-bar"></i>'), $url)->toRenderable();
         $output_links[] = render($link) . " &nbsp;" . render($link_glyph);
       }
+      if ($node->hasField('field_model') && $node->get('field_model')->entity != NULL
+      ) {
+        $output_links[] = "<div class='field--label-inline'><div class='field__label'>Model</div>: " . $node->get('field_model')->entity->getName() . "</div>";
+      }
     }
     if (!($is_complex_object) && (!$is_collection)) {
       $url = Url::fromUri(
@@ -221,6 +233,37 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
       $link = $link->toRenderable();
       $link_glyph = Link::fromTextAndUrl($this->t("<i class='fas fa-file-export'></i>"), $url)->toRenderable();
       $output_links[] = render($link) . " &nbsp;" . render($link_glyph);
+    }
+    if ($user_is_admin_or_metadata_manager && $is_asu_repository_item) {
+      // Legacy item link... look up the node's field_pid value and if the
+      // first character is not an "a"
+      // If both of these are true, then the link would be to:
+      // repository.asu.edu/items/{node.field_pid}
+      $field_pid = $node->get('field_pid')->getString();
+      if ($field_pid && (strtolower(substr($field_pid, 0, 1)) <> "a")) {
+        $legacy_uri = "https://repository.asu.edu/items/" . $field_pid;
+        $url = Url::fromUri($legacy_uri, ['attributes' => ['target' => '_blank', 'rel' => 'noopener']]);
+        $link = Link::fromTextAndUrl($this->t('Legacy URI<span class="visually-hidden">, opens in a new window</span>'), $url);
+        $link_glyph = Link::fromTextAndUrl($this->t('<span class="visually-hidden">Legacy URI, opens in a new window</span><i class="fas fa-external-link-alt"></i>'), $url);
+        $link = $link->toRenderable();
+        $link_glyph = $link_glyph->toRenderable();
+        $output_links[] = render($link) . ' &nbsp;' . render($link_glyph);
+      }
+    }
+    if (in_array('administrator', $this->currentUser->getRoles())) {
+      $mapper = \Drupal::service('islandora.entity_mapper');
+      $flysystem_config = Settings::get('flysystem');
+      $fedora_root = $flysystem_config['fedora']['config']['root'];
+      $fedora_root = rtrim($fedora_root, '/');
+      $path = $mapper->getFedoraPath($node->uuid());
+      $path = trim($path, '/');
+      $fedora_uri = "$fedora_root/$path";
+      $url = Url::fromUri($fedora_uri, ['attributes' => ['target' => '_blank', 'rel' => 'noopener']]);
+      $link = Link::fromTextAndUrl($this->t('Fedora URI<span class="visually-hidden">, opens in a new window</span>'), $url);
+      $link = $link->toRenderable();
+      $link_glyph = Link::fromTextAndUrl($this->t('<span class="visually-hidden">Fedora URI, opens in a new window</span><i class="fas fa-external-link-alt"></i>'), $url);
+      $link_glyph = $link_glyph->toRenderable();
+      $output_links[] = render($link) . ' &nbsp;' . render($link_glyph);
     }
     return [
       '#markup' => (count($output_links) > 0) ?
