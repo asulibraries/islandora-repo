@@ -35,8 +35,8 @@ class TaxonomyWithURIFormatter extends EntityReferenceLabelFormatter {
   //   * {@inheritdoc}
   //   */
   //  public function settingsForm(array $form, FormStateInterface $form_state) {
-  //    $default_value = $this->getSetting('uri_field_name') ? 
-  //      $this->getSetting('uri_field_name') : 'field_authority_link'; 
+  //    $default_value = $this->getSetting('uri_field_name') ?
+  //      $this->getSetting('uri_field_name') : 'field_authority_link';
   //    $element['uri_field_name'] = [
   //      '#title' => t('URI field name'),
   //      '#type' => 'select',
@@ -71,11 +71,11 @@ class TaxonomyWithURIFormatter extends EntityReferenceLabelFormatter {
     $elements = parent::viewElements($items, $langcode);
     foreach ($items as $delta => $item) {
       $taxo_term = $item->entity;
-      $authority_link = ($taxo_term->hasField($uri_field_name) ? $taxo_term->get($uri_field_name) : NULL);
+      $authority_link = ($taxo_term && $taxo_term->hasField($uri_field_name) ? $taxo_term->get($uri_field_name) : NULL);
       if (is_object($authority_link)) {
         $authority_field_uri = $authority_link->uri;
         $term_name = $taxo_term->getName();
-        $elements[$delta]['#plain_text'] = $term_name . 
+        $elements[$delta]['#plain_text'] = $term_name .
           (($authority_field_uri) ?  "|" . $authority_field_uri : "");
       }
     }

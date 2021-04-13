@@ -51,7 +51,7 @@ class InstitutionFromCollection extends ProcessorPluginBase {
     $node = $item->getOriginalObject()->getValue();
     if ($node->hasField('field_member_of') && $node->field_member_of->entity) {
       $parent = $this->getParentCollection($node, 3, 0);
-      if ($parent->hasField('field_collaborating_institutions') && !$parent->get('field_collaborating_institutions')->isEmpty()) {
+      if ($parent && $parent->hasField('field_collaborating_institutions') && !$parent->get('field_collaborating_institutions')->isEmpty()) {
         $insts = $parent->get('field_collaborating_institutions')->referencedEntities();
         foreach ($insts as $element) {
           $fields = $item->getFields(FALSE);
@@ -86,7 +86,7 @@ class InstitutionFromCollection extends ProcessorPluginBase {
     $parent_object = $node->field_member_of->entity;
     // If the parent object is just an asu_repository_item, then the parent
     // is a Complex Object.
-    if ($parent_object->bundle() == "asu_repository_item") {
+    if ($parent_object && $parent_object->bundle() == "asu_repository_item") {
       $depth++;
       $parent_collection = $this->getParentCollection($parent_object, $max_depth, $depth);
     }
