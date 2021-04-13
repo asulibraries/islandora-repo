@@ -443,7 +443,12 @@ function asu_permissions_user_insert(UserInterface $entity) {
     }
   }
   catch (ClientException $e) {
-    throw new LibauthException('There was an issue validating user ' . $entity->getDisplayName() . ' at ASU due to a client exception. If you think this is an error, <a href="/contact">please contact us</a>.');
+    if ($request->getStatusCode() == 404) {
+      throw new LibauthException('Unable to find user ' . $entity->getDisplayName() . ' at ASU. If you think this is an error, <a href="/contact">please contact us</a>.');
+
+    } else {
+        throw new LibauthException('There was an issue validating user ' . $entity->getDisplayName() . ' at ASU due to a client exception. If you think this is an error, <a href="/contact">please contact us</a>.');
+    }
   }
   catch (ConnectException $e) {
     throw new LibauthException('There was an issue validating user ' . $entity->getDisplayName() . ' at ASU due to a connection exception. If you think this is an error, <a href="/contact">please contact us</a>.');
