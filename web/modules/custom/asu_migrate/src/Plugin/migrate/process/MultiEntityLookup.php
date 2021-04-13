@@ -2,14 +2,15 @@
 
 namespace Drupal\asu_migrate\Plugin\migrate\process;
 
-use Drupal\migrate\ProcessPluginBase;
 use Drupal\migrate\MigrateExecutableInterface;
 use Drupal\migrate\MigrateSkipProcessException;
 use Drupal\migrate\Row;
+use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate_plus\Plugin\migrate\process\EntityLookup;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\Entity\EntityTypeManager;
 
 /**
  * Check if term exists and create new if doesn't.
@@ -40,23 +41,30 @@ class MultiEntityLookup extends EntityLookup implements ContainerFactoryPluginIn
    *
    * @param Drupal\Core\Entity\EntityTypeManager $entityTypeManager
    *   A drupal entity type manager object.
+   * @param Drupal\migrate\Plugin\MigrationInterface $migration
+   *   The migration object.
    */
   public function __construct(
       array $configuration,
       $plugin_id,
       $plugin_definition,
-      EntityTypeManager $entityTypeManager
+      EntityTypeManager $entityTypeManager,
+      MigrationInterface $migration
     ) {
-    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $migration);
     $this->entityTypeManager = $entityTypeManager;
   }
 
   /**
-   * {@inheritdoc}
+   * TODO: write the comment correctly.
    */
-  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+  public static function create(ContainerInterface $container, array $configuration, $pluginId, $pluginDefinition, MigrationInterface $migration = NULL) {
     return new static(
+      $configuration,
+      $pluginId,
+      $pluginDefinition,
       $container->get('entity_type.manager'),
+      $migration
     );
   }
 

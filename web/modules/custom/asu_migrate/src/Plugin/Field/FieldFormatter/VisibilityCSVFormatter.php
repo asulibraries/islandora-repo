@@ -6,6 +6,8 @@ use Drupal\Core\Field\Plugin\Field\FieldFormatter\IntegerFormatter;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\Entity\EntityTypeManager;
+
 
 /**
  * Plugin implementation of the 'VisibilityCSVFormatter'.
@@ -48,7 +50,10 @@ class VisibilityCSVFormatter extends IntegerFormatter implements ContainerFactor
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     return new static(
-      $container->get('entity_type.manager'),
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('entity_type.manager')
     );
   }
 

@@ -9,6 +9,7 @@ use Drupal\migrate\Row;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\Entity\EntityTypeManager;
 
 /**
  * Check if term exists and create new if doesn't.
@@ -49,7 +50,10 @@ class NameURILookup extends ProcessPluginBase implements ContainerFactoryPluginI
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     return new static(
-      $container->get('entity_type.manager'),
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('entity_type.manager')
     );
   }
 
