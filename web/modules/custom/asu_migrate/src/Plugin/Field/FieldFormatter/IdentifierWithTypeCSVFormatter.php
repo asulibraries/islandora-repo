@@ -26,9 +26,8 @@ class IdentifierWithTypeCSVFormatter extends EntityReferenceLabelFormatter {
     foreach ($items as $delta => $item) {
       $paragraph = $item->entity;
       $identifier_text = $paragraph->field_identifier_value->value . '';
-      $identifier_predicate = $paragraph->field_identifier_type->field_identifier_predicate->value . '';
       $identifier_type_term = $paragraph->field_identifier_type->referencedEntities();
-      $identifier_predicate = (is_array($identifier_type_term) && 
+      $identifier_predicate = (is_array($identifier_type_term) &&
         array_key_exists(0, $identifier_type_term) &&
         $identifier_type_term[0]->hasField('field_identifier_predicate')) ?
         $identifier_type_term[0]->get('field_identifier_predicate')->value : NULL;
