@@ -52,7 +52,15 @@ function content_change_digest_theme($existing, $type, $theme, $path) {
       'render element' => 'elements',
       'base hook' => 'view'
     ],
-    'views_view__differences' => [
+    'views_view__differences__givenday' => [
+      'render element' => 'elements',
+      'base hook' => 'view'
+    ],
+    'views_view__content-recent__email_newcontent1day' => [
+      'render element' => 'elements',
+      'base hook' => 'view'
+    ],
+    'views_view__differences__email_givenday' => [
       'render element' => 'elements',
       'base hook' => 'view'
     ]
@@ -125,12 +133,6 @@ function content_change_digest_get_recipients() {
     }
   }
 
-  // \Drupal::logger('content_change_digest')
-    // ->notice('roles = ' . print_r($config_roles, true));
-  // \Drupal::logger('content_change_digest')
-    // ->notice('users = ' . print_r($config_users_ids, true));
-  // \Drupal::logger('content_change_digest')
-    // ->notice('userlist = ' . print_r($userlist, true));
   foreach ($userlist as $user_id => $user_name) {
     // loading the users must be with the Entity user load method such as
     $temp_account = \Drupal\user\Entity\User::load($user_id);
@@ -145,28 +147,25 @@ function content_change_digest_get_recipients() {
 function content_change_digest_get_view_html() {
   // fetch the html for the view.
   $output = [];
+  $date = date('Y-m-d');
   $view = Views::getView('differences');
   if (is_object($view)) {
-    $view->setDisplay('page_2');
+    $view->setDisplay('email_givenday');
+    $view->setArguments([$date]);
     $view->execute();
+    $args = $view->args;
     $el = $view->render();
     $render_view = \Drupal::service('renderer')->render($el);
-//    \Drupal::logger('content_change_digest')
-//      ->notice('in content_change_digest_mail - created differences with "differences1day" display');
-//    \Drupal::logger('content_change_digest')
-//      ->notice($render_view);
     $output[] = "<h3>Changed content</h3>" . $render_view;
   }
 
   $view2 = Views::getView('content_recent');
   if (is_object($view2)) {
-    $view2->setDisplay('newcontent1day');
+    $view2->setDisplay('email_givenday');
+    $view2->setArguments([$date]);
     $view2->execute();
-    $render_view2 = \Drupal::service('renderer')->render($view2->render());
-//    \Drupal::logger('content_change_digest')
-//      ->notice('in content_change_digest_mail - created content_recent with "newcontent1day" display');
-//    \Drupal::logger('content_change_digest')
-//      ->notice($render_view2);
+    $el2 = $view2->render();
+    $render_view2 = \Drupal::service('renderer')->render($el2);
     $output[] = "<h3>New content</h3>" . $render_view2;
   }
   return $output;
@@ -223,4 +222,20 @@ function content_change_digest_should_hide_opt_out() {
     $show = array_key_exists($this_user_id, $config_users_ids);
   }
   return !$show;
+}
+
+function content_change_digest_preprocess_views_view(&$variables) {
+  // check that the content_change_digest view is being called.
+  $view = $variables['view'];
+  $id = $view->storage
+    ->id();
+  $day = date('Y-m-d');
+  $site_url = \Drupal::request()->getSchemeAndHttpHost();
+  // This variable is only rendered for the email display mode for the view.
+  // Because of this, each email is coded with the day that it was run.
+  if ($id == 'differences') {
+    $variables['content_change_digest_url'] = $site_url . '/differences/day/' . $day;
+  } elseif ($id == 'content_recent') {
+    $variables['content_change_digest_url'] = $site_url . '/newcontent/day/' . $day;
+  }
 }

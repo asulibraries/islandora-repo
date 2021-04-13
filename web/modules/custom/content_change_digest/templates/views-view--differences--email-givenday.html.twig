@@ -69,10 +69,12 @@
         default_row_class ? 'views-row',
       ] %}
       {% if (last_nid != view.style_plugin.getField(nested_row, 'nid')) %}
-      <br>
-      <div class="field_title">
-        <strong>Changes to {{ view.style_plugin.getField(nested_row, 'title') }}</strong>
-      </div>
+        <br>
+        {% if (view.style_plugin.getField(nested_row, 'nid')) %}
+        <div class="field_title">
+          <strong>Changes to {{ view.style_plugin.getField(nested_row, 'title') }}</strong>
+        </div>
+        {% endif %}
       {% endif %}
       <div class="field_changed-2">
         {{ view.style_plugin.getField(nested_row, 'revision_uid') }}
@@ -89,10 +91,10 @@
       {{ empty }}
     </div>
   {% endif %}
-
   {% if pager %}
-    {{ pager }}
+    <p><i>There are more items changed for the given day than allowed for the email view.</i></p>
   {% endif %}
+  <a href="{{ content_change_digest_url }}">View report online</a>
   {% if attachment_after %}
     <div class="attachment attachment-after">
       {{ attachment_after }}
