@@ -415,12 +415,19 @@ function asu_permissions_user_insert(UserInterface $entity) {
     if ($request->getStatusCode() == 200) {
       // if 200 and in headcount, proceed
       $json = json_decode($request->getBody(), TRUE);
-      // \Drupal::logger('asu permissions')->info(print_r($json, TRUE));
+      \Drupal::logger('asu permissions')->info(print_r($json, TRUE));
       if (array_key_exists('in_headcount', $json) && $json['in_headcount'] == TRUE) {
-        // \Drupal::logger('asu permissions')->info("proceed to creating user");
+        \Drupal::logger('asu permissions')->info("proceed to creating user");
         $fname = $json['person']['preferred_first_name'] != '' ? $json['person']['preferred_first_name'] : $json['person']['first_name'];
-        // $entity->set('');
-        // @TODO set the users first and last name - possible substitute for LDAP integration
+        $lname = $json['person']['preferred_last_name'] != '' ? $json['person']['preferred_last_name'] : $json['person']['last_name'];
+        $honors = $json['person']['honors'];
+        $entity->set('field_first_name', $fname);
+        $entity->set('field_last_name', $lname);
+        $entity->set('field_honors', $honors);
+        if ($honors) {
+          $entity->addRole('honors_student');
+        }
+        $entity->save();
       }
       else {
         throw new LibauthException('User is not authorized for electronic resources at ASU. If you think this is an error, <a href="/contact">please contact us</a>.');
