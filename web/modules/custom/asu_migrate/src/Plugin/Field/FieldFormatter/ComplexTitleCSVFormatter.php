@@ -1,4 +1,4 @@
-<?php //
+<?php
 
 namespace Drupal\asu_migrate\Plugin\Field\FieldFormatter;
 
@@ -16,7 +16,7 @@ use Drupal\Core\Field\FieldItemListInterface;
  *   }
  * )
  */
-class ComplexTitleCSVFormatter extends EntityReferenceLabelFormatter {
+class ComplexTitleCSVFormatter  extends EntityReferenceLabelFormatter {
 
   /**
    * {@inheritdoc}
@@ -24,15 +24,15 @@ class ComplexTitleCSVFormatter extends EntityReferenceLabelFormatter {
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = parent::viewElements($items, $langcode);
     foreach ($items as $delta => $item) {
-      $title_paragraph = $item->entity;
-
       $nonsort = $item->entity->field_nonsort->value . '';
       $main = $item->entity->field_main_title->value;
       $sub = $item->entity->field_subtitle->value . '';
       $nm = $nonsort . ":" .
         ($main != NULL ? $main : "[untitled]") . ":" .
         $sub;
-      $elements[$delta]['#plain_text'] = $nm;
+      \Drupal::logger('title formatter')->info($nm);
+      $elements[$delta]['#text'] = $nm;
+      $elements[$delta]['#type'] = 'processed_text';
     }
 
     return $elements;
