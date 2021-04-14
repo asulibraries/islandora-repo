@@ -21,7 +21,7 @@
 	<source {{ file.source_attributes }} crossorigin="anonymous"/>
 {% endfor %}
 {% if caption %}
-	<track src="{{ caption }}" kind="captions" crossorigin="anonymous">
+	<track src="{{ caption }}" kind="captions" crossorigin="anonymous" default>
 	{% endif %}
 	Your browser does not support the video tag. Please
 	<a href="{{path("entity.webform.canonical", {"webform": "feedback"})}}">
