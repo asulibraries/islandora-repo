@@ -6,18 +6,18 @@ dependencies:
     - views.view.solr_search_content
   module:
     - search_api
-id: linked_agents_col
-name: Creators
-url_alias: linked_agents
-weight: 0
+id: model_global
+name: Model
+url_alias: model
+weight: -1
 min_count: 1
 show_only_one_result: false
-field_identifier: field_linked_agent
-facet_source_id: 'search_api:views_page__solr_search_content__page_3'
+field_identifier: field_model
+facet_source_id: 'search_api:views_page__solr_search_content__page_1'
 widget:
   type: links
   config:
-    show_numbers: true
+    show_numbers: false
     soft_limit: 5
     soft_limit_settings:
       show_less_label: 'Show less'
@@ -39,7 +39,7 @@ processor_configs:
     weights:
       sort: 20
     settings:
-      sort: ASC
+      sort: DESC
   count_limit:
     processor_id: count_limit
     weights:
@@ -63,6 +63,11 @@ processor_configs:
     processor_id: hide_1_result_facet
     weights:
       build: 50
+    settings: {  }
+  translate_entity:
+    processor_id: translate_entity
+    weights:
+      build: 5
     settings: {  }
   url_processor_handler:
     processor_id: url_processor_handler

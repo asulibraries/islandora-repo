@@ -1,0 +1,51 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.model_global
+  module:
+    - context
+    - facets
+    - islandora
+    - system
+    - user
+  theme:
+    - asulib_barrio
+id: model
+theme: asulib_barrio
+region: sidebar_first
+weight: 0
+provider: null
+plugin: 'facet_block:model_global'
+settings:
+  id: 'facet_block:model_global'
+  label: Model
+  provider: facets
+  label_display: visible
+  block_id: model
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    pages: ''
+    negate: null
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    view_inclusion: {  }
+  media_source_mimetype:
+    id: media_source_mimetype
+    mimetype: ''
+    negate: false
+    context_mapping: {  }
+  request_path:
+    id: request_path
+    pages: '/search*'
+    negate: false
+  user_role:
+    id: user_role
+    roles:
+      administrator: administrator
+      repositor_manager: repositor_manager
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
