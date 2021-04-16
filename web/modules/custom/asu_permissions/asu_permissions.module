@@ -453,9 +453,18 @@ function asu_permissions_user_insert(UserInterface $entity) {
         $fname = $json['person']['preferred_first_name'] != '' ? $json['person']['preferred_first_name'] : $json['person']['first_name'];
         $lname = $json['person']['preferred_last_name'] != '' ? $json['person']['preferred_last_name'] : $json['person']['last_name'];
         $honors = $json['person']['honors'];
+        $emplid = $json['person']['emplid'];
+        $campus = $json['stuplan'][0]['campus'];
+        $schools = [];
+        foreach($json['stuplan'] as $plan) {
+          array_push($schools, $plan['acad_dept_org_descr']);
+        }
         $entity->set('field_first_name', $fname);
         $entity->set('field_last_name', $lname);
         $entity->set('field_honors', $honors);
+        $entity->set('field_emplid', $emplid);
+        $entity->set('field_campus', $campus);
+        $entity->set('field_programs', $schools);
         if ($honors) {
           $entity->addRole('honors_student');
         }
