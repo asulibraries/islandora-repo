@@ -101,6 +101,57 @@ function asu_collection_extras_solr_get_collection_children($collection_node) {
   return $nids_arr;
 }
 
+
+/**
+ * This will query Solr to get the item's values for the 
+ * itm_field_combined_member_of field.
+ *
+ * @param mixed $item_node
+ *   Can take a node object or the node ID value.
+ * @param bool $sort_by_date
+ *   (OPTIONAL) whether or not to sort by date, default is FALSE.
+ * @param int $limit
+ *   The number of results to return (to provide the recent additions for the
+ *   block that only displays only 4 items)
+ *
+ * @return array
+ *   Multidimensional array that contains the nid, changed, and
+ * original_file_count for each child of the collection. The key of the top
+ * array is the nid. This array should be sorted by the changed timestamps
+ * so that the first element's changed value would be the most recent.
+ */
+function asu_collection_extras_solr_get_node_membership($item_node) {
+  $item_node_id = (is_object($item_node) ? $item_node->id() : $item_node);
+  $nids_arr = [];
+  if (!is_null($item_node)) {
+    $index = Index::load('default_solr_index');
+    $server = $index->getServerInstance();
+    $backend = $server->getBackend();
+    $solrConnector = $backend->getSolrConnector();
+    $solariumQuery = $solrConnector->getSelectQuery();
+    $count = 0;
+    while(TRUE) {
+      $solariumQuery->setStart($count)->setRows(50000);
+      $solariumQuery->addParam('q', '(its_nid:' . $item_node_id . ')');
+      $solariumQuery->setFields(['its_nid', 'itm_field_combined_member_of']);
+      $solariumQuery->addSort('ds_changed', 'desc');
+
+      $nids = $solrConnector->execute($solariumQuery);
+      foreach ($nids as $nid_doc) {
+        $nids_arr[$nid_doc->its_nid] = [
+          'itm_field_combined_member_of' => $nid_doc->itm_field_combined_member_of,
+        ];
+      }
+      $count = $count + $nids->count();
+      if ($nids->getNumFound() <= $count) {
+        break;
+      }
+    }
+
+  }
+  return $nids_arr;
+}
+
 /**
  * This does the actual summary work for the given collection.
  *
@@ -111,7 +162,7 @@ function asu_collection_extras_solr_get_collection_children($collection_node) {
  * @param int $collection_nid
  *   The collection node id() value.
  */
-function asu_collection_extras_doCollectionSummary($collection_nid) {
+function asu_collection_extras_doCollectionSummary($collection_nid, $site_uri = '') {
   $connection = \Drupal::service('database');
   if (!$connection->schema()->tableExists('asu_collection_extras_collection_usage')) {
     \Drupal::logger('asu_collection_extras')->warning('asu_collection_extras_collection_usage table does not exist. Re-install asu_collection_extras module or run SQL:
@@ -130,35 +181,54 @@ function asu_collection_extras_doCollectionSummary($collection_nid) {
   // Seems that matomo is not tracking thumbnails at all, so the media query
   // in the loop will not reduce the media objects in the media query below
   // to those with field_media_use = "Original file".
+echo "\nStarting to gather collection " . $collection_nid . " children for processing...\n";
   $children = asu_collection_extras_solr_get_collection_children($collection_nid);
   $collection_views = $collection_downloads = 0;
-  foreach ($children as $child_nid => $child_arr) {
+  $unset_date_value = 0; // sets to January 1 1970 00:00:00 GMT)
+  $items_path = $site_uri . "/items";
+  $matomo_data = \Drupal::service('islandora_matomo.default')->getAllPages($items_path);
+echo "\n\$matomo_data = \n".print_r($matomo_data, true) . "\n";
+  // Loop through the $matomo_data array to populate the initial views count
+  // for these items. The downloads will be calculated on another of this table.
+  foreach ($matomo_data as $nid => $views) {
+    // Given the object $nid, we don't know the collection it is related to.
+    $item_membership = asu_collection_extras_solr_get_node_membership($nid);
+    echo "\n\$item_membership = \n<pre>".print_r($item_membership, true) . "</pre>";
     $item_views = $item_downloads = 0;
-    if ($child_nid) {
-      $item_views += \Drupal::service('islandora_matomo.default')->getViewsForNode($child_nid);
-      $mids = \Drupal::entityQuery('media')
-        ->condition('field_media_of', $child_nid)
-        ->execute();
-      foreach ($mids as $mid) {
-        $fid = \Drupal::service('islandora_matomo.default')->getFileFromMedia($mid);
-        $item_downloads += \Drupal::service('islandora_matomo.default')->getDownloadsForFile($fid);
-      }
-      $connection
-        ->delete('asu_collection_extras_item_downloads')
-        ->condition('collection_nid', $collection_nid)
-        ->condition('nid', $child_nid)
-        ->execute();
-      $connection
-        ->insert('asu_collection_extras_item_downloads')
-        ->fields([
-          'collection_nid', 'nid', 'views', 'downloads', 'modified'
-        ])
-        ->values([
-          $collection_nid, $child_nid, $item_views, $item_downloads, time()
-        ])
-        ->execute();
-    }
   }
+
+//  foreach ($children as $child_nid => $child_arr) {
+//    $item_views = $item_downloads = 0;
+//    if ($child_nid) {
+//      $item_views += \Drupal::service('islandora_matomo.default')->getViewsForNode($child_nid);
+//      $mids = \Drupal::entityQuery('media')
+//        ->condition('field_media_of', $child_nid)
+//        ->execute();
+//      foreach ($mids as $mid) {
+//        $fid = \Drupal::service('islandora_matomo.default')->getFileFromMedia($mid);
+//        $item_downloads += \Drupal::service('islandora_matomo.default')->getDownloadsForFile($fid);
+//      }
+//      $connection
+//        ->delete('asu_collection_extras_item_downloads')
+//        ->condition('collection_nid', $collection_nid)
+//        ->condition('nid', $child_nid)
+//        ->execute();
+//      $connection
+//        ->insert('asu_collection_extras_item_downloads')
+//        ->fields([
+//          'collection_nid', 'nid', 'views', 'downloads', 'modified'
+//        ])
+//        // Insert an "unset" modified value so that these may be processed in
+//        // a separate process.
+//        ->values([
+//          $collection_nid, $child_nid, $item_views, $item_downloads, $unset_date_value
+//        ])
+////        ->values([
+////          $collection_nid, $child_nid, $item_views, $item_downloads, time()
+////        ])
+//        ->execute();
+//    }
+//  }
   $collection_views += $item_views;
   $collection_downloads += $item_downloads;
 
@@ -171,9 +241,14 @@ function asu_collection_extras_doCollectionSummary($collection_nid) {
     ->fields([
       'nid', 'views', 'downloads', 'modified'
     ])
+    // Insert an "unset" modified value so that these may be processed in
+    // a separate process.
     ->values([
-      $collection_nid, $collection_views, $collection_downloads, time()
+      $collection_nid, $collection_views, $collection_downloads, $unset_date_value
     ])
+//    ->values([
+//      $collection_nid, $collection_views, $collection_downloads, time()
+//    ])
     ->execute();
 }
 
