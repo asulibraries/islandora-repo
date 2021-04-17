@@ -57,6 +57,16 @@ class SelfDepositSettings extends ConfigFormBase {
       '#default_value' => $config ? $this->entityTypeManager->getStorage('node')->load($config->get('collection_for_deposits')) : '',
     ];
 
+    $form['barrett_collection_for_deposits'] = [
+      '#type' => 'entity_autocomplete',
+      '#title' => $this->t('Barrett Collection for deposits'),
+      '#description' => $this->t('The Barrett collection for self deposits to get uploaded into.'),
+      '#target_type' => 'node',
+      '#selection_settings' => ['target_bundles' => ['collection']],
+      '#default_value' => $config ? $this->entityTypeManager->getStorage('node')->load($config->get('barrett_collection_for_deposits')) : '',
+    ];
+
+
     $form['audio_media_model'] = [
       '#type' => 'entity_autocomplete',
       '#title' => $this->t('Model for Audio Media'),
@@ -112,6 +122,7 @@ class SelfDepositSettings extends ConfigFormBase {
     parent::submitForm($form, $form_state);
     $this->config('self_deposit.selfdepositsettings')
       ->set('collection_for_deposits', $form_state->getValue('collection_for_deposits'))
+      ->set('barrett_collection_for_deposits', $form_state->getValue('barrett_collection_for_deposits'))
       ->set('audio_media_model', $form_state->getValue('audio_media_model'))
       ->set('image_media_model', $form_state->getValue('image_media_model'))
       ->set('video_media_model', $form_state->getValue('video_media_model'))
