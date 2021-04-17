@@ -4,13 +4,13 @@ dependencies:
     module:
       - asu_migrate
 
-id: c270_file
-label: Import Collection 270 Files
-migration_group: migrate_c270_csv
+id: c17_file
+label: Import Collection 17 Files
+migration_group: migrate_c17_csv
 
 source:
   plugin: csv
-  path: /var/www/html/drupal/web/modules/custom/asu_migrate/data/migration_data/att_file_270_v2.csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/data/migration_data/att_file_17_v2.csv
   delimiter: ','
 
   # 1 means you have a header row, 0 means you don't
@@ -25,7 +25,7 @@ source:
     # Islandora uses flysystem and stream wrappers to work with files.  What we're really saying here is
     # to put these files in Fedora in a 'csv_migration' folder.  It doesn't matter if the directory
     # doesn't exist yet, it will get created for you automatically.
-    destination_dir: 'fedora://c270'
+    destination_dir: 'fedora://c17'
 
     # Hard-code mime type to jpeg.  This could easily come from a column in the CSV if you have
     # different mimetypes.
