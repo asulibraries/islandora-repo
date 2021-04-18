@@ -4,13 +4,13 @@ dependencies:
     module:
       - asu_migrate
 
-id: c329_node
-label: Import Collection 329 from CSV
-migration_group: migrate_c329_csv
+id: c130_node
+label: Import Collection 130 from CSV
+migration_group: migrate_c130_csv
 
 source:
   plugin: csv
-  path: /var/www/html/drupal/web/modules/custom/asu_migrate/c329_merged_v3.csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/c130_merged_v2.csv
 
   # 1 means you have a header row, 0 means you don't
   header_row_count: 1
@@ -25,11 +25,11 @@ source:
     model: Digital Document
 
     # Everything gets created as admin
-    collection_title: "Bj Bud Memorial Archives"
+    collection_title: "Barrett, The Honors College Thesis/Creative Project Collection"
     pres_state: '558' # Not Preserved
     handle: "https://hdl.handle.net/2286/R.I."
     cataloging_standards: "asu1"
-    level_of_coding: "intermediate"
+    level_of_coding: "minimal"
 
 process:
   field_extent:

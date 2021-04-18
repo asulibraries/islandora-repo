@@ -4,13 +4,13 @@ dependencies:
     module:
       - asu_migrate
 
-id: c329_media
-label: Import Collection 329 Media from CSV
-migration_group: migrate_c329_csv
+id: c130_media
+label: Import Collection 130 Media from CSV
+migration_group: migrate_c130_csv
 
 source:
   plugin: csv
-  path: /var/www/html/drupal/web/modules/custom/asu_migrate/data/migration_data/att_file_329_v2.csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/data/migration_data/att_file_130_v2.csv
 
   # 1 means you have a header row, 0 means you don't
   header_row_count: 1
@@ -54,7 +54,7 @@ process:
       source: document id
     -
       plugin: migration_lookup
-      migration: c329_file
+      migration: c130_file
       no_stub: true
 
   field_media_image:
@@ -64,7 +64,7 @@ process:
       source: image id
     -
       plugin: migration_lookup
-      migration: c329_file
+      migration: c130_file
       no_stub: true
 
   field_media_video_file:
@@ -74,7 +74,7 @@ process:
       source: video id
     -
       plugin: migration_lookup
-      migration: c329_file
+      migration: c130_file
       no_stub: true
 
   field_media_audio_file:
@@ -84,7 +84,7 @@ process:
       source: audio id
     -
       plugin: migration_lookup
-      migration: c329_file
+      migration: c130_file
       no_stub: true
 
   field_media_file:
@@ -94,14 +94,14 @@ process:
       source: generic file id
     -
       plugin: migration_lookup
-      migration: c329_file
+      migration: c130_file
       no_stub: true
 
   # Lookup the migrated node in the node migration
   field_media_of:
     plugin: migration_lookup
     source: item id
-    migration: c329_node
+    migration: c130_node
     no_stub: true
 
   created:
@@ -135,6 +135,6 @@ destination:
 
 migration_dependencies:
   required:
-    - migrate_plus.migration.c329_file
-    - migrate_plus.migration.c329_node
+    - migrate_plus.migration.c130_file
+    - migrate_plus.migration.c130_node
   optional: {  }
