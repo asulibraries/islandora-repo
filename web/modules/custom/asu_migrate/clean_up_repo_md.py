@@ -156,6 +156,8 @@ def set_file_id(mime, media_type, file_id, field):
     print(file_id)
     if media_type == "image" and model == "Image" and field == "image":
         return file_id
+    elif media_type == "file" and model == "Image" and field == "binary":
+        return file_id
     elif (
         media_type == "document" and model == "Digital Document" and field == "document"
     ):
