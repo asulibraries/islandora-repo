@@ -26,6 +26,7 @@ source:
 
     # Everything gets created as admin
     uid: 1
+    asuonly: "ASU Only"
 
 process:
 
@@ -113,19 +114,12 @@ process:
     to_timezone: 'UTC'
 
   field_access_terms:
-    -
-      plugin: static_map
-      source: attachment file access
-      map:
-        1: "Public" #OpenAccess
-        2: "ASU Only" #ASU
-        3: "Private" #Closed
-    -
-      plugin: entity_lookup
-      bundle: islandora_access
-      bundle_key: vid
-      entity_type: taxonomy_term
-      value_key: name
+    source: constants/asuonly
+    plugin: entity_lookup
+    bundle: islandora_access
+    bundle_key: vid
+    entity_type: taxonomy_term
+    value_key: name
 
 destination:
   # These are 'document' media we're making. - could this be dynamic?
