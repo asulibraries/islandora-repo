@@ -484,7 +484,7 @@ function asu_permissions_user_insert(UserInterface $entity) {
     }
   }
   catch (ClientException $e) {
-    if ($request->getStatusCode() == 404) {
+    if ($request && $request->getStatusCode() == 404) {
       throw new LibauthException('Unable to find user ' . $entity->getDisplayName() . ' at ASU. If you think this is an error, <a href="/contact">please contact us</a>.');
 
     } else {
