@@ -137,14 +137,14 @@ process:
     method: process
 
   uid:
-    -
-      plugin: str_replace
-      search: "system"
-      replace: ""
-      source: System User
-    -
-      plugin: user_lookup
-      default_value: constants/uid
+    # -
+    #   plugin: str_replace
+    #   search: "system"
+    #   replace: ""
+    #   source: System User
+    # -
+    plugin: user_lookup
+    default_value: constants/uid
 
   field_open_access:
     plugin: skip_on_empty
