@@ -140,6 +140,13 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
     // either "Repository Item", "ASU Repository Item", or "Collection",
     // the underlying node can be accessed via the path.
     $node = $this->routeMatch->getParameter('node');
+    if (!is_object($node)) {
+      $nid = $this->routeMatch->getParameter('arg_0');
+      $node = $this->entityTypeManager->getStorage('node')->load($nid);
+      if (!is_object($node)) {
+        return;
+      }
+    }
     $is_collection = ($node->bundle() == 'collection');
     $is_complex_object = FALSE;
     $is_asu_repository_item = ($node->bundle() == 'asu_repository_item');

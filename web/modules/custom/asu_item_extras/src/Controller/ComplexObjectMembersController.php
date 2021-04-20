@@ -8,6 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\views\Views;
 
 /**
  * Controller for Complex Object Members "Included in this item" view page.
@@ -74,13 +75,14 @@ class ComplexObjectMembersController extends ControllerBase implements Container
 
       // Check that the model for this node is set to "Complex Object".
       if (($content_type == 'asu_repository_item') && $field_model == 'Complex Object') {
-        $children = asu_item_extras_get_complex_object_child_nodes($node->id());
-        foreach ($children as $child_obj) {
-          if ($child_obj->entity_id) {
-            $node = $this->entityTypeManager->getStorage('node')->load($child_obj->entity_id);
-            $builder = $this->entityTypeManager->getViewBuilder('node');
-            $build_output[] = $builder->view($node, 'complex_object_child_box');
-          }
+        $view = Views::getView('included_in_complex_object');
+        $args = [$node->id];
+        if (is_object($view)) {
+          $view->setArguments($args);
+          $view->setDisplay('all_included_items');
+          $view->preExecute();
+          $view->execute();
+          $build_output[] = $view->buildRenderable('all_included_items', $args);
         }
       }
     }
