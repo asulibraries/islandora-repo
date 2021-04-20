@@ -520,6 +520,8 @@ def main(argv):
     # att_df[x_col] = att_df[x_col].replace(".0", "")
     merge_df['Date Created'] = merge_df['Date Created'].astype(str)
     merge_df['Date Created'] = merge_df['Date Created'].str.replace('.0', "", regex=False)
+    merge_df['Date Created'] = merge_df['Date Created'].str.replace(
+        'nan', "", regex=False)
     att_df[x_col] = att_df[x_col].fillna(-1)
     att_df[x_col] = att_df[x_col].astype("int64")
     att_df[x_col] = att_df[x_col].replace(-1, None)
