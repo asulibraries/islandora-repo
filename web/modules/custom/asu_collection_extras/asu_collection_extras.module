@@ -135,13 +135,13 @@ function asu_collection_extras_doCollectionSummary($collection_nid) {
   foreach ($children as $child_nid => $child_arr) {
     $item_views = $item_downloads = 0;
     if ($child_nid) {
-      $item_views += \Drupal::service('islandora_matomo.default')->getViewsForNode($child_nid);
+      $item_views += \Drupal::service('islandora_matomo.default')->getViewsForNode(['nid' => $child_nid]);
       $mids = \Drupal::entityQuery('media')
         ->condition('field_media_of', $child_nid)
         ->execute();
       foreach ($mids as $mid) {
         $fid = \Drupal::service('islandora_matomo.default')->getFileFromMedia($mid);
-        $item_downloads += \Drupal::service('islandora_matomo.default')->getDownloadsForFile($fid);
+        $item_downloads += \Drupal::service('islandora_matomo.default')->getDownloadsForFile(['fid' => $fid]);
       }
       $connection
         ->delete('asu_collection_extras_item_downloads')
