@@ -38,10 +38,11 @@ class DrushASUCalcViewsAndDownloads extends DrushCommands {
     // to those with field_media_use = "Original file".
     // Set $unset_date_value variable to January 1 1970 00:00:00 GMT)
     $unset_date_value = 0;
-    $items_matomo_data = \Drupal::service('islandora_matomo.default')->getAllPages($site_uri . "/items/");
+    $items_matomo_data = \Drupal::service('islandora_matomo.default')->getAllPages($options['siteuri'] . "/items/");
     echo "\n\$items_matomo_data = \n" . print_r($items_matomo_data, TRUE) . "\n";
     // Loop through the $items_matomo_data array to populate the initial
     // views count. Downloads will be calculated during the sync method.
+    $items_matomo_data = $this->rekeyData($items_matomo_data);
     if (is_array($items_matomo_data) && count($items_matomo_data) > 0) {
       foreach ($items_matomo_data as $nid => $views) {
         echo "nid = " . $nid . "\n";
@@ -60,7 +61,8 @@ class DrushASUCalcViewsAndDownloads extends DrushCommands {
           ->execute();
       }
     }
-    $collections_matomo_data = \Drupal::service('islandora_matomo.default')->getAllPages($site_uri . "/collections/");
+    $collections_matomo_data = \Drupal::service('islandora_matomo.default')->getAllPages($options['siteuri'] . "/collections/");
+    $collections_matomo_data = $this->rekeyData($collections_matomo_data);
     echo "\n\$collections_matomo_data = \n" . print_r($collections_matomo_data, TRUE) . "\n";
     // Loop through the $collections_matomo_data array to populate the initial
     // views count.
@@ -97,6 +99,26 @@ class DrushASUCalcViewsAndDownloads extends DrushCommands {
     set_time_limit(0);
     // Get $options['howmany'] records that need to be processed.
     asu_collection_extras_doCollectionSummary($options['siteuri'], $this);
+  }
+
+  /**
+   * To remake the array so that there isn't a URL fragment such as "?x=10"
+   * after the node id.
+   *
+   * @param array $matomo_data
+   *   Key represents the page that was returned from matomo and the value is
+   * the views for that page.
+   */
+  private function rekeyData(array $matomo_data) {
+    $return_arr = [];
+    foreach ($matomo_data as $page => $views) {
+      // normalize the key for the array
+      if (strstr($page, '?')) {
+        @list($page, $fragment) = explode("?", $page);
+      }
+      $return_arr[$page] = (array_key_exists($page, $return_arr) ? $return_arr[$page] + $views : $views);
+    }
+    return $return_arr;
   }
 
 }
