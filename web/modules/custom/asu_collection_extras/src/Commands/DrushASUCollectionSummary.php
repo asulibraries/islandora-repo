@@ -4,6 +4,7 @@ namespace Drupal\asu_collection_extras\Commands;
 
 use Drush\Commands\DrushCommands;
 use Drupal\asu_collection_extras\Controller\ASUSumaryClass;
+use Drupal\node\NodeInterface;
 
 /**
  * A drush command file for collection summary tabulation.
@@ -29,5 +30,5 @@ class DrushASUCollectionSummary extends DrushCommands {
     set_time_limit(0);
     asu_collection_extras_doCollectionSummary($options['siteuri'], $this);
   }
-  
+
 }

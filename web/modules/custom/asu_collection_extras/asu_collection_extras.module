@@ -174,8 +174,8 @@ function asu_collection_extras_doCollectionSummary($site_uri = '') {
   // to those with field_media_use = "Original file".
   $views = $downloads = 0;
   $unset_date_value = 0; // sets to January 1 1970 00:00:00 GMT)
-  $items_matomo_data = \Drupal::service('islandora_matomo.default')->getAllPages($site_uri . "/items");
-echo "\n\$items_matomo_data = \n".print_r($items_matomo_data, true) . "\n";
+  $items_matomo_data = \Drupal::service('islandora_matomo.default')->getAllPages($site_uri . "/items/");
+  echo "\n\$items_matomo_data = \n".print_r($items_matomo_data, true) . "\n";
   // Loop through the $items_matomo_data array to populate the initial views count
   // for these items. The downloads will be calculated on another of this table.
   if (count($items_matomo_data) > 0) {
@@ -187,16 +187,18 @@ echo "\n\$items_matomo_data = \n".print_r($items_matomo_data, true) . "\n";
         // there better be an update method for the database object
         // Use an "unset" modified value so that these may be processed in
         // a separate process.
-      $connection->merge('asu_collection_extras_collection_usage')
-        ->key(array('nid' => $nid))
+      $connection->merge('ace_items')
+        ->key(array('i_nid' => $nid))
         ->fields([
-          'views' => $views, 'modified' => $unset_date_value
+          'views' => $views, 
+          'views_modified' => time(),
+          'downloads_modified' => $unset_date_value
         ])
         ->execute();
     }
   }
-  $collections_matomo_data = \Drupal::service('islandora_matomo.default')->getAllPages($site_uri . "/collections");
-echo "\n\$collections_matomo_data = \n".print_r($collections_matomo_data, true) . "\n";
+  $collections_matomo_data = \Drupal::service('islandora_matomo.default')->getAllPages($site_uri . "/collections/");
+  echo "\n\$collections_matomo_data = \n".print_r($collections_matomo_data, true) . "\n";
   // Loop through the $collections_matomo_data array to populate the initial views count
   // for these items. The downloads will be calculated on another of this table.
   if (count($collections_matomo_data) > 0) {
@@ -206,71 +208,28 @@ echo "\n\$collections_matomo_data = \n".print_r($collections_matomo_data, true) 
       echo "\n\$collection_membership = \n".print_r($item_membership, true);
         // Use an "unset" modified value so that these may be processed in
         // a separate process.
-      $connection->merge('asu_collection_extras_collection_usage')
-        ->key(array('nid' => $nid))
+      $connection->merge('ace_collections')
+        ->key(array('c_nid' => $nid))
         ->fields([
-          'views' => $views, 'modified' => $unset_date_value
+          'views' => $views, 'modified' => time()
         ])
         ->execute();
     }
   }
 
-//  foreach ($children as $child_nid => $child_arr) {
-//    $item_views = $item_downloads = 0;
-//    if ($child_nid) {
-//      $item_views += \Drupal::service('islandora_matomo.default')->getViewsForNode($child_nid);
-//      $mids = \Drupal::entityQuery('media')
-//        ->condition('field_media_of', $child_nid)
-//        ->execute();
-//      foreach ($mids as $mid) {
-//        $fid = \Drupal::service('islandora_matomo.default')->getFileFromMedia($mid);
-//        $item_downloads += \Drupal::service('islandora_matomo.default')->getDownloadsForFile($fid);
-//      }
-//      $connection
-//        ->delete('asu_collection_extras_item_downloads')
-//        ->condition('collection_nid', $collection_nid)
-//        ->condition('nid', $child_nid)
-//        ->execute();
-//      $connection
-//        ->insert('asu_collection_extras_item_downloads')
-//        ->fields([
-//          'collection_nid', 'nid', 'views', 'downloads', 'modified'
-//        ])
-//        // Insert an "unset" modified value so that these may be processed in
-//        // a separate process.
-//        ->values([
-//          $collection_nid, $child_nid, $item_views, $item_downloads, $unset_date_value
-//        ])
-////        ->values([
-////          $collection_nid, $child_nid, $item_views, $item_downloads, time()
-////        ])
-//        ->execute();
-//    }
-//  }
   $collection_views += $item_views;
   $collection_downloads += $item_downloads;
-
-  // We don't want to delete these records, do we -- we want it to persist.
-//  $connection
-//    ->delete('asu_collection_extras_collection_usage')
-//    ->condition('nid', $collection_nid)
-//    ->execute();
-
-  // there better be an update method for the database object
-  // Use an "unset" modified value so that these may be processed in
-  // a separate process.
-  $connection->merge('asu_collection_extras_collection_usage')
-    ->key(array('nid' => $nid))
-    ->fields([
-      'views' => $views, 'modified' => $unset_date_value
-    ])
-    ->execute();
 }
 
-function asu_collection_extras_all_collections() {
-  $query = \Drupal::entityQuery('node');
-  $query
-    ->condition('status', 1)
-    ->condition('type', 'collection');
-  return $query->execute();
+function asu_collection_extras_node_view(array &$build, Drupal\node\Entity\Node $node, Drupal\Core\Entity\Entity\EntityViewDisplay $display, $view_mode) {
+  $node_bundle = $node->bundle();
+  if (($build['#view_mode'] == 'full' || $build['#view_mode'] == 'asu_image') &&
+    ($node_bundle == 'collection' || $node_bundle == 'asu_repository_item')) {
+    // After the node render is executed, 
+    $build['#attached'] = [
+      'library' => [
+        'asu_collection_extras/matomosync',
+      ],
+    ];
+  }
 }
