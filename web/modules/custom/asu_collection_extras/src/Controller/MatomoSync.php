@@ -3,7 +3,6 @@
 namespace Drupal\asu_collection_extras\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\asu_collection_extras\Controller\ASUSumaryClass;
 use Drupal\node\NodeInterface;
 
 /**
@@ -24,6 +23,8 @@ class MatomoSync extends ControllerBase {
     \Drupal::logger('asu_collection_extras')->info('it is in the endpoint! node id = ' . $node->id());
     $node_relations = $this->syncNodeRelations($node);
     $node_matomo_stats = $this->syncNodeMatomoStats($node);
+    \Drupal::logger('asu_collection_extras')->info('$node_relations = ' . print_r($node_relations, true));
+    \Drupal::logger('asu_collection_extras')->info('$node_matomo_stats = ' . print_r($node_matomo_stats, true));
 
     return [];
   }
