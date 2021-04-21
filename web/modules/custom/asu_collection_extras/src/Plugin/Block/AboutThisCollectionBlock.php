@@ -232,19 +232,12 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
    */
   private function getCollectionViews($collection_node) {
     $collection_node_id = (is_object($collection_node) ? $collection_node->id() : $collection_node);
-    if (!$this->connection->schema()->tableExists('asu_collection_extras_collection_usage')) {
-      \Drupal::logger('asu_collection_extras')->warning('asu_collection_extras_collection_usage table does not exist. Re-install asu_collection_extras module or run SQL:' .
-      "<code>CREATE TABLE `asu_collection_extras_collection_usage` (
-    `nid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'The collection \"node\".nid this record affects.',
-    `views` int(11) NOT NULL DEFAULT '0' COMMENT 'View total for all objects in the collection.',
-    `downloads` int(11) NOT NULL DEFAULT '0' COMMENT 'Download total for all objects in the collection.',
-    `modified` int(11) NOT NULL DEFAULT '0' COMMENT 'Timestamp for when the record is updated'
-    PRIMARY KEY (`nid`)
-  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4</code>");
+    if (!$this->connection->schema()->tableExists('ace_items')) {
+      \Drupal::logger('asu_collection_extras')->warning('ace_items table does not exist. Please run update.php.');
       return 0;
     }
     $collection_views = $this->connection
-      ->query('SELECT views FROM asu_collection_extras_collection_usage WHERE nid = ' . $collection_node_id)
+      ->query('SELECT views FROM ace_collections WHERE c_nid = ' . $collection_node_id)
       ->fetchAll();
     $v = 0;
     foreach ($collection_views as $c_obj) {

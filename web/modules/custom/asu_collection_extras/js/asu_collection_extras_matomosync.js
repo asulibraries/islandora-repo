@@ -4,9 +4,6 @@
 
 (function ($) {
     $(document).ready(function(){
-//        alert(context);    // [object HTMLUListElement]
-//        alert(settings);   // [object Object]
-        // var p_parts = settings.path.currentPath.split('/');
         // create a URL that will trigger the PHP code to perform the heavy lifting
         // for this node.
         var this_uri = window.location.href;
@@ -28,8 +25,6 @@
         }
         if (node_id != '') {
             build_call_uri = build_call_uri + "/matomosync";
-//            build_call_uri = '/items/5623/matomosync';
-            alert('call ' + build_call_uri);
             var settings = [];
             $.ajax(build_call_uri, {
                 success: function(data) {

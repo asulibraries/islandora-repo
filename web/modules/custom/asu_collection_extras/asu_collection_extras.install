@@ -118,6 +118,10 @@ function asu_collection_extras_schema() {
 
 function asu_collection_extras_update_8003() {
   $schema = Database::getConnection()->schema();
-  $schema->dropTable('asu_collection_extras_item_downloads');
-  $schema->dropTable('asu_collection_extras_collection_usage');
+  if ($schema->tableExists('asu_collection_extras_item_downloads') {
+    $schema->dropTable('asu_collection_extras_item_downloads');
+  }
+  if ($schema->tableExists('asu_collection_extras_collection_usage') {
+    $schema->dropTable('asu_collection_extras_collection_usage');
+  }
 }
