@@ -3,6 +3,7 @@
 namespace Drupal\asu_collection_extras\Commands;
 
 use Drush\Commands\DrushCommands;
+use Drupal\asu_collection_extras\Controller\MatomoSync;
 
 /**
  * A drush command file for collection summary tabulation.
@@ -87,18 +88,29 @@ class DrushASUCalcViewsAndDownloads extends DrushCommands {
   /**
    * Drush command that displays the given text.
    *
+   * NOTE: The core drush parameter uri is needed in order to get correct path
+   * to each file as it processes the download counts.
+   *
    * @command asu_collection_extras:sync
    * @option howmany
    *   How many items to process in this pass, default value is 100 items.
    * @aliases asu_cs sync
-   * @usage asu_collection_extras:sync --siteuri https://localhost:8000
-   * @usage asu_collection_extras:sync --siteuri https://localhost:8000
+   * @usage asu_collection_extras:sync --uri https://localhost:8000
+   * @usage asu_collection_extras:sync --uri https://localhost:8000
    */
   public function sync($options = ['howmany' => 100]) {
     // When this runs, it may take a long time to complete.
     set_time_limit(0);
     // Get $options['howmany'] records that need to be processed.
-    asu_collection_extras_doCollectionSummary($options['siteuri'], $this);
+    $query = \Drupal::database()->select('ace_items', 'ace_i');
+    $query->addField('ace_i', 'i_nid');
+    $query->condition('downloads_modified', 0)
+      ->range(0, $options['howmany']);
+
+    $records = $query->execute();
+    foreach ($records as $record) {
+      MatomoSync::matomoSync($record->i_nid);
+    }
   }
 
   /**
@@ -114,7 +126,7 @@ class DrushASUCalcViewsAndDownloads extends DrushCommands {
     foreach ($matomo_data as $page => $views) {
       // normalize the key for the array
       if (strstr($page, '?')) {
-        @list($page, $fragment) = explode("?", $page);
+        list($page, $fragment) = explode("?", $page);
       }
       $return_arr[$page] = (array_key_exists($page, $return_arr) ? $return_arr[$page] + $views : $views);
     }
