@@ -3,7 +3,7 @@
 namespace Drupal\asu_collection_extras\Commands;
 
 use Drush\Commands\DrushCommands;
-use Drupal\asu_collection_extras\Controller\MatomoSync;
+use Drupal\node\NodeInterface;
 
 /**
  * A drush command file for collection summary tabulation.
@@ -40,16 +40,15 @@ class DrushASUCalcViewsAndDownloads extends DrushCommands {
     // Set $unset_date_value variable to January 1 1970 00:00:00 GMT)
     $unset_date_value = 0;
     $items_matomo_data = \Drupal::service('islandora_matomo.default')->getAllPages($options['siteuri'] . "/items/");
-    echo "\n\$items_matomo_data = \n" . print_r($items_matomo_data, TRUE) . "\n";
+    \Drupal::logger('asu_collection_extras')->info("\$items_matomo_data = \n" . print_r($items_matomo_data, TRUE));
     // Loop through the $items_matomo_data array to populate the initial
     // views count. Downloads will be calculated during the sync method.
     $items_matomo_data = $this->rekeyData($items_matomo_data);
     if (is_array($items_matomo_data) && count($items_matomo_data) > 0) {
       foreach ($items_matomo_data as $nid => $views) {
-        echo "nid = " . $nid . "\n";
         // Given the object $nid, we don't know the collection it is related to.
         $item_membership = asu_collection_extras_solr_get_node_membership($nid);
-        echo "\n\$item_membership = \n" . print_r($item_membership, TRUE);
+        \Drupal::logger('asu_collection_extras')->info("\$item_membership = \n" . print_r($item_membership, TRUE));
         // Use an "unset" modified value so that these may be processed in
         // a separate process.
         $connection->merge('ace_items')
@@ -64,14 +63,14 @@ class DrushASUCalcViewsAndDownloads extends DrushCommands {
     }
     $collections_matomo_data = \Drupal::service('islandora_matomo.default')->getAllPages($options['siteuri'] . "/collections/");
     $collections_matomo_data = $this->rekeyData($collections_matomo_data);
-    echo "\n\$collections_matomo_data = \n" . print_r($collections_matomo_data, TRUE) . "\n";
+    \Drupal::logger('asu_collection_extras')->info("\$collections_matomo_data = \n" . print_r($collections_matomo_data, TRUE));
     // Loop through the $collections_matomo_data array to populate the initial
     // views count.
     if (is_array($collections_matomo_data) && count($collections_matomo_data) > 0) {
       foreach ($collections_matomo_data as $nid => $views) {
         // Given the object $nid, we don't know the collection it is related to.
         $item_membership = asu_collection_extras_solr_get_node_membership($nid);
-        echo "\n\$collection_membership = \n" . print_r($item_membership, TRUE);
+        \Drupal::logger('asu_collection_extras')->info("\$collection_membership = \n" . print_r($collection_membership, TRUE));
         // Use an "unset" modified value so that these may be processed in
         // a separate process.
         $connection->merge('ace_collections')
@@ -109,7 +108,14 @@ class DrushASUCalcViewsAndDownloads extends DrushCommands {
 
     $records = $query->execute();
     foreach ($records as $record) {
-      MatomoSync::matomoSync($record->i_nid);
+      $node = \Drupal::entityTypeManager()->getStorage('node')->load($record->i_nid);
+      if (is_object($node)) {
+        \Drupal::logger('asu_collection_extras')->info('it is in the endpoint! node id = ' . $node->id());
+        $node_relations = asu_collection_extras_syncNodeRelations($node);
+        $node_matomo_stats = asu_collection_extras_syncNodeMatomoStats($node->id());
+        \Drupal::logger('asu_collection_extras')->info('$node_relations = ' . print_r($node_relations, true));
+        \Drupal::logger('asu_collection_extras')->info('$node_matomo_stats = ' . print_r($node_matomo_stats, true));
+      }
     }
   }
 

@@ -26,6 +26,7 @@
         if (node_id != '') {
             build_call_uri = build_call_uri + "/matomosync";
             var settings = [];
+            alert('ajax call to ' + build_call_uri);
             $.ajax(build_call_uri, {
                 success: function(data) {
                     alert('success');
