@@ -205,7 +205,7 @@ function asu_collection_extras_syncNodeRelations($node) {
         $member_of_id = (is_object($additional_membership_entity)) ? $additional_membership_entity->id() : 0;
         $member_of_model = (is_object($additional_membership_entity)) ? $additional_membership_entity->bundle() : '';
         \Drupal::logger('asu_collection_extras')->info('member_of ' . $member_of_id . ' which is ' . $member_of_model);
-        $parent_type = ($member_of_model == 'Collection') ? 'collec' : 'item';
+        $parent_type = ($member_of_model == 'collection') ? 'collec' : 'item';
         $connection->delete('ace_relations')
           ->condition('parent_nid', $member_of_id)
           ->condition('child_nid', $child_nid)

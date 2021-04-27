@@ -187,14 +187,16 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
       }
     }
 
-    $collection_views = $this->getCollectionViews($collection_node);
+    $collection_views_and_downloads = $this->getCollectionViewsAndDownloads($collection_node);
     // Calculate the "Items" box link.
     $items_url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/collections/' .
        (($collection_node) ? $collection_node->id() : 0) . '/search/?search_api_fulltext=');
     $stat_box_row1[] = $this->makeBox("<strong>" . $items . "</strong><br>items", $items_url);
     $stat_box_row1[] = $this->makeBox("<strong>" . $files . "</strong><br>files");
     $stat_box_row1[] = $this->makeBox("<strong>" . count($islandora_models) . "</strong><br>resource types");
-    $stat_box_row2[] = $this->makeBox("<strong>" . $collection_views . "</strong><br>views");
+    $stat_box_row2[] = $this->makeBox("<strong>" . $collection_views_and_downloads['views'] . 
+      "</strong> views<br><strong>" . $collection_views_and_downloads['downloads'] . 
+      "</strong> downloads");
     $stat_box_row2[] = $this->makeBox("<strong>" . (($collection_created) ? date('Y', $collection_created) : 'unknown') .
       "</strong><br>collection created");
     $stat_box_row2[] = $this->makeBox("<strong>" . (($max_timestamp) ? date('M d, Y', $max_timestamp) : 'unknown') .
@@ -222,28 +224,46 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
   }
 
   /**
-   * Loads the collection views from the summary table.
+   * Loads the collection views and downloads from the summary table.
    *
    * @param mixed $collection_node
    *   This could be a node object or the integer id() value of a node.
    *
-   * @return int
-   *   The number of views for the collection.
+   * @return array
+   *   'views': the number of views for the collection.
+   *   'downloads': total downloads for all items related to the collection.
    */
-  private function getCollectionViews($collection_node) {
+  private function getCollectionViewsAndDownloads($collection_node) {
     $collection_node_id = (is_object($collection_node) ? $collection_node->id() : $collection_node);
     if (!$this->connection->schema()->tableExists('ace_items')) {
       \Drupal::logger('asu_collection_extras')->warning('ace_items table does not exist. Please run update.php.');
       return 0;
     }
+    // Get the views for the collection page itself.
     $collection_views = $this->connection
       ->query('SELECT views FROM ace_collections WHERE c_nid = ' . $collection_node_id)
       ->fetchAll();
-    $v = 0;
+    $v = $d = 0;
     foreach ($collection_views as $c_obj) {
       $v += $c_obj->views;
     }
-    return $v;
+
+    // Now get the sum of views for the items that are related to this
+    // collection.
+    $collection_views = $this->connection
+      ->query("SELECT SUM(views) as views_total, SUM(downloads) as download_total" .
+        " FROM ace_items WHERE i_nid IN (" .
+        "SELECT child_nid FROM ace_relations WHERE parent_nid = " .
+        $collection_node_id . " AND parent_type = 'collec')")
+      ->fetchAll();
+    foreach ($collection_views as $c_obj) {
+      $v += $c_obj->views_total;
+      $d += $c_obj->download_total;
+    }
+    return [
+      'views' => $v,
+      'downloads' => $d,
+    ];
   }
 
   /**

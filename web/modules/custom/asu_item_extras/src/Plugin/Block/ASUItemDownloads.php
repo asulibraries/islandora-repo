@@ -101,14 +101,13 @@ class ASUItemDownloads extends BlockBase implements ContainerFactoryPluginInterf
       }
     }
     if ($node_id) {
-      // $mids = \Drupal::entityQuery('media')
       $mids = $this->entityTypeManager->getStorage('media')->getQuery()
         ->condition('field_media_of', $node_id)
         ->execute();
       $download_count = 0;
       foreach ($mids as $mid) {
         $fid = $this->islandoraMatomo->getFileFromMedia($mid);
-        $download_count += $this->islandoraMatomo->getDownloadsForFile($fid);
+        $download_count += $this->islandoraMatomo->getDownloadsForFile(['fid' => $fid]);
 
       }
       return [
