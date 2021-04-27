@@ -186,8 +186,11 @@ function asu_collection_extras_syncNodeRelations($node) {
     // i_nid = $node->id();
     // c_nid = $member_of_id
     // parent_type = "collec"
-    $connection->merge('ace_relations')
-      ->key(['i_nid' => $nid])
+    $connection->delete('ace_relations')
+      ->condition('parent_nid', $member_of_id)
+      ->condition('child_nid', $child_nid)
+      ->execute();
+    $connection->insert('ace_relations')
       ->fields([
         'parent_nid' => $member_of_id,
         'child_nid' => $child_nid,
@@ -203,8 +206,11 @@ function asu_collection_extras_syncNodeRelations($node) {
         $member_of_model = (is_object($additional_membership_entity)) ? $additional_membership_entity->bundle() : '';
         \Drupal::logger('asu_collection_extras')->info('member_of ' . $member_of_id . ' which is ' . $member_of_model);
         $parent_type = ($member_of_model == 'Collection') ? 'collec' : 'item';
-        $connection->merge('ace_relations')
-          ->key(['i_nid' => $nid])
+        $connection->delete('ace_relations')
+          ->condition('parent_nid', $member_of_id)
+          ->condition('child_nid', $child_nid)
+          ->execute();
+        $connection->insert('ace_relations')
           ->fields([
             'parent_nid' => $member_of_id,
             'child_nid' => $child_nid,
@@ -237,7 +243,7 @@ function asu_collection_extras_syncNodeMatomoStats($nid) {
   $connection->merge('ace_items')
     ->key(['i_nid' => $nid])
     ->fields([
-      'views' => $views,
+      'views' => $item_views,
       'views_modified' => time(),
       'downloads' => $item_downloads,
       'downloads_modified' => time(),
