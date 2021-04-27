@@ -43,8 +43,8 @@ class DrushASUCalcViewsAndDownloads extends DrushCommands {
     \Drupal::logger('asu_collection_extras')->info("\$items_matomo_data = \n" . print_r($items_matomo_data, TRUE));
     // Loop through the $items_matomo_data array to populate the initial
     // views count. Downloads will be calculated during the sync method.
-    $items_matomo_data = $this->rekeyData($items_matomo_data);
     if (is_array($items_matomo_data) && count($items_matomo_data) > 0) {
+      $items_matomo_data = $this->rekeyData($items_matomo_data);
       foreach ($items_matomo_data as $nid => $views) {
         // Given the object $nid, we don't know the collection it is related to.
         $item_membership = asu_collection_extras_solr_get_node_membership($nid);
@@ -62,11 +62,11 @@ class DrushASUCalcViewsAndDownloads extends DrushCommands {
       }
     }
     $collections_matomo_data = \Drupal::service('islandora_matomo.default')->getAllPages($options['siteuri'] . "/collections/");
-    $collections_matomo_data = $this->rekeyData($collections_matomo_data);
-    \Drupal::logger('asu_collection_extras')->info("\$collections_matomo_data = \n" . print_r($collections_matomo_data, TRUE));
     // Loop through the $collections_matomo_data array to populate the initial
     // views count.
     if (is_array($collections_matomo_data) && count($collections_matomo_data) > 0) {
+      $collections_matomo_data = $this->rekeyData($collections_matomo_data);
+      \Drupal::logger('asu_collection_extras')->info("\$collections_matomo_data = \n" . print_r($collections_matomo_data, TRUE));
       foreach ($collections_matomo_data as $nid => $views) {
         // Given the object $nid, we don't know the collection it is related to.
         $item_membership = asu_collection_extras_solr_get_node_membership($nid);
