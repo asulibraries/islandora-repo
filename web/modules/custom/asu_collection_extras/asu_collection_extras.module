@@ -174,17 +174,26 @@ function asu_collection_extras_node_view(array &$build, Drupal\node\Entity\Node 
 function asu_collection_extras_syncNodeRelations($node) {
   // Query the node to determine all of the objects related via Member Of
   // and Additional Memberships.
+  $child_nid = $node->id();
   $member_of = $node->get('field_member_of')->entity;
   $member_of_id = (is_object($member_of)) ? $member_of->id() : 0;
   $member_of_model = (is_object($member_of)) ? $member_of->bundle() : '';
   \Drupal::logger('asu_collection_extras')->info('member_of ' . $member_of_id . ' which is ' . $member_of_model);
-
+  $connection = \Drupal::service('database');
   if ($member_of_id) {
     // Insert a record for this item and the parent collection.
     // Object parent is a collection.
     // i_nid = $node->id();
     // c_nid = $member_of_id
-    // parent_type = collec
+    // parent_type = "collec"
+    $connection->merge('ace_relations')
+      ->key(['i_nid' => $nid])
+      ->fields([
+        'parent_nid' => $member_of_id,
+        'child_nid' => $child_nid,
+        'parent_type' => 'collec',
+      ])
+      ->execute();
   }
   if ($node->bundle() == 'asu_repository_item') {
     $additional_memberships = $node->get('field_additional_memberships')->referencedEntities();
@@ -193,6 +202,15 @@ function asu_collection_extras_syncNodeRelations($node) {
         $member_of_id = (is_object($additional_membership_entity)) ? $additional_membership_entity->id() : 0;
         $member_of_model = (is_object($additional_membership_entity)) ? $additional_membership_entity->bundle() : '';
         \Drupal::logger('asu_collection_extras')->info('member_of ' . $member_of_id . ' which is ' . $member_of_model);
+        $parent_type = ($member_of_model == 'Collection') ? 'collec' : 'item';
+        $connection->merge('ace_relations')
+          ->key(['i_nid' => $nid])
+          ->fields([
+            'parent_nid' => $member_of_id,
+            'child_nid' => $child_nid,
+            'parent_type' => $parent_type,
+          ])
+          ->execute();
       }
     }
   }
@@ -214,5 +232,15 @@ function asu_collection_extras_syncNodeMatomoStats($nid) {
     \Drupal::logger('asu_collection_extras')->info("downloads (fid:" . $fid . ") = " . $item_fid_downloads);
   }
   \Drupal::logger('asu_collection_extras')->info("total downloads = " . $item_downloads);
-  // @TODO - save this to the table
+  // Save this to the ace_items table.
+  $connection = \Drupal::service('database');
+  $connection->merge('ace_items')
+    ->key(['i_nid' => $nid])
+    ->fields([
+      'views' => $views,
+      'views_modified' => time(),
+      'downloads' => $item_downloads,
+      'downloads_modified' => time(),
+    ])
+    ->execute();
 }
