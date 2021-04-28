@@ -76,7 +76,7 @@ function asu_collection_extras_solr_get_collection_children($collection_node) {
     $solariumQuery = $solrConnector->getSelectQuery();
     $count = 0;
     while(TRUE) {
-      $solariumQuery->setStart($count)->setRows(50000);
+      $solariumQuery->setStart($count)->setRows(1000);
       $solariumQuery->addParam('q', '(itm_field_ancestors:' . $collection_node_id .
         ' OR itm_field_combined_member_of:' . $collection_node_id . ')');
       $solariumQuery->setFields(['its_nid', 'ds_changed', 'ss_original_file_count', 'itm_field_model']);
