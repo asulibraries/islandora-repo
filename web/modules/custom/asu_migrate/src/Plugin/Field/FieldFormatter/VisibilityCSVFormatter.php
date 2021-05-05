@@ -30,6 +30,13 @@ class VisibilityCSVFormatter extends IntegerFormatter implements ContainerFactor
   protected $entityTypeManager;
 
   /**
+   * The asuUtils definition.
+   *
+   * @var asuUtils
+   */
+  protected $asuUtils;
+
+  /**
    * Constructs a VisibilityCSVFormatter object.
    *
    * @param Drupal\Core\Entity\EntityTypeManager $entityTypeManager
@@ -39,10 +46,12 @@ class VisibilityCSVFormatter extends IntegerFormatter implements ContainerFactor
       array $configuration,
       $plugin_id,
       $plugin_definition,
-      EntityTypeManager $entityTypeManager
+      EntityTypeManager $entityTypeManager,
+      asu_utils $ASUUtils
     ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->entityTypeManager = $entityTypeManager;
+    $this->asuUtils = $ASUUtils;
   }
 
   /**
@@ -53,7 +62,8 @@ class VisibilityCSVFormatter extends IntegerFormatter implements ContainerFactor
       $configuration,
       $plugin_id,
       $plugin_definition,
-      $container->get('entity_type.manager')
+      $container->get('entity_type.manager'),
+      $container->get('asu_utils')
     );
   }
 
@@ -62,7 +72,6 @@ class VisibilityCSVFormatter extends IntegerFormatter implements ContainerFactor
    */
   public function viewElements(FieldItemListInterface $items, $langcode) {
     $elements = [];
-    $asu_utils = \Drupal::service('asu_utils');
     // This takes each node and converts the moderation_state of it into the
     // Visibility value.
     //  - Private: draft
@@ -70,7 +79,7 @@ class VisibilityCSVFormatter extends IntegerFormatter implements ContainerFactor
     foreach ($items as $delta => $item) {
       $item_entity_id = $item->value;
       $item_entity = @$this->entityTypeManager->getStorage('node')->load($item_entity_id);
-      $is_published = $asu_utils->isNodePublished($item_entity);
+      $is_published = $this->asuUtils->isNodePublished($item_entity);
       $elements[$delta]['#markup'] = ($is_published ? "Public" : "Private");
     }
 

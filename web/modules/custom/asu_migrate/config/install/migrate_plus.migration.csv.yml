@@ -26,11 +26,10 @@ process:
     source: Extent
     method: process
 
-# wgg - Date Created should not be the EDTF field.
-#  field_edtf_date_created:
-#    plugin: skip_on_empty
-#    source: Date Created
-#    method: process
+  field_edtf_date_created:
+    plugin: skip_on_empty
+    source: Date Created
+    method: process
   field_edtf_copyright_date:
     plugin: skip_on_empty
     source: Copyright Date
@@ -264,7 +263,7 @@ process:
     uri_array_key: uri
     source: Temporal Subject
 
-  # wgg - several boolean fields with 0 or 1 as values.
+  # Several boolean fields with 0 or 1 as values.
   field_peer_reviewed: Peer-reviewed
   field_open_access: Open Access
   field_complex_object_child: Complex Object Child
@@ -273,7 +272,7 @@ process:
   field_statement_responsibility: Statement of Responsibility
   field_level_of_coding: Level of Coding
 
-  # wgg - these are List (text) fields... can the value just go in?
+  # These are List (text) fields... can the value just go in?
   field_frequency: Frequency
   field_issuance: Issuance
 
