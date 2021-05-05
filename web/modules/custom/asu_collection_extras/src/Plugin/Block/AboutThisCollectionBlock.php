@@ -161,7 +161,7 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
     // \Drupal::logger('asu_collection_extras')->info('Collection ' . $collection_node->id() .
     //   ' children:<pre><code>' . print_r($children, TRUE) . '</code></pre>');
     $items = $max_timestamp = 0;
-    $islandora_models = $stat_box_row1 = [];
+    $islandora_models = $stat_box_row1 = $stat_box_row2 = $stat_box_row3 = [];
 
     $items = count($children);
     $files = $max_timestamp = 0;
@@ -194,12 +194,13 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
     $stat_box_row1[] = $this->makeBox("<strong>" . $items . "</strong><br>items", $items_url);
     $stat_box_row1[] = $this->makeBox("<strong>" . $files . "</strong><br>files");
     $stat_box_row1[] = $this->makeBox("<strong>" . count($islandora_models) . "</strong><br>resource types");
-    $stat_box_row2[] = $this->makeBox("<strong>" . $collection_views_and_downloads['views'] . 
-      "</strong> views<br><strong>" . $collection_views_and_downloads['downloads'] . 
-      "</strong> downloads");
+    $stat_box_row2[] = $this->makeBox("<strong>" . $collection_views_and_downloads['views'] .
+      "</strong><br>views");
+    $stat_box_row2[] = $this->makeBox("<strong>" . $collection_views_and_downloads['downloads'] .
+      "</strong><br>downloads");
     $stat_box_row2[] = $this->makeBox("<strong>" . (($collection_created) ? date('Y', $collection_created) : 'unknown') .
       "</strong><br>collection created");
-    $stat_box_row2[] = $this->makeBox("<strong>" . (($max_timestamp) ? date('M d, Y', $max_timestamp) : 'unknown') .
+    $stat_box_row3[] = $this->makeBox("<strong>" . (($max_timestamp) ? date('M d, Y', $max_timestamp) : 'unknown') .
       "</strong><br>last updated</div>");
     return [
       '#markup' =>
@@ -211,6 +212,10 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
         // ROW 2.
       '<div class="row">' .
       implode('', $stat_box_row2) .
+      '</div>' .
+        // ROW 3.
+      '<div class="row">' .
+      implode('', $stat_box_row3) .
       '</div>' :
       "",
       'lib' => [
