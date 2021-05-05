@@ -130,11 +130,13 @@ class DrushASUCalcViewsAndDownloads extends DrushCommands {
   private function rekeyData(array $matomo_data) {
     $return_arr = [];
     foreach ($matomo_data as $page => $views) {
-      // normalize the key for the array
-      if (strstr($page, '?')) {
-        list($page, $fragment) = explode("?", $page);
+      if (is_int($page)) {
+        // normalize the key for the array
+        if (strstr($page, '?')) {
+          list($page, $fragment) = explode("?", $page);
+        }
+        $return_arr[$page] = (array_key_exists($page, $return_arr) ? $return_arr[$page] + $views : $views);
       }
-      $return_arr[$page] = (array_key_exists($page, $return_arr) ? $return_arr[$page] + $views : $views);
     }
     return $return_arr;
   }
