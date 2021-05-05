@@ -164,7 +164,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
     $output_links = [];
     // Add item link.
     $use_can_add_child = ($is_complex_object || $is_collection) && $this->canAddChild();
-    if ($canUpdate && ($is_complex_object || $is_collection)) {
+    if ($use_can_add_child) {
       // This link is a little bit tricky... it needs to have a fragment like
       // this for example, where the value 10 is the collection id() value.
       // node/add/asu_repository_item?edit[field_member_of][widget][0][target_id]=10.
@@ -212,7 +212,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
         $output_links[] = "<div class='field--label-inline'><div class='field__label'>Model</div>: " . $node->get('field_model')->entity->getName() . "</div>";
       }
     }
-    if (!($is_complex_object) && (!$is_collection) && $canUpdate) {
+    if (!($is_complex_object) && (!$is_collection)) {
       $url = Url::fromUri(
             $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
             '/node/' . $node->id() . '/media/add'
@@ -220,6 +220,18 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
       $link = Link::fromTextAndUrl($this->t('Add media'), $url);
       $link = $link->toRenderable();
       $link_glyph = Link::fromTextAndUrl($this->t('<i class="fas fa-plus-circle"></i>'), $url)->toRenderable();
+      $output_links[] = render($link) . " &nbsp;" . render($link_glyph);
+    }
+
+    if ($user_is_admin_or_metadata_manager && ($is_collection || $is_asu_repository_item)) {
+      $route_part = ($is_collection) ? 'collections' : 'items';
+      $url = Url::fromUri(
+            $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
+            '/' . $route_part . '/' . $node->id() . '/csv'
+        );
+      $link = Link::fromTextAndUrl($this->t('Download CSV'), $url);
+      $link = $link->toRenderable();
+      $link_glyph = Link::fromTextAndUrl($this->t("<i class='fas fa-file-export'></i>"), $url)->toRenderable();
       $output_links[] = render($link) . " &nbsp;" . render($link_glyph);
     }
     if ($user_is_admin_or_metadata_manager && $is_asu_repository_item) {
@@ -235,7 +247,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
         $link_glyph = Link::fromTextAndUrl($this->t('<span class="visually-hidden">Legacy URI, opens in a new window</span><i class="fas fa-external-link-alt"></i>'), $url);
         $link = $link->toRenderable();
         $link_glyph = $link_glyph->toRenderable();
-        $output_links[] = render($link) . ' &nbsp;' . render($link_glyph); 
+        $output_links[] = render($link) . ' &nbsp;' . render($link_glyph);
       }
     }
     if (in_array('administrator', $this->currentUser->getRoles())) {
@@ -251,7 +263,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
       $link = $link->toRenderable();
       $link_glyph = Link::fromTextAndUrl($this->t('<span class="visually-hidden">Fedora URI, opens in a new window</span><i class="fas fa-external-link-alt"></i>'), $url);
       $link_glyph = $link_glyph->toRenderable();
-      $output_links[] = render($link) . ' &nbsp;' . render($link_glyph); 
+      $output_links[] = render($link) . ' &nbsp;' . render($link_glyph);
     }
     return [
       '#markup' => (count($output_links) > 0) ?

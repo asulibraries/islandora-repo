@@ -108,7 +108,6 @@ class ASUItemDownloads extends BlockBase implements ContainerFactoryPluginInterf
       foreach ($mids as $mid) {
         $fid = $this->islandoraMatomo->getFileFromMedia($mid);
         $download_count += $this->islandoraMatomo->getDownloadsForFile(['fid' => $fid]);
-
       }
       return [
         '#cache' => ['max-age' => 0],

@@ -12,52 +12,48 @@ dependencies:
   config:
     - field.storage.node.field_additional_memberships
     - field.storage.node.field_member_of
-    - field.storage.taxonomy_term.field_cat_date_begin
-    - field.storage.taxonomy_term.field_cat_date_end
-    - field.storage.node.field_copyright_statement
-    - field.storage.taxonomy_term.field_corp_alt_name
-    - field.storage.node.field_description
-    - field.storage.node.field_display_hints
-    - field.storage.node.field_edition
     - field.storage.node.field_edtf_copyright_date
+    - field.storage.node.field_copyright_statement
+    - field.storage.node.field_linked_agent
     - field.storage.node.field_edtf_date
     - field.storage.node.field_edtf_date_created
     - field.storage.node.field_edtf_date_issued
+    - field.storage.node.field_description
+    - field.storage.node.field_rich_description
+    - field.storage.node.field_display_hints
+    - field.storage.node.field_edition
     - field.storage.node.field_embargo_release_date
     - field.storage.node.field_extent
     - field.storage.node.field_frequency
-    - field.storage.taxonomy_term.field_geo_alt_name
+    - field.storage.node.field_genre
     - field.storage.node.field_geographic_subject
     - field.storage.node.field_handle
     - field.storage.node.field_typed_identifier
     - field.storage.paragraph.field_identifier_value
     - field.storage.node.field_issuance
     - field.storage.node.field_language
-    - field.storage.node.field_linked_agent
+    - field.storage.node.field_pid
     - field.storage.node.field_local_identifier
-    - field.storage.node.field_title
-    - field.storage.paragraph.field_main_title
     - field.storage.node.field_model
+    - field.storage.node.field_subjects_name
     - field.storage.node.field_note
     - field.storage.node.field_open_access
     - field.storage.node.field_peer_reviewed
-    - field.storage.node.field_pid
+    - field.storage.node.field_place_of_publication_code
     - field.storage.node.field_place_published
     - field.storage.node.field_preferred_citation
     - field.storage.node.field_related_item
+    - field.storage.node.field_resource_type
     - field.storage.node.field_reuse_permissions
-    - field.storage.node.field_rich_description
     - field.storage.node.field_series
     - field.storage.node.field_statement_responsibility
-    - field.storage.node.field_subjects_name
     - field.storage.node.field_table_of_contents
     - field.storage.node.field_tags
     - field.storage.node.field_temporal_subject
+    - field.storage.node.field_title
+    - field.storage.paragraph.field_main_title
     - field.storage.node.field_title_subject
     - field.storage.node.field_subject
-    - field.storage.node.field_genre
-    - field.storage.node.field_place_of_publication_code
-    - field.storage.node.field_resource_type
     - search_api.server.default_solr_server
     - core.entity_view_mode.node.full_metadata
 third_party_settings:
@@ -65,6 +61,9 @@ third_party_settings:
     finalize: false
     commit_before_finalize: false
     commit_after_finalize: false
+    multilingual:
+      limit_to_content_language: false
+      include_language_independent: true
     highlighter:
       maxAnalyzedChars: 51200
       fragmenter: regex
@@ -80,11 +79,24 @@ third_party_settings:
         requireFieldMatch: false
         snippets: 3
         fragsize: 0
-    advanced:
-      index_prefix: ''
+    mlt:
+      mintf: 1
+      mindf: 1
+      maxdf: 0
+      maxdfpct: 0
+      minwl: 0
+      maxwl: 0
+      maxqt: 100
+      maxntp: 2000
+      boost: false
+      interestingTerms: none
     term_modifiers:
       slop: 10000000
       fuzzy: 2
+    advanced:
+      index_prefix: ''
+      collection: ''
+      timezone: ''
 id: default_solr_index
 name: 'Default Solr content index'
 description: 'Default content index created by the Solr Search Defaults module'
@@ -105,6 +117,10 @@ field_settings:
   asu_agent_aut:
     label: 'Authors (Agent By Role)'
     property_path: asu_agent_aut
+    type: string
+  asu_agent_dgc:
+    label: 'Degree Committee Member (Agent By Role)'
+    property_path: asu_agent_dgc
     type: string
   asu_agent_ths:
     label: 'Thesis Advisors (Agent by Role)'
@@ -156,14 +172,6 @@ field_settings:
     dependencies:
       module:
         - node
-  description:
-    label: Description
-    datasource_id: 'entity:taxonomy_term'
-    property_path: description
-    type: text
-    dependencies:
-      module:
-        - taxonomy
   etdf_created_year_only:
     label: 'Date Created'
     property_path: etdf_created_year_only
@@ -184,22 +192,6 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_member_of
-  field_cat_date_begin:
-    label: 'Founding Date'
-    datasource_id: 'entity:taxonomy_term'
-    property_path: field_cat_date_begin
-    type: string
-    dependencies:
-      config:
-        - field.storage.taxonomy_term.field_cat_date_begin
-  field_cat_date_end:
-    label: 'Dissolution Date'
-    datasource_id: 'entity:taxonomy_term'
-    property_path: field_cat_date_end
-    type: string
-    dependencies:
-      config:
-        - field.storage.taxonomy_term.field_cat_date_end
   field_combined_member_of:
     label: 'Member Of (Primary and Additional)'
     property_path: aggregated_field
@@ -217,14 +209,6 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_copyright_statement
-  field_corp_alt_name:
-    label: 'Corporate Body Alternate Name'
-    datasource_id: 'entity:taxonomy_term'
-    property_path: field_corp_alt_name
-    type: text
-    dependencies:
-      config:
-        - field.storage.taxonomy_term.field_corp_alt_name
   field_description:
     label: Description
     datasource_id: 'entity:node'
@@ -315,14 +299,6 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_frequency
-  field_geo_alt_name:
-    label: 'Alternate Name'
-    datasource_id: 'entity:taxonomy_term'
-    property_path: field_geo_alt_name
-    type: text
-    dependencies:
-      config:
-        - field.storage.taxonomy_term.field_geo_alt_name
   field_geographic_subject:
     label: 'Geographic Subject'
     datasource_id: 'entity:node'
@@ -594,15 +570,6 @@ field_settings:
       type: count
       fields:
         - 'entity:node/search_api_reverse_entity_references_node__field_member_of'
-  name:
-    label: Name
-    datasource_id: 'entity:taxonomy_term'
-    property_path: name
-    type: text
-    boost: !!float 8
-    dependencies:
-      module:
-        - taxonomy
   nid:
     label: ID
     datasource_id: 'entity:node'
@@ -735,17 +702,6 @@ datasource_settings:
     bundles:
       default: true
       selected: {  }
-    languages:
-      default: true
-      selected: {  }
-  'entity:taxonomy_term':
-    bundles:
-      default: true
-      selected:
-        - islandora_access
-        - islandora_display
-        - islandora_media_use
-        - islandora_models
     languages:
       default: true
       selected: {  }

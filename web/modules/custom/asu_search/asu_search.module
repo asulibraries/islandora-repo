@@ -5,6 +5,7 @@ use Drupal\views\ViewExecutable;
 use Drupal\views\Plugin\views\cache\CachePluginBase;
 use Drupal\user\Entity\User;
 use Drupal\taxonomy\Entity\Term;
+use Drupal\Core\Url;
 
 /**
  * Implements hook_form_alter().
@@ -56,6 +57,7 @@ function asu_search_search_api_solr_field_mapping_alter(IndexInterface $index, a
   $fields['note_value'] = 'sm_note_value';
   $fields['asu_agent_aut'] = 'sm_asu_agent_aut';
   $fields['asu_agent_ths'] = 'sm_asu_agent_ths';
+  $fields['asu_agent_dgc'] = 'sm_asu_agent_dgc';
   $fields['asu_identifier'] = 'sm_asu_identifier';
 }
 
@@ -122,6 +124,17 @@ function asu_search_views_pre_render(ViewExecutable $view) {
       $content_output = implode(",", $ids);
       $content_output = "<a href='/mods-xml/" . $content_output . "' target='_blank'>Export MODS XML</a>";
       $view->header['area_1']->options['content']['value'] = t($content_output);
+      // Add a link to download the CSV export for the current search.
+      $current_url = \Drupal::request()->getSchemeAndHttpHost() . Url::fromRoute('<current>')->toString();
+      $query_parts = \Drupal::request()->query->all();
+      $query_string_parts = [];
+      foreach ($query_parts as $query_key => $query_value) {
+        $query_string_parts[] = $query_key . '=' . $query_value;
+      }
+      $query_string = implode("&", $query_string_parts);
+      $view->header['area_1']->options['content']['value'] .= ' | ' . "<a href='" .
+        $current_url . "/csv?" . $query_string . "' target='_blank'>Download CSV</a> &nbsp;" .
+        "<a href='" . $current_url . "/csv?" . $query_string . " target='_blank'><i class='fas fa-file-export'></i></a>";
     }
     else {
       $view->header['area_1']->options['content']['value'] = "";

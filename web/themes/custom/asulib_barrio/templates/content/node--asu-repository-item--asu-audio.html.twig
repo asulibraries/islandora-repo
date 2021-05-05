@@ -100,10 +100,10 @@
   </header>
   <div{{content_attributes.addClass('node__content','clearfix','container')}}>
     <div class="row">
-      <div class="col-md-5 file-container">
-        {{ drupal_view('video_media_evas', 'original_file', node.id) }}
+      <div class="col-md-12 file-container">
+        {{ drupal_view('video_media_evas', 'service_file', node.id) }}
       </div>
-      <div class="col-md-7 info-container">
+      <div class="col-md-12 info-container">
         <div>{{ content.field_rich_description }}</div>
         <div class="row">
           <div class="col-md-6">{{ content.field_copyright_statement }}</div>
@@ -133,7 +133,7 @@
           {{ content.field_linked_agent }}
         </div>
       {% endif %}
-      <div>{{ content.field_date_created }}</div>
+      <div>{{ content.field_edtf_date_created }}</div>
       {# Use the node field to check if empty. Content field is less reliable. #}
       {% if (node.field_subject is not empty) or (node.field_geographic_subject is not empty) or (node.field_subjects_name is not empty) or (node.field_temporal_subject is not empty) or (node.field_title_subject is not empty) or (node.field_name_title_subject is not empty) %}
         <div class="all-subjects">

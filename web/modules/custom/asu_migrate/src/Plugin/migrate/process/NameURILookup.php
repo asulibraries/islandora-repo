@@ -7,6 +7,10 @@ use Drupal\migrate\MigrateExecutableInterface;
 use Drupal\migrate\MigrateSkipProcessException;
 use Drupal\migrate\Row;
 use Drupal\taxonomy\Entity\Term;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\Entity\EntityTypeManager;
+
 /**
  * Check if term exists and create new if doesn't.
  *
@@ -14,9 +18,45 @@ use Drupal\taxonomy\Entity\Term;
  *   id = "name_uri_lookup"
  * )
  */
-class NameURILookup extends ProcessPluginBase {
+class NameURILookup extends ProcessPluginBase implements ContainerFactoryPluginInterface {
   protected $name;
   protected $uri;
+
+  /**
+   * The entityTypeManager definition.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManager
+   */
+  protected $entityTypeManager;
+
+  /**
+   * Constructs a NameURILookup object.
+   *
+   * @param Drupal\Core\Entity\EntityTypeManager $entityTypeManager
+   *   A drupal entity type manager object.
+   */
+  public function __construct(
+      array $configuration,
+      $plugin_id,
+      $plugin_definition,
+      EntityTypeManager $entityTypeManager
+    ) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->entityTypeManager = $entityTypeManager;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('entity_type.manager')
+    );
+  }
+
   /**
    * {@inheritdoc}
    */
@@ -54,8 +94,13 @@ class NameURILookup extends ProcessPluginBase {
     $properties = [];
     if (!empty($uri) && !empty($field)) {
       $properties[$field] = $uri;
+      // This value may come from an inherited class NameURIGenerate.
+      $default_vocabulary = $this->configuration['default_vocabulary'];
+      if ($default_vocabulary) {
+        $properties['vid'] = $default_vocabulary;
+      }
     }
-    $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties($properties);
+    $terms = $this->entityTypeManager->getStorage('taxonomy_term')->loadByProperties($properties);
     $term = reset($terms);
     return !empty($term) ? $term->id() : 0;
   }
@@ -66,8 +111,13 @@ class NameURILookup extends ProcessPluginBase {
     $properties = [];
     if (!empty($name)) {
       $properties['name'] = $name;
+      // This value may come from an inherited class NameURIGenerate.
+      $default_vocabulary = $this->configuration['default_vocabulary'];
+      if ($default_vocabulary) {
+        $properties['vid'] = $default_vocabulary;
+      }
     }
-    $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties($properties);
+    $terms = $this->entityTypeManager->getStorage('taxonomy_term')->loadByProperties($properties);
     $term = reset($terms);
     return !empty($term) ? $term->id() : 0;
   }

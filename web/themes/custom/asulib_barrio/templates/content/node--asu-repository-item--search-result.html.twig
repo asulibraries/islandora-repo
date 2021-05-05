@@ -113,9 +113,9 @@
         <strong>Contributors</strong>
         <p>{{content.field_linked_agent}}</p>
       {% endif %}
-      {% if content.field_date_created is not empty %}
+      {% if content.field_edtf_date_created is not empty %}
         <strong>Created</strong>
-        <p>{{content.field_date_created}}</p>
+        <p>{{content.field_edtf_date_created}}</p>
       {% endif %}
       {% if content.search_api_excerpt is not empty %}
         {{content.search_api_excerpt}}

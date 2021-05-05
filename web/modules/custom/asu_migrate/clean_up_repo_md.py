@@ -156,6 +156,8 @@ def set_file_id(mime, media_type, file_id, field):
     print(file_id)
     if media_type == "image" and model == "Image" and field == "image":
         return file_id
+    elif media_type == "file" and model == "Image" and field == "binary":
+        return file_id
     elif (
         media_type == "document" and model == "Digital Document" and field == "document"
     ):
@@ -518,6 +520,8 @@ def main(argv):
     # att_df[x_col] = att_df[x_col].replace(".0", "")
     merge_df['Date Created'] = merge_df['Date Created'].astype(str)
     merge_df['Date Created'] = merge_df['Date Created'].str.replace('.0', "", regex=False)
+    merge_df['Date Created'] = merge_df['Date Created'].str.replace(
+        'nan', "", regex=False)
     att_df[x_col] = att_df[x_col].fillna(-1)
     att_df[x_col] = att_df[x_col].astype("int64")
     att_df[x_col] = att_df[x_col].replace(-1, None)

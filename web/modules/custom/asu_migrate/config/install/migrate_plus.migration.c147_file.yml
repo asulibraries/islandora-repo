@@ -1,0 +1,117 @@
+# Uninstall this config when the feature is uninstalled
+dependencies:
+  enforced:
+    module:
+      - asu_migrate
+
+id: c147_file
+label: Import Collection 147 Files
+migration_group: migrate_c147_csv
+
+source:
+  plugin: csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/data/migration_data/att_file_147_v2.csv
+  delimiter: ','
+
+  # 1 means you have a header row, 0 means you don't
+  header_row_count: 1
+
+  # Each migration needs a unique key per row in the csv.  Here we're using the file path.
+  ids:
+    - file id
+
+  # You can't enter string literals into a process plugin, but you can give it a constant as a 'source'.
+  constants:
+    # Islandora uses flysystem and stream wrappers to work with files.  What we're really saying here is
+    # to put these files in Fedora in a 'csv_migration' folder.  It doesn't matter if the directory
+    # doesn't exist yet, it will get created for you automatically.
+    destination_dir: 'fedora://c147'
+
+    # Hard-code mime type to jpeg.  This could easily come from a column in the CSV if you have
+    # different mimetypes.
+    # mime: image/jpeg
+
+    # Everything gets created as admin
+    uid: 1
+    baseurl: "https://repository.asu.edu"
+    basepath: "/mnt/libfile/Repository/old-repo-data/filestore/"
+
+process:
+
+  # Set these properties from constants.
+#   filemime: file mime
+  uid: constants/uid
+  # todo set to asurite
+  type: file type
+
+  field_original_name/value: file original_filename
+  filename:
+    -
+      plugin: transliteration
+      source: file original_filename
+    -
+      plugin: str_replace
+      search: " "
+      replace: "_"
+    -
+      plugin: str_replace
+      search: "'"
+      replace: ""
+    -
+      plugin: str_replace
+      search: ","
+      replace: ""
+    -
+      plugin: str_replace
+      search: ")"
+      replace: ""
+    -
+      plugin: str_replace
+      search: "("
+      replace: ""
+    -
+      plugin: str_replace
+      search: "&"
+      replace: ""
+    -
+      plugin: str_replace
+      search: "["
+      replace: ""
+    -
+      plugin: str_replace
+      search: "]"
+      replace: ""
+
+
+  # Construct the destination URI using the file name.
+  destination:
+    plugin: concat
+    delimiter: /
+    source:
+      - constants/destination_dir
+      - '@filename'
+    #   - file id
+
+  filelocation:
+    plugin: concat
+    source:
+      - constants/baseurl
+      - file url
+
+  localfilelocation:
+    plugin: concat
+    source:
+      - constants/basepath
+      - storage path
+
+  uri:
+    plugin: file_copy
+    source:
+      - '@localfilelocation'
+      - '@destination' # The destination entry from above
+
+
+destination:
+  # These are Drupal 'image' entities we're making, not just plain 'file' entities.
+  plugin: 'entity:file'
+  # type: file

@@ -181,6 +181,7 @@ function asu_permissions_node_access(NodeInterface $node, $op, AccountInterface 
       if ($par->bundle() == 'collection') {
         if ($par->get('field_enabled') && $par->get('field_enabled')->value == 0) {
           $access_result = AccessResult::forbiddenIf(!($account->isAuthenticated() && !in_array("administrator", $account->getRoles())));
+          break;
         }
         else {
           // \Drupal::logger('asu permissions')->info($par->id() . " is enabled.");
@@ -222,6 +223,23 @@ function asu_permissions_node_access(NodeInterface $node, $op, AccountInterface 
                   }
                 }
                 else {
+                  $access_result = AccessResult::allowed();
+                }
+              }
+              else {
+                if (count($parents) > 0) {
+                  foreach ($parents as $par) {
+                    if ($par->uuid() != $node->uuid()) {
+                      // This line enforces if you can't view a parent then you can't view child.
+                      $taccess = $par->access('view', $account);
+                      if (isset($access_result) && $access_result instanceof AccessResultForbidden) {
+                        // Already forbidden.
+                      } else {
+                        $access_result = AccessResult::forbiddenIf($taccess == FALSE);
+                      }
+                    }
+                  }
+                } else {
                   $access_result = AccessResult::allowed();
                 }
               }
@@ -339,16 +357,30 @@ function _walk_membership(NodeInterface $entity, $parents) {
   if ($entity->hasField('field_member_of') &&
     !$entity->get('field_member_of')->isEmpty() && $entity->get('field_member_of') != NULL && $entity->get('field_member_of')->referencedEntities() != NULL) {
     $newent = $entity->get('field_member_of')->referencedEntities()[0];
-    $parents[] = $newent;
+    if (!array_key_exists($newent->id(), $parents)) {
+      $parents[$newent->id()] = $newent;
+    }
     $new_pars = _walk_membership($newent, $parents);
   }
   if (isset($new_pars)) {
-    return array_merge($parents, $new_pars);
+    return array_merge_recursive_unique($parents, $new_pars);
   }
   else {
-    $newarr = array_merge($parents, $enarr);
+    $newarr = array_merge_recursive_unique($parents, $enarr);
     return $newarr;
   }
+}
+
+function array_merge_recursive_unique($array1, $array2) {
+  if (empty($array1)) return $array2; //optimize the base case
+
+  foreach ($array2 as $key => $value) {
+    if (is_array($value) && is_array(@$array1[$key])) {
+      $value = array_merge_recursive_unique($array1[$key], $value);
+    }
+    $array1[$key] = $value;
+  }
+  return $array1;
 }
 
 /**
@@ -415,12 +447,28 @@ function asu_permissions_user_insert(UserInterface $entity) {
     if ($request->getStatusCode() == 200) {
       // if 200 and in headcount, proceed
       $json = json_decode($request->getBody(), TRUE);
-      // \Drupal::logger('asu permissions')->info(print_r($json, TRUE));
+      \Drupal::logger('asu permissions')->info(print_r($json, TRUE));
       if (array_key_exists('in_headcount', $json) && $json['in_headcount'] == TRUE) {
-        // \Drupal::logger('asu permissions')->info("proceed to creating user");
+        \Drupal::logger('asu permissions')->info("proceed to creating user");
         $fname = $json['person']['preferred_first_name'] != '' ? $json['person']['preferred_first_name'] : $json['person']['first_name'];
-        // $entity->set('');
-        // @TODO set the users first and last name - possible substitute for LDAP integration
+        $lname = $json['person']['preferred_last_name'] != '' ? $json['person']['preferred_last_name'] : $json['person']['last_name'];
+        $honors = $json['person']['honors'];
+        $emplid = $json['person']['emplid'];
+        $campus = $json['stuplan'][0]['campus'];
+        $schools = [];
+        foreach($json['stuplan'] as $plan) {
+          array_push($schools, $plan['acad_dept_org_descr']);
+        }
+        $entity->set('field_first_name', $fname);
+        $entity->set('field_last_name', $lname);
+        $entity->set('field_honors', $honors);
+        $entity->set('field_emplid', $emplid);
+        $entity->set('field_campus', $campus);
+        $entity->set('field_programs', $schools);
+        if ($honors) {
+          $entity->addRole('honors_student');
+        }
+        $entity->save();
       }
       else {
         throw new LibauthException('User is not authorized for electronic resources at ASU. If you think this is an error, <a href="/contact">please contact us</a>.');
@@ -436,7 +484,12 @@ function asu_permissions_user_insert(UserInterface $entity) {
     }
   }
   catch (ClientException $e) {
-    throw new LibauthException('There was an issue validating user ' . $entity->getDisplayName() . ' at ASU due to a client exception. If you think this is an error, <a href="/contact">please contact us</a>.');
+    if ($request && $request->getStatusCode() == 404) {
+      throw new LibauthException('Unable to find user ' . $entity->getDisplayName() . ' at ASU. If you think this is an error, <a href="/contact">please contact us</a>.');
+
+    } else {
+        throw new LibauthException('There was an issue validating user ' . $entity->getDisplayName() . ' at ASU due to a client exception. If you think this is an error, <a href="/contact">please contact us</a>.');
+    }
   }
   catch (ConnectException $e) {
     throw new LibauthException('There was an issue validating user ' . $entity->getDisplayName() . ' at ASU due to a connection exception. If you think this is an error, <a href="/contact">please contact us</a>.');
