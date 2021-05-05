@@ -13,99 +13,219 @@ use Drupal\Core\Database\Database;
  * Creates the tables using the schema API.
  */
 function asu_collection_extras_schema() {
-  $schema['asu_collection_extras_collection_usage'] = [
-    'description' => 'Store each collection\'s view and download total',
-    'fields' => [
-      'nid' => [
-        'description' => 'The collection {node}.nid this record affects.',
-        'type' => 'int',
-        'unsigned' => TRUE,
-        'not null' => TRUE,
-        'default' => 0,
+  $schema = [
+    'ace_collections' => [
+      'description' => 'Stores the collections for summary reports.',
+      'fields' => [
+        'c_nid' => [
+          'description' => 'The collection {node}.nid this record affects.',
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+          'default' => 0,
+        ],
+        'views' => [
+          'description' => 'View total for all objects in the collection.',
+          'type' => 'int',
+          'not null' => TRUE,
+          'default' => 0,
+        ],
+        'modified' => [
+          'description' => 'Timestamp for when the record is updated',
+          'type' => 'int',
+          'not null' => TRUE,
+          'default' => 0,
+        ],
       ],
-      'views' => [
-        'description' => 'View total for all objects in the collection.',
-        'type' => 'int',
-        'not null' => TRUE,
-        'default' => 0,
+      'primary key' => ['c_nid'],
+    ],
+    'ace_items' => [
+      'description' => 'Stores the items for summary reports.',
+      'fields' => [
+        'i_nid' => [
+          'description' => 'The items {node}.nid this record affects.',
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+          'default' => 0,
+        ],
+        'views' => [
+          'description' => 'View total for all objects in the collection.',
+          'type' => 'int',
+          'not null' => TRUE,
+          'default' => 0,
+        ],
+        'downloads' => [
+          'description' => 'Download total for all objects in the collection.',
+          'type' => 'int',
+          'not null' => TRUE,
+          'default' => 0,
+        ],
+        'views_modified' => [
+          'description' => 'Timestamp for when the record is updated',
+          'type' => 'int',
+          'not null' => TRUE,
+          'default' => 0,
+        ],
+        'downloads_modified' => [
+          'description' => 'Timestamp for when the record is updated',
+          'type' => 'int',
+          'not null' => TRUE,
+          'default' => 0,
+        ],
       ],
-      'downloads' => [
-        'description' => 'Download total for all objects in the collection.',
-        'type' => 'int',
-        'not null' => TRUE,
-        'default' => 0,
+      'primary key' => ['i_nid'],
+    ],
+    'ace_relations' => [
+      'description' => 'Stores the collections for summary reports.',
+      'fields' => [
+        'uid' => [
+          'type' => 'serial',
+          'not null' => TRUE,
+        ],
+        'parent_nid' => [
+          'description' => 'The parent object {node}.nid this record affects.',
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+          'default' => 0,
+        ],
+        'child_nid' => [
+          'description' => 'The child object {node}.nid this record affects.',
+          'type' => 'int',
+          'unsigned' => TRUE,
+          'not null' => TRUE,
+          'default' => 0,
+        ],
+        'parent_type' => [
+          'description' => 'Timestamp for when the record is updated',
+          'type' => 'varchar',
+          'length' => 6,
+          'not null' => TRUE,
+        ],
       ],
-      'modified' => [
-        'description' => 'Timestamp for when the record is updated',
-        'type' => 'int',
-        'not null' => TRUE,
-        'default' => 0,
+      'primary key' => ['uid'],
+      'indexes' => [
+        'parent_nid' => [
+          'parent_nid',
+        ],
       ],
     ],
-    'primary key' => ['nid'],
-  ];
 
-  $schema['asu_collection_extras_item_downloads'] = [
-    'description' => 'Store the # of downloads for each asu_repository_item',
-    'fields' => [
-      'collection_nid' => [
-        'description' => 'The collection {node}.nid this record affects.',
-        'type' => 'int',
-        'unsigned' => TRUE,
-        'not null' => TRUE,
-        'default' => 0,
-      ],
-      'nid' => [
-        'description' => 'The item {node}.nid this record affects.',
-        'type' => 'int',
-        'unsigned' => TRUE,
-        'not null' => TRUE,
-        'default' => 0,
-      ],
-      'views' => [
-        'description' => 'View total for all objects in the collection.',
-        'type' => 'int',
-        'not null' => TRUE,
-        'default' => 0,
-      ],
-      'downloads' => [
-        'description' => 'Download total for all objects in the collection.',
-        'type' => 'int',
-        'not null' => TRUE,
-        'default' => 0,
-      ],
-      'modified' => [
-        'description' => 'Timestamp for when the record is updated',
-        'type' => 'int',
-        'not null' => TRUE,
-        'default' => 0,
-      ],
-    ],
-    'primary key' => ['collection_nid', 'nid'],
-    'indexes' => [
-      'downloads' => [
-        'downloads',
-      ],
-      'collection_nid' => [
-        'collection_nid',
-      ],
-    ],
   ];
   return $schema;
 }
 
 /**
- * Implements hook_update_8001() to add modified field.
+ * Create new tables needed for this version and drops the old tables.
  */
-function asu_collection_extras_update_8001() {
-  // Add the modified field to the two tables.
-  $spec = [
-    'type' => 'int',
-    'description' => 'Timestamp for when the record is updated',
-    'not null' => TRUE,
-    'default' => 0,
-  ];
+function asu_collection_extras_update_8003() {
   $schema = Database::getConnection()->schema();
-  $schema->addField('asu_collection_extras_item_downloads', 'modified', $spec);
-  $schema->addField('asu_collection_extras_collection_usage', 'modified', $spec);
+
+  $ace_collections_spec = [
+    'description' => 'Stores the collections for summary reports.',
+    'fields' => [
+      'c_nid' => [
+        'description' => 'The collection {node}.nid this record affects.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'views' => [
+        'description' => 'View total for all objects in the collection.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'modified' => [
+        'description' => 'Timestamp for when the record is updated',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+    ],
+    'primary key' => ['c_nid'],
+  ];
+  $ace_items_spec = [
+    'description' => 'Stores the items for summary reports.',
+    'fields' => [
+      'i_nid' => [
+        'description' => 'The items {node}.nid this record affects.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'views' => [
+        'description' => 'View total for all objects in the collection.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'downloads' => [
+        'description' => 'Download total for all objects in the collection.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'views_modified' => [
+        'description' => 'Timestamp for when the record is updated',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'downloads_modified' => [
+        'description' => 'Timestamp for when the record is updated',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+    ],
+    'primary key' => ['i_nid'],
+  ];
+  $ace_relations_spec = [
+    'description' => 'Stores the collections for summary reports.',
+    'fields' => [
+      'uid' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+      ],
+      'parent_nid' => [
+        'description' => 'The parent object {node}.nid this record affects.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'child_nid' => [
+        'description' => 'The child object {node}.nid this record affects.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'parent_type' => [
+        'description' => 'Timestamp for when the record is updated',
+        'type' => 'varchar',
+        'length' => 6,
+        'not null' => TRUE,
+      ],
+    ],
+    'primary key' => ['uid'],
+    'indexes' => [
+      'parent_nid' => [
+        'parent_nid',
+      ],
+    ],
+  ];
+  $schema->createTable('ace_items', $ace_items_spec);
+  $schema->createTable('ace_collections', $ace_collections_spec);
+  $schema->createTable('ace_relations', $ace_relations_spec);
+  if ($schema->tableExists('asu_collection_extras_item_downloads')) {
+    $schema->dropTable('asu_collection_extras_item_downloads');
+  }
+  if ($schema->tableExists('asu_collection_extras_collection_usage')) {
+    $schema->dropTable('asu_collection_extras_collection_usage');
+  }
 }
