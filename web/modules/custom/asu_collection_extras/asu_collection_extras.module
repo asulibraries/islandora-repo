@@ -76,7 +76,7 @@ function asu_collection_extras_solr_get_collection_children($collection_node) {
     $solariumQuery = $solrConnector->getSelectQuery();
     $count = 0;
     while(TRUE) {
-      $solariumQuery->setStart($count)->setRows(50000);
+      $solariumQuery->setStart($count)->setRows(1000);
       $solariumQuery->addParam('q', '(itm_field_ancestors:' . $collection_node_id .
         ' OR itm_field_combined_member_of:' . $collection_node_id . ')');
       $solariumQuery->setFields(['its_nid', 'ds_changed', 'ss_original_file_count', 'itm_field_model']);
@@ -135,13 +135,13 @@ function asu_collection_extras_doCollectionSummary($collection_nid) {
   foreach ($children as $child_nid => $child_arr) {
     $item_views = $item_downloads = 0;
     if ($child_nid) {
-      $item_views += \Drupal::service('islandora_matomo.default')->getViewsForNode($child_nid);
+      $item_views += \Drupal::service('islandora_matomo.default')->getViewsForNode(['nid' => $child_nid]);
       $mids = \Drupal::entityQuery('media')
         ->condition('field_media_of', $child_nid)
         ->execute();
       foreach ($mids as $mid) {
         $fid = \Drupal::service('islandora_matomo.default')->getFileFromMedia($mid);
-        $item_downloads += \Drupal::service('islandora_matomo.default')->getDownloadsForFile($fid);
+        $item_downloads += \Drupal::service('islandora_matomo.default')->getDownloadsForFile(['fid' => $fid]);
       }
       $connection
         ->delete('asu_collection_extras_item_downloads')

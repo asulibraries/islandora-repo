@@ -105,6 +105,8 @@ class TypedRelationGenerate extends NameURIGenerate {
     "relators:dfd" => "Defendant",
     "relators:dft" => "Defendant-appellant",
     "relators:dfe" => "Defendant-appellee",
+    "relators:dgc" => "Degree Committee Member",
+    "relators:dgc" => "Committee Member",
     "relators:dgg" => "Degree granting institution",
     "relators:dgs" => "Degree supervisor",
     "relators:dln" => "Delineator",
@@ -270,6 +272,7 @@ class TypedRelationGenerate extends NameURIGenerate {
     "relators:tld" => "Television director",
     "relators:tlp" => "Television producer",
     "relators:ths" => "Thesis advisor",
+    "relators:ths" => "Thesis director",
     "relators:trc" => "Transcriber",
     "relators:trl" => "Translator",
     "relators:tyd" => "Type designer",
@@ -321,7 +324,7 @@ class TypedRelationGenerate extends NameURIGenerate {
   }
 
   public function look_up_relator(string $relator) {
-    return array_search($relator, $this->relator_map);
+    return array_search(strtolower($relator), array_map('strtolower', $this->relator_map));
   }
 
 }

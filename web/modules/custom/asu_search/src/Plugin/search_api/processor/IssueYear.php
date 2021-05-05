@@ -67,15 +67,17 @@ class IssueYear extends ProcessorPluginBase {
         && !$node->field_edtf_date_created->isEmpty()) {
 
         $date = $node->field_edtf_date_created->value;
-        $iso = EDTFUtils::iso8601Value($date);
-        $components = explode('-', $iso);
-        $year = array_shift($components);
-        if (is_numeric($year)) {
-          $fields = $item->getFields(FALSE);
-          $fields = $this->getFieldsHelper()
-            ->filterForPropertyPath($fields, NULL, 'etdf_created_year_only');
-          foreach ($fields as $field) {
-            $field->addValue($year);
+        if ($date != "nan") {
+          $iso = EDTFUtils::iso8601Value($date);
+          $components = explode('-', $iso);
+          $year = array_shift($components);
+          if (is_numeric($year)) {
+            $fields = $item->getFields(FALSE);
+            $fields = $this->getFieldsHelper()
+              ->filterForPropertyPath($fields, NULL, 'etdf_created_year_only');
+            foreach ($fields as $field) {
+              $field->addValue($year);
+            }
           }
         }
       }

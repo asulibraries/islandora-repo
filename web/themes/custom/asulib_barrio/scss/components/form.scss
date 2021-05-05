@@ -267,11 +267,21 @@ a.tabledrag-handle .handle {
 .field-multiple-table tr:last-child td {
   border-bottom: 1px solid $gray-3;
 }
-.form-type-webform-multiple thead {
-  display: none;
+.form-type-webform-multiple thead tr th {
+  padding-top: 0;
+  padding-bottom: 0;
 }
 .form-type-webform-multiple {
   max-width: $asu-width;
+  padding-top: 20px;
+}
+#group_members_table, #thesis_director_table, #committee_members_table {
+  .tabledrag-toggle-weight-wrapper {
+    display: none;
+  }
+  th {
+    padding: 10px;
+  }
 }
 .form-wrapper summary {
   font-size: 1.25rem;
