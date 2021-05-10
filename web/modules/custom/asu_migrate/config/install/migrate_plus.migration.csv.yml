@@ -27,13 +27,17 @@ process:
     method: process
 
   field_edtf_date_created:
-    plugin: skip_on_empty
-    source: Date Created
-    from_format: 'Y-m-d G:i:s.uP'
-    # from_format: 'd/m/Y - H:i'
-    to_format: 'U'
-    from_timezone: 'UTC'
-    to_timezone: 'UTC'
+    -
+      plugin: skip_on_empty
+      method: process
+      source: Date Created
+    -
+      plugin: format_date
+      from_format: 'Y-m-d G:i:s.uP'
+      #from_format: 'd/m/Y - H:i'
+      to_format: 'U'
+      from_timezone: 'UTC'
+      to_timezone: 'UTC'
   field_edtf_copyright_date:
     plugin: skip_on_empty
     source: Copyright Date
@@ -66,9 +70,16 @@ process:
       bundle: reuse_permissions
 
   created:
-    plugin: skip_on_empty
-    source: System Created
-    method: process
+    -
+      plugin: skip_on_empty
+      source: System Created
+      method: process
+    -
+      plugin: format_date
+      from_format: 'd/m/Y - H:i'
+      to_format: 'U'
+      from_timezone: 'UTC'
+      to_timezone: 'UTC'
 
   moderation_state: Visibility
 
