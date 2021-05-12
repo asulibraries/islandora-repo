@@ -27,7 +27,7 @@ class ComplexTitleCSVFormatter  extends EntityReferenceLabelFormatter {
       $nonsort = $item->entity->field_nonsort->value . '';
       $main = $item->entity->field_main_title->value;
       $sub = $item->entity->field_subtitle->value . '';
-      $nm = (($nonsort) ? $nonsort . ':' : '').
+      $nm = (($nonsort) ? $nonsort . ' ' : '').
         ($main != NULL ? $main : "[untitled]") .
         (($sub) ? ':' . $sub : '');
       \Drupal::logger('title formatter')->info($nm);
