@@ -3,21 +3,19 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.media.source
-    - field.field.media.audio.field_access_terms
-    - field.field.media.audio.field_captions
     - field.field.media.audio.field_file_size
-    - field.field.media.audio.field_legacy_checksum
     - field.field.media.audio.field_media_audio_file
     - field.field.media.audio.field_media_of
     - field.field.media.audio.field_media_use
     - field.field.media.audio.field_mime_type
     - field.field.media.audio.field_original_name
+    - field.field.media.audio.field_track
     - media.type.audio
   enforced:
     module:
       - islandora_core_feature
   module:
-    - asu_item_extras
+    - islandora_audio
 id: media.audio.source
 targetEntityType: media
 bundle: audio
@@ -29,7 +27,7 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_media_audio_file:
-    type: file_audio_caption
+    type: islandora_file_audio
     weight: 0
     label: visually_hidden
     settings:
@@ -49,6 +47,7 @@ hidden:
   field_media_use: true
   field_mime_type: true
   field_original_name: true
+  field_track: true
   langcode: true
   name: true
   search_api_excerpt: true

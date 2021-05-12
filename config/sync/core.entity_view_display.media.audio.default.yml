@@ -11,30 +11,15 @@ dependencies:
     - field.field.media.audio.field_media_use
     - field.field.media.audio.field_mime_type
     - field.field.media.audio.field_original_name
+    - field.field.media.audio.field_track
     - media.type.audio
   module:
-    - file
+    - islandora_audio
 id: media.audio.default
 targetEntityType: media
 bundle: audio
 mode: default
 content:
-  field_access_terms:
-    weight: 6
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_captions:
-    weight: 9
-    label: above
-    settings:
-      use_description_as_link_text: true
-    third_party_settings: {  }
-    type: file_default
-    region: content
   field_file_size:
     type: number_integer
     weight: 3
@@ -45,12 +30,12 @@ content:
       prefix_suffix: true
     third_party_settings: {  }
   field_gemini_uri:
-    weight: 7
+    weight: 100
     region: content
     settings: {  }
     third_party_settings: {  }
   field_media_audio_file:
-    type: file_audio
+    type: islandora_file_audio
     weight: 1
     label: visually_hidden
     settings:
@@ -85,7 +70,7 @@ content:
       link_to_entity: false
     third_party_settings: {  }
   field_original_name:
-    weight: 8
+    weight: 101
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -101,7 +86,10 @@ content:
     third_party_settings: {  }
 hidden:
   created: true
+  field_access_terms: true
+  field_captions: true
   field_legacy_checksum: true
+  field_track: true
   langcode: true
   search_api_excerpt: true
   thumbnail: true
