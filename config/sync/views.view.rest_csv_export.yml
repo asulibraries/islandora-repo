@@ -50,7 +50,6 @@ dependencies:
     - search_api.index.default_solr_index
   module:
     - asu_migrate
-    - asu_search
     - controlled_access_terms
     - csv_serialization
     - datetime
@@ -258,7 +257,7 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: complex_title_formatter
+          type: complex_title_csv
           settings:
             link: 0
           group_column: ''
