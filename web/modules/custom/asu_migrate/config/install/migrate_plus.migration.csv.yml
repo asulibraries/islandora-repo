@@ -2,7 +2,7 @@ dependencies:
   enforced:
     module:
       - asu_migrate
-      
+
 id: csv
 label: Import/Update Nodes from CSV
 migration_group: csv_upload
@@ -20,7 +20,7 @@ source:
 
 process:
   nid: ID
-    
+
   field_extent:
     plugin: skip_on_empty
     source: Extent
@@ -83,7 +83,7 @@ process:
 
   moderation_state: Visibility
 
-  field_model:      
+  field_model:
     source: Model
     plugin: entity_lookup
     entity_type: taxonomy_term
@@ -265,7 +265,7 @@ process:
     name_array_key: name
     uri_array_key: uri
     source: Title Subject
-    
+
   field_temporal_subject:
     plugin: name_uri_generate
     uri_field: field_authority_link
@@ -287,7 +287,7 @@ process:
   field_frequency: Frequency
   field_issuance: Issuance
 
-  field_coordinates: 
+  field_coordinates:
     -
       plugin: str_to_geolocation
       source: Coordinates
@@ -375,7 +375,7 @@ process:
       default_vocabulary: corporate_body
       # relator: 'relators:ctb'
 
-# Event Contributor      
+# Event Contributor
   event_contrib:
     -
       plugin: explode
@@ -393,14 +393,14 @@ process:
       uri_field: field_authority_link
       default_vocabulary: conference
       # relator: 'relators:ctb'
-      
+
   field_linked_agent:
     plugin: merge
     source:
       - '@corporate_body'
       - '@contributors'
       - '@event_contrib'
-      
+
   field_additional_memberships:
     source: Additional Memberships
     plugin: entity_lookup
@@ -490,7 +490,6 @@ destination:
     - field_peer_reviewed
     - field_open_access
     - field_genre
-    - status
     - created
     - uid
     - field_copyright_statement
