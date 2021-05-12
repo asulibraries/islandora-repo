@@ -30,9 +30,7 @@ class ComplexTitleCSVFormatter  extends EntityReferenceLabelFormatter {
       $nm = (($nonsort) ? $nonsort . ' ' : '').
         ($main != NULL ? $main : "[untitled]") .
         (($sub) ? ':' . $sub : '');
-      \Drupal::logger('title formatter')->info($nm);
-      $elements[$delta]['#text'] = $nm;
-      $elements[$delta]['#type'] = 'processed_text';
+      $elements[$delta]['#plain_text'] = $nm;
     }
 
     return $elements;
