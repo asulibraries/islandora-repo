@@ -1,0 +1,34 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.content_recent
+  module:
+    - islandora
+    - system
+    - views
+  theme:
+    - asulib_barrio
+id: views_block__content_recent_block_6
+theme: asulib_barrio
+region: content
+weight: -33
+provider: null
+plugin: 'views_block:content_recent-block_6'
+settings:
+  id: 'views_block:content_recent-block_6'
+  label: ''
+  provider: views
+  label_display: '0'
+  views_label: ''
+  items_per_page: none
+visibility:
+  media_source_mimetype:
+    id: media_source_mimetype
+    mimetype: ''
+    negate: false
+    context_mapping: {  }
+  request_path:
+    id: request_path
+    pages: '<front>'
+    negate: false
