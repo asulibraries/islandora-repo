@@ -1,0 +1,26 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_track
+    - media.type.video
+  module:
+    - islandora
+id: media.video.field_track
+field_name: field_track
+entity_type: media
+bundle: video
+label: Track
+description: 'Supply a caption file here.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  file_directory: '[date:custom:Y]-[date:custom:m]'
+  file_extensions: vtt
+  max_filesize: ''
+  languages: installed
+  handler: 'default:file'
+  handler_settings: {  }
+field_type: media_track
