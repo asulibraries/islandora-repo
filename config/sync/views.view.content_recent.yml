@@ -277,7 +277,12 @@ display:
           field: field_member_of_target_id
           plugin_id: standard
       title: 'Recent content'
-      header: {  }
+      header:
+        area:
+          id: area
+          table: views
+          field: area
+          plugin_id: text
       footer: {  }
       empty:
         area_text_custom:
@@ -2508,9 +2513,9 @@ display:
       style:
         type: default
         options:
-          grouping: {  }
           row_class: ''
           default_row_class: true
+          uses_fields: false
       defaults:
         style: false
         row: false
@@ -2520,6 +2525,9 @@ display:
         filter_groups: false
         query: false
         group_by: false
+        header: false
+        footer: false
+        css_class: false
       row:
         type: 'entity:node'
         options:
@@ -2740,6 +2748,9 @@ display:
           query_comment: ''
           query_tags: {  }
       group_by: true
+      header: {  }
+      footer: {  }
+      css_class: 'container table-striped'
     cache_metadata:
       max-age: -1
       contexts:
