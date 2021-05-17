@@ -98,7 +98,7 @@ class ASUBreadcrumbBuilder implements BreadcrumbBuilderInterface {
     $route_name = $route_match->getRouteName();
 
     $chain = [];
-    if (is_object($media)) {
+    if (isset($media)) {
       $this->walkMembership($media, $chain);
     } else {
       $this->walkMembership($node, $chain);
