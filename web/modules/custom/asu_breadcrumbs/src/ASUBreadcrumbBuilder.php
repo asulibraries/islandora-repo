@@ -74,11 +74,14 @@ class ASUBreadcrumbBuilder implements BreadcrumbBuilderInterface {
     // a node ID string and sometimes returns a node object.
     $nid = $attributes->getRawParameters()->get('node');
     $mid = $attributes->getRawParameters()->get('media');
-    if (!empty($nid) || !empty($mid)) {
+    if (!empty($nid)) {
       $node = $this->nodeStorage->load($nid);
+      return (!empty($node) && $node->hasField($this->config->get('referenceField')));
+    }
+    if (!empty($mid)) {
       $media = $this->mediaStorage->load($mid);
-      return ( (!empty($node) && $node->hasField($this->config->get('referenceField')) ) ||
-        (!empty($media) && $media->hasField('field_media_of') ) );
+      return
+        (!empty($media) && $media->hasField('field_media_of'));
     }
   }
 
