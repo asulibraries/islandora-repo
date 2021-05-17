@@ -124,7 +124,7 @@ class ASUBreadcrumbBuilder implements BreadcrumbBuilderInterface {
       $breadcrumb->addLink($chainlink->toLink());
     }
     // Get the node for the current page.
-    if (is_object($node)) {
+    if (isset($node)) {
       $bundle = $node->bundle();
       $route_name = $route_match->getRouteName();
       // Need to also include the canonical view of any node.
@@ -192,7 +192,7 @@ class ASUBreadcrumbBuilder implements BreadcrumbBuilderInterface {
   private function getNodeLink(RouteMatchInterface $route_match) {
     $node = $route_match->getParameter('node');
     // No ... $node = $this->routeMatch->getParameter('node');.
-    if (is_object($node)) {
+    if (isset($node)) {
       $options = ['absolute' => TRUE];
       $url = Url::fromRoute('entity.node.canonical', ['node' => $node->id()], $options);
       $first_title = $node->field_title[0];
