@@ -112,8 +112,11 @@ class ASUBreadcrumbBuilder implements BreadcrumbBuilderInterface {
     if (!$this->config->get('includeSelf')) {
       array_pop($chain);
     }
-
-    $breadcrumb->addCacheableDependency($node);
+    if (isset($node)){
+      $breadcrumb->addCacheableDependency($node);
+    } elseif (isset($media)) {
+      $breadcrumb->addCacheableDependency($media);
+    }
 
     // Add membership chain to the breadcrumb.
     foreach ($chain as $chainlink) {
