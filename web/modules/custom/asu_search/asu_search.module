@@ -5,7 +5,6 @@ use Drupal\views\ViewExecutable;
 use Drupal\views\Plugin\views\cache\CachePluginBase;
 use Drupal\user\Entity\User;
 use Drupal\taxonomy\Entity\Term;
-use Drupal\Core\Url;
 
 /**
  * Implements hook_form_alter().
@@ -65,7 +64,13 @@ function asu_search_preprocess_node(&$variables) {
   if ($variables['node'] && $variables['node']->getType() == 'asu_repository_item') {
     $asu_utils = \Drupal::service('asu_utils');
     $variables['is_published'] = $asu_utils->isNodePublished($variables['node']);
-    if ($variables['view_mode'] == "search_result") {
+    if ($variables['view_mode'] == "search_result" || $variables['view_mode'] == "collection_browse_teaser" ||
+      $variables['view_mode'] == "recent_item_teaser") {
+      if ($variables['view_mode'] == "recent_item_teaser") {
+        $date_formatter = \Drupal::service('date.formatter');
+        $variables['changed_ago'] =
+          $date_formatter->formatTimeDiffSince($variables['node']->getChangedTime(), ['granularity' => 2, 'return_as_object' => TRUE])->toRenderable();
+      }
       if ($variables['node']->get('field_model') != NULL && count($variables['node']->get('field_model')) > 0) {
         $model = $variables['node']->get('field_model')->referencedEntities()[0]->getName();
         if ($model == "Complex Object") {
