@@ -86,7 +86,7 @@ function asu_collection_extras_solr_get_collection_children($collection_node) {
       foreach ($nids as $nid_doc) {
         $nids_arr[$nid_doc->its_nid] = [
           'changed' => $nid_doc->ds_changed,
-          'original_file_count' => $nid_doc->ss_original_file_count,
+          'original_file_count' => (!is_null($nid_doc->ss_original_file_count) ? $nid_doc->ss_original_file_count : 0),
           'field_model' => (!is_null($nid_doc->itm_field_model) && array_key_exists(0, $nid_doc->itm_field_model)) ?
             $nid_doc->itm_field_model[0] : 0
         ];
