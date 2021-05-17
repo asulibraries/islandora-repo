@@ -90,7 +90,9 @@ class ASUBreadcrumbBuilder implements BreadcrumbBuilderInterface {
    */
   public function build(RouteMatchInterface $route_match) {
     $nid = $route_match->getRawParameters()->get('node');
-    $node = $this->nodeStorage->load($nid);
+    if ($nid) {
+      $node = $this->nodeStorage->load($nid);
+    }
     $mid = $route_match->getRawParameters()->get('media');
     if ($mid) {
       $media = $this->mediaStorage->load($mid);
