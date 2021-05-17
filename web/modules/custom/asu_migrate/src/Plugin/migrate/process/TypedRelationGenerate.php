@@ -324,7 +324,11 @@ class TypedRelationGenerate extends NameURIGenerate {
   }
 
   public function look_up_relator(string $relator) {
-    return array_search(strtolower($relator), array_map('strtolower', $this->relator_map));
+    $relator = array_search(strtolower($relator), array_map('strtolower', $this->relator_map));
+    if (!$relator) {
+      $relator = 'relators:ctb';
+    }
+    return $relator;
   }
 
 }
