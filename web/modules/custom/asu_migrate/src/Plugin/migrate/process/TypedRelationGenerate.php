@@ -309,9 +309,14 @@ class TypedRelationGenerate extends NameURIGenerate {
       }
       else {
         $parts = explode($this->configuration['delimiter'], $value);
-        $relator_string = array_pop($parts);
-        $relator = $this->look_up_relator($relator_string);
-        $value = implode($this->configuration['delimiter'], $parts);
+        if (count($parts) > 1) {
+          $relator_string = array_pop($parts);
+          $relator = $this->look_up_relator($relator_string);
+          $value = implode($this->configuration['delimiter'], $parts);
+        }
+        else {
+          $relator = 'relators:ctb';
+        }
       }
     }
     $term = parent::transform($value, $migrate_executable, $row, $destination_property);
@@ -325,7 +330,7 @@ class TypedRelationGenerate extends NameURIGenerate {
   public function look_up_relator(string $relator) {
     $relator_found = array_search(strtolower($relator), array_map('strtolower', $this->relator_map));
     if (!$relator_found && strtolower($relator) == "thesis advisor") {
-        $relator_found = "relators:ths";
+      $relator_found = "relators:ths";
     }
     elseif (!$relator_found) {
       $relator_found = 'relators:ctb';
