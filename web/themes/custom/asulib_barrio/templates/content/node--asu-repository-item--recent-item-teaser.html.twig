@@ -85,8 +85,8 @@
 
 %}
 {# <div class="col-md-3"> #}
-    <div {{ attributes.addClass(classes) }}>
-        <div{{content_attributes.addClass('views-field', 'views-field-nothing views-align-left')}}>
+    <tr {{ attributes.addClass(classes) }}>
+        <td{{content_attributes.addClass('views-field', 'views-field-nothing views-align-left')}}>
             {% if complex_obj_thumb is not empty %}
             <a href="/items/{{ node.id }}"><img class="image-style-thumbnail" width="100" src=" {{ complex_obj_thumb }}"/></a>
             {% elseif drupal_view_result('display_media', 'thumbnail', node.id) is empty %}
@@ -99,8 +99,8 @@
             {% else %}
               {{ drupal_view('display_media', 'thumbnail', node.id) }}
             {% endif %}
-        </div>
-        <div class="col-md-10">
+        </td>
+        <td class="col-md-10">
             <span>
                 {% set title = content.field_title[0]|render|trim|slice(0, 40) %}
                 <a href="{{ url }}" rel="bookmark">{{ title|raw }}
@@ -112,6 +112,6 @@
             {%  if changed_ago %}
               <br>{{ changed_ago }} ago
             {% endif %}
-        </div>
-    </div>
+        </td>
+    </tr>
 {# </div> #}
