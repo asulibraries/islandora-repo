@@ -16,17 +16,22 @@
 * @ingroup themeable
 */
 #}
-<video controls width="100%">
-{% for file in files %}
-	<source {{ file.source_attributes }} crossorigin="anonymous"/>
-{% endfor %}
-{% if caption %}
-	<track src="{{ caption }}" kind="captions" crossorigin="anonymous" default>
-	{% endif %}
-	Your browser does not support the video tag. Please
+<div id="audioTrack"></div>
+<audio {{ attributes }}>
+	{% for file in files %}
+		<source {{ file.source_attributes }} crossorigin="anonymous"/>
+		{% if tracks %}
+			{% for track in tracks %}
+				<track {{ track.track_attributes }} default crossorigin="anonymous"/>
+			{% endfor %}
+		{% endif %}
+	{% endfor %}
+	Your browser does not support the audio tag. Please
 	<a href="{{path("entity.webform.canonical", {"webform": "feedback"})}}">
 		report this issue</a>
 	with your browser information so we can improve our platform.
-</video>
+</audio>
+
+{{ attach_library('islandora_audio/audio') }}
 
 

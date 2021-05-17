@@ -11,31 +11,15 @@ dependencies:
     - field.field.media.video.field_media_video_file
     - field.field.media.video.field_mime_type
     - field.field.media.video.field_original_name
+    - field.field.media.video.field_track
     - media.type.video
   module:
-    - asu_item_extras
-    - file
+    - islandora_video
 id: media.video.default
 targetEntityType: media
 bundle: video
 mode: default
 content:
-  field_access_terms:
-    weight: 6
-    label: above
-    settings:
-      link: true
-    third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_captions:
-    weight: 9
-    label: above
-    settings:
-      use_description_as_link_text: true
-    third_party_settings: {  }
-    type: file_default
-    region: content
   field_file_size:
     type: number_integer
     weight: 3
@@ -46,7 +30,7 @@ content:
       prefix_suffix: true
     third_party_settings: {  }
   field_gemini_uri:
-    weight: 7
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -67,17 +51,17 @@ content:
       link: true
     third_party_settings: {  }
   field_media_video_file:
-    type: file_video_caption
+    type: islandora_file_video
     weight: 1
     label: visually_hidden
     settings:
-      controls: true
-      multiple_file_display_type: tags
+      muted: false
       width: 640
       height: 480
+      controls: true
       autoplay: false
       loop: false
-      muted: false
+      multiple_file_display_type: tags
     third_party_settings: {  }
     region: content
   field_mime_type:
@@ -89,7 +73,7 @@ content:
       link_to_entity: false
     third_party_settings: {  }
   field_original_name:
-    weight: 8
+    weight: 7
     label: above
     settings: {  }
     third_party_settings: {  }
@@ -105,7 +89,10 @@ content:
     third_party_settings: {  }
 hidden:
   created: true
+  field_access_terms: true
+  field_captions: true
   field_legacy_checksum: true
+  field_track: true
   langcode: true
   search_api_excerpt: true
   thumbnail: true
