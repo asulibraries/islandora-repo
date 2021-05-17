@@ -113,7 +113,7 @@
         <strong>Contributors</strong>
         <p>{{content.field_linked_agent}}</p>
       {% endif %}
-      {% if content.field_edtf_date_created is not empty %}
+      {% if content.field_edtf_date_created[0] is not empty %}
         <strong>Created</strong>
         <p>{{content.field_edtf_date_created}}</p>
       {% endif %}
