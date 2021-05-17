@@ -89,7 +89,9 @@ class ASUBreadcrumbBuilder implements BreadcrumbBuilderInterface {
     $nid = $route_match->getRawParameters()->get('node');
     $node = $this->nodeStorage->load($nid);
     $mid = $route_match->getRawParameters()->get('media');
-    $media = $this->mediaStorage->load($mid);
+    if ($mid) {
+      $media = $this->mediaStorage->load($mid);
+    }
     $breadcrumb = new Breadcrumb();
     $breadcrumb->addLink(Link::createFromRoute($this->t('Home'), '<front>'));
 
