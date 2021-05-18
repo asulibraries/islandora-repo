@@ -64,8 +64,8 @@ function asu_search_preprocess_node(&$variables) {
   if ($variables['node'] && $variables['node']->getType() == 'asu_repository_item') {
     $asu_utils = \Drupal::service('asu_utils');
     $variables['is_published'] = $asu_utils->isNodePublished($variables['node']);
-    if ($variables['view_mode'] == "search_result" || $variables['view_mode'] == "collection_browse_teaser" ||
-      $variables['view_mode'] == "recent_item_teaser") {
+    $allow_display_modes = ["search_result", "collection_browse_teaser", "recent_item_teaser", "recent_item_teaser_prism"];
+    if (!(array_search($variables['view_mode'], $allow_display_modes) === FALSE)) {
       if ($variables['view_mode'] == "recent_item_teaser") {
         $date_formatter = \Drupal::service('date.formatter');
         $variables['changed_ago'] =

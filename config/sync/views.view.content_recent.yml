@@ -2,8 +2,8 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.node.collection_browse_teaser
     - core.entity_view_mode.node.recent_item_teaser
+    - core.entity_view_mode.node.recent_item_teaser_prism
     - field.storage.node.field_collection_thumbnail
     - field.storage.node.field_model
     - field.storage.node.field_rich_description
@@ -382,44 +382,6 @@ display:
           entity_type: node
           entity_field: status
           plugin_id: boolean
-        field_complex_object_child_value:
-          id: field_complex_object_child_value
-          table: node__field_complex_object_child
-          field: field_complex_object_child_value
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: '!='
-          value: '1'
-          group: 1
-          exposed: false
-          expose:
-            operator_id: ''
-            label: ''
-            description: ''
-            use_operator: false
-            operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: ''
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          plugin_id: boolean
         type:
           id: type
           table: node_field_data
@@ -462,6 +424,44 @@ display:
           entity_type: node
           entity_field: type
           plugin_id: bundle
+        field_complex_object_child_value:
+          id: field_complex_object_child_value
+          table: node__field_complex_object_child
+          field: field_complex_object_child_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: '!='
+          value: '1'
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          plugin_id: boolean
       defaults:
         filters: false
         filter_groups: false
@@ -473,42 +473,22 @@ display:
         query: false
         cache: false
         group_by: false
+        css_class: false
       filter_groups:
         operator: AND
         groups: {  }
       style:
         type: default
         options:
-          grouping: {  }
-          row_class: ''
-          default_row_class: true
+          row_class: col-md-3
+          default_row_class: false
+          uses_fields: false
       row:
         type: 'entity:node'
         options:
           relationship: none
-          view_mode: collection_browse_teaser
-      relationships:
-        uid:
-          id: uid
-          table: node_field_data
-          field: uid
-          relationship: none
-          group_type: group
-          admin_label: author
-          required: false
-          entity_type: node
-          entity_field: uid
-          plugin_id: standard
-        reverse__node__field_member_of:
-          id: reverse__node__field_member_of
-          table: node_field_data
-          field: reverse__node__field_member_of
-          relationship: none
-          group_type: group
-          admin_label: field_member_of
-          required: false
-          entity_type: node
-          plugin_id: entity_reverse
+          view_mode: recent_item_teaser_prism
+      relationships: {  }
       fields:
         changed:
           id: changed
@@ -812,6 +792,7 @@ display:
           output_lifespan: 21600
           output_lifespan_custom: 0
       group_by: true
+      css_class: ''
     cache_metadata:
       contexts:
         - 'languages:language_content'

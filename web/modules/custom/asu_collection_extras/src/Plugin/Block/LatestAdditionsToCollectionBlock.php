@@ -123,7 +123,7 @@ class LatestAdditionsToCollectionBlock extends BlockBase implements ContainerFac
     $output = [];
     foreach ($nids as $nid) {
       $node = $storage->load($nid);
-      $build = $view_builder->view($node, 'collection_browse_teaser');
+      $build = $view_builder->view($node, 'recent_item_teaser');
       $output[] = render($build);
     }
     return '<div class="card-deck">' . implode('', $output) . "</div>";
