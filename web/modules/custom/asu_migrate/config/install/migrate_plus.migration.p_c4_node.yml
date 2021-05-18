@@ -407,7 +407,7 @@ process:
     -
       plugin: explode
       delimiter: ' || '
-      source: Corporate Contributors
+      source: Institutional Contributors
     -
       plugin: callback
       callable: trim
@@ -438,7 +438,7 @@ process:
       method: process
     -
       plugin: typed_relation_generate
-      delimiter: '|'
+      delimiter: '||'
       uri_field: field_authority_link
       default_vocabulary: person
       # relator: 'relators:pht'
