@@ -50,7 +50,7 @@ class CreateItemWebformHandler extends WebformHandlerBase {
       $media_type = 'video';
       $field_name = 'field_media_video_file';
     }
-    if (!$model) {
+    if (!isset($model)) {
       $media_type = 'file';
       $model = 'Binary';
       $field_name = 'field_media_file';
