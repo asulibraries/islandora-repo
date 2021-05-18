@@ -73,7 +73,7 @@
     }
 
 %}
-<div class="views-field views-field-nothing views-align-left">
+<div class="views-field views-field-nothing views-align-center">
     {% if complex_obj_thumb is not empty %}
     <a href="/items/{{ node.id }}"><img class="image-style-thumbnail prism-home-thumb" src=" {{ complex_obj_thumb }}"/></a>
     {% elseif drupal_view_result('display_media', 'thumbnail', node.id) is empty %}
@@ -87,7 +87,7 @@
       {{ drupal_view('display_media', 'thumbnail', node.id) }}
     {% endif %}
 </div>
-<div class="views-field views-field-title">
+<div class="views-field views-field-title views-align-center">
     <span>
         {% set title = content.field_title[0]|render|trim|slice(0, 40) %}
         <a href="{{ url }}" rel="bookmark">{{ title|raw }}
