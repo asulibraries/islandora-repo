@@ -226,6 +226,7 @@ function asu_collection_extras_syncNodeRelations($node)
 function asu_collection_extras_syncNodeMatomoStats($nid) {
   // for the given node, call Matomo API to get the views AND downloads.
   \Drupal::logger('asu_collection_extras')->info('asu_collection_extras_syncNodeMatomoStats for ' . $nid);
+  $item_views = 0;
   $item_views += \Drupal::service('islandora_matomo.default')->getViewsForNode(['nid' => $nid]);
   \Drupal::logger('asu_collection_extras')->info('views = for ' . $item_views);
   $mids = \Drupal::entityQuery('media')
