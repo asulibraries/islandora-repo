@@ -4,7 +4,7 @@ dependencies:
   config:
     - views.view.content_recent
   module:
-    - context
+    - islandora
     - system
     - views
   theme:
@@ -12,7 +12,7 @@ dependencies:
 id: views_block__content_recent_block_4
 theme: asulib_barrio
 region: content
-weight: -20
+weight: -34
 provider: null
 plugin: 'views_block:content_recent-block_4'
 settings:
@@ -23,18 +23,12 @@ settings:
   views_label: ''
   items_per_page: none
 visibility:
-  request_path_exclusion:
-    id: request_path_exclusion
-    pages: ''
-    negate: null
-    context_mapping: {  }
-  view_inclusion:
-    id: view_inclusion
-    negate: null
-    view_inclusion: {  }
+  media_source_mimetype:
+    id: media_source_mimetype
+    mimetype: ''
+    negate: false
     context_mapping: {  }
   request_path:
     id: request_path
     pages: '<front>'
     negate: false
-    context_mapping: {  }

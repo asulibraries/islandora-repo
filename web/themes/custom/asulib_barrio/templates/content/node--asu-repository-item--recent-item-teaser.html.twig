@@ -69,7 +69,6 @@
     node.isSticky() ? 'node--sticky',
     not node.isPublished() ? 'node--unpublished',
     view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
-    'card',
 ]
 %}
 
@@ -86,30 +85,33 @@
 
 %}
 {# <div class="col-md-3"> #}
-    <div {{ attributes.addClass(classes) }}>
-        <div{{content_attributes.addClass('node__content','card-img-top')}}>
+    <tr {{ attributes.addClass(classes) }}>
+        <td{{content_attributes.addClass('views-field', 'views-field-nothing', 'views-align-left')}}>
             {% if complex_obj_thumb is not empty %}
-              <img src=" {{ complex_obj_thumb }}"/>
+            <a href="/items/{{ node.id }}"><img class="image-style-thumbnail" width="100" src=" {{ complex_obj_thumb }}"/></a>
             {% elseif drupal_view_result('display_media', 'thumbnail', node.id) is empty %}
               {% set mod = content.field_model[0]|render|trim %}
               {% for k, v in model_icons|filter((v, k) => k == mod) -%}
                 <div class="icon-container">
-                  <i class="{{ v }} fa-6x"></i>
+                  <i class="{{ v }} fa-2x"></i>
                 </div>
               {% endfor %}
             {% else %}
               {{ drupal_view('display_media', 'thumbnail', node.id) }}
             {% endif %}
-        </div>
-        <div class="card-body">
-            <h5{{ title_attributes.addClass('node__title', 'card-title') }}>
+        </td>
+        <td class="col-md-10">
+            <span>
                 {% set title = content.field_title[0]|render|trim|slice(0, 40) %}
                 <a href="{{ url }}" rel="bookmark">{{ title|raw }}
                 {% if content.field_title[0]|render|length > 40 %}
                     ...
                 {% endif %}
                 </a>
-            </h5>
-        </div>
-    </div>
+            </span>
+            {%  if changed_ago %}
+              <br>{{ changed_ago }} ago
+            {% endif %}
+        </td>
+    </tr>
 {# </div> #}
