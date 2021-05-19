@@ -177,7 +177,7 @@ class CreateItemWebformHandler extends WebformHandlerBase {
   public function preSave(WebformSubmissionInterface $webform_submission) {
     // Get an array of the values from the submission.
     $values = $webform_submission->getData();
-    $files = $values['file'];
+    $files = $values['files'];
 
     if (count($files) > 1) {
       $model = 'Complex Object';
@@ -261,11 +261,11 @@ class CreateItemWebformHandler extends WebformHandlerBase {
       $field_name = 'field_media_audio_file';
     }
     elseif ($type == 'file') {
-      $file_id = $values['file'];
+      $file_id = $values['files'];
       $field_name = 'field_media_file';
     }
     else {
-      $file_id = $values['file'];
+      $file_id = $values['files'];
       $field_name = 'field_media_file';
     }
     \Drupal::logger('custom webform handler')->info("media type is " . $type);
