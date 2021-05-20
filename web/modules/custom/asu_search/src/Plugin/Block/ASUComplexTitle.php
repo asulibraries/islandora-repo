@@ -34,7 +34,7 @@ class ASUComplexTitle extends BlockBase {
     if ($current_route->getParameter('node')) {
       $node = $current_route->getParameter('node');
     }
-    elseif ($current_route->getParameter('arg_0')) {
+    elseif ($current_route->getParameter('arg_0') != NULL) {
       $node = \Drupal::entityTypeManager()->getStorage('node')->load($current_route->getParameter('arg_0'));
     }
     elseif ($current_route_name <> 'view.solr_search_content.page_2') {
