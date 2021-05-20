@@ -10,7 +10,7 @@ migration_group: migrate_c4_csv
 
 source:
   plugin: csv
-  path: /var/www/html/drupal/web/modules/custom/asu_migrate/data/migration_data/test_derivs.csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/data/migration_data/c4_derivs.csv
   delimiter: ','
 
   # 1 means you have a header row, 0 means you don't
@@ -57,7 +57,13 @@ process:
       - constants/destination_dir
       - "@filename"
 
-  uri: file url
+  # uri: file url
+  uri:
+    plugin: s3_download
+    source: file url
+    profile: legacy-repository
+    bucket: digital-repository-media
+    dest_dir: c4
 
 destination:
   plugin: 'entity:file'
