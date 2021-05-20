@@ -99,7 +99,6 @@ function asulib_barrio_preprocess_node(&$variables) {
  * Converts typed identifiers for DOI into links based on our use cases.
  */
 function asulib_barrio_preprocess_paragraph(&$variables) {
-  \Drupal::logger('asulib barrio')->info('paragraph->id() = ' . $variables['paragraph']->id());
   $paragraph = $variables['paragraph'];
   if ($paragraph->bundle() == 'typed_identifier' && $paragraph->hasField('field_identifier_type') &&
     !is_null($paragraph->get('field_identifier_type')->referencedEntities()[0]) &&
@@ -108,7 +107,6 @@ function asulib_barrio_preprocess_paragraph(&$variables) {
     // If the value has http:// or https:// then use that link value, else
     // create a link that is https://doi.
     preg_match_all('/^http(s?):\/\//m', $identifier_value, $matches, PREG_SET_ORDER, 0);
-    \Drupal::logger('asulib barrio')->info('$matches = ' . print_r($matches, true));
     if (count($matches) > 0) {
       // Value is a link already.
       $url = Url::fromUri($identifier_value);
@@ -118,8 +116,6 @@ function asulib_barrio_preprocess_paragraph(&$variables) {
       $url = Url::fromUri('https://doi.org/' . $identifier_value);
       $variables['DOI_link'] = Link::fromTextAndUrl($identifier_value, $url);
     }
- //    if (strstr($identifier_value, ))
-    \Drupal::logger('asulib barrio')->info('$identifier_value = ' . $identifier_value);
   }
 }
 
