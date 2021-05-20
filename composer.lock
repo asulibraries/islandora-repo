@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "90cc34f06f5f33108d591cee4629639d",
+    "content-hash": "00887987e3bf456c98c1da67d03908ed",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -219,6 +219,61 @@
                 "source": "https://github.com/aws/aws-sdk-php/tree/3.181.1"
             },
             "time": "2021-05-12T18:13:31+00:00"
+        },
+        {
+            "name": "aws/aws-sdk-php-resources",
+            "version": "0.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/awslabs/aws-sdk-php-resources.git",
+                "reference": "8131944849a1f1e24e9708d9129f1671689a80c9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/awslabs/aws-sdk-php-resources/zipball/8131944849a1f1e24e9708d9129f1671689a80c9",
+                "reference": "8131944849a1f1e24e9708d9129f1671689a80c9",
+                "shasum": ""
+            },
+            "require": {
+                "aws/aws-sdk-php": "~3.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Aws\\Resource\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Amazon Web Services",
+                    "homepage": "http://aws.amazon.com"
+                }
+            ],
+            "description": "A resource-oriented API for interacting with AWS services",
+            "homepage": "http://aws.amazon.com/sdkforphp",
+            "keywords": [
+                "amazon",
+                "aws",
+                "cloud",
+                "dynamodb",
+                "ec2",
+                "glacier",
+                "s3",
+                "sdk"
+            ],
+            "support": {
+                "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
+                "issues": "https://github.com/aws/aws-sdk-php-resources/issues",
+                "source": "https://github.com/awslabs/aws-sdk-php-resources/tree/master"
+            },
+            "time": "2015-06-20T20:55:44+00:00"
         },
         {
             "name": "behat/mink",
@@ -7888,6 +7943,56 @@
                 "source": "https://git.drupalcode.org/project/migrate_plus",
                 "issues": "https://www.drupal.org/project/issues/migrate_plus",
                 "slack": "#migrate"
+            }
+        },
+        {
+            "name": "drupal/migrate_process_s3",
+            "version": "dev-2.0.x",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/migrate_process_s3.git",
+                "reference": "634ee785fcfa2149697d28ec4cbbc67a1b98cbb7"
+            },
+            "require": {
+                "aws/aws-sdk-php-resources": "^0.3.0",
+                "drupal/core": "^8.7.7 || ^9"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-2.0.x": "2.0.x-dev"
+                },
+                "drupal": {
+                    "version": "2.0.x-dev",
+                    "datestamp": "1604535225",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "hinte",
+                    "homepage": "https://www.drupal.org/user/3276368"
+                },
+                {
+                    "name": "socketwench",
+                    "homepage": "https://www.drupal.org/user/65793"
+                }
+            ],
+            "description": "Provides migration plugins for working with any S3 compatible service.",
+            "homepage": "https://www.drupal.org/project/migrate_process_s3",
+            "keywords": [
+                "Drupal"
+            ],
+            "support": {
+                "source": "http://cgit.drupalcode.org/migrate_process_s3",
+                "issues": "https://www.drupal.org/project/issues/migrate_process_s3"
             }
         },
         {
@@ -20900,6 +21005,7 @@
         "drupal/jw_player": 10,
         "drupal/jwt": 10,
         "drupal/masquerade": 10,
+        "drupal/migrate_process_s3": 20,
         "drupal/migrate_run": 10,
         "drupal/pdf": 20,
         "drupal/rest_oai_pmh": 10,
