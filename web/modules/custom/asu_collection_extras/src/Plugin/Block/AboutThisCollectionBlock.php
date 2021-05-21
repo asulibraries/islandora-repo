@@ -191,12 +191,13 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
     // Calculate the "Items" box link.
     $items_url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/collections/' .
        (($collection_node) ? $collection_node->id() : 0) . '/search/?search_api_fulltext=');
-    $stat_box_row1[] = $this->makeBox("<strong>" . $items . "</strong><br>items", $items_url);
-    $stat_box_row1[] = $this->makeBox("<strong>" . $files . "</strong><br>files");
+    $stat_box_row1[] = $this->makeBox("<strong>" . number_format($items) . "</strong><br>items", $items_url);
+    $stat_box_row1[] = $this->makeBox("<strong>" . number_format($files) . "</strong><br>files");
+    // Skip number_format - should never be more than a 1,000 models.
     $stat_box_row1[] = $this->makeBox("<strong>" . count($islandora_models) . "</strong><br>resource types");
-    $stat_box_row2[] = $this->makeBox("<strong>" . $collection_views_and_downloads['views'] .
+    $stat_box_row2[] = $this->makeBox("<strong>" . number_format($collection_views_and_downloads['views']) .
       "</strong><br>views");
-    $stat_box_row2[] = $this->makeBox("<strong>" . $collection_views_and_downloads['downloads'] .
+    $stat_box_row2[] = $this->makeBox("<strong>" . number_format($collection_views_and_downloads['downloads']) .
       "</strong><br>downloads");
     $stat_box_row2[] = $this->makeBox("<strong>" . (($collection_created) ? date('Y', $collection_created) : 'unknown') .
       "</strong><br>collection created");
