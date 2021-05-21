@@ -35,6 +35,7 @@ source:
     uid: 1
     baseurl: "https://repository.asu.edu"
     basepath: "/mnt/libfile/Repository/old-repo-data/filestore/"
+    local_dir: '/home/ubuntu/c4'
 
 process:
   uid: constants/uid
@@ -57,13 +58,26 @@ process:
       - constants/destination_dir
       - "@filename"
 
-  # uri: file url
+  localfilelocation:
+    plugin: concat
+    delimiter:
+    source:
+      - constants/local_dir
+      - file url
+
   uri:
-    plugin: s3_download
-    source: file url
-    profile: legacy-repository
-    bucket: digital-repository-media
-    dest_dir: c4
+    plugin: file_copy
+    source:
+      - '@localfilelocation'
+      - '@destination' # The destination entry from above
+
+  # uri: file url
+  # uri:
+  #   plugin: s3_download
+  #   source: file url
+  #   profile: legacy-repository
+  #   bucket: digital-repository-media
+  #   dest_dir: c4
 
 destination:
   plugin: 'entity:file'
