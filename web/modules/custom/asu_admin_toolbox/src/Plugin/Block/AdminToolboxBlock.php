@@ -198,7 +198,17 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
       $link = $link->toRenderable();
       $link_glyph = Link::fromTextAndUrl($this->t('<i class="fas fa-pencil-alt"></i>'), $url)->toRenderable();
       $output_links[] = render($link) . " &nbsp;" . render($link_glyph);
-
+      if ($canUpdate && $is_complex_object) {
+        // Reorder items
+        $url = Url::fromUri(
+              $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
+              '/node/' . $node->id() . '/members/reorder'
+          );
+        $link = Link::fromTextAndUrl($this->t('Reorder items'), $url);
+        $link = $link->toRenderable();
+        $link_glyph = Link::fromTextAndUrl($this->t('<i class="fas fa-arrows-alt-v"></i>'), $url)->toRenderable();
+        $output_links[] = render($link) . " &nbsp;" . render($link_glyph);
+      }
       if ($is_collection) {
         // Statistics link.
         $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/collections/' . $node->id() . '/statistics');
@@ -212,6 +222,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
         $output_links[] = "<div class='field--label-inline'><div class='field__label'>Model</div>: " . $node->get('field_model')->entity->getName() . "</div>";
       }
     }
+
     if (!($is_complex_object) && (!$is_collection)) {
       $url = Url::fromUri(
             $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
