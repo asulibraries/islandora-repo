@@ -1,6 +1,8 @@
 <?php
 
 use Drupal\Core\Template\Attribute;
+use Drupal\Core\Url;
+use Drupal\Core\Link;
 
 /**
  * @file
@@ -89,6 +91,31 @@ function asulib_barrio_preprocess_node(&$variables) {
     $url_parts = explode('/', $site_url, -1);
     $domain = $url_parts[2];
     $variables['oai_base_url'] = $site_url . 'oai/request?verb=GetRecord&metadataPrefix=oai_dc&identifier=oai:' . $domain . ':node-';
+  }
+}
+
+/**
+ * Implements hook_preprocess_paragraph()
+ * Converts typed identifiers for DOI into links based on our use cases.
+ */
+function asulib_barrio_preprocess_paragraph(&$variables) {
+  $paragraph = $variables['paragraph'];
+  if ($paragraph->bundle() == 'typed_identifier' && $paragraph->hasField('field_identifier_type') &&
+    !is_null($paragraph->get('field_identifier_type')->referencedEntities()[0]) &&
+    $paragraph->get('field_identifier_type')->referencedEntities()[0]->label() == 'Digital object identifier') {
+    $identifier_value = $paragraph->get('field_identifier_value')->value;
+    // If the value has http:// or https:// then use that link value, else
+    // create a link that is https://doi.
+    preg_match_all('/^http(s?):\/\//m', $identifier_value, $matches, PREG_SET_ORDER, 0);
+    if (count($matches) > 0) {
+      // Value is a link already.
+      $url = Url::fromUri($identifier_value);
+      $variables['DOI_link'] = Link::fromTextAndUrl($identifier_value, $url);
+    }
+    else {
+      $url = Url::fromUri('https://doi.org/' . $identifier_value);
+      $variables['DOI_link'] = Link::fromTextAndUrl($identifier_value, $url);
+    }
   }
 }
 
