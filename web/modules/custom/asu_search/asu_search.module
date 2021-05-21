@@ -100,6 +100,15 @@ function asu_search_preprocess_node(&$variables) {
  */
 function asu_search_preprocess_views_view(&$variables) {
   if ($variables['id'] == "solr_search_content") {
+    $view = $variables['view'];
+    $search_displays = ['page_1', 'page_2', 'page_3'];
+    if (!(array_search($view->current_display, $search_displays) === FALSE)) {
+      // Get the query count and set a variable for output in a custom twig for
+      // this view's header.
+      $view->get_total_rows = TRUE;
+      $view->execute($view->current_display);
+      $variables['total_rows_formatted'] = number_format($view->total_rows);
+    } 
     // inspect the query from the URL and if there are any facets, suppress
     // the inclusion of the collections block at the top of the /search page.
     $facet_filters = \Drupal::request()->query->get('f');
