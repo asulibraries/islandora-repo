@@ -1,0 +1,231 @@
+langcode: en
+status: open
+dependencies: {  }
+open: null
+close: null
+weight: 0
+uid: 6
+template: false
+archive: false
+id: new_collection_request
+title: 'New Collection Request'
+description: 'This form allows users to propose new collections to be added to KEEP.&nbsp;'
+category: ''
+elements: "intro:\n  '#type': processed_text\n  '#text': |\n    <h1>New collection request</h1>\n    \n    <p><span><span><span><span><span><span>ASU faculty and staff who are affiliated with a program or project may request creation of a new collection to deposit and organize access to their scholarly works in KEEP. Examples of new collections that will be considered are graduate program capstone collections, publications and products associated with a lab or research group, or journals published as part of an ASU program or project.&nbsp;</span></span></span></span></span></span></p>\n    \n    <p><span><span><span><span><span><span>For more information, please fill out the form with any information you have about the proposed collection. The Digital Repository Services team will review the request and respond with further questions or information about next steps. </span></span></span></span></span></span></p>\n    \n  '#format': full_html\nabout_you:\n  '#type': container\n  your_name:\n    '#type': textfield\n    '#title': 'Your name'\n    '#required': true\n  your_asurite:\n    '#type': textfield\n    '#title': 'Your ASURITE'\n    '#required': true\n    '#default_value': '[current-user:account-name]'\n  your_e_mail:\n    '#type': textfield\n    '#title': 'Your ASU e-mail address'\n    '#required': true\n  your_role_at_asu:\n    '#type': webform_checkboxes_other\n    '#title': 'Your role at ASU'\n    '#options':\n      Faculty: Faculty\n      'Academic Professional': 'Academic Professional'\n      Staff: Staff\n      'Graduate Student': 'Graduate Student'\n      'Undergraduate Student': 'Undergraduate Student'\n      TA/RA: TA/RA\n  your_asu_unit:\n    '#type': textfield\n    '#title': 'Your ASU department/college/unit'\nabout_your_collection:\n  '#type': container\n  proposed_title_of_collection:\n    '#type': textfield\n    '#title': 'Proposed title of collection'\n    '#description': 'For examples, see the <a href=\"https://keep.lib.asu.edu/collections\">collections currently available in KEEP.</a>'\n  description_of_proposed_collection:\n    '#type': textarea\n    '#title': 'Description of proposed collection'\n    '#description': '<span style=\"font-size:11pt; font-variant:normal; white-space:pre-wrap\"><span style=\"font-family:Arial\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">Please tell us about the types of materials you would like to include in your collection (examples: journal articles, images, audio, video, etc.). </span></span></span></span></span></span>Who was involved in the creation of these materials? What is the purpose of making them available in KEEP? (please see the <a href=\"https://keep.lib.asu.edu/about/practices\">Repository Practices page</a> for more information on materials that are in scope for KEEP.)'\n  file_formats:\n    '#type': textarea\n    '#title': 'File formats'\n    '#description': 'What file formats would your collection likely contain? (examples: .pdf, .docx, .mp4, .wav, etc.) Please provide approximate amounts of each file type.&nbsp;'\n  copyright_status:\n    '#type': webform_checkboxes_other\n    '#title': 'Copyright status'\n    '#description': 'For assistance on determining copyright status, please see ASU Library&#39;s <a href=\"https://libguides.asu.edu/copyright\">Copyright LibGuide</a>. For more information on Creative Commons licenses, please <a href=\"https://creativecommons.org/licenses/\">see their site</a>.&nbsp;'\n    '#options':\n      'In copyright': 'In copyright'\n      'No copyright': 'No copyright'\n      'No known copyright': 'No known copyright'\n      'I want to assign a Creative Commons license to my materials': 'I want to assign a Creative Commons license to my materials'\n      'Not sure': 'Not sure'\n  timeframe:\n    '#type': textarea\n    '#title': Timeframe\n    '#description': '<span style=\"font-size:11pt; font-variant:normal; white-space:pre-wrap\"><span style=\"font-family:Arial\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">The normal timeline for setting up a new collection is at least a few weeks. Is this request time-bound in any way? </span></span></span></span></span></span>'\nactions:\n  '#type': webform_actions\n  '#title': 'Submit button(s)'"
+css: ''
+javascript: ''
+settings:
+  ajax: false
+  ajax_scroll_top: form
+  ajax_progress_type: ''
+  ajax_effect: ''
+  ajax_speed: null
+  page: true
+  page_submit_path: ''
+  page_confirm_path: ''
+  page_theme_name: ''
+  form_title: both
+  form_submit_once: false
+  form_exception_message: ''
+  form_open_message: ''
+  form_close_message: ''
+  form_previous_submissions: true
+  form_confidential: false
+  form_confidential_message: ''
+  form_disable_remote_addr: false
+  form_convert_anonymous: false
+  form_prepopulate: false
+  form_prepopulate_source_entity: false
+  form_prepopulate_source_entity_required: false
+  form_prepopulate_source_entity_type: ''
+  form_reset: false
+  form_disable_autocomplete: false
+  form_novalidate: false
+  form_disable_inline_errors: false
+  form_required: false
+  form_unsaved: false
+  form_disable_back: false
+  form_submit_back: false
+  form_autofocus: false
+  form_details_toggle: false
+  form_access_denied: default
+  form_access_denied_title: ''
+  form_access_denied_message: ''
+  form_access_denied_attributes: {  }
+  form_file_limit: ''
+  share: false
+  share_node: false
+  share_theme_name: ''
+  share_title: true
+  share_page_body_attributes: {  }
+  submission_label: ''
+  submission_log: false
+  submission_views: {  }
+  submission_views_replace: {  }
+  submission_user_columns: {  }
+  submission_user_duplicate: false
+  submission_access_denied: default
+  submission_access_denied_title: ''
+  submission_access_denied_message: ''
+  submission_access_denied_attributes: {  }
+  submission_exception_message: ''
+  submission_locked_message: ''
+  submission_excluded_elements: {  }
+  submission_exclude_empty: false
+  submission_exclude_empty_checkbox: false
+  previous_submission_message: ''
+  previous_submissions_message: ''
+  autofill: false
+  autofill_message: ''
+  autofill_excluded_elements: {  }
+  wizard_progress_bar: true
+  wizard_progress_pages: false
+  wizard_progress_percentage: false
+  wizard_progress_link: false
+  wizard_progress_states: false
+  wizard_auto_forward: true
+  wizard_auto_forward_hide_next_button: false
+  wizard_keyboard: true
+  wizard_start_label: ''
+  wizard_preview_link: false
+  wizard_confirmation: true
+  wizard_confirmation_label: ''
+  wizard_track: ''
+  wizard_prev_button_label: ''
+  wizard_next_button_label: ''
+  wizard_toggle: false
+  wizard_toggle_show_label: ''
+  wizard_toggle_hide_label: ''
+  preview: 0
+  preview_label: ''
+  preview_title: ''
+  preview_message: ''
+  preview_attributes: {  }
+  preview_excluded_elements: {  }
+  preview_exclude_empty: true
+  preview_exclude_empty_checkbox: false
+  draft: none
+  draft_multiple: false
+  draft_auto_save: false
+  draft_saved_message: ''
+  draft_loaded_message: ''
+  draft_pending_single_message: ''
+  draft_pending_multiple_message: ''
+  confirmation_type: page
+  confirmation_title: ''
+  confirmation_message: ''
+  confirmation_url: ''
+  confirmation_attributes: {  }
+  confirmation_back: true
+  confirmation_back_label: ''
+  confirmation_back_attributes: {  }
+  confirmation_exclude_query: false
+  confirmation_exclude_token: false
+  confirmation_update: false
+  limit_total: null
+  limit_total_interval: null
+  limit_total_message: ''
+  limit_total_unique: false
+  limit_user: null
+  limit_user_interval: null
+  limit_user_message: ''
+  limit_user_unique: false
+  entity_limit_total: null
+  entity_limit_total_interval: null
+  entity_limit_user: null
+  entity_limit_user_interval: null
+  purge: none
+  purge_days: null
+  results_disabled: false
+  results_disabled_ignore: false
+  results_customize: false
+  token_view: false
+  token_update: false
+  token_delete: false
+  serial_disabled: false
+access:
+  create:
+    roles:
+      - anonymous
+      - authenticated
+    users: {  }
+    permissions: {  }
+  view_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  update_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  delete_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  purge_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  view_own:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  update_own:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  delete_own:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  administer:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  test:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  configuration:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+handlers:
+  email:
+    id: email
+    label: 'Email to AskaLib'
+    notes: ''
+    handler_id: email
+    status: true
+    conditions: {  }
+    weight: 0
+    settings:
+      states:
+        - completed
+      to_mail: repository@asu.libanswers.com
+      to_options: {  }
+      cc_mail: ''
+      cc_options: {  }
+      bcc_mail: ''
+      bcc_options: {  }
+      from_mail: _default
+      from_options: {  }
+      from_name: _default
+      subject: _default
+      body: _default
+      excluded_elements: {  }
+      ignore_access: false
+      exclude_empty: true
+      exclude_empty_checkbox: false
+      exclude_attachments: false
+      html: true
+      attachments: false
+      twig: false
+      debug: false
+      reply_to: ''
+      return_path: ''
+      sender_mail: ''
+      sender_name: ''
+      theme_name: ''
+      parameters: {  }
+variants: {  }
