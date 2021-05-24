@@ -92,6 +92,7 @@ class ModsEncoder extends XmlEncoder {
         foreach ($config as $ck => $cv) {
           if ($field_name == "field_linked_agent") {
             $rel_type = $field->getValue()[$i]['rel_type'];
+            $rel_type = str_replace("barrettrelators:", "", $rel_type);
             $rel_type = str_replace("relators:", "", $rel_type);
           }
           if ($cv == "bundle") {

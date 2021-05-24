@@ -106,7 +106,7 @@ class TypedRelationGenerate extends NameURIGenerate {
     "relators:dft" => "Defendant-appellant",
     "relators:dfe" => "Defendant-appellee",
     "relators:dgc" => "Degree Committee Member",
-    "relators:dgc" => "Committee Member",
+    "barrettrelators:dgc" => "Committee Member",
     "relators:dgg" => "Degree granting institution",
     "relators:dgs" => "Degree supervisor",
     "relators:dln" => "Delineator",
@@ -271,7 +271,8 @@ class TypedRelationGenerate extends NameURIGenerate {
     "relators:tcd" => "Technical director",
     "relators:tld" => "Television director",
     "relators:tlp" => "Television producer",
-    "relators:ths" => "Thesis director",
+    "barrettrelators:ths" => "Thesis director",
+    "relators:ths" => "Thesis advisor",
     "relators:trc" => "Transcriber",
     "relators:trl" => "Translator",
     "relators:tyd" => "Type designer",
@@ -329,10 +330,7 @@ class TypedRelationGenerate extends NameURIGenerate {
 
   public function look_up_relator(string $relator) {
     $relator_found = array_search(strtolower($relator), array_map('strtolower', $this->relator_map));
-    if (!$relator_found && strtolower($relator) == "thesis advisor") {
-      $relator_found = "relators:ths";
-    }
-    elseif (!$relator_found) {
+    if (!$relator_found) {
       $relator_found = 'relators:ctb';
     }
     return $relator_found;

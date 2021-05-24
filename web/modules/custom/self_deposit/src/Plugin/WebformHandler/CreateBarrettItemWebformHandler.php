@@ -102,12 +102,12 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
 
     foreach ($values['thesis_director'] as $td) {
       // make group members as ths
-      array_push($contribs, $this->getOrCreateTerm($td['last'] . ", " . $td['first'], 'person', 'relators:ths'));
+      array_push($contribs, $this->getOrCreateTerm($td['last'] . ", " . $td['first'], 'person', 'barrettrelators:ths'));
     }
 
     foreach ($values['committee_members'] as $cm) {
       // make group members as dgc
-      array_push($contribs, $this->getOrCreateTerm($cm['last'] . ", " . $cm['first'], 'person', 'relators:dgc'));
+      array_push($contribs, $this->getOrCreateTerm($cm['last'] . ", " . $cm['first'], 'person', 'barrettrelators:dgc'));
     }
 
     array_push($contribs, $this->getOrCreateTerm('Barrett, The Honors College', 'corporate_body', 'relators:ctb'));
