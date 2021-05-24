@@ -53,6 +53,11 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
   protected $formBuilder;
 
   /**
+   * IslandoraUtils class.
+   */
+  protected $islandoraUtils;
+
+  /**
    * Constructor for About this Collection Block.
    *
    * @param array $configuration
@@ -69,13 +74,16 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
    *   The entityTypeManager definition.
    * @param \Drupal\Core\Form\FormBuilderInterface $formBuilder
    *   The Drupal form builder.
+   * @param mixed $islandoraUtils
+   *   IslandoraUtils Utility class.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $route_match, RequestStack $request_stack, EntityTypeManager $entityTypeManager, FormBuilderInterface $formBuilder) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $route_match, RequestStack $request_stack, EntityTypeManager $entityTypeManager, FormBuilderInterface $formBuilder, $islandoraUtils) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->routeMatch = $route_match;
     $this->requestStack = $request_stack;
     $this->entityTypeManager = $entityTypeManager;
     $this->formBuilder = $formBuilder;
+    $this->islandoraUtils = $islandoraUtils;
   }
 
   /**
@@ -89,7 +97,8 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
       $container->get('current_route_match'),
       $container->get('request_stack'),
       $container->get('entity_type.manager'),
-      $container->get('form_builder')
+      $container->get('form_builder'),
+      $container->get('islandora.utils')
     );
   }
 
@@ -113,7 +122,7 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
 
     $output_links = [];
     $search_form = NULL;
-    if ($field_model == 'Image') {
+    if ($field_model == 'Image' && $this->canAccessItemMedia($nid)) {
       $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/items/' . $nid . '/view');
       $link = Link::fromTextAndUrl($this->t('View Image'), $url);
       // Get the node's service file information from the node - just use the
@@ -127,7 +136,7 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
       return $renderArray;
     }
     elseif ($field_model == 'Paged Content' || $field_model == 'Page' ||
-      $field_model == 'Digital Document') {
+      ($field_model == 'Digital Document' && $this->canAccessItemMedia($nid))) {
       // "Start reading" and "Show all pages" links as well as a search box.
       // get the node's openseadragon viewer url.
       $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/items/' . $nid . '/view');
@@ -135,13 +144,14 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
       $link = $link->toRenderable();
       $output_links[] = render($link);
     }
-    $return = [
+    // If there has been nothing added to $output_links, return empty array.
+    $return = (count($output_links) > 0) ? [
       '#markup' =>
       ((count($output_links) > 0) ?
         "<nav><ul class=''><li>" . implode("</li><li>", $output_links) . "</li></ul></nav>" :
         ""),
       'searchform' => $search_form,
-    ];
+    ] : [];
     return $return;
   }
 
@@ -168,6 +178,15 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
     // You must set context of this block with 'route' context tag.
     // Every new route this block will rebuild.
     return Cache::mergeContexts(parent::getCacheContexts(), ['route']);
+  }
+
+  private function canAccessItemMedia($nid) {
+    // Get the media for "Original File" and check for any access restrictions
+    // on it.
+    $origfile_term = $utils->getTermForUri('http://pcdm.org/use#OriginalFile');
+    $node_mids = $this->islandoraUtils->getMediaReferencingNodeAndTerm($node, $origfile_term);
+    // Dunno...
+    return TRUE;
   }
 
 }

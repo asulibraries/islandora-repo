@@ -140,4 +140,7 @@ function asulib_barrio_preprocess_block(&$variables) {
   if ($variables['plugin_id'] == 'asu_item_is_part_of') {
     $variables['is_metadata_page'] = (\Drupal::routeMatch()->getRouteName() == "asu_item_extras.full_metadata_view");
   }
+  if ($variables['plugin_id'] == "explore_this_item_block" && empty($variables['content'])) {
+    $variables['attributes']['hidden'] = TRUE;
+  }
 }
