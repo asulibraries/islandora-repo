@@ -47,10 +47,18 @@
   {{ title_suffix }}
   {% if header %}
     <div class="view-header">
-      {{ header }}
+      {% if total_rows_formatted %}
+        <h2>Matching Items ({{ total_rows_formatted }})</h2>
+      {% else %}
+        {{ header }}
+      {% endif %}
     </div>
     {{ drupal_block('asu_facets_summary_block:facet_summary', wrapper=false) }}
   {% endif %}
+{% if total-rows-formatted %}
+  {{ total-rows-formatted }}
+{% endif %}
+  
   {% if exposed %}
     <div class="view-filters">
       {{ exposed }}
@@ -71,25 +79,4 @@
     </div>
   {% endif %}
 
-  {% if pager %}
-    {{ pager }}
-  {% endif %}
-  {% if attachment_after %}
-    <div class="attachment attachment-after">
-      {{ attachment_after }}
-    </div>
-  {% endif %}
-  {% if more %}
-    {{ more }}
-  {% endif %}
-  {% if footer %}
-    <div class="view-footer">
-      {{ footer }}
-    </div>
-  {% endif %}
-  {% if feed_icons %}
-    <div class="feed-icons">
-      {{ feed_icons }}
-    </div>
-  {% endif %}
 </div>
