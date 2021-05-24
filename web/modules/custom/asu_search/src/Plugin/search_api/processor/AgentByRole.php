@@ -67,6 +67,7 @@ class AgentByRole extends ProcessorPluginBase {
           // \Drupal::logger('asu search')->info('taxo name is ' . $taxo_name);
           $rel_type = $element['rel_type'];
           $mac_rel = strtolower($rel_type);
+          $mac_rel = str_replace('barrettrelators:', '', $mac_rel);
           $mac_rel = str_replace('relators:', '', $mac_rel);
           // \Drupal::logger('asu search')->info('rel type is ' . $rel_type);
           $fields = $this->getFieldsHelper()

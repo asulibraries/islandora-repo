@@ -55,16 +55,16 @@ class BarrettEncoder extends XmlEncoder {
 
 
     $search = [
-      '<metadata-xml><![CDATA[',
+      '<?xml version="1.0"?>',
       ']]></metadata-xml>',
       '<item>',
       '</item>',
     ];
     $replace = [
-      'submitted_list',
-      'submitted_list',
-      'user',
-      'user',
+      '',
+      '',
+      '',
+      '',
     ];
 
     return str_replace($search, $replace, $xml);
