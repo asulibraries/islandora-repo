@@ -206,7 +206,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
           );
         $link = Link::fromTextAndUrl($this->t('Reorder items'), $url);
         $link = $link->toRenderable();
-        $link_glyph = Link::fromTextAndUrl($this->t('<i class="fas fa-arrows-alt-v"></i>'), $url)->toRenderable();
+        $link_glyph = Link::fromTextAndUrl($this->t('<i class="fas fa-sort"></i>'), $url)->toRenderable();
         $output_links[] = render($link) . " &nbsp;" . render($link_glyph);
       }
       if ($is_collection) {
