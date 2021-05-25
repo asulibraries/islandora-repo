@@ -9,6 +9,7 @@ use Drupal\Core\Link;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Form\FormBuilderInterface;
+use Drupal\Core\Session\AccountProxy;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -23,6 +24,13 @@ use Symfony\Component\HttpFoundation\RequestStack;
  * )
  */
 class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginInterface {
+
+  /**
+   * Drupal\Core\Session\AccountProxy definition.
+   *
+   * @var \Drupal\Core\Session\AccountProxy
+   */
+  protected $currentUser;
 
   /**
    * The routeMatch definition.
@@ -66,6 +74,8 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
    *   The plugin_id for the formatter.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
+   * @param \Drupal\Core\Session\AccountProxy $current_user
+   *   The current user.
    * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
    *   The route match.
    * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
@@ -77,8 +87,9 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
    * @param mixed $islandoraUtils
    *   IslandoraUtils Utility class.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $route_match, RequestStack $request_stack, EntityTypeManager $entityTypeManager, FormBuilderInterface $formBuilder, $islandoraUtils) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, AccountProxy $current_user, RouteMatchInterface $route_match, RequestStack $request_stack, EntityTypeManager $entityTypeManager, FormBuilderInterface $formBuilder, $islandoraUtils) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->currentUser = $current_user;
     $this->routeMatch = $route_match;
     $this->requestStack = $request_stack;
     $this->entityTypeManager = $entityTypeManager;
@@ -94,6 +105,7 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
       $configuration,
       $plugin_id,
       $plugin_definition,
+      $container->get('current_user'),
       $container->get('current_route_match'),
       $container->get('request_stack'),
       $container->get('entity_type.manager'),
@@ -122,7 +134,7 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
 
     $output_links = [];
     $search_form = NULL;
-    if ($field_model == 'Image' && $this->canAccessItemMedia($nid)) {
+    if ($field_model == 'Image' && $this->canAccessItemMedia($node)) {
       $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/items/' . $nid . '/view');
       $link = Link::fromTextAndUrl($this->t('View Image'), $url);
       // Get the node's service file information from the node - just use the
@@ -136,7 +148,7 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
       return $renderArray;
     }
     elseif ($field_model == 'Paged Content' || $field_model == 'Page' ||
-      ($field_model == 'Digital Document' && $this->canAccessItemMedia($nid))) {
+      ($field_model == 'Digital Document' && $this->canAccessItemMedia($node))) {
       // "Start reading" and "Show all pages" links as well as a search box.
       // get the node's openseadragon viewer url.
       $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/items/' . $nid . '/view');
@@ -180,13 +192,15 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
     return Cache::mergeContexts(parent::getCacheContexts(), ['route']);
   }
 
-  private function canAccessItemMedia($nid) {
+  private function canAccessItemMedia($node) {
     // Get the media for "Original File" and check for any access restrictions
     // on it.
-    $origfile_term = $utils->getTermForUri('http://pcdm.org/use#OriginalFile');
-    $node_mids = $this->islandoraUtils->getMediaReferencingNodeAndTerm($node, $origfile_term);
+    $origfile_term = $this->islandoraUtils->getTermForUri('http://pcdm.org/use#OriginalFile');
+//    $node_mids = $this->islandoraUtils->getMediaReferencingNodeAndTerm($node, $origfile_term);
+    $origfile = $this->islandoraUtils->getMediaWithTerm($node, $origfile_term);
+    $origfile_access = (!is_null($origfile) && $origfile->access('view', $this->currentUser));
     // Dunno...
-    return TRUE;
+    return $origfile_access;
   }
 
 }
