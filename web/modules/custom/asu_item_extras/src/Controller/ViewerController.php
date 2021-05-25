@@ -3,8 +3,13 @@
 namespace Drupal\asu_item_extras\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Url;
+use Drupal\Core\Access\AccessResult;
+use Drupal\Core\Routing\RouteMatch;
+use Drupal\node\NodeInterface;
+use Drupal\node\Entity\Node;
+use Drupal\Core\Session\AccountInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
@@ -79,6 +84,40 @@ class ViewerController extends ControllerBase {
       return new RedirectResponse($url->toString());
     }
 
+  }
+
+  /**
+   * Checks if the user can access the Original File Media.
+   *
+   * @param \Drupal\Core\Session\AccountInterface $account
+   *   Run access checks for this account.
+   * @param \Drupal\Core\Routing\RouteMatch $route_match
+   *   The current routing match.
+   *
+   * @return \Drupal\Core\Access\AccessResultInterface
+   *   The access result.
+   */
+  public function access(AccountInterface $account, RouteMatch $route_match) {
+    if ($route_match->getParameters()->has('node')) {
+      $node = $route_match->getParameter('node');
+      if (!$node instanceof NodeInterface) {
+        $node = Node::load($node);
+      }
+      if ($node->access('view', $account)) {
+        // user can at least view the node
+        // can user view the media though?
+        $islandora_utils = \Drupal::service('islandora.utils');
+        $origfile_term = $islandora_utils->getTermForUri('http://pcdm.org/use#OriginalFile');
+        $origfile = $islandora_utils->getMediaWithTerm($node, $origfile_term);
+
+        if ($origfile->access('view', $account)) {
+          // User can access media
+          return AccessResult::allowed();
+        }
+
+      }
+    }
+    return AccessResult::forbidden();
   }
 
 }

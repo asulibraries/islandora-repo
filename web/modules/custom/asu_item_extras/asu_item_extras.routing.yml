@@ -29,7 +29,7 @@ asu_item_extras.viewer_controller_render_view:
     _controller: '\Drupal\asu_item_extras\Controller\ViewerController::renderView'
     _title: 'View'
   requirements:
-    _entity_access: 'node.view'
+    _custom_access: '\Drupal\asu_item_extras\Controller\ViewerController::access'
     node: \d+
   options:
     parameters:
