@@ -29,7 +29,11 @@ source:
 
 process:
 
-  name: item title
+  name:
+    plugin: substr
+    source: item title
+    start: 0
+    length: 254
   uid: constants/uid
   # todo set to asurite
   bundle: media type
