@@ -419,10 +419,10 @@ process:
       method: process
 
   corporations:
-    # -
-    #   plugin: skip_on_empty
-    #   method: process
-    #   source: Contributors-Corporate
+    -
+      plugin: skip_on_empty
+      method: process
+      source: Contributors-Corporate
     -
       plugin: explode
       delimiter: ' || '
