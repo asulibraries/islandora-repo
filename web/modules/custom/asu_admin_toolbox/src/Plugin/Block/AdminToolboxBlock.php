@@ -221,17 +221,16 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
       ) {
         $output_links[] = "<div class='field--label-inline'><div class='field__label'>Model</div>: " . $node->get('field_model')->entity->getName() . "</div>";
       }
-    }
-
-    if (!($is_complex_object) && (!$is_collection)) {
-      $url = Url::fromUri(
-            $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
-            '/node/' . $node->id() . '/media/add'
-        );
-      $link = Link::fromTextAndUrl($this->t('Add media'), $url);
-      $link = $link->toRenderable();
-      $link_glyph = Link::fromTextAndUrl($this->t('<i class="fas fa-plus-circle"></i>'), $url)->toRenderable();
-      $output_links[] = render($link) . " &nbsp;" . render($link_glyph);
+      if (!($is_complex_object) && (!$is_collection)) {
+        $url = Url::fromUri(
+              $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
+              '/node/' . $node->id() . '/media/add'
+          );
+        $link = Link::fromTextAndUrl($this->t('Add media'), $url);
+        $link = $link->toRenderable();
+        $link_glyph = Link::fromTextAndUrl($this->t('<i class="fas fa-plus-circle"></i>'), $url)->toRenderable();
+        $output_links[] = render($link) . " &nbsp;" . render($link_glyph);
+      }
     }
 
     if ($user_is_admin_or_metadata_manager && ($is_collection || $is_asu_repository_item)) {
