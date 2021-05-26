@@ -130,11 +130,14 @@ class ViewerController extends ControllerBase {
         $origfile_term = $islandora_utils->getTermForUri('http://pcdm.org/use#OriginalFile');
         $origfile = $islandora_utils->getMediaWithTerm($node, $origfile_term);
 
-        if ($origfile->access('view', $account)) {
+        if (!is_null($origFile) && $origfile->access('view', $account)) {
           // User can access media
           return AccessResult::allowed();
         }
-
+        elseif (is_null($origFile)) {
+          // Must allow in order for the redirect in renderView above to work.
+          return AccessResult::allowed();
+        }
       }
     }
     return AccessResult::forbidden();
