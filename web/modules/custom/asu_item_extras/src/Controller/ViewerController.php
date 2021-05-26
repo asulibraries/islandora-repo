@@ -32,12 +32,18 @@ class ViewerController extends ControllerBase {
   protected $currentRouteMatch;
 
   /**
+   * IslandoraUtils class.
+   */
+  protected $islandoraUtils;
+
+  /**
    * {@inheritdoc}
    */
   public static function create(ContainerInterface $container) {
     $instance = parent::create($container);
     $instance->entityTypeManager = $container->get('entity_type.manager');
     $instance->currentRouteMatch = $container->get('current_route_match');
+    $instance->islandoraUtils = $container->get('islandora.utils');
     return $instance;
   }
 
@@ -59,13 +65,27 @@ class ViewerController extends ControllerBase {
         if ($node->hasField('field_model') && !$node->get('field_model')->isEmpty()) {
           $model_term = $node->get('field_model')->referencedEntities()[0];
           $model = $model_term->getName();
+          $origfile_term = $this->islandoraUtils->getTermForUri('http://pcdm.org/use#OriginalFile');
+          $origfile = $this->islandoraUtils->getMediaWithTerm($node, $origfile_term);
           if ($model == 'Digital Document') {
-            $view_mode = 'pdfjs';
-            return $builder->view($node, $view_mode);
+            if (!is_null($origfile)) {
+              $view_mode = 'pdfjs';
+              return $builder->view($node, $view_mode);
+            }
+            else {
+              \Drupal::messenger()->addMessage("There is no media to preview. You have been redirected to this item's overview page.");
+              return new RedirectResponse($url->toString());
+            }
           }
           elseif ($model == 'Image') {
-            $view_mode = 'open_seadragon';
-            return $builder->view($node, $view_mode);
+            if (!is_null($origfile)) {
+              $view_mode = 'open_seadragon';
+              return $builder->view($node, $view_mode);
+            }
+            else {
+              \Drupal::messenger()->addMessage("There is no media to preview. You have been redirected to this item's overview page.");
+              return new RedirectResponse($url->toString());
+            }
           }
           else {
             return new RedirectResponse($url->toString());
@@ -110,11 +130,14 @@ class ViewerController extends ControllerBase {
         $origfile_term = $islandora_utils->getTermForUri('http://pcdm.org/use#OriginalFile');
         $origfile = $islandora_utils->getMediaWithTerm($node, $origfile_term);
 
-        if ($origfile->access('view', $account)) {
+        if (!is_null($origFile) && $origfile->access('view', $account)) {
           // User can access media
           return AccessResult::allowed();
         }
-
+        elseif (is_null($origFile)) {
+          // Must allow in order for the redirect in renderView above to work.
+          return AccessResult::allowed();
+        }
       }
     }
     return AccessResult::forbidden();
