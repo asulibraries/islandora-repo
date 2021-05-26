@@ -37,7 +37,7 @@ process:
   uid:
     -
       plugin: skip_on_empty
-      source: System User
+      source: System Creator
       method: process
     -
       plugin: user_lookup
@@ -61,7 +61,7 @@ process:
     -
       plugin: skip_on_empty
       method: process
-      source: document id
+      source: original filename
     -
       plugin: migration_lookup
       migration: gutierrez_file
@@ -71,7 +71,7 @@ process:
     -
       plugin: skip_on_empty
       method: process
-      source: image id
+      source: original filename
     -
       plugin: migration_lookup
       migration: gutierrez_file
@@ -81,7 +81,7 @@ process:
     -
       plugin: skip_on_empty
       method: process
-      source: video id
+      source: original filename
     -
       plugin: migration_lookup
       migration: gutierrez_file
@@ -91,7 +91,7 @@ process:
     -
       plugin: skip_on_empty
       method: process
-      source: audio id
+      source: original filename
     -
       plugin: migration_lookup
       migration: gutierrez_file
