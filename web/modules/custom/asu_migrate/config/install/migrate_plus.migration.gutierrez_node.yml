@@ -92,22 +92,30 @@ process:
   #     to_timezone: 'UTC'
 
   moderation_state:
-    plugin: static_map
-    source: Visibility
-    map:
-      Private: draft
-      Public: published
-      "1": published
-      "0": draft
-    default_value: published
+    -
+      plugin: skip_on_empty
+      source: Visibility
+      method: process
+    -
+      plugin: static_map
+      map:
+        Private: draft
+        Public: published
+        "1": published
+        "0": draft
+      default_value: published
 
   field_model:
-    source: Model
-    plugin: entity_lookup
-    entity_type: taxonomy_term
-    value_key: name
-    bundle_key: vid
-    bundle: islandora_models
+    -
+      plugin: skip_on_empty
+      source: Model
+      method: process
+    -
+      plugin: entity_lookup
+      entity_type: taxonomy_term
+      value_key: name
+      bundle_key: vid
+      bundle: islandora_models
 
   field_rich_description/value:
     plugin: skip_on_empty
