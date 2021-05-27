@@ -131,7 +131,8 @@ class ASUBreadcrumbBuilder implements BreadcrumbBuilderInterface {
       $is_node_or_node_subpage = (
         ($route_name == 'asu_item_extras.full_metadata_view') ||
         ($route_name == 'asu_item_extras.complex_object_members') ||
-        ($route_name == 'asu_item_extras.viewer_controller_render_view'));
+        ($route_name == 'asu_item_extras.viewer_controller_render_view') ||
+        ($route_name == 'view.media_of.page_1'));
       $is_collection_subpage =
         ($route_name == 'asu_statistics.collection_statistics_view');
       if ($is_node_or_node_subpage && ($bundle == 'asu_repository_item') ||
@@ -191,7 +192,10 @@ class ASUBreadcrumbBuilder implements BreadcrumbBuilderInterface {
    */
   private function getNodeLink(RouteMatchInterface $route_match) {
     $node = $route_match->getParameter('node');
-    // No ... $node = $this->routeMatch->getParameter('node');.
+    if (!is_object($node)) {
+      $node_id = is_int($node) ? $node : $node[0];
+      $node = $this->nodeStorage->load($node_id);
+    }
     if (isset($node)) {
       $options = ['absolute' => TRUE];
       $url = Url::fromRoute('entity.node.canonical', ['node' => $node->id()], $options);
