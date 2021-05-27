@@ -58,7 +58,7 @@ class ASUBreadcrumbBuilder implements BreadcrumbBuilderInterface {
    * @param \Drupal\\Core\\Render\\Renderer $renderer
    *   Drupal core renderer.
    */
-  public function __construct(EntityTypeManagerInterface $entity_manager, ConfigFactoryInterface $config_factory, Renderer $renderer) {
+  public function __construct(EntityTypeManagerInterface $entity_manager, ConfigFactoryInterface $config_factory, Renderer $renderer /*, EntityTypeManager $entityTypeManager */) {
     $this->nodeStorage = $entity_manager->getStorage('node');
     $this->mediaStorage = $entity_manager->getStorage('media');
     $this->config = $config_factory->get('asu_breadcrumbs.breadcrumbs');
@@ -128,10 +128,12 @@ class ASUBreadcrumbBuilder implements BreadcrumbBuilderInterface {
       $bundle = $node->bundle();
       $route_name = $route_match->getRouteName();
       // Need to also include the canonical view of any node.
+      \Drupal::logger('asu search')->info('$route_name = ' . print_r($route_name, TRUE));
       $is_node_or_node_subpage = (
         ($route_name == 'asu_item_extras.full_metadata_view') ||
         ($route_name == 'asu_item_extras.complex_object_members') ||
-        ($route_name == 'asu_item_extras.viewer_controller_render_view'));
+        ($route_name == 'asu_item_extras.viewer_controller_render_view') || 
+        ($route_name == 'view.media_of.page_1'));
       $is_collection_subpage =
         ($route_name == 'asu_statistics.collection_statistics_view');
       if ($is_node_or_node_subpage && ($bundle == 'asu_repository_item') ||
@@ -191,7 +193,10 @@ class ASUBreadcrumbBuilder implements BreadcrumbBuilderInterface {
    */
   private function getNodeLink(RouteMatchInterface $route_match) {
     $node = $route_match->getParameter('node');
-    // No ... $node = $this->routeMatch->getParameter('node');.
+    if (!is_object($node)) {
+      $node_id = is_int($node) ? $node : $node[0];
+      $node = $this->nodeStorage->load($node_id);
+    }
     if (isset($node)) {
       $options = ['absolute' => TRUE];
       $url = Url::fromRoute('entity.node.canonical', ['node' => $node->id()], $options);
