@@ -58,7 +58,7 @@ class ASUBreadcrumbBuilder implements BreadcrumbBuilderInterface {
    * @param \Drupal\\Core\\Render\\Renderer $renderer
    *   Drupal core renderer.
    */
-  public function __construct(EntityTypeManagerInterface $entity_manager, ConfigFactoryInterface $config_factory, Renderer $renderer /*, EntityTypeManager $entityTypeManager */) {
+  public function __construct(EntityTypeManagerInterface $entity_manager, ConfigFactoryInterface $config_factory, Renderer $renderer) {
     $this->nodeStorage = $entity_manager->getStorage('node');
     $this->mediaStorage = $entity_manager->getStorage('media');
     $this->config = $config_factory->get('asu_breadcrumbs.breadcrumbs');
@@ -128,11 +128,10 @@ class ASUBreadcrumbBuilder implements BreadcrumbBuilderInterface {
       $bundle = $node->bundle();
       $route_name = $route_match->getRouteName();
       // Need to also include the canonical view of any node.
-      \Drupal::logger('asu search')->info('$route_name = ' . print_r($route_name, TRUE));
       $is_node_or_node_subpage = (
         ($route_name == 'asu_item_extras.full_metadata_view') ||
         ($route_name == 'asu_item_extras.complex_object_members') ||
-        ($route_name == 'asu_item_extras.viewer_controller_render_view') || 
+        ($route_name == 'asu_item_extras.viewer_controller_render_view') ||
         ($route_name == 'view.media_of.page_1'));
       $is_collection_subpage =
         ($route_name == 'asu_statistics.collection_statistics_view');
