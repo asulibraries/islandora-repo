@@ -23,7 +23,7 @@ source:
   constants:
     # We're tagging our media as Original Files
     use: Service File
-
+    aunder: "a_"
     # Everything gets created as admin
     uid: 1
 
@@ -48,10 +48,15 @@ process:
 
   # Lookup the migrated node in the node migration
   field_media_of:
-    plugin: migration_lookup
-    source: item id
-    migration: p_c4_node
-    no_stub: true
+    -
+      plugin: concat
+      source:
+        - constants/aunder
+        - item id
+    -
+      plugin: migration_lookup
+      migration: p_c4_node
+      no_stub: true
 
   created:
     plugin: format_date
