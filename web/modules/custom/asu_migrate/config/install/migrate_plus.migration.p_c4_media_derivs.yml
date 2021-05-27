@@ -41,14 +41,10 @@ process:
     bundle: islandora_media_use
 
   field_media_audio_file:
-    -
-      plugin: skip_on_empty
-      method: process
-      source: derivative id
-    -
-      plugin: migration_lookup
-      migration: p_c4_file_derivs
-      no_stub: true
+    source: derivative id
+    plugin: migration_lookup
+    migration: p_c4_file_derivs
+    no_stub: true
 
   # Lookup the migrated node in the node migration
   field_media_of:
