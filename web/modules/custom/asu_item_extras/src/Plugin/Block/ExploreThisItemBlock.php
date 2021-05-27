@@ -162,7 +162,6 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
       ((count($output_links) > 0) ?
         "<nav><ul class=''><li>" . implode("</li><li>", $output_links) . "</li></ul></nav>" :
         ""),
-      'searchform' => $search_form,
     ] : [];
     return $return;
   }
