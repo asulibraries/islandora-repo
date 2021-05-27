@@ -35,12 +35,9 @@ process:
     start: 0
     length: 254
   uid:
-    -
-      source: System User
-      method: process
-      default_value: constants/uid
-    -
-      plugin: user_lookup
+    source: System User
+    default_value: constants/uid
+    plugin: user_lookup
   bundle: file type
   field_original_name: file original_filename
 
