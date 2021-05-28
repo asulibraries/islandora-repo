@@ -119,7 +119,7 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     else {
       $nid = 0;
     }
-    $download_info = [];
+    $download_info = $file_size = '';
     $islandora_utils = \Drupal::service('islandora.utils');
     $media_source_service = \Drupal::service('islandora.media_source_service');
     $origfile_term = $islandora_utils->getTermForUri('http://pcdm.org/use#OriginalFile');
@@ -133,7 +133,8 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
         $of_file = $origfile->get($source_field)->referencedEntities()[0];
         $of_uri = $islandora_utils->getDownloadUrl($of_file);
         $of_link = Link::fromTextAndUrl($this->t('Original'), Url::fromUri($of_uri, ['attributes' => ['class' => ['dropdown-item']]]));
-        $download_info[] = $origfile;
+        $file_size = $origfile->get('field_file_size')->value;
+        $download_info .= " " . $origfile->get('field_mime_type')->value;
       }
       // TODO populate $download_info with the filesize in human readable format and the extension of the fiel
     }
@@ -179,6 +180,7 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
       '#asu_download_info' => $download_info,
       '#asu_download_restricted' => ['#markup' => $markup],
       '#asu_download_links' => $links,
+      '#file_size' => $file_size,
       '#theme' => 'asu_item_extras_downloads_block',
     ];
     return $return;
