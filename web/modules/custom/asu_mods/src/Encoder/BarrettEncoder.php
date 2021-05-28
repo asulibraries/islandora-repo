@@ -55,7 +55,7 @@ class BarrettEncoder extends XmlEncoder {
 
 
     $search = [
-      '<?xml version="1.0"?>',
+      '<metadata-xml>',
       ']]></metadata-xml>',
       '<item>',
       '</item>',
