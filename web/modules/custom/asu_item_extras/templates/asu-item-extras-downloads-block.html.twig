@@ -1,3 +1,8 @@
+{% for media in asu_download_info %}
+	{{media.field_file_size}}
+	{{media.id}}
+{% endfor %}
+
 {% if asu_download_links|render|striptags|trim is not empty %}
 	<div class="btn-group" role="group">
 		<button id="dropdownMenuButton" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
