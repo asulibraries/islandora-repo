@@ -193,8 +193,8 @@ class ASUBreadcrumbBuilder implements BreadcrumbBuilderInterface {
   private function getNodeLink(RouteMatchInterface $route_match) {
     $node = $route_match->getParameter('node');
     if (!is_object($node)) {
-      $node_id = is_int($node) ? $node : $node[0];
-      $node = $this->nodeStorage->load($node_id);
+      $node_id = is_array($node) ? $node[0]: $node;
+      $node = (!is_array($node) && $node_id) ? $this->nodeStorage->load($node_id): NULL;
     }
     if (isset($node)) {
       $options = ['absolute' => TRUE];
