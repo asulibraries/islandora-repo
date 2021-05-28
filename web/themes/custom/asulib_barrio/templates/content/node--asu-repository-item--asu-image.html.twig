@@ -98,7 +98,7 @@
   <div{{ content_attributes.addClass('node__content', 'clearfix', 'container') }}>
     <div class="content-section row">
       <div class="col-md-5 file-container">
-        {{ content.display_media_thumbnail }}
+        <a href="{{ url }}/view" class="image-link">{{ content.display_media_thumbnail }}</a>
       </div>
       <div class="col-md-7 info-container">
         <div>{{ content.field_rich_description }}</div>
