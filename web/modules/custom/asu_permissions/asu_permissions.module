@@ -190,11 +190,11 @@ function asu_permissions_node_access(NodeInterface $node, $op, AccountInterface 
     }
     // \Drupal::logger('asu permissions - access before group')->info($access_result);
 
-    $date = new \DateTime();
-    $today = $date->format("c");
-    if ($node->hasField('field_embargo_release_date') && $node->get('field_embargo_release_date') && $node->get('field_embargo_release_date')->value >= $today) {
-      $access_result = AccessResult::forbidden();
-    }
+    // $date = new \DateTime();
+    // $today = $date->format("c");
+    // if ($node->hasField('field_embargo_release_date') && $node->get('field_embargo_release_date') && $node->get('field_embargo_release_date')->value >= $today) {
+    //   $access_result = AccessResult::forbidden();
+    // }
 
     $groups = _get_groups_from_node($node);
     // If the node does not belong to any group, we have nothing to say.

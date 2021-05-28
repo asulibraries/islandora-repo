@@ -106,7 +106,8 @@
           <div class="col-md-6">{{ content.field_copyright_statement }}</div>
           <div class="col-md-6">{{ content.field_reuse_permissions }}</div>
         </div>
-        <div class="download-options">{{ content.display_media_download_button }}</div>
+        <div class="download-options">{{ drupal_block('downloads_block') }}</div>
+
         <div class="download-info">
           <p>{{ 'Download count'|t }}: {{ drupal_block('asu_item_downloads', wrapper=false) }}</p>
         </div>

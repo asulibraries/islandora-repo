@@ -1,5 +1,8 @@
 <?php
 
+use Drupal\views\ViewExecutable;
+use Drupal\views\Plugin\views\cache\CachePluginBase;
+
 /**
  * Implements hook_theme().
  */
@@ -13,6 +16,13 @@ function asu_item_extras_theme() {
         'poster' => NULL,
         'attributes' => NULL
       ]
-    ]
+      ],
+      'asu_item_extras_downloads_block' => [
+        'template' => 'asu-item-extras-downloads-block',
+        'variables' => [
+          'asu_download_links' => NULL,
+          'asu_download_restricted' => NULL
+        ]
+      ]
   ];
 }
