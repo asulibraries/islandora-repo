@@ -55,13 +55,13 @@ class BarrettEncoder extends XmlEncoder {
 
 
     $search = [
-      '<metadata-xml>',
+      '<?xml version="1.0"?>\n',
       ']]></metadata-xml>',
       '<item>',
       '</item>',
     ];
     $replace = [
-      '',
+      '<?xml version="1.0" encoding="UTF-8"?>',
       '',
       '',
       '',
