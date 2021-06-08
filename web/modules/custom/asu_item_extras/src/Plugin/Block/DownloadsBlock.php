@@ -127,7 +127,6 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     $servicefile_term = $islandora_utils->getTermForUri('http://pcdm.org/use#ServiceFile');
     $servicefile = $islandora_utils->getMediaWithTerm($node, $servicefile_term);
     if ($origfile) {
-      $of_access = $origfile->get('field_access_terms')->referencedEntities()[0]->label();
       $source_field = $media_source_service->getSourceFieldName($origfile->bundle());
       if (!empty($source_field)) {
         $of_file = $origfile->get($source_field)->referencedEntities()[0];
@@ -139,8 +138,6 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
       // TODO populate $download_info with the filesize in human readable format and the extension of the fiel
     }
     if ($servicefile) {
-      $sf_access =
-        $servicefile->get('field_access_terms')->referencedEntities()[0]->label();
       $source_field = $media_source_service->getSourceFieldName($servicefile->bundle());
       if (!empty($source_field)) {
         $sf_file = $servicefile->get($source_field)->referencedEntities()[0];
