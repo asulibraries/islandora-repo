@@ -73,9 +73,10 @@ process:
       source: Reuse
       method: process
     -
-      plugin: entity_lookup_by_field
-      lookup_field: field_source/uri
+      plugin: entity_lookup
       entity_type: taxonomy_term
+      value_key: name
+      bundle_key: vid
       bundle: reuse_permissions
 
   created:
@@ -295,11 +296,10 @@ process:
       value_key: title
       lookup_field: field_pid
 
-  # WAITING TO MATCH SUBJECTS UNTIL WE HEAR FROM LINDA
   field_subject:
     -
       plugin: skip_on_empty
-      source: Topical Subjects
+      source: Subjects
       method: process
     -
       plugin: explode
@@ -404,7 +404,7 @@ process:
     #   source: Contributors-Corporate
     -
       plugin: explode
-      delimiter: ' || '
+      delimiter: '||'
       source: Institutional Contributors
     -
       plugin: callback
