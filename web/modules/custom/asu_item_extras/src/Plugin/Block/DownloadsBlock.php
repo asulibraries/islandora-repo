@@ -127,6 +127,8 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     $servicefile_term = $islandora_utils->getTermForUri('http://pcdm.org/use#ServiceFile');
     $servicefile = $islandora_utils->getMediaWithTerm($node, $servicefile_term);
     if ($origfile) {
+      $file_entities = ($origfile->hasField('field_access_terms') ? $origfile->get('field_access_terms')->referencedEntities() : NULL);
+      $of_access = ((!is_null($file_entities) && array_key_exists(0, $file_entities)) ? $file_entities[0]->label() : FALSE);
       $source_field = $media_source_service->getSourceFieldName($origfile->bundle());
       if (!empty($source_field)) {
         $of_file = $origfile->get($source_field)->referencedEntities()[0];
@@ -138,12 +140,14 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
       // TODO populate $download_info with the filesize in human readable format and the extension of the fiel
     }
     if ($servicefile) {
+      $file_entities = ($servicefile->hasField('field_access_terms') ? $servicefile->get('field_access_terms')->referencedEntities() : NULL);
+      $sf_access = ((!is_null($file_entities) && array_key_exists(0, $file_entities)) ? $file_entities[0]->label() : FALSE);
       $source_field = $media_source_service->getSourceFieldName($servicefile->bundle());
       if (!empty($source_field)) {
         $sf_file = $servicefile->get($source_field)->referencedEntities()[0];
         $sf_uri = $islandora_utils->getDownloadUrl($sf_file);
         $sf_link = Link::fromTextAndUrl($this->t('Derivative'), Url::fromUri($sf_uri, ['attributes' => ['class' => ['dropdown-item']]]));
-        $download_info[] = $servicefile;
+        $download_info .= $servicefile->get('field_mime_type')->value;
       }
     }
 
