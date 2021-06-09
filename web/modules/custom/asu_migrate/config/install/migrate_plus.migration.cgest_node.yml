@@ -4,20 +4,20 @@ dependencies:
     module:
       - asu_migrate
 
-id: p_c4_node
-label: Import Collection 4 from CSV
-migration_group: migrate_c4_csv
+id: cgest_node
+label: Import Collection 269 from CSV
+migration_group: migrate_cgest_csv
 
 source:
   plugin: csv
-  path: /var/www/html/drupal/web/modules/custom/asu_migrate/c4_merged_authorities_v2.csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/data/migration_data/c_cgest_merged_v2.csv
 
   # 1 means you have a header row, 0 means you don't
   header_row_count: 1
 
   # Each migration needs a unique key per row in the csv.  Here we're using the file path.
   ids:
-    - Item ID
+    - Title
 
   # You can't enter string literals into a process plugin, but you can give it a constant as a 'source'.
   constants:
@@ -26,12 +26,11 @@ source:
 
     # Everything gets created as admin
     uid: 1
-    collection_title: 'ASU School of Music Performance Archive'
+    collection_title: 'The Center for Gender Equity in Science and Technology'
     pres_state: '558' # Not Preserved
     handle: "https://hdl.handle.net/2286/R.I."
-    genre: "http://vocab.getty.edu/page/aat/300262956"
     cataloging_standards: "asu1"
-    level_of_coding: "intermediate"
+    level_of_coding: "minimal"
 
 process:
   field_extent:
@@ -59,18 +58,19 @@ process:
   field_copyright_statement:
     -
       plugin: skip_on_empty
-      source: Copyright
+      source: Copyright Statement
       method: process
     -
-      plugin: entity_lookup_by_field
-      lookup_field: field_source/uri
+      plugin: entity_lookup
       entity_type: taxonomy_term
+      value_key: name
+      bundle_key: vid
       bundle: copyright_statements
 
   field_reuse_permissions:
     -
       plugin: skip_on_empty
-      source: Reuse
+      source: Reuse Permissions
       method: process
     -
       plugin: entity_lookup
@@ -79,35 +79,45 @@ process:
       bundle_key: vid
       bundle: reuse_permissions
 
-  created:
-    -
-      plugin: skip_on_empty
-      source: System Created
-      method: process
-    -
-      plugin: format_date
-      from_format: 'Y-m-d G:i:s.uP'
-      to_format: 'U'
-      from_timezone: 'UTC'
-      to_timezone: 'UTC'
+  # created:
+  #   -
+  #     plugin: skip_on_empty
+  #     source: System Created
+  #     method: process
+  #   -
+  #     plugin: format_date
+  #     from_format: 'Y-m-d G:i:s.uP'
+  #     to_format: 'U'
+  #     from_timezone: 'UTC'
+  #     to_timezone: 'UTC'
 
   moderation_state:
-    plugin: static_map
-    source: Visibility
-    map:
-      Private: draft
-      Public: published
-      "1": published
-      "0": draft
-    default_value: published
+    -
+      plugin: skip_on_empty
+      source: Visibility
+      method: process
+    -
+      plugin: static_map
+      map:
+        Private: draft
+        Public: published
+        "1": published
+        "0": draft
+        "t": published
+        "f": draft
+      default_value: published
 
   field_model:
-    source: Model
-    plugin: entity_lookup
-    entity_type: taxonomy_term
-    value_key: name
-    bundle_key: vid
-    bundle: islandora_models
+    -
+      plugin: skip_on_empty
+      source: Model
+      method: process
+    -
+      plugin: entity_lookup
+      entity_type: taxonomy_term
+      value_key: name
+      bundle_key: vid
+      bundle: islandora_models
 
   field_rich_description/value:
     plugin: skip_on_empty
@@ -119,26 +129,31 @@ process:
     default_value: "description_restricted_items"
 
   field_genre:
-    # -
-    #   plugin: skip_on_empty
-    #   source: Genre
-    #   method: process
-    # -
-    plugin: entity_lookup_by_field
-    lookup_field: field_authority_link/uri
-    entity_type: taxonomy_term
-    bundle: genre
-    source: constants/genre
+    -
+      plugin: skip_on_empty
+      source: Genre
+      method: process
+    -
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: name_uri_generate
+      delimiter: '|'
+      uri_field: field_authority_link
+      default_vocabulary: genre
 
   field_preferred_citation:
     plugin: skip_on_empty
-    source: Citation
+    source: Preferred Citation
     method: process
 
   uid:
     -
       plugin: skip_on_empty
-      source: System User
+      source: System Creator
       method: process
     -
       plugin: user_lookup
@@ -174,7 +189,7 @@ process:
     -
       plugin: explode
       delimiter: '||'
-      source: Item Title_x
+      source: Title
     -
       plugin: callback
       callable: trim
@@ -188,7 +203,7 @@ process:
     -
       plugin: explode
       delimiter: '||'
-      source: Item Title_x
+      source: Title
     -
       plugin: callback
       callable: trim
@@ -213,10 +228,6 @@ process:
     -
       plugin: callback
       callable: trim
-    # -
-    #   plugin: callback
-    #   callable: str_replace
-    # TODO - perhaps replace 'call number'?
     -
       plugin: paragraph_generate
       paragraph_type: 'typed_identifier'
@@ -233,7 +244,7 @@ process:
   field_note_para:
     -
       plugin: skip_on_empty
-      source: Notes
+      source: Note
       method: process
     -
       plugin: explode
@@ -250,7 +261,7 @@ process:
           order: 0
           type: text
 
-  field_pid: Item ID
+  # field_pid: Item ID
 
   field_preservation_state:
     plugin: entity_lookup
@@ -275,11 +286,11 @@ process:
       bundle_key: vid
       bundle: language
 
-  field_handle:
-    plugin: concat
-    source:
-      - constants/handle
-      - Item ID
+  # field_handle:
+  #   plugin: concat
+  #   source:
+  #     - constants/handle
+  #     - Item ID
 
   field_member_of:
     -
@@ -296,10 +307,22 @@ process:
       value_key: title
       lookup_field: field_pid
 
+  field_embargo_release_date:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: Embargo Release Date
+    -
+      plugin: format_date
+      from_format: 'Y-m-d'
+      to_format: 'Y-m-d\TH:i:s'
+      from_timezone: 'America/Phoenix'
+      to_timezone: 'America/Phoenix'
+
   field_subject:
     -
       plugin: skip_on_empty
-      source: Subjects
+      source: Topical Subjects
       method: process
     -
       plugin: explode
@@ -398,14 +421,13 @@ process:
       method: process
 
   corporations:
-    # -
-    #   plugin: skip_on_empty
-    #   method: process
-    #   source: Contributors-Corporate
+    -
+      plugin: skip_on_empty
+      method: process
+      source: Corporate Contributor
     -
       plugin: explode
       delimiter: '||'
-      source: Institutional Contributors
     -
       plugin: callback
       callable: trim
@@ -414,20 +436,16 @@ process:
       method: process
     -
       plugin: typed_relation_generate
-      delimiter: '|'
+      delimiter: ' | '
       uri_field: field_authority_link
       default_vocabulary: corporate_body
       # relator: 'relators:ctb'
 
   contributors:
-    # -
-    #   plugin: skip_on_empty
-    #   method: process
-    #   source: Contributors-Person
     -
       plugin: explode
-      delimiter: ' || '
-      source: Personal Contributors
+      delimiter: '||'
+      source: Contributors-Person
     -
       plugin: callback
       callable: trim
@@ -436,7 +454,7 @@ process:
       method: process
     -
       plugin: typed_relation_generate
-      delimiter: '|'
+      delimiter: ' | '
       uri_field: field_authority_link
       default_vocabulary: person
       # relator: 'relators:pht'
