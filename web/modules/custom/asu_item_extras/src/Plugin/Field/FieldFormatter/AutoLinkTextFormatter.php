@@ -34,7 +34,7 @@ class AutoLinkTextFormatter extends FormatterBase {
 
   private function auto_link_text($string) {
     $url = '@(http(s)?)?(://)?(([a-zA-Z])([-\w]+\.)+([^\s\.]+[^\s]*)+[^,.\s])@';
-    $string = preg_replace($url, '<a href="http$2://$4" target="_blank" title="$0">$0</a>', $string);
+    $string = preg_replace($url, '<a href="http$2://$4" target="_blank" title="$0">$0<span class="visually-hidden">, opens in a new window</span></a>', $string);
 
     return $string;
   }
