@@ -85,7 +85,7 @@
     {{ content|without('field_note_para') }}
     {# Check if the note paragraph has any content #}
     {% if (content.field_note_para.0['#paragraph'].field_note_text is not empty) or (content.field_note_para.0['#paragraph'].field_note_type is not empty) %}
-      {{ content.field_note_para|raw }}
+      {{ content.field_note_para }}
     {% endif %}
     {% if drupal_view('collaborating_institutions', 'block_1', node.id)|render|striptags|trim|length > 0 %}
       <div class="collab field row">
