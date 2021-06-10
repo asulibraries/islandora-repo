@@ -101,7 +101,7 @@ process:
   localfilelocation: File Location
 
   uri:
-    plugin: file_copy
+    plugin: file_remote_url
     source:
       - '@localfilelocation'
       - '@destination' # The destination entry from above
