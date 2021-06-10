@@ -5,6 +5,8 @@ dependencies:
     - field.field.paragraph.complex_note.field_note_text
     - field.field.paragraph.complex_note.field_note_type
     - paragraphs.paragraphs_type.complex_note
+  module:
+    - asu_item_extras
 id: paragraph.complex_note.default
 targetEntityType: paragraph
 bundle: complex_note
@@ -15,7 +17,7 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    type: basic_string
+    type: auto_link_text
     region: content
   field_note_type:
     weight: 1
