@@ -2,8 +2,14 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.user.user.field_campus
+    - field.field.user.user.field_emplid
+    - field.field.user.user.field_first_name
+    - field.field.user.user.field_honors
+    - field.field.user.user.field_last_name
     - field.field.user.user.field_opt_out_of_content_changed
     - field.field.user.user.field_orcid_id
+    - field.field.user.user.field_programs
     - field.field.user.user.field_terms_accepted
     - field.field.user.user.user_picture
     - image.style.thumbnail
@@ -17,47 +23,60 @@ bundle: user
 mode: default
 content:
   account:
-    weight: -10
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  contact:
-    weight: 5
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  field_opt_out_of_content_changed:
-    weight: 7
-    settings:
-      display_label: true
-    third_party_settings: {  }
-    type: boolean_checkbox
-    region: content
-  field_terms_accepted:
-    weight: 31
-    settings:
-      display_label: true
-    third_party_settings: {  }
-    type: boolean_checkbox
-    region: content
-  language:
     weight: 0
     region: content
     settings: {  }
     third_party_settings: {  }
-  matomo:
-    weight: 3
+  contact:
+    weight: 6
+    region: content
     settings: {  }
     third_party_settings: {  }
+  field_opt_out_of_content_changed:
+    weight: 8
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
     region: content
+  field_orcid_id:
+    type: string_textfield
+    weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_terms_accepted:
+    weight: 10
+    settings:
+      display_label: true
+    third_party_settings: {  }
+    type: boolean_checkbox
+    region: content
+  google_analytics:
+    weight: 4
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  language:
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  matomo:
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   path:
     type: path
-    weight: 30
+    weight: 9
     region: content
     settings: {  }
     third_party_settings: {  }
   timezone:
-    weight: 6
+    weight: 7
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -67,8 +86,13 @@ content:
       progress_indicator: throbber
       preview_image_style: thumbnail
     third_party_settings: {  }
-    weight: -1
+    weight: 2
     region: content
 hidden:
-  field_orcid_id: true
+  field_campus: true
+  field_emplid: true
+  field_first_name: true
+  field_honors: true
+  field_last_name: true
+  field_programs: true
   langcode: true
