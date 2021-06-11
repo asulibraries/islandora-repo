@@ -44,7 +44,7 @@ display:
           sort_asc_label: Asc
           sort_desc_label: Desc
       pager:
-        type: mini
+        type: full
         options:
           items_per_page: 50
           offset: 0
@@ -53,14 +53,17 @@ display:
           tags:
             previous: '‹ Previous'
             next: 'Next ›'
+            first: '« First'
+            last: 'Last »'
           expose:
-            items_per_page: false
+            items_per_page: true
             items_per_page_label: 'Items per page'
-            items_per_page_options: '5, 10, 25, 50'
+            items_per_page_options: '5, 10, 25, 50, 100, 200'
             items_per_page_options_all: false
             items_per_page_options_all_label: '- All -'
             offset: false
             offset_label: Offset
+          quantity: 9
       style:
         type: table
         options:
@@ -698,7 +701,17 @@ display:
           entity_field: status
       sorts: {  }
       title: Files
-      header: {  }
+      header:
+        result:
+          id: result
+          table: views
+          field: result
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          content: 'Displaying @start - @end of @total'
+          plugin_id: result
       footer: {  }
       empty:
         area_text_custom:

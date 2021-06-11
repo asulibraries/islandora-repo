@@ -48,6 +48,14 @@ dependencies:
     - node.type.asu_repository_item
     - node.type.collection
     - search_api.index.default_solr_index
+    - user.role.administrator
+    - user.role.collections_staff
+    - user.role.content_approver
+    - user.role.depositor
+    - user.role.honors_staff
+    - user.role.metadata_manager
+    - user.role.repositor_manager
+    - user.role.some_metadata
   module:
     - asu_migrate
     - controlled_access_terms
@@ -59,6 +67,7 @@ dependencies:
     - search_api
     - serialization
     - text
+    - user
     - views_data_export
 id: rest_csv_export
 label: 'CSV Export'
@@ -75,18 +84,26 @@ display:
     position: 0
     display_options:
       access:
-        type: none
-        options: {  }
+        type: role
+        options:
+          role:
+            administrator: administrator
+            content_approver: content_approver
+            depositor: depositor
+            metadata_manager: metadata_manager
+            repositor_manager: repositor_manager
+            collections_staff: collections_staff
+            honors_staff: honors_staff
+            some_metadata: some_metadata
       cache:
         type: tag
         options: {  }
       query:
         type: views_query
         options:
-          bypass_access: false
-          skip_access: false
-          preserve_facet_query_args: false
-          contextual_filters_or: false
+          skip_access: 0
+          bypass_access: 0
+          preserve_facet_query_args: 0
       exposed_form:
         type: basic
         options:
@@ -5154,6 +5171,7 @@ display:
         - url
         - url.query_args
         - 'user.node_grants:view'
+        - user.roles
       tags:
         - 'config:field.storage.node.field_additional_memberships'
         - 'config:field.storage.node.field_cataloging_standards'
@@ -5224,7 +5242,7 @@ display:
             trim: true
             encoding: utf8
             utf8_bom: '0'
-            use_serializer_encode_only: false
+            use_serializer_encode_only: true
       row:
         type: data_field
         options:
@@ -5239,6 +5257,8 @@ display:
       redirect_to_display: none
       custom_redirect_path: false
       include_query_params: false
+      export_method: batch
+      export_batch_size: 200
     cache_metadata:
       max-age: -1
       contexts:
@@ -5247,6 +5267,7 @@ display:
         - request_format
         - url
         - 'user.node_grants:view'
+        - user.roles
       tags:
         - 'config:field.storage.node.field_additional_memberships'
         - 'config:field.storage.node.field_cataloging_standards'
@@ -5526,6 +5547,7 @@ display:
         - request_format
         - url
         - 'user.node_grants:view'
+        - user.roles
       tags:
         - 'config:field.storage.node.field_additional_memberships'
         - 'config:field.storage.node.field_cataloging_standards'
@@ -5614,6 +5636,8 @@ display:
       redirect_to_display: none
       custom_redirect_path: false
       include_query_params: false
+      export_method: batch
+      export_batch_size: 200
     cache_metadata:
       max-age: -1
       contexts:
@@ -5622,6 +5646,7 @@ display:
         - request_format
         - url
         - 'user.node_grants:view'
+        - user.roles
       tags:
         - 'config:field.storage.node.field_additional_memberships'
         - 'config:field.storage.node.field_cataloging_standards'
@@ -5712,6 +5737,7 @@ display:
         - request_format
         - url
         - 'user.node_grants:view'
+        - user.roles
       tags:
         - 'config:field.storage.node.field_additional_memberships'
         - 'config:field.storage.node.field_cataloging_standards'

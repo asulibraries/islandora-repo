@@ -1046,7 +1046,17 @@ display:
             label: ''
           granularity: second
       title: Media
-      header: {  }
+      header:
+        result:
+          id: result
+          table: views
+          field: result
+          relationship: none
+          group_type: group
+          admin_label: ''
+          empty: false
+          content: 'Displaying @start - @end of @total'
+          plugin_id: result
       footer: {  }
       empty:
         area_text_custom:
