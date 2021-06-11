@@ -1,0 +1,129 @@
+# Uninstall this config when the feature is uninstalled
+dependencies:
+  enforced:
+    module:
+      - asu_migrate
+
+id: prism_cols2
+label: Import prism_cols2
+migration_group: migrate_cols
+
+source:
+  plugin: csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/prism_cols2.csv
+  header_row_count: 1
+  ids:
+    - id
+
+  constants:
+    model: "Collection"
+
+process:
+  field_default_derivative_file_pe:
+    -
+      plugin: static_map
+      source: default_df_perms
+      map:
+        1: "Public" #OpenAccess
+        2: "ASU Only" #ASU
+        3: "Private" #Closed
+    -
+      plugin: entity_lookup
+      bundle: islandora_access
+      bundle_key: vid
+      entity_type: taxonomy_term
+      value_key: name
+
+  field_default_original_file_perm:
+    -
+      plugin: static_map
+      source: default_of_perms
+      map:
+        1: "Public" #OpenAccess
+        2: "ASU Only" #ASU
+        3: "Private" #Closed
+    -
+      plugin: entity_lookup
+      bundle: islandora_access
+      bundle_key: vid
+      entity_type: taxonomy_term
+      value_key: name
+
+  field_primary_contact:
+    plugin: skip_on_empty
+    method: process
+    source: primary_contact
+
+  created:
+    -
+      plugin: skip_on_empty
+      source: created
+      method: process
+    -
+      plugin: format_date
+      from_format: 'Y-m-d G:i:s.uP'
+      to_format: 'U'
+      from_timezone: 'UTC'
+      to_timezone: 'UTC'
+
+  field_model:
+    source: model
+    plugin: entity_lookup
+    entity_type: taxonomy_term
+    value_key: name
+    bundle_key: vid
+    bundle: islandora_models
+
+  field_rich_description/value:
+    plugin: skip_on_empty
+    source: description
+    method: process
+
+  field_rich_description/format:
+    plugin: default_value
+    default_value: "description_restricted_items"
+
+  title:
+    plugin: substr
+    source: title
+    start: 0
+    length: 254
+
+  field_title:
+    -
+      plugin: explode
+      delimiter: '||'
+      source: title
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: paragraph_title_generate
+      paragraph_type: 'complex_title'
+      split_into_parts: true
+      fields:
+        field_nonsort: " "
+        field_main_title: " "
+        field_subtitle: " "
+
+  field_handle: handle
+
+  # field_member_of:
+  #   -
+  #     plugin: get
+  #     source:
+  #       - 'parent item'
+  #       - 'parent'
+  #   -
+  #     plugin: multi_entity_lookup
+  #     entity_type: node
+  #     access_check: 0
+  #     bundle_key: type
+  #     bundle: collection
+  #     value_key: title
+
+
+# We're making nodes
+destination:
+  plugin: 'entity:node'
+  default_bundle: collection
