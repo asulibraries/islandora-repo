@@ -46,6 +46,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_reuse_permissions
     - field.field.node.asu_repository_item.field_rich_description
     - field.field.node.asu_repository_item.field_series
+    - field.field.node.asu_repository_item.field_source
     - field.field.node.asu_repository_item.field_statement_responsibility
     - field.field.node.asu_repository_item.field_subject
     - field.field.node.asu_repository_item.field_subjects_name
@@ -302,7 +303,7 @@ content:
     weight: 17
     label: above
     settings:
-      link: true
+      link: false
     third_party_settings: {  }
     type: entity_reference_label
     region: content
@@ -566,6 +567,7 @@ hidden:
   field_keyword: true
   field_level_of_coding: true
   field_oai_set: true
+  field_source: true
   islandora_fits_checksum: true
   openseadragon_media_evas_entity_view_2: true
   openseadragon_media_evas_service_file: true
