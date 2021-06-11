@@ -2,8 +2,14 @@ langcode: en
 status: true
 dependencies:
   config:
+    - field.field.user.user.field_campus
+    - field.field.user.user.field_emplid
+    - field.field.user.user.field_first_name
+    - field.field.user.user.field_honors
+    - field.field.user.user.field_last_name
     - field.field.user.user.field_opt_out_of_content_changed
     - field.field.user.user.field_orcid_id
+    - field.field.user.user.field_programs
     - field.field.user.user.field_terms_accepted
     - field.field.user.user.user_picture
     - image.style.thumbnail
@@ -16,7 +22,7 @@ bundle: user
 mode: default
 content:
   field_opt_out_of_content_changed:
-    weight: 6
+    weight: 3
     label: above
     settings:
       format: default
@@ -25,8 +31,16 @@ content:
     third_party_settings: {  }
     type: boolean
     region: content
+  field_orcid_id:
+    type: string
+    weight: 2
+    region: content
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
   field_terms_accepted:
-    weight: 7
+    weight: 4
     label: above
     settings:
       format: default
@@ -35,9 +49,16 @@ content:
     third_party_settings: {  }
     type: boolean
     region: content
-  member_for:
+  masquerade:
     weight: 5
     region: content
+    settings: {  }
+    third_party_settings: {  }
+  member_for:
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   user_picture:
     type: image
     weight: 0
@@ -48,7 +69,12 @@ content:
     third_party_settings: {  }
     label: hidden
 hidden:
-  field_orcid_id: true
+  field_campus: true
+  field_emplid: true
+  field_first_name: true
+  field_honors: true
+  field_last_name: true
+  field_programs: true
   langcode: true
   orcid: true
   search_api_excerpt: true

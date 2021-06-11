@@ -88,7 +88,7 @@
 
 <article{{ attributes.addClass(classes) }}>
   <div{{ content_attributes.addClass('node__content', 'clearfix', 'row', 'item-result') }}>
-    <div class="col-md-2">
+    <div class="col-md-2 thumb-image-border">
       {% if complex_obj_thumb is not empty %}
         <a href="/items/{{ node.id }}"><img src=" {{ complex_obj_thumb }}"/></a>
       {% elseif drupal_view_result('display_media', 'thumbnail', node.id) is empty %}

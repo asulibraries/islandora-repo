@@ -3,6 +3,7 @@
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\Core\Link;
+use Drupal\Core\Render\Element;
 
 /**
  * @file
@@ -142,5 +143,27 @@ function asulib_barrio_preprocess_block(&$variables) {
   }
   if ($variables['plugin_id'] == "explore_this_item_block" && empty($variables['content'])) {
     $variables['attributes']['hidden'] = TRUE;
+  }
+}
+
+/**
+ * Preprocess user content.
+ */
+function asulib_barrio_preprocess_user(&$variables) {
+//  // Helpful $content variable for templates.
+  $account = $variables['elements']['#user'];
+  if (array_key_exists('field_orcid_id', $variables['content'])) {
+    $orcid_id = $account->get('field_orcid_id')->value;
+    $url = Url::fromUri('https://orcid.org/' . $orcid_id);
+    $link = Link::fromTextAndUrl($orcid_id, $url);
+    $link = $link->toRenderable();
+    $orcid_link = render($link);
+    $variables['content']['orchid'] = [
+      '#type' => 'item',
+      '#markup' => '<h4 class="label">ORCID ID</h4>' . $orcid_link,
+      '#weight' => 1,
+    ];
+    // Remove the previous display for this field on the user page.
+    unset($variables['content']['field_orcid_id']);
   }
 }
