@@ -86,15 +86,14 @@
     <article{{ attributes.addClass(classes) }}>
       <header>
           {% if drupal_view_result('display_media', 'thumbnail', node.id) is not empty %}
-            {{ drupal_view('display_media', 'thumbnail', node.id) }}
-          {% else %}
             {% set mod = content.field_model[0]|render|trim %}
-            {{ mod }}
             {% for k, v in model_icons|filter((v, k) => k == mod) -%}
               <div class="icon-container">
                 <i class="{{ v }} fa-6x"></i>
               </div>
             {% endfor %}
+          {% else %}
+            {{ drupal_view('display_media', 'thumbnail', node.id) }}
           {% endif %}
             {{ title_prefix }}
             {% if label %}
