@@ -4,13 +4,13 @@ dependencies:
     module:
       - asu_migrate
 
-id: c158_node
-label: Import Collection 158 from CSV
-migration_group: migrate_c158_csv
+id: c131_node
+label: Import Collection 131 from CSV
+migration_group: migrate_c131_csv
 
 source:
   plugin: csv
-  path: /var/www/html/drupal/web/modules/custom/asu_migrate/c158_merged_v2.csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/c131_merged_v2.csv
 
   # 1 means you have a header row, 0 means you don't
   header_row_count: 1
@@ -26,7 +26,7 @@ source:
 
     # Everything gets created as admin
     uid: 1
-    collection_title: 'ASU Library Collection'
+    collection_title: "Tanner, Rene"
     pres_state: '558' # Not Preserved
     handle: "https://hdl.handle.net/2286/R.I."
     cataloging_standards: "asu1"
@@ -280,7 +280,7 @@ process:
       plugin: get
       source:
         - 'Parent Item'
-        - 'Collection Title'
+        - 'constants/collection_title'
     -
       plugin: multi_entity_lookup
       entity_type: node
