@@ -10,7 +10,7 @@ migration_group: migrate_c212_csv
 
 source:
   plugin: csv
-  path: /var/www/html/drupal/web/modules/custom/asu_migrate/data/migration_data/att_file_212_cleaned.csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/data/migration_data/att_file_212_v2.csv
   delimiter: ','
 
   # 1 means you have a header row, 0 means you don't
@@ -42,9 +42,9 @@ process:
 #   filemime: file mime
   uid: constants/uid
   # todo set to asurite
-  type: 'file type'
+  type: file type
 
-  field_original_name/value: 'file original_filename'
+  field_original_name/value: file original_filename
   filename:
     -
       plugin: transliteration
@@ -56,6 +56,30 @@ process:
     -
       plugin: str_replace
       search: "'"
+      replace: ""
+    -
+      plugin: str_replace
+      search: ","
+      replace: ""
+    -
+      plugin: str_replace
+      search: ")"
+      replace: ""
+    -
+      plugin: str_replace
+      search: "("
+      replace: ""
+    -
+      plugin: str_replace
+      search: "&"
+      replace: ""
+    -
+      plugin: str_replace
+      search: "["
+      replace: ""
+    -
+      plugin: str_replace
+      search: "]"
       replace: ""
 
 
