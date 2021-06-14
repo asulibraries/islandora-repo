@@ -35,13 +35,9 @@ process:
     start: 0
     length: 254
   uid:
-    -
-      plugin: skip_on_empty
-      source: System Creator
-      method: process
-    -
-      plugin: user_lookup
-      default_value: constants/uid
+    source: System Creator
+    plugin: user_lookup
+    default_value: constants/uid
   bundle: file type
   field_original_name: File Name
 
