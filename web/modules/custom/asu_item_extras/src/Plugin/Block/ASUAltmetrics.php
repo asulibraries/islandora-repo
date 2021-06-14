@@ -172,14 +172,17 @@ class ASUAltmetrics extends BlockBase implements ContainerFactoryPluginInterface
    * {@inheritdoc}
    */
   public function getCacheTags() {
-    // With this when your node change your block will rebuild.
-    if ($node = $this->routeMatch->getParameter('node')) {
-      // If there is node add its cachetag.
-      return Cache::mergeTags(parent::getCacheTags(), ['node:' . $node->id()]);
+    if ($this->currentRouteMatch->getParameter('node')) {
+      $node = $this->currentRouteMatch->getParameter('node');
+    }
+    if (!is_object($node)) {
+      $node = $this->entityTypeManager->getStorage('node')->load($node);
+    }
+    if (!$node) {
+      return parent::getCacheTags();
     }
     else {
-      // Return default tags instead.
-      return parent::getCacheTags();
+      return Cache::mergeTags(parent::getCacheTags(), ['node:' . $node->id()]);
     }
   }
 
