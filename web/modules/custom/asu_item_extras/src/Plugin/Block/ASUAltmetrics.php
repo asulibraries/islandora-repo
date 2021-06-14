@@ -7,6 +7,7 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Routing\CurrentRouteMatch;
+use Drupal\Core\Cache\Cache;
 
 /**
  * Provides an 'Altmetrics' Block.
@@ -165,6 +166,31 @@ class ASUAltmetrics extends BlockBase implements ContainerFactoryPluginInterface
         ],
       ] : []);
     ;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheTags() {
+    // With this when your node change your block will rebuild.
+    if ($node = $this->routeMatch->getParameter('node')) {
+      // If there is node add its cachetag.
+      return Cache::mergeTags(parent::getCacheTags(), ['node:' . $node->id()]);
+    }
+    else {
+      // Return default tags instead.
+      return parent::getCacheTags();
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheContexts() {
+    // If you depends on \Drupal::routeMatch().
+    // You must set context of this block with 'route' context tag.
+    // Every new route this block will rebuild.
+    return Cache::mergeContexts(parent::getCacheContexts(), ['route']);
   }
 
 }
