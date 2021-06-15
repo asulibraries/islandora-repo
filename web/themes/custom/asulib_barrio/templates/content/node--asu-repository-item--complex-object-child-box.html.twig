@@ -86,37 +86,23 @@
 <div class="space-border-box">
     <article{{ attributes.addClass(classes) }}>
       <header>
-        {% if mod == 'Audio' %}
-          {% if drupal_view_result('video_media_evas', 'service_file', node.id) is empty %}
-            {{ drupal_view('video_media_evas', 'original_file', node.id) }}
-          {% else %}
-            {{ drupal_view('video_media_evas', 'service_file', node.id) }}
-          {% endif %}
-        {% elseif mod == 'Video' %}
-          {% if drupal_view_result('video_media_evas', 'service_file', node.id) is empty %}
-            {{ drupal_view('video_media_evas', 'original_file', node.id) }}
-          {% else %}
-            {{ drupal_view('video_media_evas', 'service_file', node.id) }}
-          {% endif %}
+        {% if drupal_view_result('display_media', 'thumbnail', node.id) is empty %}
+          {% for k, v in model_icons|filter((v, k) => k == mod) -%}
+            <div class="icon-container">
+              <i class="{{ v }} fa-6x"></i>
+            </div>
+          {% endfor %}
         {% else %}
-          {% if drupal_view_result('display_media', 'thumbnail', node.id) is empty %}
-            {% for k, v in model_icons|filter((v, k) => k == mod) -%}
-              <div class="icon-container">
-                <i class="{{ v }} fa-6x"></i>
-              </div>
-            {% endfor %}
-          {% else %}
-            {{ drupal_view('display_media', 'thumbnail', node.id) }}
-          {% endif %}
+          {{ drupal_view('display_media', 'thumbnail', node.id) }}
         {% endif %}
-            {{ title_prefix }}
-            {% if label %}
-              <h5{{ title_attributes.addClass('node__title') }}>
-                {% if not is_published %}<i class="fas fa-ban"></i>&nbsp;{% endif %}
-                <a href="{{ url }}" rel="bookmark">{{ label }}</a>
-              </h5>
-            {% endif %}
-            {{ title_suffix }}
+          {{ title_prefix }}
+          {% if label %}
+            <h5{{ title_attributes.addClass('node__title') }}>
+              {% if not is_published %}<i class="fas fa-ban"></i>&nbsp;{% endif %}
+              <a href="{{ url }}" rel="bookmark">{{ label }}</a>
+            </h5>
+          {% endif %}
+          {{ title_suffix }}
         <br class="clearfloat">
         {% if drupal_view_result('media_of', 'page_1' ,node.id) is not empty%}
           <div>Download count:
@@ -128,6 +114,24 @@
           </div>
           {% if mod == 'Image' or mod == 'Digital Document' %}
             <a href="/items/{{ node.id }}/view">Preview</a><br/>
+          {% else if mod == 'Audio' %}
+            <a data-toggle="collapse" href="#player{{ node.id }}" role="button" aria-expanded="false" aria-controls="player{{ node.id }}"><i class="fa fa-play"></i>Play</a><br/>
+            <div id="player{{ node.id }}" class="collapse">
+              {% if drupal_view_result('video_media_evas', 'service_file', node.id) is empty %}
+                {{ drupal_view('video_media_evas', 'original_file', node.id) }}
+              {% else %}
+                {{ drupal_view('video_media_evas', 'service_file', node.id) }}
+              {% endif %}
+            </div>
+          {% elseif mod == 'Video' %}
+            <a data-toggle="collapse" href="#player{{ node.id }}" role="button" aria-expanded="false" aria-controls="player{{ node.id }}"><i class="fa fa-play"></i>Play</a><br/>
+            <div id="player{{ node.id }}" class="collapse">
+              {% if drupal_view_result('video_media_evas', 'service_file', node.id) is empty %}
+                {{ drupal_view('video_media_evas', 'original_file', node.id) }}
+              {% else %}
+                {{ drupal_view('video_media_evas', 'service_file', node.id) }}
+              {% endif %}
+            </div>
           {% endif %}
         {% endif %}
         <div class="altmetrics-info">
