@@ -104,7 +104,7 @@
           {% endif %}
           {{ title_suffix }}
         <br class="clearfloat">
-        {% if drupal_view_result('media_of', 'page_1' ,node.id) is not empty%}
+        {% if drupal_view_result('media_of', 'page_1' ,node.id) is not empty %}
           <div>Download count:
             {{ drupal_block('asu_item_downloads', {'child_node_id': node.id}) }}
           </div>
@@ -114,7 +114,7 @@
           </div>
           {% if mod == 'Image' or mod == 'Digital Document' %}
             <a href="/items/{{ node.id }}/view">Preview</a><br/>
-          {% else if mod == 'Audio' %}
+          {% elseif mod == 'Audio' %}
             <a data-toggle="collapse" href="#player{{ node.id }}" role="button" aria-expanded="false" aria-controls="player{{ node.id }}"><i class="fa fa-play"></i>Play</a><br/>
             <div id="player{{ node.id }}" class="collapse">
               {% if drupal_view_result('video_media_evas', 'service_file', node.id) is empty %}
