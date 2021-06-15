@@ -143,10 +143,11 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     if ($servicefile) {
       $source_field = $media_source_service->getSourceFieldName($servicefile->bundle());
       if (!empty($source_field)) {
+        \Drupal::logger('downloadsblock')->info("service file has type " . $serviceFile->get('field_media_use')->entity->getName());
         $sf_file = $servicefile->get($source_field)->referencedEntities()[0];
         $sf_uri = $islandora_utils->getDownloadUrl($sf_file);
         $sf_link = Link::fromTextAndUrl($this->t('Derivative'), Url::fromUri($sf_uri, ['attributes' => ['class' => ['dropdown-item']]]));
-        $download_info .= $servicefile->get('field_mime_type')->value;
+        // $download_info .= $servicefile->get('field_mime_type')->value;
       }
     }
 
