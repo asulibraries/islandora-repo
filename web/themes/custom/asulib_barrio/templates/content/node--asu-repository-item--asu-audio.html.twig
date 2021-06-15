@@ -102,9 +102,13 @@
     <div class="row">
       <div class="col-md-12 file-container">
         {% if drupal_view_result('video_media_evas', 'service_file', node.id) is empty%}
-          {{ drupal_view('video_media_evas', 'original_file', node.id) }}
+          {% if of_access %}
+            {{ drupal_view('video_media_evas', 'original_file', node.id) }}
+          {% endif %}
         {% else %}
-          {{ drupal_view('video_media_evas', 'service_file', node.id) }}
+          {% if sf_access %}
+            {{ drupal_view('video_media_evas', 'service_file', node.id) }}
+          {% endif %}
         {% endif %}
       </div>
       <div class="col-md-12 info-container">
