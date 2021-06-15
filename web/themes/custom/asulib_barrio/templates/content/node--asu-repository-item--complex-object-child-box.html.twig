@@ -114,7 +114,7 @@
           </div>
           {% if mod == 'Image' or mod == 'Digital Document' %}
             <a href="/items/{{ node.id }}/view">Preview</a><br/>
-          {% elseif mod == 'Audio' or mod == 'Video' %}
+          {% elseif (mod == 'Audio' or mod == 'Video') and (of_access or sf_access) %}
             <a data-toggle="collapse" href="#player{{ node.id }}" role="button" aria-expanded="false" aria-controls="player{{ node.id }}"><i class="far fa-play-circle"></i> Play</a><br/>
             <div id="player{{ node.id }}" class="collapse">
               <div class="mini-player">
