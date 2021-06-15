@@ -49,3 +49,13 @@ asu_item_extras.thumbnail_controller_get_thumbnail:
       node:
         type: entity:node
     no_cache: 'TRUE'
+
+asu_item_extras.perf_archive.edit:
+  path: '/perf_archive/{node}/edit'
+  defaults:
+    _entity_form: 'node.perf_archive'
+    _title: 'Performance Archive Edit'
+  requirements:
+    node: '\d+'
+    _entity_access: 'node.update'
+    _permission: 'access content'
