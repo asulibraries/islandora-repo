@@ -86,13 +86,13 @@
 <div class="space-border-box">
     <article{{ attributes.addClass(classes) }}>
       <header>
-        {% if mod = 'Audio' %}
+        {% if mod == 'Audio' %}
           {% if drupal_view_result('video_media_evas', 'service_file', node.id) is empty %}
             {{ drupal_view('video_media_evas', 'original_file', node.id) }}
           {% else %}
             {{ drupal_view('video_media_evas', 'service_file', node.id) }}
           {% endif %}
-        {% elseif mod = 'Video' %}
+        {% elseif mod == 'Video' %}
           {% if drupal_view_result('video_media_evas', 'service_file', node.id) is empty %}
             {{ drupal_view('video_media_evas', 'original_file', node.id) }}
           {% else %}
