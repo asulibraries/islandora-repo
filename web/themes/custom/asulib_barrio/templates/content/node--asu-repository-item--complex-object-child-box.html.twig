@@ -113,13 +113,13 @@
             {{ drupal_block('downloads_block') }}
           </div>
           {% if mod == 'Audio' %}
-            {% if drupal_view_result('video_media_evas', 'service_file', node.id) is empty%}
+            {% if drupal_view_result('video_media_evas', 'service_file', node.id) is empty %}
               {{ drupal_view('video_media_evas', 'original_file', node.id) }}
             {% else %}
               {{ drupal_view('video_media_evas', 'service_file', node.id) }}
             {% endif %}
-          {% else if mod == 'Video' %}
-            {% if drupal_view_result('video_media_evas', 'service_file', node.id) is empty%}
+          {% elseif mod == 'Video' %}
+            {% if drupal_view_result('video_media_evas', 'service_file', node.id) is empty %}
               {{ drupal_view('video_media_evas', 'original_file', node.id) }}
             {% else %}
               {{ drupal_view('video_media_evas', 'service_file', node.id) }}
