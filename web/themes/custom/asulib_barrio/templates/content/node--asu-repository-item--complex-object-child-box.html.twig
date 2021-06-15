@@ -87,7 +87,7 @@
     <article{{ attributes.addClass(classes) }}>
       <header>
         {% if drupal_view_result('display_media', 'thumbnail', node.id) is empty %}
-          {% for k, v in model_icons|filter((v, k) => k == mod) -%}
+          {% for k, v in model_icons|filter((v, k) => k == mod) %}
             <div class="icon-container">
               <i class="{{ v }} fa-6x"></i>
             </div>
