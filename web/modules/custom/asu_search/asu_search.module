@@ -95,7 +95,7 @@ function asu_search_preprocess_node(&$variables) {
     if ($variables['view_mode'] == 'asu_complex_object') {
       $childs = \Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['field_member_of' => $variables['node']->id()]);
       $count = count($childs);
-      $variables['child_count'] = $child_count;
+      $variables['child_count'] = $count;
     }
   }
 }
