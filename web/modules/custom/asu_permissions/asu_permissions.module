@@ -283,7 +283,7 @@ function asu_permissions_media_access(EntityInterface $entity, $operation, Accou
     // TODO potentially do a lookup here for additional all-seeing roles.
     $access_result = AccessResult::allowed();
   }
-
+  \Drupal::logger('asu permissions')->info("checking access for " . $entity->get('field_media_use')->entity->getName());
   if ($entity->hasField('field_access_terms') && $entity->get('field_access_terms')->entity) {
     // \Drupal::messenger()->addMessage("has islandora access set");
     $access_term = $entity->get('field_access_terms')->entity->getName();
