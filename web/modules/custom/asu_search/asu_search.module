@@ -92,6 +92,11 @@ function asu_search_preprocess_node(&$variables) {
         }
       }
     }
+    if ($view_mode == 'asu_complex_object') {
+      $childs = \Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['field_member_of' => $variables['node']->id()]);
+      $count = count($childs);
+      $variables['child_count'] = $child_count;
+    }
   }
 }
 
@@ -109,7 +114,7 @@ function asu_search_preprocess_views_view(&$variables) {
       $view->get_total_rows = TRUE;
       $view->execute($view->current_display);
       $variables['total_rows_formatted'] = number_format($view->total_rows);
-    } 
+    }
     // inspect the query from the URL and if there are any facets, suppress
     // the inclusion of the collections block at the top of the /search page.
     $facet_filters = \Drupal::request()->query->get('f');
