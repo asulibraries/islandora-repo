@@ -299,6 +299,7 @@ function asu_permissions_media_access(EntityInterface $entity, $operation, Accou
   }
   // \Drupal::logger('asu permissions')->info('access results' . $access_result);
   if (!isset($access_result)) {
+    \Drupal::logger('asu permissions')->info('had to go deeper because it was public');
     // Depend on the permission of the parent item
     $taccess = $item->access($operation, $account);
     $all_parents = _walk_membership($item, [$item]);
