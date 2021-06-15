@@ -143,11 +143,9 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     if ($servicefile) {
       $source_field = $media_source_service->getSourceFieldName($servicefile->bundle());
       if (!empty($source_field)) {
-        \Drupal::logger('downloadsblock')->info("service file has type " . $servicefile->get('field_media_use')->entity->getName());
         $sf_file = $servicefile->get($source_field)->referencedEntities()[0];
         $sf_uri = $islandora_utils->getDownloadUrl($sf_file);
         $sf_link = Link::fromTextAndUrl($this->t('Derivative'), Url::fromUri($sf_uri, ['attributes' => ['class' => ['dropdown-item']]]));
-        // $download_info .= $servicefile->get('field_mime_type')->value;
       }
     }
 
@@ -156,16 +154,12 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     $links = [];
     if (isset($of_file)) {
       $access_of_media = $origfile->access('view', $this->currentUser);
-      \Drupal::logger('downloadsblock')->info("of file access");
-      \Drupal::logger('downloadsblock')->info($access_of_media);
       if ($access_of_media) {
         $links[] = $of_link->toRenderable();
       }
     }
     if (isset($sf_file)) {
       $access_sf_media = $servicefile->access('view', $this->currentUser);
-      \Drupal::logger('downloadsblock')->info("sf file access");
-      \Drupal::logger('downloadsblock')->info($access_sf_media);
       if ($access_sf_media) {
         $links[] = $sf_link->toRenderable();
       }
