@@ -110,7 +110,7 @@
           </div>
           <br/>
           <div class="download-options">
-            {{ drupal_block('downloads_block'), {'child_node_id': node.id}) }}
+            {{ drupal_block('downloads_block', {'child_node_id': node.id}) }}
           </div>
           {% if mod == 'Image' or mod == 'Digital Document' %}
             <a href="/items/{{ node.id }}/view">Preview</a><br/>
