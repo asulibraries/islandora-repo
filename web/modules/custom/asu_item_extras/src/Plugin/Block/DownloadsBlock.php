@@ -155,7 +155,7 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     $markup = '';
     $links = [];
     if (isset($of_file)) {
-      $access_of_media = $of_file->access('view', $this->currentUser);
+      $access_of_media = $origfile->access('view', $this->currentUser);
       \Drupal::logger('downloadsblock')->info("of file access");
       \Drupal::logger('downloadsblock')->info($access_of_media);
       if ($access_of_media) {
@@ -163,7 +163,7 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
       }
     }
     if (isset($sf_file)) {
-      $access_sf_media = $sf_file->access('view', $this->currentUser);
+      $access_sf_media = $servicefile->access('view', $this->currentUser);
       \Drupal::logger('downloadsblock')->info("sf file access");
       \Drupal::logger('downloadsblock')->info($access_sf_media);
       if ($access_sf_media) {
