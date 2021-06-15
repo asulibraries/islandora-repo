@@ -150,13 +150,13 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     $user_roles = $this->currentUser->getRoles();
     $markup = '';
     $links = [];
-    if ($of_file) {
+    if (isset($of_file)) {
       $access_of_media = $of_file->access('view', $this->currentUser);
       if ($access_of_media) {
         $links[] = $of_link->toRenderable();
       }
     }
-    if ($sf_file) {
+    if (isset($sf_file)) {
       $access_sf_media = $sf_file->access('view', $this->currentUser);
       if ($access_sf_media) {
         $links[] = $sf_link->toRenderable();
