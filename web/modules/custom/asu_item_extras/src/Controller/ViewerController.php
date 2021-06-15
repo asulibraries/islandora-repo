@@ -135,7 +135,7 @@ class ViewerController extends ControllerBase {
           \Drupal::logger('viewer conroller')->info("user can access OF media");
           return AccessResult::allowed();
         }
-        elseif (is_null($origFile)) {
+        elseif (is_null($origfile)) {
           // Must allow in order for the redirect in renderView above to work.
           return AccessResult::allowed();
         } else {
