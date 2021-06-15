@@ -54,8 +54,29 @@ asu_item_extras.perf_archive.edit:
   path: '/perf_archive/{node}/edit'
   defaults:
     _entity_form: 'node.perf_archive'
-    _title: 'Performance Archive Edit'
+    _title_callback: 'Drupal\node\Controller\NodeController::revisionPageTitle'
   requirements:
     node: '\d+'
     _entity_access: 'node.update'
-    _permission: 'access content'
+  options:
+    _node_operation_route: TRUE
+    parameters:
+      node:
+        type: entity:node
+    no_cache: 'TRUE'
+
+asu_item_extras.perf_archive.add:
+  path: '/perf_archive/add'
+  defaults:
+    _entity_form: 'node.perf_archive'
+    _title_callback: 'Drupal\node\Controller\NodeController::addPageTitle'
+  requirements:
+    node: '\d+'
+    _node_add_access: 'node:asu_repository_item'
+  options:
+    _node_operation_route: TRUE
+    parameters:
+      node:
+        type: entity:node
+    no_cache: 'TRUE'
+
