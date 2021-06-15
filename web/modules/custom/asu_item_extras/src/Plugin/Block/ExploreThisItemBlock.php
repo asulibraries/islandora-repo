@@ -195,10 +195,8 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
     // Get the media for "Original File" and check for any access restrictions
     // on it.
     $origfile_term = $this->islandoraUtils->getTermForUri('http://pcdm.org/use#OriginalFile');
-//    $node_mids = $this->islandoraUtils->getMediaReferencingNodeAndTerm($node, $origfile_term);
     $origfile = $this->islandoraUtils->getMediaWithTerm($node, $origfile_term);
     $origfile_access = (!is_null($origfile) && $origfile->access('view', $this->currentUser));
-    // Dunno...
     return $origfile_access;
   }
 
