@@ -295,8 +295,9 @@ function asu_permissions_media_access(EntityInterface $entity, $operation, Accou
   \Drupal::logger('asu permissions')->info("access term: " . $access_term);
   if (!$account->isAuthenticated() && $access_term != "Public") {
     $access_result = AccessResult::forbidden();
+    \Drupal::logger('asu permissions')->info('access results: forbidden');
   }
-  \Drupal::logger('asu permissions')->info('access results' . $access_result);
+  // \Drupal::logger('asu permissions')->info('access results' . $access_result);
   if (!isset($access_result)) {
     // Depend on the permission of the parent item
     $taccess = $item->access($operation, $account);
