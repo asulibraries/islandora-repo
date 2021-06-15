@@ -117,7 +117,7 @@
           {% elseif mod == 'Audio' %}
             <a data-toggle="collapse" href="#player{{ node.id }}" role="button" aria-expanded="false" aria-controls="player{{ node.id }}"><i class="fa fa-play"></i> Play</a><br/>
             <div id="player{{ node.id }}" class="collapse">
-              <div class="card card-body">
+              <div class="col-12">
                 {% if drupal_view_result('video_media_evas', 'service_file', node.id) is empty %}
                   {{ drupal_view('video_media_evas', 'original_file', node.id) }}
                 {% else %}
@@ -128,7 +128,7 @@
           {% elseif mod == 'Video' %}
             <a data-toggle="collapse" href="#player{{ node.id }}" role="button" aria-expanded="false" aria-controls="player{{ node.id }}"><i class="fa fa-play"></i> Play</a><br/>
             <div id="player{{ node.id }}" class="collapse">
-              <div class="card card-body">
+              <div class="col-12">
                 {% if drupal_view_result('video_media_evas', 'service_file', node.id) is empty %}
                   {{ drupal_view('video_media_evas', 'original_file', node.id) }}
                 {% else %}
