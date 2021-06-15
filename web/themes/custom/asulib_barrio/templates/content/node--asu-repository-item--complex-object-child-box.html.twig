@@ -86,6 +86,19 @@
 <div class="space-border-box">
     <article{{ attributes.addClass(classes) }}>
       <header>
+        {% if mod = 'Audio' %}
+          {% if drupal_view_result('video_media_evas', 'service_file', node.id) is empty %}
+            {{ drupal_view('video_media_evas', 'original_file', node.id) }}
+          {% else %}
+            {{ drupal_view('video_media_evas', 'service_file', node.id) }}
+          {% endif %}
+        {% elseif mod = 'Video' %}
+          {% if drupal_view_result('video_media_evas', 'service_file', node.id) is empty %}
+            {{ drupal_view('video_media_evas', 'original_file', node.id) }}
+          {% else %}
+            {{ drupal_view('video_media_evas', 'service_file', node.id) }}
+          {% endif %}
+        {% else %}
           {% if drupal_view_result('display_media', 'thumbnail', node.id) is empty %}
             {% for k, v in model_icons|filter((v, k) => k == mod) -%}
               <div class="icon-container">
@@ -95,6 +108,7 @@
           {% else %}
             {{ drupal_view('display_media', 'thumbnail', node.id) }}
           {% endif %}
+        {% endif %}
             {{ title_prefix }}
             {% if label %}
               <h5{{ title_attributes.addClass('node__title') }}>
@@ -112,19 +126,7 @@
           <div class="download-options">
             {{ drupal_block('downloads_block') }}
           </div>
-          {% if mod == 'Audio' %}
-            {% if drupal_view_result('video_media_evas', 'service_file', node.id) is empty %}
-              {{ drupal_view('video_media_evas', 'original_file', node.id) }}
-            {% else %}
-              {{ drupal_view('video_media_evas', 'service_file', node.id) }}
-            {% endif %}
-          {% elseif mod == 'Video' %}
-            {% if drupal_view_result('video_media_evas', 'service_file', node.id) is empty %}
-              {{ drupal_view('video_media_evas', 'original_file', node.id) }}
-            {% else %}
-              {{ drupal_view('video_media_evas', 'service_file', node.id) }}
-            {% endif %}
-          {% else %}
+          {% if mod == 'Image' or mod == 'Digital Document' %}
             <a href="/items/{{ node.id }}/view">Preview</a><br/>
           {% endif %}
         {% endif %}
