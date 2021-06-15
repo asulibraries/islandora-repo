@@ -111,13 +111,16 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
    * {@inheritdoc}
    */
   public function build() {
-    // Depending on what the islandora_object model is, the links will differ.
-    $node = $this->routeMatch->getParameter('node');
-    if ($node) {
-      $nid = $node->id();
+    $block_config = BlockBase::getConfiguration();
+    if (is_array($block_config) && array_key_exists('child_node_id', $block_config)) {
+      $nid = $block_config['child_node_id'];
+      $node = $this->entityTypeManager->getStorage('node')->load($nid);
     }
     else {
-      $nid = 0;
+      if ($this->routeMatch->getParameter('node')) {
+        $node = $this->routeMatch->getParameter('node');
+        $nid = (is_string($node) ? $node : $node->id());
+      }
     }
     $download_info = $file_size = '';
     $islandora_utils = \Drupal::service('islandora.utils');
@@ -187,10 +190,20 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
    * {@inheritdoc}
    */
   public function getCacheTags() {
-    // With this when your node change your block will rebuild.
-    if ($node = $this->routeMatch->getParameter('node')) {
+
+    $block_config = BlockBase::getConfiguration();
+    if (is_array($block_config) && array_key_exists('child_node_id', $block_config)) {
+      $nid = $block_config['child_node_id'];
+    }
+    else {
+      if ($this->routeMatch->getParameter('node')) {
+        $node = $this->routeMatch->getParameter('node');
+        $nid = (is_string($node) ? $node : $node->id());
+      }
+    }
+    if (isset($nid)) {
       // If there is node add its cachetag.
-      return Cache::mergeTags(parent::getCacheTags(), ['node:' . $node->id()]);
+      return Cache::mergeTags(parent::getCacheTags(), ['node:' . $nid]);
     }
     else {
       // Return default tags instead.
