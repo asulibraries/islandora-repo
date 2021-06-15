@@ -155,6 +155,8 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     $links = [];
     if (isset($of_file)) {
       $access_of_media = $of_file->access('view', $this->currentUser);
+      \Drupal::logger('downloadsblock')->info("of file access");
+      \Drupal::logger('downloadsblock')->info($access_of_media);
       if ($access_of_media) {
         $links[] = $of_link->toRenderable();
       }
