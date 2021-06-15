@@ -161,6 +161,8 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     }
     if (isset($sf_file)) {
       $access_sf_media = $sf_file->access('view', $this->currentUser);
+      \Drupal::logger('downloadsblock')->info("sf file access");
+      \Drupal::logger('downloadsblock')->info($access_sf_media);
       if ($access_sf_media) {
         $links[] = $sf_link->toRenderable();
       }
