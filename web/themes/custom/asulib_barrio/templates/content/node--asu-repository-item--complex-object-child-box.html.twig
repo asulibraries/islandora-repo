@@ -82,11 +82,11 @@
         "Paged Content": "complex-object-icon",
     }
 %}
+{% set mod = content.field_model[0]|render|trim %}
 <div class="space-border-box">
     <article{{ attributes.addClass(classes) }}>
       <header>
           {% if drupal_view_result('display_media', 'thumbnail', node.id) is empty %}
-            {% set mod = content.field_model[0]|render|trim %}
             {% for k, v in model_icons|filter((v, k) => k == mod) -%}
               <div class="icon-container">
                 <i class="{{ v }} fa-6x"></i>
@@ -109,8 +109,24 @@
             {{ drupal_block('asu_item_downloads', {'child_node_id': node.id}) }}
           </div>
           <br/>
-          <div class="download-options">{{ drupal_view('display_media', 'download_button', node.id) }}</div>
-          <a href="/items/{{ node.id }}/view">Preview</a><br/>
+          <div class="download-options">
+            {{ drupal_block('downloads_block') }}
+          </div>
+          {% if mod == 'Audio' %}
+            {% if drupal_view_result('video_media_evas', 'service_file', node.id) is empty%}
+              {{ drupal_view('video_media_evas', 'original_file', node.id) }}
+            {% else %}
+              {{ drupal_view('video_media_evas', 'service_file', node.id) }}
+            {% endif %}
+          {% else if mod == 'Video' %}
+            {% if drupal_view_result('video_media_evas', 'service_file', node.id) is empty%}
+              {{ drupal_view('video_media_evas', 'original_file', node.id) }}
+            {% else %}
+              {{ drupal_view('video_media_evas', 'service_file', node.id) }}
+            {% endif %}
+          {% else %}
+            <a href="/items/{{ node.id }}/view">Preview</a><br/>
+          {% endif %}
         {% endif %}
         <div class="altmetrics-info">
           {{ drupal_block('asu_altmetrics', wrapper=false) }}
