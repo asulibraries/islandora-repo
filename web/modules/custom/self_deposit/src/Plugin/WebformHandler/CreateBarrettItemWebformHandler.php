@@ -8,6 +8,7 @@ use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\webform\Plugin\WebformHandlerBase;
 use Drupal\webform\WebformSubmissionInterface;
+use Drupal\user\Entity\User;
 
 /**
  * Create a new repository item entity from a webform submission.
@@ -93,8 +94,14 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
       array_push($keywords, $kterm);
     }
 
+    \Drupal::logger('barrett')->info(print_r($values['student_name'], TRUE));
+
     $contribs = [];
-    array_push($contribs, $this->getOrCreateTerm($values['your_name'], 'person', 'relators:aut'));
+    if (array_key_exists('your_name', $values)) {
+      array_push($contribs, $this->getOrCreateTerm($values['your_name'], 'person', 'relators:aut'));
+    } else {
+      array_push($contribs, $this->getOrCreateTerm($values['student_name'][0]['last'] . ", " . $values['student_name'][0]['first'], 'person', 'relators:aut'));
+    }
     foreach($values['group_members'] as $gm) {
       // make group members as aut
       array_push($contribs, $this->getOrCreateTerm($gm['last'] . ", " . $gm['first'], 'person', 'relators:aut'));
@@ -108,6 +115,11 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
     foreach ($values['committee_members'] as $cm) {
       // make group members as dgc
       array_push($contribs, $this->getOrCreateTerm($cm['last'] . ", " . $cm['first'], 'person', 'barrettrelators:dgc'));
+    }
+
+    foreach ($values['additional_contributors'] as $ac) {
+      // make additional contribs as ctb
+      array_push($contribs, $this->getOrCreateTerm($ac['last'] . ", " . $ac['first'], 'person', 'relators:ctb'));
     }
 
     array_push($contribs, $this->getOrCreateTerm('Barrett, The Honors College', 'corporate_body', 'relators:ctb'));
@@ -181,6 +193,14 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
         ['target_id' => $member_of]
       ]
     ];
+
+    if (array_key_exists('embargo_release_date', $values)) {
+      $node_args['field_embargo_release_date'] = ['value' => $values['embargo_release_date']];
+    }
+    if (array_key_exists('language1', $values)) {
+      $node_args['field_language'] = [['target_id' => $this->getOrCreateTerm($values['language1'], 'language')]];
+    }
+    \Drupal::logger('barrett')->info(print_r($node_args, TRUE));
 
     $node = Node::create($node_args);
     $node->save();
@@ -277,6 +297,21 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
       $node = $this->createNode($webform_submission, $values, $values['item_title'], $taxo_term, $copyright_term, $perm_term, $member_of);
       $this->createMedia($media_type, $field_name, $files[0], $node->id());
     }
+    // create user, populate from student_asurite, student_id
+    \Drupal::logger('barret')->info("after create node, about to create user");
+    $user = user_load_by_name($values['student_asurite']);
+    if ($user == NULL) {
+      $user = User::create();
+      $user->enforceIsNew();
+      $user->setEmail($values['student_asurite'] . "@asu.edu");
+      $user->setUsername($values['student_asurite']);
+      $user->set('field_last_name', $values['student_name'][0]['last']);
+      $user->set('field_first_name', $values['student_name'][0]['first']);
+      $user->set('field_honors', TRUE);
+      $user->set('field_emplid', $values['student_id']);
+      $user->save();
+    }
+    $webform_submission->setOwnerId($user->id());
 
     $webform_submission->setElementData('item_node', $node->id());
   }
