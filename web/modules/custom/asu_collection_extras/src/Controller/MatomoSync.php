@@ -24,11 +24,11 @@ class MatomoSync extends ControllerBase {
       $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
     }
     if (is_object($node)) {
-      \Drupal::logger('asu_collection_extras')->info('it is in the endpoint! node id = ' . $node->id());
+      // \Drupal::logger('asu_collection_extras')->info('it is in the endpoint! node id = ' . $node->id());
       $node_relations = asu_collection_extras_syncNodeRelations($node);
       $node_matomo_stats = asu_collection_extras_syncNodeMatomoStats($node->id());
-      \Drupal::logger('asu_collection_extras')->info('$node_relations = ' . print_r($node_relations, true));
-      \Drupal::logger('asu_collection_extras')->info('$node_matomo_stats = ' . print_r($node_matomo_stats, true));
+      // \Drupal::logger('asu_collection_extras')->info('$node_relations = ' . print_r($node_relations, true));
+      // \Drupal::logger('asu_collection_extras')->info('$node_matomo_stats = ' . print_r($node_matomo_stats, true));
     }
     return [];
   }

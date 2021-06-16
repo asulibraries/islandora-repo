@@ -225,10 +225,10 @@ function asu_collection_extras_syncNodeRelations($node)
 
 function asu_collection_extras_syncNodeMatomoStats($nid) {
   // for the given node, call Matomo API to get the views AND downloads.
-  \Drupal::logger('asu_collection_extras')->info('asu_collection_extras_syncNodeMatomoStats for ' . $nid);
+  // \Drupal::logger('asu_collection_extras')->info('asu_collection_extras_syncNodeMatomoStats for ' . $nid);
   $item_views = 0;
   $item_views += \Drupal::service('islandora_matomo.default')->getViewsForNode(['nid' => $nid]);
-  \Drupal::logger('asu_collection_extras')->info('views = for ' . $item_views);
+  // \Drupal::logger('asu_collection_extras')->info('views = for ' . $item_views);
   $mids = \Drupal::entityQuery('media')
     ->condition('field_media_of', $nid)
     ->execute();
@@ -237,9 +237,9 @@ function asu_collection_extras_syncNodeMatomoStats($nid) {
     $fid = \Drupal::service('islandora_matomo.default')->getFileFromMedia($mid);
     $item_fid_downloads = \Drupal::service('islandora_matomo.default')->getDownloadsForFile(['fid' => $fid]);
     $item_downloads += $item_fid_downloads;
-    \Drupal::logger('asu_collection_extras')->info("downloads (fid:" . $fid . ") = " . $item_fid_downloads);
+    // \Drupal::logger('asu_collection_extras')->info("downloads (fid:" . $fid . ") = " . $item_fid_downloads);
   }
-  \Drupal::logger('asu_collection_extras')->info("total downloads = " . $item_downloads);
+  // \Drupal::logger('asu_collection_extras')->info("total downloads = " . $item_downloads);
   // Save this to the ace_items table.
   $connection = \Drupal::service('database');
   $connection->merge('ace_items')
