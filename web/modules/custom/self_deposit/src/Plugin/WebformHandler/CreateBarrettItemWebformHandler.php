@@ -100,7 +100,7 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
     if (array_key_exists('your_name', $values)) {
       array_push($contribs, $this->getOrCreateTerm($values['your_name'], 'person', 'relators:aut'));
     } else {
-      array_push($contribs, $this->getOrCreateTerm($values['student_name'][0]['last'] . ", " . $values['student_name'][0]['first'], 'person', 'relators:aut'));
+      array_push($contribs, $this->getOrCreateTerm($values['student_name']['last'] . ", " . $values['student_name']['first'], 'person', 'relators:aut'));
     }
     foreach($values['group_members'] as $gm) {
       // make group members as aut
@@ -136,10 +136,10 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
       $created_month = "12";
       $fall_year = $year;
     }
-    if (!$fall_year) {
+    if (!isset($fall_year)) {
       $fall_year = $spring_year - 1;
     }
-    if (!$spring_year) {
+    if (!isset($spring_year)) {
       $spring_year = $fall_year + 1;
     }
     $series_val = "Academic Year " . $fall_year . "-" . $spring_year;
@@ -195,12 +195,12 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
     ];
 
     if (array_key_exists('embargo_release_date', $values)) {
-      $node_args['field_embargo_release_date'] = ['value' => $values['embargo_release_date']];
+      $embargo_vals = explode('T', $values['embargo_release_date']);
+      $node_args['field_embargo_release_date'] = ['value' => $embargo_vals[0] . "T23:59:59"];
     }
     if (array_key_exists('language1', $values)) {
-      $node_args['field_language'] = [['target_id' => $this->getOrCreateTerm($values['language1'], 'language')]];
+      $node_args['field_language'] = [['target_id' => $values['language1']]];
     }
-    \Drupal::logger('barrett')->info(print_r($node_args, TRUE));
 
     $node = Node::create($node_args);
     $node->save();
@@ -298,15 +298,14 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
       $this->createMedia($media_type, $field_name, $files[0], $node->id());
     }
     // create user, populate from student_asurite, student_id
-    \Drupal::logger('barret')->info("after create node, about to create user");
     $user = user_load_by_name($values['student_asurite']);
     if ($user == NULL) {
       $user = User::create();
       $user->enforceIsNew();
       $user->setEmail($values['student_asurite'] . "@asu.edu");
       $user->setUsername($values['student_asurite']);
-      $user->set('field_last_name', $values['student_name'][0]['last']);
-      $user->set('field_first_name', $values['student_name'][0]['first']);
+      $user->set('field_last_name', $values['student_name']['last']);
+      $user->set('field_first_name', $values['student_name']['first']);
       $user->set('field_honors', TRUE);
       $user->set('field_emplid', $values['student_id']);
       $user->save();
