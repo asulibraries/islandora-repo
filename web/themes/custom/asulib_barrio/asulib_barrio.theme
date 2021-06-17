@@ -92,6 +92,17 @@ function asulib_barrio_preprocess_node(&$variables) {
     $url_parts = explode('/', $site_url, -1);
     $domain = $url_parts[2];
     $variables['oai_base_url'] = $site_url . 'oai/request?verb=GetRecord&metadataPrefix=oai_dc&identifier=oai:' . $domain . ':node-';
+    if ($variables['view_mode'] == 'complex_object_child_box') {
+      // $parent_obj = $node->get('field_member_of')->entity;
+      // since we are pulling the $node var from the route, we're actually already on the parent obj page
+      $collection = $node->get('field_member_of')->entity;
+      $fields_to_display = $collection->get('field_fields_co_child')->referencedEntities();
+      if ($fields_to_display) {
+        foreach($fields_to_display as $field) {
+          $variables['co_child_fields'][] = $field->getName();
+        }  
+      }
+    }
   }
 }
 

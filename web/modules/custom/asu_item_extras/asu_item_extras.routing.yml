@@ -50,31 +50,3 @@ asu_item_extras.thumbnail_controller_get_thumbnail:
         type: entity:node
     no_cache: 'TRUE'
 
-asu_item_extras.perf_archive.edit:
-  path: '/perf_archive/{node}/edit'
-  defaults:
-    _entity_form: 'node.perf_archive'
-    _title: 'Edit Performance Archive Item'
-  requirements:
-    node: '\d+'
-    _entity_access: 'node.update'
-  options:
-    _node_operation_route: TRUE
-    parameters:
-      node:
-        type: entity:node
-    no_cache: 'TRUE'
-
-asu_item_extras.perf_archive.add:
-  path: '/perf_archive/add/{node_type}'
-  defaults:
-    _entity_form: 'node.perf_archive'
-    _title: 'Add Performance Archive Item'
-  requirements:
-    _node_add_access: 'node:asu_repository_item'
-  options:
-    _node_operation_route: TRUE
-    parameters:
-      node_type:
-        type: entity:node_type
-

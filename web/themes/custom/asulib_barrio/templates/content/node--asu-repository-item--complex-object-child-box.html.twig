@@ -138,6 +138,11 @@
           <span class="copy_permalink_link" title="{{node.field_handle[0].value}}">Permanent Link</span> &nbsp;
             <span class="copy_permalink_link far fa-copy fa-lg" title="{{node.field_handle[0].value}}">&nbsp;</span>
         {% endif %}
+        {% if co_child_fields %}
+          {% for f in co_child_fields %}
+            {{ node.fields[f]|view }}
+          {% endfor %}
+        {% endif %}
 
     </header>
     </article>

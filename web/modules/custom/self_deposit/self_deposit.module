@@ -56,3 +56,49 @@ function self_deposit_preprocess_node(&$variables) {
     }
   }
 }
+
+/**
+ * Implements hook_entity_type_build().
+ */
+function self_deposit_entity_type_build(array &$entity_types) {
+  $entity_types['node']->setFormClass('perf_archive', 'Drupal\node\NodeForm');
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function self_deposit_form_node_asu_repository_item_perf_archive_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  $config = \Drupal::config('self_deposit.selfdepositsettings');
+
+  if ($config->get('perf_archive_default_genre')) {
+    $default_genre = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($config->get('perf_archive_default_genre'));
+    $form['field_genre']['widget'][0]['target_id']['#default_value'] = $default_genre;
+  }
+
+  if ($config->get('perf_archive_default_copyright')) {
+    $form['field_copyright_statement']['widget']['#default_value'] = $config->get('perf_archive_default_copyright');
+  }
+
+  if ($config->get('perf_archive_default_reuse')) {
+    $form['field_reuse_permissions']['widget']['#default_value'] = $config->get('perf_archive_default_reuse');
+  }
+
+  if ($config->get('perf_archive_default_model')) {
+    $form['field_model']['widget']['#default_value'] = $config->get('perf_archive_default_model');
+  }
+
+  if ($config->get('perf_archive_default_identifier_type')) {
+    $form['field_typed_identifier']['widget'][0]['subform']['field_identifier_type']['widget']['#default_value'] = $config->get('perf_archive_default_identifier_type');
+  }
+
+  if ($config->get('perf_archive_default_collection')) {
+    $default_collection = \Drupal::entityTypeManager()->getStorage('node')->load($config->get('perf_archive_default_collection'));
+    $form['field_member_of']['widget'][0]['target_id']['#default_value'] = $default_collection;
+    $of_perms = $default_collection->get('field_default_original_file_perm')->entity;
+    $sf_perms = $default_collection->get('field_default_derivative_file_pe')->entity;
+    $form['field_default_derivative_file_pe']['widget'][0]['target_id']['#default_value'] = $sf_perms;
+    $form['field_default_original_file_perm']['widget'][0]['target_id']['#default_value'] = $of_perms;
+  }
+  
+  $form['moderation_state']['widget'][0]['state']['#default_value'] = 'published';
+}
