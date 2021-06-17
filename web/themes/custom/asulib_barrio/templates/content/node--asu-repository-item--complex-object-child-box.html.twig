@@ -140,6 +140,9 @@
         {% endif %}
         {% if co_child_fields %}
           {% for f in co_child_fields %}
+            {% if f == "field_linked_agent" %}
+              <div class="field__label">Contributors</div>
+            {% endif %}
             {{ node.fields[f]|view }}
           {% endfor %}
         {% endif %}
