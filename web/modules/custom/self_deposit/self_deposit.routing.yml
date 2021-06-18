@@ -8,21 +8,6 @@ self_deposit.settings:
   options:
     _admin_route: TRUE
 
-self_deposit.perf_archive_deposit:
-  path: '/perf_archive/child/{node_type}'
-  defaults:
-    _controller: '\Drupal\self_deposit\Controller\PerfArchiveDepositController::content'
-    _title: 'Performance Archive Deposit'
-  requirements:
-    _node_add_access: 'node:asu_repository_item'
-  options:
-    _node_operation_route: TRUE
-    parameters:
-      node_type:
-        type: entity:node_type
-        with_config_overrides: TRUE
-
-
 self_deposit.perf_archive.edit:
   path: '/perf_archive/{node}/edit'
   defaults:
@@ -50,3 +35,18 @@ self_deposit.perf_archive.add:
     parameters:
       node_type:
         type: entity:node_type
+
+self_deposit.perf_archive.add_child:
+  path: '/perf_archive/add_child/{node_type}/{parent}'
+  defaults:
+    _entity_form: 'node.perf_archive_child'
+    _title: 'Add Performance Archive Child Item'
+  requirements:
+    _node_add_access: 'node:asu_repository_item'
+  options:
+    _node_operation_route: TRUE
+    parameters:
+      node_type:
+        type: entity:node_type
+      parent:
+        type: entity:node

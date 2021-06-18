@@ -101,14 +101,10 @@
   <div{{content_attributes.addClass('node__content','clearfix','container')}}>
     <div class="row">
       <div class="col-md-12 file-container">
-        {% if drupal_view_result('video_media_evas', 'service_file', node.id) is empty %}
-          {% if of_access %}
-            {{ drupal_view('video_media_evas', 'original_file', node.id) }}
-          {% endif %}
-        {% else %}
-          {% if sf_access %}
-            {{ drupal_view('video_media_evas', 'service_file', node.id) }}
-          {% endif %}
+        {% if drupal_view_result('video_media_evas', 'service_file', node.id) is empty and of_access %}
+          {{ drupal_view('video_media_evas', 'original_file', node.id) }}
+        {% elseif sf_access %}
+          {{ drupal_view('video_media_evas', 'service_file', node.id) }}
         {% endif %}
       </div>
     </div>

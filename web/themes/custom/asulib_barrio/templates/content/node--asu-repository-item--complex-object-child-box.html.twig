@@ -118,14 +118,10 @@
             <a data-toggle="collapse" href="#player{{ node.id }}" role="button" aria-expanded="false" aria-controls="player{{ node.id }}"><i class="far fa-play-circle"></i> Play</a><br/>
             <div id="player{{ node.id }}" class="collapse">
               <div class="mini-player">
-                {% if drupal_view_result('video_media_evas', 'service_file', node.id) is empty%}
-                  {% if of_access %}
-                    {{ drupal_view('video_media_evas', 'original_file', node.id) }}
-                  {% endif %}
-                {% else %}
-                  {% if sf_access %}
-                    {{ drupal_view('video_media_evas', 'service_file', node.id) }}
-                  {% endif %}
+                {% if drupal_view_result('video_media_evas', 'service_file', node.id) is empty and of_access %}
+                  {{ drupal_view('video_media_evas', 'original_file', node.id) }}
+                {% elseif sf_access %}
+                  {{ drupal_view('video_media_evas', 'service_file', node.id) }}
                 {% endif %}
               </div>
             </div>
@@ -141,7 +137,9 @@
         {% if co_child_fields %}
           {% for f in co_child_fields %}
             {% if f == "field_linked_agent" %}
-              <div class="field__label">Contributors</div>
+              {% if node.fields[f] is not empty %}
+                <div class="field__label">Contributors</div>
+              {% endif %}
             {% endif %}
             {{ node.fields[f]|view }}
           {% endfor %}

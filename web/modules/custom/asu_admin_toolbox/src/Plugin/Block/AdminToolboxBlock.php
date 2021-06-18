@@ -176,11 +176,20 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
             '/node/add/asu_repository_item?edit[field_member_of][widget][0][target_id]=' .
             $node->id() . ($is_complex_object ? '&edit[field_complex_object_child][value]=1' : '')
         );
+      $config = \Drupal::config('self_deposit.selfdepositsettings');
       if ($is_complex_object) {
         $link = Link::fromTextAndUrl($this->t('Add media'), $url);
       }
       else {
         $link = Link::fromTextAndUrl($this->t('Add item'), $url);
+        if ($is_collection && $config->get('perf_archive_default_collection')) {
+          if ($node->id() == $config->get('perf_archive_default_collection')){
+            $pa_url = Url::fromRoute('self_deposit.perf_archive.add', [
+              'node_type' => 'asu_repository_item'
+            ]);
+            $link = Link::fromTextAndUrl($this->t('Add Performance Archive item'), $pa_url);
+          }
+        }
       }
       $link = $link->toRenderable();
       $link_glyph = Link::fromTextAndUrl($this->t('<i class="fas fa-plus-circle"></i>'), $url)->toRenderable();
