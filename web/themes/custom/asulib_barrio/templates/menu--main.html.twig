@@ -1,0 +1,116 @@
+{#
+/**
+ * @file
+ * Bootstrap Barrio's override to display a menu.
+ *
+ * Available variables:
+ * - menu_name: The machine name of the menu.
+ * - items: A nested list of menu items. Each menu item contains:
+ *   - attributes: HTML attributes for the menu item.
+ *   - below: The menu item child items.
+ *   - title: The menu link title.
+ *   - url: The menu link url, instance of \Drupal\Core\Url
+ *   - localized_options: Menu link localized options.
+ *   - is_expanded: TRUE if the link has visible children within the current
+ *     menu tree.
+ *   - is_collapsed: TRUE if the link has children within the current menu tree
+ *     that are not currently visible.
+ *   - in_active_trail: TRUE if the link is in the active trail.
+ */
+#}
+{#
+  Bootstrap-based menus won't display menu levels greater than 2
+  so to get multi-columns working with ASU theme, we make certain
+  assumptions how the menu is built.
+  Top-level menu items with submenus should have the route:<button>
+  as their link. Column headings should use the <nolink> route.
+  This menu assumes that each heading is its own column.
+  Larger menus or ones with multiple headings in a column
+  will need to adjust this or use another method.
+  See: https://www.phase2technology.com/blog/creating-mega-menu-layout-builder
+#}
+{% set attributes = attributes.addClass('menu') %}
+{% import _self as menus %}
+
+{#
+  We call a macro which calls itself to render the full tree.
+  @see http://twig.sensiolabs.org/doc/tags/macro.html
+#}
+{{ menus.menu_links(items, is_front, dropdown, attributes, 0) }}
+
+{% macro menu_links(items, is_front, dropdown, attributes, menu_level) %}
+  {% set primary_nav_level = 'menu--level-' ~ (menu_level + 1) %}
+  {% import _self as menus %}
+  {% if items %}
+    {% set attributes = attributes.removeClass(primary_nav_level) %}
+    {% for item in items %}
+      {% if item.url.isrouted and item.url.routeName == '<nolink>' %}
+        {% set menu_item_type = 'nolink' %}
+          {# If there's more than one column, end the current one and
+            start a new one. #}
+          {% if not loop.first %}
+            </div>
+            <div class="dropdown-col">
+          {% endif %}
+      {% elseif item.url.isrouted and item.url.routeName == '<button>' %}
+        {% set menu_item_type = 'button' %}
+        {% if item.below %}
+          <div class="nav-item dropdown">
+        {% endif %}
+      {% else %}
+        {% set menu_item_type = 'link' %}
+      {% endif %}
+      {% set link_classes = [
+          'menu__link--level-' ~ (menu_level + 1),
+          item.in_active_trail ? 'menu__link--active-trail',
+          dropdown == 'yes' ? 'dropdown-item' : 'nav-link',
+          item.is_active ? 'active',
+        ]
+      %}
+        {#
+          A unique ID should be used but not available through Twig so use the
+          |clean_id filter
+        #}
+        {% set aria_id = (item.title ~ '-submenu-' ~ loop.index)|clean_id %}
+        {% if menu_item_type == 'link' %}
+          {# Change out any home link for an icon #}
+          {% if ('Home' in item.title) or ('home' in item.title) %}
+            {%
+              set home_classes = [
+              'nav-link-home',
+              'nav-link',
+              is_front ? 'active',
+            ]
+            %}
+            <a{{ item.attributes.addClass(home_classes) }} href="{{ item.url }}" tabindex="0">
+            <span class="d-xl-none">{{ item.title }}</span>
+            <span title="{{ item.title }}" class="fas fa-fw fa-home"></span>
+            </a>
+          {% else %}
+          {{ link(item.title, item.url, { 'class': link_classes, 'id': aria_id, 'tabindex': '0'}) }}
+          {% endif %}
+        {% elseif menu_item_type == 'nolink' %}
+          <h3>{{ item.title }}</h3>
+        {% elseif menu_item_type == 'button' %}
+          <button class="btn dropdown-toggle nav-link" id="{{ aria_id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{ item.title }}
+            <svg class="svg-inline--fa fa-chevron-down fa-w-14" aria-hidden="true" focusable="false" data-prefix="fa" data-icon="chevron-down" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z"></path></svg>
+            <!--<span class="fa fa-chevron-down"></span>-->
+          </button>
+          {% set attributes = attributes.setAttributes('id', aria_id) %}
+          {% if item.below %}
+            {% set dropdown = 'yes' %}
+            <div class="dropdown-menu dropdown-columns" aria-labelledby="{{ aria_id }}">
+              {# Always at least one column in the dropdown #}
+              <div class="dropdown-col">
+                {{ menus.menu_links(item.below, is_front, dropdown, attributes, menu_level + 1) }}
+              </div> {# End the last column in the dropdown #}
+            </div>
+          {% endif %}
+        {% endif %}
+      {% if (item.below and item.url.routename == '<button>') %}
+        </div>
+      {% endif %}
+    {% endfor %}
+  {% endif %}
+{% endmacro %}
