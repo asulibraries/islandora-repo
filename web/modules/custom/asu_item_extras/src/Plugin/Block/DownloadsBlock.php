@@ -195,9 +195,11 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
       '#asu_download_info' => $download_info,
       '#asu_download_restricted' => ['#markup' => $markup],
       '#asu_download_links' => $links,
-      '#file_size' => $file_size,
       '#theme' => 'asu_item_extras_downloads_block',
     ];
+    if ($file_size > 0) {
+      $return['#file_size'] = $file_size;
+    }
     return $return;
   }
 
