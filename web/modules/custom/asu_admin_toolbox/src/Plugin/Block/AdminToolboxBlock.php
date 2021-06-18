@@ -179,6 +179,15 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
       $config = \Drupal::config('self_deposit.selfdepositsettings');
       if ($is_complex_object) {
         $link = Link::fromTextAndUrl($this->t('Add media'), $url);
+        if ($is_collection && $config->get('perf_archive_default_collection')) {
+          if ($node->get('field_member_of') && $node->get('field_member_of')->entity->id() == $config->get('perf_archive_default_collection')){
+            $pa_url = Url::fromRoute('self_deposit.perf_archive.add_child', [
+              'node_type' => 'asu_repository_item',
+              'parent' => $node->id()
+            ]);
+            $link = Link::fromTextAndUrl($this->t('Add Performance Archive Child item'), $pa_url);
+          }
+        }
       }
       else {
         $link = Link::fromTextAndUrl($this->t('Add item'), $url);
