@@ -1,5 +1,7 @@
 <b>
-{{ file_size | format_bytes }}
+{% if file_size %}
+  {{ file_size | format_bytes }}
+{% endif %}
 {{ asu_download_info }}
 </b>
 <br/>
