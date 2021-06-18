@@ -129,6 +129,8 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     $origfile = $islandora_utils->getMediaWithTerm($node, $origfile_term);
     $servicefile_term = $islandora_utils->getTermForUri('http://pcdm.org/use#ServiceFile');
     $servicefile = $islandora_utils->getMediaWithTerm($node, $servicefile_term);
+    $masterfile_term = $islandora_utils->getTermForUri('http://pcdm.org/use#PreservationMasterFile');
+    $masterfile = $islandora_utils->getMediaWithTerm($node, $masterfile_term);
     if ($origfile) {
       $source_field = $media_source_service->getSourceFieldName($origfile->bundle());
       if (!empty($source_field)) {
@@ -148,6 +150,14 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
         $sf_link = Link::fromTextAndUrl($this->t('Derivative'), Url::fromUri($sf_uri, ['attributes' => ['class' => ['dropdown-item']]]));
       }
     }
+    if ($masterfile) {
+      $source_field = $media_source_service->getSourceFieldName($masterfile->bundle());
+      if (!empty($source_field)) {
+        $pmf_file = $masterfile->get($source_field)->referencedEntities()[0];
+        $pmf_uri = $islandora_utils->getDownloadUrl($pmf_file);
+        $pmf_link = Link::fromTextAndUrl($this->t('Master'), Url::fromUri($pmf_uri, ['attributes' => ['class' => ['dropdown-item']]]));
+      }
+    }
 
     $user_roles = $this->currentUser->getRoles();
     $markup = '';
@@ -162,6 +172,12 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
       $access_sf_media = $servicefile->access('view', $this->currentUser);
       if ($access_sf_media) {
         $links[] = $sf_link->toRenderable();
+      }
+    }
+    if (isset($pmf_file)) {
+      $access_pmf_media = $masterfile->access('view', $this->currentUser);
+      if ($access_pmf_media) {
+        $links[] = $pmf_link->toRenderable();
       }
     }
 
