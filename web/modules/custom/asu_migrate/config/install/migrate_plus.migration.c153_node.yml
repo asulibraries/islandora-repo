@@ -116,17 +116,22 @@ process:
     plugin: default_value
     default_value: "description_restricted_items"
 
-  # got value from alex directly
   field_genre:
     -
       plugin: skip_on_empty
       source: Genre
       method: process
     -
-      plugin: entity_lookup_by_field
-      lookup_field: field_authority_link/uri
-      entity_type: taxonomy_term
-      bundle: genre
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: name_uri_generate
+      delimiter: '|'
+      uri_field: field_authority_link
+      default_vocabulary: genre
 
   field_preferred_citation:
     plugin: skip_on_empty
