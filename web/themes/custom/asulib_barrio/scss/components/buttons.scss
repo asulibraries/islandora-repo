@@ -7,33 +7,25 @@
   border: none;
   padding: 0;
   margin: 0;
-  border-bottom: 1px dotted $maroon;
+  border-bottom: none;
   background: none;
 }
 .btn-link:hover {
   text-decoration: none;
 }
-a.btn-primary,
-a.copy_button { color: #fff; }
-.btn-primary:hover,
-.btn-primary:focus,
-a.copy_button:hover,
-a.copy_button:focus {
+
+.btn-primary {
   color: $white;
-  background-color: $brightmaroon;
+  background-color: $maroon;
+  border-color: $maroon;
 }
-.btn-primary:hover,
-.btn-primary:focus {
-  border-color: $brightmaroon;
+
+
+ nav #search-form .btn.button {
+  font-size: $uds-component-button-medium-font-size;
+  padding: $uds-component-button-padding-y-medium $uds-component-button-padding-x-medium;
 }
-.sidebar .btn-primary a { background-color: transparent;}
-.sidebar .btn-primary a:hover,
-.sidebar .btn-primary a:focus,
-.sidebar .btn-primary:hover,
-.sidebar .btn-primary:focus {
-  background-color: $brightmaroon;
-  border-color: $brightmaroon;
-}
+
 
 /* WS2.0 style buttons for some form elements */
 button.tabledrag-toggle-weight {
@@ -70,9 +62,9 @@ button.tabledrag-toggle-weight {
 
 }
 
-/* stop full-width buttons in the body - don't want to mess with sidebar */
-@media (min-width: 768px) {
-  #main .form-control.btn {
-    width: auto;
-  }
-}
+// /* stop full-width buttons in the body - don't want to mess with sidebar */
+// @media (min-width: 768px) {
+//   #main .form-control.btn {
+//     width: auto;
+//   }
+// }
