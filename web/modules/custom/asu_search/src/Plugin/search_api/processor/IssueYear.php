@@ -69,7 +69,8 @@ class IssueYear extends ProcessorPluginBase {
         $date = $node->field_edtf_date_created->value;
         if ($date != "nan") {
           $iso = EDTFUtils::iso8601Value($date);
-          $components = explode('-', $iso);
+          $iso_one = explode("T", $iso)[0];
+          $components = explode('-', $iso_one);
           $year = array_shift($components);
           if (is_numeric($year)) {
             $fields = $item->getFields(FALSE);
