@@ -61,7 +61,7 @@ class ASUComplexTitle extends BlockBase {
           $para_render = 'Explore "' . $para_render . '"';
         }
         if ($i == 0) {
-          $para_render = '<h1 class="title' .
+          $para_render = '<h1 class="article title' .
             ($node_is_published ? "" : " unpublished_title") . '">' . ($node_is_published ? '' : '<i class="fa fa-lock"></i>&nbsp;') . $para_render . '</h1>';
         }
         else {
