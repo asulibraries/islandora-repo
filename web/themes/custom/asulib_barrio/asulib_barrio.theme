@@ -96,11 +96,13 @@ function asulib_barrio_preprocess_node(&$variables) {
       // $parent_obj = $node->get('field_member_of')->entity;
       // since we are pulling the $node var from the route, we're actually already on the parent obj page
       $collection = $node->get('field_member_of')->entity;
-      $fields_to_display = $collection->get('field_fields_co_child')->referencedEntities();
-      if ($fields_to_display) {
-        foreach($fields_to_display as $field) {
-          $variables['co_child_fields'][] = $field->getName();
-        }  
+      if ($collection) {
+        $fields_to_display = $collection->get('field_fields_co_child')->referencedEntities();
+        if ($fields_to_display) {
+          foreach($fields_to_display as $field) {
+            $variables['co_child_fields'][] = $field->getName();
+          }  
+        }
       }
     }
   }
