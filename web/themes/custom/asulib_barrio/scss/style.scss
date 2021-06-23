@@ -17,22 +17,13 @@ body {
 /* COLORS
 --------------------------------------------------*/
 
-// a {
-//     color: $accent-shade;
-// }
-// a:hover,
-// a:focus {
-//   color: $brightmaroon;
-//   text-decoration: none;
-// }
+a:visited {
+  color: $darkmaroon;
+}
 
 .bg-inverse {
     background: $primary-shade !important;
 }
-
-// .site-footer {
-//     background: $accent-shade !important;
-// }
 
 .menu--main li a {
     color: $primary-shade;
@@ -137,10 +128,7 @@ a.icon-link {
   border-bottom: none;
 }
 .icon-link i {
-     margin-right: .75rem;
-   }
-.icon-link span {
-  border-bottom: 1px dotted $maroon;
+  margin-right: .75rem;
 }
 
 /* This might be too general */
@@ -241,3 +229,16 @@ a.image-link:focus { border: none; }
 //     padding-right: 0;
 //   }
 // }
+
+blockquote {
+    border-left: none;
+    padding-left: 4rem;
+}
+
+article ul:not(.field__items):not(.contextual-links) {
+    @extend .uds-list;
+}
+
+#machine ul {
+    padding: 0 3rem;
+}
