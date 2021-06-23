@@ -92,6 +92,9 @@ class AboutThisItemBlock extends BlockBase implements ContainerFactoryPluginInte
     else {
       $nid = 0;
     }
+    if (!isset($node)) {
+      return [];
+    }
     $output_links = [];
     // Add a link for the "Overview" of this node.
     $variables['nodeid'] = $nid;

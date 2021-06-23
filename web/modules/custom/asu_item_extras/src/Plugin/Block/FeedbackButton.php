@@ -80,7 +80,11 @@ class FeedbackButton extends BlockBase implements ContainerFactoryPluginInterfac
     else {
       $nid = 0;
     }
-    $cid = $this->getCollectionParent($node);
+    if (isset($node)) {
+      $cid = $this->getCollectionParent($node);
+    } else {
+      $cid = 0;
+    }
     $url_base = $this->currentRequest->getSchemeAndHttpHost();
     $class = 'btn btn-primary';
     if ($cid == $nid) {

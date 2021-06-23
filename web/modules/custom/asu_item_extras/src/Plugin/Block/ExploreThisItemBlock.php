@@ -126,6 +126,9 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
     else {
       $nid = 0;
     }
+    if (!isset($node)) {
+      return [];
+    }
 
     $field_model_tid = $node->get('field_model')->getString();
     $field_model_term = $this->entityTypeManager->getStorage('taxonomy_term')->load($field_model_tid);
