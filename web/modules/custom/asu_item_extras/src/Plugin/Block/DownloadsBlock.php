@@ -146,8 +146,10 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
       $source_field = $media_source_service->getSourceFieldName($servicefile->bundle());
       if (!empty($source_field)) {
         $sf_file = $servicefile->get($source_field)->referencedEntities()[0];
-        $sf_uri = $islandora_utils->getDownloadUrl($sf_file);
-        $sf_link = Link::fromTextAndUrl($this->t('Derivative'), Url::fromUri($sf_uri, ['attributes' => ['class' => ['dropdown-item']]]));
+        if ($servicefile->get($source_field)->referencedEntities()) {
+          $sf_uri = $islandora_utils->getDownloadUrl($sf_file);
+          $sf_link = Link::fromTextAndUrl($this->t('Derivative'), Url::fromUri($sf_uri, ['attributes' => ['class' => ['dropdown-item']]]));  
+        }
       }
     }
     if ($masterfile) {
