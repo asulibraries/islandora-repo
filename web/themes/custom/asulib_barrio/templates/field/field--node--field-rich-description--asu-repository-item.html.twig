@@ -53,7 +53,9 @@
 ]
 %}
 
-<div{{ attributes.addClass(classes, 'text-show-more field__item') }}>
+{% set id = random() %}
+
+<div{{ attributes.addClass(classes, 'text-show-more field__item') }} id="{{ id }}">
 	<div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
 	{% for item in items %}
 		{% set description = item.content|render|trim|split(' ') %}
@@ -62,7 +64,7 @@
 			{#{% set remainder = description|slice(30)|join(' ') %}#}
       <div class="description-teaser collapse multi-collapse show">{{ teaser|raw }}</div>
       <div class="description-full multi-collapse collapse" id="full-content">{{ item.content }}</div>
-      <button aria-expanded="false" aria-controls="full-content more-ellipse" type="button" data-toggle="collapse" data-target=".multi-collapse" class="btn-link show-more">
+      <button aria-expanded="false" aria-controls="full-content more-ellipse" type="button" data-toggle="collapse" data-target="#{{ id }} .multi-collapse" class="btn-link show-more">
         {% trans %}(more){% endtrans %}
       </button>
 		{% else %}
@@ -70,3 +72,4 @@
 		{% endif %}
 	{% endfor %}
 </div>
+
