@@ -29,7 +29,7 @@
         "drupal/admin_toolbar": "^3.0",
         "drupal/archivesspace": "^1.1",
         "drupal/auto_entitylabel": "^3.0@beta",
-        "drupal/bootstrap_barrio": "^5.0",
+        "drupal/bootstrap_barrio": "^5.5",
         "drupal/bootstrap_sass": "^5.0",
         "drupal/cas": "^1.7",
         "drupal/cas_attributes": "1.x-dev@dev",
@@ -233,6 +233,9 @@
             },
 	    "drupal/rest_oai_pmh": {
                 "fix for empty values and incorrect namespaces": "https://raw.githubusercontent.com/asulibraries/islandora-repo/develop/web/modules/custom/asu_custom_rdf/ns_and_empty_fixes.patch"
+	    },
+            "drupal/s3fs": {
+                "fix for only applying the cname s3fs for mp4": "https://raw.githubusercontent.com/asulibraries/islandora-repo/develop/s3fs_mp4_only.patch"
 	    }
         },
 	"installer-types": ["npm-asset", "bower-asset"]
