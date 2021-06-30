@@ -174,7 +174,8 @@ function asu_search_views_query_alter(\Drupal\views\ViewExecutable $view, \Drupa
         // $fields = $query->getIndex()->getFields();
         $query->setWhereGroup('AND', 2);
         $query->addWhere(2, 'status', 1, '=');
-        $query->addWhere(2, 'field_ancestors', 299, '<>');
+        // $query->addWhere(2, 'field_ancestors', 299, '<>'); //no longer need to filter out performance archive
+        // eventually it'd be nice to properly filter out items that belong to a collection which is unpublished
         break;
     }
   }
