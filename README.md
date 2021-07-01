@@ -36,8 +36,10 @@ Requirements:
 
 1. cd into `/web/themes/custom/asulib_barrio`
 2. Install gulp with `npm install --global gulp-cli`
-3. Install dependencies including Bootstrap latest version: `npm install`
-4. Update `gulpfile.js` with your local URL
+3. add `@asu-design-system:registry=https://registry.web.asu.edu` to your `~/.npmrc`
+4. run `npm adduser --registry https://registry.web.asu.edu` and make a user
+5. Install dependencies including Bootstrap latest version: `npm install`
+6. Update `gulpfile.js` with your local URL
 
 Example:
 
