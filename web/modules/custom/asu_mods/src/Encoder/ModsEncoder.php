@@ -97,8 +97,15 @@ class ModsEncoder extends XmlEncoder {
           }
           if ($cv == "bundle") {
             $cv = $val->bundle();
-            if ($cv == 'person') {
-              $cv = 'personal';
+            switch ($cv) {
+              // MODS schema requires "personal".
+              case 'person':
+                $cv = 'personal';
+                break;
+              // MODS schema requires "Corporate".
+              case 'corporate_body':
+                $cv = 'Corporate';
+                break;
             }
           }
           elseif ($ck == "@supplied") {
@@ -271,6 +278,7 @@ class ModsEncoder extends XmlEncoder {
         }
       }
     }
+
     return $this->fixData($new_data);
   }
 
