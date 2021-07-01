@@ -141,13 +141,13 @@ field_resource_type:
   '@valueURI': field_external_authority_link/uri
   '#': name
 field_geographic_subject:
-  '_top': subject_geo
+  '_top': subject
   geographic:
     '@authority': field_authority_link/source
     '@valueURI': field_authority_link/uri
     '#': name
 field_temporal_subject:
-  '_top': subject_temp
+  '_top': subject
   temporal:
     # '@point': todo
     # '@encoding': todo
@@ -155,13 +155,13 @@ field_temporal_subject:
     '@valueURI': field_authority_link/uri
     '#': name
 field_subject:
-  '_top': subject_subj
+  '_top': subject
   topic:
     '@authority': field_authority_link/source
     '@valueURI': field_authority_link/uri
     '#': name
 field_subjects_name:
-  '_top': subject_name
+  '_top': subject
   name:
     '@authority': field_authority_link/source
     '@valueURI': field_authority_link/uri
@@ -171,7 +171,7 @@ field_subjects_name:
   # subject:
 # # TODO - figure out the storage on this one
 field_title_subject:
-  '_top': subject_tit
+  '_top': subject
   title:
     '@authority': field_authority_link/source
     '@valueURI': field_authority_link/uri
