@@ -104,7 +104,7 @@ class ModsEncoder extends XmlEncoder {
                 break;
               // MODS schema requires "Corporate".
               case 'corporate_body':
-                $cv = 'Corporate';
+                $cv = 'corporate';
                 break;
             }
           }
