@@ -142,7 +142,7 @@ class ASUItemIIIF extends BlockBase implements ContainerFactoryPluginInterface {
             '#suffix' => '<!-- Unnamed (Rectangle) -->
             </div>
             <div class="col">
-              <a id="copy_manifest_link" class="btn btn-primary copy_button">Copy link</a>
+              <a id="copy_manifest_link" class="btn btn-maroon btn-md">Copy link</a>
             </div>
             </div>
             </div>
