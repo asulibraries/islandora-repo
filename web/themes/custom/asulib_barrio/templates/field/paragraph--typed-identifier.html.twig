@@ -49,9 +49,7 @@
 {% block paragraph %}
   <div{{ attributes.addClass(classes) }}>
     {% block content %}
-      {% if DOI_link %}
-        Digital object identifier: {{ DOI_link }}
-      {% elseif Identifier_link %}
+      {% if Identifier_link %}
         {{ Identifier_link_label }}: {{ Identifier_link }}
       {% else %}
         {{ content }}
