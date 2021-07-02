@@ -88,10 +88,12 @@ function asulib_barrio_preprocess_node(&$variables) {
     $node = \Drupal::entityTypeManager()->getStorage('node')->load($node);
   }
   if ($node && $node->getType() == 'asu_repository_item') {
-    $site_url = \Drupal::urlGenerator()->generateFromRoute('<front>', [], ['absolute' => TRUE]);
-    $url_parts = explode('/', $site_url, -1);
-    $domain = $url_parts[2];
-    $variables['oai_base_url'] = $site_url . 'oai/request?verb=GetRecord&metadataPrefix=oai_dc&identifier=oai:' . $domain . ':node-';
+    if ($variables['view_mode'] == 'full' || $variables['view_mode'] == 'asu_audio' || $variables['view_mode'] == 'asu_complex_object' || $variables['view_mode'] == 'asu_document' || $variables['view_mode'] == 'asu_image' || $variables['view_mode'] == 'asu_video' || $variables['view_mode'] == 'full_metadata') {
+      $site_url = \Drupal::urlGenerator()->generateFromRoute('<front>', [], ['absolute' => TRUE]);
+      $url_parts = explode('/', $site_url, -1);
+      $domain = $url_parts[2];
+      $variables['oai_base_url'] = $site_url . 'oai/request?verb=GetRecord&metadataPrefix=oai_dc&identifier=oai:' . $domain . ':node-';
+    }
     if ($variables['view_mode'] == 'complex_object_child_box') {
       // $parent_obj = $node->get('field_member_of')->entity;
       // since we are pulling the $node var from the route, we're actually already on the parent obj page
