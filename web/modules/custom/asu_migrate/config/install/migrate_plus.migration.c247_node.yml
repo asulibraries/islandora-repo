@@ -31,6 +31,7 @@ source:
     handle: "https://hdl.handle.net/2286/R.I."
     cataloging_standards: "asu1"
     level_of_coding: "minimal"
+    draft: "draft"
 
 process:
   field_extent:
@@ -89,15 +90,7 @@ process:
       from_timezone: 'UTC'
       to_timezone: 'UTC'
 
-  moderation_state:
-    plugin: static_map
-    source: Visibility
-    map:
-      Private: draft
-      Public: published
-      1: published
-      0: draft
-    default_value: published
+  moderation_state: constants/draft
 
   field_model:
     source: Model
