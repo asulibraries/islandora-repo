@@ -178,25 +178,25 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
         );
       $config = \Drupal::config('self_deposit.selfdepositsettings');
       if ($is_complex_object) {
-        $link = Link::fromTextAndUrl($this->t('Add media <i class="fas fa-plus-circle"></i>'), $url);
+        $link = Link::fromTextAndUrl($this->t('Add media &nbsp; <i class="fas fa-plus-circle"></i>'), $url);
         if ($config->get('perf_archive_default_collection')) {
           if ($node->get('field_member_of') && $node->get('field_member_of')->entity->id() == $config->get('perf_archive_default_collection')){
             $pa_url = Url::fromRoute('self_deposit.perf_archive.add_child', [
               'node_type' => 'asu_repository_item',
               'parent' => $node->id()
             ], ['attributes' => ['class' => 'nav-link']]);
-            $link = Link::fromTextAndUrl($this->t('Add Performance Archive Child item <i class="fas fa-plus-circle"></i>'), $pa_url);
+            $link = Link::fromTextAndUrl($this->t('Add Performance Archive Child item &nbsp; <i class="fas fa-plus-circle"></i>'), $pa_url);
           }
         }
       }
       else {
-        $link = Link::fromTextAndUrl($this->t('Add item <i class="fas fa-plus-circle"></i>'), $url);
+        $link = Link::fromTextAndUrl($this->t('Add item &nbsp; <i class="fas fa-plus-circle"></i>'), $url);
         if ($is_collection && $config->get('perf_archive_default_collection')) {
           if ($node->id() == $config->get('perf_archive_default_collection')){
             $pa_url = Url::fromRoute('self_deposit.perf_archive.add', [
               'node_type' => 'asu_repository_item'
             ], ['attributes' => ['class' => 'nav-link']]);
-            $link = Link::fromTextAndUrl($this->t('Add Performance Archive item <i class="fas fa-plus-circle"></i>'), $pa_url);
+            $link = Link::fromTextAndUrl($this->t('Add Performance Archive item &nbsp; <i class="fas fa-plus-circle"></i>'), $pa_url);
           }
         }
       }
@@ -211,7 +211,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
             $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
             '/node/' . $node->id() . '/edit', ['attributes' => ['class' => 'nav-link']]
         );
-      $link = Link::fromTextAndUrl($this->t('Edit <i class="fas fa-pencil-alt"></i>'), $url);
+      $link = Link::fromTextAndUrl($this->t('Edit &nbsp; <i class="fas fa-pencil-alt"></i>'), $url);
       $link = $link->toRenderable();
       $output_links[] = render($link);
       if ($canUpdate && $is_complex_object) {
@@ -220,14 +220,14 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
               $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
               '/node/' . $node->id() . '/members/reorder', ['attributes' => ['class' => 'nav-link']]
           );
-        $link = Link::fromTextAndUrl($this->t('Reorder items <i class="fas fa-sort"></i>'), $url);
+        $link = Link::fromTextAndUrl($this->t('Reorder items &nbsp; <i class="fas fa-sort"></i>'), $url);
         $link = $link->toRenderable();
         $output_links[] = render($link);
       }
       if ($is_collection) {
         // Statistics link.
         $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/collections/' . $node->id() . '/statistics', ['attributes' => ['class' => 'nav-link']]);
-        $link = Link::fromTextAndUrl($this->t('Statistics <i class="fas fa-chart-bar"></i>'), $url);
+        $link = Link::fromTextAndUrl($this->t('Statistics &nbsp; <i class="fas fa-chart-bar"></i>'), $url);
         $link = $link->toRenderable();
         $output_links[] = render($link);
       }
@@ -240,7 +240,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
               $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
               '/node/' . $node->id() . '/media/add', ['attributes' => ['class' => 'nav-link']]
           );
-        $link = Link::fromTextAndUrl($this->t('Add media <i class="fas fa-plus-circle"></i>'), $url);
+        $link = Link::fromTextAndUrl($this->t('Add media &nbsp; <i class="fas fa-plus-circle"></i>'), $url);
         $link = $link->toRenderable();
         $output_links[] = render($link);
       }
@@ -252,7 +252,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
             $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
             '/' . $route_part . '/' . $node->id() . '/csv', ['attributes' => ['class' => 'nav-link']]
         );
-      $link = Link::fromTextAndUrl($this->t('Download CSV <i class="fas fa-file-export"></i>'), $url);
+      $link = Link::fromTextAndUrl($this->t('Download CSV &nbsp; <i class="fas fa-file-export"></i>'), $url);
       $link = $link->toRenderable();
       $output_links[] = render($link);
     }
@@ -265,7 +265,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
       if ($field_pid && (strtolower(substr($field_pid, 0, 1)) <> "a")) {
         $legacy_uri = "https://repository.asu.edu/items/" . $field_pid;
         $url = Url::fromUri($legacy_uri, ['attributes' => ['target' => '_blank', 'rel' => 'noopener', 'class' => 'nav-link']]);
-        $link = Link::fromTextAndUrl($this->t('Legacy URI<span class="visually-hidden">, opens in a new window</span> <i class="fas fa-external-link-alt"></i>'), $url);
+        $link = Link::fromTextAndUrl($this->t('Legacy URI<span class="visually-hidden">, opens in a new window</span> &nbsp; <i class="fas fa-external-link-alt"></i>'), $url);
         $link = $link->toRenderable();
         $output_links[] = render($link);
       }
@@ -279,7 +279,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
       $path = trim($path, '/');
       $fedora_uri = "$fedora_root/$path";
       $url = Url::fromUri($fedora_uri, ['attributes' => ['target' => '_blank', 'rel' =>'noopener', 'class' => 'nav-link']]);
-      $link = Link::fromTextAndUrl($this->t('Fedora URI<span class="visually-hidden">, opens in a new window</span> <i class="fas fa-external-link-alt"></i>'), $url);
+      $link = Link::fromTextAndUrl($this->t('Fedora URI<span class="visually-hidden">, opens in a new window</span> &nbsp; <i class="fas fa-external-link-alt"></i>'), $url);
       $link = $link->toRenderable();
       $output_links[] = render($link);
     }
