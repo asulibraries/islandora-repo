@@ -57,13 +57,14 @@ class ExploreForm extends FormBase {
     $url = Url::fromUri(
       $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
       '/collections/' . (($node) ? $node->id() : 0) .
-      '/search/?search_api_fulltext=');
+      '/search/?search_api_fulltext=',
+      ['attributes' => ['class' => 'nav-link']]);
     $link = Link::fromTextAndUrl($this->t('Explore items'), $url);
     $link = $link->toRenderable();
     $form['explore_link'] = [
       '#markup' =>
       (($link) ?
-        render($link) . "<hr>" :
+        render($link) :
         ""),
     ];
     $form['search_api_fulltext'] = [
@@ -101,3 +102,4 @@ class ExploreForm extends FormBase {
   }
 
 }
+

@@ -138,7 +138,7 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
     $output_links = [];
     $search_form = NULL;
     if ($field_model == 'Image' && $this->canAccessItemMedia($node)) {
-      $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/items/' . $nid . '/view');
+      $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/items/' . $nid . '/view', ['attributes' => ['class' => 'nav-link']]);
       $link = Link::fromTextAndUrl($this->t('View Image'), $url);
       // Get the node's service file information from the node - just use the
       // openseadragon view.
@@ -154,7 +154,7 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
       ($field_model == 'Digital Document' && $this->canAccessItemMedia($node))) {
       // "Start reading" and "Show all pages" links as well as a search box.
       // get the node's openseadragon viewer url.
-      $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/items/' . $nid . '/view');
+      $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/items/' . $nid . '/view', ['attributes' => ['class' => 'nav-link']]);
       $link = Link::fromTextAndUrl($this->t('Explore Document'), $url);
       $link = $link->toRenderable();
       $output_links[] = render($link);
@@ -163,7 +163,7 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
     $return = (count($output_links) > 0) ? [
       '#markup' =>
       ((count($output_links) > 0) ?
-        "<nav><ul class=''><li>" . implode("</li><li>", $output_links) . "</li></ul></nav>" :
+        "<nav class='sidebar'>" . implode("", $output_links) . "</nav>" :
         ""),
     ] : [];
     return $return;
@@ -204,3 +204,4 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
   }
 
 }
+

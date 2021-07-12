@@ -98,7 +98,7 @@ class AboutThisItemBlock extends BlockBase implements ContainerFactoryPluginInte
     $output_links = [];
     // Add a link for the "Overview" of this node.
     $variables['nodeid'] = $nid;
-    $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/items/' . $nid);
+    $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/items/' .$nid, ['attributes' => ['class' => 'nav-link']]);
     $link = Link::fromTextAndUrl($this->t('Overview'), $url);
     $link = $link->toRenderable();
     $output_links[] = render($link);
@@ -109,14 +109,14 @@ class AboutThisItemBlock extends BlockBase implements ContainerFactoryPluginInte
     // event that will send the current node's URL to the copy buffer?
     if ($node->hasField('field_handle') && $node->get('field_handle')->value != NULL) {
       $hdl = $node->get('field_handle')->value;
-      $output_links[] = '<span class="copy_permalink_link" title="' . $hdl . '">Permalink</span>&nbsp; <span class="far fa-copy fa-lg copy_permalink_link" title="' . $hdl . '">&nbsp;</span>';
+      $output_links[] = '<a class="nav-link copy_permalink_link" title="' . $hdl . '">Permalink</span>&nbsp; <span class="far fa-copy fa-lg copy_permalink_link" title="' . $hdl . '">&nbsp;</a>';
     }
 
     return [
       '#cache' => ['max-age' => 0],
       '#markup' =>
       (count($output_links) > 0) ?
-      "<nav><ul class=''><li>" . implode("</li><li>", $output_links) . "</li></ul></nav>" :
+      "<nav class='sidebar'>" . implode("", $output_links) . "</nav>" :
       "",
       '#attached' => [
         'library' => [
@@ -127,3 +127,4 @@ class AboutThisItemBlock extends BlockBase implements ContainerFactoryPluginInte
   }
 
 }
+

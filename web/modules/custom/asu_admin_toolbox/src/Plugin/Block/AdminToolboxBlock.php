@@ -174,35 +174,34 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
       $url = Url::fromUri(
             $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
             '/node/add/asu_repository_item?edit[field_member_of][widget][0][target_id]=' .
-            $node->id() . ($is_complex_object ? '&edit[field_complex_object_child][value]=1' : '')
+            $node->id() . ($is_complex_object ? '&edit[field_complex_object_child][value]=1' : ''), ['attributes' => ['class' => 'nav-link']]
         );
       $config = \Drupal::config('self_deposit.selfdepositsettings');
       if ($is_complex_object) {
-        $link = Link::fromTextAndUrl($this->t('Add media'), $url);
+        $link = Link::fromTextAndUrl($this->t('Add media &nbsp; <i class="fas fa-plus-circle"></i>'), $url);
         if ($config->get('perf_archive_default_collection')) {
           if ($node->get('field_member_of') && $node->get('field_member_of')->entity->id() == $config->get('perf_archive_default_collection')){
             $pa_url = Url::fromRoute('self_deposit.perf_archive.add_child', [
               'node_type' => 'asu_repository_item',
               'parent' => $node->id()
-            ]);
-            $link = Link::fromTextAndUrl($this->t('Add Performance Archive Child item'), $pa_url);
+            ], ['attributes' => ['class' => 'nav-link']]);
+            $link = Link::fromTextAndUrl($this->t('Add Performance Archive Child item &nbsp; <i class="fas fa-plus-circle"></i>'), $pa_url);
           }
         }
       }
       else {
-        $link = Link::fromTextAndUrl($this->t('Add item'), $url);
+        $link = Link::fromTextAndUrl($this->t('Add item &nbsp; <i class="fas fa-plus-circle"></i>'), $url);
         if ($is_collection && $config->get('perf_archive_default_collection')) {
           if ($node->id() == $config->get('perf_archive_default_collection')){
             $pa_url = Url::fromRoute('self_deposit.perf_archive.add', [
               'node_type' => 'asu_repository_item'
-            ]);
-            $link = Link::fromTextAndUrl($this->t('Add Performance Archive item'), $pa_url);
+            ], ['attributes' => ['class' => 'nav-link']]);
+            $link = Link::fromTextAndUrl($this->t('Add Performance Archive item &nbsp; <i class="fas fa-plus-circle"></i>'), $pa_url);
           }
         }
       }
       $link = $link->toRenderable();
-      $link_glyph = Link::fromTextAndUrl($this->t('<i class="fas fa-plus-circle"></i>'), $url)->toRenderable();
-      $output_links[] = render($link) . " &nbsp;" . render($link_glyph);
+      $output_links[] = render($link);
     }
 
     if ($canUpdate) {
@@ -210,44 +209,40 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
       // edit-own-asu-repository-item-content permissions.
       $url = Url::fromUri(
             $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
-            '/node/' . $node->id() . '/edit'
+            '/node/' . $node->id() . '/edit', ['attributes' => ['class' => 'nav-link']]
         );
-      $link = Link::fromTextAndUrl($this->t('Edit'), $url);
+      $link = Link::fromTextAndUrl($this->t('Edit &nbsp; <i class="fas fa-pencil-alt"></i>'), $url);
       $link = $link->toRenderable();
-      $link_glyph = Link::fromTextAndUrl($this->t('<i class="fas fa-pencil-alt"></i>'), $url)->toRenderable();
-      $output_links[] = render($link) . " &nbsp;" . render($link_glyph);
+      $output_links[] = render($link);
       if ($canUpdate && $is_complex_object) {
         // Reorder items
         $url = Url::fromUri(
               $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
-              '/node/' . $node->id() . '/members/reorder'
+              '/node/' . $node->id() . '/members/reorder', ['attributes' => ['class' => 'nav-link']]
           );
-        $link = Link::fromTextAndUrl($this->t('Reorder items'), $url);
+        $link = Link::fromTextAndUrl($this->t('Reorder items &nbsp; <i class="fas fa-sort"></i>'), $url);
         $link = $link->toRenderable();
-        $link_glyph = Link::fromTextAndUrl($this->t('<i class="fas fa-sort"></i>'), $url)->toRenderable();
-        $output_links[] = render($link) . " &nbsp;" . render($link_glyph);
+        $output_links[] = render($link);
       }
       if ($is_collection) {
         // Statistics link.
-        $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/collections/' . $node->id() . '/statistics');
-        $link = Link::fromTextAndUrl($this->t('Statistics'), $url);
+        $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/collections/' . $node->id() . '/statistics', ['attributes' => ['class' => 'nav-link']]);
+        $link = Link::fromTextAndUrl($this->t('Statistics &nbsp; <i class="fas fa-chart-bar"></i>'), $url);
         $link = $link->toRenderable();
-        $link_glyph = Link::fromTextAndUrl($this->t('<i class="fas fa-chart-bar"></i>'), $url)->toRenderable();
-        $output_links[] = render($link) . " &nbsp;" . render($link_glyph);
+        $output_links[] = render($link);
       }
       if ($node->hasField('field_model') && $node->get('field_model')->entity != NULL
       ) {
-        $output_links[] = "<div class='field--label-inline'><div class='field__label'>Model</div>: " . $node->get('field_model')->entity->getName() . "</div>";
+        $output_links[] = "<a class='nav-link disabled field--label-inline'><div class='field__label'>Model</div>: " . $node->get('field_model')->entity->getName() . "</a>";
       }
       if (!($is_complex_object) && (!$is_collection)) {
         $url = Url::fromUri(
               $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
-              '/node/' . $node->id() . '/media/add'
+              '/node/' . $node->id() . '/media/add', ['attributes' => ['class' => 'nav-link']]
           );
-        $link = Link::fromTextAndUrl($this->t('Add media'), $url);
+        $link = Link::fromTextAndUrl($this->t('Add media &nbsp; <i class="fas fa-plus-circle"></i>'), $url);
         $link = $link->toRenderable();
-        $link_glyph = Link::fromTextAndUrl($this->t('<i class="fas fa-plus-circle"></i>'), $url)->toRenderable();
-        $output_links[] = render($link) . " &nbsp;" . render($link_glyph);
+        $output_links[] = render($link);
       }
     }
 
@@ -255,12 +250,11 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
       $route_part = ($is_collection) ? 'collections' : 'items';
       $url = Url::fromUri(
             $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
-            '/' . $route_part . '/' . $node->id() . '/csv'
+            '/' . $route_part . '/' . $node->id() . '/csv', ['attributes' => ['class' => 'nav-link']]
         );
-      $link = Link::fromTextAndUrl($this->t('Download CSV'), $url);
+      $link = Link::fromTextAndUrl($this->t('Download CSV &nbsp; <i class="fas fa-file-export"></i>'), $url);
       $link = $link->toRenderable();
-      $link_glyph = Link::fromTextAndUrl($this->t("<i class='fas fa-file-export'></i>"), $url)->toRenderable();
-      $output_links[] = render($link) . " &nbsp;" . render($link_glyph);
+      $output_links[] = render($link);
     }
     if ($user_is_admin_or_metadata_manager && $is_asu_repository_item) {
       // Legacy item link... look up the node's field_pid value and if the
@@ -270,12 +264,10 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
       $field_pid = $node->get('field_pid')->getString();
       if ($field_pid && (strtolower(substr($field_pid, 0, 1)) <> "a")) {
         $legacy_uri = "https://repository.asu.edu/items/" . $field_pid;
-        $url = Url::fromUri($legacy_uri, ['attributes' => ['target' => '_blank', 'rel' => 'noopener']]);
-        $link = Link::fromTextAndUrl($this->t('Legacy URI<span class="visually-hidden">, opens in a new window</span>'), $url);
-        $link_glyph = Link::fromTextAndUrl($this->t('<span class="visually-hidden">Legacy URI, opens in a new window</span><i class="fas fa-external-link-alt"></i>'), $url);
+        $url = Url::fromUri($legacy_uri, ['attributes' => ['target' => '_blank', 'rel' => 'noopener', 'class' => 'nav-link']]);
+        $link = Link::fromTextAndUrl($this->t('Legacy URI<span class="visually-hidden">, opens in a new window</span> &nbsp; <i class="fas fa-external-link-alt"></i>'), $url);
         $link = $link->toRenderable();
-        $link_glyph = $link_glyph->toRenderable();
-        $output_links[] = render($link) . ' &nbsp;' . render($link_glyph);
+        $output_links[] = render($link);
       }
     }
     if (in_array('administrator', $this->currentUser->getRoles())) {
@@ -286,16 +278,14 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
       $path = $mapper->getFedoraPath($node->uuid());
       $path = trim($path, '/');
       $fedora_uri = "$fedora_root/$path";
-      $url = Url::fromUri($fedora_uri, ['attributes' => ['target' => '_blank', 'rel' => 'noopener']]);
-      $link = Link::fromTextAndUrl($this->t('Fedora URI<span class="visually-hidden">, opens in a new window</span>'), $url);
+      $url = Url::fromUri($fedora_uri, ['attributes' => ['target' => '_blank', 'rel' =>'noopener', 'class' => 'nav-link']]);
+      $link = Link::fromTextAndUrl($this->t('Fedora URI<span class="visually-hidden">, opens in a new window</span> &nbsp; <i class="fas fa-external-link-alt"></i>'), $url);
       $link = $link->toRenderable();
-      $link_glyph = Link::fromTextAndUrl($this->t('<span class="visually-hidden">Fedora URI, opens in a new window</span><i class="fas fa-external-link-alt"></i>'), $url);
-      $link_glyph = $link_glyph->toRenderable();
-      $output_links[] = render($link) . ' &nbsp;' . render($link_glyph);
+      $output_links[] = render($link);
     }
     return [
       '#markup' => (count($output_links) > 0) ?
-      "<div class='pseudo_block'><h2>Admin toolbox</h2><nav><ul><li>" . implode("<hr>", $output_links) . "</li></ul></nav></div>" :
+      "<div class='pseudo_block'><h2>Admin toolbox</h2><nav class='sidebar'>".implode('', $output_links)."</nav></div>" :
       "",
       '#attached' => [
         'library' => [
@@ -343,3 +333,4 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
   }
 
 }
+
