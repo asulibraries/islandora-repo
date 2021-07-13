@@ -3,6 +3,8 @@ status: true
 dependencies:
   config:
     - field.field.media.remote_video.field_media_oembed_video
+    - field.field.media.remote_video.field_media_of
+    - field.field.media.remote_video.field_media_use
     - media.type.remote_video
   module:
     - media
@@ -25,6 +27,22 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    region: content
+  field_media_of:
+    weight: 101
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_media_use:
+    weight: 102
+    settings: {  }
+    third_party_settings: {  }
+    type: options_buttons
     region: content
   langcode:
     type: language_select

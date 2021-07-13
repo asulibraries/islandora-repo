@@ -122,7 +122,8 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
         $nid = (is_string($node) ? $node : $node->id());
       }
     }
-    $download_info = $file_size = '';
+    $download_info = '';
+    $file_size = 0;
     $islandora_utils = \Drupal::service('islandora.utils');
     $media_source_service = \Drupal::service('islandora.media_source_service');
     $origfile_term = $islandora_utils->getTermForUri('http://pcdm.org/use#OriginalFile');
@@ -131,31 +132,42 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     $servicefile = $islandora_utils->getMediaWithTerm($node, $servicefile_term);
     $masterfile_term = $islandora_utils->getTermForUri('http://pcdm.org/use#PreservationMasterFile');
     $masterfile = $islandora_utils->getMediaWithTerm($node, $masterfile_term);
-    if ($origfile) {
+
+    if ($origfile && $origfile->bundle() <> 'remote_video') {
+      $file_entities = ($origfile->hasField('field_access_terms') ? $origfile->get('field_access_terms')->referencedEntities() : NULL);
+      $of_access = ((!is_null($file_entities) && array_key_exists(0, $file_entities)) ? $file_entities[0]->label() : FALSE);
       $source_field = $media_source_service->getSourceFieldName($origfile->bundle());
       if (!empty($source_field)) {
-        $of_file = $origfile->get($source_field)->referencedEntities()[0];
-        $of_uri = $islandora_utils->getDownloadUrl($of_file);
-        $of_link = Link::fromTextAndUrl($this->t('Original'), Url::fromUri($of_uri, ['attributes' => ['class' => ['dropdown-item']]]));
-        $file_size = $origfile->get('field_file_size')->value;
-        $download_info .= " " . $origfile->get('field_mime_type')->value;
+        $of_file = ($origfile->hasField($source_field) && (is_object($origfile->get($source_field))) ? $origfile->get($source_field)->referencedEntities()[0] : FALSE);
+        if ($of_file) {
+          $of_uri = $islandora_utils->getDownloadUrl($of_file);
+          $of_link = Link::fromTextAndUrl($this->t('Original'), Url::fromUri($of_uri, ['attributes' => ['class' => ['dropdown-item']]]));
+          $file_size = $origfile->get('field_file_size')->value;
+          $download_info .= " " . $origfile->get('field_mime_type')->value;
+        }
       }
       // TODO populate $download_info with the filesize in human readable format and the extension of the fiel
     }
-    if ($servicefile) {
+    if ($servicefile && $servicefile->bundle() <> 'remote_video') {
+      $file_entities = ($servicefile->hasField('field_access_terms') ? $servicefile->get('field_access_terms')->referencedEntities() : NULL);
+      $sf_access = ((!is_null($file_entities) && array_key_exists(0, $file_entities)) ? $file_entities[0]->label() : FALSE);
       $source_field = $media_source_service->getSourceFieldName($servicefile->bundle());
-      if (!empty($source_field) && $servicefile->get($source_field)->referencedEntities()) {
-        $sf_file = $servicefile->get($source_field)->referencedEntities()[0];
-        $sf_uri = $islandora_utils->getDownloadUrl($sf_file);
-        $sf_link = Link::fromTextAndUrl($this->t('Derivative'), Url::fromUri($sf_uri, ['attributes' => ['class' => ['dropdown-item']]]));  
+      if (!empty($source_field)) {
+        $sf_file = ($servicefile->hasField($source_field) && (is_object($servicefile->get($source_field))) ? $servicefile->get($source_field)->referencedEntities()[0] : FALSE);
+        if ($sf_file) {
+          $sf_uri = $islandora_utils->getDownloadUrl($sf_file);
+          $sf_link = Link::fromTextAndUrl($this->t('Derivative'), Url::fromUri($sf_uri, ['attributes' => ['class' => ['dropdown-item']]]));
+          $download_info .= $servicefile->get('field_mime_type')->value;
+        }
       }
     }
-    if ($masterfile) {
+    if ($masterfile && $masterfile.bundle() <> 'remote_video') {
       $source_field = $media_source_service->getSourceFieldName($masterfile->bundle());
       if (!empty($source_field)) {
         $pmf_file = $masterfile->get($source_field)->referencedEntities()[0];
         $pmf_uri = $islandora_utils->getDownloadUrl($pmf_file);
         $pmf_link = Link::fromTextAndUrl($this->t('Master'), Url::fromUri($pmf_uri, ['attributes' => ['class' => ['dropdown-item']]]));
+        $download_info .= $masterfile->get('field_mime_type')->value;
       }
     }
 
@@ -174,7 +186,7 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
         $links[] = $sf_link->toRenderable();
       }
     }
-    if (isset($pmf_file)) {
+    if (isset($masterfile)) {
       $access_pmf_media = $masterfile->access('view', $this->currentUser);
       if ($access_pmf_media) {
         $links[] = $pmf_link->toRenderable();
@@ -195,11 +207,10 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
       '#asu_download_info' => $download_info,
       '#asu_download_restricted' => ['#markup' => $markup],
       '#asu_download_links' => $links,
+      '#file_size' => $file_size,
       '#theme' => 'asu_item_extras_downloads_block',
     ];
-    if ($file_size > 0) {
-      $return['#file_size'] = $file_size;
-    }
+
     return $return;
   }
 
@@ -207,7 +218,6 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
    * {@inheritdoc}
    */
   public function getCacheTags() {
-
     $block_config = BlockBase::getConfiguration();
     if (is_array($block_config) && array_key_exists('child_node_id', $block_config)) {
       $nid = $block_config['child_node_id'];
@@ -219,7 +229,6 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
       }
     }
     if (isset($nid)) {
-      // If there is node add its cachetag.
       return Cache::mergeTags(parent::getCacheTags(), ['node:' . $nid]);
     }
     else {
