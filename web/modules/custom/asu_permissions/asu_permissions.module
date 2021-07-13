@@ -457,10 +457,15 @@ function asu_permissions_user_insert(UserInterface $entity) {
         $lname = $json['person']['preferred_last_name'] != '' ? $json['person']['preferred_last_name'] : $json['person']['last_name'];
         $honors = $json['person']['honors'];
         $emplid = $json['person']['emplid'];
-        $campus = $json['stuplan'][0]['campus'];
         $schools = [];
         foreach($json['stuplan'] as $plan) {
           array_push($schools, $plan['acad_dept_org_descr']);
+          if ($plan['acad_career'] == 'UGRD') {
+            $campus = $plan['campus'];
+          }
+        }
+        if (!$campus) {
+          $campus = $json['stuplan'][0]['campus'];
         }
         $entity->set('field_first_name', $fname);
         $entity->set('field_last_name', $lname);
