@@ -182,7 +182,7 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     }
     if (isset($sf_file)) {
       $access_sf_media = $servicefile->access('view', $this->currentUser);
-      if ($access_sf_media) {
+      if ($access_sf_media && isset($sf_link)) {
         $links[] = $sf_link->toRenderable();
       }
     }
