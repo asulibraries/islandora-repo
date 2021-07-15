@@ -59,3 +59,25 @@ function asu_statistics_file_download($uri) {
   }
   return NULL;
 }
+
+function asu_statistics_preprocess_node(array &$variables) {
+  \Drupal::logger('asu_statistics')->info(t("Node view mode @mode.", ['@mode' => $variables['view_mode']]));
+  // We should limit the nodes that have this javascript attached.
+  if (is_object($variables['node'])) {
+    $field_model_tid = $variables['node']->hasField('field_model') ? $variables['node']->get('field_model')->getString() : "";
+    $field_model_term = ($field_model_tid) ? \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($field_model_tid) : NULL;
+    $field_model = (isset($field_model_term) && is_object($field_model_term)) ?
+      $field_model_term->getName() : '';
+
+    if ($variables['node']->bundle() == 'asu_repository_item' && $field_model <> 'Complex Object') {
+      $islandora_utils = \Drupal::service('islandora.utils');
+      $servicefile_term = $islandora_utils->getTermForUri('http://pcdm.org/use#ServiceFile');
+      $servicefile = $islandora_utils->getMediaWithTerm($variables['node'], $servicefile_term);
+      if (is_object($servicefile) && ($servicefile->bundle() == 'video' ||
+        $servicefile->bundle() == 'audio')) {
+        \Drupal::logger('asu_statistics')->info(t("Service file media @bundle.", ['@bundle' => $servicefile->bundle()]));
+        $variables['#attached']['library'] = 'asu_statistics/track';
+      }
+    }
+  }
+}
