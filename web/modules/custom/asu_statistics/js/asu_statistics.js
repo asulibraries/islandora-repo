@@ -1,7 +1,6 @@
 /**
  * @file - asu_statistics.js
  */
-console.log('included asu_statistics.js');
 
 (function ($) {
 Drupal.behaviors.asu_statistics = {
