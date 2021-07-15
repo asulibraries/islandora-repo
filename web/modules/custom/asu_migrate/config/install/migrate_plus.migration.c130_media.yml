@@ -23,14 +23,17 @@ source:
   constants:
     # We're tagging our media as Original Files
     use: Original File
-
+    asu_only: "ASU Only"
     # Everything gets created as admin
     uid: 1
-    asuonly: "ASU Only"
 
 process:
 
-  name: item title
+  name:
+    source: item title
+    plugin: substr
+    start: 0
+    length: 254
   uid: constants/uid
   # todo set to asurite
   bundle: media type
@@ -114,12 +117,12 @@ process:
     to_timezone: 'UTC'
 
   field_access_terms:
-    source: constants/asuonly
     plugin: entity_lookup
     bundle: islandora_access
     bundle_key: vid
     entity_type: taxonomy_term
     value_key: name
+    source: constants/asu_only
 
 destination:
   # These are 'document' media we're making. - could this be dynamic?

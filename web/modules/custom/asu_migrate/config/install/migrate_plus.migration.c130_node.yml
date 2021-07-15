@@ -25,7 +25,8 @@ source:
     model: Digital Document
 
     # Everything gets created as admin
-    collection_title: "Barrett, The Honors College Thesis/Creative Project Collection"
+    uid: 1
+    collection_title: 'Barrett, The Honors College Thesis/Creative Project Collection'
     pres_state: '558' # Not Preserved
     handle: "https://hdl.handle.net/2286/R.I."
     cataloging_standards: "asu1"
@@ -48,19 +49,6 @@ process:
     plugin: skip_on_empty
     source: Date Created
     method: process
-
-  field_embargo_release_date:
-    -
-      plugin: skip_on_empty
-      method: process
-      source: Embargo Date
-    -
-      plugin: format_date
-      from_format: 'Y-m-d'
-      to_format: 'Y-m-d\TH:i:s'
-      from_timezone: 'America/Phoenix'
-      to_timezone: 'America/Phoenix'
-
 
   field_date_digitized:
     plugin: skip_on_empty
@@ -109,6 +97,7 @@ process:
       Public: published
       1: published
       0: draft
+    default_value: published
 
   field_model:
     source: Model
@@ -120,29 +109,24 @@ process:
 
   field_rich_description/value:
     plugin: skip_on_empty
-    source: cleaned_description
+    source: Description
     method: process
 
   field_rich_description/format:
     plugin: default_value
     default_value: "description_restricted_items"
 
+  # got value from alex directly
   field_genre:
     -
       plugin: skip_on_empty
       source: Genre
       method: process
     -
-      plugin: explode
-      delimiter: '||'
-    -
-      plugin: callback
-      callable: trim
-    -
-      plugin: name_uri_generate
-      delimiter: '|'
-      uri_field: field_authority_link
-      default_vocabulary: genre
+      plugin: entity_lookup_by_field
+      lookup_field: field_authority_link/uri
+      entity_type: taxonomy_term
+      bundle: genre
 
   field_preferred_citation:
     plugin: skip_on_empty
@@ -168,7 +152,11 @@ process:
     source: Peer-reviewed
     method: process
 
-  field_complex_object_child: Complex Object Child
+  field_complex_object_child:
+    plugin: skip_on_empty
+    source: Complex Object Child
+    method: process
+    default_value: 0
 
   field_table_of_contents:
     plugin: skip_on_empty
@@ -181,10 +169,18 @@ process:
     method: process
 
   title:
-    plugin: substr
-    source: Item Title
-    start: 0
-    length: 254
+    -
+      plugin: explode
+      delimiter: '||'
+      source: Item Title
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: substr
+      start: 0
+      length: 254
+
 
   field_title:
     -
@@ -264,6 +260,9 @@ process:
       source: Language
       method: process
     -
+      plugin: explode
+      delimiter: '||'
+    -
       plugin: entity_lookup
       entity_type: taxonomy_term
       value_key: name
@@ -289,6 +288,19 @@ process:
       bundle_key: type
       bundle: collection
       value_key: title
+      lookup_field: field_pid
+
+  field_embargo_release_date:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: Embargo Date
+    -
+      plugin: format_date
+      from_format: 'Y-m-d'
+      to_format: 'Y-m-d\TH:i:s'
+      from_timezone: 'America/Phoenix'
+      to_timezone: 'America/Phoenix'
 
   field_subject:
     -
@@ -324,11 +336,28 @@ process:
       uri_field: field_authority_link
       default_vocabulary: geo_location
 
+  field_name_title_subject:
+    -
+      plugin: skip_on_empty
+      source: Name Title Subjects
+      method: process
+    -
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: name_uri_generate
+      delimiter: '|'
+      uri_field: field_authority_link
+      default_vocabulary: name_titles
+
   pers_names:
     -
       plugin: skip_on_empty
-      method: process
       source: Personal Name Subjects
+      method: process
     -
       plugin: explode
       delimiter: '||'
@@ -347,8 +376,8 @@ process:
   corp_names:
     -
       plugin: skip_on_empty
-      method: process
       source: Corporate Name Subjects
+      method: process
     -
       plugin: explode
       delimiter: '||'
@@ -368,21 +397,21 @@ process:
     -
       plugin: merge_skip_empty
       source:
-        - '@corp_names'
         - '@pers_names'
+        - '@corp_names'
     -
       plugin: skip_on_empty
       method: process
 
-
-  authors:
-    -
-      plugin: skip_on_empty
-      method: process
-      source: Authors
+  corporations:
+    # -
+    #   plugin: skip_on_empty
+    #   method: process
+    #   source: Contributors-Corporate
     -
       plugin: explode
-      delimiter: '||'
+      delimiter: ' || '
+      source: Contributors-Corporate
     -
       plugin: callback
       callable: trim
@@ -393,18 +422,15 @@ process:
       plugin: typed_relation_generate
       delimiter: '|'
       uri_field: field_authority_link
-      default_vocabulary: person
-      relator: 'relators:aut'
+      default_vocabulary: corporate_body
+      # relator: 'relators:ctb'
 
   contributors:
     -
-      plugin: skip_on_empty
-      method: process
+      plugin: explode
+      delimiter: '||'
       source: Contributors-Person
     -
-      plugin: explode
-      delimiter: '||'
-    -
       plugin: callback
       callable: trim
     -
@@ -415,101 +441,14 @@ process:
       delimiter: '|'
       uri_field: field_authority_link
       default_vocabulary: person
-
-  corporations:
-    -
-      plugin: skip_on_empty
-      method: process
-      source: Contributors-Corporate
-    -
-      plugin: explode
-      delimiter: '||'
-    -
-      plugin: callback
-      callable: trim
-    -
-      plugin: skip_on_empty
-      method: process
-    -
-      plugin: typed_relation_generate
-      delimiter: '|'
-      uri_field: field_authority_link
-      default_vocabulary: corporate_body
-      relator: 'relators:ctb'
-
-  corp_publishers:
-    -
-      plugin: skip_on_empty
-      method: process
-      source: Publishers-Corporate
-    -
-      plugin: explode
-      delimiter: '||'
-    -
-      plugin: callback
-      callable: trim
-    -
-      plugin: skip_on_empty
-      method: process
-    -
-      plugin: typed_relation_generate
-      delimiter: '|'
-      uri_field: field_authority_link
-      default_vocabulary: corporate_body
-      relator: 'relators:pbl'
-
-  pers_photographers:
-    -
-      plugin: skip_on_empty
-      method: process
-      source: Photographers-Personal
-    -
-      plugin: explode
-      delimiter: '||'
-    -
-      plugin: callback
-      callable: trim
-    -
-      plugin: skip_on_empty
-      method: process
-    -
-      plugin: typed_relation_generate
-      delimiter: '|'
-      uri_field: field_authority_link
-      default_vocabulary: person
-      relator: 'relators:pht'
-
-  pers_transcribers:
-    -
-      plugin: skip_on_empty
-      method: process
-      source: Transcriber-Personal
-    -
-      plugin: explode
-      delimiter: '||'
-    -
-      plugin: callback
-      callable: trim
-    -
-      plugin: skip_on_empty
-      method: process
-    -
-      plugin: typed_relation_generate
-      delimiter: '|'
-      uri_field: field_authority_link
-      default_vocabulary: person
-      relator: 'relators:trc'
+      # relator: 'relators:pht'
 
   field_linked_agent:
     -
       plugin: merge_skip_empty
       source:
-        - '@authors'
         - '@contributors'
         - '@corporations'
-        - '@corp_publishers'
-        - '@pers_photographers'
-        - '@pers_transcribers'
     -
       plugin: skip_on_empty
       method: process
@@ -531,7 +470,6 @@ process:
     bundle: cataloging_standards
 
   field_level_of_coding: constants/level_of_coding
-
 
 # We're making nodes
 destination:
