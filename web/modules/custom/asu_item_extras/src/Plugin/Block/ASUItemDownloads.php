@@ -101,6 +101,12 @@ class ASUItemDownloads extends BlockBase implements ContainerFactoryPluginInterf
       }
     }
     if ($node_id) {
+      $islandora_utils = \Drupal::service('islandora.utils');
+      $servicefile_term = $islandora_utils->getTermForUri('http://pcdm.org/use#ServiceFile');
+      $servicefile = $islandora_utils->getMediaWithTerm($node, $servicefile_term);
+      if ($servicefile->bundle() == 'remote_video') {
+        return [];
+      }
       $mids = $this->entityTypeManager->getStorage('media')->getQuery()
         ->condition('field_media_of', $node_id)
         ->execute();

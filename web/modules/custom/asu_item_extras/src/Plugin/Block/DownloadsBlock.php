@@ -125,14 +125,16 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     $download_info = '';
     $file_size = 0;
     $islandora_utils = \Drupal::service('islandora.utils');
+    $servicefile_term = $islandora_utils->getTermForUri('http://pcdm.org/use#ServiceFile');
+    $servicefile = $islandora_utils->getMediaWithTerm($node, $servicefile_term);
+    if ($servicefile->bundle() == 'remote_video') {
+      return [];
+    }
     $media_source_service = \Drupal::service('islandora.media_source_service');
     $origfile_term = $islandora_utils->getTermForUri('http://pcdm.org/use#OriginalFile');
     $origfile = $islandora_utils->getMediaWithTerm($node, $origfile_term);
-    $servicefile_term = $islandora_utils->getTermForUri('http://pcdm.org/use#ServiceFile');
-    $servicefile = $islandora_utils->getMediaWithTerm($node, $servicefile_term);
     $masterfile_term = $islandora_utils->getTermForUri('http://pcdm.org/use#PreservationMasterFile');
     $masterfile = $islandora_utils->getMediaWithTerm($node, $masterfile_term);
-
     if ($origfile && $origfile->bundle() <> 'remote_video') {
       $file_entities = ($origfile->hasField('field_access_terms') ? $origfile->get('field_access_terms')->referencedEntities() : NULL);
       $of_access = ((!is_null($file_entities) && array_key_exists(0, $file_entities)) ? $file_entities[0]->label() : FALSE);
