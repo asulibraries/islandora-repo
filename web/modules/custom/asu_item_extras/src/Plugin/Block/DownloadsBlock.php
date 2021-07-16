@@ -176,7 +176,7 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     $links = [];
     if (isset($of_file)) {
       $access_of_media = $origfile->access('view', $this->currentUser);
-      if ($access_of_media) {
+      if ($access_of_media && isset($of_link)) {
         $links[] = $of_link->toRenderable();
       }
     }
@@ -188,7 +188,7 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     }
     if (isset($masterfile)) {
       $access_pmf_media = $masterfile->access('view', $this->currentUser);
-      if ($access_pmf_media) {
+      if ($access_pmf_media && isset($pmf_link)) {
         $links[] = $pmf_link->toRenderable();
       }
     }
