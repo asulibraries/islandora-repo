@@ -61,10 +61,35 @@ function asulib_barrio_preprocess_breadcrumb(&$variables) {
         ];
       }
     } elseif ($current_route == 'asu_item_extras.complex_object_members') {
+      $variables['breadcrumb'][] = [
+        'text' => t('Associated media'),
+        'attributes' => new Attribute(['class' => ['is_active']])
+      ];
+    } elseif ($current_route == 'entity.webform.canonical') {
+      $request = \Drupal::request();
+      $route_match = \Drupal::routeMatch();
+      // $page_title should be like "{page title}: Feedback".
+      $page_title = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
+      $arguments = $page_title->getArguments();
+      $source_entity_title = (array_key_exists('@source_entity', $arguments)) ? $arguments['@source_entity'] : "";
+      if ($source_entity_title && count($variables['breadcrumb']) == 4) {
+        unset($variables['breadcrumb'][3]);
+        unset($variables['breadcrumb'][2]);
+        unset($variables['breadcrumb'][1]);
+        $item_id = \Drupal::request()->query->get('item');
+        $use_collection_id = \Drupal::request()->query->get('collection');
+        // Potentially add the item's collection breadcrumb first.
+        if ($use_collection_id) {
+          $variables['breadcrumb'][] = \Drupal::entityTypeManager()->getStorage('node')->load($use_collection_id)->toLink();
+        }
+        $url = ($item_id) ?
+          Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/items/' .$item_id, ['attributes' => ['class' => 'nav-link']]):
+          Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/collections/' .$use_collection_id, ['attributes' => ['class' => 'nav-link']]);
+        $link = Link::fromTextAndUrl($source_entity_title, $url);
+        $variables['breadcrumb'][] = $link;
         $variables['breadcrumb'][] = [
-          'text' => t('Associated media'),
-          'attributes' => new Attribute(['class' => ['is_active']])
-        ];
+          'text' => 'Feedback'];
+      }
     } else {
       // Add the search text as a text-breadcrumb as text.
       if ($search_term && $search_term != "") {
