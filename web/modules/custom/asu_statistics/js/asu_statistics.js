@@ -22,7 +22,7 @@ Drupal.behaviors.asu_statistics = {
                   page_pathname = 'items/' + article_node_id;
               }
               // Push the tracking event to Matomo.
-              _paq.push(['trackEvent', 'MediaEvents', 'Play audio', page_pathname, "play"]);
+              _paq.push(['trackEvent', 'MediaEvents', 'Play audio', page_pathname]);
           });
       });
       $('video').each( function() {
@@ -34,7 +34,7 @@ Drupal.behaviors.asu_statistics = {
                    page_pathname = 'items/' + article_node_id;
               }
               // Push the tracking event to Matomo.
-              _paq.push(['trackEvent', 'MediaEvents', 'Play video', page_pathname, "play"]);
+              _paq.push(['trackEvent', 'MediaEvents', 'Play video', page_pathname]);
           });
       });
     }
