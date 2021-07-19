@@ -72,21 +72,7 @@ function asulib_barrio_preprocess_breadcrumb(&$variables) {
       $page_title = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
       $arguments = $page_title->getArguments();
       $source_entity_title = (array_key_exists('@source_entity', $arguments)) ? $arguments['@source_entity'] : "";
-      if ($source_entity_title && count($variables['breadcrumb']) == 4) {
-        unset($variables['breadcrumb'][3]);
-        unset($variables['breadcrumb'][2]);
-        unset($variables['breadcrumb'][1]);
-        $item_id = \Drupal::request()->query->get('item');
-        $use_collection_id = \Drupal::request()->query->get('collection');
-        // Potentially add the item's collection breadcrumb first.
-        if ($use_collection_id) {
-          $variables['breadcrumb'][] = \Drupal::entityTypeManager()->getStorage('node')->load($use_collection_id)->toLink();
-        }
-        $url = ($item_id) ?
-          Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/items/' .$item_id, ['attributes' => ['class' => 'nav-link']]):
-          Url::fromUri(\Drupal::request()->getSchemeAndHttpHost() . '/collections/' .$use_collection_id, ['attributes' => ['class' => 'nav-link']]);
-        $link = Link::fromTextAndUrl($source_entity_title, $url);
-        $variables['breadcrumb'][] = $link;
+      if ($source_entity_title) {
         $variables['breadcrumb'][] = [
           'text' => 'Feedback'];
       }
