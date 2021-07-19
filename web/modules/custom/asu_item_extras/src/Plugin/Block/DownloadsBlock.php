@@ -138,7 +138,7 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
       $of_access = ((!is_null($file_entities) && array_key_exists(0, $file_entities)) ? $file_entities[0]->label() : FALSE);
       $source_field = $media_source_service->getSourceFieldName($origfile->bundle());
       if (!empty($source_field)) {
-        $of_file = ($origfile->hasField($source_field) && (is_object($origfile->get($source_field))) ? $origfile->get($source_field)->referencedEntities()[0] : FALSE);
+        $of_file = ($origfile->hasField($source_field) && (is_object($origfile->get($source_field)) && $origfile->get($source_field)->referencedEntities() != NULL) ? $origfile->get($source_field)->referencedEntities()[0] : FALSE);
         if ($of_file) {
           $of_uri = $islandora_utils->getDownloadUrl($of_file);
           $of_link = Link::fromTextAndUrl($this->t('Original'), Url::fromUri($of_uri, ['attributes' => ['class' => ['dropdown-item']]]));
@@ -153,7 +153,7 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
       $sf_access = ((!is_null($file_entities) && array_key_exists(0, $file_entities)) ? $file_entities[0]->label() : FALSE);
       $source_field = $media_source_service->getSourceFieldName($servicefile->bundle());
       if (!empty($source_field)) {
-        $sf_file = ($servicefile->hasField($source_field) && (is_object($servicefile->get($source_field))) ? $servicefile->get($source_field)->referencedEntities()[0] : FALSE);
+        $sf_file = ($servicefile->hasField($source_field) && (is_object($servicefile->get($source_field)) && $servicefile->get($source_field)->referencedEntities() != NULL) ? $servicefile->get($source_field)->referencedEntities()[0] : FALSE);
         if ($sf_file) {
           $sf_uri = $islandora_utils->getDownloadUrl($sf_file);
           $sf_link = Link::fromTextAndUrl($this->t('Derivative'), Url::fromUri($sf_uri, ['attributes' => ['class' => ['dropdown-item']]]));
@@ -176,19 +176,19 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     $links = [];
     if (isset($of_file)) {
       $access_of_media = $origfile->access('view', $this->currentUser);
-      if ($access_of_media) {
+      if ($access_of_media && isset($of_link)) {
         $links[] = $of_link->toRenderable();
       }
     }
     if (isset($sf_file)) {
       $access_sf_media = $servicefile->access('view', $this->currentUser);
-      if ($access_sf_media) {
+      if ($access_sf_media && isset($sf_link)) {
         $links[] = $sf_link->toRenderable();
       }
     }
     if (isset($masterfile)) {
       $access_pmf_media = $masterfile->access('view', $this->currentUser);
-      if ($access_pmf_media) {
+      if ($access_pmf_media && isset($pmf_link)) {
         $links[] = $pmf_link->toRenderable();
       }
     }
