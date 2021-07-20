@@ -120,6 +120,7 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
   public function build() {
     // Depending on what the islandora_object model is, the links will differ.
     $node = $this->routeMatch->getParameter('node');
+    $node = is_string($node) ? $this->entityTypeManager->getStorage('node')->load($node) : $node;
     if ($node) {
       $nid = $node->id();
     }
