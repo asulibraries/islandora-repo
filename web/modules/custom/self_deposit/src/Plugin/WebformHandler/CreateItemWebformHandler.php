@@ -177,7 +177,7 @@ class CreateItemWebformHandler extends WebformHandlerBase {
   public function preSave(WebformSubmissionInterface $webform_submission) {
     // Get an array of the values from the submission.
     $values = $webform_submission->getData();
-    $files = $values['files'];
+    $files = $values['file'];
 
     if (count($files) > 1) {
       $model = 'Complex Object';
