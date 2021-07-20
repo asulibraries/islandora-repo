@@ -201,12 +201,9 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     }
     $date = new \DateTime();
     $today = $date->format("c");
-    if ($node->hasField('field_embargo_release_date') && $node->get('field_embargo_release_date') && $node->get('field_embargo_release_date')->value != NULL) {
-      if ($node->get('field_embargo_release_date')->value >= $today) {
-        \Drupal::logger('asu downloads block')->info($node->get('field_embargo_release_date')->value);
-      // if its embargoed, remove the download options entirely.
-        $markup = "<i class='fas fa-lock'></i> Download restricted until " . $node->get('field_embargo_release_date')->date->format('Y-m-d') . ".";
-      }
+    if ($node->hasField('field_embargo_release_date') && $node->get('field_embargo_release_date') && $node->get('field_embargo_release_date')->value != NULL && $node->get('field_embargo_release_date')->value != 'T23:59:59' && $node->get('field_embargo_release_date')->value >= $today) {
+    // if its embargoed, remove the download options entirely.
+      $markup = "<i class='fas fa-lock'></i> Download restricted until " . $node->get('field_embargo_release_date')->date->format('Y-m-d') . ".";
     }
 
     $return = [
