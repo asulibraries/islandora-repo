@@ -9,6 +9,7 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 
 /**
  * Provides a 'About this item' Block.
@@ -36,6 +37,13 @@ class AboutThisItemBlock extends BlockBase implements ContainerFactoryPluginInte
   protected $requestStack;
 
   /**
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
    * Constructor for About this Collection Block.
    *
    * @param array $configuration
@@ -48,11 +56,14 @@ class AboutThisItemBlock extends BlockBase implements ContainerFactoryPluginInte
    *   The route match.
    * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
    *   The request stack.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $route_match, RequestStack $request_stack) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $route_match, RequestStack$request_stack, EntityTypeManagerInterface $entity_type_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->routeMatch = $route_match;
     $this->requestStack = $request_stack;
+    $this->entityTypeManager = $entity_type_manager;
   }
 
   /**
@@ -65,6 +76,7 @@ class AboutThisItemBlock extends BlockBase implements ContainerFactoryPluginInte
       $plugin_definition,
       $container->get('current_route_match'),
       $container->get('request_stack'),
+      $container->get('entity_type.manager')
     );
   }
 
@@ -86,6 +98,7 @@ class AboutThisItemBlock extends BlockBase implements ContainerFactoryPluginInte
     // the underlying node can be accessed via the path.
     // TODO - use dependency injection.
     $node = $this->routeMatch->getParameter('node');
+    $node = is_string($node) ? $this->entityTypeManager->getStorage('node')->load($node) : $node;
     if ($node) {
       $nid = $node->id();
     }
