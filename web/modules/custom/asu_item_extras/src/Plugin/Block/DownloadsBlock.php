@@ -120,6 +120,9 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
       if ($this->routeMatch->getParameter('node')) {
         $node = $this->routeMatch->getParameter('node');
         $nid = (is_string($node) ? $node : $node->id());
+        if (is_string($node)) {
+          $node = $this->entityTypeManager->getStorage('node')->load($nid);
+        }
       }
     }
     $download_info = '';
