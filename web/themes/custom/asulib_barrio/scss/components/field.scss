@@ -209,11 +209,14 @@ button.show-more {
 }
 
 .node--view-mode-full-metadata .field--name-field-typed-identifier > .field__items > .field__item {
-    display: block;
+    display: inline-block;
     border-bottom: 1px solid $border-color;
     margin-bottom: 10px;
     &:last-of-type {
         border-bottom: none;
+    }
+    .paragraph {
+        display: inline-block;
     }
 }
 
