@@ -318,7 +318,13 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
    */
   public function getCacheTags() {
     if ($node = $this->routeMatch->getParameter('node')) {
-      return Cache::mergeTags(parent::getCacheTags(), ['node:' . $node->id()]);
+      if (is_string($node)) {
+        $nid = $node;
+      }
+      else {
+        $nid = $node->id();
+      }
+      return Cache::mergeTags(parent::getCacheTags(), ['node:' . $nid]);
     }
     else {
       return parent::getCacheTags();
