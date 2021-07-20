@@ -201,7 +201,7 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     }
     $date = new \DateTime();
     $today = $date->format("c");
-    if ($node->hasField('field_embargo_release_date') && $node->get('field_embargo_release_date') != NULL && $node->get('field_embargo_release_date')->value >= $today) {
+    if ($node->hasField('field_embargo_release_date') && $node->get('field_embargo_release_date') && $node->get('field_embargo_release_date')->value != NULL && $node->get('field_embargo_release_date')->value >= $today) {
       // if its embargoed, remove the download options entirely.
       $markup = "<i class='fas fa-lock'></i> Download restricted until " . $node->get('field_embargo_release_date')->date->format('Y-m-d') . ".";
     }
