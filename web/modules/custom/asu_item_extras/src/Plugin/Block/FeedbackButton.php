@@ -107,8 +107,8 @@ class FeedbackButton extends BlockBase implements ContainerFactoryPluginInterfac
   public function getCacheTags() {
     // With this when your node change your block will rebuild.
     if ($node = $this->routeMatch->getParameter('node')) {
-      // If there is node add its cachetag.
-      return Cache::mergeTags(parent::getCacheTags(), ['node:' . $node->id()]);
+      $nid = is_string($node) ? $node : $node->id();
+      return Cache::mergeTags(parent::getCacheTags(), ['node:' . $nid]);
     }
     else {
       // Return default tags instead.
