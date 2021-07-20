@@ -175,14 +175,14 @@ class ASUAltmetrics extends BlockBase implements ContainerFactoryPluginInterface
     if ($this->currentRouteMatch->getParameter('node')) {
       $node = $this->currentRouteMatch->getParameter('node');
     }
+    if (!is_object($node)) {
+      $node = $this->entityTypeManager->getStorage('node')->load($node);
+    }
     if (!isset($node)) {
       return parent::getCacheTags();
     }
     else {
       return Cache::mergeTags(parent::getCacheTags(), ['node:' . $node->id()]);
-    }
-    if (!is_object($node)) {
-      $node = $this->entityTypeManager->getStorage('node')->load($node);
     }
   }
 
