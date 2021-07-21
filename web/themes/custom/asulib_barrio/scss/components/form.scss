@@ -89,7 +89,12 @@ select {
 .js-form-type-checkbox input[type="checkbox"], .js-form-type-radio input[type="radio"] {
   height: 1.5rem;
   width: 1.5rem;
+  opacity: 0;
   z-index: 1;
+}
+
+.diff-revisions .js-form-type-checkbox input[type="checkbox"], .js-form-type-radio input[type="radio"] {
+  opacity: 1;
 }
 
 .form-check-label {
