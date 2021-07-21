@@ -160,7 +160,7 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
         if ($sf_file) {
           $sf_uri = $islandora_utils->getDownloadUrl($sf_file);
           $sf_link = Link::fromTextAndUrl($this->t('Derivative'), Url::fromUri($sf_uri, ['attributes' => ['class' => ['dropdown-item']]]));
-          $download_info .= $servicefile->get('field_mime_type')->value;
+          // $download_info .= $servicefile->get('field_mime_type')->value;
         }
       }
     }
@@ -170,7 +170,7 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
         $pmf_file = $masterfile->get($source_field)->referencedEntities()[0];
         $pmf_uri = $islandora_utils->getDownloadUrl($pmf_file);
         $pmf_link = Link::fromTextAndUrl($this->t('Master'), Url::fromUri($pmf_uri, ['attributes' => ['class' => ['dropdown-item']]]));
-        $download_info .= $masterfile->get('field_mime_type')->value;
+        // $download_info .= $masterfile->get('field_mime_type')->value;
       }
     }
 
