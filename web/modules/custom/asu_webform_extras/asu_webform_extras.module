@@ -4,3 +4,47 @@
  * @file
  * Contains asu_webform_extras.module.
  */
+
+/**
+ * Implements hook_node_form_alter().
+ */
+function asu_webform_extras_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+  $form_id_partial = substr($form_id, 0, 28);
+  if ($form_id_partial == 'webform_submission_feedback_') {
+    // do things because this is one of our feedback forms.
+    if (array_key_exists('item', $form['elements'])) {
+      $item_id = $form['elements']['item']['#default_value'];
+      $collection_id = $form['elements']['collection']['#default_value'];
+      $form['elements']['feedbackon']['#markup'] = '<p><strong>Feedback on ' .
+      '</strong><br />' . asu_webform_extras_get_feedbackon($item_id, $collection_id) . '</p>';
+    }
+  }
+}
+function asu_webform_extras_get_feedbackon($item_id, $collection_id) {
+  $feedbackon_output = [];
+  if ($item_id) {
+    $collection = ($collection_id) ? \Drupal::entityTypeManager()->getStorage('node')->load($collection_id) : NULL;
+    if (!is_null($collection)) {
+      $feedbackon_output[] = render($collection->toLink()->toRenderable());
+    }
+    $item = \Drupal::entityTypeManager()->getStorage('node')->load($item_id);
+    if (is_object($item)) {
+      $feedbackon_output[] = render($item->toLink()->toRenderable());
+    }
+  }
+  if (count($feedbackon_output)) {
+    return implode(' / ', $feedbackon_output);
+  }
+}
+
+/**
+ * Prepares variables for HTML email.
+ */
+function asu_webform_extras_preprocess_webform_email_message_html(&$variables) {
+  /** @var \Drupal\webform\WebformSubmissionInterface $webform_submission */
+  $webform_submission = $variables['webform_submission'];
+  $data = $webform_submission->getData();
+  $item_id = $data['item'];
+  $collection_id = $data['collection'];
+  $variables['asu_webform_extras_feedbackon'] = asu_webform_extras_get_feedbackon($item_id, $collection_id);
+}

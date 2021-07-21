@@ -1,0 +1,19 @@
+{#
+/**
+ * @file
+ * Default theme implementation for webform email wrapper template as HTML.
+ *
+ * Available variables:
+ * - message: The email message which contains to, from, subject, message, etc…
+ * - webform_submission: The webform submission.
+ * - handler: The webform handler.
+ *
+ * @ingroup themeable
+ */
+#}
+{{ message.body }}
+{% if asu_webform_extras_feedbackon %}
+  <p><strong>Feedback on</strong><br />
+  {{ asu_webform_extras_feedbackon|raw }}
+  </p>
+{% endif %}
