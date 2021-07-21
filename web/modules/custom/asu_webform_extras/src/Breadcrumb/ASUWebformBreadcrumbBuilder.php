@@ -11,6 +11,7 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Drupal\Core\Template\Attribute;
 
 /**
  * {@inheritdoc}
@@ -106,9 +107,7 @@ class ASUWebformBreadcrumbBuilder extends ASUBreadcrumbBuilder {
           $breadcrumb->addLink($chainlink->toLink());
         }
       }
-      // This is stupid, but the breadcrumb class does not have a way to add
-      // a text-only breadcrumb to show that we are on the "Feedback" form page,
-      // so this part is handled in the theme code.
+      $breadcrumb->addLink(Link::createFromRoute('Feedback', '<none>'));
     }
     else {
       $breadcrumb->addLink(Link::createFromRoute($this->t('Administration'), 'system.admin'));

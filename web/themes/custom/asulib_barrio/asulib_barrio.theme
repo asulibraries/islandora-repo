@@ -65,17 +65,6 @@ function asulib_barrio_preprocess_breadcrumb(&$variables) {
         'text' => t('Associated media'),
         'attributes' => new Attribute(['class' => ['is_active']])
       ];
-    } elseif ($current_route == 'entity.webform.canonical') {
-      $request = \Drupal::request();
-      $route_match = \Drupal::routeMatch();
-      // $page_title should be like "{page title}: Feedback".
-      $page_title = \Drupal::service('title_resolver')->getTitle($request, $route_match->getRouteObject());
-      $arguments = $page_title->getArguments();
-      $source_entity_title = (array_key_exists('@source_entity', $arguments)) ? $arguments['@source_entity'] : "";
-      if ($source_entity_title) {
-        $variables['breadcrumb'][] = [
-          'text' => 'Feedback'];
-      }
     } else {
       // Add the search text as a text-breadcrumb as text.
       if ($search_term && $search_term != "") {
