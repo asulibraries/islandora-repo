@@ -11,6 +11,8 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\node\NodeInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+
 
 /**
  * Provides a 'Feedback' Block.
@@ -37,6 +39,13 @@ class FeedbackButton extends BlockBase implements ContainerFactoryPluginInterfac
   protected $routeMatch;
 
   /**
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
    * Constructor for Feedback Button Block.
    *
    * @param array $configuration
@@ -49,11 +58,14 @@ class FeedbackButton extends BlockBase implements ContainerFactoryPluginInterfac
    *   The current request.
    * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
    *   The route match.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, Request $currentRequest, RouteMatchInterface $route_match) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, Request $currentRequest, RouteMatchInterface$route_match, EntityTypeManagerInterface $entity_type_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->currentRequest = $currentRequest;
     $this->routeMatch = $route_match;
+    $this->entityTypeManager = $entity_type_manager;
   }
 
   /**
@@ -65,7 +77,8 @@ class FeedbackButton extends BlockBase implements ContainerFactoryPluginInterfac
       $plugin_id,
       $plugin_definition,
       $container->get('request_stack')->getCurrentRequest(),
-      $container->get('current_route_match')
+      $container->get('current_route_match'),
+      $container->get('entity_type.manager')
     );
   }
 
@@ -75,7 +88,8 @@ class FeedbackButton extends BlockBase implements ContainerFactoryPluginInterfac
   public function build() {
     $node = $this->routeMatch->getParameter('node');
     if ($node) {
-      $nid = $node->id();
+      $nid = (is_string($node) ? $node : $node->id());
+      $node = is_string($node) ? $this->entityTypeManager->getStorage('node')->load($node) : $node;
     }
     else {
       $nid = 0;
