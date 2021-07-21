@@ -61,7 +61,6 @@ function asu_statistics_file_download($uri) {
 }
 
 function asu_statistics_preprocess_node(array &$variables) {
-  \Drupal::logger('asu_statistics')->info(t("Node view mode @mode.", ['@mode' => $variables['view_mode']]));
   // We should limit the nodes that have this javascript attached.
   if (is_object($variables['node'])) {
     $field_model_tid = $variables['node']->hasField('field_model') ? $variables['node']->get('field_model')->getString() : "";
@@ -75,7 +74,6 @@ function asu_statistics_preprocess_node(array &$variables) {
       $servicefile = $islandora_utils->getMediaWithTerm($variables['node'], $servicefile_term);
       if (is_object($servicefile) && ($servicefile->bundle() == 'video' ||
         $servicefile->bundle() == 'audio')) {
-        \Drupal::logger('asu_statistics')->info(t("Service file media @bundle.", ['@bundle' => $servicefile->bundle()]));
         $variables['#attached']['library'] = 'asu_statistics/track';
       }
     }
