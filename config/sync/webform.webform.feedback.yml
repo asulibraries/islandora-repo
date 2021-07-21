@@ -16,7 +16,52 @@ id: feedback
 title: Feedback
 description: 'Feedback form related to a particular item'
 category: ''
-elements: "primary_element:\n  '#type': select\n  '#title': 'Primary element'\n  '#disabled': true\n  '#options':\n    item: item\n    collection: collection\n  '#required': true\n  '#access': false\nemail:\n  '#type': email\n  '#title': 'Your Email'\n  '#required': true\n  '#default_value': '[current-user:mail]'\nyour_name:\n  '#type': textfield\n  '#title': 'Your name'\n  '#required': true\n  '#default_value': '[current-user:display-name]'\nfeedback_category:\n  '#type': select\n  '#title': 'Feedback Category'\n  '#options':\n    'Contributing Content': 'Contributing Content'\n    'Intellectual Property and Rights': 'Intellectual Property and Rights'\n    Corrections: Corrections\n    'Problem Report': 'Problem Report'\n    General: General\n    'Caption Request': 'Caption Request'\nmessage:\n  '#type': textarea\n  '#title': Message"
+elements: |-
+  feedbackon:
+    '#type': webform_markup
+    '#display_on': both
+  primary_element:
+    '#type': select
+    '#title': 'Primary element'
+    '#disabled': true
+    '#options':
+      item: item
+      collection: collection
+    '#required': true
+    '#access': false
+  email:
+    '#type': email
+    '#title': 'Your Email'
+    '#required': true
+    '#default_value': '[current-user:mail]'
+  your_name:
+    '#type': textfield
+    '#title': 'Your name'
+    '#required': true
+    '#default_value': '[current-user:display-name]'
+  feedback_category:
+    '#type': select
+    '#title': 'Feedback Category'
+    '#options':
+      'Contributing Content': 'Contributing Content'
+      'Intellectual Property and Rights': 'Intellectual Property and Rights'
+      Corrections: Corrections
+      'Problem Report': 'Problem Report'
+      General: General
+      'Caption Request': 'Caption Request'
+  message:
+    '#type': textarea
+    '#title': Message
+  collection:
+    '#type': textfield
+    '#title': Collection
+    '#readonly': true
+    '#access': false
+  item:
+    '#type': textfield
+    '#title': item
+    '#readonly': true
+    '#access': false
 css: ''
 javascript: ''
 settings:
@@ -198,7 +243,7 @@ access:
 handlers:
   email:
     id: email
-    label: Email
+    label: '[webform_submission:values:?]Email'
     notes: ''
     handler_id: email
     status: true
@@ -217,7 +262,7 @@ handlers:
       from_options: {  }
       from_name: '[webform_submission:values:your_name:raw]'
       subject: _default
-      body: _default
+      body: "<p>Submitted on {{ webform_token('[webform_submission:created]', webform_submission, [], options) }}</p>\r\n<p>Submitted by: {{ webform_token('[webform_submission:user]', webform_submission, [], options) }}</p><hr>\r\n<p>Submitted values are:</p>\r\n{{ webform_token('[webform_submission:values]', webform_submission, [], options) }}"
       excluded_elements: {  }
       ignore_access: false
       exclude_empty: true
@@ -225,7 +270,7 @@ handlers:
       exclude_attachments: false
       html: true
       attachments: false
-      twig: false
+      twig: true
       debug: false
       reply_to: ''
       return_path: ''

@@ -150,7 +150,7 @@ class ASUBreadcrumbBuilder implements BreadcrumbBuilderInterface {
    *
    * We pass crumbs by reference to enable checking for looped chains.
    */
-  protected function walkMembership(EntityInterface $entity, &$crumbs) {
+  public function walkMembership(EntityInterface $entity, &$crumbs) {
     $entityBundle = $entity->getEntityTypeId();
     // Avoid infinate loops, return if we've seen this before.
     foreach ($crumbs as $crumb) {
