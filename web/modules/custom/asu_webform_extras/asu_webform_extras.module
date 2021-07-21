@@ -48,3 +48,30 @@ function asu_webform_extras_preprocess_webform_email_message_html(&$variables) {
   $collection_id = $data['collection'];
   $variables['asu_webform_extras_feedbackon'] = asu_webform_extras_get_feedbackon($item_id, $collection_id);
 }
+
+/**
+ * Default preprocessor for the asu_statistics_theme hook.
+ */
+function template_preprocess_webform_email_message_html__feedback(&$variables) {
+  $variables['attributes'] = [
+    'id' => ['webform_email_message_html__feedback'],
+  ];
+}
+
+/**
+ * Implements hook_theme().
+ */
+function asu_webform_extras_theme($existing, $type, $theme, $path) {
+  return [
+    'webform_email_message_html__feedback' => [
+      'variables' => [
+        'message' => NULL,
+        'webform_submission' => NULL,
+        'handler' => NULL,
+        'asu_webform_extras_feedbackon' => NULL,
+      ],
+      'template' => 'webform-email-message-html--feedback',
+      'base hook' => 'webform_email_message_html'
+    ],
+  ];
+}
