@@ -276,12 +276,16 @@ process:
       bundle_key: vid
       bundle: language
 
+  thandle:
+    plugin: str_replace
+    source: ID
+    search: "a_"
+    replace: ""
   field_handle:
     plugin: concat
     source:
       - constants/handle
-      - ID
-
+      - '@thandle'
   field_member_of:
     -
       plugin: get
