@@ -17,6 +17,9 @@ title: Feedback
 description: 'Feedback form related to a particular item'
 category: ''
 elements: |-
+  feedbackon:
+    '#type': webform_markup
+    '#display_on': both
   primary_element:
     '#type': select
     '#title': 'Primary element'
@@ -59,9 +62,6 @@ elements: |-
     '#title': item
     '#readonly': true
     '#access': false
-  feedbackon:
-    '#type': webform_markup
-    '#display_on': both
 css: ''
 javascript: ''
 settings:

@@ -22,12 +22,14 @@ function asu_webform_extras_form_alter(&$form, \Drupal\Core\Form\FormStateInterf
 }
 function asu_webform_extras_get_feedbackon($item_id, $collection_id) {
   $feedbackon_output = [];
-  if ($item_id) {
+  if ($collection_id){
     $collection = ($collection_id) ? \Drupal::entityTypeManager()->getStorage('node')->load($collection_id) : NULL;
     if (!is_null($collection)) {
       $feedbackon_output[] = render($collection->toLink()->toRenderable());
     }
-    $item = \Drupal::entityTypeManager()->getStorage('node')->load($item_id);
+  }
+  if ($item_id) {
+    $item = ($item_id) ? \Drupal::entityTypeManager()->getStorage('node')->load($item_id) : NULL;
     if (is_object($item)) {
       $feedbackon_output[] = render($item->toLink()->toRenderable());
     }
@@ -50,24 +52,12 @@ function asu_webform_extras_preprocess_webform_email_message_html(&$variables) {
 }
 
 /**
- * Default preprocessor for the asu_statistics_theme hook.
- */
-function template_preprocess_webform_email_message_html__feedback(&$variables) {
-  $variables['attributes'] = [
-    'id' => ['webform_email_message_html__feedback'],
-  ];
-}
-
-/**
  * Implements hook_theme().
  */
 function asu_webform_extras_theme($existing, $type, $theme, $path) {
   return [
     'webform_email_message_html__feedback' => [
       'variables' => [
-        'message' => NULL,
-        'webform_submission' => NULL,
-        'handler' => NULL,
         'asu_webform_extras_feedbackon' => NULL,
       ],
       'template' => 'webform-email-message-html--feedback',
