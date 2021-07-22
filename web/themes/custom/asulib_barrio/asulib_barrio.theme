@@ -61,10 +61,10 @@ function asulib_barrio_preprocess_breadcrumb(&$variables) {
         ];
       }
     } elseif ($current_route == 'asu_item_extras.complex_object_members') {
-        $variables['breadcrumb'][] = [
-          'text' => t('Associated media'),
-          'attributes' => new Attribute(['class' => ['is_active']])
-        ];
+      $variables['breadcrumb'][] = [
+        'text' => t('Associated media'),
+        'attributes' => new Attribute(['class' => ['is_active']])
+      ];
     } else {
       // Add the search text as a text-breadcrumb as text.
       if ($search_term && $search_term != "") {
