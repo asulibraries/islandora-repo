@@ -93,7 +93,8 @@ class ASUWebformBreadcrumbBuilder extends ASUBreadcrumbBuilder {
     $breadcrumb = new Breadcrumb();
     $breadcrumb->addLink(Link::createFromRoute($this->t('Home'), '<front>'));
     $current_route = $route_match->getRouteName();
-    if ($current_route == 'entity.webform.canonical') {
+    $webform_title = $route_match->getParameters()->get('webform')->get('title');
+    if ($current_route == 'entity.webform.canonical' && $webform_title == 'Feedback') {
       $item_id = $this->request->getCurrentRequest()->query->get('item');
       $collection_id = $this->request->getCurrentRequest()->query->get('collection');
       $closest_node = ($item_id) ? $this->nodeStorage->load($item_id) :
