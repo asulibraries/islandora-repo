@@ -122,6 +122,11 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
       array_push($contribs, $this->getOrCreateTerm($ac['last'] . ", " . $ac['first'], 'person', 'relators:ctb'));
     }
 
+    foreach ($values['institutional_contributors'] as $ic) {
+      // make insitutional contribs as ctb
+      array_push($contribs, $this->getOrCreateTerm($ic, 'corporate_body', 'relators:ctb'));
+    }
+
     array_push($contribs, $this->getOrCreateTerm('Barrett, The Honors College', 'corporate_body', 'relators:ctb'));
 
     $date_submitted = $webform_submission->getCreatedTime();
