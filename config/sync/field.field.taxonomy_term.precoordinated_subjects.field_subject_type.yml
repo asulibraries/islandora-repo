@@ -2,18 +2,18 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.paragraph.field_subject_type
-    - paragraphs.paragraphs_type.simple_subject
+    - field.storage.taxonomy_term.field_subject_type
+    - taxonomy.vocabulary.precoordinated_subjects
   module:
     - options
-id: paragraph.simple_subject.field_subject_type
+id: taxonomy_term.precoordinated_subjects.field_subject_type
 field_name: field_subject_type
-entity_type: paragraph
-bundle: simple_subject
+entity_type: taxonomy_term
+bundle: precoordinated_subjects
 label: 'Subject Type'
 description: ''
 required: false
-translatable: true
+translatable: false
 default_value: {  }
 default_value_callback: ''
 settings: {  }

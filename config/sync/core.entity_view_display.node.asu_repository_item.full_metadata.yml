@@ -6,7 +6,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_additional_memberships
     - field.field.node.asu_repository_item.field_cataloging_standards
     - field.field.node.asu_repository_item.field_complex_object_child
-    - field.field.node.asu_repository_item.field_complex_subjects
+    - field.field.node.asu_repository_item.field_complex_subject
     - field.field.node.asu_repository_item.field_coordinates
     - field.field.node.asu_repository_item.field_copyright_statement
     - field.field.node.asu_repository_item.field_date_digitized
@@ -46,6 +46,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_reuse_permissions
     - field.field.node.asu_repository_item.field_rich_description
     - field.field.node.asu_repository_item.field_series
+    - field.field.node.asu_repository_item.field_source
     - field.field.node.asu_repository_item.field_statement_responsibility
     - field.field.node.asu_repository_item.field_subject
     - field.field.node.asu_repository_item.field_subjects_name
@@ -89,6 +90,14 @@ content:
     weight: 43
     region: content
     label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+  field_complex_subject:
+    type: entity_reference_label
+    weight: 44
+    region: content
+    label: above
     settings:
       link: true
     third_party_settings: {  }
@@ -460,7 +469,6 @@ hidden:
   display_media_service_file: true
   display_media_thumbnail: true
   field_complex_object_child: true
-  field_complex_subjects: true
   field_default_derivative_file_pe: true
   field_default_original_file_perm: true
   field_display_hints: true
@@ -469,6 +477,7 @@ hidden:
   field_model: true
   field_oai_set: true
   field_preservation_state: true
+  field_source: true
   field_title: true
   islandora_fits_checksum: true
   langcode: true

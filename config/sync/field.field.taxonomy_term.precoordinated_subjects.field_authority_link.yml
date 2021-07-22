@@ -2,15 +2,15 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.paragraph.field_authority_link
-    - paragraphs.paragraphs_type.simple_subject
+    - field.storage.taxonomy_term.field_authority_link
+    - taxonomy.vocabulary.precoordinated_subjects
   module:
     - controlled_access_terms
-id: paragraph.simple_subject.field_authority_link
+id: taxonomy_term.precoordinated_subjects.field_authority_link
 field_name: field_authority_link
-entity_type: paragraph
-bundle: simple_subject
-label: 'Authority Link'
+entity_type: taxonomy_term
+bundle: precoordinated_subjects
+label: 'Authority Sources'
 description: ''
 required: false
 translatable: true
