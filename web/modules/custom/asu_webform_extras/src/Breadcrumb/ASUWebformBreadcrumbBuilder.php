@@ -108,26 +108,11 @@ class ASUWebformBreadcrumbBuilder extends ASUBreadcrumbBuilder {
           $breadcrumb->addLink($chainlink->toLink());
         }
       }
-      $breadcrumb->addLink(Link::createFromRoute('Feedback', '<none>'));
     }
-    else {
-      $breadcrumb->addLink(Link::createFromRoute($this->t('Administration'), 'system.admin'));
-      $breadcrumb->addLink(Link::createFromRoute($this->t('Structure'), 'system.admin_structure'));
-      $breadcrumb->addLink(Link::createFromRoute($this->t('Webforms'), 'entity.webform.collection'));
-      $breadcrumb->addLink(Link::createFromRoute($this->t('Access'), 'entity.webform_access_group.collection'));
-      switch ($this->type) {
-        case 'webform_access_group':
-          $breadcrumb->addLink(Link::createFromRoute($this->t('Groups'), 'entity.webform_access_group.collection'));
-          break;
-
-        case 'webform_access_type';
-          $breadcrumb->addLink(Link::createFromRoute($this->t('Types'), 'entity.webform_access_type.collection'));
-          break;
-      }
-      // This breadcrumb builder is based on a route parameter, and hence it
-      // depends on the 'route' cache context.
-      $breadcrumb->addCacheContexts(['route']);
-    }
+    $breadcrumb->addLink(Link::createFromRoute($webform_title, '<none>'));
+    // This breadcrumb builder is based on a route parameter, and hence it
+    // depends on the 'route' cache context.
+    $breadcrumb->addCacheContexts(['route']);
 
     return $breadcrumb;
   }
