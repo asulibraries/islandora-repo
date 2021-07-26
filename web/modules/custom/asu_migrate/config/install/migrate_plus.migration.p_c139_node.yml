@@ -239,6 +239,9 @@ process:
       source: Language_y
       method: process
     -
+      plugin: explode
+      delimiter: '||'
+    -
       plugin: entity_lookup
       entity_type: taxonomy_term
       value_key: name
