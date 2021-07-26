@@ -315,6 +315,7 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
       $user->set('field_emplid', $values['student_id']);
       $user->save();
     }
+    $node->set('uid', $user->id());
     $webform_submission->setOwnerId($user->id());
 
     $webform_submission->setElementData('item_node', $node->id());
