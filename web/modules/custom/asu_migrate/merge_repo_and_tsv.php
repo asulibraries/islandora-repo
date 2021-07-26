@@ -1,77 +1,64 @@
 <?php
 
 /**
- * @file asu_tsv_utils.php
+ * @file merge_repo_and_tsv.php
  */
 
 // Set any defaults or initialize the values to pass to parsing command.
-$input_file = $output_file = '';
+$tsv_file = $csv_file = $output_file = '';
 $n = 5;
 $offset = 0;
 
-if (!empty($argv[1])) {
-  $p1 = $argv[1];
-  if ($p1 == 'help' || $p1 == '--help' || $p1 == '/?') {
-    help($argv);
-    return;
-  }
-  $input_file = $p1;
-  if (!empty($argv[2])) {
-    $p2 = $argv[2];
-    if (strstr($p2, '-n=') || strstr($p2, '--number=')) {
-      $n = str_replace(['--number=', '-n='], '', $p2) + 0;
-      if (!is_int($n)) {
-        print 'ERROR: number parameter is not an integer value. Got "' . $n . '".' . "\n\n";
-        help($argv);
-        return;
+if (!empty($argv[1]) && !empty($argv[2])) {
+  $parts = $argv;
+  $params = [];
+  foreach ($parts as $i => $param) {
+    if ($param == '-help' || $param == '--help' || $param == '/?') {
+      help();
+    }
+    // skip the first - which would be this script filename.
+    if ($i > 0) {
+      @list($param_n, $param_v) = explode("=", $param);
+      switch ($param_n) {
+        case '-tsv':
+            $tsv_file = $param_v;
+            break;
+        case '-csv':
+            $csv_file = $param_v;
+            break;
+        case '-out':
+            $output_file = $param_v;
+            break;
+        case '-n':
+        case '--number':
+            $n = $param_v + 0;
+            break;
+        case '-o':
+        case '--offset':
+            $offset = $param_v + 0;
+            break;
       }
     }
-    elseif (strstr($p2, '-o=') || strstr($p2, '--offset=')) {
-      $offset = str_replace(['--offset=', '-o='], '', $p2) + 0;
-      if (!is_int($n)) {
-        print 'ERROR: offset parameter is not an integer value. Got "' . $n . '".' . "\n\n";
-        help($argv);
-        return;
-      }
+    if (!is_int($n)) {
+      print 'ERROR: number parameter is not an integer value. Got "' . $n . '".' . "\n\n";
+      help();
     }
-    else {
-      $output_file = $p2;
-    }
-  }
-  if (!empty($argv[3])) {
-    $p3 = $argv[3];
-    if (strstr($p3, '-n=') || strstr($p3, '--number=')) {
-      $n = str_replace(['--number=', '-n='], '', $p3) + 0;
-      if (!is_int($n)) {
-        print 'ERROR: number parameter is not an integer value. Got "' . $n . '".' . "\n\n";
-        help($argv);
-        return;
-      }
-    }
-    elseif (strstr($p3, '-o=') || strstr($p3, '--offset=')) {
-      $offset = str_replace(['--offset=', '-o='], '', $p3) + 0;
-      if (!is_int($n)) {
-        print 'ERROR: offset parameter is not an integer value. Got "' . $n . '".' . "\n\n";
-        help($argv);
-        return;
-      }
-    }
-    else {
-      $output_file = $p3;
+    if (!is_int($offset)) {
+      print 'ERROR: offset parameter is not an integer value. Got "' . $offset . '".' . "\n\n";
+      help();
     }
   }
 }
-if (!$input_file) {
-  print 'ERROR: input-file missing.' . "\n\n";
-  help($argv);
-  return;
+if (!$tsv_file) {
+  print 'ERROR: input tsv file missing.' . "\n\n";
+  help();
 }
-parse_tsv($input_file, $n, $offset, $output_file);
+parse_tsv($tsv_file, $n, $offset, $output_file);
 
 /**
  * Parses the TSV file.
  *
- * @param string $input_file
+ * @param string $tsv_file
  *   Points to the TSV file that is to be parsed.
  * @param int $n
  *   How many rows to parse.
@@ -80,14 +67,13 @@ parse_tsv($input_file, $n, $offset, $output_file);
  * @param string $output_file
  *   File to which to save the result CSV.
  */
-function parse_tsv($input_file, int $n, int $offset = 0, string $output_file = '') {
-  echo "\nWorking on parsing up to $n rows of the file \"$input_file\".\n\n";
-  if (!file_exists($input_file)) {
-    print "ERROR: File \"$input_file\" does not exist. Could not parse.\n\n";
+function parse_tsv($tsv_file, int $n, int $offset = 0, string $output_file = '') {
+  echo "\nWorking on parsing up to $n rows of the file \"$tsv_file\".\n\n";
+  if (!file_exists($tsv_file)) {
+    print "ERROR: File \"$tsv_file\" does not exist. Could not parse.\n\n";
     help();
-    exit;
   }
-  $handle = fopen($input_file, "r");
+  $handle = fopen($tsv_file, "r");
   $remaining_lines = $n;
   $csv = [];
   if ($handle) {
@@ -98,6 +84,8 @@ function parse_tsv($input_file, int $n, int $offset = 0, string $output_file = '
       }
       else {
         // Process the line read.
+        // First, be sure that there is no linefeed as part of this value.
+        $line = rtrim($line, "\n");
         $line_parts = explode("	", $line);
         $line_as_array = refactor_marc_array($line_parts);
         // These rows will uniquely be identified by their identifier (parsed
@@ -363,7 +351,7 @@ function convert_row_to_unified_fields(array $out_csv) {
   foreach ($out_csv as $identifier => $row) {
     $fieldnames = array_keys($row);
     foreach ($key_fieldnames as $fieldname) {
-      $unified_csv[$identifier][$fieldname] = $row[$fieldname];
+      $unified_csv[$identifier][$fieldname] = (array_key_exists($fieldname, $row) ? $row[$fieldname] : '');
     }
   }
   return $unified_csv;
@@ -372,22 +360,27 @@ function convert_row_to_unified_fields(array $out_csv) {
 /**
  * Help / info for this utility.
  */
-function help($argv = []) {
-  print "The \"ASU TSV utility\" will parse a tab-separated file and optionally save this as a file.
+function help() {
+  print "The \"Merge Repo and TSV\" will parse a tab-separated file and optionally save this as a file. This will create a CSV for migration purposes; the fields that are kept from each source has been determined by the metadata owners.
 
-Usage: asu_tsv_utils.php [input-file] [output-file] ([OPTIONS])
+Usage: merge_repo_and_tsv.php -tsv={filename} -csv={filename} -out={filename} ([OPTIONS])
 
 Mandatory argument
-  [input-file]           relative path to the TSV file to parse.
+  -tsv={filename}     relative path to the TSV file to parse.
+  -csv={filename}     relative path to the Repo CSV file for the same items.
 
 Optional argument
-  [output-file]          where to save the results
+  -out={filename}     where to save the results
 
 (OPTIONS)
-  -n=#, --number=#       how many rows to process (default is 5)
-  -o=#, --offset=#       how many rows by which to offset (default is 0)
+  -n=#                how many rows to process (default is 5)
+  -o=#                how many rows by which to offset (default is 0)
 
-Parse the TSV contained in the input-file and optionally save as a CSV file that has headings row that is made up of the distinct field references.\n\n";
+Examples:
+ php merge_repo_and_tsv.php -tsv=tsv/foo.tsv -csv=bar.csv -out=/tmp/merge_test.csv -n=2000 -o=6000
+ php merge_repo_and_tsv.php -tsv=/tmp/test_foo.tsv -csv=/tmp/test_bar.csv -out=~/merge_test.csv -n=10000
+ php merge_repo_and_tsv.php -tsv=/tmp/test_foo.tsv -csv=/tmp/test_bar.csv -n=10
 
-  die(print_r($argv));
+\n\n";
+  exit;
 }
