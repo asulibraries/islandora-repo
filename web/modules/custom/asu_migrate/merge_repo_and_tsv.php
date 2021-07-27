@@ -180,15 +180,15 @@ function refactor_marc_field($value) {
       $quoted_parts = get_part_between_chars($curly_bracket_part, '"', '"');
       foreach ($quoted_parts as $quoted_part) {
         $comma_tokenized = str_replace(',', '&comma;', $quoted_part);
-        $value = str_replace($quoted_part, $comma_tokenized, $value);
+        $curly_bracket_part = str_replace($quoted_part, $comma_tokenized, $curly_bracket_part);
       }
       $individual_parts = explode(",", $curly_bracket_part);
       // Echo "Individual parts from curly brackets contents :\n" .
       // print_r($individual_parts, true) . "\n-------\n";.
       foreach ($individual_parts as $individual_part) {
+        $individual_part = str_replace('&comma;', ',', $individual_part);
         $fvs = refactor_marc_field($individual_part);
         foreach ($fvs as $f => $v) {
-          str_replace('&comma;', ',', $v);
           if (is_array($v) && count($v) == 1 && array_key_exists(0, $v)) {
             $ret_arr[$f][] = $v;
           }
@@ -289,38 +289,70 @@ function get_part_between_chars(&$value, $open_char, $close_char) {
 function convert_marc_arr_to_csv_row(array $line_as_array) {
   foreach ($line_as_array as $field_name => $array) {
     $field_name = get_csv_field_headername($field_name);
-    if (count($array) == 1) {
-      $val0_of_array = (is_array($array) ? $array[0] : $array);
-      // @todo NEED A WAY TO GET ANY vocab_or_qualifier FOR THESE.
-      if (is_array($val0_of_array)) {
-        if (count($val0_of_array) == 1) {
-          // NOTE: reusing loop variables here.
-          foreach ($val0_of_array as $array) {
-            $val0_of_array = (is_array($array) ? $array[0] : $array);
-          }
-          $ret_array[$field_name] = $val0_of_array;
-        }
-        else {
-          $concat_fields = [];
-          foreach ($val0_of_array as $array) {
-            $concat_fields[] = (is_array($array) ? $array[0] : $array);
-          }
-          $sep = ($field_name == 'field_prec_subject') ? ' || ' : '|';
-          $ret_array[$field_name] = implode($sep, $concat_fields);
-        }
+    $ret_array[$field_name] = glue_multiparts($array, $field_name);
+  }
+  return $ret_array;
+}
+
+/**
+ * Will glue together the parts of a multidimensional array.
+ *
+ * @param array $array
+ *   The incoming array to glue together.
+ * @param string $field_name
+ *   Field name.
+ *
+ * @return string
+ *   The parts of the multidimensional array glued together.
+ */
+function glue_multiparts(array $array, $field_name) {
+  $output = [];
+  foreach ($array as $array_item) {
+    $val0_of_array = ((is_array($array_item) && array_key_exists(0, $array_item)) ? $array_item[0] : $array_item);
+    // @todo NEED A WAY TO GET ANY vocab_or_qualifier FOR THESE.
+    $vocabs_or_qualifiers = '';
+    if (is_array($val0_of_array)) {
+      if (array_key_exists('vocab_or_qualifier', $val0_of_array)) {
+        $vocabs_or_qualifiers = "@" . implode(",@", $val0_of_array['vocab_or_qualifier']);
+        unset($val0_of_array['vocab_or_qualifier']);
+      }
+      if (count($val0_of_array) == 1) {
+        $output[] = trimr_period_add_att(glue_multiparts($val0_of_array, $field_name), $vocabs_or_qualifiers);
       }
       else {
-        $ret_array[$field_name] = $val0_of_array;
+        $concat_fields = [];
+        foreach ($val0_of_array as $inner_array) {
+          $inner_vocabs_or_qualifiers = '';
+          if (array_key_exists('vocab_or_qualifier', $inner_array)) {
+            $inner_vocabs_or_qualifiers = "@" . implode(",@", $inner_array['vocab_or_qualifier']);
+            unset($inner_array['vocab_or_qualifier']);
+          }
+          $concat_fields[] = trimr_period_add_att(glue_multiparts($inner_array, $field_name), $inner_vocabs_or_qualifiers);
+        }
+        $sep = ($field_name == 'field_prec_subject') ? '|' : '|';
+        $output[] = trimr_period_add_att(implode($sep, $concat_fields), $vocabs_or_qualifiers);
       }
     }
     else {
-      // @todo NEED A WAY TO GET ANY vocab_or_qualifier FOR THESE.
-      // foreach ($array as $inner_array) {
-      $ret_array[$field_name] = $val0_of_array;
-      // }
+      $output[] = trimr_period_add_att($val0_of_array, $vocabs_or_qualifiers);
     }
   }
-  return $ret_array;
+  return implode(" || ", $output);
+}
+
+/**
+ * Trims the right period from a string and adds the attribute.
+ *
+ * @param string $string
+ *   The incoming string to operate on.
+ * @param string $attrib
+ *   The attribute from TSV.
+ *
+ * @return string
+ *   The trimmed value with the attrib added.
+ */
+function trimr_period_add_att($string, $attrib) {
+  return rtrim(trim($string), ".") . $attrib;
 }
 
 /**
@@ -424,7 +456,7 @@ function merge_multifields(array $csv) {
     if (is_array($field_contents)) {
       $vocabs_or_qualifiers = '';
       if (array_key_exists('vocab_or_qualifier', $field_contents)) {
-        $vocabs_or_qualifiers = "[@" . implode(",@", $field_contents['vocab_or_qualifier']) . "]";
+        $vocabs_or_qualifiers = "@" . implode(",@", $field_contents['vocab_or_qualifier']);
         unset($field_contents['vocab_or_qualifier']);
       }
       if ($vocabs_or_qualifiers) {
