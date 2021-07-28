@@ -719,12 +719,32 @@ function asu_permissions_node_access_records(NodeInterface $node) {
 
     // We use the group ID as the realm ID.
     $gid = $group->id();
+    $records_exist = array_reduce(
+      $records,
+      function ($carry, $record) use ($gid, $node_type_id, $uid, $prefix) {
+        if ($record['gid'] != $gid) {
+          return $carry;
+        }
+        if ($record['realm'] === "$prefix:$node_type_id") {
+          $carry['non_author'] = TRUE;
+        } elseif ($record['realm'] === "gnode_author:$uid:$node_type_id") {
+          $carry['author'] = TRUE;
+        }
 
-    // Add the non-author record for viewing nodes.
-    $records[] = ['gid' => $gid, 'realm' => "$prefix:$node_type_id"] + $base;
+        return $carry;
+      },
+      ['author' => FALSE, 'non_author' => FALSE]
+    );
 
-    // Add the author record for updating or deleting.
-    $records[] = ['gid' => $gid, 'realm' => "gnode_author:$uid:$node_type_id"] + $base;
+     // Add the non-author record for viewing nodes.
+    if (!$records_exist['non_author']) {
+      $records[] = [ 'gid' => $gid, 'realm' => "$prefix:$node_type_id" ] + $base;
+    }
+
+     // Add the author record for updating or deleting.
+    if (!$records_exist['author']) {
+      $records[] = [ 'gid' => $gid, 'realm' => "gnode_author:$uid:$node_type_id" ] + $base;
+    }
   }
 
   // Add the general access bypass record.
