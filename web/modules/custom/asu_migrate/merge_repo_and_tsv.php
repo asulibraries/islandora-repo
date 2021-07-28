@@ -61,10 +61,21 @@ if (!$csv_file) {
   echo "ERROR: input CSV file missing.\n\n";
   help();
 }
-$csv = parse_tsv($tsv_file, $n, $offset, $output_file);
-if (count($csv) > 0) {
+$tsv_as_csv = parse_tsv($tsv_file, $n, $offset, $output_file);
+$find_item_ids = array_keys($tsv_as_csv);
+echo "item_ids from TSV: \n-------------------------\n" .
+  implode("\n", $find_item_ids) . "\n\n";
+$csv_headers = [];
+$repo_csv = load_repo_csv_file($csv_file, $find_item_ids, $csv_headers);
+// Since the load function removes the item_ids that have been found, the
+// array now contains the item_id values that were not found in the CSV.
+echo "Repo CSV matched rows: \n-----------------\n" .
+  print_r($repo_csv, TRUE) . "\n\n";
+echo "item_ids not found in CSV: \n-------------------------\n" .
+  implode("\n", $find_item_ids) . "\n\n";
+if (count($tsv_as_csv) > 0) {
   if ($output_file) {
-    $distinctfields_csv = merge_multifields($csv);
+    $distinctfields_csv = merge_multifields($tsv_as_csv);
     $out_csv = convert_row_to_unified_fields($distinctfields_csv);
     save_csv_to_file($out_csv, $output_file);
   }
@@ -121,12 +132,12 @@ function parse_tsv($tsv_file, int $n, int $offset = 0, string $output_file = '')
         else {
           $hdl_string = '????';
         }
-        $identifier = str_replace('http://hdl.handle.net/2286/', '', $hdl_string);
+        $identifier = str_replace('http://hdl.handle.net/2286/R.I.', '', $hdl_string);
         if ($output_file) {
           // This step may depend on whether or not this script will ALSO be
           // loading the CSV merged metadata file that came from the export
           // from the legacy repository for the same items.
-          $csv[$identifier] = convert_marc_arr_to_csv_row($line_as_array);
+          $csv[$identifier] = array_merge(['Item ID' => $identifier], convert_marc_arr_to_csv_row($line_as_array));
         }
         $remaining_lines--;
       }
@@ -184,7 +195,7 @@ function refactor_marc_field($value) {
       }
       $individual_parts = explode(",", $curly_bracket_part);
       // Echo "Individual parts from curly brackets contents :\n" .
-      // print_r($individual_parts, true) . "\n-------\n";.
+      // print_r($individual_parts, TRUE) . "\n-------\n";.
       foreach ($individual_parts as $individual_part) {
         $individual_part = str_replace('&comma;', ',', $individual_part);
         $fvs = refactor_marc_field($individual_part);
@@ -365,8 +376,65 @@ function trimr_period_add_att($string, $attrib) {
  *   This should be the header name that matches.
  */
 function get_csv_field_headername($field_name) {
-  // Perhaps this needs to be mapped from the migration header names.
-  return $field_name;
+  /*
+   * These field names are possible, but according to the merge rules between
+   * the MARC derived TSV and the exported legacy records in the CSV source,
+   * some of these fields will never be needed.
+   */
+  // handle
+  // field_title
+  // field_statement_responsibility
+  // field_date_created
+  // field_prec_subject
+  // field_subject
+  // field_linked_agent
+  // field_language
+  // field_genre
+  // field_note_para
+  // field_resource_type
+  // field_cataloging_standards
+  // field_description_source
+  // field_level_of_coding
+  // field_extent
+  // field_name_subject
+  // field_title_subject
+  // field_geographic_subject
+  // field_table_of_contents.
+  $tsv_field_map = [
+    '' => 'Collection ID',
+    '' => 'Collection Title',
+    '' => 'Item Title',
+    '' => 'Item ID',
+    '' => 'Subjects',
+    '' => 'Personal Contributors',
+    '' => 'Institutional Contributors',
+    '' => 'Date Created',
+    '' => 'Description',
+    '' => 'Table of Contents',
+    '' => 'Language',
+    '' => 'Identifiers',
+    '' => 'Series',
+    '' => 'Resource Types',
+    '' => 'Extent',
+    '' => 'Citation',
+    '' => 'Notes',
+    '' => 'Copyright',
+    '' => 'Reuse',
+    '' => 'Visibility',
+    '' => 'Embargo Date',
+    '' => 'System Created',
+    '' => 'System Updated',
+    '' => 'Attachment Count',
+    '' => 'System User',
+    '' => 'Model',
+    '' => 'Parent Item',
+    '' => 'Complex Object Child',
+    '' => 'Topical Subject',
+    '' => 'Topical Subjects',
+    '' => 'Contributors-Person',
+    '' => 'Contributors-Corporate',
+  ];
+  return (array_key_exists($field_name, $tsv_field_map) ? $tsv_field_map[$field_name] : $field_name);
 }
 
 /**
@@ -469,12 +537,47 @@ function merge_multifields(array $csv) {
   return $distinctfields_csv;
 }
 
-/*
-field_title:{
- *  field_main_title:"Weaving a new shared authority",
- *  field_title_subtitle:"the Akwesasne Museum and community collaboration
- *    preserving cultural heritage, 1970-2012"}
+/**
+ * This will load the source Repo CSV file. Each row will use "Item ID" as key.
+ *
+ * @param string $filename
+ *   Path to source Repo CSV export file.
+ * @param array $item_ids
+ *   Variable parameter - the Item id values that come from the TSV file.
+ * @param array $csv_headers
+ *   Variable parameter - returns headers that correspond to the CSV data rows.
+ *
+ * @return array
+ *   An associative array that has "Item ID" as the key.
  */
+function load_repo_csv_file($filename, array &$item_ids, array &$csv_headers) {
+  $array = [];
+  if (($handle = fopen($filename, "r")) !== FALSE) {
+    $csv_headers = [];
+    $history_json_index = $item_id_index = 0;
+    while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+      if (count($csv_headers) < 1) {
+        $csv_headers = $data;
+        $history_json_index = array_search('History JSON', $data);
+        $item_id_index = array_search('Item ID', $data);
+      }
+      else {
+        if (array_key_exists($item_id_index, $data) && ($found_item_id_index = array_search($data[$item_id_index], $item_ids))) {
+          unset($data[$history_json_index]);
+          $this_identifier = $item_ids[$found_item_id_index];
+          // Also, remove this from the $item_ids array.
+          unset($item_ids[$found_item_id_index]);
+          $array[$this_identifier] = $data;
+        }
+      }
+    }
+    fclose($handle);
+  }
+  if ($history_json_index && array_key_exists($history_json_index, $csv_headers)) {
+    unset($csv_headers[$history_json_index]);
+  }
+  return $array;
+}
 
 /**
  * Helper to show progress of various iterations.
