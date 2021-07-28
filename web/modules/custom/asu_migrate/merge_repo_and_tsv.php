@@ -63,15 +63,14 @@ if (!$csv_file) {
 }
 $tsv_as_csv = parse_tsv($tsv_file, $n, $offset, $output_file);
 $find_item_ids = array_keys($tsv_as_csv);
-echo "item_ids from TSV: \n-------------------------\n " .
-  implode(", ", $find_item_ids) . "\n\n";
 $csv_headers = [];
 $repo_csv = load_repo_csv_file($csv_file, $find_item_ids, $csv_headers);
 // Since the load function removes the item_ids that have been found, the
 // array now contains the item_id values that were not found in the CSV.
 if (count($find_item_ids) > 0) {
-  echo "\nItem ids that were not found in Repo CSV source file:" .
-    "\n-------------------------\n" . implode("\n", $find_item_ids) . "\n\n";
+  echo "\nItem ids that were not found in Repo CSV source file (" .
+    number_format(count($find_item_ids)) . " identifiers):" .
+    "\n-------------------------\n" . implode(", ", $find_item_ids) . "\n\n";
 }
 if (count($tsv_as_csv) > 0) {
   if ($output_file) {
@@ -138,7 +137,7 @@ function parse_tsv($tsv_file, int $n, int $offset = 0, string $output_file = '')
         else {
           $hdl_string = '????';
         }
-        $identifier = str_replace('http://hdl.handle.net/2286/R.I.', '', $hdl_string);
+        $identifier = get_identifier($hdl_string);
         if ($output_file) {
           // This step may depend on whether or not this script will ALSO be
           // loading the CSV merged metadata file that came from the export
@@ -152,6 +151,20 @@ function parse_tsv($tsv_file, int $n, int $offset = 0, string $output_file = '')
     echo "\nParsed " . number_format($n - $remaining_lines) . " lines of TSV file.\n";
   }
   return $csv;
+}
+
+/**
+ * Helper to return the identifier value from our handle.net address values.
+ *
+ * @param string $hdl_string
+ *   The handle URI.
+ *
+ * @return string
+ *   The identifier that is parsed from it.
+ */
+function get_identifier($hdl_string) {
+  $search = ['http://hdl.handle.net/2286/R.I.', 'http://hdl.handle.net/2286/'];
+  return str_ireplace($search, '', $hdl_string);
 }
 
 /**
@@ -585,7 +598,7 @@ function merge_multifields(array $csv) {
 function load_repo_csv_file($filename, array &$item_ids, array &$csv_headers) {
   $array = [];
   if (($handle = fopen($filename, "r")) !== FALSE) {
-    echo "Working on finding matches of TSV items in source Repo CSV file \"$filename\".\n";
+    echo "\nWorking on finding matches of TSV items in source Repo CSV file \"$filename\".\n";
 
     $csv_headers = [];
     $history_json_index = $item_id_index = $counter = 0;
@@ -597,12 +610,15 @@ function load_repo_csv_file($filename, array &$item_ids, array &$csv_headers) {
         $item_id_index = array_search('Item ID', $data);
       }
       else {
-        if (array_key_exists($item_id_index, $data) && ($found_item_id_index = array_search($data[$item_id_index], $item_ids))) {
-          unset($data[$history_json_index]);
-          $this_identifier = $item_ids[$found_item_id_index];
-          // Also, remove this from the $item_ids array.
-          unset($item_ids[$found_item_id_index]);
-          $array[$this_identifier] = $data;
+        if (array_key_exists($item_id_index, $data)) {
+          $found_item_id_index = array_search($data[$item_id_index], $item_ids);
+          if (!($found_item_id_index === FALSE)) {
+            unset($data[$history_json_index]);
+            $this_identifier = $item_ids[$found_item_id_index];
+            // Also, remove this from the $item_ids array.
+            unset($item_ids[$found_item_id_index]);
+            $array[$this_identifier] = $data;
+          }
         }
         $counter++;
       }
@@ -617,7 +633,7 @@ function load_repo_csv_file($filename, array &$item_ids, array &$csv_headers) {
 }
 
 /**
- * Saves an UNFOUND_ITEMS_{$tsv_file} file.
+ * Saves an UNFOUND_ITEMS_{n}_{offset}_{$tsv_file} file.
  *
  * @param string $tsv_file
  *   Points to the TSV file that was the source.
@@ -629,8 +645,10 @@ function load_repo_csv_file($filename, array &$item_ids, array &$csv_headers) {
  *   The item id values that need to be saved in the UNFOUND_ITEMS file.
  */
 function save_tsv_of_unfound_items($tsv_file, $n, $offset, array &$find_item_ids) {
-  // Save filename will be "UNFOUND_ITEMS_{$tsv_file}".
-  $save_unfound_item_filename = "UNFOUND_ITEMS_$tsv_file";
+  // Save filename will be "UNFOUND_ITEMS_{n}_{offset}_{$tsv_file}".
+  $pathinfo = pathinfo($tsv_file);
+  $save_unfound_item_filename = (($pathinfo['dirname']) ? $pathinfo['dirname'] . '/' : '') .
+    "UNFOUND_ITEMS_" . $n . "_" . $offset . "_" . $pathinfo['basename'];
   echo "\n\nMaking file of unfound TSV items \"$save_unfound_item_filename\".\n";
   $handle = fopen($tsv_file, "r");
   $remaining_lines = $n;
@@ -658,10 +676,10 @@ function save_tsv_of_unfound_items($tsv_file, $n, $offset, array &$find_item_ids
         else {
           $hdl_string = '????';
         }
-        $identifier = str_replace('http://hdl.handle.net/2286/R.I.', '', $hdl_string);
+        $identifier = get_identifier($hdl_string);
         // Finally, we know whether or not this item is on the list.
-        if (array_search($identifier, $find_item_ids)) {
-          $unfound_lines .= $line . "\n";
+        if (!(array_search($identifier, $find_item_ids) === FALSE)) {
+          $unfound_lines[] = $line . "\n";
         }
 
         $remaining_lines--;
@@ -669,8 +687,8 @@ function save_tsv_of_unfound_items($tsv_file, $n, $offset, array &$find_item_ids
     }
     fclose($handle);
     // Save the TSV file for any items now.
-    if ($unfound_lines) {
-      file_put_contents($save_unfound_item_filename, $unfound_lines);
+    if (count($unfound_lines) > 0) {
+      file_put_contents($save_unfound_item_filename, implode("", $unfound_lines));
       echo "\nSaved \"$save_unfound_item_filename\".\n";
     }
     else {
