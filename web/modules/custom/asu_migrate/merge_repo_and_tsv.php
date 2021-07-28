@@ -78,6 +78,10 @@ if (count($tsv_as_csv) > 0) {
     $distinctfields_csv = merge_multifields($tsv_as_csv);
     $out_csv = convert_row_to_unified_fields($distinctfields_csv);
     save_csv_to_file($out_csv, $output_file);
+    // Now, for the items that were not found in the CSV, write a new TSV file.
+    if (count($find_item_ids) > 0) {
+      save_tsv_of_unfound_items($tsv_file, $find_item_ids);
+    }
   }
   else {
     echo "WARNING: Resultant CSV file was not saved.\n";
@@ -553,9 +557,12 @@ function merge_multifields(array $csv) {
 function load_repo_csv_file($filename, array &$item_ids, array &$csv_headers) {
   $array = [];
   if (($handle = fopen($filename, "r")) !== FALSE) {
+    echo "Working on finding matches of TSV items in source Repo CSV file \"$filename\".\n";
+
     $csv_headers = [];
-    $history_json_index = $item_id_index = 0;
+    $history_json_index = $item_id_index = $counter = 0;
     while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+      show_progress($counter);
       if (count($csv_headers) < 1) {
         $csv_headers = $data;
         $history_json_index = array_search('History JSON', $data);
@@ -569,14 +576,82 @@ function load_repo_csv_file($filename, array &$item_ids, array &$csv_headers) {
           unset($item_ids[$found_item_id_index]);
           $array[$this_identifier] = $data;
         }
+        $counter++;
       }
     }
     fclose($handle);
+    echo "\n" . number_format(count($array)) . " items matched by scanning through " . number_format($counter) . " Repo items.\n";
   }
   if ($history_json_index && array_key_exists($history_json_index, $csv_headers)) {
     unset($csv_headers[$history_json_index]);
   }
   return $array;
+}
+
+/**
+ * Saves an UNFOUND_ITEMS_{$tsv_file} file.
+ *
+ * @param string $tsv_file
+ *   Points to the TSV file that was the source.
+ * @param int $n
+ *   How many rows to parse.
+ * @param int $offset
+ *   Offset for line parsing.
+ * @param array $find_item_ids
+ *   The item id values that need to be saved in the UNFOUND_ITEMS file.
+ */
+function save_tsv_of_unfound_items($tsv_file, $n, $offset, array &$find_item_ids) {
+  // Save filename will be "UNFOUND_ITEMS_{$tsv_file}".
+  $save_unfound_item_filename = "UNFOUND_ITEMS_$tsv_file";
+  echo "\n\nMaking file of unfound TSV items \"$save_unfound_item_filename\".\n";
+  $handle = fopen($tsv_file, "r");
+  $remaining_lines = $n;
+  $unfound_lines = [];
+  if ($handle) {
+    while ((($line = fgets($handle)) !== FALSE) && ($remaining_lines || $offset)) {
+      if ($offset) {
+        $offset--;
+      }
+      else {
+        show_progress($remaining_lines, $n);
+        // Process the line read.
+        // First, be sure that there is no linefeed as part of this value.
+        $line = rtrim($line, "\n");
+        $line_parts = explode("	", $line);
+        $line_as_array = refactor_marc_array($line_parts);
+        // These rows will uniquely be identified by their identifier (parsed
+        // from the ($hdl_string) value
+        // and would match up with items from the legacy repository on the same
+        // identifier.
+        if (array_key_exists('handle', $line_as_array)) {
+          $hdl_element = $line_as_array['handle'];
+          $hdl_string = array_shift($hdl_element);
+        }
+        else {
+          $hdl_string = '????';
+        }
+        $identifier = str_replace('http://hdl.handle.net/2286/R.I.', '', $hdl_string);
+        // Finally, we know whether or not this item is on the list.
+        if (array_search($identifier, $find_item_ids)) {
+          $unfound_lines .= $line . "\n";
+        }
+
+        $remaining_lines--;
+      }
+    }
+    fclose($handle);
+    // Save the TSV file for any items now.
+    if ($unfound_lines) {
+      file_put_contents($save_unfound_item_filename, $unfound_lines);
+      echo "\nSaved \"$save_unfound_item_filename\".\n";
+    }
+    else {
+      echo "WARNING: There was at least one item that was not found in the " .
+        "Repo CSV source file, but during the attempt to write the " .
+        "UNFOUND_ITEMS file, no matching items could be found in TSV file " .
+        "either. Nothing was saved.\n";
+    }
+  }
 }
 
 /**
