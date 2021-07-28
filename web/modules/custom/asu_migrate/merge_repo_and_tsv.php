@@ -5,6 +5,8 @@
  * merge_repo_and_tsv.php
  */
 
+require_once 'handle_id_map.php';
+
 // Set any defaults or initialize the values to pass to parsing command.
 $tsv_file = $csv_file = $output_file = '';
 $n = 5;
@@ -78,6 +80,7 @@ if (count($tsv_as_csv) > 0) {
     if (count($find_item_ids) > 0) {
       save_tsv_of_unfound_items($tsv_file, $n, $offset, $find_item_ids);
     }
+    remove_unfound_items_from_tsv($tsv_as_csv, $find_item_ids);
     // At this point, we can start to merge the TSV and the CSV.
     $distinctfields_csv = merge_multifields($tsv_as_csv);
     $out_csv = convert_row_to_unified_fields($distinctfields_csv);
@@ -163,8 +166,10 @@ function parse_tsv($tsv_file, int $n, int $offset = 0, string $output_file = '')
  *   The identifier that is parsed from it.
  */
 function get_identifier($hdl_string) {
+  global $_asu_migrate_hdl_map;
   $search = ['http://hdl.handle.net/2286/R.I.', 'http://hdl.handle.net/2286/'];
-  return str_ireplace($search, '', $hdl_string);
+  $identifier = str_ireplace($search, '', $hdl_string);
+  return (array_key_exists($identifier, $_asu_migrate_hdl_map) ? $_asu_migrate_hdl_map[$identifier] : $identifier);
 }
 
 /**
@@ -548,6 +553,22 @@ function convert_row_to_unified_fields(array $out_csv) {
     $counter++;
   }
   return $unified_csv;
+}
+
+/**
+ * Removes the items that were not found from being processed any further.
+ *
+ * @param array $tsv_as_csv
+ *   Variable parameter of TSV file - with item id values as the key.
+ * @param array $find_item_ids
+ *   The array of item ids that were identified as not found in the CSV.
+ */
+function remove_unfound_items_from_tsv(array &$tsv_as_csv, array $find_item_ids) {
+  foreach ($find_item_ids as $item_id) {
+    if (array_key_exist($item_id, $tsv_as_csv)) {
+      unset($tsv_as_csv[$item_id]);
+    }
+  }
 }
 
 /**
