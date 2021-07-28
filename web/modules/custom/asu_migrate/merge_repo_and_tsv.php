@@ -63,25 +63,27 @@ if (!$csv_file) {
 }
 $tsv_as_csv = parse_tsv($tsv_file, $n, $offset, $output_file);
 $find_item_ids = array_keys($tsv_as_csv);
-echo "item_ids from TSV: \n-------------------------\n" .
-  implode("\n", $find_item_ids) . "\n\n";
+echo "item_ids from TSV: \n-------------------------\n " .
+  implode(", ", $find_item_ids) . "\n\n";
 $csv_headers = [];
 $repo_csv = load_repo_csv_file($csv_file, $find_item_ids, $csv_headers);
 // Since the load function removes the item_ids that have been found, the
 // array now contains the item_id values that were not found in the CSV.
-echo "Repo CSV matched rows: \n-----------------\n" .
-  print_r($repo_csv, TRUE) . "\n\n";
-echo "item_ids not found in CSV: \n-------------------------\n" .
-  implode("\n", $find_item_ids) . "\n\n";
+if (count($find_item_ids) > 0) {
+  echo "\nItem ids that were not found in Repo CSV source file:" .
+    "\n-------------------------\n" . implode("\n", $find_item_ids) . "\n\n";
+}
 if (count($tsv_as_csv) > 0) {
   if ($output_file) {
-    $distinctfields_csv = merge_multifields($tsv_as_csv);
-    $out_csv = convert_row_to_unified_fields($distinctfields_csv);
-    save_csv_to_file($out_csv, $output_file);
     // Now, for the items that were not found in the CSV, write a new TSV file.
     if (count($find_item_ids) > 0) {
-      save_tsv_of_unfound_items($tsv_file, $find_item_ids);
+      save_tsv_of_unfound_items($tsv_file, $n, $offset, $find_item_ids);
     }
+    // At this point, we can start to merge the TSV and the CSV.
+    $distinctfields_csv = merge_multifields($tsv_as_csv);
+    $out_csv = convert_row_to_unified_fields($distinctfields_csv);
+    merge_tsv_and_csv($out_csv, $repo_csv);
+    save_csv_to_file($out_csv, $output_file);
   }
   else {
     echo "WARNING: Resultant CSV file was not saved.\n";
@@ -439,6 +441,32 @@ function get_csv_field_headername($field_name) {
     '' => 'Contributors-Corporate',
   ];
   return (array_key_exists($field_name, $tsv_field_map) ? $tsv_field_map[$field_name] : $field_name);
+}
+
+/**
+ * This will iterate through each row of the TSV and build the merged CSV.
+ *
+ * @param array $tsv
+ *   The array of TSV items' data.
+ * @param array $repo_csv
+ *   The array of Repo CSV items' data.
+ *
+ * @return array
+ *   The unified array - ready to save.
+ */
+function merge_tsv_and_csv(array $tsv, array $repo_csv) {
+  $tsv_and_csv = [];
+  foreach ($tsv as $id => $row) {
+    if ($id && is_array($row)) {
+      // Do nothing.
+    }
+  }
+  foreach ($repo_csv as $id => $row) {
+    if ($id && is_array($row)) {
+      // Do nothing.
+    }
+  }
+  return $tsv_and_csv;
 }
 
 /**
