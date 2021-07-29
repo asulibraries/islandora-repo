@@ -229,9 +229,25 @@ function asu_collection_extras_syncNodeMatomoStats($nid) {
   $item_views = 0;
   $item_views += \Drupal::service('islandora_matomo.default')->getViewsForNode(['nid' => $nid]);
   // \Drupal::logger('asu_collection_extras')->info('views = for ' . $item_views);
-  $mids = \Drupal::entityQuery('media')
-    ->condition('field_media_of', $nid)
-    ->execute();
+  // We only want to add the stats for the media that is "Original File",
+  // "Service File", or "Preservation Master File".
+  $tid_of = \Drupal::entityTypeManager()
+    ->getStorage('taxonomy_term')
+    ->loadByProperties(['name' => "Original File"]);
+  $tid_sf = \Drupal::entityTypeManager()
+    ->getStorage('taxonomy_term')
+    ->loadByProperties(['name' => "Service File"]);
+  $tid_pmf = \Drupal::entityTypeManager()
+    ->getStorage('taxonomy_term')
+    ->loadByProperties(['name' => "Preservation Master File"]);
+
+  $query = \Drupal::entityQuery('media');
+  $query->condition('field_media_of', $nid);
+  $group = $query
+    ->orConditionGroup()
+    ->condition('field_media_use', $tid_of);
+  $query->condition($group);
+  $mids = $query->execute();
   $item_downloads = 0;
   foreach ($mids as $mid) {
     $fid = \Drupal::service('islandora_matomo.default')->getFileFromMedia($mid);
