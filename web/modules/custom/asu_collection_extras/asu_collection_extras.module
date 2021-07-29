@@ -231,21 +231,23 @@ function asu_collection_extras_syncNodeMatomoStats($nid) {
   // \Drupal::logger('asu_collection_extras')->info('views = for ' . $item_views);
   // We only want to add the stats for the media that is "Original File",
   // "Service File", or "Preservation Master File".
-  $tid_of = \Drupal::entityTypeManager()
+  $tid_of = reset(\Drupal::entityTypeManager()
     ->getStorage('taxonomy_term')
-    ->loadByProperties(['name' => "Original File"]);
-  $tid_sf = \Drupal::entityTypeManager()
+    ->loadByProperties(['name' => "Original File"]))->id();
+  $tid_sf = reset(\Drupal::entityTypeManager()
     ->getStorage('taxonomy_term')
-    ->loadByProperties(['name' => "Service File"]);
-  $tid_pmf = \Drupal::entityTypeManager()
+    ->loadByProperties(['name' => "Service File"]))->id();
+  $tid_pmf = reset(\Drupal::entityTypeManager()
     ->getStorage('taxonomy_term')
-    ->loadByProperties(['name' => "Preservation Master File"]);
+    ->loadByProperties(['name' => "Preservation Master File"]))->id();
 
   $query = \Drupal::entityQuery('media');
   $query->condition('field_media_of', $nid);
   $group = $query
     ->orConditionGroup()
-    ->condition('field_media_use', $tid_of);
+    ->condition('field_media_use', $tid_of)
+    ->condition('field_media_use', $tid_sf)
+    ->condition('field_media_use', $tid_pmf);
   $query->condition($group);
   $mids = $query->execute();
   $item_downloads = 0;
