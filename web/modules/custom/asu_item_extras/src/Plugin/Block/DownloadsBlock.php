@@ -164,7 +164,7 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
         }
       }
     }
-    if ($masterfile && $masterfile.bundle() <> 'remote_video') {
+    if ($masterfile && $masterfile->bundle() <> 'remote_video') {
       $source_field = $media_source_service->getSourceFieldName($masterfile->bundle());
       if (!empty($source_field)) {
         $pmf_file = $masterfile->get($source_field)->referencedEntities()[0];
