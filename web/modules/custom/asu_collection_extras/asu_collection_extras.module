@@ -229,26 +229,36 @@ function asu_collection_extras_syncNodeMatomoStats($nid) {
   $item_views = 0;
   $item_views += \Drupal::service('islandora_matomo.default')->getViewsForNode(['nid' => $nid]);
   // \Drupal::logger('asu_collection_extras')->info('views = for ' . $item_views);
-  // We only want to add the stats for the media that is "Original File",
-  // "Service File", or "Preservation Master File".
-  $tid_of = reset(\Drupal::entityTypeManager()
-    ->getStorage('taxonomy_term')
-    ->loadByProperties(['name' => "Original File"]))->id();
-  $tid_sf = reset(\Drupal::entityTypeManager()
-    ->getStorage('taxonomy_term')
-    ->loadByProperties(['name' => "Service File"]))->id();
-  $tid_pmf = reset(\Drupal::entityTypeManager()
-    ->getStorage('taxonomy_term')
-    ->loadByProperties(['name' => "Preservation Master File"]))->id();
-
   $query = \Drupal::entityQuery('media');
   $query->condition('field_media_of', $nid);
+  // We only want to add the stats for the media that is "Original File",
+  // "Service File", or "Preservation Master File".
   $group = $query
-    ->orConditionGroup()
-    ->condition('field_media_use', $tid_of)
-    ->condition('field_media_use', $tid_sf)
-    ->condition('field_media_use', $tid_pmf);
-  $query->condition($group);
+    ->orConditionGroup();
+  $of = \Drupal::entityTypeManager()
+    ->getStorage('taxonomy_term')
+    ->loadByProperties(['name' => "Original File"]);
+  if ($of) {
+    $tid_of = reset($of);
+    $group->condition('field_media_use', $tid_of->id());
+  }
+  $sf = \Drupal::entityTypeManager()
+    ->getStorage('taxonomy_term')
+    ->loadByProperties(['name' => "Service File"]);
+  if ($sf) {
+    $tid_sf = reset($sf);
+    $group->condition('field_media_use', $tid_sf->id());
+  }
+  $pmf = \Drupal::entityTypeManager()
+    ->getStorage('taxonomy_term')
+    ->loadByProperties(['name' => "Preservation Master File"]);
+  if ($pmf) {
+    $tid_pmf = reset($pmf);
+    $group->condition('field_media_use', $tid_pmf->id());
+  }
+  if ($of || $sf || $pmf) {
+    $query->condition($group);
+  }
   $mids = $query->execute();
   $item_downloads = 0;
   foreach ($mids as $mid) {
