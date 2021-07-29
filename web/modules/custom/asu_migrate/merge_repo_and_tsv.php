@@ -184,9 +184,20 @@ function get_identifier($hdl_string) {
 function refactor_marc_array(array &$line_parts) {
   $return_marc_array = [];
   foreach ($line_parts as $value) {
-    $field_values = refactor_marc_field($value);
-    foreach ($field_values as $k => $v) {
-      $return_marc_array[$k][] = $v;
+    @list($field_name, $junk) = explode(":", $value, 2);
+    if ($field_name == 'field_prec_subject') {
+      if (array_key_exists($field_name, $return_marc_array)) {
+        $return_marc_array[$field_name][0] .= " || " . $junk;
+      }
+      else {
+        $return_marc_array[$field_name][0] = $junk;
+      }
+    }
+    else {
+      $field_values = refactor_marc_field($value);
+      foreach ($field_values as $k => $v) {
+        $return_marc_array[$k][] = $v;
+      }
     }
   }
   return $return_marc_array;
@@ -241,7 +252,9 @@ function refactor_marc_field($value) {
       return [$field_name => $ret_arr];
     }
   }
-  else {
+  elseif ($field_name <> 'field_title' && $field_name <> 'field_main_title' &&
+    $field_name <> 'field_title_subtitle' && $field_name <> 'field_description' &&
+    $field_name <> 'field_extent') {
     $bracket_part = get_part_between_chars($value, "[", "]");
     $value = strip_end_quotes($value);
     if ($bracket_part) {
@@ -257,6 +270,9 @@ function refactor_marc_field($value) {
     else {
       return [$field_name => $value];
     }
+  }
+  else {
+    return [$field_name => $value];
   }
 }
 
@@ -277,6 +293,8 @@ function strip_end_quotes($v) {
  * Helper to return values that are between the open_char and close_char.
  *
  * NOTE: this only handles "[", "]" OR "{", "}".
+ * NOTE: This will need to conditionally put ONLY CERTAIN bracketized values
+ * into this structure... else, handle as any other raw string.
  *
  * @param string $value
  *   The string to operate upon.
@@ -304,6 +322,10 @@ function get_part_between_chars(&$value, $open_char, $close_char) {
     }
     preg_match_all($pattern, $value, $matches);
     if ($open_char <> '"') {
+      // This will need to conditionally put ONLY CERTAIN bracketized values
+      // into this structure... else, handle as any other raw string.
+      // also need to check what the value is - and only strip out that part if
+      // it is a legal vocab or qualifier.
       $value = substr($value, 1, (strpos($value, $open_char) - 1));
     }
     return $matches[1];
@@ -565,7 +587,7 @@ function convert_row_to_unified_fields(array $out_csv) {
  */
 function remove_unfound_items_from_tsv(array &$tsv_as_csv, array $find_item_ids) {
   foreach ($find_item_ids as $item_id) {
-    if (array_key_exist($item_id, $tsv_as_csv)) {
+    if (array_key_exists($item_id, $tsv_as_csv)) {
       unset($tsv_as_csv[$item_id]);
     }
   }
