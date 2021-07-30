@@ -91,7 +91,7 @@ if (count($tsv_as_csv) > 0) {
     $out_csv = convert_row_to_unified_fields($distinctfields_csv);
     merge_tsv_and_csv($out_csv, $repo_csv);
     save_csv_to_file($out_csv, $output_file);
-    save_csv_that_had_no_merge($csv_filename, $n, $offset, $unmerged_item_ids);
+    save_csv_that_had_no_merge($csv_filename, $unmerged_item_ids);
   }
   else {
     echo "WARNING: Resultant CSV file was not saved.\n";
@@ -682,26 +682,35 @@ function load_repo_csv_file($csv_filename, array &$item_ids, array &$csv_headers
 }
 
 /**
- * This will save the items in the CSV that match $unmerged_item_ids.
+ * Perform shell commands to copy the source CSV and remove merged ID lines.
+ *
+ * This used to be written to save the items in the CSV that match
+ * $unmerged_item_ids.
  *
  * @param string $csv_filename
  *   Path to source Repo CSV export file.
- * @param int $n
- *   How many rows to parse.
- * @param int $offset
- *   Offset for line parsing.
  * @param array $unmerged_item_ids
  *   Variable parameter - the Item id values that were not merged with MARC.
  */
-function save_csv_that_had_no_merge($csv_filename, int $n, int $offset = 0, array $unmerged_item_ids) {
+function save_csv_that_had_no_merge($csv_filename, array $unmerged_item_ids) {
   $not_merged_csv = [];
-  if (($handle = fopen($csv_filename, "r")) !== FALSE) {
-    $pathinfo = pathinfo($csv_filename);
-    $save_unmerged_items_filename = (($pathinfo['dirname']) ? $pathinfo['dirname'] . '/' : '') .
-      "NOMARC_ITEMS_" . $n . "_" . $offset . "_" . $pathinfo['basename'];
+  $pathinfo = pathinfo($csv_filename);
+  $save_unmerged_items_filename = (($pathinfo['dirname']) ? $pathinfo['dirname'] . '/' : '') .
+    "NOMARC_ITEMS_" . $pathinfo['basename'];
+  echo "\nWorking on creating the CSV of items that were not merged with any TSV MARC \"$csv_filename\".\n";
 
-    echo "\nWorking on creating the CSV of items that were not merged with any TSV MARC \"$csv_filename\".\n";
-
+  // If the "NOMARC" file does not exist, create it as a copy of the initial CSV source file.
+  if (!file_exists($save_unmerged_items_filename)) {
+    echo "\nCreating a copy of the original source CSV file \"$csv_filename\" - saved as \"$save_unmerged_items_filename\".\n";
+    $command = 'cp ' . $csv_filename . ' ' . $save_unmerged_items_filename;
+    $run_output = [];
+    exec($command, $run_output, $result_code);
+    // check that the previous command did not have any errors.
+    sleep(2000);
+  }
+  // Load ALL rows from this file into an array -- and loop through these
+  // to make an array of the rows.
+  if (($handle = fopen($save_unmerged_items_filename, "r")) !== FALSE) {
     $csv_headers = [];
     $item_id_index = $counter = 0;
     while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
@@ -712,22 +721,34 @@ function save_csv_that_had_no_merge($csv_filename, int $n, int $offset = 0, arra
       }
       else {
         if (array_key_exists($item_id_index, $data)) {
-          $found_item_id_index = array_search($data[$item_id_index], $unmerged_item_ids);
-          if (($found_item_id_index === FALSE)) {
-            $this_identifier = $unmerged_item_ids[$found_item_id_index];
-            $not_merged_csv[$this_identifier] = $data;
-          }
+          $this_identifier = $data[$item_id_index];
+          $not_merged_csv[$this_identifier] = $data;
         }
         $counter++;
       }
     }
     fclose($handle);
-    // Save the TSV file for any items now.
-    if (count($not_merged_csv) > 0) {
-      file_put_contents($save_unfound_item_filename, implode("", $unfound_lines));
-      echo "\nSaved \"$save_unmerged_items_filename\" containing " . number_format(count($not_merged_csv)) . " items.\n";
+  }
+  // Now that $not_merged_csv contains all of the possible rows, loop through
+  // and output ONLY the rows that contain an ID that is not on the list of'
+  // item ids that were merged with a TSV row.
+  $fp = @fopen($save_unmerged_items_filename, 'w');
+  if (!$fp) {
+    echo "ERROR: The file \"" . $save_unmerged_items_filename . "\" could not be opened for writing.";
+    return;
+  }
+  $first_row = TRUE;
+  foreach ($not_merged_csv as $identifier => $row) {
+    if ($first_row) {
+      fputcsv($fp, array_keys($row));
+      $first_row = FALSE;
+    }
+    if (array_search($identifier, $unmerged_item_ids) === FALSE) {
+      fputcsv($fp, $row);
     }
   }
+  fclose($fp);
+  echo "\nSaved \"$save_unmerged_items_filename\" containing " . number_format(count($not_merged_csv)) . " items.\n";
 }
 
 /**
