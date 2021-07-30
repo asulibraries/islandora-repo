@@ -115,7 +115,7 @@ die("\nDone.\n\n");
  *   File to which to save the result CSV.
  */
 function parse_tsv($tsv_filename, int $n, int $offset = 0, string $output_file = '') {
-  echo "(each \"*\" represents 100 items or rows)\n\nWorking on parsing up to $n rows of the file \"$tsv_file\".\n";
+  echo "(each \"*\" represents 100 items or rows)\n\nWorking on parsing up to $n rows of the file \"$tsv_filename\".\n";
   if (!file_exists($tsv_filename)) {
     echo "ERROR: File \"$tsv_filename\" does not exist. Could not parse.\n\n";
     help();
@@ -700,14 +700,10 @@ function save_csv_that_had_no_merge($csv_filename, array $unmerged_item_ids) {
   echo "\nWorking on creating the CSV of items that were not merged with any TSV MARC \"$csv_filename\".\n";
 
   // If the "NOMARC" file does not exist, create it as a copy of the initial CSV source file.
-  if (!file_exists($save_unmerged_items_filename)) {
-    echo "\nCreating a copy of the original source CSV file \"$csv_filename\" - saved as \"$save_unmerged_items_filename\".\n";
-    $command = 'cp ' . $csv_filename . ' ' . $save_unmerged_items_filename;
-    $run_output = [];
-    exec($command, $run_output, $result_code);
-    // check that the previous command did not have any errors.
-    sleep(2000);
-  }
+  echo "\nCreating a copy of the original source CSV file \"$csv_filename\" - saved as \"$save_unmerged_items_filename\".\n";
+  $command = 'cp ' . $csv_filename . ' ' . $save_unmerged_items_filename;
+  $run_output = [];
+  exec($command, $run_output, $result_code);
   // Load ALL rows from this file into an array -- and loop through these
   // to make an array of the rows.
   if (($handle = fopen($save_unmerged_items_filename, "r")) !== FALSE) {
@@ -722,7 +718,11 @@ function save_csv_that_had_no_merge($csv_filename, array $unmerged_item_ids) {
       else {
         if (array_key_exists($item_id_index, $data)) {
           $this_identifier = $data[$item_id_index];
-          $not_merged_csv[$this_identifier] = $data;
+          foreach ($data as $idx => $val) {
+            if (array_key_exists($idx, $csv_headers)) {
+              $not_merged_csv[$this_identifier][$csv_headers[$idx]] = $val;
+            }
+          }
         }
         $counter++;
       }
