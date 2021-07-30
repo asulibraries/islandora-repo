@@ -200,6 +200,24 @@ function asu_permissions_node_access(NodeInterface $node, $op, AccountInterface 
     if (empty($groups) && !(isset($access_result))) {
       $access_result = AccessResult::neutral();
     }
+    // if the node is published and there is parent access, don't bother checking the groups
+    if ($node->isPublished()) {
+      if (count($parents) > 0) {
+        foreach ($parents as $par) {
+          if ($par->uuid() != $node->uuid()) {
+            // This line enforces if you can't view a parent then you can't view child.
+            $taccess = $par->access('view', $account);
+            if (isset($access_result) && $access_result instanceof AccessResultForbidden) {
+              // Already forbidden.
+            } else {
+              $access_result = AccessResult::forbiddenIf($taccess == FALSE);
+            }
+          }
+        }
+      } else {
+        $access_result = AccessResult::allowed();
+      }
+    }
     if (!isset($access_result)) {
       // From this point on you need group to allow you to perform the operation.
       if ($op == 'view' || $op == 'update') {
