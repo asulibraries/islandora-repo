@@ -552,255 +552,255 @@ function asu_permissions_preprocess_node(&$variables) {
  *
  * @see gnode_node_access_records()
  */
-function asu_permissions_node_grants(AccountInterface $account, $op) {
-  // Provide the master grant for users who can bypass group access.
-  if ($account->hasPermission('bypass group access')) {
-    return ['gnode_bypass' => [GNODE_MASTER_GRANT_ID]];
-  }
+// function asu_permissions_node_grants(AccountInterface $account, $op) {
+//   // Provide the master grant for users who can bypass group access.
+//   if ($account->hasPermission('bypass group access')) {
+//     return ['gnode_bypass' => [GNODE_MASTER_GRANT_ID]];
+//   }
 
-  // Anonymous users get the anonymous grant. See the implementation in the
-  // gnode_node_access_records() function as to why that is.
-  if ($account->isAnonymous()) {
-    return ['gnode_anonymous' => [GNODE_MASTER_GRANT_ID]];
-  }
+//   // Anonymous users get the anonymous grant. See the implementation in the
+//   // gnode_node_access_records() function as to why that is.
+//   if ($account->isAnonymous()) {
+//     return ['gnode_anonymous' => [GNODE_MASTER_GRANT_ID]];
+//   }
 
-  // Gather the machine names of all node types.
-  $entity_type_manager = \Drupal::entityTypeManager();
-  $node_type_ids = $entity_type_manager
-    ->getStorage('node_type')
-    ->getQuery()
-    ->execute();
+//   // Gather the machine names of all node types.
+//   $entity_type_manager = \Drupal::entityTypeManager();
+//   $node_type_ids = $entity_type_manager
+//     ->getStorage('node_type')
+//     ->getQuery()
+//     ->execute();
 
-  /** @var \Drupal\group\Access\ChainGroupPermissionCalculatorInterface $permission_calculator */
-  $permission_calculator = \Drupal::service('group_permission.chain_calculator');
-  $calculated_permissions = $permission_calculator->calculatePermissions($account);
+//   /** @var \Drupal\group\Access\ChainGroupPermissionCalculatorInterface $permission_calculator */
+//   $permission_calculator = \Drupal::service('group_permission.chain_calculator');
+//   $calculated_permissions = $permission_calculator->calculatePermissions($account);
 
-  // Initialize an array for group-specific and group type-wide permissions.
-  $grants_group = $grants_group_type = [];
+//   // Initialize an array for group-specific and group type-wide permissions.
+//   $grants_group = $grants_group_type = [];
 
-  // First set grants for permissions that the user has in specific groups.
-  foreach ($calculated_permissions->getItemsByScope(CGPII::SCOPE_GROUP) as $item) {
-    // Add the groups the user is a member of to use later on.
-    $member_gids[] = $gid = $item->getIdentifier();
+//   // First set grants for permissions that the user has in specific groups.
+//   foreach ($calculated_permissions->getItemsByScope(CGPII::SCOPE_GROUP) as $item) {
+//     // Add the groups the user is a member of to use later on.
+//     $member_gids[] = $gid = $item->getIdentifier();
 
-    foreach ($node_type_ids as $node_type_id) {
-      $plugin_id = "group_node:$node_type_id";
+//     foreach ($node_type_ids as $node_type_id) {
+//       $plugin_id = "group_node:$node_type_id";
 
-      switch ($op) {
-        case 'view':
-          if ($item->hasPermission("view $plugin_id entity", $account)) {
-            $grants_group["gnode:$node_type_id"][] = $gid;
-          }
-          if ($item->hasPermission("view unpublished $plugin_id entity", $account)) {
-            $grants_group["gnode_unpublished:$node_type_id"][] = $gid;
-          }
-          break;
+//       switch ($op) {
+//         case 'view':
+//           if ($item->hasPermission("view $plugin_id entity", $account)) {
+//             $grants_group["gnode:$node_type_id"][] = $gid;
+//           }
+//           if ($item->hasPermission("view unpublished $plugin_id entity", $account)) {
+//             $grants_group["gnode_unpublished:$node_type_id"][] = $gid;
+//           }
+//           break;
 
-        case 'update':
-        case 'delete':
-          // If you can act on any node, there's no need for the author grant.
-          if ($item->hasPermission("$op any $plugin_id entity", $account)) {
-            $grants_group["gnode:$node_type_id"][] = $gid;
-          }
-          elseif ($item->hasPermission("$op own $plugin_id entity", $account)) {
-            $uid = $account->id();
-            $grants_group["gnode_author:$uid:$node_type_id"][] = $gid;
-          }
-          break;
-      }
-    }
-  }
+//         case 'update':
+//         case 'delete':
+//           // If you can act on any node, there's no need for the author grant.
+//           if ($item->hasPermission("$op any $plugin_id entity", $account)) {
+//             $grants_group["gnode:$node_type_id"][] = $gid;
+//           }
+//           elseif ($item->hasPermission("$op own $plugin_id entity", $account)) {
+//             $uid = $account->id();
+//             $grants_group["gnode_author:$uid:$node_type_id"][] = $gid;
+//           }
+//           break;
+//       }
+//     }
+//   }
 
-  // Then add grants for permissions that the user has for all groups of a type.
-  /** @var \Drupal\group\Entity\GroupTypeInterface[] $group_types */
-  $group_types = $entity_type_manager->getStorage('group_type')->loadMultiple();
-  foreach ($calculated_permissions->getItemsByScope(CGPII::SCOPE_GROUP_TYPE) as $item) {
-    // Get the IDs of all the groups the user is not part of for the group type.
-    $query = $entity_type_manager->getStorage('group')->getQuery();
-    $query->condition('type', $item->getIdentifier());
-    if (!empty($member_gids)) {
-      $query->condition('id', $member_gids, 'NOT IN');
-    }
-    $gids = \Drupal::service('renderer')->executeInRenderContext(new RenderContext(), function () use ($query) {
-      return $query->execute();
-    });
+//   // Then add grants for permissions that the user has for all groups of a type.
+//   /** @var \Drupal\group\Entity\GroupTypeInterface[] $group_types */
+//   $group_types = $entity_type_manager->getStorage('group_type')->loadMultiple();
+//   foreach ($calculated_permissions->getItemsByScope(CGPII::SCOPE_GROUP_TYPE) as $item) {
+//     // Get the IDs of all the groups the user is not part of for the group type.
+//     $query = $entity_type_manager->getStorage('group')->getQuery();
+//     $query->condition('type', $item->getIdentifier());
+//     if (!empty($member_gids)) {
+//       $query->condition('id', $member_gids, 'NOT IN');
+//     }
+//     $gids = \Drupal::service('renderer')->executeInRenderContext(new RenderContext(), function () use ($query) {
+//       return $query->execute();
+//     });
 
-    // If we could not retrieve any group IDs, skip to the next group type.
-    if (empty($gids)) {
-      continue;
-    }
+//     // If we could not retrieve any group IDs, skip to the next group type.
+//     if (empty($gids)) {
+//       continue;
+//     }
 
-    foreach ($node_type_ids as $node_type_id) {
-      $plugin_id = "group_node:$node_type_id";
+//     foreach ($node_type_ids as $node_type_id) {
+//       $plugin_id = "group_node:$node_type_id";
 
-      // Only check for permissions if the group type has the group_node plugin
-      // installed for the node type.
-      if (!$group_types[$item->getIdentifier()]->hasContentPlugin($plugin_id)) {
-        continue;
-      }
+//       // Only check for permissions if the group type has the group_node plugin
+//       // installed for the node type.
+//       if (!$group_types[$item->getIdentifier()]->hasContentPlugin($plugin_id)) {
+//         continue;
+//       }
 
-      switch ($op) {
-        case 'view':
-          if ($item->hasPermission("view $plugin_id entity")) {
-            $grants_group_type["gnode:$node_type_id"][] = $gids;
-          }
-          if ($item->hasPermission("view unpublished $plugin_id entity")) {
-            $grants_group_type["gnode_unpublished:$node_type_id"][] = $gids;
-          }
-          break;
+//       switch ($op) {
+//         case 'view':
+//           if ($item->hasPermission("view $plugin_id entity")) {
+//             $grants_group_type["gnode:$node_type_id"][] = $gids;
+//           }
+//           if ($item->hasPermission("view unpublished $plugin_id entity")) {
+//             $grants_group_type["gnode_unpublished:$node_type_id"][] = $gids;
+//           }
+//           break;
 
-        case 'update':
-        case 'delete':
-          // If you can act on any node, there's no need for the author grant.
-          if ($item->hasPermission("$op any $plugin_id entity")) {
-            $grants_group_type["gnode:$node_type_id"][] = $gids;
-          }
-          elseif ($item->hasPermission("$op own $plugin_id entity")) {
-            $uid = $account->id();
-            $grants_group_type["gnode_author:$uid:$node_type_id"][] = $gids;
-          }
-          break;
-      }
-    }
-  }
+//         case 'update':
+//         case 'delete':
+//           // If you can act on any node, there's no need for the author grant.
+//           if ($item->hasPermission("$op any $plugin_id entity")) {
+//             $grants_group_type["gnode:$node_type_id"][] = $gids;
+//           }
+//           elseif ($item->hasPermission("$op own $plugin_id entity")) {
+//             $uid = $account->id();
+//             $grants_group_type["gnode_author:$uid:$node_type_id"][] = $gids;
+//           }
+//           break;
+//       }
+//     }
+//   }
 
-  // The code above populated the outsider grants by adding the group IDs per
-  // group type. We need to combine this into one big list of group IDs per
-  // entry in the $grants_o array.
-  foreach ($grants_group_type as $key => $gids_per_group_type) {
-    $grants_group_type[$key] = array_reduce($gids_per_group_type, 'array_merge', []);
-  }
+//   // The code above populated the outsider grants by adding the group IDs per
+//   // group type. We need to combine this into one big list of group IDs per
+//   // entry in the $grants_o array.
+//   foreach ($grants_group_type as $key => $gids_per_group_type) {
+//     $grants_group_type[$key] = array_reduce($gids_per_group_type, 'array_merge', []);
+//   }
 
-  // Recursively merge the member grants with the outsider grants.
-  return array_merge_recursive($grants_group, $grants_group_type);
-}
+//   // Recursively merge the member grants with the outsider grants.
+//   return array_merge_recursive($grants_group, $grants_group_type);
+// }
 
 /**
  * Implements hook_node_access_records().
  *
  * @see gnode_node_grants()
  */
-function asu_permissions_node_access_records(NodeInterface $node) {
-  $records = $group_types = [];
-  $node_type_id = $node->bundle();
-  $plugin_id = "group_node:$node_type_id";
+// function asu_permissions_node_access_records(NodeInterface $node) {
+//   $records = $group_types = [];
+//   $node_type_id = $node->bundle();
+//   $plugin_id = "group_node:$node_type_id";
 
-  // Load all of the group content for this node.
-  $group_contents = \Drupal::entityTypeManager()
-    ->getStorage('group_content')
-    ->loadByEntity($node);
+//   // Load all of the group content for this node.
+//   $group_contents = \Drupal::entityTypeManager()
+//     ->getStorage('group_content')
+//     ->loadByEntity($node);
 
-  // Only act if there are group content entities for this node.
-  if (empty($group_contents)) {
-    return $records;
-  }
+//   // Only act if there are group content entities for this node.
+//   if (empty($group_contents)) {
+//     return $records;
+//   }
 
-  // We can use the same grant-all base because we will only hand out the grants
-  // based on the $op parameter in hook_node_grants().
-  $base = [
-    'grant_view' => 1,
-    'grant_update' => 1,
-    'grant_delete' => 1,
-    'priority' => 0,
-  ];
+//   // We can use the same grant-all base because we will only hand out the grants
+//   // based on the $op parameter in hook_node_grants().
+//   $base = [
+//     'grant_view' => 1,
+//     'grant_update' => 1,
+//     'grant_delete' => 1,
+//     'priority' => 0,
+//   ];
 
-  // Set records for every group the node belongs to.
-  $uid = $node->getOwnerId();
-  $prefix = $node->isPublished() ? 'gnode' : 'gnode_unpublished';
-  foreach ($group_contents as $group_content) {
-    /** @var \Drupal\group\Entity\GroupContentInterface $group_content */
-    $group = $group_content->getGroup();
-    $group_type_id = $group_content->bundle();
+//   // Set records for every group the node belongs to.
+//   $uid = $node->getOwnerId();
+//   $prefix = $node->isPublished() ? 'gnode' : 'gnode_unpublished';
+//   foreach ($group_contents as $group_content) {
+//     /** @var \Drupal\group\Entity\GroupContentInterface $group_content */
+//     $group = $group_content->getGroup();
+//     $group_type_id = $group_content->bundle();
 
-    // Gather all group types the node belongs to.
-    if (!isset($group_types[$group_type_id])) {
-      $group_types[$group_type_id] = $group->getGroupType();
-    }
+//     // Gather all group types the node belongs to.
+//     if (!isset($group_types[$group_type_id])) {
+//       $group_types[$group_type_id] = $group->getGroupType();
+//     }
 
-    // We use the group ID as the realm ID.
-    $gid = $group->id();
-    $records_exist = array_reduce(
-      $records,
-      function ($carry, $record) use ($gid, $node_type_id, $uid, $prefix) {
-        if ($record['gid'] != $gid) {
-          return $carry;
-        }
-        if ($record['realm'] === "$prefix:$node_type_id") {
-          $carry['non_author'] = TRUE;
-        } elseif ($record['realm'] === "gnode_author:$uid:$node_type_id") {
-          $carry['author'] = TRUE;
-        }
+//     // We use the group ID as the realm ID.
+//     $gid = $group->id();
+//     $records_exist = array_reduce(
+//       $records,
+//       function ($carry, $record) use ($gid, $node_type_id, $uid, $prefix) {
+//         if ($record['gid'] != $gid) {
+//           return $carry;
+//         }
+//         if ($record['realm'] === "$prefix:$node_type_id") {
+//           $carry['non_author'] = TRUE;
+//         } elseif ($record['realm'] === "gnode_author:$uid:$node_type_id") {
+//           $carry['author'] = TRUE;
+//         }
 
-        return $carry;
-      },
-      ['author' => FALSE, 'non_author' => FALSE]
-    );
+//         return $carry;
+//       },
+//       ['author' => FALSE, 'non_author' => FALSE]
+//     );
 
-     // Add the non-author record for viewing nodes.
-    if (!$records_exist['non_author']) {
-      $records[] = [ 'gid' => $gid, 'realm' => "$prefix:$node_type_id" ] + $base;
-    }
+//      // Add the non-author record for viewing nodes.
+//     if (!$records_exist['non_author']) {
+//       $records[] = [ 'gid' => $gid, 'realm' => "$prefix:$node_type_id" ] + $base;
+//     }
 
-     // Add the author record for updating or deleting.
-    if (!$records_exist['author']) {
-      $records[] = [ 'gid' => $gid, 'realm' => "gnode_author:$uid:$node_type_id" ] + $base;
-    }
-  }
+//      // Add the author record for updating or deleting.
+//     if (!$records_exist['author']) {
+//       $records[] = [ 'gid' => $gid, 'realm' => "gnode_author:$uid:$node_type_id" ] + $base;
+//     }
+//   }
 
-  // Add the general access bypass record.
-  $records[] = ['gid' => GNODE_MASTER_GRANT_ID, 'realm' => 'gnode_bypass'] + $base;
+//   // Add the general access bypass record.
+//   $records[] = ['gid' => GNODE_MASTER_GRANT_ID, 'realm' => 'gnode_bypass'] + $base;
 
-  // For anonymous users we actually build the access record based on the groups
-  // the node belongs to. After all: If you're anonymous to one group, you're
-  // anonymous to all groups. Meaning that if one of the node's groups allows
-  // anonymous users to view the node, all anonymous users can view it. We can
-  // use this to our advantage by assigning a special access record that we can
-  // provide a grant for in gnode_node_grants().
-  $anonymous_record = [
-    'gid' => GNODE_MASTER_GRANT_ID,
-    'realm' => 'gnode_anonymous',
-    'grant_view' => 0,
-    'grant_update' => 0,
-    'grant_delete' => 0,
-    'priority' => 0,
-  ];
+//   // For anonymous users we actually build the access record based on the groups
+//   // the node belongs to. After all: If you're anonymous to one group, you're
+//   // anonymous to all groups. Meaning that if one of the node's groups allows
+//   // anonymous users to view the node, all anonymous users can view it. We can
+//   // use this to our advantage by assigning a special access record that we can
+//   // provide a grant for in gnode_node_grants().
+//   $anonymous_record = [
+//     'gid' => GNODE_MASTER_GRANT_ID,
+//     'realm' => 'gnode_anonymous',
+//     'grant_view' => 0,
+//     'grant_update' => 0,
+//     'grant_delete' => 0,
+//     'priority' => 0,
+//   ];
 
-  // Get references to the grants for faster and more readable loops below.
-  $can_view = &$anonymous_record['grant_view'];
-  $can_update = &$anonymous_record['grant_update'];
-  $can_delete = &$anonymous_record['grant_delete'];
+//   // Get references to the grants for faster and more readable loops below.
+//   $can_view = &$anonymous_record['grant_view'];
+//   $can_update = &$anonymous_record['grant_update'];
+//   $can_delete = &$anonymous_record['grant_delete'];
 
-  $view_permission = $node->isPublished()
-    ? "view $plugin_id entity"
-    : "view unpublished $plugin_id entity";
+//   $view_permission = $node->isPublished()
+//     ? "view $plugin_id entity"
+//     : "view unpublished $plugin_id entity";
 
-  foreach ($group_types as $group_type) {
-    /** @var \Drupal\group\Entity\GroupTypeInterface $group_type */
-    $group_role = $group_type->getAnonymousRole();
+//   foreach ($group_types as $group_type) {
+//     /** @var \Drupal\group\Entity\GroupTypeInterface $group_type */
+//     $group_role = $group_type->getAnonymousRole();
 
-    if (!$can_view && $group_role->hasPermission($view_permission)) {
-      $can_view = 1;
-    }
-    if (!$can_update && $group_role->hasPermission("update any $plugin_id entity")) {
-      $can_update = 1;
-    }
-    if (!$can_delete && $group_role->hasPermission("delete any $plugin_id entity")) {
-      $can_delete = 1;
-    }
+//     if (!$can_view && $group_role->hasPermission($view_permission)) {
+//       $can_view = 1;
+//     }
+//     if (!$can_update && $group_role->hasPermission("update any $plugin_id entity")) {
+//       $can_update = 1;
+//     }
+//     if (!$can_delete && $group_role->hasPermission("delete any $plugin_id entity")) {
+//       $can_delete = 1;
+//     }
 
-    // If the node is owned by anonymous, we also need to check for the author
-    // permissions following the pattern "$op own $plugin_id entity".
-    if ($uid == 0) {
-      if (!$can_update && $group_role->hasPermission("update own $plugin_id entity")) {
-        $can_update = 1;
-      }
-      if (!$can_delete && $group_role->hasPermission("delete own $plugin_id entity")) {
-        $can_delete = 1;
-      }
-    }
-  }
+//     // If the node is owned by anonymous, we also need to check for the author
+//     // permissions following the pattern "$op own $plugin_id entity".
+//     if ($uid == 0) {
+//       if (!$can_update && $group_role->hasPermission("update own $plugin_id entity")) {
+//         $can_update = 1;
+//       }
+//       if (!$can_delete && $group_role->hasPermission("delete own $plugin_id entity")) {
+//         $can_delete = 1;
+//       }
+//     }
+//   }
 
-  $records[] = $anonymous_record;
+//   $records[] = $anonymous_record;
 
-  return $records;
-}
+//   return $records;
+// }
