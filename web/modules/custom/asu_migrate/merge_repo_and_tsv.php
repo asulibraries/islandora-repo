@@ -63,35 +63,32 @@ if (!$csv_filename) {
   echo "ERROR: input CSV file missing.\n\n";
   help();
 }
+$unmerged_tsv_items_ids = [];
 $tsv_as_csv = parse_tsv($tsv_filename, $n, $offset, $output_file);
-$find_item_ids = array_keys($tsv_as_csv);
-// Since $find_item_ids has items removed as the CSV matches are found, we
-// need a copy of this array for later so that the items that were not a part
-// of that list can be used to make the CSV of items that still need to be
-// migrated, but did not have have to merge with any TSV MARC.
-$unmerged_item_ids = $find_item_ids;
-$csv_headers = [];
-$repo_csv = load_repo_csv_file($csv_filename, $find_item_ids, $csv_headers);
+$tsv_item_ids = array_keys($tsv_as_csv);
+$repo_csv = load_repo_csv_file($csv_filename, $tsv_item_ids);
 // Since the load function removes the item_ids that have been found, the
 // array now contains the item_id values that were not found in the CSV.
-if (count($find_item_ids) > 0) {
+if (count($tsv_item_ids) > 0) {
   echo "\nItem ids that were not found in Repo CSV source file (" .
     number_format(count($find_item_ids)) . " identifiers):" .
-    "\n-------------------------\n" . implode(", ", $find_item_ids) . "\n\n";
+    "\n-------------------------\n" . implode(", ", $tsv_item_ids) . "\n\n";
 }
+
 if (count($tsv_as_csv) > 0) {
   if ($output_file) {
     // Now, for the items that were not found in the CSV, write a new TSV file.
-    if (count($find_item_ids) > 0) {
-      save_tsv_of_unfound_items($tsv_filename, $n, $offset, $find_item_ids);
+    if (count($tsv_item_ids) > 0) {
+      save_tsv_of_unfound_items($tsv_filename, $n, $offset, $tsv_item_ids);
     }
-    remove_unfound_items_from_tsv($tsv_as_csv, $find_item_ids);
+    remove_unfound_items_from_tsv($tsv_as_csv, $tsv_item_ids);
     // At this point, we can start to merge the TSV and the CSV.
     $distinctfields_csv = merge_multifields($tsv_as_csv);
-    $out_csv = convert_row_to_unified_fields($distinctfields_csv);
-    merge_tsv_and_csv($out_csv, $repo_csv);
-    save_csv_to_file($out_csv, $output_file);
-    save_csv_that_had_no_merge($csv_filename, $unmerged_item_ids);
+    $out_tsv_as_csv = convert_row_to_unified_fields($distinctfields_csv);
+    $unmerged_tsv_items_ids = merge_tsv_and_csv($out_tsv_as_csv, $repo_csv, $output_file);
+    if (count($unmerged_tsv_items_ids) > 0) {
+      save_csv_that_had_no_merge($csv_filename, $unmerged_tsv_items_ids);
+    }
   }
   else {
     echo "WARNING: Resultant CSV file was not saved.\n";
@@ -496,15 +493,18 @@ function get_csv_field_headername($field_name) {
  *   The array of TSV items' data.
  * @param array $repo_csv
  *   The array of Repo CSV items' data.
+ * @param string $output_file
+ *   The filename for saving.
  *
  * @return array
  *   The unified array - ready to save.
  */
-function merge_tsv_and_csv(array $tsv, array $repo_csv) {
+function merge_tsv_and_csv(array $tsv, array $repo_csv, $output_file) {
   $tsv_and_csv = [];
   foreach ($tsv as $id => $row) {
     if ($id && is_array($row)) {
       // Do nothing.
+      $tsv_and_csv[$id] = $row;
     }
   }
   foreach ($repo_csv as $id => $row) {
@@ -512,6 +512,8 @@ function merge_tsv_and_csv(array $tsv, array $repo_csv) {
       // Do nothing.
     }
   }
+  save_csv_to_file($tsv_and_csv, $output_file);
+
   return $tsv_and_csv;
 }
 
@@ -536,16 +538,21 @@ function save_csv_to_file(array $out_csv, $output_file) {
       echo "ERROR: The file \"" . $output_file . "\" could not be opened for writing.";
       return;
     }
+    $row_count_saved = 0;
     $first_row = TRUE;
     foreach ($out_csv as $row) {
       if ($first_row) {
         fputcsv($fp, array_keys($row));
         $first_row = FALSE;
       }
-      fputcsv($fp, $row);
+      else {
+        fputcsv($fp, $row);
+        $row_count_saved++;
+      }
     }
     fclose($fp);
   }
+  echo "\nSaved \"$output_file\" containing " . number_format($row_count_saved) . " rows.\n";
 }
 
 /**
@@ -638,20 +645,18 @@ function merge_multifields(array $csv) {
  *   Path to source Repo CSV export file.
  * @param array $item_ids
  *   Variable parameter - the Item id values that come from the TSV file.
- * @param array $csv_headers
- *   Variable parameter - returns headers that correspond to the CSV data rows.
  *
  * @return array
  *   An associative array that has "Item ID" as the key.
  */
-function load_repo_csv_file($csv_filename, array &$item_ids, array &$csv_headers) {
+function load_repo_csv_file($csv_filename, array &$item_ids) {
   $array = [];
   if (($handle = fopen($csv_filename, "r")) !== FALSE) {
     echo "\nWorking on finding matches of TSV items in source Repo CSV file \"$csv_filename\".\n";
 
     $csv_headers = [];
     $history_json_index = $item_id_index = $counter = 0;
-    while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+    while (($data = fgetcsv($handle, 20000, ",")) !== FALSE) {
       show_progress($counter);
       if (count($csv_headers) < 1) {
         $csv_headers = $data;
@@ -662,11 +667,12 @@ function load_repo_csv_file($csv_filename, array &$item_ids, array &$csv_headers
         if (array_key_exists($item_id_index, $data)) {
           $found_item_id_index = array_search($data[$item_id_index], $item_ids);
           if (!($found_item_id_index === FALSE)) {
-            unset($data[$history_json_index]);
             $this_identifier = $item_ids[$found_item_id_index];
             // Also, remove this from the $item_ids array.
             unset($item_ids[$found_item_id_index]);
-            $array[$this_identifier] = $data;
+            foreach ($csv_headers as $idx => $cvs_fieldname) {
+              $array[$this_identifier][$cvs_fieldname] = $data[$idx];
+            }
           }
         }
         $counter++;
@@ -684,71 +690,41 @@ function load_repo_csv_file($csv_filename, array &$item_ids, array &$csv_headers
 /**
  * Perform shell commands to copy the source CSV and remove merged ID lines.
  *
- * This used to be written to save the items in the CSV that match
- * $unmerged_item_ids.
+ * This used to be written to save the items in the CSV that do not match
+ * $merged_item_ids.
  *
  * @param string $csv_filename
  *   Path to source Repo CSV export file.
- * @param array $unmerged_item_ids
- *   Variable parameter - the Item id values that were not merged with MARC.
+ * @param array $merged_item_ids
+ *   Variable parameter - the Item id values that were merged with MARC.
  */
-function save_csv_that_had_no_merge($csv_filename, array $unmerged_item_ids) {
-  $not_merged_csv = [];
+function save_csv_that_had_no_merge($csv_filename, array $merged_item_ids) {
+  $save_csv = [];
   $pathinfo = pathinfo($csv_filename);
   $save_unmerged_items_filename = (($pathinfo['dirname']) ? $pathinfo['dirname'] . '/' : '') .
     "NOMARC_ITEMS_" . $pathinfo['basename'];
   echo "\nWorking on creating the CSV of items that were not merged with any TSV MARC \"$csv_filename\".\n";
-
-  // If the "NOMARC" file does not exist, create it as a copy of the initial CSV source file.
-  echo "\nCreating a copy of the original source CSV file \"$csv_filename\" - saved as \"$save_unmerged_items_filename\".\n";
-  $command = 'cp ' . $csv_filename . ' ' . $save_unmerged_items_filename;
-  $run_output = [];
-  exec($command, $run_output, $result_code);
   // Load ALL rows from this file into an array -- and loop through these
   // to make an array of the rows.
-  if (($handle = fopen($save_unmerged_items_filename, "r")) !== FALSE) {
-    $csv_headers = [];
+  if (($handle = fopen($csv_filename, "r")) !== FALSE) {
     $item_id_index = $counter = 0;
-    while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+    while (($data = fgetcsv($handle, 20000, ",")) !== FALSE) {
       show_progress($counter);
-      if (count($csv_headers) < 1) {
-        $csv_headers = $data;
+      if (count($save_csv) < 1) {
+        $save_csv[] = $data;
         $item_id_index = array_search('Item ID', $data);
       }
       else {
         if (array_key_exists($item_id_index, $data)) {
           $this_identifier = $data[$item_id_index];
-          foreach ($data as $idx => $val) {
-            if (array_key_exists($idx, $csv_headers)) {
-              $not_merged_csv[$this_identifier][$csv_headers[$idx]] = $val;
-            }
-          }
+          $save_csv[$this_identifier] = $data;
         }
         $counter++;
       }
     }
     fclose($handle);
   }
-  // Now that $not_merged_csv contains all of the possible rows, loop through
-  // and output ONLY the rows that contain an ID that is not on the list of'
-  // item ids that were merged with a TSV row.
-  $fp = @fopen($save_unmerged_items_filename, 'w');
-  if (!$fp) {
-    echo "ERROR: The file \"" . $save_unmerged_items_filename . "\" could not be opened for writing.";
-    return;
-  }
-  $first_row = TRUE;
-  foreach ($not_merged_csv as $identifier => $row) {
-    if ($first_row) {
-      fputcsv($fp, array_keys($row));
-      $first_row = FALSE;
-    }
-    if (array_search($identifier, $unmerged_item_ids) === FALSE) {
-      fputcsv($fp, $row);
-    }
-  }
-  fclose($fp);
-  echo "\nSaved \"$save_unmerged_items_filename\" containing " . number_format(count($not_merged_csv)) . " items.\n";
+  save_csv_to_file($save_csv, $save_unmerged_items_filename);
 }
 
 /**
@@ -763,52 +739,40 @@ function save_csv_that_had_no_merge($csv_filename, array $unmerged_item_ids) {
  * @param array $find_item_ids
  *   The item id values that need to be saved in the UNFOUND_ITEMS file.
  */
-function save_tsv_of_unfound_items($tsv_file, $n, $offset, array &$find_item_ids) {
-  // Save filename will be "UNFOUND_ITEMS_{n}_{offset}_{$tsv_file}".
+function save_tsv_of_unfound_items($tsv_filename, $n, $offset, array &$find_item_ids) {
+  // Save filename will be "UNFOUND_ITEMS_{n}_{offset}_{$tsv_filename}".
   $pathinfo = pathinfo($tsv_filename);
   $save_unfound_item_filename = (($pathinfo['dirname']) ? $pathinfo['dirname'] . '/' : '') .
     "UNFOUND_ITEMS_" . $n . "_" . $offset . "_" . $pathinfo['basename'];
   echo "\n\nMaking file of unfound TSV items \"$save_unfound_item_filename\".\n";
   $handle = fopen($tsv_filename, "r");
-  $remaining_lines = $n;
   $unfound_lines = [];
   if ($handle) {
-    while ((($line = fgets($handle)) !== FALSE) && ($remaining_lines || $offset)) {
-      if ($offset) {
-        $offset--;
+    $csv_headers = [];
+    $item_id_index = $counter = 0;
+    while (($data = fgetcsv($handle, 40000, ",")) !== FALSE) {
+      show_progress($counter);
+      if (count($csv_headers) < 1) {
+        $unfound_lines[] = $data;
+        $item_id_index = array_search('Item ID', $data);
       }
       else {
-        show_progress($remaining_lines, $n);
-        // Process the line read.
-        // First, be sure that there is no linefeed as part of this value.
-        $line = rtrim($line, "\n");
-        $line_parts = explode("	", $line);
-        $line_as_array = refactor_marc_array($line_parts);
-        // These rows will uniquely be identified by their identifier (parsed
-        // from the ($hdl_string) value
-        // and would match up with items from the legacy repository on the same
-        // identifier.
-        if (array_key_exists('handle', $line_as_array)) {
-          $hdl_element = $line_as_array['handle'];
-          $hdl_string = array_shift($hdl_element);
-        }
-        else {
-          $hdl_string = '????';
-        }
-        $identifier = get_identifier($hdl_string);
-        // Finally, we know whether or not this item is on the list.
         if (!(array_search($identifier, $find_item_ids) === FALSE)) {
-          $unfound_lines[] = $line . "\n";
+          $found_item_id_index = array_search($data[$item_id_index], $item_ids);
+          if (!($found_item_id_index === FALSE)) {
+            $this_identifier = $find_item_ids[$found_item_id_index];
+            // Also, remove this from the $find_item_ids array.
+            unset($find_item_ids[$found_item_id_index]);
+            $unfound_lines[$this_identifier] = $data;
+          }
         }
-
-        $remaining_lines--;
+        $counter++;
       }
     }
     fclose($handle);
     // Save the TSV file for any items now.
     if (count($unfound_lines) > 0) {
-      file_put_contents($save_unfound_item_filename, implode("", $unfound_lines));
-      echo "\nSaved \"$save_unfound_item_filename\".\n";
+      save_csv_to_file($unfound_lines, $save_unfound_item_filename);
     }
     else {
       echo "WARNING: There was at least one item that was not found in the " .
