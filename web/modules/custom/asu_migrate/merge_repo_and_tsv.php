@@ -63,7 +63,6 @@ if (!$csv_filename) {
   echo "ERROR: input CSV file missing.\n\n";
   help();
 }
-$unmerged_tsv_items = [];
 $tsv_as_csv = parse_tsv($tsv_filename, $n, $offset, $output_file);
 $tsv_item_ids = array_keys($tsv_as_csv);
 load_repo_csv_file($csv_filename, $tsv_item_ids);
@@ -85,10 +84,7 @@ if (count($tsv_as_csv) > 0) {
     // At this point, we can start to merge the TSV and the CSV.
     $distinctfields_csv = merge_multifields($tsv_as_csv);
     $out_tsv_as_csv = convert_row_to_unified_fields($distinctfields_csv);
-    $unmerged_tsv_items = merge_tsv_and_csv($out_tsv_as_csv, $csv_filename, $output_file);
-    if (count($unmerged_tsv_items) > 0) {
-      save_csv_that_had_no_merge($csv_filename, $unmerged_tsv_items);
-    }
+    merge_tsv_and_csv($out_tsv_as_csv, $csv_filename, $output_file);
   }
   else {
     echo "WARNING: Resultant CSV file was not saved.\n";
@@ -495,38 +491,27 @@ function get_csv_field_headername($field_name) {
  *   Path to source Repo CSV export file.
  * @param string $output_file
  *   The filename for saving.
- *
- * @return array
- *   The unified array - ready to save.
  */
 function merge_tsv_and_csv(array $tsv, $csv_filename, $output_file) {
   // THIS IS NOT THE LOGIC TO MERGE... JUST TO TRY TO COMBINE THEM SIMPLY --
   // AND FAILING TO DO IT LIKE A PILE OF MUD.
-  $item_ids = array_keys($tsv);
-  $repo_csv = $tsv_and_csv = $backup_repo_csv = [];
+  $tsv_and_csv = $backup_repo_csv = [];
   if (($handle = fopen($csv_filename, "r")) !== FALSE) {
-    echo "\nWorking on finding matches of TSV items in source Repo CSV file \"$csv_filename\".\n";
-
+    echo "\nMerging the data between MARC sourced TSV and the source Repo CSV file \"$csv_filename\".\n--------------\n";
     $csv_headers = [];
     $item_id_index = $counter = 0;
     while (($data = fgetcsv($handle, 20000, ",")) !== FALSE) {
       show_progress($counter);
       if (count($csv_headers) < 1) {
         $csv_headers = $data;
-        $repo_csv[] = $data;
-
+        $tsv_and_csv[] = $data;
         $item_id_index = array_search('Item ID', $data);
       }
       else {
         if (array_key_exists($item_id_index, $data)) {
-          $found_item_id_index = array_search($data[$item_id_index], $item_ids);
-          if (!($found_item_id_index === FALSE)) {
-            $this_identifier = $item_ids[$found_item_id_index];
-            // Also, remove this from the $item_ids array.
-            unset($item_ids[$found_item_id_index]);
-            foreach ($csv_headers as $idx => $cvs_fieldname) {
-              $repo_csv[$this_identifier][$cvs_fieldname] = $data[$idx];
-            }
+          $this_identifier = $data[$item_id_index];
+          foreach ($csv_headers as $idx => $cvs_fieldname) {
+            $tsv_and_csv[$this_identifier][$cvs_fieldname] = $data[$idx];
           }
         }
         $counter++;
@@ -536,19 +521,95 @@ function merge_tsv_and_csv(array $tsv, $csv_filename, $output_file) {
   }
 
   foreach ($tsv as $id => $row) {
-    if (is_array($row)) {
+    if ($id && is_array($row)) {
       // Do nothing.
-      if (array_key_exists($id, $repo_csv)) {
-        $tsv_and_csv[$id] = array_merge($repo_csv[$id], $row);
-      }
-      else {
-        $backup_repo_csv[$id] = $row;
+      if (array_key_exists($id, $tsv_and_csv)) {
+        /* Potentially replace values from the CSV with what was in the MARC
+        TSV file. These fields are:
+        - Title -- drop
+        - Creation Date -- drop
+        - Language -- drop
+        - Extent -- drop
+        - Notes -- drop */
+
+        /* Shouldn't occur, but if you detect any use, let me know so we can
+        discuss:
+        - Identifier -- n/a (not used in ProQuest ETD metadata)
+        - Series -- n/a (not used in ProQuest ETD metadata)
+        - Citation -- n/a (not used in ProQuest ETD metadata) */
+
+        /* Because of this conditional rule, the exported CSV has
+        Contributors-Person-Adv-Cmt and if there is a value in it, put that
+        into the Contributors-Person field. In all cases, drup the
+        Contributors-Person-Adv-Cmt field after applying the logic.
+        - Contributor [plus Type and Role qualifiers] -- CONDITIONAL: retain
+        if role is "Advisor" or "Committee member"; otherwise drop */
+        if ($row['field_title']) {
+          $tsv_and_csv[$id]['Item Title'] = $row['field_title'];
+        }
+        if ($row['field_date_created']) {
+          $tsv_and_csv[$id]['Date Created'] = $row['field_date_created'];
+        }
+        if ($row['field_language']) {
+          $tsv_and_csv[$id]['Language'] = $row['field_language'];
+        }
+        if ($row['field_note_para']) {
+          $tsv_and_csv[$id]['Notes'] = merge_two_values($tsv_and_csv[$id]['Notes'], $row['field_note_para']);
+        }
+        if ($row['field_subject']) {
+          $tsv_and_csv[$id]['Topical Subjects'] = merge_two_values($tsv_and_csv[$id]['Topical Subjects'], $row['field_subject']);
+        }
+        if ($row['field_cataloging_standards']) {
+          $tsv_and_csv[$id]['Cataloging Standards'] = $row['field_cataloging_standards'];
+        }
+        if ($row['field_statement_responsibility']) {
+          $tsv_and_csv[$id]['Statement of Responsibility'] = $row['field_statement_responsibility'];
+        }
+        if ($row['field_name_subject']) {
+          $tsv_and_csv[$id]['Name Title Subjects'] = $row['field_name_subject'];
+        }
+        if ($row['field_title_subject']) {
+          $tsv_and_csv[$id]['Title Subject'] = $row['field_title_subject'];
+        }
+        if ($row['field_geographic_subject']) {
+          $tsv_and_csv[$id]['Geographic Subjects'] = $row['field_geographic_subject'];
+        }
+        if ($row['field_prec_subject']) {
+          $tsv_and_csv[$id]['field_prec_subject'] = $row['field_prec_subject'];
+        }
       }
     }
   }
   save_csv_to_file($tsv_and_csv, $output_file);
+}
 
-  return $backup_repo_csv;
+/**
+ * This will merge the values that are passed into a single value.
+ *
+ * The parts of the merge are delimited by " || " and will be merged based on
+ * the first "|" part of each. The second value key takes precedence over a
+ * value that matches from the first value's key that matches.
+ *
+ * @param string $val1
+ *   The first value.
+ * @param string $val2
+ *   The second value.
+ *
+ * @return string
+ *   The combination of both values with no duplicates.
+ */
+function merge_two_values($val1, $val2) {
+  $val1_a = explode(" || ", $val1);
+  $val2_a = explode(" || ", $val2);
+  foreach ($val1_a as $val1_val) {
+    $val1_first_part = explode("|", $val1_val, 2);
+    $merged_parts[$val1_first_part[0]] = $val1_val;
+  }
+  foreach ($val2_a as $val2_val) {
+    $val2_first_part = explode("|", $val2_val, 2);
+    $merged_parts[$val2_first_part[0]] = $val2_val;
+  }
+  return implode(" || ", $merged_parts);
 }
 
 /**
@@ -715,24 +776,6 @@ function load_repo_csv_file($csv_filename, array &$item_ids) {
   if ($history_json_index && array_key_exists($history_json_index, $csv_headers)) {
     unset($csv_headers[$history_json_index]);
   }
-}
-
-/**
- * Perform shell commands to copy the source CSV and remove merged ID lines.
- *
- * This used to be written to save the items in the CSV that do not match
- * $unmerged_tsv_items.
- *
- * @param string $csv_filename
- *   Path to source Repo CSV export file.
- * @param array $unmerged_tsv_items
- *   The rows that were not represented in the TSV file.
- */
-function save_csv_that_had_no_merge($csv_filename, array $unmerged_tsv_items) {
-  $pathinfo = pathinfo($csv_filename);
-  $save_unmerged_items_filename = (($pathinfo['dirname']) ? $pathinfo['dirname'] . '/' : '') .
-    "NOMARC_ITEMS_" . $pathinfo['basename'];
-  save_csv_to_file($unmerged_tsv_items, $save_unmerged_items_filename);
 }
 
 /**
