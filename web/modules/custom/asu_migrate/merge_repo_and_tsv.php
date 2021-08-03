@@ -344,7 +344,6 @@ function get_part_between_chars(&$value, $open_char, $close_char) {
  */
 function convert_marc_arr_to_csv_row(array $line_as_array) {
   foreach ($line_as_array as $field_name => $array) {
-    $field_name = get_csv_field_headername($field_name);
     $ret_array[$field_name] = glue_multiparts($array, $field_name);
   }
   return $ret_array;
@@ -409,77 +408,6 @@ function glue_multiparts(array $array, $field_name) {
  */
 function trimr_period_add_att($string, $attrib) {
   return rtrim(trim($string), ".") . $attrib;
-}
-
-/**
- * This will return the Migration CSV header name corresponding to a fieldname.
- *
- * @param string $field_name
- *   The incoming field_name that came from the TSV export file.
- *
- * @return string
- *   This should be the header name that matches.
- */
-function get_csv_field_headername($field_name) {
-  /*
-   * These field names are possible, but according to the merge rules between
-   * the MARC derived TSV and the exported legacy records in the CSV source,
-   * some of these fields will never be needed.
-   */
-  // handle
-  // field_title
-  // field_statement_responsibility
-  // field_date_created
-  // field_prec_subject
-  // field_subject
-  // field_linked_agent
-  // field_language
-  // field_genre
-  // field_note_para
-  // field_resource_type
-  // field_cataloging_standards
-  // field_description_source
-  // field_level_of_coding
-  // field_extent
-  // field_name_subject
-  // field_title_subject
-  // field_geographic_subject
-  // field_table_of_contents.
-  $tsv_field_map = [
-    '' => 'Collection ID',
-    '' => 'Collection Title',
-    '' => 'Item Title',
-    '' => 'Item ID',
-    '' => 'Subjects',
-    '' => 'Personal Contributors',
-    '' => 'Institutional Contributors',
-    '' => 'Date Created',
-    '' => 'Description',
-    '' => 'Table of Contents',
-    '' => 'Language',
-    '' => 'Identifiers',
-    '' => 'Series',
-    '' => 'Resource Types',
-    '' => 'Extent',
-    '' => 'Citation',
-    '' => 'Notes',
-    '' => 'Copyright',
-    '' => 'Reuse',
-    '' => 'Visibility',
-    '' => 'Embargo Date',
-    '' => 'System Created',
-    '' => 'System Updated',
-    '' => 'Attachment Count',
-    '' => 'System User',
-    '' => 'Model',
-    '' => 'Parent Item',
-    '' => 'Complex Object Child',
-    '' => 'Topical Subject',
-    '' => 'Topical Subjects',
-    '' => 'Contributors-Person',
-    '' => 'Contributors-Corporate',
-  ];
-  return (array_key_exists($field_name, $tsv_field_map) ? $tsv_field_map[$field_name] : $field_name);
 }
 
 /**
