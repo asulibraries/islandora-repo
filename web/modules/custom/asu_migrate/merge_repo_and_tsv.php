@@ -465,19 +465,6 @@ function merge_tsv_and_csv(array $tsv, $csv_filename, $output_file) {
         - Language -- drop
         - Extent -- drop
         - Notes -- drop */
-
-        /* Shouldn't occur, but if you detect any use, let me know so we can
-        discuss:
-        - Identifier -- n/a (not used in ProQuest ETD metadata)
-        - Series -- n/a (not used in ProQuest ETD metadata)
-        - Citation -- n/a (not used in ProQuest ETD metadata) */
-
-        /* Because of this conditional rule, the exported CSV has
-        Contributors-Person-Adv-Cmt and if there is a value in it, put that
-        into the Contributors-Person field. In all cases, drup the
-        Contributors-Person-Adv-Cmt field after applying the logic.
-        - Contributor [plus Type and Role qualifiers] -- CONDITIONAL: retain
-        if role is "Advisor" or "Committee member"; otherwise drop */
         if ($row['field_title']) {
           $tsv_and_csv[$id]['Item Title'] = $row['field_title'];
         }
@@ -513,6 +500,38 @@ function merge_tsv_and_csv(array $tsv, $csv_filename, $output_file) {
         }
         if ($row['field_prec_subject']) {
           $tsv_and_csv[$id]['field_prec_subject'] = $row['field_prec_subject'];
+        }
+        /* Shouldn't occur, but if you detect any use, let me know so we can
+        discuss:
+        - Identifier -- n/a (not used in ProQuest ETD metadata)
+        - Series -- n/a (not used in ProQuest ETD metadata)
+        - Citation -- n/a (not used in ProQuest ETD metadata) */
+        if ($tsv_and_csv[$id]['Identifiers'] == 'n/a') {
+          echo "Identifier = \"n/a\" found for item id $id. Cleared the value for this item.\n";
+          $tsv_and_csv[$id]['Identifiers'] = '';
+        }
+        if ($tsv_and_csv[$id]['Series'] == 'n/a') {
+          echo "Series = \"n/a\" found for item id $id. Cleared the value for this item.\n";
+          $tsv_and_csv[$id]['Series'] = '';
+        }
+        if ($tsv_and_csv[$id]['Citation'] == 'n/a') {
+          echo "Citation = \"n/a\" found for item id $id. Cleared the value for this item.\n";
+          $tsv_and_csv[$id]['Citation'] = '';
+        }
+
+        /* Because of this conditional rule, the exported CSV has
+        Contributors-Person-Adv-Cmt and if there is a value in it, put that
+        into the Contributors-Person field. In all cases, drup the
+        Contributors-Person-Adv-Cmt field after applying the logic.
+        - Contributor [plus Type and Role qualifiers] -- CONDITIONAL: retain
+        if role is "Advisor" or "Committee member"; otherwise drop */
+        if ($tsv_and_csv[$id]['Contributors-Person-Adv-Cmt']) {
+          echo "Citation = \"n/a\" found for item id $id. Cleared the value for this item.\n";
+          $tsv_and_csv[$id]['Contributors-Person'] = $tsv_and_csv[$id]['Contributors-Person-Adv-Cmt'];
+          $tsv_and_csv[$id]['Contributors-Person-Adv-Cmt'] = '';
+        }
+        if ($row['field_linked_agent']) {
+          $tsv_and_csv[$id]['Contributors-Person'] = merge_two_values($tsv_and_csv[$id]['Contributors-Person'], $row['field_linked_agent']);
         }
       }
     }
