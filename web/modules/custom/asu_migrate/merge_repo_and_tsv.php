@@ -503,6 +503,12 @@ function merge_tsv_and_csv(array $tsv, $csv_filename, $output_file) {
     while (($data = fgetcsv($handle, 20000, ",")) !== FALSE) {
       show_progress($counter);
       if (count($csv_headers) < 1) {
+        $data[] = 'Topical Subjects';
+        $data[] = 'Cataloging Standards';
+        $data[] = 'Statement of Responsibility';
+        $data[] = 'Title Subject';
+        $data[] = 'Geographic Subjects';
+        $data[] = 'field_prec_subject';
         $csv_headers = $data;
         $tsv_and_csv[] = $data;
         $item_id_index = array_search('Item ID', $data);
@@ -511,7 +517,7 @@ function merge_tsv_and_csv(array $tsv, $csv_filename, $output_file) {
         if (array_key_exists($item_id_index, $data)) {
           $this_identifier = $data[$item_id_index];
           foreach ($csv_headers as $idx => $cvs_fieldname) {
-            $tsv_and_csv[$this_identifier][$cvs_fieldname] = $data[$idx];
+            $tsv_and_csv[$this_identifier][$cvs_fieldname] = (array_key_exists($idx, $data) ? $data[$idx] : '');
           }
         }
         $counter++;
