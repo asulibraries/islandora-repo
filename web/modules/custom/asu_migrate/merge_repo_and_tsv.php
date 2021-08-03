@@ -434,6 +434,8 @@ function merge_tsv_and_csv(array $tsv, $csv_filename, $output_file) {
         $data[] = 'Topical Subjects';
         $data[] = 'Cataloging Standards';
         $data[] = 'Statement of Responsibility';
+        $data[] = 'Description Source';
+        $data[] = 'Level of Coding';
         $data[] = 'Title Subject';
         $data[] = 'Geographic Subjects';
         $data[] = 'field_prec_subject';
@@ -444,6 +446,14 @@ function merge_tsv_and_csv(array $tsv, $csv_filename, $output_file) {
       else {
         if (array_key_exists($item_id_index, $data)) {
           $this_identifier = $data[$item_id_index];
+          $data['Topical Subjects'] = '';
+          $data['Cataloging Standards'] = '';
+          $data['Statement of Responsibility'] = '';
+          $data['Description Source'] = '';
+          $data['Level of Coding'] = '';
+          $data['Title Subject'] = '';
+          $data['Geographic Subjects'] = '';
+          $data['field_prec_subject'] = '';
           foreach ($csv_headers as $idx => $cvs_fieldname) {
             $tsv_and_csv[$this_identifier][$cvs_fieldname] = (array_key_exists($idx, $data) ? $data[$idx] : '');
           }
@@ -489,6 +499,12 @@ function merge_tsv_and_csv(array $tsv, $csv_filename, $output_file) {
         if ($row['field_statement_responsibility']) {
           $tsv_and_csv[$id]['Statement of Responsibility'] = $row['field_statement_responsibility'];
         }
+        if ($row['field_description_source']) {
+          $tsv_and_csv[$id]['Description Source'] = $row['field_description_source'];
+        }
+        if ($row['field_level_of_coding']) {
+          $tsv_and_csv[$id]['Level of Coding'] = $row['field_level_of_coding'];
+        }
         if (array_key_exists('field_name_subject', $row) && $row['field_name_subject']) {
           $tsv_and_csv[$id]['Name Title Subjects'] = $row['field_name_subject'];
         }
@@ -526,7 +542,6 @@ function merge_tsv_and_csv(array $tsv, $csv_filename, $output_file) {
         - Contributor [plus Type and Role qualifiers] -- CONDITIONAL: retain
         if role is "Advisor" or "Committee member"; otherwise drop */
         if ($tsv_and_csv[$id]['Contributors-Person-Adv-Cmt']) {
-          echo "Citation = \"n/a\" found for item id $id. Cleared the value for this item.\n";
           $tsv_and_csv[$id]['Contributors-Person'] = $tsv_and_csv[$id]['Contributors-Person-Adv-Cmt'];
           $tsv_and_csv[$id]['Contributors-Person-Adv-Cmt'] = '';
         }
