@@ -482,6 +482,7 @@ function merge_tsv_and_csv(array $tsv, $csv_filename, $output_file) {
               $tsv_and_csv[$this_identifier][$csv_fieldname] = (array_key_exists($idx, $data) ? $data[$idx] : '');
             }
           }
+          $tsv_and_csv[$this_identifier]['Level of Coding'] = 'minimal';
         }
         $counter++;
       }

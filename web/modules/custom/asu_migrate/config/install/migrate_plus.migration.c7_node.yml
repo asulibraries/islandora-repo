@@ -30,7 +30,7 @@ source:
     pres_state: '558' # Not Preserved
     handle: "https://hdl.handle.net/2286/R.I."
     cataloging_standards: "asu1"
-    level_of_coding: "minimal"
+    # level_of_coding: "minimal"
 
 process:
   field_extent:
@@ -469,13 +469,42 @@ process:
     source: constants/cataloging_standards
     bundle: cataloging_standards
 
-  field_level_of_coding: constants/level_of_coding
+  field_level_of_coding:
+    -
+      plugin: skip_on_empty
+      source: Level of Coding
+      method: process  
   
-Topical Subjects	
-Cataloging Standards
-Statement of Responsibility
-Title Subject
-Geographic Subjects
+  field_cataloging_standards:
+    -
+      plugin: skip_on_empty
+      source: Cataloging Standards
+      method: process
+    -
+      plugin: entity_lookup_by_field
+      lookup_field: field_source/uri
+      entity_type: taxonomy_term
+      bundle: cataloging_standards
+      
+  field_statement_responsibility: Statement of Responsibility
+
+  field_title_subject:
+    -
+      plugin: skip_on_empty
+      source: Title Subject
+      method: process
+    -
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: name_uri_generate
+      delimiter: '|'
+      uri_field: field_authority_link
+      default_vocabulary: titles
+
 #field_prec_subject - this compound subject string is pending further development
 
 # We're making nodes
