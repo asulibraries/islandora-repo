@@ -16,6 +16,7 @@
 
 
 .sidebar {
+  border: none;
   .block {
     border-style: solid;
     border-width: $border-width;
@@ -113,6 +114,12 @@
     color: $uds-color-base-gray-7;
     font-weight: 400 !important;
     font-size: 1rem !important;
+    justify-content: left;
+    align-items: baseline;
+    &:not(.is-active) {
+      justify-content: left;
+      align-items: baseline;    
+    }
 
     &:hover {
       text-decoration: underline;
