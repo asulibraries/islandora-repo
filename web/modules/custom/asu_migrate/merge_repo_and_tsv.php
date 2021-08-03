@@ -431,14 +431,31 @@ function merge_tsv_and_csv(array $tsv, $csv_filename, $output_file) {
     while (($data = fgetcsv($handle, 20000, ",")) !== FALSE) {
       show_progress($counter);
       if (count($csv_headers) < 1) {
-        $data[] = 'Topical Subjects';
-        $data[] = 'Cataloging Standards';
-        $data[] = 'Statement of Responsibility';
-        $data[] = 'Description Source';
-        $data[] = 'Level of Coding';
-        $data[] = 'Title Subject';
-        $data[] = 'Geographic Subjects';
-        $data[] = 'field_prec_subject';
+        unset($data[0]);
+        if (array_search('Topical Subjects', $data) === FALSE) {
+          $data[] = 'Topical Subjects';
+        }
+        if (array_search('Cataloging Standards', $data) === FALSE) {
+          $data[] = 'Cataloging Standards';
+        }
+        if (array_search('Statement of Responsibility', $data) === FALSE) {
+          $data[] = 'Statement of Responsibility';
+        }
+        if (array_search('Description Source', $data) === FALSE) {
+          $data[] = 'Description Source';
+        }
+        if (array_search('Level of Coding', $data) === FALSE) {
+          $data[] = 'Level of Coding';
+        }
+        if (array_search('Title Subject', $data) === FALSE) {
+          $data[] = 'Title Subject';
+        }
+        if (array_search('Geographic Subjects', $data) === FALSE) {
+          $data[] = 'Geographic Subjects';
+        }
+        if (array_search('field_prec_subject', $data) === FALSE) {
+          $data[] = 'field_prec_subject';
+        }
         $csv_headers = $data;
         $tsv_and_csv[] = $data;
         $item_id_index = array_search('Item ID', $data);
@@ -446,16 +463,24 @@ function merge_tsv_and_csv(array $tsv, $csv_filename, $output_file) {
       else {
         if (array_key_exists($item_id_index, $data)) {
           $this_identifier = $data[$item_id_index];
-          $data['Topical Subjects'] = '';
-          $data['Cataloging Standards'] = '';
-          $data['Statement of Responsibility'] = '';
-          $data['Description Source'] = '';
-          $data['Level of Coding'] = '';
-          $data['Title Subject'] = '';
-          $data['Geographic Subjects'] = '';
-          $data['field_prec_subject'] = '';
-          foreach ($csv_headers as $idx => $cvs_fieldname) {
-            $tsv_and_csv[$this_identifier][$cvs_fieldname] = (array_key_exists($idx, $data) ? $data[$idx] : '');
+          // Cataloging Standards.
+          $data[] = '';
+          // Statement of Responsibility.
+          $data[] = '';
+          // Description Source.
+          $data[] = '';
+          // Level of Coding.
+          $data[] = '';
+          // Title Subject.
+          $data[] = '';
+          // Geographic Subjects.
+          $data[] = '';
+          // field_prec_subject.
+          $data[] = '';
+          foreach ($csv_headers as $idx => $csv_fieldname) {
+            if ($idx) {
+              $tsv_and_csv[$this_identifier][$csv_fieldname] = (array_key_exists($idx, $data) ? $data[$idx] : '');
+            }
           }
         }
         $counter++;
@@ -733,8 +758,8 @@ function load_repo_csv_file($csv_filename, array &$item_ids) {
             $this_identifier = $item_ids[$found_item_id_index];
             // Also, remove this from the $item_ids array.
             unset($item_ids[$found_item_id_index]);
-            foreach ($csv_headers as $idx => $cvs_fieldname) {
-              $array[$this_identifier][$cvs_fieldname] = $data[$idx];
+            foreach ($csv_headers as $idx => $csv_fieldname) {
+              $array[$this_identifier][$csv_fieldname] = $data[$idx];
             }
           }
         }
