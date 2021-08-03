@@ -565,13 +565,13 @@ function merge_tsv_and_csv(array $tsv, $csv_filename, $output_file) {
         if ($row['field_statement_responsibility']) {
           $tsv_and_csv[$id]['Statement of Responsibility'] = $row['field_statement_responsibility'];
         }
-        if ($row['field_name_subject']) {
+        if (array_key_exists('field_name_subject', $row) && $row['field_name_subject']) {
           $tsv_and_csv[$id]['Name Title Subjects'] = $row['field_name_subject'];
         }
-        if ($row['field_title_subject']) {
+        if (array_key_exists('field_title_subject', $row) && $row['field_title_subject']) {
           $tsv_and_csv[$id]['Title Subject'] = $row['field_title_subject'];
         }
-        if ($row['field_geographic_subject']) {
+        if (array_key_exists('field_geographic_subject', $row) && $row['field_geographic_subject']) {
           $tsv_and_csv[$id]['Geographic Subjects'] = $row['field_geographic_subject'];
         }
         if ($row['field_prec_subject']) {
