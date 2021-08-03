@@ -487,6 +487,9 @@ function merge_tsv_and_csv(array $tsv, $csv_filename, $output_file) {
         if ($row['field_language']) {
           $tsv_and_csv[$id]['Language'] = $row['field_language'];
         }
+        if ($row['field_genre']) {
+          $tsv_and_csv[$id]['Resource Types'] = merge_two_values($tsv_and_csv[$id]['Resource Types'], $row['field_genre']);
+        }
         if ($row['field_note_para']) {
           $tsv_and_csv[$id]['Notes'] = merge_two_values($tsv_and_csv[$id]['Notes'], $row['field_note_para']);
         }
