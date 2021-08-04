@@ -40,7 +40,7 @@ process:
       method: process
     -
       plugin: explode
-      delimiter: '||'
+      delimiter: ' || '
     -
       plugin: callback
       callable: trim
@@ -171,7 +171,7 @@ process:
   title:
     -
       plugin: explode
-      delimiter: '||'
+      delimiter: ' || '
       source: Item Title
     -
       plugin: callback
@@ -185,7 +185,7 @@ process:
   field_title:
     -
       plugin: explode
-      delimiter: '||'
+      delimiter: ' || '
       source: Item Title
     -
       plugin: callback
@@ -207,7 +207,7 @@ process:
       method: process
     -
       plugin: explode
-      delimiter: '||'
+      delimiter: ' || '
     -
       plugin: callback
       callable: trim
@@ -231,7 +231,7 @@ process:
       method: process
     -
       plugin: explode
-      delimiter: '||'
+      delimiter: ' || '
     -
       plugin: callback
       callable: trim
@@ -261,7 +261,7 @@ process:
       method: process
     -
       plugin: explode
-      delimiter: '||'
+      delimiter: ' || '
     -
       plugin: entity_lookup
       entity_type: taxonomy_term
@@ -309,7 +309,7 @@ process:
       method: process
     -
       plugin: explode
-      delimiter: '||'
+      delimiter: ' || '
     -
       plugin: callback
       callable: trim
@@ -326,7 +326,7 @@ process:
       method: process
     -
       plugin: explode
-      delimiter: '||'
+      delimiter: ' || '
     -
       plugin: callback
       callable: trim
@@ -343,7 +343,7 @@ process:
       method: process
     -
       plugin: explode
-      delimiter: '||'
+      delimiter: ' || '
     -
       plugin: callback
       callable: trim
@@ -360,7 +360,7 @@ process:
       method: process
     -
       plugin: explode
-      delimiter: '||'
+      delimiter: ' || '
     -
       plugin: callback
       callable: trim
@@ -380,7 +380,7 @@ process:
       method: process
     -
       plugin: explode
-      delimiter: '||'
+      delimiter: ' || '
     -
       plugin: callback
       callable: trim
@@ -428,7 +428,7 @@ process:
   contributors:
     -
       plugin: explode
-      delimiter: '||'
+      delimiter: ' || '
       source: Contributors-Person
     -
       plugin: callback
@@ -495,7 +495,7 @@ process:
       method: process
     -
       plugin: explode
-      delimiter: '||'
+      delimiter: ' || '
     -
       plugin: callback
       callable: trim
