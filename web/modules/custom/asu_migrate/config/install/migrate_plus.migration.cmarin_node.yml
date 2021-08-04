@@ -269,11 +269,10 @@ process:
       bundle_key: vid
       bundle: language
 
-  field_handle:
-    plugin: concat
-    source:
-      - constants/handle
-      - Item ID
+  field_handle: 
+    plugin: skip_on_empty
+    source: Handle
+    method: process
 
   field_member_of:
     -
