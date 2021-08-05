@@ -10,7 +10,8 @@ migration_group: migrate_c7_csv
 
 source:
   plugin: csv
-  path: /var/www/html/drupal/web/modules/custom/asu_migrate/c7_merged_v2.csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/c7_merged_v3.csv
+  # c7_merged_v2.csv
 
   # 1 means you have a header row, 0 means you don't
   header_row_count: 1
@@ -243,6 +244,10 @@ process:
         field_note_text:
           order: 0
           type: text
+        field_note_type:
+          order: 1
+          type: taxonomy_term
+          lookup_field: name
 
   field_pid: Item ID
 
