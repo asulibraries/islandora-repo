@@ -20,7 +20,7 @@ nav #search-form {
     text-align: right;
     fieldset.form-group {
         display: inline-block;
-        @extend .col-md-7;
+        @extend .col-md-6;
         margin: 0;
         padding: 0;
         @media(max-width: 1260px) {
@@ -29,6 +29,7 @@ nav #search-form {
     }
     .form-control {
         @extend .form-control-sm;
+        line-height: 0.5;
     }
     .button {
         vertical-align: top;
@@ -40,23 +41,14 @@ nav #search-form {
     margin-bottom: 0;
 }
 
-.search-home-form, .bento-home-search-form {
-    margin-top: 40px;
-    margin-bottom: 40px;
-}
-
-#search-home-form, #bento-home-search-form {
-    padding: 30px 30px 40px 30px;
-    background: $gray-2;
-    fieldset.form-group {
-        display: inline-block;
-        @extend .col-md-7;
-    }
-}
-
 .repo-search {
+    padding-top: $large-padding;
+    padding-bottom: $large-padding;
+    background: $gray-2;
+    .content {
+        @extend .container;
+    }
     fieldset {
-        /*@extend .col;*/
         margin: 0;
         padding: 0 !important;
     }
@@ -68,12 +60,11 @@ nav #search-form {
         // background: url(/themes/custom/asulib_barrio/images/search-white.svg) center center / 1.25rem no-repeat content-box $maroon;
         // text-indent: -5555px;
         @extend .btn-md;
+        line-height: 1.5rem;
+        margin-left: 5px;
     }
     form {
         @extend .row;
-        @extend .no-gutters;
-        @extend .justify-content-center;
-        /*@extend .align-items-center;*/
     }
 }
 

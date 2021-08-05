@@ -30,8 +30,7 @@
         background-color: $gray-2;
     }
     .padded-content-box {
-        /*padding: 2.5rem 15px 1.5rem;*/
-        margin-bottom: 4rem;
+        margin-bottom: $large-padding;
     }
     .view-id-content_recent .view-content {
         background-color: rgba(242, 242, 242, 1);
@@ -139,7 +138,8 @@
 
 .calls-to-action {
     background: $gray-2;
-    padding: 40px;
+    padding-top: $large-padding;
+    padding-bottom: $large-padding;    
     .col-md-4 {
         background: $white;
         border: 1px solid $gray-3;
@@ -165,24 +165,19 @@
     }
 }
 
-.path-frontpage header {
-    margin-bottom: 0;
-}
-.path-frontpage h2 {
-    margin-bottom: ($spacer * 1.5);
+.path-frontpage {
+    header {
+        margin-bottom: 0;
+    }
+    .node__content {
+        margin-top: 0;
+        padding-top: $large-padding;
+        padding-bottom: $small-padding;
+    }
 }
 
 .card-wrapper {
     margin-bottom: 1rem;
-}
-
-/* Mobile breakpoint */
-@media (max-width: 990px) {
-    .calls-to-action {
-        .col-md-4 {
-            margin-bottom: 2rem;
-        }
-    }
 }
 
 .prism-home-thumb {
@@ -192,4 +187,13 @@
 
 .prism-fullwidth-row {
     width: 100%;
+}
+
+.sm-top-lg-bottom-padded-content {
+    padding-top: $small-padding;
+    padding-bottom: $large-padding;
+}
+.sm-top-sm-bottom-padded-content {
+    padding-top: $small-padding;
+    padding-bottom: $small-padding;
 }
