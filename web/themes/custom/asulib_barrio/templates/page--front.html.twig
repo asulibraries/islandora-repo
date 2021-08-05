@@ -146,21 +146,21 @@
 										<div class="container sm-top-lg-bottom-padded-content">
 											<div class="row">
 											<div class="col-md-6">
-												<h2>Recent Items</h2>
+												<h2>Recent items</h2>
 												{{ drupal_view('content_recent', 'block_4') }}
 											</div>
 											<div class="col-md-6">
-												<h2>Recent Collections</h2>
+												<h2>Recent collections</h2>
 												{{ drupal_view('content_recent', 'block_5') }}
 											</div>
 											</div>
 										</div>
 										{{ drupal_block('calls_to_action_block') }}
-									{% elseif site_name == "PRISM" %} 
+									{% elseif site_name == "PRISM" %}
 										<div class="container sm-top-sm-bottom-padded-content">
 											<div class="row">
 												<div class="col-md-12">
-													<h2>Recent Items</h2>
+													<h2>Recent items</h2>
 													{{ drupal_view('content_recent', 'block_2') }}
 												</div>
 											</div>
@@ -168,8 +168,25 @@
 										<div class="container sm-top-lg-bottom-padded-content">
 											<div class="row">
 												<div class="col-md-12">
-													<h2>Featured Collections</h2>
+													<h2>Featured collections</h2>
 													{{ drupal_view('featured_collections', 'block_1') }}
+												</div>
+											</div>
+										</div>
+									{% else %}
+										<div class="container sm-top-sm-bottom-padded-content">
+											<div class="row">
+												<div class="col-md-12">
+													<h2>Recent items in KEEP</h2>
+													{{ drupal_view('landing_page_recent_keep_items', 'block_1') }}
+												</div>
+											</div>
+										</div>
+										<div class="container sm-top-lg-bottom-padded-content">
+											<div class="row">
+												<div class="col-md-12">
+													<h2>Featured content</h2>
+													{{ drupal_view('featured_content', 'block_1') }}
 												</div>
 											</div>
 										</div>
