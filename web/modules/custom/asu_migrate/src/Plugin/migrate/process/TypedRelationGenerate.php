@@ -2,11 +2,8 @@
 
 namespace Drupal\asu_migrate\Plugin\migrate\process;
 
-use Drupal\migrate\ProcessPluginBase;
 use Drupal\migrate\MigrateExecutableInterface;
-use Drupal\migrate\MigrateSkipProcessException;
 use Drupal\migrate\Row;
-use Drupal\taxonomy\Entity\Term;
 
 /**
  * Check if term exists and create new if doesn't.
@@ -16,7 +13,12 @@ use Drupal\taxonomy\Entity\Term;
  * )
  */
 class TypedRelationGenerate extends NameURIGenerate {
-  protected $relator_map = [
+  /**
+   * This is the mapping between relators and their names.
+   *
+   * @var array
+   */
+  protected $relatorMap = [
     "relators:abr" => "Abridger",
     "relators:act" => "Actor",
     "relators:adp" => "Adapter",
@@ -290,7 +292,7 @@ class TypedRelationGenerate extends NameURIGenerate {
     "relators:wat" => "Writer of added text",
     "relators:win" => "Writer of introduction",
     "relators:wpr" => "Writer of preface",
-    "relators:wst" => "Writer of supplementary textual content"
+    "relators:wst" => "Writer of supplementary textual content",
   ];
 
   /**
@@ -298,8 +300,9 @@ class TypedRelationGenerate extends NameURIGenerate {
    */
   public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
     if (is_array($value)) {
-      $name = $value['name'];
-      $uri = (array_key_exists('uri', $value) ? $value['uri'] : '');
+      /* These two parts are not needed for this functionality. */
+      /* $name = $value['name']; /*
+      /* $uri = (array_key_exists('uri', $value) ? $value['uri'] : ''); */
       $relator = (array_key_exists('rel', $value) ?
         (strstr($value['rel'], 'relators:') ? $value['rel'] : 'relators:' . $value['rel']) : '');
       unset($value['rel']);
@@ -312,7 +315,7 @@ class TypedRelationGenerate extends NameURIGenerate {
         $parts = explode($this->configuration['delimiter'], $value);
         if (count($parts) > 1) {
           $relator_string = array_pop($parts);
-          $relator = $this->look_up_relator($relator_string);
+          $relator = $this->lookUpRelator($relator_string);
           $value = implode($this->configuration['delimiter'], $parts);
         }
         else {
@@ -323,15 +326,41 @@ class TypedRelationGenerate extends NameURIGenerate {
     $term = parent::transform($value, $migrate_executable, $row, $destination_property);
     $typed_relation = [
       'rel_type' => $relator,
-      'target_id' => $term
+      'target_id' => $term,
     ];
     return $typed_relation;
   }
 
-  public function look_up_relator(string $relator) {
-    $relator_found = array_search(strtolower($relator), array_map('strtolower', $this->relator_map));
-    if (!$relator_found) {
-      $relator_found = 'relators:ctb';
+  /**
+   * This looks up a relator code based on the name.
+   *
+   * Note: this can take either a relator value OR a relator key such as
+   * "relators:msd" or even "relator:aut".
+   *
+   * @param string $relator
+   *   The relator part of the working string.
+   *
+   * @return string
+   *   The array key that matches the relator that was provided.
+   */
+  public function lookUpRelator(string $relator) {
+    // Allow lookup to function when passing the relators:xyz key instead of
+    // a value.
+    if (strstr($relator, "relators:") || strstr($relator, "relator:")) {
+      $key = 'relators:' . str_replace([
+        'relators:',
+        'relator:',
+      ], "", $relator);
+      $relator_by_code_found = array_key_exists($key, $this->relatorMap);
+      if (!($relator_by_code_found === FALSE)) {
+        $relator_found = $key;
+      }
+    }
+    else {
+      $relator_found = array_search(strtolower($relator), array_map('strtolower', $this->relatorMap));
+      if (!$relator_found) {
+        $relator_found = 'relators:ctb';
+      }
     }
     return $relator_found;
   }

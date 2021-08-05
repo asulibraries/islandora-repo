@@ -228,8 +228,6 @@ function refactor_marc_field($value) {
         $curly_bracket_part = str_replace($quoted_part, $comma_tokenized, $curly_bracket_part);
       }
       $individual_parts = explode(",", $curly_bracket_part);
-      // Echo "Individual parts from curly brackets contents :\n" .
-      // print_r($individual_parts, TRUE) . "\n-------\n";.
       foreach ($individual_parts as $individual_part) {
         $individual_part = str_replace('&comma;', ',', $individual_part);
         $fvs = refactor_marc_field($individual_part);
@@ -271,6 +269,7 @@ function refactor_marc_field($value) {
     }
   }
   else {
+    $value = strip_end_quotes($value);
     return [$field_name => $value];
   }
 }
@@ -362,51 +361,71 @@ function convert_marc_arr_to_csv_row(array $line_as_array) {
  */
 function glue_multiparts(array $array, $field_name) {
   $output = [];
+  // Echo $field_name . " = \n" . print_r($array, true) . "\n";.
+  $part_delim = ($field_name == 'field_note_para' || $field_name == 'field_linked_agent') ? "|" : "@";
   foreach ($array as $array_item) {
     $val0_of_array = ((is_array($array_item) && array_key_exists(0, $array_item)) ? $array_item[0] : $array_item);
     // @todo NEED A WAY TO GET ANY vocab_or_qualifier FOR THESE.
     $vocabs_or_qualifiers = '';
     if (is_array($val0_of_array)) {
       if (array_key_exists('vocab_or_qualifier', $val0_of_array)) {
-        $vocabs_or_qualifiers = "@" . implode(",@", $val0_of_array['vocab_or_qualifier']);
+        $vocabs_or_qualifiers = $part_delim . implode($part_delim, $val0_of_array['vocab_or_qualifier']);
         unset($val0_of_array['vocab_or_qualifier']);
       }
       if (count($val0_of_array) == 1) {
-        $output[] = trimr_period_add_att(glue_multiparts($val0_of_array, $field_name), $vocabs_or_qualifiers);
+        $output[] = trimr_special_add_att(glue_multiparts($val0_of_array, $field_name), $vocabs_or_qualifiers, $field_name);
       }
       else {
         $concat_fields = [];
         foreach ($val0_of_array as $inner_array) {
           $inner_vocabs_or_qualifiers = '';
           if (array_key_exists('vocab_or_qualifier', $inner_array)) {
-            $inner_vocabs_or_qualifiers = "@" . implode(",@", $inner_array['vocab_or_qualifier']);
+            $inner_vocabs_or_qualifiers = $part_delim . implode($part_delim, $inner_array['vocab_or_qualifier']);
             unset($inner_array['vocab_or_qualifier']);
           }
-          $concat_fields[] = trimr_period_add_att(glue_multiparts($inner_array, $field_name), $inner_vocabs_or_qualifiers);
+          $concat_fields[] = trimr_special_add_att(glue_multiparts($inner_array, $field_name), $inner_vocabs_or_qualifiers, $field_name);
         }
         $sep = ($field_name == 'field_prec_subject') ? '|' : '|';
-        $output[] = trimr_period_add_att(implode($sep, $concat_fields), $vocabs_or_qualifiers);
+        $output[] = trimr_special_add_att(implode($sep, $concat_fields), $vocabs_or_qualifiers, $field_name);
       }
     }
     else {
-      $output[] = trimr_period_add_att($val0_of_array, $vocabs_or_qualifiers);
+      $output[] = trimr_special_add_att($val0_of_array, $vocabs_or_qualifiers, $field_name);
     }
   }
   return implode(" || ", $output);
 }
 
 /**
- * Trims the right period from a string and adds the attribute.
+ * Trims based on logic from a string and adds the attribute.
  *
  * @param string $string
  *   The incoming string to operate on.
  * @param string $attrib
  *   The attribute from TSV.
+ * @param string $field_name
+ *   The field for which this is being called.
  *
  * @return string
  *   The trimmed value with the attrib added.
  */
-function trimr_period_add_att($string, $attrib) {
+function trimr_special_add_att($string, $attrib, $field_name) {
+  @list($junk, $junk) = explode("@", $string);
+  if (strstr($junk, ":")) {
+    if ((strstr($string, "type:person") || strstr($string, "type:conference")) && $field_name == 'field_linked_agent') {
+      $string = str_replace([
+        'type:person',
+        'type:conference',
+      ], '|', $string);
+    }
+    $string = str_replace("@", "|", $string);
+  }
+  if (strstr($string, "[lcsh]")) {
+    $string = rtrim(trim($string), "[lcsh]");
+  }
+  if ($attrib == '@lcsh' && ($field_name == 'field_subject' || $field_name == 'field_prec_subjects')) {
+    $attrib = '';
+  }
   return rtrim(trim($string), ".") . $attrib;
 }
 
@@ -715,8 +734,9 @@ function merge_multifields(array $csv) {
     $counter++;
     if (is_array($field_contents)) {
       $vocabs_or_qualifiers = '';
+      $part_delim = ($fieldname == 'field_note_para' || $fieldname == 'field_linked_agent') ? "|" : "@";
       if (array_key_exists('vocab_or_qualifier', $field_contents)) {
-        $vocabs_or_qualifiers = "@" . implode(",@", $field_contents['vocab_or_qualifier']);
+        $vocabs_or_qualifiers = $part_delim . implode($part_delim, $field_contents['vocab_or_qualifier']);
         unset($field_contents['vocab_or_qualifier']);
       }
       if ($vocabs_or_qualifiers) {
@@ -856,6 +876,8 @@ function show_progress($counter, $max = 0) {
 function help() {
   echo "The \"Merge Repo and TSV\" will parse a tab-separated file and optionally save this as a file. This will create a CSV for migration purposes; the fields that are kept from each source has been determined by the metadata owners.
 
+If any TSV items are not matched up with CSV items, these are saved using the parameters for the current run as UNFOUND_ITEMS_{n}_{offset}_{tsv}.
+
 Usage: merge_repo_and_tsv.php -tsv={filename} -csv={filename} -out={filename} ([OPTIONS])
 
 Mandatory argument
@@ -863,7 +885,7 @@ Mandatory argument
   -csv={filename}     relative path to the Repo CSV file for the same items.
 
 Optional argument
-  -out={filename}     where to save the results
+  -out={filename}     where to save the resulting merged CSV
 
 (OPTIONS)
   -n=#                how many rows to process (default is 5)
@@ -871,7 +893,7 @@ Optional argument
 
 Examples:
  php merge_repo_and_tsv.php -tsv=tsv/foo.tsv -csv=bar.csv -out=/tmp/merge_test.csv -n=2000 -o=6000
- php merge_repo_and_tsv.php -tsv=/tmp/test_foo.tsv -csv=/tmp/test_bar.csv -out=~/merge_test.csv -n=10000
+ php merge_repo_and_tsv.php -tsv=/tmp/test_foo.tsv -csv=/tmp/test_bar.csv -out=~/c7_merged_v3.csv -n=10000
  php merge_repo_and_tsv.php -tsv=/tmp/test_foo.tsv -csv=/tmp/test_bar.csv
 
 \n\n";
