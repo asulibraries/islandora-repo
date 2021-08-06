@@ -447,7 +447,7 @@ function merge_tsv_and_csv(array $tsv, $csv_filename, $output_file) {
     echo "\nMerging the data between MARC sourced TSV and the source Repo CSV file \"$csv_filename\".\n--------------\n";
     $csv_headers = [];
     $item_id_index = $counter = 0;
-    while (($data = fgetcsv($handle, 20000, ",")) !== FALSE) {
+    while (($data = fgetcsv($handle)) !== FALSE) {
       show_progress($counter);
       if (count($csv_headers) < 1) {
         unset($data[0]);
@@ -596,6 +596,7 @@ function merge_tsv_and_csv(array $tsv, $csv_filename, $output_file) {
       }
     }
   }
+
   save_csv_to_file($tsv_and_csv, $output_file);
 }
 
@@ -764,7 +765,7 @@ function load_repo_csv_file($csv_filename, array &$item_ids) {
 
     $csv_headers = [];
     $history_json_index = $item_id_index = $counter = 0;
-    while (($data = fgetcsv($handle, 20000, ",")) !== FALSE) {
+    while (($data = fgetcsv($handle)) !== FALSE) {
       show_progress($counter);
       if (count($csv_headers) < 1) {
         $csv_headers = $data;
@@ -818,7 +819,7 @@ function save_tsv_of_unfound_items($tsv_filename, $n, $offset, array &$find_item
   if ($handle) {
     $csv_headers = [];
     $item_id_index = $counter = 0;
-    while (($data = fgetcsv($handle, 40000, ",")) !== FALSE) {
+    while (($data = fgetcsv($handle)) !== FALSE) {
       show_progress($counter);
       if (count($csv_headers) < 1) {
         $unfound_lines[] = $data;

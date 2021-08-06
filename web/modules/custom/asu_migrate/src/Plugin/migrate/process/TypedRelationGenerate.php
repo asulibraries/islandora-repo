@@ -346,6 +346,7 @@ class TypedRelationGenerate extends NameURIGenerate {
   public function lookUpRelator(string $relator) {
     // Allow lookup to function when passing the relators:xyz key instead of
     // a value.
+    $relator_found = 'relators:ctb';
     if (strstr($relator, "relators:") || strstr($relator, "relator:")) {
       $key = 'relators:' . str_replace([
         'relators:',
@@ -358,9 +359,6 @@ class TypedRelationGenerate extends NameURIGenerate {
     }
     else {
       $relator_found = array_search(strtolower($relator), array_map('strtolower', $this->relatorMap));
-      if (!$relator_found) {
-        $relator_found = 'relators:ctb';
-      }
     }
     return $relator_found;
   }
