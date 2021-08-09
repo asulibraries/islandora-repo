@@ -183,9 +183,12 @@ function asu_permissions_node_update(NodeInterface $node) {
       // change the media with type OF
       $medias = $utils->getMedia($node);
       foreach($medias as $media) {
-        $term_name = $media->get('field_media_use')->entity->getName();
+        $term = $media->get('field_media_use')->entity;
+        $term_name = $term->getName();
         if ($term_name == "Original File") {
-          $media->set('field_access_terms', $media->get('field_media_use')->entity->id());
+          $media->set('field_access_terms', $node
+            ->get('field_default_original_file_perm')->entity->id());
+          $media->save();
         }
       }
     }
@@ -204,9 +207,12 @@ function asu_permissions_node_update(NodeInterface $node) {
         $medias = $utils->getMedia($node);
       }
       foreach ($medias as $media) {
-        $term_name = $media->get('field_media_use')->entity->getName();
+        $term = $media->get('field_media_use')->entity;
+        $term_name = $term->getName();
         if ($term_name == "Service File") {
-          $media->set('field_access_terms', $media->get('field_media_use')->entity->id());
+          $media->set('field_access_terms', $node
+            ->get('field_default_derivative_file_pe')->entity->id());
+          $media->save();
         }
       }
     }
