@@ -529,11 +529,14 @@ function merge_tsv_and_csv(array $tsv, $csv_filename, $output_file) {
         if ($row['field_language']) {
           $tsv_and_csv[$id]['Language'] = $row['field_language'];
         }
+        if ($row['field_extent']) {
+          $tsv_and_csv[$id]['Extent'] = $row['field_extent'];
+        }
         if ($row['field_genre']) {
           $tsv_and_csv[$id]['Resource Types'] = merge_two_values($tsv_and_csv[$id]['Resource Types'], $row['field_genre']);
         }
         if ($row['field_note_para']) {
-          $tsv_and_csv[$id]['Notes'] = merge_two_values($tsv_and_csv[$id]['Notes'], $row['field_note_para']);
+          $tsv_and_csv[$id]['Notes'] = $row['field_note_para'];
         }
         if ($row['field_subject']) {
           $tsv_and_csv[$id]['Topical Subjects'] = merge_two_values($tsv_and_csv[$id]['Topical Subjects'], $row['field_subject']);
@@ -591,7 +594,7 @@ function merge_tsv_and_csv(array $tsv, $csv_filename, $output_file) {
           $tsv_and_csv[$id]['Contributors-Person-Adv-Cmt'] = '';
         }
         if ($row['field_linked_agent']) {
-          $tsv_and_csv[$id]['Contributors-Person'] = merge_two_values($tsv_and_csv[$id]['Contributors-Person'], $row['field_linked_agent']);
+          $tsv_and_csv[$id]['Contributors-Person'] = merge_two_values($row['field_linked_agent'], $tsv_and_csv[$id]['Contributors-Person']);
         }
       }
     }
