@@ -170,6 +170,52 @@ function asu_permissions_node_update(NodeInterface $node) {
     elseif ($node->get('field_member_of')->entity && !$node->original->get('field_member_of')->entity) {
       _add_object_to_parent_group($node);
     }
+
+    $of_items = $node
+      ->get('field_default_original_file_perm')
+      ->filterEmptyItems();
+    $of_original_items = $node->original
+      ->get('field_default_original_file_perm')
+      ->filterEmptyItems();
+
+    // If the field items are not equal, we need to save.
+    if (!$of_items->equals($of_original_items)) {
+      // change the media with type OF
+      $medias = $utils->getMedia($node);
+      foreach($medias as $media) {
+        $term = $media->get('field_media_use')->entity;
+        $term_name = $term->getName();
+        if ($term_name == "Original File") {
+          $media->set('field_access_terms', $node
+            ->get('field_default_original_file_perm')->entity->id());
+          $media->save();
+        }
+      }
+    }
+
+    $df_items = $node
+      ->get('field_default_derivative_file_pe')
+      ->filterEmptyItems();
+    $df_original_items = $node->original
+      ->get('field_default_derivative_file_pe')
+      ->filterEmptyItems();
+
+    // If the field items are not equal, we need to save.
+    if (!$df_items->equals($df_original_items)) {
+      // change the media with service file
+      if (!isset($medias)) {
+        $medias = $utils->getMedia($node);
+      }
+      foreach ($medias as $media) {
+        $term = $media->get('field_media_use')->entity;
+        $term_name = $term->getName();
+        if ($term_name == "Service File") {
+          $media->set('field_access_terms', $node
+            ->get('field_default_derivative_file_pe')->entity->id());
+          $media->save();
+        }
+      }
+    }
   }
 }
 
