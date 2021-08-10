@@ -64,6 +64,7 @@ class TypedRelationGenerate extends NameURIGenerate {
     "relators:clb" => "Collaborator",
     "relators:cng" => "Cinematographer",
     "relators:cli" => "Client",
+    "barrettrelators:cau" => "Co-author",
     "relators:cor" => "Collection registrar",
     "relators:col" => "Collector",
     "relators:clt" => "Collotyper",
