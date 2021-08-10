@@ -526,7 +526,7 @@ def main(argv):
     att_df[x_col] = att_df[x_col].astype("int64")
     att_df[x_col] = att_df[x_col].replace(-1, None)
     att_df[x_col] = att_df[x_col].replace("-1", "")
-    if int(merge_df.iloc[0]["Collection ID"]) == 130:
+    if int(merge_df.iloc[0]["Collection ID"]) == 130 or int(merge_df.iloc[0]["Collection ID"]) == 7:
         merge_df.to_csv(
             "c" + str(int(merge_df.iloc[0]["Collection ID"])) + "_merged_v3.csv"
         )
