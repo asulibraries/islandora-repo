@@ -104,7 +104,7 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
     }
     foreach($values['group_members'] as $gm) {
       // make group members as aut
-      array_push($contribs, $this->getOrCreateTerm($gm['last'] . ", " . $gm['first'], 'person', 'relators:aut'));
+      array_push($contribs, $this->getOrCreateTerm($gm['last'] . ", " . $gm['first'], 'person', 'barrettrelators:cau'));
     }
 
     foreach ($values['thesis_director'] as $td) {
