@@ -327,11 +327,16 @@
   }
 }
 
-.thumb-image-border .views-field-field-media-image img, .thumb-image-border .icon-container {
-  border: 1px solid #D0D0D0;
-  padding: 8px;
-}
-
 .main-content .thumb-image-border a {
   border-bottom: none;
-} 
+}
+
+.view-content-recent .icon-container {
+  height: 100%;
+  object-fit: $uds-component-card-basic-image-top-object-fit;
+}
+
+.view-id-content_recent table td {
+  border: none;
+  padding: 0;
+}

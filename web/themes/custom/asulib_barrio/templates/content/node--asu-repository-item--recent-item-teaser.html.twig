@@ -69,6 +69,8 @@
     node.isSticky() ? 'node--sticky',
     not node.isPublished() ? 'node--unpublished',
     view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
+    'card',
+    'card-horizontal'
 ]
 %}
 
@@ -85,33 +87,37 @@
 
 %}
 {# <div class="col-md-3"> #}
-    <tr {{ attributes.addClass(classes) }}>
-        <td{{content_attributes.addClass('views-field', 'views-field-nothing', 'views-align-left')}}>
-            {% if complex_obj_thumb is not empty %}
-            <a href="/items/{{ node.id }}"><img class="image-style-thumbnail" width="100" src=" {{ complex_obj_thumb }}"/></a>
-            {% elseif drupal_view_result('display_media', 'thumbnail', node.id) is empty %}
-              {% set mod = content.field_model[0]|render|trim %}
-              {% for k, v in model_icons|filter((v, k) => k == mod) -%}
-                <div class="icon-container">
-                  <i class="{{ v }} fa-2x"></i>
-                </div>
-              {% endfor %}
-            {% else %}
-              {{ drupal_view('display_media', 'thumbnail', node.id) }}
-            {% endif %}
-        </td>
-        <td class="col-md-10">
-            <span>
-                {% set title = content.field_title[0]|render|trim|slice(0, 40) %}
-                <a href="{{ url }}" rel="bookmark">{{ title|raw }}
-                {% if content.field_title[0]|render|length > 40 %}
+<div {{ attributes.addClass(classes) }}>
+    {% if complex_obj_thumb is not empty %}
+    <img class="card-img-top thumb-image-border image-style-thumbnail" width="100" src=" {{ complex_obj_thumb }}"/>
+    {% elseif drupal_view_result('display_media', 'thumbnail', node.id) is empty %}
+      {% set mod = content.field_model[0]|render|trim %}
+      {% for k, v in model_icons|filter((v, k) => k == mod) -%}
+        <div class="icon-container">
+          <i class="{{ v }} fa-6x"></i>
+        </div>
+      {% endfor %}
+    {% else %}
+        <img class="card-img-top thumb-image-border image-style-thumbnail" src="/items/{{ node.id }}/thumbnail"/>
+    {% endif %}
+    <div class="card-content-wrapper">
+        <div class="card-header">
+            <h3 class="card-title">
+                {% set title = content.field_title[0]|render|trim|slice(0, 60) %}
+                {{ title|raw }}
+                {% if content.field_title[0]|render|length > 60 %}
                     ...
                 {% endif %}
-                </a>
-            </span>
+            </h3>
+        </div>
+        <div class="card-body">
             {%  if changed_ago %}
-              <br>{{ changed_ago }} ago
-            {% endif %}
-        </td>
-    </tr>
+              <p class="card-text">{{ changed_ago }} ago</p>
+            {% endif %}                   
+        </div>
+        <div class="card-button">
+            <a href="{{ url }}" rel="bookmark" class="btn btn-maroon">About</a>
+        </div>
+    </div>
+</div>
 {# </div> #}

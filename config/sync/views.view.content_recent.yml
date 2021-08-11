@@ -9,7 +9,6 @@ dependencies:
     - field.storage.node.field_rich_description
     - field.storage.node.field_title
     - image.style.medium
-    - image.style.thumbnail
     - node.type.asu_repository_item
     - node.type.collection
   module:
@@ -1160,8 +1159,8 @@ display:
           click_sort_column: target_id
           type: media_thumbnail
           settings:
-            image_style: medium
-            image_link: content
+            image_style: ''
+            image_link: ''
           group_column: target_id
           group_columns: {  }
           group_rows: true
@@ -1267,16 +1266,6 @@ display:
           entity_type: node
           entity_field: uid
           plugin_id: standard
-        reverse__node__field_member_of:
-          id: reverse__node__field_member_of
-          table: node_field_data
-          field: reverse__node__field_member_of
-          relationship: none
-          group_type: group
-          admin_label: field_member_of
-          required: false
-          entity_type: node
-          plugin_id: entity_reverse
       defaults:
         relationships: false
         group_by: false
@@ -1412,23 +1401,16 @@ display:
         groups:
           1: AND
       style:
-        type: views_bootstrap_grid
+        type: default
         options:
-          row_class: 'clearfix collection-browse-object container'
+          row_class: ''
           default_row_class: false
           uses_fields: false
-          col_xs: col-12
-          col_sm: none
-          col_md: col-md-6
-          col_lg: col-lg-6
-          col_xl: col-xl-6
       row:
-        type: fields
+        type: 'entity:node'
         options:
-          default_field_elements: false
-          inline: {  }
-          separator: ''
-          hide_empty: true
+          relationship: none
+          view_mode: recent_item_teaser
       fields:
         changed:
           id: changed
@@ -1634,7 +1616,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "{% set published_class = [\r\nstatus != \"1\" ? 'node--unpublished',\r\n 'col']\r\n%}\r\n<div class=\"card card-hover card-horizontal\">\r\n  {% if field_collection_thumbnail %}\r\n  <div class=\"thumb-image-border icon-container card-img-top\">\r\n   {{ field_collection_thumbnail }} \r\n  </div>\r\n  {% endif %}\r\n\r\n <div class=\"card-content-wrapper\">\r\n  <div class=\"card-header\">\r\n     <h5 class=\"card-title\">{% if status != \"1\" %}<i class=\"fa fa-lock\"></i> {% endif %}<a href=\"/collections/{{nid}}\">{{ field_title }}</a></h5>\r\n  </div>\r\n  <div class=\"card-body\">\r\n   <p class=\"card-text\">{{ changed }} </p>\r\n  </div>\r\n  <div class=\"row\">\r\n   <div class=\"col-6 card-button\"><a role=\"button\" href=\"/collections/{{nid}}\" class=\"btn btn-gray\">About</a></div>\r\n   <div class=\"col-5 card-button\"><a role=\"button\" href=\"/collections/{{nid}}/search?search_api_fulltext=\" class=\"btn btn-gray\">Browse</a></div>\r\n  </div>\r\n </div>\r\n</div>"
+            text: "{% set published_class = [\r\nstatus != \"1\" ? 'node--unpublished',\r\n 'col']\r\n%}\r\n<div class=\"card card-hover card-horizontal\">\r\n  {% if field_collection_thumbnail %}\r\n  <div class=\"thumb-image-border icon-container card-img-top\">\r\n   {{ field_collection_thumbnail }} \r\n  </div>\r\n  {% endif %}\r\n\r\n <div class=\"card-content-wrapper\">\r\n  <div class=\"card-header\">\r\n     <h5 class=\"card-title\">{% if status != \"1\" %}<i class=\"fa fa-lock\"></i> {% endif %}<a href=\"/items/{{nid}}\">{{ field_title }}</a></h5>\r\n  </div>\r\n  <div class=\"card-body\">\r\n   <p class=\"card-text\">{{ changed }} </p>\r\n  </div>\r\n  <div class=\"row\">\r\n   <div class=\"col-6 card-button\"><a role=\"button\" href=\"/items/{{nid}}\" class=\"btn btn-gray\">About</a></div>\r\n  </div>\r\n </div>\r\n</div>"
             make_link: false
             path: ''
             absolute: false
@@ -1967,7 +1949,7 @@ display:
           exclude: true
           alter:
             alter_text: false
-            text: ''
+            text: '{{ field_collection_thumbnail }}'
             make_link: false
             path: ''
             absolute: false
@@ -1990,7 +1972,7 @@ display:
             more_link_path: ''
             strip_tags: false
             trim: false
-            preserve_tags: ''
+            preserve_tags: img
             html: false
           element_type: ''
           element_class: card-img-top
@@ -2000,15 +1982,15 @@ display:
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
-          empty: '<i class="far fa-folder-open fa-2x"></i>'
+          empty: '<div class="icon-container"><i class="far fa-folder-open fa-6x"></i></div>'
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
           type: media_thumbnail
           settings:
-            image_style: thumbnail
-            image_link: content
+            image_style: medium
+            image_link: ''
           group_column: target_id
           group_columns: {  }
           group_rows: true
@@ -2223,7 +2205,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "<div class=\"card card-hover card-horizontal\">\r\n  {{ field_collection_thumbnail }}\r\n <div class=\"card-content-wrapper\">\r\n  <div class=\"card-header\">\r\n   <h3 class=\"card-title\">{{ field_title }}</h3>\r\n  </div>\r\n  <div class=\"card-body\">\r\n   <p class=\"card-text\">\r\n     {{ changed }}<br />\r\n     {{ field_rich_description }}\r\n   </p>\r\n  </div>\r\n  <div class=\"row\">\r\n   <div class=\"col-6 card-button\"><a role=\"button\" href=\"/collections/{{nid}}\" class=\"btn btn-gray\">About</a></div>\r\n   <div class=\"col-5 card-button\"><a role=\"button\" href=\"/collections/{{nid}}/search?search_api_fulltext=\" class=\"btn btn-gray\">Browse</a></div>\r\n  </div>\r\n </div>\r\n</div>"
+            text: "<div class=\"card card-horizontal\">\r\n{% set field_collection_thumbnail_fixclass = field_collection_thumbnail %}\r\n{% set replace_value_var= \"image-style-medium\" %}\r\n{% set replace_with_value_var= \"card-img-top\" %}\r\n{{ field_collection_thumbnail_fixclass|replace({ (replace_value_var): replace_with_value_var })|raw }}\r\n\r\n <div class=\"card-content-wrapper\">\r\n  <div class=\"card-header\">\r\n   <h3 class=\"card-title\">{{ field_title }}</h3>\r\n  </div>\r\n  <div class=\"card-body\">\r\n   <p class=\"card-text\">\r\n     {{ changed }}<br />\r\n     {{ field_rich_description }}\r\n   </p>\r\n  </div>\r\n  <div class=\"card-button\">\r\n     <a role=\"button\" href=\"/collections/{{nid}}\" class=\"btn btn-maroon\">About</a>\r\n   </div>\r\n  <div class=\"card-button\">\r\n     <a role=\"button\" href=\"/collections/{{nid}}/search?search_api_fulltext=\" class=\"btn btn-md btn-gray\">Browse</a>\r\n   </div>\r\n  </div>\r\n </div>\r\n</div>"
             make_link: false
             path: ''
             absolute: false
@@ -2276,9 +2258,11 @@ display:
           columns:
             field_model: field_model
             nid: nid
-            nothing: nothing
-            field_title: field_title
+            field_collection_thumbnail: field_collection_thumbnail
             changed: changed
+            field_title: field_title
+            field_rich_description: field_rich_description
+            nothing: nothing
           info:
             field_model:
               sortable: 0
@@ -2294,14 +2278,9 @@ display:
               separator: ''
               empty_column: 1
               responsive: ''
-            nothing:
+            field_collection_thumbnail:
               sortable: 0
               default_sort_order: asc
-              align: views-align-left
-              separator: ''
-              empty_column: 0
-              responsive: ''
-            field_title:
               align: ''
               separator: ''
               empty_column: 0
@@ -2313,11 +2292,28 @@ display:
               separator: ''
               empty_column: 0
               responsive: ''
+            field_title:
+              align: ''
+              separator: ''
+              empty_column: 0
+              responsive: ''
+            field_rich_description:
+              sortable: 0
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: 0
+              responsive: ''
+            nothing:
+              align: views-align-left
+              separator: ''
+              empty_column: 0
+              responsive: ''
           default: '-1'
           empty_table: 0
           responsive: 0
           bootstrap_styles:
-            striped: striped
+            striped: 0
             bordered: 0
             hover: 0
             condensed: 0
