@@ -516,7 +516,7 @@ function asu_permissions_user_insert(UserInterface $entity) {
         // \Drupal::logger('asu permissions')->info("proceed to creating user");
         $fname = $json['person']['preferred_first_name'] != '' ? $json['person']['preferred_first_name'] : $json['person']['first_name'];
         $lname = $json['person']['preferred_last_name'] != '' ? $json['person']['preferred_last_name'] : $json['person']['last_name'];
-        $honors = $json['person']['honors'];
+        $honors = $json['honors'];
         $emplid = $json['person']['emplid'];
         $schools = [];
         $entity->set('field_first_name', $fname);
