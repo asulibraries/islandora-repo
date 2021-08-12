@@ -183,16 +183,28 @@ article:not(.node--view-mode-full-metadata) .inline-list, .field--name-field-cop
 
 .all-subjects .inline-list,
 .all-memberships .inline-list,
-.field:not(.field--name-field-note-para) .inline-list li {
+.agents .inline-list,
+.inline-list li {
   display: inline;
 }
 
-.field:not(.field--name-field-note-para) .inline-list li:not(:last-child)::after,
+.inline-list li:not(:last-child)::after,
 .all-subjects ul:not(:first-of-type)::before,
+.agents ul:not(:first-of-type)::before,
 .all-memberships ul:not(:first-of-type)::before {
   content: '/';
   margin-left: 5px;
   margin-right: 5px;
+}
+
+.field--name-field-note-para .inline-list li:not(:last-child)::after {
+  content: '';
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.field:not(.field--name-field-note-para) .inline-list li {
+  display: block;
 }
 
 /* Handling icon fallbacks for items */
