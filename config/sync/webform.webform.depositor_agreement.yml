@@ -13,7 +13,51 @@ id: depositor_agreement
 title: 'Depositor Agreement'
 description: 'deposit agreement for users'
 category: ''
-elements: "agreement_text:\n  '#type': processed_text\n  '#text': |\n    <p>Author(s) retain copyright for all items contributed to the ASU Digital Repository. By clicking through a license agreement, each contributor represents that s/he owns the copyright to and has the right to deposit the item in the ASU Digital Repository and grants to Arizona State University a LIMITED, NON-EXCLUSIVE LICENSE to disseminate the item through the Digital Repository and to migrate the item (i.e., copy it) for preservation purposes.</p>\n    \n    <h2>Non-exclusive Distribution License</h2>\n    \n    <p>To properly administer the ASU Digital Repository and preserve the contents for future use, the Arizona Board of Regents on behalf of Arizona State University (ASU) and the ASU Library requires certain permissions and representations from you, the author(s) or copyright owner. By granting this license, you are not transferring the copyright to the work nor are you giving up the right to submit the work to publishers or other repositories.</p>\n    \n    <p>By accepting this license agreement, you grant to the ASU Library the non-exclusive right to reproduce, exhibit, translate (as described below) and/or distribute your submission (including the metadata and abstract) in any format or medium worldwide and royalty-free for non-commercial, academic purposes only.</p>\n    \n    <p>The ASU Digital Repository will clearly identify your name(s) as the author(s) of the submission, including a statement of your copyright if you are the owner, and will not make any alteration, other than as allowed by this license, to your submission.</p>\n    \n    <p>You agree that ASU may, without changing the content, translate the submission to any medium or format and keep more than one copy for purposes of security, back up and preservation.</p>\n    \n    <p>You also agree that authorized readers of your submission have the right to use it for non-commercial, academic purposes as defined by the \"fair use\" doctrine of U.S. copyright law, so long as all attributions and copyright statements are retained.</p>\n    \n    <p>You represent and warrant that (1) you have all of the rights necessary to grant the license and rights contained in this license agreement; (2) your submission does not, to the best of your knowledge, infringe upon any third party’s copyright or other intellectual property rights; and (3) the submission contains no libelous or other unlawful matter and will not violate the right of privacy or constitute an invasion of any other rights of any person or third party.</p>\n    \n    <p>If the submission contains material for which you do not hold copyright and that exceeds fair use, you represent that you have obtained the unrestricted permission of the copyright owner to grant ASU the rights required by this license, and that such third-party owned material is clearly identified and acknowledged within the text or content of the submission.</p>\n    \n    <p>If the submission is based upon work that has been sponsored or supported by an agency or organization other than ASU, you represent that you have fulfilled any right of review or other obligations required by that contract or agreement.</p>\n    \n    <p>I will hold ASU harmless for any liability arising from any breach of the representations given by me in this license agreement.</p>\n    \n  '#format': basic_html\nagree:\n  '#type': checkbox\n  '#title': Agree\n  '#required': true\nredirect_url:\n  '#type': hidden\n  '#title': 'Redirect URL'\n  '#default_value': '[current-page:query:next]'\n  '#title_display': invisible\n  '#description_display': invisible\n  '#readonly': true\n  '#prepopulate': true\n  '#input_hide': 0\n  '#states': {  }\nactions:\n  '#type': webform_actions\n  '#title': 'Submit button(s)'\n  '#submit__label': Agree"
+elements: |-
+  agreement_text:
+    '#type': processed_text
+    '#text': |
+      <p>Author(s) retain copyright for all items contributed to the ASU Digital Repository. By clicking through a license agreement, each contributor represents that s/he owns the copyright to and has the right to deposit the item in the ASU Digital Repository and grants to Arizona State University a LIMITED, NON-EXCLUSIVE LICENSE to disseminate the item through the Digital Repository and to migrate the item (i.e., copy it) for preservation purposes.</p>
+      
+      <h2>Non-exclusive Distribution License</h2>
+      
+      <p>To properly administer the ASU Digital Repository and preserve the contents for future use, the Arizona Board of Regents on behalf of Arizona State University (ASU) and the ASU Library requires certain permissions and representations from you, the author(s) or copyright owner. By granting this license, you are not transferring the copyright to the work nor are you giving up the right to submit the work to publishers or other repositories.</p>
+      
+      <p>By accepting this license agreement, you grant to the ASU Library the non-exclusive right to reproduce, exhibit, translate (as described below) and/or distribute your submission (including the metadata and abstract) in any format or medium worldwide and royalty-free for non-commercial, academic purposes only.</p>
+      
+      <p>The ASU Digital Repository will clearly identify your name(s) as the author(s) of the submission, including a statement of your copyright if you are the owner, and will not make any alteration, other than as allowed by this license, to your submission.</p>
+      
+      <p>You agree that ASU may, without changing the content, translate the submission to any medium or format and keep more than one copy for purposes of security, back up and preservation.</p>
+      
+      <p>You also agree that authorized readers of your submission have the right to use it for non-commercial, academic purposes as defined by the "fair use" doctrine of U.S. copyright law, so long as all attributions and copyright statements are retained.</p>
+      
+      <p>You represent and warrant that (1) you have all of the rights necessary to grant the license and rights contained in this license agreement; (2) your submission does not, to the best of your knowledge, infringe upon any third party’s copyright or other intellectual property rights; and (3) the submission contains no libelous or other unlawful matter and will not violate the right of privacy or constitute an invasion of any other rights of any person or third party.</p>
+      
+      <p>If the submission contains material for which you do not hold copyright and that exceeds fair use, you represent that you have obtained the unrestricted permission of the copyright owner to grant ASU the rights required by this license, and that such third-party owned material is clearly identified and acknowledged within the text or content of the submission.</p>
+      
+      <p>If the submission is based upon work that has been sponsored or supported by an agency or organization other than ASU, you represent that you have fulfilled any right of review or other obligations required by that contract or agreement.</p>
+      
+      <p>I will hold ASU harmless for any liability arising from any breach of the representations given by me in this license agreement.</p>
+      
+    '#format': basic_html
+  agree:
+    '#type': checkbox
+    '#title': Agree
+    '#required': true
+  redirect_url:
+    '#type': hidden
+    '#title': 'Redirect URL'
+    '#default_value': '[current-page:query:next]'
+    '#title_display': invisible
+    '#description_display': invisible
+    '#readonly': true
+    '#prepopulate': true
+    '#input_hide': 0
+    '#states': {  }
+  actions:
+    '#type': webform_actions
+    '#title': 'Submit button(s)'
+    '#submit__label': Agree
 css: ''
 javascript: ''
 settings:
