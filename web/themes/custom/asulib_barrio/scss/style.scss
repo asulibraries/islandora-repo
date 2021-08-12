@@ -183,11 +183,11 @@ article:not(.node--view-mode-full-metadata) .inline-list, .field--name-field-cop
 
 .all-subjects .inline-list,
 .all-memberships .inline-list,
-.inline-list li {
+.field:not(.field--name-field-note-para) .inline-list li {
   display: inline;
 }
 
-.inline-list li:not(:last-child)::after,
+.field:not(.field--name-field-note-para) .inline-list li:not(:last-child)::after,
 .all-subjects ul:not(:first-of-type)::before,
 .all-memberships ul:not(:first-of-type)::before {
   content: '/';
