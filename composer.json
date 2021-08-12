@@ -116,6 +116,7 @@
         "islandora/islandora": "dev-8.x-1.x",
         "islandora/islandora_defaults": "dev-8.x-1.x",
         "islandora/openseadragon": "dev-8.x-1.x",
+        "professional-wiki/edtf": "^2.0",
         "vlucas/phpdotenv": "^2.4",
         "webflo/drupal-finder": "^1.0.0",
         "webmozart/path-util": "^2.3",
@@ -236,6 +237,9 @@
 	    },
             "drupal/s3fs": {
                 "fix for only applying the cname s3fs for mp4": "https://raw.githubusercontent.com/asulibraries/islandora-repo/develop/s3fs_mp4_only.patch"
+	    },
+            "drupal/views_data_export": {
+                "fix for batch export": "https://www.drupal.org/files/issues/2021-02-12/3173296-9-batch-query-alter.patch"
 	    }
         },
 	"installer-types": ["npm-asset", "bower-asset"]
