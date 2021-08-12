@@ -289,9 +289,9 @@ display:
           group_type: group
           admin_label: ''
           order: ASC
-          exposed: false
+          exposed: true
           expose:
-            label: ''
+            label: ID
           entity_type: node
           entity_field: nid
           plugin_id: standard
@@ -299,17 +299,17 @@ display:
           id: created
           table: node_field_data
           field: created
-          order: DESC
-          entity_type: node
-          entity_field: created
-          plugin_id: date
           relationship: none
           group_type: group
           admin_label: ''
-          exposed: false
+          order: DESC
+          exposed: true
           expose:
-            label: ''
+            label: 'Authored on'
           granularity: second
+          entity_type: node
+          entity_field: created
+          plugin_id: date
       title: 'Action Helper'
       header: {  }
       footer: {  }
@@ -358,31 +358,25 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - 'url.query_args:sort_by'
+        - 'url.query_args:sort_order'
         - 'user.node_grants:view'
         - user.roles
       tags:
-        - 'config:core.entity_view_display.node.asu_repository_item.asu_audio'
-        - 'config:core.entity_view_display.node.asu_repository_item.asu_complex_object'
-        - 'config:core.entity_view_display.node.asu_repository_item.asu_document'
-        - 'config:core.entity_view_display.node.asu_repository_item.asu_image'
-        - 'config:core.entity_view_display.node.asu_repository_item.asu_video'
-        - 'config:core.entity_view_display.node.asu_repository_item.collection_browse_teaser'
-        - 'config:core.entity_view_display.node.asu_repository_item.complex_object_child_box'
-        - 'config:core.entity_view_display.node.asu_repository_item.default'
-        - 'config:core.entity_view_display.node.asu_repository_item.full_metadata'
-        - 'config:core.entity_view_display.node.asu_repository_item.open_seadragon'
-        - 'config:core.entity_view_display.node.asu_repository_item.pdfjs'
-        - 'config:core.entity_view_display.node.asu_repository_item.recent_item_teaser'
-        - 'config:core.entity_view_display.node.asu_repository_item.recent_item_teaser_prism'
-        - 'config:core.entity_view_display.node.asu_repository_item.search_result'
-        - 'config:core.entity_view_display.node.asu_repository_item.teaser'
-        - 'config:core.entity_view_display.node.asu_repository_item.thumbnail_check'
         - 'config:core.entity_view_display.node.article.content_browser'
         - 'config:core.entity_view_display.node.article.default'
         - 'config:core.entity_view_display.node.article.rss'
         - 'config:core.entity_view_display.node.article.search_index'
         - 'config:core.entity_view_display.node.article.search_result'
         - 'config:core.entity_view_display.node.article.teaser'
+        - 'config:core.entity_view_display.node.asu_repository_item.asu_audio'
+        - 'config:core.entity_view_display.node.asu_repository_item.asu_image'
+        - 'config:core.entity_view_display.node.asu_repository_item.asu_video'
+        - 'config:core.entity_view_display.node.asu_repository_item.collection_browse_teaser'
+        - 'config:core.entity_view_display.node.asu_repository_item.full_metadata'
+        - 'config:core.entity_view_display.node.asu_repository_item.open_seadragon'
+        - 'config:core.entity_view_display.node.asu_repository_item.pdfjs'
+        - 'config:core.entity_view_display.node.asu_repository_item.recent_item_teaser_prism'
         - 'config:core.entity_view_display.node.collection.collection_browse_teaser'
         - 'config:core.entity_view_display.node.collection.default'
         - 'config:core.entity_view_display.node.collection.search_result'
@@ -393,10 +387,18 @@ display:
         - 'config:core.entity_view_display.node.islandora_object.pdfjs'
         - 'config:core.entity_view_display.node.islandora_object.teaser'
         - 'config:core.entity_view_display.node.page.content_browser'
-        - 'config:core.entity_view_display.node.page.default'
         - 'config:core.entity_view_display.node.page.search_index'
         - 'config:core.entity_view_display.node.page.search_result'
         - 'config:core.entity_view_display.node.page.teaser'
+        - 'config:core.entity_view_display.node.asu_repository_item.default'
+        - 'config:core.entity_view_display.node.asu_repository_item.search_result'
+        - 'config:core.entity_view_display.node.asu_repository_item.asu_complex_object'
+        - 'config:core.entity_view_display.node.asu_repository_item.asu_document'
+        - 'config:core.entity_view_display.node.asu_repository_item.complex_object_child_box'
+        - 'config:core.entity_view_display.node.asu_repository_item.recent_item_teaser'
+        - 'config:core.entity_view_display.node.asu_repository_item.teaser'
+        - 'config:core.entity_view_display.node.asu_repository_item.thumbnail_check'
+        - 'config:core.entity_view_display.node.page.default'
   page_1:
     display_plugin: page
     id: page_1
@@ -412,6 +414,8 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
+        - 'url.query_args:sort_by'
+        - 'url.query_args:sort_order'
         - 'user.node_grants:view'
         - user.roles
       tags:
