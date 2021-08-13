@@ -17,7 +17,6 @@ source:
   constants:
     use: Original File
     uid: 1
-    bundle: "image"
     private: "Private"
 
 process:
@@ -28,7 +27,6 @@ process:
     start: 0
     length: 254
   uid: constants/uid
-  bundle: constants/bundle
   field_original_name: File original_filename
 
   # Make the media an 'Original File'
@@ -111,7 +109,7 @@ destination:
   # These are 'document' media we're making. - could this be dynamic?
   # perhaps even just a static map lookup by the mime type
   plugin: 'entity:media'
-  default_bundle: document
+  default_bundle: image
 
 migration_dependencies:
   required:
