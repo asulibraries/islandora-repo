@@ -4,7 +4,7 @@ dependencies:
   config:
     - field.storage.node.field_collection_thumbnail
     - field.storage.node.field_rich_description
-    - image.style.medium
+    - image.style.card_image
     - node.type.collection
   module:
     - flexslider_views
@@ -118,8 +118,8 @@ display:
           click_sort_column: target_id
           type: media_thumbnail
           settings:
-            image_style: medium
-            image_link: content
+            image_style: card_image
+            image_link: ''
           group_column: target_id
           group_columns: {  }
           group_rows: true
@@ -389,7 +389,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "<div class=\"row\"><div class=\"card card-horizontal card-hover\">\r\n{{ field_collection_thumbnail }}\r\n  <div class=\"card-content-wrapper\">\r\n  <div class=\"card-header\">\r\n   <h3 class=\"card-title\">{{ title }}</h3>\r\n  </div>\r\n  <div class=\"card-body\">\r\n   <a role=\"button\" href=\"/collections/{{nid}}\" class=\"stretched-link\"></a>\r\n   <p class=\"card-text\">\r\n     {{ field_rich_description }}<br />\r\n     {{ changed }}\r\n   </p>\r\n  </div>\r\n  </div>\r\n </div>\r\n</div>"
+            text: "<div class=\"row\"><div class=\"card card-horizontal\">\r\n{{ field_collection_thumbnail }}\r\n  <div class=\"card-content-wrapper\">\r\n  <div class=\"card-header\">\r\n   <h3 class=\"card-title\">{{ title }}</h3>\r\n  </div>\r\n  <div class=\"card-body\">\r\n   <a role=\"button\" href=\"/collections/{{nid}}\" class=\"stretched-link\"></a>\r\n   <p class=\"card-text\">\r\n     {{ field_rich_description }}<br />\r\n     {{ changed }}\r\n   </p>\r\n  </div>\r\n  </div>\r\n </div>\r\n</div>"
             make_link: false
             path: ''
             absolute: false
