@@ -115,7 +115,6 @@ function asu_search_preprocess_views_view(&$variables) {
       $view->execute($view->current_display);
       $variables['total_rows_formatted'] = number_format($view->total_rows);
     }
-    $hv = $variables['header']['view'];
     // inspect the query from the URL and if there are any facets, suppress
     // the inclusion of the collections block at the top of the /search page.
     $facet_filters = \Drupal::request()->query->get('f');
@@ -133,12 +132,9 @@ function asu_search_preprocess_views_view(&$variables) {
 }
 
 function asu_search_views_pre_render(ViewExecutable $view) {
-  \Drupal::logger('views')->info($view->current_display);
   if ($view->id() == 'solr_search_content' && $view->current_display === 'page_1') {
     $results = $view->result;
     $ids = [];
-    $view_header = $view->header;
-    $he = $view->header['view'];
     $user = User::load(\Drupal::currentUser()->id());
     $user_roles = $user->getRoles();
     if (in_array("administrator", $user_roles) || in_array("metadata_manager", $user_roles)){
