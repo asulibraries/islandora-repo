@@ -115,6 +115,7 @@ function asu_search_preprocess_views_view(&$variables) {
       $view->execute($view->current_display);
       $variables['total_rows_formatted'] = number_format($view->total_rows);
     }
+    $hv = $variables['header']['view'];
     // inspect the query from the URL and if there are any facets, suppress
     // the inclusion of the collections block at the top of the /search page.
     $facet_filters = \Drupal::request()->query->get('f');
@@ -132,9 +133,12 @@ function asu_search_preprocess_views_view(&$variables) {
 }
 
 function asu_search_views_pre_render(ViewExecutable $view) {
+  \Drupal::logger('views')->info($view->current_display);
   if ($view->id() == 'solr_search_content' && $view->current_display === 'page_1') {
     $results = $view->result;
     $ids = [];
+    $view_header = $view->header;
+    $he = $view->header['view'];
     $user = User::load(\Drupal::currentUser()->id());
     $user_roles = $user->getRoles();
     if (in_array("administrator", $user_roles) || in_array("metadata_manager", $user_roles)){
@@ -161,22 +165,4 @@ function asu_search_views_pre_render(ViewExecutable $view) {
     }
   }
   // TODO: may need to handle the complex object search page separately here.
-}
-
-/**
- * Implements hook_views_query_alter().
- */
-function asu_search_views_query_alter(\Drupal\views\ViewExecutable $view, \Drupal\views\Plugin\views\query\QueryPluginBase $query) {
-  if ($view->id() == 'solr_search_content' && $view->current_display == 'page_1') {
-    // $base_table = $view->storage->get('base_table');
-    switch ($view->storage->get('base_table')) {
-      case "search_api_index_default_solr_index":
-        // $fields = $query->getIndex()->getFields();
-        $query->setWhereGroup('AND', 2);
-        $query->addWhere(2, 'status', 1, '=');
-        // $query->addWhere(2, 'field_ancestors', 299, '<>'); //no longer need to filter out performance archive
-        // eventually it'd be nice to properly filter out items that belong to a collection which is unpublished
-        break;
-    }
-  }
 }
