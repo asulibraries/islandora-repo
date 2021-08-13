@@ -70,7 +70,7 @@
     not node.isPublished() ? 'node--unpublished',
     view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
     'card',
-    'card-horizontal'
+    'card-horizontal', 'card-hover'
 ]
 %}
 
@@ -98,7 +98,8 @@
         </div>
       {% endfor %}
     {% else %}
-        <img class="card-img-top thumb-image-border image-style-thumbnail" src="/items/{{ node.id }}/thumbnail"/>
+        {{ drupal_view('display_media', 'thumbnail', node.id) }}
+      <!--  <img class="card-img-top thumb-image-border image-style-thumbnail" src="/items/{ { node.id }}/thumbnail"/> -->
     {% endif %}
     <div class="card-content-wrapper">
         <div class="card-header">
@@ -113,10 +114,8 @@
         <div class="card-body">
             {%  if changed_ago %}
               <p class="card-text">{{ changed_ago }} ago</p>
-            {% endif %}                   
-        </div>
-        <div class="card-button">
-            <a href="{{ url }}" rel="bookmark" class="btn btn-maroon">About</a>
+            {% endif %}
+            <a role="button" href="/items/{{ node.id }}" class="stretched-link"></a>
         </div>
     </div>
 </div>

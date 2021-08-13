@@ -190,3 +190,12 @@ function asulib_barrio_preprocess_user(&$variables) {
 function asulib_barrio_preprocess_page(&$variables) {
   $variables['site_name'] = \Drupal::config('system.site')->get('name');
 }
+
+/**
+ * Implements hook_preprocess_image()
+ */
+function asulib_barrio_preprocess_image(&$variables) {
+  if ($variables['style_name'] == 'card_image') {
+    $variables['attributes']['class'][] = 'card-img-top';
+  }
+}

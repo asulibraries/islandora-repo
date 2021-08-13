@@ -8,7 +8,7 @@ dependencies:
     - field.storage.node.field_model
     - field.storage.node.field_rich_description
     - field.storage.node.field_title
-    - image.style.medium
+    - image.style.card_image
     - node.type.asu_repository_item
     - node.type.collection
   module:
@@ -1989,7 +1989,7 @@ display:
           click_sort_column: target_id
           type: media_thumbnail
           settings:
-            image_style: medium
+            image_style: card_image
             image_link: ''
           group_column: target_id
           group_columns: {  }
@@ -2205,7 +2205,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "<div class=\"card card-horizontal\">\r\n{% set field_collection_thumbnail_fixclass = field_collection_thumbnail %}\r\n{% set replace_value_var= \"image-style-medium\" %}\r\n{% set replace_with_value_var= \"card-img-top\" %}\r\n{{ field_collection_thumbnail_fixclass|replace({ (replace_value_var): replace_with_value_var })|raw }}\r\n\r\n <div class=\"card-content-wrapper\">\r\n  <div class=\"card-header\">\r\n   <h3 class=\"card-title\">{{ field_title }}</h3>\r\n  </div>\r\n  <div class=\"card-body\">\r\n   <p class=\"card-text\">\r\n     {{ changed }}<br />\r\n     {{ field_rich_description }}\r\n   </p>\r\n  </div>\r\n  <div class=\"card-button\">\r\n     <a role=\"button\" href=\"/collections/{{nid}}\" class=\"btn btn-maroon\">About</a>\r\n   </div>\r\n  <div class=\"card-button\">\r\n     <a role=\"button\" href=\"/collections/{{nid}}/search?search_api_fulltext=\" class=\"btn btn-md btn-gray\">Browse</a>\r\n   </div>\r\n  </div>\r\n </div>\r\n</div>"
+            text: "<div class=\"card card-horizontal card-hover\">\r\n{% set field_collection_thumbnail_fixclass = field_collection_thumbnail %}\r\n{% set replace_value_var= \"image-style-medium\" %}\r\n{% set replace_with_value_var= \"card-img-top\" %}\r\n{{ field_collection_thumbnail_fixclass|replace({ (replace_value_var): replace_with_value_var })|raw }}\r\n  <div class=\"card-content-wrapper\">\r\n  <div class=\"card-header\">\r\n   <h3 class=\"card-title\">{{ field_title }}</h3>\r\n  </div>\r\n  <div class=\"card-body\">\r\n   <a role=\"button\" href=\"/collections/{{nid}}\" class=\"stretched-link\"></a>\r\n   <p class=\"card-text\">\r\n     {{ field_rich_description }}<br />\r\n     {{ changed }}\r\n   </p>\r\n  </div>\r\n  </div>\r\n </div>\r\n</div>"
             make_link: false
             path: ''
             absolute: false

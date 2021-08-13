@@ -12,7 +12,7 @@ dependencies:
     - field.storage.media.field_media_video_file
     - field.storage.media.field_mime_type
     - field.storage.media.field_width
-    - responsive_image.styles.item_displays
+    - image.style.card_image
   enforced:
     module:
       - islandora_core_feature
@@ -21,7 +21,6 @@ dependencies:
     - file
     - image
     - media
-    - responsive_image
     - taxonomy
     - user
 id: display_media
@@ -1806,9 +1805,9 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: responsive_image
+          type: image
           settings:
-            responsive_image_style: item_displays
+            image_style: card_image
             image_link: ''
           group_column: ''
           group_columns: {  }
