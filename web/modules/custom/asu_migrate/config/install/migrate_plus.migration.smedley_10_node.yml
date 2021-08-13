@@ -77,17 +77,17 @@ process:
       entity_type: taxonomy_term
       value_key: name
 
-  field_copyright_statement:
-    -
-      plugin: skip_on_empty
-      source: Copyright Statement
-      method: process
-    -
-      plugin: entity_lookup
-      entity_type: taxonomy_term
-      value_key: name
-      bundle_key: vid
-      bundle: copyright_statements
+  # field_copyright_statement:
+  #   -
+  #     plugin: skip_on_empty
+  #     source: Copyright Statement
+  #     method: process
+  #   -
+  #     plugin: entity_lookup
+  #     entity_type: taxonomy_term
+  #     value_key: name
+  #     bundle_key: vid
+  #     bundle: copyright_statements
 
   field_reuse_permissions:
     -
@@ -225,20 +225,20 @@ process:
         field_main_title: " "
         field_subtitle: " "
 
-  # field_language:
-  #   -
-  #     plugin: skip_on_empty
-  #     source: Language
-  #     method: process
-  #   -
-  #     plugin: explode
-  #     delimiter: '||'
-  #   -
-  #     plugin: entity_lookup
-  #     entity_type: taxonomy_term
-  #     value_key: name
-  #     bundle_key: vid
-  #     bundle: language
+  field_language:
+    -
+      plugin: skip_on_empty
+      source: Language
+      method: process
+    -
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: entity_lookup
+      entity_type: taxonomy_term
+      value_key: name
+      bundle_key: vid
+      bundle: language
 
   field_member_of:
     -
