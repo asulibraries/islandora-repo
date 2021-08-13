@@ -89,18 +89,6 @@ process:
       bundle_key: vid
       bundle: copyright_statements
 
-  field_cataloging_standards:
-    -
-      plugin: skip_on_empty
-      source: Cataloging Standards
-      method: process
-    -
-      plugin: entity_lookup
-      entity_type: taxonomy_term
-      value_key: name
-      bundle_key: vid
-      bundle: cataloging_standards
-
   field_reuse_permissions:
     -
       plugin: skip_on_empty
@@ -251,8 +239,6 @@ process:
       value_key: name
       bundle_key: vid
       bundle: language
-
-  field_pid: ID
 
   field_member_of:
     -
