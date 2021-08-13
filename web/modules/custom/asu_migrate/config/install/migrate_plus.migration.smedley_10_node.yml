@@ -90,12 +90,16 @@ process:
       bundle: copyright_statements
 
   field_cataloging_standards:
-    plugin: entity_generate
-    entity_type: taxonomy_term
-    value_key: name
-    bundle_key: vid
-    source: Cataloging Standards
-    bundle: cataloging_standards
+    -
+      plugin: skip_on_empty
+      source: Cataloging Standards
+      method: process
+    -
+      plugin: entity_generate
+      entity_type: taxonomy_term
+      value_key: name
+      bundle_key: vid
+      bundle: cataloging_standards
 
   field_reuse_permissions:
     -
@@ -108,28 +112,6 @@ process:
       value_key: name
       bundle_key: vid
       bundle: reuse_permissions
-
-  created:
-    -
-      plugin: skip_on_empty
-      source: System Created
-      method: process
-    -
-      plugin: format_date
-      from_format: 'Y-m-d G:i:s.uP'
-      to_format: 'U'
-      from_timezone: 'UTC'
-      to_timezone: 'UTC'
-
-  moderation_state:
-    plugin: static_map
-    source: Visibility
-    map:
-      Private: draft
-      Public: published
-      "1": published
-      "0": draft
-    default_value: published
 
   field_model:
     source: Model
@@ -254,55 +236,6 @@ process:
         field_nonsort: " "
         field_main_title: " "
         field_subtitle: " "
-
-
-  field_typed_identifier:
-    -
-      plugin: skip_on_empty
-      source: Identifiers
-      method: process
-    -
-      plugin: explode
-      delimiter: '||'
-    -
-      plugin: callback
-      callable: trim
-    -
-      plugin: paragraph_generate
-      paragraph_type: 'typed_identifier'
-      delimiter: '|'
-      fields:
-        field_identifier_value:
-          order: 0
-          type: text
-        field_identifier_type:
-          order: 1
-          type: taxonomy_term
-          lookup_field: field_identifier_predicate
-
-  field_note_para:
-    -
-      plugin: skip_on_empty
-      source: Notes
-      method: process
-    -
-      plugin: explode
-      delimiter: '||'
-    -
-      plugin: callback
-      callable: trim
-    -
-      plugin: paragraph_generate
-      paragraph_type: 'complex_note'
-      delimiter: '|'
-      fields:
-        field_note_text:
-          order: 0
-          type: text
-        field_note_type:
-          order: 1
-          type: taxonomy_term
-          lookup_field: name
 
   field_language:
     -
