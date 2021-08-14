@@ -490,14 +490,6 @@ process:
     -
       plugin: string_to_json
 
-  field_cataloging_standards:
-    plugin: entity_generate
-    entity_type: taxonomy_term
-    value_key: name
-    bundle_key: vid
-    source: constants/cataloging_standards
-    bundle: cataloging_standards
-
   field_level_of_coding:
     plugin: skip_on_empty
     source: Level of Coding
