@@ -139,14 +139,7 @@ process:
     source: Citation
     method: process
 
-  uid:
-    -
-      plugin: skip_on_empty
-      source: System User
-      method: process
-    -
-      plugin: user_lookup
-      default_value: constants/uid
+  uid: constants/uid
 
   field_open_access:
     plugin: skip_on_empty
