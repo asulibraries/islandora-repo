@@ -301,9 +301,6 @@ class TypedRelationGenerate extends NameURIGenerate {
    */
   public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
     if (is_array($value)) {
-      /* These two parts are not needed for this functionality. */
-      /* $name = $value['name']; /*
-      /* $uri = (array_key_exists('uri', $value) ? $value['uri'] : ''); */
       $relator = (array_key_exists('rel', $value) ?
         (strstr($value['rel'], 'relators:') ? $value['rel'] : 'relators:' . $value['rel']) : '');
       unset($value['rel']);
@@ -315,7 +312,16 @@ class TypedRelationGenerate extends NameURIGenerate {
       else {
         $parts = explode($this->configuration['delimiter'], $value);
         if (count($parts) > 1) {
-          $relator_string = array_pop($parts);
+          // allows the configuration to specify which order the relator is in
+          if (array_key_exists('relator_position', $this->configuration)) {
+            $relator_position = $this->configuration['relator_position'];
+            $relator_string = $parts[$relator_position];
+            unset($parts[$relator_position]);
+          }
+          else {
+            // assumes an order of name|uri|relator
+            $relator_string = array_pop($parts);
+          }
           $relator = $this->lookUpRelator($relator_string);
           $value = implode($this->configuration['delimiter'], $parts);
         }

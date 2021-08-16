@@ -427,7 +427,7 @@ process:
       delimiter: '|'
       uri_field: field_authority_link
       default_vocabulary: corporate_body
-      # relator: 'relators:ctb'
+      relator_position: 1
 
   conferences:
     -
@@ -444,6 +444,7 @@ process:
       plugin: typed_relation_generate
       delimiter: '|'
       uri_field: field_authority_link
+      relator_position: 1
       default_vocabulary: conference
 
   contributors:
@@ -461,6 +462,7 @@ process:
       plugin: typed_relation_generate
       delimiter: '|'
       uri_field: field_authority_link
+      relator_position: 1
       default_vocabulary: person
       # relator: 'relators:pht'
 
