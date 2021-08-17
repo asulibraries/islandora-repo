@@ -1,0 +1,84 @@
+dependencies:
+  enforced:
+    module:
+      - asu_migrate
+
+id: smedley_40_file
+label: Import Collection smedley_40 Files
+migration_group: migrate_smedley_40_csv
+
+source:
+  plugin: csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/c_smedley_v40_merged_v2.csv
+  delimiter: ','
+  header_row_count: 1
+  ids:
+    - ID
+
+  constants:
+    destination_dir: 'fedora://smedley_40'
+    uid: 1
+    baseurl: "https://repository.asu.edu"
+    basepath: "/mnt/libfile/Repository/old-repo-data/filestore/"
+    file_type: "image"
+
+process:
+  uid: constants/uid
+  type: constanst/file_type
+
+  field_original_name/value: File original_filename
+  filename:
+    -
+      plugin: transliteration
+      source: File original_filename
+    -
+      plugin: str_replace
+      search: " "
+      replace: "_"
+    -
+      plugin: str_replace
+      search: "'"
+      replace: ""
+    -
+      plugin: str_replace
+      search: ","
+      replace: ""
+    -
+      plugin: str_replace
+      search: ")"
+      replace: ""
+    -
+      plugin: str_replace
+      search: "("
+      replace: ""
+    -
+      plugin: str_replace
+      search: "&"
+      replace: ""
+    -
+      plugin: str_replace
+      search: "["
+      replace: ""
+    -
+      plugin: str_replace
+      search: "]"
+      replace: ""
+
+
+  # Construct the destination URI using the file name.
+  destination:
+    plugin: concat
+    delimiter: /
+    source:
+      - constants/destination_dir
+      - '@filename'
+
+  uri:
+    plugin: file_copy
+    source:
+      - File Location
+      - '@destination' # The destination entry from above
+
+
+destination:
+  plugin: 'entity:file'

@@ -354,6 +354,14 @@ field_settings:
         - field.storage.node.field_linked_agent
       module:
         - taxonomy
+  field_linked_agent_tid:
+    label: 'Linked Agent'
+    datasource_id: 'entity:node'
+    property_path: field_linked_agent
+    type: integer
+    dependencies:
+      config:
+        - field.storage.node.field_linked_agent
   field_local_identifier:
     label: 'Local Identifier'
     datasource_id: 'entity:node'
@@ -373,6 +381,11 @@ field_settings:
         - field.storage.paragraph.field_main_title
       module:
         - paragraphs
+  field_media_use:
+    label: 'Media Use'
+    datasource_id: 'entity:node'
+    property_path: 'search_api_reverse_entity_references_media__field_media_of:field_media_use:entity:name'
+    type: string
   field_member_of:
     label: 'Member of'
     datasource_id: 'entity:node'
@@ -554,22 +567,6 @@ field_settings:
     label: 'Institution From Collection'
     property_path: institution_from_collection
     type: string
-  media_of_count:
-    label: 'Media Count'
-    property_path: aggregated_field
-    type: string
-    configuration:
-      type: count
-      fields:
-        - 'entity:node/search_api_reverse_entity_references_media__field_media_of'
-  member_of_count:
-    label: 'Member Count'
-    property_path: aggregated_field
-    type: string
-    configuration:
-      type: count
-      fields:
-        - 'entity:node/search_api_reverse_entity_references_node__field_member_of'
   nid:
     label: ID
     datasource_id: 'entity:node'
@@ -609,39 +606,14 @@ field_settings:
     type: text
     configuration:
       roles:
-        anonymous: anonymous
+        administrator: administrator
       view_mode:
         'entity:node':
           article: ''
           asu_repository_item: full_metadata
           collection: ''
-          flexslider_example: ''
           islandora_object: ''
           page: ''
-        'entity:taxonomy_term':
-          collaborating_institutions: ''
-          conference: ''
-          copyright_statements: ''
-          corporate_body: ''
-          country_codes: ''
-          family: ''
-          genre: ''
-          geo_location: ''
-          identifier_types: ''
-          language: ''
-          name_titles: ''
-          note_types: ''
-          oai_sets: ''
-          person: ''
-          physical_form: ''
-          preservation_states: ''
-          related_items: ''
-          resource_types: ''
-          reuse_permissions: ''
-          subject: ''
-          tags: ''
-          temporal: ''
-          titles: ''
   resource_type_name:
     label: 'Resource Type'
     datasource_id: 'entity:node'

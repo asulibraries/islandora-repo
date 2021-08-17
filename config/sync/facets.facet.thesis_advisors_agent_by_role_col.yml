@@ -7,7 +7,7 @@ dependencies:
   module:
     - search_api
 id: thesis_advisors_agent_by_role_col
-name: 'Thesis Advisors (Agent by Role)'
+name: 'Thesis Director (Agent by Role)'
 url_alias: thesis_advisors_agent_by_role_
 weight: 0
 min_count: 1
@@ -32,7 +32,7 @@ expand_hierarchy: false
 enable_parent_when_child_gets_disabled: true
 hard_limit: 100
 exclude: false
-only_visible_when_facet_source_is_visible: true
+only_visible_when_facet_source_is_visible: false
 processor_configs:
   active_widget_order:
     processor_id: active_widget_order
@@ -40,6 +40,13 @@ processor_configs:
       sort: 20
     settings:
       sort: ASC
+  count_limit:
+    processor_id: count_limit
+    weights:
+      build: 50
+    settings:
+      minimum_items: 1
+      maximum_items: null
   count_widget_order:
     processor_id: count_widget_order
     weights:
@@ -52,11 +59,6 @@ processor_configs:
       sort: 40
     settings:
       sort: ASC
-  hide_1_result_facet:
-    processor_id: hide_1_result_facet
-    weights:
-      build: 50
-    settings: {  }
   url_processor_handler:
     processor_id: url_processor_handler
     weights:
