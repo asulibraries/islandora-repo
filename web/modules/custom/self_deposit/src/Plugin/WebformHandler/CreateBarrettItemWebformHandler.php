@@ -81,7 +81,7 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
     return $term_arr;
   }
 
-  private function createNode($webform_submission, $values, $title, $model, $copyright_term, $perm_term, $member_of) {
+  private function createNode($webform_submission, $values, $title, $model, $copyright_term, $perm_term, $member_of, $user=NULL) {
     $paragraph = Paragraph::create(
       ['type' => 'complex_title', 'field_main_title' => $title]
     );
@@ -93,8 +93,6 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
       $kterm = $this->getOrCreateTerm($key, 'subject');
       array_push($keywords, $kterm);
     }
-
-    \Drupal::logger('barrett')->info(print_r($values['student_name'], TRUE));
 
     $contribs = [];
     if (array_key_exists('your_name', $values)) {
@@ -129,6 +127,27 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
 
     array_push($contribs, $this->getOrCreateTerm('Barrett, The Honors College', 'corporate_body', 'relators:ctb'));
 
+    if ($user && $user->hasField('field_programs')) {
+      $prgs = $user->get('field_programs')->value;
+      if (is_array($prgs)) {
+        foreach ($prgs as $prg) {
+          array_push($contribs, $this->getOrCreateTerm($prg, 'corporate_body', 'relators:ctb'));
+        }
+      } else {
+        if ($prgs != "") {
+          array_push($contribs, $this->getOrCreateTerm($prgs, 'corporate_body', 'relators:ctb'));
+        }
+      }
+    }
+
+    if (array_key_exists('series', $values) && $values['series'] != "" ) {
+      $series_val = $values['series'];
+    }
+
+    if (array_key_exists('date_created', $values) && $values['date_created'] != "") {
+      $created_date_val = $values['date_created'];
+    }
+
     $date_submitted = $webform_submission->getCreatedTime();
     $month = \Drupal::service('date.formatter')->format($date_submitted, 'custom', 'm');
     $year =
@@ -147,8 +166,17 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
     if (!isset($spring_year)) {
       $spring_year = $fall_year + 1;
     }
-    $series_val = "Academic Year " . $fall_year . "-" . $spring_year;
-    $created_date_val = $year . "-" . $created_month;
+    if (!isset($series_val)) {
+      $series_val = "Academic Year " . $fall_year . "-" . $spring_year;
+    }
+    if (!isset($created_date_val)) {
+      $created_date_val = $year . "-" . $created_month;
+    }
+
+    $mod_state = 'draft';
+    if ($webform_submission->getWebform()->id() == 'barrett_staff_submission') {
+      $mod_state = 'published';
+    }
 
     $node_args = [
       'type' => 'asu_repository_item',
@@ -156,7 +184,7 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
       'created' => time(),
       'changed' => time(),
       'uid' => \Drupal::currentUser()->id(),
-      'moderation_state' => 'draft',
+      'moderation_state' =>  $mod_state,
       'field_title' => [
         [
           'target_id' => $paragraph->id(),
@@ -172,7 +200,6 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
       ],
       'field_subjects' => $keywords,
       'field_linked_agent' => $contribs,
-      // TODO add schools/colleges?
       'field_edtf_date_created' => [
         'value' => $created_date_val
       ],
@@ -240,6 +267,7 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
     ];
     $media = Media::create($media_args);
     $media->save();
+    return $media;
   }
 
   /**
@@ -288,20 +316,6 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
       $member_of = $config->get('barrett_collection_for_deposits');
     }
 
-    if ($model == 'Complex Object') {
-      $node = $this->createNode($webform_submission, $values, $values['item_title'], $taxo_term, $copyright_term, $perm_term, $member_of);
-      foreach ($child_files as $cfkey => $cfvalues) {
-        $fmember_of = $node->id();
-        $ftaxo_terms = $taxo_manager->loadByProperties(['name' => $cfvalues['model']]);
-        $ftaxo_term = reset($ftaxo_terms);
-        $child_node = $this->createNode($webform_submission, $values, $cfvalues['file_name'], $ftaxo_term, $copyright_term, $perm_term, $fmember_of);
-        $this->createMedia($cfvalues['media_type'], $cfvalues['field_name'], $cfkey, $child_node->id());
-      }
-    }
-    else {
-      $node = $this->createNode($webform_submission, $values, $values['item_title'], $taxo_term, $copyright_term, $perm_term, $member_of);
-      $this->createMedia($media_type, $field_name, $files[0], $node->id());
-    }
     // create user, populate from student_asurite, student_id
     $user = user_load_by_name($values['student_asurite']);
     if ($user == NULL) {
@@ -314,10 +328,27 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
       $user->set('field_honors', TRUE);
       $user->set('field_emplid', $values['student_id']);
       $user->save();
+      \Drupal::moduleHandler()->invoke('asu_permissions', 'user_insert', [$user]);
+    }
+
+    if ($model == 'Complex Object') {
+      $node = $this->createNode($webform_submission, $values, $values['item_title'], $taxo_term, $copyright_term, $perm_term, $member_of, $user);
+      foreach ($child_files as $cfkey => $cfvalues) {
+        $fmember_of = $node->id();
+        $ftaxo_terms = $taxo_manager->loadByProperties(['name' => $cfvalues['model']]);
+        $ftaxo_term = reset($ftaxo_terms);
+        $child_node = $this->createNode($webform_submission, $values, $cfvalues['file_name'], $ftaxo_term, $copyright_term, $perm_term, $fmember_of);
+        $media = $this->createMedia($cfvalues['media_type'], $cfvalues['field_name'], $cfkey, $child_node->id());
+      }
+    }
+    else {
+      $node = $this->createNode($webform_submission, $values, $values['item_title'], $taxo_term, $copyright_term, $perm_term, $member_of, $user);
+      $media = $this->createMedia($media_type, $field_name, $files[0], $node->id());
     }
     $node->set('uid', $user->id());
     $webform_submission->setOwnerId($user->id());
 
     $webform_submission->setElementData('item_node', $node->id());
+    \Drupal::moduleHandler()->invoke('islandora', 'media_insert', [$media]);
   }
 }
