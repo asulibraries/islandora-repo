@@ -198,7 +198,7 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
       'field_reuse_permissions' => [
         ['target_id' => $values['reuse_permissions']],
       ],
-      'field_subjects' => $keywords,
+      'field_subject' => $keywords,
       'field_linked_agent' => $contribs,
       'field_edtf_date_created' => [
         'value' => $created_date_val
