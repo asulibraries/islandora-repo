@@ -169,6 +169,14 @@ elements: |-
         view_name: autocomplete_taxonomy_terms
         display_name: entity_reference_1
         arguments: {  }
+  series:
+    '#type': textfield
+    '#title': Series
+    '#description': 'Leave blank for auto-populating.'
+  date_created:
+    '#type': textfield
+    '#title': 'Date created'
+    '#description': 'Must follow YYYY[-MM[-DD]] format. Leave blank for auto-populating.'
   file:
     '#type': managed_file
     '#title': File
