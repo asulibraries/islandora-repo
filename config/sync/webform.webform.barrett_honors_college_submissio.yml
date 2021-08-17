@@ -150,6 +150,10 @@ elements: |-
   item_node:
     '#type': value
     '#title': 'Item Node'
+  student_asurite:
+    '#type': hidden
+    '#title': 'student asurite'
+    '#default_value': '[current-user:account-name]'
   actions:
     '#type': webform_actions
     '#title': 'Submit button(s)'
@@ -191,7 +195,7 @@ settings:
   form_details_toggle: false
   form_access_denied: login
   form_access_denied_title: ''
-  form_access_denied_message: ''
+  form_access_denied_message: 'You are not authorized to view the Barrett Honors College Submission form. Please login or report the problem.'
   form_access_denied_attributes: {  }
   form_file_limit: ''
   share: false
