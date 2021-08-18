@@ -74,7 +74,6 @@ elements: |-
     '#multiple__add_more': false
     '#multiple__add_more_input': false
     '#multiple__add_more_input_label': 'more keywords'
-    '#required': true
   group_members:
     '#type': webform_name
     '#title': 'Group Members'
@@ -302,8 +301,8 @@ settings:
   draft_pending_multiple_message: ''
   confirmation_type: url_message
   confirmation_title: ''
-  confirmation_message: 'Thank you for submitting your item to KEEP. This project will be published to the digital collection after it is manually reviewed for submission accuracy and embargo conditions.'
-  confirmation_url: /
+  confirmation_message: 'Thank you for submitting a new Barrett Thesis item to KEEP.'
+  confirmation_url: '/node/[webform_submission:values:item_node]'
   confirmation_attributes: {  }
   confirmation_back: true
   confirmation_back_label: ''
