@@ -68,8 +68,7 @@ class ComplexObjectMembersController extends ControllerBase implements Container
       $content_type = $node->getType();
 
       // What is the model for this node?
-      $field_model_tid = $node->get('field_model')->getString();
-      $field_model_term = $this->entityTypeManager->getStorage('taxonomy_term')->load($field_model_tid);
+      $field_model_term = $node->get('field_model')->entity;
       $field_model = (isset($field_model_term) && is_object($field_model_term)) ?
         $field_model_term->getName() : '';
 
@@ -82,13 +81,12 @@ class ComplexObjectMembersController extends ControllerBase implements Container
           $view->setDisplay('all_included_items');
           $view->preExecute();
           $view->execute();
-          $build_output[] = $view->buildRenderable('all_included_items', $args);
+          $build_output[0] = $view->buildRenderable('all_included_items', $args);
         }
       }
     }
     return [
       '#markup' => '<h2>' . $this->t('Included in this item') . '</h2><div class="row">',
-      '#cache' => ['max-age' => 0],
       'build_output' => $build_output,
       '#suffix' => '</div>',
     ];
