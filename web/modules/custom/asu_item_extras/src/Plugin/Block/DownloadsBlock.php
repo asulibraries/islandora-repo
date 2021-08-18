@@ -197,7 +197,7 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     }
 
     if ($links == [] && in_array('anonymous', $user_roles)) {
-      $markup = "<i class='fas fa-lock'></i> Download restricted. Please <a href=''>sign in.</a>";
+      $markup = "<i class='fas fa-lock'></i> Download restricted. Please <a href=''>sign in</a>.";
     }
     $date = new \DateTime();
     $today = $date->format("c");

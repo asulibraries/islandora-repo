@@ -10,28 +10,17 @@ migration_group: migrate_c7_csv
 
 source:
   plugin: csv
-  path: /var/www/html/drupal/web/modules/custom/asu_migrate/c7_merged_v3.csv
-  # c7_merged_v2.csv
-
-  # 1 means you have a header row, 0 means you don't
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/c7_merged_v5.csv
   header_row_count: 1
-
-  # Each migration needs a unique key per row in the csv.  Here we're using the file path.
   ids:
     - Item ID
-
-  # You can't enter string literals into a process plugin, but you can give it a constant as a 'source'.
   constants:
-    # We're tagging our nodes as Images
     model: Digital Document
-
-    # Everything gets created as admin
     uid: 1
     collection_title: 'ASU Electronic Theses and Dissertations'
     pres_state: '558' # Not Preserved
     handle: "https://hdl.handle.net/2286/R.I."
     cataloging_standards: "asu1"
-    # level_of_coding: "minimal"
 
 process:
   field_extent:
@@ -73,10 +62,16 @@ process:
       source: Reuse
       method: process
     -
-      plugin: entity_lookup_by_field
-      lookup_field: field_source/uri
+      plugin: entity_lookup
       entity_type: taxonomy_term
+      value_key: name
+      bundle_key: vid
       bundle: reuse_permissions
+
+  field_statement_responsibility:
+    plugin: skip_on_empty
+    method: process
+    source: Statement of Responsibility
 
   created:
     -
@@ -96,8 +91,8 @@ process:
     map:
       Private: draft
       Public: published
-      1: published
-      0: draft
+      "1": published
+      "0": draft
     default_value: published
 
   field_model:
@@ -113,35 +108,38 @@ process:
     source: Description
     method: process
 
+  field_description_source:
+    plugin: skip_on_empty
+    method: process
+    source: Description Source
+
   field_rich_description/format:
     plugin: default_value
     default_value: "description_restricted_items"
 
-  # got value from alex directly
   field_genre:
     -
       plugin: skip_on_empty
-      source: Genre
+      source: Genres
       method: process
     -
-      plugin: entity_lookup_by_field
-      lookup_field: field_authority_link/uri
-      entity_type: taxonomy_term
-      bundle: genre
+      plugin: explode
+      delimiter: ' || '
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: name_uri_generate
+      delimiter: '|'
+      uri_field: field_authority_link
+      default_vocabulary: genre
 
   field_preferred_citation:
     plugin: skip_on_empty
     source: Citation
     method: process
 
-  uid:
-    -
-      plugin: skip_on_empty
-      source: System User
-      method: process
-    -
-      plugin: user_lookup
-      default_value: constants/uid
+  uid: constants/uid
 
   field_open_access:
     plugin: skip_on_empty
@@ -195,6 +193,7 @@ process:
       plugin: paragraph_title_generate
       paragraph_type: 'complex_title'
       split_into_parts: true
+      delimiter: "|"
       fields:
         field_nonsort: " "
         field_main_title: " "
@@ -428,7 +427,25 @@ process:
       delimiter: '|'
       uri_field: field_authority_link
       default_vocabulary: corporate_body
-      # relator: 'relators:ctb'
+      relator_position: 1
+
+  conferences:
+    -
+      plugin: explode
+      delimiter: ' || '
+      source: Contributors-Conference
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: skip_on_empty
+      method: process
+    -
+      plugin: typed_relation_generate
+      delimiter: '|'
+      uri_field: field_authority_link
+      relator_position: 1
+      default_vocabulary: conference
 
   contributors:
     -
@@ -445,6 +462,7 @@ process:
       plugin: typed_relation_generate
       delimiter: '|'
       uri_field: field_authority_link
+      relator_position: 1
       default_vocabulary: person
       # relator: 'relators:pht'
 
@@ -454,6 +472,7 @@ process:
       source:
         - '@contributors'
         - '@corporations'
+        - '@conferences'
     -
       plugin: skip_on_empty
       method: process
@@ -466,20 +485,11 @@ process:
     -
       plugin: string_to_json
 
-  field_cataloging_standards:
-    plugin: entity_generate
-    entity_type: taxonomy_term
-    value_key: name
-    bundle_key: vid
-    source: constants/cataloging_standards
-    bundle: cataloging_standards
-
   field_level_of_coding:
-    -
-      plugin: skip_on_empty
-      source: Level of Coding
-      method: process  
-  
+    plugin: skip_on_empty
+    source: Level of Coding
+    method: process
+
   field_cataloging_standards:
     -
       plugin: skip_on_empty
@@ -490,8 +500,6 @@ process:
       lookup_field: field_source/uri
       entity_type: taxonomy_term
       bundle: cataloging_standards
-      
-  field_statement_responsibility: Statement of Responsibility
 
   field_title_subject:
     -

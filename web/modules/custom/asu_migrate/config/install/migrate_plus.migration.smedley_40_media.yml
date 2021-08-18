@@ -1,0 +1,118 @@
+# Uninstall this config when the feature is uninstalled
+dependencies:
+  enforced:
+    module:
+      - asu_migrate
+
+id: smedley_40_media
+label: Import Collection smedley_40 Media from CSV
+migration_group: migrate_smedley_40_csv
+
+source:
+  plugin: csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/c_smedley_v40_merged_v2.csv
+  header_row_count: 1
+  ids:
+    - ID
+  constants:
+    use: Original File
+    uid: 1
+    private: "Private"
+
+process:
+
+  name:
+    source: Title
+    plugin: substr
+    start: 0
+    length: 254
+  uid: constants/uid
+  field_original_name: File original_filename
+
+  # Make the media an 'Original File'
+  field_media_use:
+    plugin: entity_lookup
+    source: constants/use
+    entity_type: taxonomy_term
+    value_key: name
+    bundle_key: vid
+    bundle: islandora_media_use
+
+
+  # Lookup the migrated file in the file migration.
+  field_media_document:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: document id
+    -
+      plugin: migration_lookup
+      migration: smedley_40_file
+      no_stub: true
+
+  field_media_image:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: ID
+    -
+      plugin: migration_lookup
+      migration: smedley_40_file
+      no_stub: true
+
+  field_media_video_file:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: video id
+    -
+      plugin: migration_lookup
+      migration: smedley_40_file
+      no_stub: true
+
+  field_media_audio_file:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: audio id
+    -
+      plugin: migration_lookup
+      migration: smedley_40_file
+      no_stub: true
+
+  field_media_file:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: generic file id
+    -
+      plugin: migration_lookup
+      migration: smedley_40_file
+      no_stub: true
+
+  # Lookup the migrated node in the node migration
+  field_media_of:
+    plugin: migration_lookup
+    source: ID
+    migration: smedley_40_node
+    no_stub: true
+
+  field_access_terms:
+    source: constants/private
+    plugin: entity_lookup
+    bundle: islandora_access
+    bundle_key: vid
+    entity_type: taxonomy_term
+    value_key: name
+
+destination:
+  # These are 'document' media we're making. - could this be dynamic?
+  # perhaps even just a static map lookup by the mime type
+  plugin: 'entity:media'
+  default_bundle: image
+
+migration_dependencies:
+  required:
+    - migrate_plus.migration.smedley_40_file
+    - migrate_plus.migration.smedley_40_node
+  optional: {  }

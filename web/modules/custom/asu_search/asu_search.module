@@ -162,21 +162,3 @@ function asu_search_views_pre_render(ViewExecutable $view) {
   }
   // TODO: may need to handle the complex object search page separately here.
 }
-
-/**
- * Implements hook_views_query_alter().
- */
-function asu_search_views_query_alter(\Drupal\views\ViewExecutable $view, \Drupal\views\Plugin\views\query\QueryPluginBase $query) {
-  if ($view->id() == 'solr_search_content' && $view->current_display == 'page_1') {
-    // $base_table = $view->storage->get('base_table');
-    switch ($view->storage->get('base_table')) {
-      case "search_api_index_default_solr_index":
-        // $fields = $query->getIndex()->getFields();
-        $query->setWhereGroup('AND', 2);
-        $query->addWhere(2, 'status', 1, '=');
-        // $query->addWhere(2, 'field_ancestors', 299, '<>'); //no longer need to filter out performance archive
-        // eventually it'd be nice to properly filter out items that belong to a collection which is unpublished
-        break;
-    }
-  }
-}

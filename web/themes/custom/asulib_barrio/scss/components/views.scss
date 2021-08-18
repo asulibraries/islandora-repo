@@ -194,6 +194,21 @@
             justify-content: center;
         }
     }
+    span.views-summary {
+        margin-top:8px;
+    }
+    span.views-summary a {
+        border: 1px solid #d0d0d0;
+        padding: 8.5px 12.75px;
+        font-size: 16px;
+        border-radius: 96px;
+        background-color: #bfbfbf;
+    }
+    span.views-summary a.is-active {
+        border-color: #8c1d40;
+        background-color: #8c1d40;
+        color: white;
+    }
 }
 
 .node--view-mode-collection-browse-teaser.node--type-collection {
@@ -206,6 +221,9 @@
     margin-bottom: 10px;
     display: flex;
     flex-direction: column;
+    .card {
+        border: none;
+    }
     .collection-browse-button {
         width: 100%;
         align-self: flex-end;
@@ -339,4 +357,14 @@
 
 .main-content .thumb-image-border a {
   border-bottom: none;
+}
+
+.view-content-recent .icon-container {
+  height: 100%;
+  object-fit: $uds-component-card-basic-image-top-object-fit;
+}
+
+.view-id-content_recent table td {
+  border: none;
+  padding: 0;
 }

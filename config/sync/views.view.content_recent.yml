@@ -8,8 +8,7 @@ dependencies:
     - field.storage.node.field_model
     - field.storage.node.field_rich_description
     - field.storage.node.field_title
-    - image.style.medium
-    - image.style.thumbnail
+    - image.style.card_image
     - node.type.asu_repository_item
     - node.type.collection
   module:
@@ -80,24 +79,38 @@ display:
           id: title
           table: node_field_data
           field: title
-          entity_type: node
-          entity_field: title
+          relationship: none
+          group_type: group
+          admin_label: ''
           label: ''
           exclude: false
           alter:
             alter_text: false
+            text: ''
             make_link: false
+            path: ''
             absolute: false
-            trim: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
             word_boundary: false
             ellipsis: false
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
             strip_tags: false
+            trim: false
+            preserve_tags: ''
             html: false
-          hide_empty: false
-          empty_zero: false
-          relationship: none
-          group_type: group
-          admin_label: ''
           element_type: ''
           element_class: ''
           element_label_type: ''
@@ -107,10 +120,25 @@ display:
           element_wrapper_class: ''
           element_default_classes: true
           empty: ''
+          hide_empty: false
+          empty_zero: false
           hide_alter_empty: true
+          click_sort_column: value
           type: string
           settings:
             link_to_entity: true
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          entity_type: node
+          entity_field: title
           plugin_id: field
         changed:
           id: changed
@@ -1131,8 +1159,8 @@ display:
           click_sort_column: target_id
           type: media_thumbnail
           settings:
-            image_style: medium
-            image_link: content
+            image_style: ''
+            image_link: ''
           group_column: target_id
           group_columns: {  }
           group_rows: true
@@ -1238,22 +1266,15 @@ display:
           entity_type: node
           entity_field: uid
           plugin_id: standard
-        reverse__node__field_member_of:
-          id: reverse__node__field_member_of
-          table: node_field_data
-          field: reverse__node__field_member_of
-          relationship: none
-          group_type: group
-          admin_label: field_member_of
-          required: false
-          entity_type: node
-          plugin_id: entity_reverse
       defaults:
         relationships: false
         group_by: false
         filters: false
         filter_groups: false
-      group_by: true
+        style: false
+        row: false
+        fields: false
+      group_by: false
       filters:
         field_complex_object_child_value:
           id: field_complex_object_child_value
@@ -1379,6 +1400,260 @@ display:
         operator: AND
         groups:
           1: AND
+      style:
+        type: default
+        options:
+          row_class: ''
+          default_row_class: false
+          uses_fields: false
+      row:
+        type: 'entity:node'
+        options:
+          relationship: none
+          view_mode: recent_item_teaser
+      fields:
+        changed:
+          id: changed
+          table: node_field_data
+          field: changed
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: timestamp_ago
+          settings:
+            future_format: '@interval hence'
+            past_format: '@interval ago'
+            granularity: 2
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          entity_type: node
+          entity_field: changed
+          plugin_id: field
+        field_collection_thumbnail:
+          id: field_collection_thumbnail
+          table: node__field_collection_thumbnail
+          field: field_collection_thumbnail
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        field_title:
+          id: field_title
+          table: node__field_title
+          field: field_title
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: complex_title_formatter
+          settings:
+            link: 0
+          group_column: ''
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        nothing:
+          id: nothing
+          table: views
+          field: nothing
+          relationship: none
+          group_type: group
+          admin_label: 'Row for thumb, title/changed'
+          label: ''
+          exclude: false
+          alter:
+            alter_text: true
+            text: "{% set published_class = [\r\nstatus != \"1\" ? 'node--unpublished',\r\n 'col']\r\n%}\r\n<div class=\"card card-hover card-horizontal\">\r\n  {% if field_collection_thumbnail %}\r\n  <div class=\"thumb-image-border icon-container card-img-top\">\r\n   {{ field_collection_thumbnail }} \r\n  </div>\r\n  {% endif %}\r\n\r\n <div class=\"card-content-wrapper\">\r\n  <div class=\"card-header\">\r\n     <h5 class=\"card-title\">{% if status != \"1\" %}<i class=\"fa fa-lock\"></i> {% endif %}<a href=\"/items/{{nid}}\">{{ field_title }}</a></h5>\r\n  </div>\r\n  <div class=\"card-body\">\r\n   <p class=\"card-text\">{{ changed }} </p>\r\n  </div>\r\n  <div class=\"row\">\r\n   <div class=\"col-6 card-button\"><a role=\"button\" href=\"/items/{{nid}}\" class=\"btn btn-gray\">About</a></div>\r\n  </div>\r\n </div>\r\n</div>"
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: false
+          plugin_id: custom
     cache_metadata:
       max-age: -1
       contexts:
@@ -1386,7 +1661,9 @@ display:
         - 'languages:language_interface'
         - 'user.node_grants:view'
         - user.permissions
-      tags: {  }
+      tags:
+        - 'config:field.storage.node.field_collection_thumbnail'
+        - 'config:field.storage.node.field_title'
   block_5:
     display_plugin: block
     id: block_5
@@ -1669,10 +1946,10 @@ display:
           group_type: group
           admin_label: ''
           label: ''
-          exclude: false
+          exclude: true
           alter:
             alter_text: false
-            text: ''
+            text: '{{ field_collection_thumbnail }}'
             make_link: false
             path: ''
             absolute: false
@@ -1695,25 +1972,25 @@ display:
             more_link_path: ''
             strip_tags: false
             trim: false
-            preserve_tags: ''
+            preserve_tags: img
             html: false
           element_type: ''
-          element_class: ''
+          element_class: card-img-top
           element_label_type: ''
           element_label_class: ''
           element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
           element_default_classes: true
-          empty: '<i class="far fa-folder-open fa-2x"></i>'
+          empty: '<div class="icon-container"><i class="far fa-folder-open fa-6x"></i></div>'
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
           type: media_thumbnail
           settings:
-            image_style: thumbnail
-            image_link: content
+            image_style: card_image
+            image_link: ''
           group_column: target_id
           group_columns: {  }
           group_rows: true
@@ -1800,9 +2077,9 @@ display:
           group_type: group
           admin_label: ''
           label: ''
-          exclude: false
+          exclude: true
           alter:
-            alter_text: true
+            alter_text: false
             text: "<a href=\"/collections/{{nid}}\">{{field_title}}</a><br/>\r\n{{changed}}"
             make_link: false
             path: '/items/{{nid}}'
@@ -1855,13 +2132,124 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
+        field_rich_description:
+          id: field_rich_description
+          table: node__field_rich_description
+          field: field_rich_description
+          relationship: none
+          group_type: group
+          admin_label: ''
+          label: ''
+          exclude: true
+          alter:
+            alter_text: true
+            text: "{{ field_rich_description }}\r\n"
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: text_default
+          settings: {  }
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          plugin_id: field
+        nothing:
+          id: nothing
+          table: views
+          field: nothing
+          relationship: none
+          group_type: group
+          admin_label: 'Row for thumb, title/desc'
+          label: ''
+          exclude: false
+          alter:
+            alter_text: true
+            text: "<div class=\"card card-horizontal card-hover\">\r\n{{ field_collection_thumbnail }}\r\n  <div class=\"card-content-wrapper\">\r\n  <div class=\"card-header\">\r\n   <h3 class=\"card-title\">{{ field_title }}</h3>\r\n  </div>\r\n  <div class=\"card-body\">\r\n   <a role=\"button\" href=\"/collections/{{nid}}\" class=\"stretched-link\"></a>\r\n   <p class=\"card-text\">\r\n     {{ field_rich_description }}<br />\r\n     {{ changed }}\r\n   </p>\r\n  </div>\r\n  </div>\r\n </div>"
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: false
+          plugin_id: custom
       css_class: container
       style:
         type: views_bootstrap_table
         options:
           grouping: {  }
           row_class: ''
-          default_row_class: true
+          default_row_class: false
           override: 1
           sticky: 0
           caption: ''
@@ -1870,9 +2258,11 @@ display:
           columns:
             field_model: field_model
             nid: nid
-            nothing: nothing
-            field_title: field_title
+            field_collection_thumbnail: field_collection_thumbnail
             changed: changed
+            field_title: field_title
+            field_rich_description: field_rich_description
+            nothing: nothing
           info:
             field_model:
               sortable: 0
@@ -1888,14 +2278,9 @@ display:
               separator: ''
               empty_column: 1
               responsive: ''
-            nothing:
+            field_collection_thumbnail:
               sortable: 0
               default_sort_order: asc
-              align: views-align-left
-              separator: ''
-              empty_column: 0
-              responsive: ''
-            field_title:
               align: ''
               separator: ''
               empty_column: 0
@@ -1907,11 +2292,28 @@ display:
               separator: ''
               empty_column: 0
               responsive: ''
+            field_title:
+              align: ''
+              separator: ''
+              empty_column: 0
+              responsive: ''
+            field_rich_description:
+              sortable: 0
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: 0
+              responsive: ''
+            nothing:
+              align: views-align-left
+              separator: ''
+              empty_column: 0
+              responsive: ''
           default: '-1'
           empty_table: 0
           responsive: 0
           bootstrap_styles:
-            striped: striped
+            striped: 0
             bordered: 0
             hover: 0
             condensed: 0
@@ -1930,6 +2332,7 @@ display:
       tags:
         - 'config:field.storage.node.field_collection_thumbnail'
         - 'config:field.storage.node.field_model'
+        - 'config:field.storage.node.field_rich_description'
         - 'config:field.storage.node.field_title'
   email_givenday:
     display_plugin: block

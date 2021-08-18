@@ -1446,7 +1446,7 @@ display:
           click_sort_column: value
           type: string
           settings:
-            link_to_entity: true
+            link_to_entity: false
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -1585,18 +1585,18 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-        nothing_1:
-          id: nothing_1
-          table: views
-          field: nothing
+        status:
+          id: status
+          table: node_field_data
+          field: status
           relationship: none
           group_type: group
-          admin_label: 'Row for thumb, title/desc'
+          admin_label: ''
           label: ''
-          exclude: false
+          exclude: true
           alter:
-            alter_text: true
-            text: "<div class=\"row\">\r\n{{ field_collection_thumbnail }} \r\n<div class=\"col\">\r\n<h2><a href=\"/collections/{{nid}}\">{{ field_title }}</a></h2>\r\n{{ field_rich_description }} \r\n</div>\r\n</div>"
+            alter_text: false
+            text: ''
             make_link: false
             path: ''
             absolute: false
@@ -1632,20 +1632,38 @@ display:
           empty: ''
           hide_empty: false
           empty_zero: false
-          hide_alter_empty: false
-          plugin_id: custom
-        nothing:
-          id: nothing
+          hide_alter_empty: true
+          click_sort_column: value
+          type: boolean
+          settings:
+            format: boolean
+            format_custom_true: ''
+            format_custom_false: ''
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+          entity_type: node
+          entity_field: status
+          plugin_id: field
+        nothing_1:
+          id: nothing_1
           table: views
           field: nothing
           relationship: none
           group_type: group
-          admin_label: 'About and Browse Buttons'
+          admin_label: 'Row for thumb, title/desc'
           label: ''
           exclude: false
           alter:
             alter_text: true
-            text: "<div class=\"row\">\r\n        <div class=\"btn-group collection-browse-button\" role=\"group\">\r\n          <a role=\"button\" href=\"/collections/{{nid}}\" class=\"btn btn-secondary\">About</a>\r\n<a role=\"button\" href=\"/collections/{{nid}}/search?search_api_fulltext=\" class=\"btn btn-secondary\">Browse</a>\r\n</div></div>"
+            text: "{% set published_class = [\r\nstatus != \"1\" ? 'node--unpublished',\r\n 'col']\r\n%}\r\n<div class=\"card card-horizontal\">\r\n  {% if field_collection_thumbnail %}\r\n  <div class=\"thumb-image-border icon-container card-img-top\">\r\n   {{ field_collection_thumbnail }} \r\n  </div>\r\n  {% endif %}\r\n <div class=\"card-content-wrapper\">\r\n    <div class=\"card-header\">\r\n     <h3 class=\"card-title\">{% if status != \"1\" %}<i class=\"fa fa-lock\"></i> {% endif %}{{ field_title }}</h3>\r\n    </div>\r\n    <div class=\"card-body\">\r\n     <p class=\"card-text\">{{ field_rich_description }}</p>\r\n    </div>\r\n    <div class=\"row\">\r\n     <div class=\"col-6 card-button\"><a role=\"button\" href=\"/collections/{{nid}}\" class=\"btn btn-gray\">About</a></div>\r\n     <div class=\"col-5 card-button\"><a role=\"button\" href=\"/collections/{{nid}}/search?search_api_fulltext=\" class=\"btn btn-gray\">Browse</a></div>\r\n    </div>\r\n  </div>\r\n</div>"
             make_link: false
             path: ''
             absolute: false
@@ -2135,7 +2153,7 @@ display:
           click_sort_column: value
           type: string
           settings:
-            link_to_entity: true
+            link_to_entity: false
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -2352,56 +2370,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "{% set published_class = [\r\nstatus != \"1\" ? 'node--unpublished',\r\n 'col']\r\n%}\r\n<div class=\"card card-horizontal\">\r\n<div class=\"row\">\r\n <div class=\"card-content-wrapper\">\r\n  {% if field_collection_thumbnail %}\r\n  <div class=\"thumb-image-border icon-container card-img-top\">\r\n   {{ field_collection_thumbnail }} \r\n  </div>\r\n  {% endif %}\r\n    <div class=\"card-header\">\r\n     <h3 class=\"card-title\">{% if status != \"1\" %}<i class=\"fa fa-lock\"></i> {% endif %}<a href=\"/collections/{{nid}}\">{{ field_title }}</a></h3>\r\n    </div>\r\n    <div class=\"card-body\">\r\n     <p class=\"card-text\">{{ field_rich_description }}</p>\r\n    </div>\r\n  </div>\r\n  <div class=\"row\">\r\n   <div class=\"col-6 card-button\"><a role=\"button\" href=\"/collections/{{nid}}\" class=\"btn btn-gray\">About</a></div>\r\n   <div class=\"col-5 card-button\"><a role=\"button\" href=\"/collections/{{nid}}/search?search_api_fulltext=\" class=\"btn btn-gray\">Browse</a></div>\r\n  </div>\r\n </div>\r\n</div>\r\n\r\n<div class=\"card card-horizontal\"><img class=\"card-img-top\" src=\"https://unity.web.asu.edu/@asu-design-system/bootstrap4-theme/static/media/example-image.e89fc217.jpg\" alt=\"Card image cap\"><div class=\"card-content-wrapper\"><div class=\"card-header\"><h3 class=\"card-title\">Card default title</h3></div><div class=\"card-body\"><p class=\"card-text\">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua eiusmod tempo.</p></div><div class=\"card-button\"><a href=\"#\" class=\"btn btn-dark\">Button link here</a></div></div></div>"
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: false
-          plugin_id: custom
-        nothing:
-          id: nothing
-          table: views
-          field: nothing
-          relationship: none
-          group_type: group
-          admin_label: 'About and Browse Buttons'
-          label: ''
-          exclude: true
-          alter:
-            alter_text: true
-            text: "<div class=\"row\">\r\n        <div class=\"btn-group collection-browse-button\" role=\"group\">\r\n          <a role=\"button\" href=\"/collections/{{nid}}\" class=\"btn btn-secondary\">About</a>\r\n<a role=\"button\" href=\"/collections/{{nid}}/search?search_api_fulltext=\" class=\"btn btn-secondary\">Browse</a>\r\n</div></div>"
+            text: "{% set published_class = [\r\nstatus != \"1\" ? 'node--unpublished',\r\n 'col']\r\n%}\r\n<div class=\"card card-horizontal\">\r\n  {% if field_collection_thumbnail %}\r\n  <div class=\"thumb-image-border icon-container card-img-top\">\r\n   {{ field_collection_thumbnail }} \r\n  </div>\r\n  {% endif %}\r\n <div class=\"card-content-wrapper\">\r\n    <div class=\"card-header\">\r\n     <h3 class=\"card-title\">{% if status != \"1\" %}<i class=\"fa fa-lock\"></i> {% endif %}{{ field_title }}</h3>\r\n    </div>\r\n    <div class=\"card-body\">\r\n     <p class=\"card-text\">{{ field_rich_description }}</p>\r\n    </div>\r\n    <div class=\"row\">\r\n     <div class=\"col-6 card-button\"><a role=\"button\" href=\"/collections/{{nid}}\" class=\"btn btn-gray\">About</a></div>\r\n     <div class=\"col-5 card-button\"><a role=\"button\" href=\"/collections/{{nid}}/search?search_api_fulltext=\" class=\"btn btn-gray\">Browse</a></div>\r\n    </div>\r\n  </div>\r\n</div>"
             make_link: false
             path: ''
             absolute: false

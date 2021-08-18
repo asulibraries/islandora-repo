@@ -11,7 +11,76 @@ id: new_collection_request
 title: 'New Collection Request'
 description: 'This form allows users to propose new collections to be added to KEEP.&nbsp;'
 category: ''
-elements: "intro:\n  '#type': processed_text\n  '#text': |\n    <h1>New collection request</h1>\n    \n    <p><span><span><span><span><span><span>ASU faculty and staff who are affiliated with a program or project may request creation of a new collection to deposit and organize access to their scholarly works in KEEP. Examples of new collections that will be considered are graduate program capstone collections, publications and products associated with a lab or research group, or journals published as part of an ASU program or project.&nbsp;</span></span></span></span></span></span></p>\n    \n    <p><span><span><span><span><span><span>For more information, please fill out the form with any information you have about the proposed collection. The Digital Repository Services team will review the request and respond with further questions or information about next steps. </span></span></span></span></span></span></p>\n    \n  '#format': full_html\nabout_you:\n  '#type': container\n  your_name:\n    '#type': textfield\n    '#title': 'Your name'\n    '#required': true\n  your_asurite:\n    '#type': textfield\n    '#title': 'Your ASURITE'\n    '#required': true\n    '#default_value': '[current-user:account-name]'\n  your_e_mail:\n    '#type': textfield\n    '#title': 'Your ASU e-mail address'\n    '#required': true\n  your_role_at_asu:\n    '#type': webform_checkboxes_other\n    '#title': 'Your role at ASU'\n    '#options':\n      Faculty: Faculty\n      'Academic Professional': 'Academic Professional'\n      Staff: Staff\n      'Graduate Student': 'Graduate Student'\n      'Undergraduate Student': 'Undergraduate Student'\n      TA/RA: TA/RA\n  your_asu_unit:\n    '#type': textfield\n    '#title': 'Your ASU department/college/unit'\nabout_your_collection:\n  '#type': container\n  proposed_title_of_collection:\n    '#type': textfield\n    '#title': 'Proposed title of collection'\n    '#description': 'For examples, see the <a href=\"https://keep.lib.asu.edu/collections\">collections currently available in KEEP.</a>'\n  description_of_proposed_collection:\n    '#type': textarea\n    '#title': 'Description of proposed collection'\n    '#description': '<span style=\"font-size:11pt; font-variant:normal; white-space:pre-wrap\"><span style=\"font-family:Arial\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">Please tell us about the types of materials you would like to include in your collection (examples: journal articles, images, audio, video, etc.). </span></span></span></span></span></span>Who was involved in the creation of these materials? What is the purpose of making them available in KEEP? (please see the <a href=\"https://keep.lib.asu.edu/about/practices\">Repository Practices page</a> for more information on materials that are in scope for KEEP.)'\n  file_formats:\n    '#type': textarea\n    '#title': 'File formats'\n    '#description': 'What file formats would your collection likely contain? (examples: .pdf, .docx, .mp4, .wav, etc.) Please provide approximate amounts of each file type.&nbsp;'\n  copyright_status:\n    '#type': webform_checkboxes_other\n    '#title': 'Copyright status'\n    '#description': 'For assistance on determining copyright status, please see ASU Library&#39;s <a href=\"https://libguides.asu.edu/copyright\">Copyright LibGuide</a>. For more information on Creative Commons licenses, please <a href=\"https://creativecommons.org/licenses/\">see their site</a>.&nbsp;'\n    '#options':\n      'In copyright': 'In copyright'\n      'No copyright': 'No copyright'\n      'No known copyright': 'No known copyright'\n      'I want to assign a Creative Commons license to my materials': 'I want to assign a Creative Commons license to my materials'\n      'Not sure': 'Not sure'\n  timeframe:\n    '#type': textarea\n    '#title': Timeframe\n    '#description': '<span style=\"font-size:11pt; font-variant:normal; white-space:pre-wrap\"><span style=\"font-family:Arial\"><span style=\"color:#000000\"><span style=\"font-weight:400\"><span style=\"font-style:normal\"><span style=\"text-decoration:none\">The normal timeline for setting up a new collection is at least a few weeks. Is this request time-bound in any way? </span></span></span></span></span></span>'\nactions:\n  '#type': webform_actions\n  '#title': 'Submit button(s)'"
+elements: |-
+  intro:
+    '#type': processed_text
+    '#text': |
+      <h1>New collection request</h1>
+      
+      <p><span><span><span><span><span><span>ASU faculty and staff who are affiliated with a program or project may request creation of a new collection to deposit and organize access to their scholarly works in KEEP. Examples of new collections that will be considered are graduate program capstone collections, publications and products associated with a lab or research group, or journals published as part of an ASU program or project.&nbsp;</span></span></span></span></span></span></p>
+      
+      <p><span><span><span><span><span><span>For more information, please fill out the form with any information you have about the proposed collection. The Digital Repository Services team will review the request and respond with further questions or information about next steps. </span></span></span></span></span></span></p>
+      
+    '#format': full_html
+  about_you:
+    '#type': container
+    your_name:
+      '#type': textfield
+      '#title': 'Your name'
+      '#required': true
+    your_asurite:
+      '#type': textfield
+      '#title': 'Your ASURITE'
+      '#required': true
+      '#default_value': '[current-user:account-name]'
+    your_e_mail:
+      '#type': textfield
+      '#title': 'Your ASU e-mail address'
+      '#required': true
+    your_role_at_asu:
+      '#type': webform_checkboxes_other
+      '#title': 'Your role at ASU'
+      '#options':
+        Faculty: Faculty
+        'Academic Professional': 'Academic Professional'
+        Staff: Staff
+        'Graduate Student': 'Graduate Student'
+        'Undergraduate Student': 'Undergraduate Student'
+        TA/RA: TA/RA
+    your_asu_unit:
+      '#type': textfield
+      '#title': 'Your ASU department/college/unit'
+  about_your_collection:
+    '#type': container
+    proposed_title_of_collection:
+      '#type': textfield
+      '#title': 'Proposed title of collection'
+      '#description': 'For examples, see the <a href="https://keep.lib.asu.edu/collections">collections currently available in KEEP.</a>'
+    description_of_proposed_collection:
+      '#type': textarea
+      '#title': 'Description of proposed collection'
+      '#description': '<span style="font-size:11pt; font-variant:normal; white-space:pre-wrap"><span style="font-family:Arial"><span style="color:#000000"><span style="font-weight:400"><span style="font-style:normal"><span style="text-decoration:none">Please tell us about the types of materials you would like to include in your collection (examples: journal articles, images, audio, video, etc.). </span></span></span></span></span></span>Who was involved in the creation of these materials? What is the purpose of making them available in KEEP? (please see the <a href="https://keep.lib.asu.edu/about/practices">Repository Practices page</a> for more information on materials that are in scope for KEEP.)'
+    file_formats:
+      '#type': textarea
+      '#title': 'File formats'
+      '#description': 'What file formats would your collection likely contain? (examples: .pdf, .docx, .mp4, .wav, etc.) Please provide approximate amounts of each file type.&nbsp;'
+    copyright_status:
+      '#type': webform_checkboxes_other
+      '#title': 'Copyright status'
+      '#description': 'For assistance on determining copyright status, please see ASU Library&#39;s <a href="https://libguides.asu.edu/copyright">Copyright LibGuide</a>. For more information on Creative Commons licenses, please <a href="https://creativecommons.org/licenses/">see their site</a>.&nbsp;'
+      '#options':
+        'In copyright': 'In copyright'
+        'No copyright': 'No copyright'
+        'No known copyright': 'No known copyright'
+        'I want to assign a Creative Commons license to my materials': 'I want to assign a Creative Commons license to my materials'
+        'Not sure': 'Not sure'
+    timeframe:
+      '#type': textarea
+      '#title': Timeframe
+      '#description': '<span style="font-size:11pt; font-variant:normal; white-space:pre-wrap"><span style="font-family:Arial"><span style="color:#000000"><span style="font-weight:400"><span style="font-style:normal"><span style="text-decoration:none">The normal timeline for setting up a new collection is at least a few weeks. Is this request time-bound in any way? </span></span></span></span></span></span>'
+  actions:
+    '#type': webform_actions
+    '#title': 'Submit button(s)'
 css: ''
 javascript: ''
 settings:
