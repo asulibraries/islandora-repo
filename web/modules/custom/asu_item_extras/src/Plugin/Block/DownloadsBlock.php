@@ -8,7 +8,7 @@ use Drupal\Core\Session\AccountProxy;
 use Drupal\Core\Url;
 use Drupal\Core\Link;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBuilderInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
@@ -42,7 +42,7 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
   /**
    * The entityTypeManager definition.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManager
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
 
@@ -75,14 +75,14 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
    *   The route match.
    * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
    *   The request stack.
-   * @param \Drupal\Core\Entity\EntityTypeManager $entityTypeManager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entityTypeManager definition.
    * @param \Drupal\Core\Form\FormBuilderInterface $formBuilder
    *   The Drupal form builder.
    * @param \Drupal\Core\Session\AccountProxy $current_user
    *   The current user.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $route_match, RequestStack $request_stack, EntityTypeManager $entityTypeManager, FormBuilderInterface $formBuilder, AccountProxy $current_user) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $route_match, RequestStack $request_stack, EntityTypeManagerInterface $entityTypeManager, FormBuilderInterface $formBuilder, AccountProxy $current_user) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->routeMatch = $route_match;
     $this->requestStack = $request_stack;
