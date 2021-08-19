@@ -68,7 +68,7 @@ function asu_statistics_preprocess_node(array &$variables) {
     $field_model = (isset($field_model_term) && is_object($field_model_term)) ?
       $field_model_term->getName() : '';
 
-    if ($variables['node']->bundle() == 'asu_repository_item' && $field_model <> 'Complex Object') {
+    if ($variables['node']->bundle() == 'asu_repository_item' && $field_model <> 'Complex Object' && $variables['view_mode'] <> "search_result") {
       $islandora_utils = \Drupal::service('islandora.utils');
       $servicefile_term = $islandora_utils->getTermForUri('http://pcdm.org/use#ServiceFile');
       $servicefile = $islandora_utils->getMediaWithTerm($variables['node'], $servicefile_term);
