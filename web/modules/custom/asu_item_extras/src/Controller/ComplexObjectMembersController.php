@@ -7,7 +7,7 @@ use Drupal\user\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\views\Views;
 
 /**
@@ -24,7 +24,7 @@ class ComplexObjectMembersController extends ControllerBase implements Container
   /**
    * The entityTypeManager definition.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManager
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
 
@@ -33,10 +33,10 @@ class ComplexObjectMembersController extends ControllerBase implements Container
    *
    * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
    *   The route match.
-   * @param Drupal\Core\Entity\EntityTypeManager $entityTypeManager
+   * @param Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   A drupal entity type manager object.
    */
-  public function __construct(RouteMatchInterface $route_match, EntityTypeManager $entityTypeManager) {
+  public function __construct(RouteMatchInterface $route_match, EntityTypeManagerInterface $entityTypeManager) {
     $this->routeMatch = $route_match;
     $this->entityTypeManager = $entityTypeManager;
   }
