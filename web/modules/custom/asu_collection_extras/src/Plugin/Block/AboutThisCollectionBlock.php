@@ -3,7 +3,7 @@
 namespace Drupal\asu_collection_extras\Plugin\Block;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Routing\CurrentRouteMatch;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Block\BlockBase;
@@ -34,7 +34,7 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
   /**
    * The entityTypeManager definition.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManager
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
 
@@ -70,7 +70,7 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
    *   The plugin implementation definition.
    * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
    *   The request stack.
-   * @param \Drupal\Core\Entity\EntityTypeManager $entityTypeManager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entityTypeManager definition.
    * @param \Drupal\Core\Routing\CurrentRouteMatch $currentRouteMatch
    *   The currentRouteMatch definition.
@@ -84,7 +84,7 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
     $plugin_id,
     $plugin_definition,
     RequestStack $request_stack,
-    EntityTypeManager $entityTypeManager,
+    EntityTypeManagerInterface $entityTypeManager,
     CurrentRouteMatch $currentRouteMatch,
     IslandoraMatomoService $islandoraMatomo,
     Connection $connection
