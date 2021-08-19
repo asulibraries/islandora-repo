@@ -7,7 +7,7 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Url;
 use Drupal\Core\Link;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBuilderInterface;
 use Drupal\Core\Session\AccountProxy;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -49,7 +49,7 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
   /**
    * The entityTypeManager definition.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManager
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
 
@@ -80,14 +80,14 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
    *   The route match.
    * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
    *   The request stack.
-   * @param \Drupal\Core\Entity\EntityTypeManager $entityTypeManager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entityTypeManager definition.
    * @param \Drupal\Core\Form\FormBuilderInterface $formBuilder
    *   The Drupal form builder.
    * @param mixed $islandoraUtils
    *   IslandoraUtils Utility class.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, AccountProxy $current_user, RouteMatchInterface $route_match, RequestStack $request_stack, EntityTypeManager $entityTypeManager, FormBuilderInterface $formBuilder, $islandoraUtils) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, AccountProxy $current_user, RouteMatchInterface $route_match, RequestStack $request_stack, EntityTypeManagerInterface $entityTypeManager, FormBuilderInterface $formBuilder, $islandoraUtils) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->currentUser = $current_user;
     $this->routeMatch = $route_match;
