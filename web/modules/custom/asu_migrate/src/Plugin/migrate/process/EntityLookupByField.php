@@ -71,8 +71,11 @@ class EntityLookupByField extends ProcessPluginBase implements ContainerFactoryP
   /**
    * Load term by value.
    */
-  public function getTidByValue($value = NULL, $field = NULL) {
+  public function getTidByValue($value = NULL, $field = NULL, $bundle = NULL) {
     $properties = [];
+    if ($bundle) {
+      $properties['bundle'] = [$bundle];
+    }
     if (!empty($value) && !empty($field)) {
       if (strpos($field, '/') !== false) {
         $field = explode('/', $field);
