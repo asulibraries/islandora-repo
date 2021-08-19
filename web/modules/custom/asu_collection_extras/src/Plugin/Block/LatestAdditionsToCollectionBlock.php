@@ -4,7 +4,7 @@ namespace Drupal\asu_collection_extras\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Routing\CurrentRouteMatch;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -22,7 +22,7 @@ class LatestAdditionsToCollectionBlock extends BlockBase implements ContainerFac
   /**
    * The entityTypeManager definition.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManager
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
 
@@ -42,7 +42,7 @@ class LatestAdditionsToCollectionBlock extends BlockBase implements ContainerFac
    *   The plugin_id for the formatter.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\Core\Entity\EntityTypeManager $entityTypeManager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entityTypeManager definition.
    * @param \Drupal\Core\Routing\CurrentRouteMatch $currentRouteMatch
    *   The currentRouteMatch definition.
@@ -51,7 +51,7 @@ class LatestAdditionsToCollectionBlock extends BlockBase implements ContainerFac
     array $configuration,
     $plugin_id,
     $plugin_definition,
-    EntityTypeManager $entityTypeManager,
+    EntityTypeManagerInterface $entityTypeManager,
     CurrentRouteMatch $currentRouteMatch) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->entityTypeManager = $entityTypeManager;
