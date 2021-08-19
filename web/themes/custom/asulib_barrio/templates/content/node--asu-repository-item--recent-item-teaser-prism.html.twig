@@ -68,7 +68,6 @@
     node.isSticky() ? 'node--sticky',
     not node.isPublished() ? 'node--unpublished',
     view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
-    'views-align-center',
     'card', 'card-hover'
 ]
 %}
@@ -86,33 +85,29 @@
 
 %}
 <div {{ attributes.addClass(classes) }}>
+  <div class="card-header card-header-icon">  
     {% if complex_obj_thumb is not empty %}
-    <img class="card-img-top thumb-image-border image-style-thumbnail prism-home-thumb" src=" {{ complex_obj_thumb }}"/>
+        <i class="far fa-file-image fa-2x"></i>
     {% elseif drupal_view_result('display_media', 'thumbnail', node.id) is empty %}
       {% set mod = content.field_model[0]|render|trim %}
       {% for k, v in model_icons|filter((v, k) => k == mod) -%}
-        <div class="icon-container">
-          <i class="{{ v }} fa-6x"></i>
-        </div>
+        <i class="{{ v }} fa-2x"></i>
       {% endfor %}
     {% else %}
-      {{ drupal_view('display_media', 'thumbnail', node.id) }}
+        <i class="far fa-file-image fa-2x"></i>
     {% endif %}
-    <div class="card-content-wrapper">
-        <div class="card-header">
-            <h5 class="card-title">
-                {% set title = content.field_title[0]|render|trim|slice(0, 60) %}
-                {{ title|raw }}
-                {% if content.field_title[0]|render|length > 60 %}
-                    ...
-                {% endif %}
-            </h5>
-        </div>
-        <div class="card-body">
-            {%  if changed_ago %}
-              <p class="card-text">{{ changed_ago }} ago</p>
-            {% endif %}
-            <a role="button" href="/items/{{ node.id }}" class="stretched-link"></a>
-        </div>
-    </div>
+    <h3 class="card-title">
+        {% set title = content.field_title[0]|render|trim|slice(0, 80) %}
+        {{ title|raw }}
+        {% if content.field_title[0]|render|length > 80 %}
+            ...
+        {% endif %}
+    </h3>
+  </div>
+  <div class="card-body">
+    {% if changed_ago %}
+      <p class="card-text">{{ changed_ago }} ago</p>
+    {% endif %}
+    <a role="button" href="/items/{{ node.id }}" class="stretched-link"></a>
+  </div>
 </div>
