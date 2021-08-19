@@ -13,6 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Drupal\group\GroupMembershipLoaderInterface;
 use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Site\Settings;
 
 /**
@@ -78,7 +79,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
    *   The current user.
    * @param \Drupal\group\GroupMembershipLoaderInterface $group_membership_loader
    *   The group membership loader.
-   * @param \Drupal\Core\Entity\EntityTypeManager $entityTypeManager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entityTypeManager definition.
    */
   public function __construct(
@@ -89,7 +90,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
         RequestStack $request_stack,
         AccountProxy $current_user,
         GroupMembershipLoaderInterface $group_membership_loader,
-        EntityTypeManager $entityTypeManager
+        EntityTypeManagerInterface $entityTypeManager
     ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->routeMatch = $route_match;
