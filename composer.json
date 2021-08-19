@@ -18,13 +18,41 @@
 	{
 	    "type": "composer",
 	    "url": "https://asset-packagist.org"
-	}
+	},
+        {
+         "type": "package",
+         "package": {
+        "name": "d3/d3",
+        "version": "v3.5.17",
+        "type": "drupal-library",
+        "source": {
+            "url": "https://github.com/d3/d3.git",
+            "type": "git",
+            "reference": "tags/v3.5.17"
+        }
+        }
+      },
+      {
+    "type": "package",
+    "package": {
+        "name": "highlightjs/highlightjs",
+        "version": "9.7.0",
+        "type": "drupal-library",
+        "source": {
+            "url": "https://github.com/highlightjs/highlight.js.git",
+            "type": "git",
+            "reference": "tags/9.7.0"
+        }
+      }
+    }
+
     ],
     "require": {
         "php": "^7.4",
         "bower-asset/jquery-ui-slider-pips": "^1.11",
         "composer/installers": "^1.2",
         "cweagans/composer-patches": "^1.6.5",
+        "d3/d3": "^3.5",
         "drupal/address": "^1.9",
         "drupal/admin_toolbar": "^3.0",
         "drupal/archivesspace": "^1.1",
@@ -88,7 +116,7 @@
         "drupal/s3fs": "^3.0@alpha",
         "drupal/s3fs_cors": "^1.0@beta",
         "drupal/schema_metatag": "^2.2",
-        "drupal/search_api_solr": "^4.2",
+        "drupal/search_api_solr": "^4.2.1",
         "drupal/seckit": "^2.0",
         "drupal/simple_sitemap": "^3.10",
         "drupal/smtp": "^1.0",
@@ -110,6 +138,7 @@
         "drupal/workbench_email": "^2.0",
         "drush/drush": "^10.3",
         "easyrdf/easyrdf": "^1.1",
+        "highlightjs/highlightjs": "^9.7",
         "islandora-rdm/islandora_fits": "dev-8.x-1.x",
         "islandora/chullo": "dev-dev",
         "islandora/controlled_access_terms": "dev-8.x-1.x",
@@ -223,6 +252,9 @@
 		"fix for taxo term save": "https://www.drupal.org/files/issues/2020-10-29/2893747-33.patch",
 		"fix for blocks not showing up": "https://www.drupal.org/files/issues/2018-10-27/2997898-21.patch"
 	    },
+            "drupal/devel": {
+                "fix for webprofiler search": "https://gitlab.com/drupalspoons/devel/uploads/46c76358f2ea033809bdfe015bb47c97/devel-372-symfony-4-events-supports.patch"
+            },
 	    "drupal/google_analytics": {
 		"fix for GA version 4": "https://www.drupal.org/files/issues/2020-12-01/3178179-google-analytics-4.patch"
 	    },
