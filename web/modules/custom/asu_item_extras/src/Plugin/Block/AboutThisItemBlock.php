@@ -122,7 +122,7 @@ class AboutThisItemBlock extends BlockBase implements ContainerFactoryPluginInte
     // event that will send the current node's URL to the copy buffer?
     if ($node->hasField('field_handle') && $node->get('field_handle')->value != NULL) {
       $hdl = $node->get('field_handle')->value;
-      $output_links[] = '<a class="nav-link copy_permalink_link" title="' . $hdl . '">Permalink</span>&nbsp; <span class="far fa-copy fa-lg copy_permalink_link" title="' . $hdl . '">&nbsp;</a>';
+      $output_links[] = '<div class="permalink_button"><a class="btn btn-maroon btn-md copy_permalink_link" title="' . $hdl . '">Permalink&nbsp; <i class="far fa-copy fa-lg copy_permalink_link" title="' . $hdl . '"></i></a></div>';
     }
 
     return [
