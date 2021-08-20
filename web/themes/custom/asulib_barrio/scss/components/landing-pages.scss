@@ -174,7 +174,7 @@
 
 /** Fix for heros on mobile devices **/
 
-.uds-hero-* .hero {
+div[class^=uds-hero] .hero {
     @media only screen and (-webkit-min-device-pixel-ratio: 3) {
         max-height: 300px;
     }
