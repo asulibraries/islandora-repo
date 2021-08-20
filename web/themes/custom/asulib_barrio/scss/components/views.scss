@@ -213,14 +213,14 @@
     height: calc(100% - 20px);
 }
 .collection-browse-object {
-    border: 1px solid $gray-5;
+    border: none;
     padding: 20px 20px 0px 20px;
     margin-top: 10px;
     margin-bottom: 10px;
     display: flex;
     flex-direction: column;
     .card {
-        border: none;
+        border: 1px solid $gray-5;
     }
     .collection-browse-button {
         width: 100%;
@@ -245,7 +245,7 @@
     }
     img {
         height: auto;
-        border: 1px solid #d0d0d0;
+        border-right: 1px solid #d0d0d0;
         padding: 8px;
     }
     h2 {
@@ -348,11 +348,7 @@
   }
 }
 
-.thumb-image-border .views-field-field-media-image img, .thumb-image-border .icon-container {
-  border: 1px solid #D0D0D0;
-  padding: 8px;
-}
-.thumb-image-border .icon-container a img {
+.collection-browse-object .icon-container a img {
   max-width: 200px;
 }
 
