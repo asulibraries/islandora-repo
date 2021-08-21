@@ -134,7 +134,6 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     $origfile = $this->entityTypeManager->getStorage('media')->loadByProperties([
       'field_media_use' => ['target_id' => $origfile_term]
     ]);
-    $origfile = reset($origfile);
     if (count($origfile) > 0) {
       $origfile = reset($origfile);
     } else {
