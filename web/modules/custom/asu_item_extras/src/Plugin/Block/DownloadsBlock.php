@@ -135,21 +135,32 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
       'field_media_use' => ['target_id' => $origfile_term]
     ]);
     $origfile = reset($origfile);
+    if (count($origfile) > 0) {
+      $origfile = reset($origfile);
+    } else {
+      $origfile = NULL;
+    }
     $servicefile_term = $default_config->get('service_file_taxonomy_term');
     $servicefile = $this->entityTypeManager->getStorage('media')->loadByProperties([
       'field_media_use' => ['target_id' => $servicefile_term]
     ]);
-    $servicefile = reset($servicefile);
+    if (count($servicefile) > 0) {
+      $servicefile = reset($servicefile);
+    } else {
+      $servicefile = NULL;
+    }
     $masterfile_term =
     $default_config->get('preservation_master_taxonomy_term');
     $masterfile = $this->entityTypeManager->getStorage('media')->loadByProperties([
       'field_media_use' => ['target_id' => $masterfile_term]
     ]);
-    $masterfile = reset($masterfile);
+    if (count($masterfile) > 0) {
+      $masterfile = reset($masterfile);
+    } else {
+      $masterfile = NULL;
+    }
 
     if ($origfile && $origfile->bundle() <> 'remote_video') {
-      $file_entities = ($origfile->hasField('field_access_terms') ? $origfile->get('field_access_terms')->referencedEntities() : NULL);
-      $of_access = ((!is_null($file_entities) && array_key_exists(0, $file_entities)) ? $file_entities[0]->label() : FALSE);
       $source_field = $media_source_service->getSourceFieldName($origfile->bundle());
       if (!empty($source_field)) {
         $of_file = ($origfile->hasField($source_field) && (is_object($origfile->get($source_field)) && $origfile->get($source_field)->referencedEntities() != NULL) ? $origfile->get($source_field)->referencedEntities()[0] : FALSE);
@@ -163,8 +174,6 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
       // TODO populate $download_info with the filesize in human readable format and the extension of the fiel
     }
     if ($servicefile && $servicefile->bundle() <> 'remote_video') {
-      $file_entities = ($servicefile->hasField('field_access_terms') ? $servicefile->get('field_access_terms')->referencedEntities() : NULL);
-      $sf_access = ((!is_null($file_entities) && array_key_exists(0, $file_entities)) ? $file_entities[0]->label() : FALSE);
       $source_field = $media_source_service->getSourceFieldName($servicefile->bundle());
       if (!empty($source_field)) {
         $sf_file = ($servicefile->hasField($source_field) && (is_object($servicefile->get($source_field)) && $servicefile->get($source_field)->referencedEntities() != NULL) ? $servicefile->get($source_field)->referencedEntities()[0] : FALSE);
