@@ -134,15 +134,18 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     $origfile = $this->entityTypeManager->getStorage('media')->loadByProperties([
       'field_media_use' => ['target_id' => $origfile_term]
     ]);
+    $origfile = reset($origfile);
     $servicefile_term = $default_config->get('service_file_taxonomy_term');
     $servicefile = $this->entityTypeManager->getStorage('media')->loadByProperties([
       'field_media_use' => ['target_id' => $servicefile_term]
     ]);
+    $servicefile = reset($servicefile);
     $masterfile_term =
     $default_config->get('preservation_master_taxonomy_term');
     $masterfile = $this->entityTypeManager->getStorage('media')->loadByProperties([
       'field_media_use' => ['target_id' => $masterfile_term]
     ]);
+    $masterfile = reset($masterfile);
 
     if ($origfile && $origfile->bundle() <> 'remote_video') {
       $file_entities = ($origfile->hasField('field_access_terms') ? $origfile->get('field_access_terms')->referencedEntities() : NULL);
