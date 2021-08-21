@@ -129,12 +129,20 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     $file_size = 0;
     $islandora_utils = \Drupal::service('islandora.utils');
     $media_source_service = \Drupal::service('islandora.media_source_service');
-    $origfile_term = $islandora_utils->getTermForUri('http://pcdm.org/use#OriginalFile');
-    $origfile = $islandora_utils->getMediaWithTerm($node, $origfile_term);
-    $servicefile_term = $islandora_utils->getTermForUri('http://pcdm.org/use#ServiceFile');
-    $servicefile = $islandora_utils->getMediaWithTerm($node, $servicefile_term);
-    $masterfile_term = $islandora_utils->getTermForUri('http://pcdm.org/use#PreservationMasterFile');
-    $masterfile = $islandora_utils->getMediaWithTerm($node, $masterfile_term);
+    $default_config = \Drupal::config('asu_default_fields.settings');
+    $origfile_term = $default_config->get('original_file_taxonomy_term');
+    $origfile = $this->entityTypeManager->getStorage('media')->loadByProperties([
+      'field_media_use' => ['target_id' => $origfile_term]
+    ]);
+    $servicefile_term = $default_config->get('service_file_taxonomy_term');
+    $servicefile = $this->entityTypeManager->getStorage('media')->loadByProperties([
+      'field_media_use' => ['target_id' => $servicefile_term]
+    ]);
+    $masterfile_term =
+    $default_config->get('preservation_master_taxonomy_term');
+    $masterfile = $this->entityTypeManager->getStorage('media')->loadByProperties([
+      'field_media_use' => ['target_id' => $masterfile_term]
+    ]);
 
     if ($origfile && $origfile->bundle() <> 'remote_video') {
       $file_entities = ($origfile->hasField('field_access_terms') ? $origfile->get('field_access_terms')->referencedEntities() : NULL);
