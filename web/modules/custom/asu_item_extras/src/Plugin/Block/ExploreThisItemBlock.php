@@ -199,8 +199,17 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
   private function canAccessItemMedia($node) {
     // Get the media for "Original File" and check for any access restrictions
     // on it.
-    $origfile_term = $this->islandoraUtils->getTermForUri('http://pcdm.org/use#OriginalFile');
-    $origfile = $this->islandoraUtils->getMediaWithTerm($node, $origfile_term);
+    $default_config = \Drupal::config('asu_default_fields.settings');
+    $origfile_term = $default_config->get('original_file_taxonomy_term');
+    $origfile = $this->entityTypeManager->getStorage('media')->loadByProperties([
+      'field_media_use' => ['target_id' => $origfile_term],
+      'field_media_of' => ['target_id' => $node->id()]
+    ]);
+    if (count($origfile) > 0) {
+      $origfile = reset($origfile);
+    } else {
+      $origfile = NULL;
+    }
     $origfile_access = (!is_null($origfile) && $origfile->access('view', $this->currentUser));
     return $origfile_access;
   }
