@@ -22,12 +22,8 @@ use Drupal\media\Entity\Media;
 function asu_collection_extras_get_collection_children($collection_node, $sort_by_date = FALSE, $limit = 0, $items_only = TRUE) {
   $collection_nid = (is_object($collection_node) ? $collection_node->id() : $collection_node);
   $childrenQuery = \Drupal::entityQuery('node');
-  $orGroup = $childrenQuery
-    ->orConditionGroup()
-    ->condition('field_member_of', $collection_nid)
-    ->condition('field_additional_memberships', $collection_nid);
   $childrenQuery
-    ->condition($orGroup)
+    ->condition('field_member_of', $collection_nid)
     ->condition('status', 1);
   if ($items_only) {
     $childrenQuery
@@ -35,7 +31,7 @@ function asu_collection_extras_get_collection_children($collection_node, $sort_b
   }
   if ($sort_by_date) {
     $childrenQuery
-      ->sort('revision_timestamp', 'DESC');
+      ->sort('changed', 'DESC');
   }
   if ($limit) {
     $childrenQuery
