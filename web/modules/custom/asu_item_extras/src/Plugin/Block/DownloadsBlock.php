@@ -132,7 +132,8 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     $default_config = \Drupal::config('asu_default_fields.settings');
     $origfile_term = $default_config->get('original_file_taxonomy_term');
     $origfile = $this->entityTypeManager->getStorage('media')->loadByProperties([
-      'field_media_use' => ['target_id' => $origfile_term]
+      'field_media_use' => ['target_id' => $origfile_term],
+      'field_media_of' => ['target_id' => $nid]
     ]);
     if (count($origfile) > 0) {
       $origfile = reset($origfile);
@@ -141,7 +142,8 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     }
     $servicefile_term = $default_config->get('service_file_taxonomy_term');
     $servicefile = $this->entityTypeManager->getStorage('media')->loadByProperties([
-      'field_media_use' => ['target_id' => $servicefile_term]
+      'field_media_use' => ['target_id' => $servicefile_term],
+      'field_media_of' => ['target_id' => $nid]
     ]);
     if (count($servicefile) > 0) {
       $servicefile = reset($servicefile);
@@ -151,7 +153,8 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     $masterfile_term =
     $default_config->get('preservation_master_taxonomy_term');
     $masterfile = $this->entityTypeManager->getStorage('media')->loadByProperties([
-      'field_media_use' => ['target_id' => $masterfile_term]
+      'field_media_use' => ['target_id' => $masterfile_term],
+      'field_media_of' => ['target_id' => $nid]
     ]);
     if (count($masterfile) > 0) {
       $masterfile = reset($masterfile);
