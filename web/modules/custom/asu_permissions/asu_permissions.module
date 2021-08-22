@@ -588,12 +588,27 @@ function asu_permissions_theme() {
 function asu_permissions_preprocess_node(&$variables) {
   if ($variables['node'] && $variables['node']->getType() == 'asu_repository_item' && ($variables['view_mode'] == 'asu_video' || $variables['view_mode'] == 'asu_audio' || $variables['view_mode'] == 'asu_document' || $variables['view_mode'] == 'asu_image' || $variables['view_mode'] == 'complex_object_child_box')) {
     $node = $variables['node'];
-    $islandora_utils = \Drupal::service('islandora.utils');
-    $media_source_service = \Drupal::service('islandora.media_source_service');
-    $origfile_term = $islandora_utils->getTermForUri('http://pcdm.org/use#OriginalFile');
-    $origfile = $islandora_utils->getMediaWithTerm($node, $origfile_term);
-    $servicefile_term = $islandora_utils->getTermForUri('http://pcdm.org/use#ServiceFile');
-    $servicefile = $islandora_utils->getMediaWithTerm($node, $servicefile_term);
+    $default_config = \Drupal::config('asu_default_fields.settings');
+    $origfile_term = $default_config->get('original_file_taxonomy_term');
+    $origfile = $this->entityTypeManager->getStorage('media')->loadByProperties([
+      'field_media_use' => ['target_id' => $origfile_term],
+      'field_media_of' => ['target_id' => $node->id()]
+    ]);
+    if (count($origfile) > 0) {
+      $origfile = reset($origfile);
+    } else {
+      $origfile = NULL;
+    }
+    $servicefile_term = $default_config->get('service_file_taxonomy_term');
+    $servicefile = $this->entityTypeManager->getStorage('media')->loadByProperties([
+      'field_media_use' => ['target_id' => $servicefile_term],
+      'field_media_of' => ['target_id' => $node->id()]
+    ]);
+    if (count($servicefile) > 0) {
+      $servicefile = reset($servicefile);
+    } else {
+      $servicefile = NULL;
+    }
     if (isset($origfile)) {
       $of_access = $origfile->access('view', \Drupal::currentUser());
       $variables['of_access'] = $of_access;
