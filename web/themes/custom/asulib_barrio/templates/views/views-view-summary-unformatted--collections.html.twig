@@ -28,7 +28,7 @@
     'page-item'
     ]
 %}
-{{ options.inline ? '<nav><ul class="pagination">' : '' }}
+{{ options.inline ? '<ul class="pagination">' : '' }}
 {% for row in rows  %}
   {{ options.inline ? '<li' : '<div'}}{{ row.attributes.addClass(row.active ? 'active').addClass(li_classes) }}>
   <a href="{{ row.url }}"{{ row.attributes.addClass(classes)|without('href') }}>{{ row.link }}</a>
@@ -37,4 +37,4 @@
   {% endif %}
   {{ options.inline ? '</li>' : '</div>' }}
 {% endfor %}
-{{ options.inline ? '</ul></nav>' : '' }}
+{{ options.inline ? '</ul>' : '' }}
