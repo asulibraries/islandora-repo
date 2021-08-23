@@ -130,25 +130,33 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     $islandora_utils = \Drupal::service('islandora.utils');
     $media_source_service = \Drupal::service('islandora.media_source_service');
     $default_config = \Drupal::config('asu_default_fields.settings');
-    $origfile_term = $default_config->get('original_file_taxonomy_term');
-    $origfile = $this->entityTypeManager->getStorage('media')->loadByProperties([
-      'field_media_use' => ['target_id' => $origfile_term],
-      'field_media_of' => ['target_id' => $nid]
-    ]);
-    if (count($origfile) > 0) {
-      $origfile = reset($origfile);
+
+    if (array_key_exists('origfile', $block_config)) {
+      $origfile = $block_config['origfile'];
     } else {
-      $origfile = NULL;
+      $origfile_term = $default_config->get('original_file_taxonomy_term');
+      $origfile = $this->entityTypeManager->getStorage('media')->loadByProperties([
+        'field_media_use' => ['target_id' => $origfile_term],
+        'field_media_of' => ['target_id' => $nid]
+      ]);
+      if (count($origfile) > 0) {
+        $origfile = reset($origfile);
+      } else {
+        $origfile = NULL;
+      }
     }
-    $servicefile_term = $default_config->get('service_file_taxonomy_term');
-    $servicefile = $this->entityTypeManager->getStorage('media')->loadByProperties([
-      'field_media_use' => ['target_id' => $servicefile_term],
-      'field_media_of' => ['target_id' => $nid]
-    ]);
-    if (count($servicefile) > 0) {
-      $servicefile = reset($servicefile);
-    } else {
-      $servicefile = NULL;
+
+    if (array_key_exists('servicefile', $block_config)) {
+      $servicefile_term = $default_config->get('service_file_taxonomy_term');
+      $servicefile = $this->entityTypeManager->getStorage('media')->loadByProperties([
+        'field_media_use' => ['target_id' => $servicefile_term],
+        'field_media_of' => ['target_id' => $nid]
+      ]);
+      if (count($servicefile) > 0) {
+        $servicefile = reset($servicefile);
+      } else {
+        $servicefile = NULL;
+      }
     }
     $masterfile_term =
     $default_config->get('preservation_master_taxonomy_term');
