@@ -33,7 +33,7 @@ function self_deposit_preprocess_node(&$variables) {
     $vm = $variables['view_mode'];
     if ( $vm == 'full' || $vm == 'asu_document' || $vm == 'asu_audio' || $vm == 'asu_complex_object' || $vm == 'asu_image' || $vm == 'asu_video') {
       $current_user = User::load(\Drupal::currentUser()->id());
-      if ($current_user->hasRole('administrator') || $current_user->hasRole('content_approver') || $current_user->hasRole('metadata_manager')) {
+      if ($current_user->hasRole('administrator') || $current_user->hasRole('content_approver')) {
         $connection = \Drupal::database();
         $node_id = $variables['node']->id();
         $query = $connection->query(
