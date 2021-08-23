@@ -183,7 +183,7 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
       }
       // TODO populate $download_info with the filesize in human readable format and the extension of the fiel
     }
-    if ($servicefile && $servicefile->bundle() <> 'remote_video') {
+    if ($servicefile && ($servicefile->bundle() <> 'remote_video' && $servicefile->bundle() <> "audio" && $servicefile->bundle() <> "video")) {
       $source_field = $media_source_service->getSourceFieldName($servicefile->bundle());
       if (!empty($source_field)) {
         $sf_file = ($servicefile->hasField($source_field) && (is_object($servicefile->get($source_field)) && $servicefile->get($source_field)->referencedEntities() != NULL) ? $servicefile->get($source_field)->referencedEntities()[0] : FALSE);
