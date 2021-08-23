@@ -232,7 +232,7 @@ function _normalize_date_format($node, $field_name, $original) {
  */
 function _url_to_service_file_media_by_mimetype($node, $mime_type) {
   // making a huge assumption that since we're looking for a PDF that its a document model
-  if ($node->get('field_model')->entity->getName() != "Digital Document") {
+  if ($node->get('field_model')->entity == NULL || $node->get('field_model')->entity->getName() != "Digital Document") {
     return;
   }
   $default_config = \Drupal::config('asu_default_fields.settings');
