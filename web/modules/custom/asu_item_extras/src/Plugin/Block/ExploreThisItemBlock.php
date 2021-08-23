@@ -137,13 +137,16 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
 
     $output_links = [];
     $search_form = NULL;
-    if ($field_model == 'Image' && $this->canAccessItemMedia($node)) {
-      $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/items/' . $nid . '/view', ['attributes' => ['class' => 'nav-link']]);
-      $link = Link::fromTextAndUrl($this->t('View Image'), $url);
-      // Get the node's service file information from the node - just use the
-      // openseadragon view.
-      $link = $link->toRenderable();
-      $output_links[] = render($link);
+    if ($field_model == 'Image') {
+      if ($this->canAccessItemMedia($node)) {
+        $view_url = $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/items/' . $nid . '/view';
+        $url = Url::fromUri($view_url, ['attributes' => ['class' => 'nav-link']]);
+        $link = Link::fromTextAndUrl($this->t('View Image'), $url);
+        // Get the node's service file information from the node - just use the
+        // openseadragon view.
+        $link = $link->toRenderable();
+        $output_links[] = render($link);
+      }
     }
     elseif ($field_model == 'Complex Object') {
       $search_form = $this->formBuilder->getForm('Drupal\asu_item_extras\Form\ExploreForm');
@@ -151,13 +154,15 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
       return $renderArray;
     }
     elseif ($field_model == 'Paged Content' || $field_model == 'Page' ||
-      ($field_model == 'Digital Document' && $this->canAccessItemMedia($node))) {
-      // "Start reading" and "Show all pages" links as well as a search box.
-      // get the node's openseadragon viewer url.
-      $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/items/' . $nid . '/view', ['attributes' => ['class' => 'nav-link']]);
-      $link = Link::fromTextAndUrl($this->t('Explore Document'), $url);
-      $link = $link->toRenderable();
-      $output_links[] = render($link);
+      $field_model == 'Digital Document') {
+        if ($this->canAccessItemMedia($node)) {
+          // "Start reading" and "Show all pages" links as well as a search box.
+          // get the node's openseadragon viewer url.
+          $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/items/' . $nid . '/view', ['attributes' => ['class' => 'nav-link']]);
+          $link = Link::fromTextAndUrl($this->t('Explore Document'), $url);
+          $link = $link->toRenderable();
+          $output_links[] = render($link);
+        }
     }
     // If there has been nothing added to $output_links, return empty array.
     $return = (count($output_links) > 0) ? [
