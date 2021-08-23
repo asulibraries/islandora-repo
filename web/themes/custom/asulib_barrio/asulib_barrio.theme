@@ -107,6 +107,49 @@ function asulib_barrio_preprocess_node(&$variables) {
         }
       }
     }
+    if ($variables['view_mode'] == 'asu_video' || $variables['view_mode'] == 'asu_audio' || $variables['view_mode'] == 'asu_document' || $variables['view_mode'] == 'asu_image' || $variables['view_mode'] == 'complex_object_child_box') {
+      $default_config = \Drupal::config('asu_default_fields.settings');
+      $origfile_term = $default_config->get('original_file_taxonomy_term');
+      $origfile = \Drupal::entityTypeManager()->getStorage('media')->loadByProperties([
+        'field_media_use' => ['target_id' => $origfile_term],
+        'field_media_of' => ['target_id' => $node->id()]
+      ]);
+      if (count($origfile) > 0) {
+        $origfile = reset($origfile);
+      } else {
+        $origfile = NULL;
+      }
+      $servicefile_term = $default_config->get('service_file_taxonomy_term');
+      $servicefile = \Drupal::entityTypeManager()->getStorage('media')->loadByProperties([
+        'field_media_use' => ['target_id' => $servicefile_term],
+        'field_media_of' => ['target_id' => $node->id()]
+      ]);
+      if (count($servicefile) > 0) {
+        $servicefile = reset($servicefile);
+      } else {
+        $servicefile = NULL;
+      }
+      if (isset($origfile)) {
+        $of_access = $origfile->access('view', \Drupal::currentUser());
+        $variables['original_file'] = $origfile;
+        $variables['of_access'] = $of_access;
+      }
+      if (isset($servicefile)) {
+        $sf_access = $servicefile->access('view', \Drupal::currentUser());
+        $variables['service_file'] = $servicefile;
+        $variables['sf_access'] = $sf_access;
+      }
+      $field_model = $node->get('field_model')->entity;
+      if ($field_model != NULL) {
+        $field_model = $field_model->getName();
+      }
+      if ($field_model <> 'Complex Object' && ($variables['view_mode'] == "asu_audio" || $variables['view_mode'] == "asu_video" || $variables['view_mode'] == "complex_object_child_box")) {
+        if (is_object($servicefile) && ($servicefile->bundle() == 'video' ||
+        $servicefile->bundle() == 'audio')) {
+          $variables['#attached']['library'] = 'asu_statistics/track';
+        }
+      }
+    }
   }
 }
 
