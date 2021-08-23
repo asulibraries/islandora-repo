@@ -60,19 +60,7 @@
  */
 #}
 {{ attach_library('bootstrap_barrio/node') }}
-{%
-    set classes = [
-    'node',
-    'node--type-' ~ node.bundle|clean_class,
-    node.isPromoted() ? 'node--promoted',
-    node.isSticky() ? 'node--sticky',
-    not node.isPublished() ? 'node--unpublished',
-    view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
-    'views-align-center',
-    'card', 'card-hover'
-]
-%}
-<!-- //   class="views-field views-field-nothing views-align-center"> -->
+
 {%
     set model_icons = {
         "Image": "far fa-file-image",
@@ -85,7 +73,7 @@
     }
 
 %}
-<div {{ attributes.addClass(classes) }}>
+<div class="views-field views-field-nothing views-align-center">
     {% if complex_obj_thumb is not empty %}
         <div class="css-pick"><div class="views-field views-field-media-image"><div class="field-content">
             <img class="card-img-top thumb-image-border image-style-thumbnail" src=" {{ complex_obj_thumb }}"/>
