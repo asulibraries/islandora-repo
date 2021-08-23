@@ -106,7 +106,9 @@
       <h4>{% if not is_published %}<i class="fa fa-lock"></i>&nbsp;
           {% endif %}<a href="{{ url }}" rel="bookmark">{{ content.field_title[0] }}</a></h4>
       {% if node.field_complex_object_child.value == 1 %}
-        {{ drupal_block('asu_search_item_is_part_of', {'parent_node_id': content.field_member_of }) }}
+        {% set parent = node.field_member_of.entity %}
+        {% set par_title = parent.field_title[0] %}
+        {{ drupal_block('asu_search_item_is_part_of', {'paragraph': par_title, 'parent_node_id': parent.id }) }}
       {% endif %}
       {% if content.field_rich_description is not empty %}
         <p>{{content.field_rich_description}}</p>
