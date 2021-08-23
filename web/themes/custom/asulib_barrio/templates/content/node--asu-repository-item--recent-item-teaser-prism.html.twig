@@ -60,19 +60,7 @@
  */
 #}
 {{ attach_library('bootstrap_barrio/node') }}
-{%
-    set classes = [
-    'node',
-    'node--type-' ~ node.bundle|clean_class,
-    node.isPromoted() ? 'node--promoted',
-    node.isSticky() ? 'node--sticky',
-    not node.isPublished() ? 'node--unpublished',
-    view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
-    'views-align-center',
-    'card', 'card-hover'
-]
-%}
-<!-- //   class="views-field views-field-nothing views-align-center"> -->
+
 {%
     set model_icons = {
         "Image": "far fa-file-image",
@@ -85,11 +73,9 @@
     }
 
 %}
-<div {{ attributes.addClass(classes) }}>
+<div class="views-field views-field-nothing views-align-center">
     {% if complex_obj_thumb is not empty %}
-        <div class="css-pick"><div class="views-field views-field-media-image"><div class="field-content">
-            <img class="card-img-top thumb-image-border image-style-thumbnail prism-home-thumb" src=" {{ complex_obj_thumb }}"/>
-        </div></div></div>
+    <a href="/items/{{ node.id }}"><img class="image-style-thumbnail prism-home-thumb" src=" {{ complex_obj_thumb }}"/></a>
     {% elseif drupal_view_result('display_media', 'thumbnail', node.id) is empty %}
       {% set mod = content.field_model[0]|render|trim %}
       {% for k, v in model_icons|filter((v, k) => k == mod) -%}
@@ -98,25 +84,16 @@
         </div>
       {% endfor %}
     {% else %}
-        <div class="vert-image-frame">
-            {{ drupal_view('display_media', 'thumbnail', node.id) }}
-        </div>
+      {{ drupal_view('display_media', 'thumbnail', node.id) }}
     {% endif %}
-    <div class="card-content-wrapper">
-        <div class="card-header">
-            <h3 class="card-title">
-                {% set title = content.field_title[0]|render|trim|slice(0, 60) %}
-                {{ title|raw }}
-                {% if content.field_title[0]|render|length > 60 %}
-                    ...
-                {% endif %}
-            </h3>
-        </div>
-        <div class="card-body">
-            {%  if changed_ago %}
-              <p class="card-text">{{ changed_ago }} ago</p>
-            {% endif %}
-            <a role="button" href="/items/{{ node.id }}" class="stretched-link"></a>
-        </div>
-    </div>
+</div>
+<div class="views-field views-field-title views-align-center">
+    <span>
+        {% set title = content.field_title[0]|render|trim|slice(0, 40) %}
+        <a href="{{ url }}" rel="bookmark">{{ title|raw }}
+        {% if content.field_title[0]|render|length > 40 %}
+            ...
+        {% endif %}
+        </a>
+    </span>
 </div>
