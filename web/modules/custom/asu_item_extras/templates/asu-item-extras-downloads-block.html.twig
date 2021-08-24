@@ -4,11 +4,13 @@
 {% endif %}
 {{ asu_download_info }}
 </b>
-<br/>
-<br/>
 {% if asu_download_restricted|render|striptags|trim is not empty %}
+	<br/>
+	<br/>
 	{{ asu_download_restricted }}
-{% else %}
+{% elseif asu_download_links is not empty %}
+	<br/>
+	<br/>
 	<div class="btn-group" role="group">
 		<button id="dropdownMenuButton" type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
 			<i class="fa fa-download"></i>

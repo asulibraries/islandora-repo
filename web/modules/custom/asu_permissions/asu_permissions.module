@@ -583,31 +583,6 @@ function asu_permissions_theme() {
 }
 
 /**
- * Implements hook_preprocess_node().
- */
-function asu_permissions_preprocess_node(&$variables) {
-  if ($variables['node'] && $variables['node']->getType() == 'asu_repository_item' && ($variables['view_mode'] == 'asu_video' || $variables['view_mode'] == 'asu_audio' || $variables['view_mode'] == 'asu_document' || $variables['view_mode'] == 'asu_image' || $variables['view_mode'] == 'complex_object_child_box')) {
-    $node = $variables['node'];
-    $islandora_utils = \Drupal::service('islandora.utils');
-    $media_source_service = \Drupal::service('islandora.media_source_service');
-    $origfile_term = $islandora_utils->getTermForUri('http://pcdm.org/use#OriginalFile');
-    $origfile = $islandora_utils->getMediaWithTerm($node, $origfile_term);
-    $servicefile_term = $islandora_utils->getTermForUri('http://pcdm.org/use#ServiceFile');
-    $servicefile = $islandora_utils->getMediaWithTerm($node, $servicefile_term);
-    if (isset($origfile)) {
-      $of_access = $origfile->access('view', \Drupal::currentUser());
-      $variables['of_access'] = $of_access;
-    }
-    if (isset($servicefile)) {
-      $sf_access = $servicefile->access('view', \Drupal::currentUser());
-      $variables['sf_access'] = $sf_access;
-    }
-  }
-}
-
-
-
-/**
  * Implements hook_node_grants().
  *
  * We define the following grants:

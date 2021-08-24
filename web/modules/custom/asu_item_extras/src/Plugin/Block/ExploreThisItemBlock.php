@@ -131,20 +131,22 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
       return [];
     }
 
-    $field_model_tid = $node->get('field_model')->getString();
-    $field_model_term = $this->entityTypeManager->getStorage('taxonomy_term')->load($field_model_tid);
+    $field_model_term = $node->get('field_model')->entity;
     $field_model = (isset($field_model_term) && is_object($field_model_term)) ?
       $field_model_term->getName() : '';
 
     $output_links = [];
     $search_form = NULL;
-    if ($field_model == 'Image' && $this->canAccessItemMedia($node)) {
-      $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/items/' . $nid . '/view', ['attributes' => ['class' => 'nav-link']]);
-      $link = Link::fromTextAndUrl($this->t('View Image'), $url);
-      // Get the node's service file information from the node - just use the
-      // openseadragon view.
-      $link = $link->toRenderable();
-      $output_links[] = render($link);
+    if ($field_model == 'Image') {
+      if ($this->canAccessItemMedia($node)) {
+        $view_url = $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/items/' . $nid . '/view';
+        $url = Url::fromUri($view_url, ['attributes' => ['class' => 'nav-link']]);
+        $link = Link::fromTextAndUrl($this->t('View Image'), $url);
+        // Get the node's service file information from the node - just use the
+        // openseadragon view.
+        $link = $link->toRenderable();
+        $output_links[] = render($link);
+      }
     }
     elseif ($field_model == 'Complex Object') {
       $search_form = $this->formBuilder->getForm('Drupal\asu_item_extras\Form\ExploreForm');
@@ -152,13 +154,15 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
       return $renderArray;
     }
     elseif ($field_model == 'Paged Content' || $field_model == 'Page' ||
-      ($field_model == 'Digital Document' && $this->canAccessItemMedia($node))) {
-      // "Start reading" and "Show all pages" links as well as a search box.
-      // get the node's openseadragon viewer url.
-      $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/items/' . $nid . '/view', ['attributes' => ['class' => 'nav-link']]);
-      $link = Link::fromTextAndUrl($this->t('Explore Document'), $url);
-      $link = $link->toRenderable();
-      $output_links[] = render($link);
+      $field_model == 'Digital Document') {
+        if ($this->canAccessItemMedia($node)) {
+          // "Start reading" and "Show all pages" links as well as a search box.
+          // get the node's openseadragon viewer url.
+          $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/items/' . $nid . '/view', ['attributes' => ['class' => 'nav-link']]);
+          $link = Link::fromTextAndUrl($this->t('Explore Document'), $url);
+          $link = $link->toRenderable();
+          $output_links[] = render($link);
+        }
     }
     // If there has been nothing added to $output_links, return empty array.
     $return = (count($output_links) > 0) ? [
@@ -199,8 +203,17 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
   private function canAccessItemMedia($node) {
     // Get the media for "Original File" and check for any access restrictions
     // on it.
-    $origfile_term = $this->islandoraUtils->getTermForUri('http://pcdm.org/use#OriginalFile');
-    $origfile = $this->islandoraUtils->getMediaWithTerm($node, $origfile_term);
+    $default_config = \Drupal::config('asu_default_fields.settings');
+    $origfile_term = $default_config->get('original_file_taxonomy_term');
+    $origfile = $this->entityTypeManager->getStorage('media')->loadByProperties([
+      'field_media_use' => ['target_id' => $origfile_term],
+      'field_media_of' => ['target_id' => $node->id()]
+    ]);
+    if (count($origfile) > 0) {
+      $origfile = reset($origfile);
+    } else {
+      $origfile = NULL;
+    }
     $origfile_access = (!is_null($origfile) && $origfile->access('view', $this->currentUser));
     return $origfile_access;
   }

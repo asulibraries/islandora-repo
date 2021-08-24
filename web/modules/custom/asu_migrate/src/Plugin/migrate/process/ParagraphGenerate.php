@@ -10,7 +10,7 @@ use Drupal\taxonomy\Entity\Term;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 
 /**
  * Create new paragraph.
@@ -49,21 +49,21 @@ class ParagraphGenerate extends ProcessPluginBase implements ContainerFactoryPlu
   /**
    * The entityTypeManager definition.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManager
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
 
   /**
    * Constructs a ParagraphGenerate object.
    *
-   * @param Drupal\Core\Entity\EntityTypeManager $entityTypeManager
+   * @param Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   A drupal entity type manager object.
    */
   public function __construct(
       array $configuration,
       $plugin_id,
       $plugin_definition,
-      EntityTypeManager $entityTypeManager
+      EntityTypeManagerInterface $entityTypeManager
     ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->entityTypeManager = $entityTypeManager;

@@ -10,6 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Cache\Cache;
 
 /**
  * Provides a 'About this item' Block.
@@ -126,7 +127,6 @@ class AboutThisItemBlock extends BlockBase implements ContainerFactoryPluginInte
     }
 
     return [
-      '#cache' => ['max-age' => 0],
       '#markup' =>
       (count($output_links) > 0) ?
       "<nav class='sidebar'>" . implode("", $output_links) . "</nav>" :
@@ -137,6 +137,35 @@ class AboutThisItemBlock extends BlockBase implements ContainerFactoryPluginInte
         ],
       ],
     ];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheTags()
+  {
+    if ($this->routeMatch->getParameter('node')) {
+      $node = $this->routeMatch->getParameter('node');
+    }
+    if (!is_object($node)) {
+      $node = $this->entityTypeManager->getStorage('node')->load($node);
+    }
+    if (!isset($node)) {
+      return parent::getCacheTags();
+    } else {
+      return Cache::mergeTags(parent::getCacheTags(), ['node:' . $node->id()]);
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheContexts()
+  {
+    // If you depends on \Drupal::routeMatch().
+    // You must set context of this block with 'route' context tag.
+    // Every new route this block will rebuild.
+    return Cache::mergeContexts(parent::getCacheContexts(), ['route']);
   }
 
 }

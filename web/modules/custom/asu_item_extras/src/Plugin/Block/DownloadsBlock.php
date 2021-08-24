@@ -129,16 +129,48 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     $file_size = 0;
     $islandora_utils = \Drupal::service('islandora.utils');
     $media_source_service = \Drupal::service('islandora.media_source_service');
-    $origfile_term = $islandora_utils->getTermForUri('http://pcdm.org/use#OriginalFile');
-    $origfile = $islandora_utils->getMediaWithTerm($node, $origfile_term);
-    $servicefile_term = $islandora_utils->getTermForUri('http://pcdm.org/use#ServiceFile');
-    $servicefile = $islandora_utils->getMediaWithTerm($node, $servicefile_term);
-    $masterfile_term = $islandora_utils->getTermForUri('http://pcdm.org/use#PreservationMasterFile');
-    $masterfile = $islandora_utils->getMediaWithTerm($node, $masterfile_term);
+    $default_config = \Drupal::config('asu_default_fields.settings');
+
+    if (array_key_exists('origfile', $block_config)) {
+      $origfile = $block_config['origfile'];
+    } else {
+      $origfile_term = $default_config->get('original_file_taxonomy_term');
+      $origfile = $this->entityTypeManager->getStorage('media')->loadByProperties([
+        'field_media_use' => ['target_id' => $origfile_term],
+        'field_media_of' => ['target_id' => $nid]
+      ]);
+      if (count($origfile) > 0) {
+        $origfile = reset($origfile);
+      } else {
+        $origfile = NULL;
+      }
+    }
+
+    if (array_key_exists('servicefile', $block_config)) {
+      $servicefile_term = $default_config->get('service_file_taxonomy_term');
+      $servicefile = $this->entityTypeManager->getStorage('media')->loadByProperties([
+        'field_media_use' => ['target_id' => $servicefile_term],
+        'field_media_of' => ['target_id' => $nid]
+      ]);
+      if (count($servicefile) > 0) {
+        $servicefile = reset($servicefile);
+      } else {
+        $servicefile = NULL;
+      }
+    }
+    $masterfile_term =
+    $default_config->get('preservation_master_taxonomy_term');
+    $masterfile = $this->entityTypeManager->getStorage('media')->loadByProperties([
+      'field_media_use' => ['target_id' => $masterfile_term],
+      'field_media_of' => ['target_id' => $nid]
+    ]);
+    if (count($masterfile) > 0) {
+      $masterfile = reset($masterfile);
+    } else {
+      $masterfile = NULL;
+    }
 
     if ($origfile && $origfile->bundle() <> 'remote_video') {
-      $file_entities = ($origfile->hasField('field_access_terms') ? $origfile->get('field_access_terms')->referencedEntities() : NULL);
-      $of_access = ((!is_null($file_entities) && array_key_exists(0, $file_entities)) ? $file_entities[0]->label() : FALSE);
       $source_field = $media_source_service->getSourceFieldName($origfile->bundle());
       if (!empty($source_field)) {
         $of_file = ($origfile->hasField($source_field) && (is_object($origfile->get($source_field)) && $origfile->get($source_field)->referencedEntities() != NULL) ? $origfile->get($source_field)->referencedEntities()[0] : FALSE);
@@ -151,9 +183,7 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
       }
       // TODO populate $download_info with the filesize in human readable format and the extension of the fiel
     }
-    if ($servicefile && $servicefile->bundle() <> 'remote_video') {
-      $file_entities = ($servicefile->hasField('field_access_terms') ? $servicefile->get('field_access_terms')->referencedEntities() : NULL);
-      $sf_access = ((!is_null($file_entities) && array_key_exists(0, $file_entities)) ? $file_entities[0]->label() : FALSE);
+    if ($servicefile && ($servicefile->bundle() <> 'remote_video' && $servicefile->bundle() <> "audio" && $servicefile->bundle() <> "video")) {
       $source_field = $media_source_service->getSourceFieldName($servicefile->bundle());
       if (!empty($source_field)) {
         $sf_file = ($servicefile->hasField($source_field) && (is_object($servicefile->get($source_field)) && $servicefile->get($source_field)->referencedEntities() != NULL) ? $servicefile->get($source_field)->referencedEntities()[0] : FALSE);
