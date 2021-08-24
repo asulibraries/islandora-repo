@@ -88,7 +88,7 @@
 <div {{ attributes.addClass(classes) }}>
     {% if complex_obj_thumb is not empty %}
         <div class="css-pick"><div class="views-field views-field-media-image"><div class="field-content">
-            <img class="card-img-top thumb-image-border image-style-thumbnail prism-home-thumb" src=" {{ complex_obj_thumb }}"/>
+            <img class="card-img-top thumb-image-border image-style-thumbnail" src=" {{ complex_obj_thumb }}"/>
         </div></div></div>
     {% elseif drupal_view_result('display_media', 'thumbnail', node.id) is empty %}
       {% set mod = content.field_model[0]|render|trim %}
@@ -98,25 +98,21 @@
         </div>
       {% endfor %}
     {% else %}
-        <div class="vert-image-frame">
-            {{ drupal_view('display_media', 'thumbnail', node.id) }}
-        </div>
+        <img class="card-img-top thumb-image-border image-style-thumbnail" src="items/{{ node.id }}/thumbnail"/>
     {% endif %}
-    <div class="card-content-wrapper">
-        <div class="card-header">
-            <h3 class="card-title">
-                {% set title = content.field_title[0]|render|trim|slice(0, 60) %}
-                {{ title|raw }}
-                {% if content.field_title[0]|render|length > 60 %}
-                    ...
-                {% endif %}
-            </h3>
-        </div>
-        <div class="card-body">
-            {%  if changed_ago %}
-              <p class="card-text">{{ changed_ago }} ago</p>
+    <div class="card-header">
+        <h3 class="card-title">
+            {% set title = content.field_title[0]|render|trim|slice(0, 60) %}
+            {{ title|raw }}
+            {% if content.field_title[0]|render|length > 60 %}
+                ...
             {% endif %}
-            <a role="button" href="/items/{{ node.id }}" class="stretched-link"></a>
-        </div>
+        </h3>
+    </div>
+    <div class="card-body">
+        {%  if changed_ago %}
+          <p class="card-text">{{ changed_ago }} ago</p>
+        {% endif %}
+        <a role="button" href="/items/{{ node.id }}" class="stretched-link"></a>
     </div>
 </div>
