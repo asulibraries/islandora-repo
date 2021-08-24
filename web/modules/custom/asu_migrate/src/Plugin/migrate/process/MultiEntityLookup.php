@@ -10,7 +10,7 @@ use Drupal\migrate_plus\Plugin\migrate\process\EntityLookup;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 
 /**
  * Check if term exists and create new if doesn't.
@@ -32,14 +32,14 @@ class MultiEntityLookup extends EntityLookup implements ContainerFactoryPluginIn
   /**
    * The entityTypeManager definition.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManager
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
 
   /**
    * Constructs a MultiEntityLookup object.
    *
-   * @param Drupal\Core\Entity\EntityTypeManager $entityTypeManager
+   * @param Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   A drupal entity type manager object.
    * @param Drupal\migrate\Plugin\MigrationInterface $migration
    *   The migration object.
@@ -48,7 +48,7 @@ class MultiEntityLookup extends EntityLookup implements ContainerFactoryPluginIn
       array $configuration,
       $plugin_id,
       $plugin_definition,
-      EntityTypeManager $entityTypeManager,
+      EntityTypeManagerInterface $entityTypeManager,
       MigrationInterface $migration
     ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition, $migration);
