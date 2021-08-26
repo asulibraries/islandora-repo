@@ -1,0 +1,13 @@
+diff --git a/src/StreamWrapper/S3fsStream.php b/src/StreamWrapper/S3fsStream.php
+index 83be70c..5e47713 100644
+--- a/src/StreamWrapper/S3fsStream.php
++++ b/src/StreamWrapper/S3fsStream.php
+@@ -609,7 +609,7 @@ class S3fsStream extends StreamWrapper implements StreamWrapperInterface {
+     }
+     else {
+       // No special request given, we can generate the link.
+-      if (empty($this->config['use_cname'])) {
++      if (empty($this->config['use_cname']) || strpos($s3_key,".mp4") == false) {
+         try {
+           $external_url = $this->s3->getObjectUrl($this->config['bucket'], $s3_key);
+         }
