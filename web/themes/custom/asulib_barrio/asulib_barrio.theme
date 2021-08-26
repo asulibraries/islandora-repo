@@ -87,7 +87,6 @@ function asulib_barrio_preprocess_node(&$variables) {
     $node = $variables['node'];
   }
   if (!is_object($node) && is_string($node)) {
-    $node = \Drupal::request()->attributes->get('node');
     $node = \Drupal::entityTypeManager()->getStorage('node')->load($node);
   }
   if ($node && $node->getType() == 'asu_repository_item') {
@@ -98,9 +97,9 @@ function asulib_barrio_preprocess_node(&$variables) {
       $variables['oai_base_url'] = $site_url . 'oai/request?verb=GetRecord&metadataPrefix=oai_dc&identifier=oai:' . $domain . ':node-';
     }
     if ($variables['view_mode'] == 'complex_object_child_box') {
-      // $parent_obj = $node->get('field_member_of')->entity;
       // since we are pulling the $node var from the route, we're actually already on the parent obj page
-      $collection = $node->get('field_member_of')->entity;
+      $parent_obj = \Drupal::request()->attributes->get('node');
+      $collection = $parent_obj->get('field_member_of')->entity;
       if ($collection && $collection->bundle() == 'collection') {
         $fields_to_display = $collection->get('field_fields_co_child')->referencedEntities();
         if ($fields_to_display) {
