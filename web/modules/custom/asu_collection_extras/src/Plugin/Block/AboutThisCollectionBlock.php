@@ -164,12 +164,10 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
     $islandora_models = $stat_box_row1 = $stat_box_row2 = $stat_box_row3 = [];
 
     $items = count($children);
-    $files = $max_timestamp = 0;
 
     // The first $child_arr will have the most recent changed value.
     foreach ($children as $nid => $child_arr) {
       if ($nid) {
-        $files += $child_arr['original_file_count'];
         if (!$max_timestamp) {
           $max_timestamp = strtotime($child_arr['changed']);
         }
@@ -192,16 +190,15 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
     $items_url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/collections/' .
        (($collection_node) ? $collection_node->id() : 0) . '/search/?search_api_fulltext=');
     $stat_box_row1[] = $this->makeBox("<strong>" . number_format($items) . "</strong><br>items", $items_url);
-    $stat_box_row1[] = $this->makeBox("<strong>" . number_format($files) . "</strong><br>files");
     // Skip number_format - should never be more than a 1,000 models.
     $stat_box_row1[] = $this->makeBox("<strong>" . count($islandora_models) . "</strong><br>resource types");
-    $stat_box_row2[] = $this->makeBox("<strong>" . number_format($collection_views_and_downloads['views']) .
+    $stat_box_row1[] = $this->makeBox("<strong>" . number_format($collection_views_and_downloads['views']) .
       "</strong><br>views");
     $stat_box_row2[] = $this->makeBox("<strong>" . number_format($collection_views_and_downloads['downloads']) .
       "</strong><br>downloads");
     $stat_box_row2[] = $this->makeBox("<strong>" . (($collection_created) ? date('Y', $collection_created) : 'unknown') .
       "</strong><br>collection created");
-    $stat_box_row3[] = $this->makeBox("<strong>" . (($max_timestamp) ? date('M d, Y', $max_timestamp) : 'unknown') .
+    $stat_box_row2[] = $this->makeBox("<strong>" . (($max_timestamp) ? date('M d, Y', $max_timestamp) : 'unknown') .
       "</strong><br>last updated</div>");
     return [
       '#markup' =>
@@ -213,11 +210,7 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
         // ROW 2.
       '<div class="row">' .
       implode('', $stat_box_row2) .
-      '</div>' .
-        // ROW 3.
-      '<div class="row">' .
-      implode('', $stat_box_row3) .
-      '</div>' :
+      '</div>':
       "",
       'lib' => [
         '#attached' => [
