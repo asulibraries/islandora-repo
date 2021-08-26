@@ -160,10 +160,8 @@ elements: |-
       '#title': Files
       '#multiple': true
       '#required': true
-      '#states':
-        visible:
-          ':input[name="file_type"]':
-            value: file
+      '#unique': true
+      '#unique_entity': true
       '#uri_scheme': fedora
       '#file_extensions': 'gif jpg jpeg png bmp eps tif pict psd txt rtf html odf pdf doc docx ppt pptx xls xlsx xml avi mov mp3 ogg wav bz2 dmg gz jar rar sit svg tar zip txt rtf pdf doc docx odt ppt pptx odp xls xlsx ods mp3 ogg wav gif jpg jpeg png avi mov mp4 ogg wav webm'
       '#sanitize': true

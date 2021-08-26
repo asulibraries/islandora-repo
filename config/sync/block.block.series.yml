@@ -1,0 +1,42 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.series
+  module:
+    - context
+    - facets
+    - islandora
+    - system
+  theme:
+    - asulib_barrio
+id: series
+theme: asulib_barrio
+region: sidebar_first
+weight: -28
+provider: null
+plugin: 'facet_block:series'
+settings:
+  id: 'facet_block:series'
+  label: Series
+  provider: facets
+  label_display: visible
+  block_id: series
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    pages: ''
+    negate: true
+  view_inclusion:
+    id: view_inclusion
+    negate: false
+    view_inclusion: {  }
+  media_source_mimetype:
+    id: media_source_mimetype
+    mimetype: ''
+    negate: false
+    context_mapping: {  }
+  request_path:
+    id: request_path
+    pages: "/collections/126577/search*\r\n/collections/130827/search*"
+    negate: false
