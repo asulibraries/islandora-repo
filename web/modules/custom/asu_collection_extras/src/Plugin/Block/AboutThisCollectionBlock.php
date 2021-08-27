@@ -158,31 +158,16 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
     // Run a solr query first to get ALL the items under the collection using
     // the ancestors field.
     $children = asu_collection_extras_solr_get_collection_children($collection_node);
-    // \Drupal::logger('asu_collection_extras')->info('Collection ' . $collection_node->id() .
-    //   ' children:<pre><code>' . print_r($children, TRUE) . '</code></pre>');
     $items = $max_timestamp = 0;
-    $islandora_models = $stat_box_row1 = $stat_box_row2 = $stat_box_row3 = [];
-
-    $items = count($children);
-
-    // The first $child_arr will have the most recent changed value.
-    foreach ($children as $nid => $child_arr) {
-      if ($nid) {
-        if (!$max_timestamp) {
-          $max_timestamp = strtotime($child_arr['changed']);
-        }
-        $model = $child_arr['field_model'];
-        // Since it is possible that an asu_repository_item may be indexed w/o
-        // having a field_model value, we must omit any that are set = 0.
-        if ($model) {
-          if (array_key_exists($model, $islandora_models)) {
-            $islandora_models[$model]++;
-          }
-          else {
-            $islandora_models[$model] = 1;
-          }
-        }
-      }
+    $islandora_models = $stat_box_row1 = $stat_box_row2 = [];
+    if (array_key_exists('item_count', $children)) {
+      $items = $children['item_count'];
+    }
+    if (array_key_exists('model_count', $children)) {
+      $islandora_models = $children['model_count'];
+    }
+    if (array_key_exists('recent_change', $children)) {
+      $max_timestamp = strtotime($children['recent_change']);
     }
 
     $collection_views_and_downloads = $this->getCollectionViewsAndDownloads($collection_node);
@@ -191,7 +176,7 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
        (($collection_node) ? $collection_node->id() : 0) . '/search/?search_api_fulltext=');
     $stat_box_row1[] = $this->makeBox("<strong>" . number_format($items) . "</strong><br>items", $items_url);
     // Skip number_format - should never be more than a 1,000 models.
-    $stat_box_row1[] = $this->makeBox("<strong>" . count($islandora_models) . "</strong><br>resource types");
+    $stat_box_row1[] = $this->makeBox("<strong>" . $islandora_models . "</strong><br>resource types");
     $stat_box_row1[] = $this->makeBox("<strong>" . number_format($collection_views_and_downloads['views']) .
       "</strong><br>views");
     $stat_box_row2[] = $this->makeBox("<strong>" . number_format($collection_views_and_downloads['downloads']) .
