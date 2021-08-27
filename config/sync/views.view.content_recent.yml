@@ -12,6 +12,7 @@ dependencies:
     - node.type.collection
   module:
     - asu_search
+    - contextual_range_filter
     - media
     - node
     - tracker
@@ -1355,8 +1356,9 @@ display:
         groups:
           1: AND
       style:
-        type: default
+        type: views_bootstrap_table
         options:
+          grouping: {  }
           row_class: ''
           default_row_class: true
           uses_fields: false
@@ -2042,7 +2044,7 @@ display:
           group_type: group
           admin_label: ''
           label: ''
-          exclude: true
+          exclude: false
           alter:
             alter_text: false
             text: '<a href="/collections/{{nid}}">{{field_title}}</a>'
