@@ -63,38 +63,37 @@ function asu_collection_extras_get_collection_children($collection_node, $sort_b
  */
 function asu_collection_extras_solr_get_collection_children($collection_node) {
   $collection_node_id = (is_object($collection_node) ? $collection_node->id() : $collection_node);
-  $nids_arr = [];
+  $result_set = [];
   if (!is_null($collection_node_id)) {
     $index = Index::load('default_solr_index');
     $server = $index->getServerInstance();
     $backend = $server->getBackend();
     $solrConnector = $backend->getSolrConnector();
     $solariumQuery = $solrConnector->getSelectQuery();
+    $solariumQuery->addParam('q', '(itm_field_ancestors:' . $collection_node_id .
+      ' OR itm_field_combined_member_of:' . $collection_node_id . ')');
+    $solariumQuery->setFields(['its_nid', 'ds_changed']);
+    $solariumQuery->addSort('ds_changed', 'desc');
+    $facetSet = $solariumQuery->getFacetSet();
+    $facetSet->createFacetField('model')->setField('itm_field_model');
     $count = 0;
-    while(TRUE) {
-      $solariumQuery->setStart($count)->setRows(1000);
-      $solariumQuery->addParam('q', '(itm_field_ancestors:' . $collection_node_id .
-        ' OR itm_field_combined_member_of:' . $collection_node_id . ')');
-      $solariumQuery->setFields(['its_nid', 'ds_changed', 'ss_original_file_count', 'itm_field_model']);
-      $solariumQuery->addSort('ds_changed', 'desc');
-
-      $nids = $solrConnector->execute($solariumQuery);
-      foreach ($nids as $nid_doc) {
-        $nids_arr[$nid_doc->its_nid] = [
-          'changed' => $nid_doc->ds_changed,
-          'original_file_count' => (!is_null($nid_doc->ss_original_file_count) ? $nid_doc->ss_original_file_count : 0),
-          'field_model' => (!is_null($nid_doc->itm_field_model) && array_key_exists(0, $nid_doc->itm_field_model)) ?
-            $nid_doc->itm_field_model[0] : 0
-        ];
-      }
-      $count = $count + $nids->count();
-      if ($nids->getNumFound() <= $count) {
-        break;
+    $models = [];
+    $solariumQuery->setStart($count)->setRows(1);
+    $nids = $solrConnector->execute($solariumQuery);
+    $first_record = $nids->getDocuments()[0];
+    $result_set['recent_change'] = $first_record->ds_changed;
+    $model_facet = $nids->getFacetSet()->getFacet('model');
+    foreach ($model_facet as $value => $mod_count) {
+      if (!in_array($value, $models)) {
+        $models[] = $value;
       }
     }
-
+    $count = $nids->getNumFound();
+    $result_set['item_count'] = $count;
+    $model_count = count($models);
+    $result_set['model_count'] = $model_count;
   }
-  return $nids_arr;
+  return $result_set;
 }
 
 /**
