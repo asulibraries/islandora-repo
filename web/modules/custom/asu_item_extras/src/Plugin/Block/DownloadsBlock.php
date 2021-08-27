@@ -176,7 +176,7 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
         $of_file = ($origfile->hasField($source_field) && (is_object($origfile->get($source_field)) && $origfile->get($source_field)->referencedEntities() != NULL) ? $origfile->get($source_field)->referencedEntities()[0] : FALSE);
         if ($of_file) {
           $of_uri = $islandora_utils->getDownloadUrl($of_file);
-          $of_link = Link::fromTextAndUrl($this->t('Original'), Url::fromUri($of_uri, ['attributes' => ['class' => ['dropdown-item']]]));
+          $of_link = Link::fromTextAndUrl($this->t('Original'), Url::fromUri($of_uri, ['attributes' => ['class' => ['dropdown-item'], 'download' => TRUE]]));
           $file_size = $origfile->get('field_file_size')->value;
           $download_info .= " " . $origfile->get('field_mime_type')->value;
         }
