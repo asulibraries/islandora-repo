@@ -1,4 +1,3 @@
-
 {#
 /**
  * @file
@@ -70,11 +69,8 @@
     node.isSticky() ? 'node--sticky',
     not node.isPublished() ? 'node--unpublished',
     view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
-<<<<<<< HEAD
     'card',
     'card-hover'
-=======
->>>>>>> resetting view configs - replaced tangled file with what latest develop contained
 ]
 %}
 
@@ -90,31 +86,30 @@
     }
 
 %}
-{# <div class="col-md-3"> #}
 <div {{ attributes.addClass(classes) }}>
-    <div class="card-header card-header-icon">
-        {% if complex_obj_thumb is not empty %}
-        <i class="far fa-file-image fa-2x"></i>
-        {% elseif drupal_view_result('display_media', 'thumbnail', node.id) is empty %}
-          {% set mod = content.field_model[0]|render|trim %}
-          {% for k, v in model_icons|filter((v, k) => k == mod) -%}
-            <i class="{{ v }} fa-2x"></i>
-          {% endfor %}
-        {% else %}
-            <i class="far fa-file-image fa-2x"></i>
-        {% endif %}
-        <h3 class="card-title">
-            {% set title = content.field_title[0]|render|trim|slice(0, 60) %}
-            {{ title|raw }}
-            {% if content.field_title[0]|render|length > 60 %}
-                ...
-            {% endif %}
-        </h3>
-    </div>
-    <div class="card-body">
-        {%  if changed_ago %}
-          <p class="card-text">{{ changed_ago }} ago</p>
-        {% endif %}
-        <a role="button" href="/items/{{ node.id }}" class="stretched-link"></a>
-    </div>
+	<div class="card-header card-header-icon">
+		{% set mod = content.field_model[0]|render|trim %}
+		{% if mod != "" %}
+			{% for k, v in model_icons|filter((v, k) => k == mod) -%}
+				<i class="{{ v }} fa-2x"></i>
+			{% endfor %}
+		{% else %}
+			<i class="far fa-file-image fa-2x"></i>
+		{% endif %}
+		<h3 class="card-title">
+			{% set title = content.field_title[0]|render|trim|slice(0, 60) %}
+			{{ title|raw }}
+			{% if content.field_title[0]|render|length > 60 %}
+				...
+			{% endif %}
+		</h3>
+	</div>
+	<div class="card-body">
+		{%  if changed_ago %}
+			<p class="card-text">{{ changed_ago }}
+				ago</p>
+		{% endif %}
+		<a role="button" href="/items/{{ node.id }}" class="stretched-link"></a>
+	</div>
 </div>
+
