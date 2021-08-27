@@ -8,12 +8,10 @@ dependencies:
     - field.storage.node.field_model
     - field.storage.node.field_title
     - image.style.medium
-    - image.style.thumbnail
     - node.type.asu_repository_item
     - node.type.collection
   module:
     - asu_search
-    - contextual_range_filter
     - media
     - node
     - tracker
@@ -1357,46 +1355,11 @@ display:
         groups:
           1: AND
       style:
-        type: views_bootstrap_table
+        type: default
         options:
-          grouping: {  }
           row_class: ''
           default_row_class: true
-<<<<<<< HEAD
           uses_fields: false
-=======
-          override: 1
-          sticky: 0
-          caption: ''
-          summary: ''
-          description: ''
-          columns:
-            title: title
-            changed: changed
-          info:
-            title:
-              sortable: 0
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: 0
-              responsive: ''
-            changed:
-              sortable: 0
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: 0
-              responsive: ''
-          default: '-1'
-          empty_table: 0
-          responsive: 0
-          bootstrap_styles:
-            striped: striped
-            bordered: 0
-            hover: 0
-            condensed: 0
->>>>>>> resetting view configs - replaced tangled file with what latest develop contained
       row:
         type: 'entity:node'
         options:
@@ -2004,70 +1967,6 @@ display:
           entity_type: node
           entity_field: nid
           plugin_id: field
-        field_collection_thumbnail:
-          id: field_collection_thumbnail
-          table: node__field_collection_thumbnail
-          field: field_collection_thumbnail
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: ''
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: '<i class="far fa-folder-open fa-2x"></i>'
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: target_id
-          type: media_thumbnail
-          settings:
-            image_style: thumbnail
-            image_link: content
-          group_column: target_id
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          plugin_id: field
         changed:
           id: changed
           table: node_field_data
@@ -2143,10 +2042,10 @@ display:
           group_type: group
           admin_label: ''
           label: ''
-          exclude: false
+          exclude: true
           alter:
-            alter_text: true
-            text: "<a href=\"/collections/{{nid}}\">{{field_title}}</a><br/>\r\n{{changed}}"
+            alter_text: false
+            text: '<a href="/collections/{{nid}}">{{field_title}}</a>'
             make_link: false
             path: '/items/{{nid}}'
             absolute: false
@@ -2161,14 +2060,14 @@ display:
             suffix: ''
             target: ''
             nl2br: false
-            max_length: 0
+            max_length: 60
             word_boundary: true
             ellipsis: true
             more_link: false
             more_link_text: ''
             more_link_path: ''
             strip_tags: false
-            trim: false
+            trim: true
             preserve_tags: ''
             html: false
           element_type: ''
@@ -2198,7 +2097,6 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
-<<<<<<< HEAD
         nothing:
           id: nothing
           table: views
@@ -2248,68 +2146,13 @@ display:
           empty_zero: false
           hide_alter_empty: false
           plugin_id: custom
-=======
->>>>>>> resetting view configs - replaced tangled file with what latest develop contained
       css_class: container
       style:
-        type: views_bootstrap_table
+        type: default
         options:
           grouping: {  }
           row_class: ''
           default_row_class: true
-          override: 1
-          sticky: 0
-          caption: ''
-          summary: ''
-          description: ''
-          columns:
-            field_model: field_model
-            nid: nid
-            nothing: nothing
-            field_title: field_title
-            changed: changed
-          info:
-            field_model:
-              sortable: 0
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: 1
-              responsive: ''
-            nid:
-              sortable: 0
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: 1
-              responsive: ''
-            nothing:
-              sortable: 0
-              default_sort_order: asc
-              align: views-align-left
-              separator: ''
-              empty_column: 0
-              responsive: ''
-            field_title:
-              align: ''
-              separator: ''
-              empty_column: 0
-              responsive: ''
-            changed:
-              sortable: 0
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: 0
-              responsive: ''
-          default: '-1'
-          empty_table: 0
-          responsive: 0
-          bootstrap_styles:
-            striped: striped
-            bordered: 0
-            hover: 0
-            condensed: 0
       row:
         type: fields
         options: {  }
@@ -2323,7 +2166,6 @@ display:
         - 'user.node_grants:view'
         - user.permissions
       tags:
-        - 'config:field.storage.node.field_collection_thumbnail'
         - 'config:field.storage.node.field_model'
         - 'config:field.storage.node.field_title'
   email_givenday:
