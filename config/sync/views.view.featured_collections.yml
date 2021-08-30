@@ -394,7 +394,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "<div class=\"row\">\r\n  <div class=\"carousel-item active\">\r\n    <div class=\"item__third card card-horizontal\">\r\n      {{ field_collection_thumbnail }}\r\n      <div class=\"card-content-wrapper\">\r\n        <div class=\"card-header\">\r\n          <h3 class=\"card-title\">{{ field_title }}</h3>\r\n        </div>\r\n        <div class=\"card-body\">\r\n          <a role=\"button\" href=\"/collections/{{nid}}\" class=\"stretched-link\"></a>\r\n          <p class=\"card-text\">\r\n            {{ field_rich_description }}<br />\r\n            {{ changed }}\r\n          </p>\r\n        </div>\r\n      </div>\r\n   </div>\r\n</div>"
+            text: "<div class=\"row\">\r\n  <div class=\"carousel-item active\">\r\n    <div class=\"item__third card card-horizontal\">\r\n      {{ field_collection_thumbnail }}\r\n      <div class=\"card-content-wrapper\">\r\n        <div class=\"card-header\">\r\n          <h3 class=\"card-title\">{{ field_title }}</h3>\r\n        </div>\r\n        <div class=\"card-body\">\r\n          <p class=\"card-text\">\r\n            {{ field_rich_description }}<br />\r\n            {{ changed }}\r\n            {{ view_node }}\r\n          </p>\r\n        </div>\r\n      </div>\r\n   </div>\r\n</div>"
             make_link: false
             path: ''
             absolute: false
