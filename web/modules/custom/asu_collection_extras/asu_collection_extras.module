@@ -81,7 +81,12 @@ function asu_collection_extras_solr_get_collection_children($collection_node) {
     $solariumQuery->setStart($count)->setRows(1);
     $nids = $solrConnector->execute($solariumQuery);
     $first_record = $nids->getDocuments()[0];
-    $result_set['recent_change'] = $first_record->ds_changed;
+    if ($first_record) {
+      $result_set['recent_change'] = $first_record->ds_changed;
+    }
+    else {
+      $result_set['recent_change'] = NULL;
+    }
     $model_facet = $nids->getFacetSet()->getFacet('model');
     foreach ($model_facet as $value => $mod_count) {
       if (!in_array($value, $models)) {
