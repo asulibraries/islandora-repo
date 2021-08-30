@@ -100,7 +100,7 @@ class FeedbackButton extends BlockBase implements ContainerFactoryPluginInterfac
       $cid = 0;
     }
     $url_base = $this->currentRequest->getSchemeAndHttpHost();
-    $class = 'btn btn-primary';
+    $class = 'btn btn-md btn-gray';
     if ($cid == $nid) {
       $feedback_url = Url::fromUri($url_base . '/form/feedback?source_entity_type=node&source_entity_id=' . $nid . '&collection=' . $cid . '&primary_element=collection');
     }
