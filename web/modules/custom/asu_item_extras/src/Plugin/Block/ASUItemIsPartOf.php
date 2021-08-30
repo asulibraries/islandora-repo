@@ -6,6 +6,7 @@ use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Render\Renderer;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\Cache\Cache;
 
 /**
  * Provides a 'Part of {parent_complex_object:pid}' Block.
@@ -107,7 +108,6 @@ class ASUItemIsPartOf extends BlockBase implements ContainerFactoryPluginInterfa
     }
     $split_html = ($is_metadata_page) ? '</div><div class="field--label-inline row field">' : '<br>';
     return [
-      '#cache' => ['max-age' => 0],
       '#markup' => (($is_metadata_page) ? '<div class="field--label-inline row field">' : '<div>') .
       implode($split_html, $parents_output) .
       '</div>',
@@ -159,6 +159,29 @@ class ASUItemIsPartOf extends BlockBase implements ContainerFactoryPluginInterfa
     $link = $entity->toLink();
     $link->setText($title);
     return $link->toString();
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheTags() {
+    $block_config = BlockBase::getConfiguration();
+    if (is_array($block_config) && array_key_exists('node', $block_config)) {
+      $nid = $block_config['node'];
+    }
+    if (isset($nid)) {
+      return Cache::mergeTags(parent::getCacheTags(), ['node:' . $nid]);
+    } else {
+      // Return default tags instead.
+      return parent::getCacheTags();
+    }
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function getCacheContexts() {
+    return Cache::mergeContexts(parent::getCacheContexts(), ['route']);
   }
 
 }
