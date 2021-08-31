@@ -24,6 +24,9 @@ use Drupal\webform\WebformSubmissionInterface;
  */
 class CreateItemWebformHandler extends WebformHandlerBase {
 
+  /**
+   * Gets the model/media type from the type of file.
+   */
   private function getModel($mime, $filename) {
     $filename = strtolower($filename);
     if (str_contains($mime, 'image') || str_contains($filename, ".jpg") || str_contains($filename, ".jpeg") || str_contains($filename, ".png")) {
@@ -56,16 +59,19 @@ class CreateItemWebformHandler extends WebformHandlerBase {
       $field_name = 'field_media_file';
     }
 
-    return array($model, $media_type, $field_name);
+    return [$model, $media_type, $field_name];
   }
 
-  private function getOrCreateTerm($string, $vocab, $relator = NULL)
-  {
+  /**
+   * Gets or creates taxo terms.
+   */
+  private function getOrCreateTerm($string, $vocab, $relator = NULL) {
     $taxo_manager = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
     $arr = $taxo_manager->loadByProperties(['name' => $string, 'vid' => $vocab]);
     if (count($arr) > 0) {
       $term = reset($arr);
-    } else {
+    }
+    else {
       $term = Term::create([
         'name' => $string,
         'vid' => $vocab,
@@ -80,8 +86,10 @@ class CreateItemWebformHandler extends WebformHandlerBase {
     return $term_arr;
   }
 
-  private function createNode($webform_submission, $values, $title, $model, $copyright_term, $perm_term, $member_of)
-  {
+  /**
+   * Actually creates the node.
+   */
+  private function createNode($webform_submission, $values, $title, $model, $copyright_term, $perm_term, $member_of) {
     $paragraph = Paragraph::create(
       ['type' => 'complex_title', 'field_main_title' => $title]
     );
@@ -131,8 +139,8 @@ class CreateItemWebformHandler extends WebformHandlerBase {
         ['target_id' => $model->id()],
       ],
       'field_member_of' => [
-        ['target_id' => $member_of]
-      ]
+        ['target_id' => $member_of],
+      ],
     ];
 
     $node = Node::create($node_args);
@@ -141,8 +149,10 @@ class CreateItemWebformHandler extends WebformHandlerBase {
     return $node;
   }
 
-  private function createMedia($media_type, $field_name, $file_id, $nid)
-  {
+  /**
+   * Actually creates the media.
+   */
+  private function createMedia($media_type, $field_name, $file_id, $nid) {
     $of_terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties(['name' => 'Original File']);
     $original_file = reset($of_terms);
 
@@ -191,10 +201,11 @@ class CreateItemWebformHandler extends WebformHandlerBase {
           'model' => $fmodel,
           'media_type' => $fmedia_type,
           'field_name' => $ffield_name,
-          'file_name' => $filename
+          'file_name' => $filename,
         ];
       }
-    } else {
+    }
+    else {
       $file = \Drupal::entityTypeManager()->getStorage('file')->load(intval($files[0]));
       $mime = $file->getMimeType();
       $filename = $file->getFilename();
@@ -227,11 +238,13 @@ class CreateItemWebformHandler extends WebformHandlerBase {
         $child_node = $this->createNode($webform_submission, $values, $cfvalues['file_name'], $ftaxo_term, $copyright_term, $perm_term, $fmember_of);
         $this->createMedia($cfvalues['media_type'], $cfvalues['field_name'], $cfkey, $child_node->id());
       }
-    } else {
+    }
+    else {
       $node = $this->createNode($webform_submission, $values, $values['item_title'], $taxo_term, $copyright_term, $perm_term, $member_of);
       $this->createMedia($media_type, $field_name, $files[0], $node->id());
     }
 
     $webform_submission->setElementData('item_node', $node->id());
   }
+
 }

@@ -5,9 +5,11 @@
  * Contains self_deposit.module.
  */
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\user\Entity\User;
 use Drupal\self_deposit\Form\PerfArchiveChild;
+use Drupal\self_deposit\Form\SheetMusicChild;
 
 /**
  * Implements hook_help().
@@ -31,7 +33,7 @@ function self_deposit_help($route_name, RouteMatchInterface $route_match) {
 function self_deposit_preprocess_node(&$variables) {
   if ($variables['node'] && $variables['node']->getType() == 'asu_repository_item') {
     $vm = $variables['view_mode'];
-    if ( $vm == 'full' || $vm == 'asu_document' || $vm == 'asu_audio' || $vm == 'asu_complex_object' || $vm == 'asu_image' || $vm == 'asu_video') {
+    if ($vm == 'full' || $vm == 'asu_document' || $vm == 'asu_audio' || $vm == 'asu_complex_object' || $vm == 'asu_image' || $vm == 'asu_video') {
       $current_user = User::load(\Drupal::currentUser()->id());
       if ($current_user->hasRole('administrator') || $current_user->hasRole('content_approver')) {
         $connection = \Drupal::database();
@@ -64,12 +66,14 @@ function self_deposit_preprocess_node(&$variables) {
 function self_deposit_entity_type_build(array &$entity_types) {
   $entity_types['node']->setFormClass('perf_archive', 'Drupal\node\NodeForm');
   $entity_types['node']->setFormClass('perf_archive_child', 'Drupal\node\NodeForm');
+  $entity_types['node']->setFormClass('sheet_music', 'Drupal\node\NodeForm');
+  $entity_types['node']->setFormClass('sheet_music_child', 'Drupal\node\NodeForm');
 }
 
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function self_deposit_form_node_asu_repository_item_perf_archive_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+function self_deposit_form_node_asu_repository_item_perf_archive_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $config = \Drupal::config('self_deposit.selfdepositsettings');
 
   if ($config->get('perf_archive_default_genre')) {
@@ -101,7 +105,7 @@ function self_deposit_form_node_asu_repository_item_perf_archive_form_alter(&$fo
     $form['field_default_derivative_file_pe']['widget'][0]['target_id']['#default_value'] = $sf_perms;
     $form['field_default_original_file_perm']['widget'][0]['target_id']['#default_value'] = $of_perms;
   }
-  
+
   $form['moderation_state']['widget'][0]['state']['#default_value'] = 'published';
   $form['actions']['submit']['#submit'][] = 'self_deposit_perf_archive_parent_submit';
 }
@@ -109,20 +113,81 @@ function self_deposit_form_node_asu_repository_item_perf_archive_form_alter(&$fo
 /**
  * Implements hook_form_FORM_ID_alter().
  */
-function self_deposit_form_node_asu_repository_item_perf_archive_child_form_alter(&$form, \Drupal\Core\Form\FormStateInterface $form_state, $form_id) {
+function self_deposit_form_node_asu_repository_item_sheet_music_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $config = \Drupal::config('self_deposit.selfdepositsettings');
+
+  if ($config->get('sheet_music_default_genre')) {
+    $default_genre = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($config->get('sheet_music_default_genre'));
+    $form['field_genre']['widget'][0]['target_id']['#default_value'] = $default_genre;
+  }
+
+  if ($config->get('sheet_music_default_copyright')) {
+    $form['field_copyright_statement']['widget']['#default_value'] = $config->get('sheet_music_default_copyright');
+  }
+
+  if ($config->get('sheet_music_default_reuse')) {
+    $form['field_reuse_permissions']['widget']['#default_value'] = $config->get('sheet_music_default_reuse');
+  }
+
+  if ($config->get('sheet_music_default_model')) {
+    $form['field_model']['widget']['#default_value'] = $config->get('sheet_music_default_model');
+  }
+
+  if ($config->get('sheet_music_default_identifier_type')) {
+    $form['field_typed_identifier']['widget'][0]['subform']['field_identifier_type']['widget']['#default_value'] = $config->get('sheet_music_default_identifier_type');
+  }
+
+  if ($config->get('sheet_music_default_collection')) {
+    $default_collection = \Drupal::entityTypeManager()->getStorage('node')->load($config->get('sheet_music_default_collection'));
+    $form['field_member_of']['widget'][0]['target_id']['#default_value'] = $default_collection;
+    $of_perms = $default_collection->get('field_default_original_file_perm')->entity;
+    $sf_perms = $default_collection->get('field_default_derivative_file_pe')->entity;
+    $form['field_default_derivative_file_pe']['widget'][0]['target_id']['#default_value'] = $sf_perms;
+    $form['field_default_original_file_perm']['widget'][0]['target_id']['#default_value'] = $of_perms;
+  }
+
+  $form['moderation_state']['widget'][0]['state']['#default_value'] = 'published';
+  $form['actions']['submit']['#submit'][] = 'self_deposit_sheet_music_parent_submit';
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function self_deposit_form_node_asu_repository_item_perf_archive_child_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   PerfArchiveChild::alter($form, $form_state);
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function self_deposit_form_node_asu_repository_item_sheet_music_child_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  SheetMusicChild::alter($form, $form_state);
 }
 
 /**
  * Submit handling for perf archive parent.
  */
-function self_deposit_perf_archive_parent_submit(array &$form, Drupal\Core\Form\FormStateInterface $form_state){
+function self_deposit_perf_archive_parent_submit(array &$form, FormStateInterface $form_state) {
   \Drupal::messenger()->addMessage(t('Peformance Archive item created. Add child items now.'));
   $node_id = $form_state->getValue('nid');
   if ($node_id) {
     $form_state->setRedirect('self_deposit.perf_archive.add_child', [
       'node_type' => 'asu_repository_item',
-      'parent' => $node_id
+      'parent' => $node_id,
+    ]);
+  }
+}
+
+/**
+ * Submit handling for sheet music parent.
+ */
+function self_deposit_sheet_music_parent_submit(array &$form, FormStateInterface $form_state) {
+  \Drupal::messenger()->addMessage(t('Sheet Music item created. Add child items now.'));
+  $node_id = $form_state->getValue('nid');
+  if ($node_id) {
+    $form_state->setRedirect('self_deposit.sheet_music.add_child', [
+      'node_type' => 'asu_repository_item',
+      'parent' => $node_id,
     ]);
   }
 }

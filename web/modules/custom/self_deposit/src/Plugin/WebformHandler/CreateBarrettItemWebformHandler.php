@@ -25,6 +25,9 @@ use Drupal\user\Entity\User;
  */
 class CreateBarrettItemWebformHandler extends WebformHandlerBase {
 
+  /**
+   * Gets the model/media type from the type of file.
+   */
   private function getModel($mime, $filename) {
     $filename = strtolower($filename);
     if (str_contains($mime, 'image') || str_contains($filename, ".jpg") || str_contains($filename, ".jpeg") || str_contains($filename, ".png")) {
@@ -57,9 +60,12 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
       $field_name = 'field_media_file';
     }
 
-    return array($model, $media_type, $field_name);
+    return [$model, $media_type, $field_name];
   }
 
+  /**
+   * Gets or creates taxonomy terms.
+   */
   private function getOrCreateTerm($string, $vocab, $relator = NULL) {
     $taxo_manager = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
     $arr = $taxo_manager->loadByProperties(['name' => $string, 'vid' => $vocab]);
@@ -81,7 +87,10 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
     return $term_arr;
   }
 
-  private function createNode($webform_submission, $values, $title, $model, $copyright_term, $perm_term, $member_of, $user=NULL) {
+  /**
+   * Actually creates the node.
+   */
+  private function createNode($webform_submission, $values, $title, $model, $copyright_term, $perm_term, $member_of, $user = NULL) {
     $paragraph = Paragraph::create(
       ['type' => 'complex_title', 'field_main_title' => $title]
     );
@@ -89,7 +98,7 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
     $paragraph->save();
 
     $keywords = [];
-    foreach($values['keywords'] as $key) {
+    foreach ($values['keywords'] as $key) {
       $kterm = $this->getOrCreateTerm($key, 'subject');
       array_push($keywords, $kterm);
     }
@@ -97,31 +106,32 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
     $contribs = [];
     if (array_key_exists('your_name', $values)) {
       array_push($contribs, $this->getOrCreateTerm($values['your_name'], 'person', 'relators:aut'));
-    } else {
+    }
+    else {
       array_push($contribs, $this->getOrCreateTerm($values['student_name']['last'] . ", " . $values['student_name']['first'], 'person', 'relators:aut'));
     }
-    foreach($values['group_members'] as $gm) {
-      // make group members as aut
+    foreach ($values['group_members'] as $gm) {
+      // Make group members as aut.
       array_push($contribs, $this->getOrCreateTerm($gm['last'] . ", " . $gm['first'], 'person', 'barrettrelators:cau'));
     }
 
     foreach ($values['thesis_director'] as $td) {
-      // make group members as ths
+      // Make group members as ths.
       array_push($contribs, $this->getOrCreateTerm($td['last'] . ", " . $td['first'], 'person', 'barrettrelators:ths'));
     }
 
     foreach ($values['committee_members'] as $cm) {
-      // make group members as dgc
+      // Make group members as dgc.
       array_push($contribs, $this->getOrCreateTerm($cm['last'] . ", " . $cm['first'], 'person', 'barrettrelators:dgc'));
     }
 
     foreach ($values['additional_contributors'] as $ac) {
-      // make additional contribs as ctb
+      // Make additional contribs as ctb.
       array_push($contribs, $this->getOrCreateTerm($ac['last'] . ", " . $ac['first'], 'person', 'relators:ctb'));
     }
 
     foreach ($values['institutional_contributors'] as $ic) {
-      // make insitutional contribs as ctb
+      // Make insitutional contribs as ctb.
       array_push($contribs, $this->getOrCreateTerm($ic, 'corporate_body', 'relators:ctb'));
     }
 
@@ -133,14 +143,15 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
         foreach ($prgs as $prg) {
           array_push($contribs, $this->getOrCreateTerm($prg, 'corporate_body', 'relators:ctb'));
         }
-      } else {
+      }
+      else {
         if ($prgs != "") {
           array_push($contribs, $this->getOrCreateTerm($prgs, 'corporate_body', 'relators:ctb'));
         }
       }
     }
 
-    if (array_key_exists('series', $values) && $values['series'] != "" ) {
+    if (array_key_exists('series', $values) && $values['series'] != "") {
       $series_val = $values['series'];
     }
 
@@ -184,7 +195,7 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
       'created' => time(),
       'changed' => time(),
       'uid' => \Drupal::currentUser()->id(),
-      'moderation_state' =>  $mod_state,
+      'moderation_state' => $mod_state,
       'field_title' => [
         [
           'target_id' => $paragraph->id(),
@@ -201,10 +212,10 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
       'field_subject' => $keywords,
       'field_linked_agent' => $contribs,
       'field_edtf_date_created' => [
-        'value' => $created_date_val
+        'value' => $created_date_val,
       ],
       'field_series' => [
-        'value' => $series_val
+        'value' => $series_val,
       ],
       'field_copyright_statement' => [
         ['target_id' => $copyright_term->id()],
@@ -219,11 +230,11 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
         ['target_id' => $model->id()],
       ],
       'field_extent' => [
-        ['value' => $values['number_of_pages']]
+        ['value' => $values['number_of_pages']],
       ],
       'field_member_of' => [
-        ['target_id' => $member_of]
-      ]
+        ['target_id' => $member_of],
+      ],
     ];
 
     if (array_key_exists('embargo_release_date', $values)) {
@@ -240,6 +251,9 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
     return $node;
   }
 
+  /**
+   * Actually creates the media.
+   */
   private function createMedia($media_type, $field_name, $file_id, $nid) {
     $of_terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties(['name' => 'Original File']);
     $original_file = reset($of_terms);
@@ -290,7 +304,7 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
           'model' => $fmodel,
           'media_type' => $fmedia_type,
           'field_name' => $ffield_name,
-          'file_name' => $filename
+          'file_name' => $filename,
         ];
       }
     }
@@ -316,7 +330,7 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
       $member_of = $config->get('barrett_collection_for_deposits');
     }
 
-    // create user, populate from student_asurite, student_id
+    // Create user, populate from student_asurite, student_id.
     $user = user_load_by_name($values['student_asurite']);
     if ($user == NULL) {
       $user = User::create();
@@ -351,4 +365,5 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
     $webform_submission->setElementData('item_node', $node->id());
     \Drupal::moduleHandler()->invoke('islandora', 'media_insert', [$media]);
   }
+
 }

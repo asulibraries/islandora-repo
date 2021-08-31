@@ -2,7 +2,6 @@
 
 namespace Drupal\self_deposit\Plugin\Field\FieldWidget;
 
-use Drupal\Core\Field\Plugin\Field\FieldWidget\EntityReferenceAutocompleteWidget;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\controlled_access_terms\Plugin\Field\FieldWidget\TypedRelationWidget;

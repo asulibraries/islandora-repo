@@ -9,7 +9,7 @@ use Drupal\media\Entity\Media;
 /**
  * Helper; redirect to the given node when ingesting media belonging to a node.
  */
-class PerfArchiveChild {
+class SheetMusicChild {
 
   const NODE_COORDS = [
     'field_member_of',
@@ -22,7 +22,7 @@ class PerfArchiveChild {
    */
   public static function alter(array &$form, FormStateInterface $form_state) {
     $config = \Drupal::config('self_deposit.selfdepositsettings');
-    $form['#title'] = t("Add Performance Archive Child Item");
+    $form['#title'] = t("Add Sheet Music Child Item");
     // Prepopulate member_of.
     $parent_from_url = \Drupal::routeMatch()->getParameter('parent');
     if (!is_object($parent_from_url) && $parent_from_url) {
@@ -41,8 +41,8 @@ class PerfArchiveChild {
       $form['field_weight']['widget'][0]['value']['#default_value'] = 1;
     }
 
-    if ($config->get('perf_archive_default_collection')) {
-      $default_collection = \Drupal::entityTypeManager()->getStorage('node')->load($config->get('perf_archive_default_collection'));
+    if ($config->get('sheet_music_default_collection')) {
+      $default_collection = \Drupal::entityTypeManager()->getStorage('node')->load($config->get('sheet_music_default_collection'));
       $of_perms = $default_collection->get('field_default_original_file_perm')->entity;
       $sf_perms = $default_collection->get('field_default_derivative_file_pe')->entity;
       $form['field_default_derivative_file_pe']['widget'][0]['target_id']['#default_value'] = $sf_perms;
@@ -55,7 +55,7 @@ class PerfArchiveChild {
     $form['file'] = [
       '#type' => 'managed_file',
       '#title' => t('File'),
-      '#upload_location' => "fedora://perf_archive",
+      '#upload_location' => "fedora://sheet_music",
       '#upload_validators' => [
         'file_validate_extensions' => ["txt rtf doc docx ppt pptx xls xlsx pdf odf odg odp ods odt fodt fods fodp fodg key numbers pages tiff tif jp2 xml jpf mp3 wav aac aif aiff mid flac m4a mp4"],
       ],
@@ -101,7 +101,7 @@ class PerfArchiveChild {
     if ($node_id) {
       $existing_weight = $form_state->getValue('field_weight', 0, 'value');
       $new_weight = $existing_weight[0]['value'] + 1;
-      $form_state->setRedirect('self_deposit.perf_archive.add_child', [
+      $form_state->setRedirect('self_deposit.sheet_music.add_child', [
         'node_type' => 'asu_repository_item',
         'parent' => $node_id,
       ], [

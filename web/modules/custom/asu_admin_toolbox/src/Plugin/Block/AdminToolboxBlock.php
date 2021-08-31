@@ -189,6 +189,15 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
             $link = Link::fromTextAndUrl($this->t('Add Performance Archive Child item &nbsp; <i class="fas fa-plus-circle"></i>'), $pa_url);
           }
         }
+        if ($config->get('sheet_music_default_collection')) {
+          if ($node->get('field_member_of') && $node->get('field_member_of')->entity->id() == $config->get('sheet_music_default_collection')) {
+            $pa_url = Url::fromRoute('self_deposit.sheet_music.add_child', [
+              'node_type' => 'asu_repository_item',
+              'parent' => $node->id()
+            ], ['attributes' => ['class' => 'nav-link']]);
+            $link = Link::fromTextAndUrl($this->t('Add Sheet Music Child item &nbsp; <i class="fas fa-plus-circle"></i>'), $pa_url);
+          }
+        }
       }
       else {
         $link = Link::fromTextAndUrl($this->t('Add item &nbsp; <i class="fas fa-plus-circle"></i>'), $url);
@@ -198,6 +207,14 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
               'node_type' => 'asu_repository_item'
             ], ['attributes' => ['class' => 'nav-link']]);
             $link = Link::fromTextAndUrl($this->t('Add Performance Archive item &nbsp; <i class="fas fa-plus-circle"></i>'), $pa_url);
+          }
+        }
+        if ($is_collection && $config->get('sheet_music_default_collection')) {
+          if ($node->id() == $config->get('sheet_music_default_collection')) {
+            $pa_url = Url::fromRoute('self_deposit.sheet_music.add', [
+              'node_type' => 'asu_repository_item'
+            ], ['attributes' => ['class' => 'nav-link']]);
+            $link = Link::fromTextAndUrl($this->t('Add Sheet Music item &nbsp; <i class="fas fa-plus-circle"></i>'), $pa_url);
           }
         }
       }
