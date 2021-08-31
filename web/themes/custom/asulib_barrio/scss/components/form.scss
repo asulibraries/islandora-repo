@@ -322,8 +322,10 @@ td.field-multiple-drag {
   margin-bottom: 0;
 }
 
-.webform-submission-self-deposit-form div.progress-step .progress-marker::before {
-  background-color: inherit !important;
+.webform-submission-self-deposit-form div.progress-step {
+  .progress-marker::after, .progress-marker::before {
+    background-color: #747474 !important;
+  }
 }
 
 .webform-submission-self-deposit-form div.progress-step button {
