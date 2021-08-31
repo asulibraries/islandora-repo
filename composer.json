@@ -146,6 +146,8 @@
         "islandora/islandora": "dev-8.x-1.x",
         "islandora/islandora_defaults": "dev-8.x-1.x",
         "islandora/openseadragon": "dev-8.x-1.x",
+        "npm-asset/nouislider": "^14",
+        "oomphinc/composer-installers-extender": "^2.0",
         "professional-wiki/edtf": "^2.0",
         "vlucas/phpdotenv": "^2.4",
         "webflo/drupal-finder": "^1.0.0",
@@ -191,7 +193,9 @@
                 "type:drupal-core"
             ],
             "web/libraries/{$name}": [
-                "type:drupal-library"
+                "type:drupal-library",
+		"vendor:npm-asset",
+		"vendor:bower-asset"
             ],
             "web/modules/contrib/{$name}": [
                 "type:drupal-module"
@@ -260,7 +264,7 @@
 		"fix for GA version 4": "https://www.drupal.org/files/issues/2020-12-01/3178179-google-analytics-4.patch"
 	    },
 	    "drupal/facets": {
-		"another fix for slider in d9": "https://www.drupal.org/files/issues/2020-12-14/3186953--7.patch"
+                "nouislider fix": "https://www.drupal.org/files/issues/2021-06-16/issue-3153622-nouislider_4.patch"
 	    },
             "drupal/migrate_source_ui": {
                 "allow url as a migrate source": "https://raw.githubusercontent.com/asulibraries/islandora-repo/develop/web/modules/custom/asu_migrate/source_ui_url.patch"
