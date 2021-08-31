@@ -339,7 +339,7 @@ function asu_permissions_media_access(EntityInterface $entity, $operation, Accou
     // Return neutral because it isn't an Islandora media - it isn't attached to an item.
     return new AccessResultNeutral();
   }
-  if ($account->isAuthenticated() && in_array("administrator", $account->getRoles())) {
+  if ($account->isAuthenticated() && (in_array("administrator", $account->getRoles()) || in_array("metadata_manager", $account->getRoles()))) {
     // Allow if admin.
     // TODO potentially do a lookup here for additional all-seeing roles.
     $access_result = AccessResult::allowed();
@@ -370,7 +370,6 @@ function asu_permissions_media_access(EntityInterface $entity, $operation, Accou
       if ($par->hasField('field_embargo_release_date') && $par->get('field_embargo_release_date') && $par->get('field_embargo_release_date')->value >= $today) {
         $access_term = "Private";
         $taccess = 0;
-      } else {
       }
     }
     // \Drupal::logger('asu permissions')->info("parent access: " . $taccess);
