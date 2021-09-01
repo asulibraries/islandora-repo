@@ -18,7 +18,10 @@ source:
 
 
 process:
-  nid: nid
+  nid:
+    plugin: skip_on_empty
+    method: process
+    source: nid
   field_weight:
     plugin: skip_on_empty
     method: process
