@@ -178,6 +178,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
             $node->id() . ($is_complex_object ? '&edit[field_complex_object_child][value]=1' : ''), ['attributes' => ['class' => 'nav-link']]
         );
       $config = \Drupal::config('self_deposit.selfdepositsettings');
+      $deposit_config = \Drupal::config('asu_deposit_methods.depositsettings');
       if ($is_complex_object) {
         $link = Link::fromTextAndUrl($this->t('Add media &nbsp; <i class="fas fa-plus-circle"></i>'), $url);
         if ($config->get('perf_archive_default_collection')) {
@@ -189,9 +190,9 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
             $link = Link::fromTextAndUrl($this->t('Add Performance Archive Child item &nbsp; <i class="fas fa-plus-circle"></i>'), $pa_url);
           }
         }
-        if ($config->get('sheet_music_default_collection')) {
-          if ($node->get('field_member_of') && $node->get('field_member_of')->entity->id() == $config->get('sheet_music_default_collection')) {
-            $pa_url = Url::fromRoute('self_deposit.sheet_music.add_child', [
+        if ($deposit_config->get('sheet_music_default_collection')) {
+          if ($node->get('field_member_of') && $node->get('field_member_of')->entity->id() == $deposit_config->get('sheet_music_default_collection')) {
+            $pa_url = Url::fromRoute('asu_deposit_methods.sheet_music.add_child', [
               'node_type' => 'asu_repository_item',
               'parent' => $node->id()
             ], ['attributes' => ['class' => 'nav-link']]);
@@ -209,9 +210,9 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
             $link = Link::fromTextAndUrl($this->t('Add Performance Archive item &nbsp; <i class="fas fa-plus-circle"></i>'), $pa_url);
           }
         }
-        if ($is_collection && $config->get('sheet_music_default_collection')) {
-          if ($node->id() == $config->get('sheet_music_default_collection')) {
-            $pa_url = Url::fromRoute('self_deposit.sheet_music.add', [
+        if ($is_collection && $deposit_config->get('sheet_music_default_collection')) {
+          if ($node->id() == $deposit_config->get('sheet_music_default_collection')) {
+            $pa_url = Url::fromRoute('asu_deposit_methods.sheet_music.add', [
               'node_type' => 'asu_repository_item'
             ], ['attributes' => ['class' => 'nav-link']]);
             $link = Link::fromTextAndUrl($this->t('Add Sheet Music item &nbsp; <i class="fas fa-plus-circle"></i>'), $pa_url);
