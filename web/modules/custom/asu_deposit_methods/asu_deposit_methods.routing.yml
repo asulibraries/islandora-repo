@@ -1,18 +1,18 @@
-self_deposit.settings:
-  path: '/admin/config/self_deposit/settings'
+asu_deposit_methods.settings:
+  path: '/admin/config/asu_deposit_methods/settings'
   defaults:
-    _form: '\Drupal\self_deposit\Form\SelfDepositSettings'
-    _title: 'Self Deposit Settings'
+    _form: '\Drupal\asu_deposit_methods\Form\DepositSettings'
+    _title: 'ASU Deposit Settings'
   requirements:
     _permission: 'administer site configuration'
   options:
     _admin_route: TRUE
 
-self_deposit.perf_archive.edit:
-  path: '/perf_archive/{node}/edit'
+asu_deposit_methods.sheet_music.edit:
+  path: '/sheet_music/{node}/edit'
   defaults:
-    _entity_form: 'node.perf_archive'
-    _title: 'Edit Performance Archive Item'
+    _entity_form: 'node.sheet_music'
+    _title: 'Edit Sheet Music Item'
   requirements:
     node: '\d+'
     _entity_access: 'node.update'
@@ -23,11 +23,11 @@ self_deposit.perf_archive.edit:
         type: entity:node
     no_cache: 'TRUE'
 
-self_deposit.perf_archive.add:
-  path: '/perf_archive/add/{node_type}'
+asu_deposit_methods.sheet_music.add:
+  path: '/sheet_music/add/{node_type}'
   defaults:
-    _entity_form: 'node.perf_archive'
-    _title: 'Add Performance Archive Item'
+    _entity_form: 'node.sheet_music'
+    _title: 'Add Sheet Music Item'
   requirements:
     _node_add_access: 'node:asu_repository_item'
   options:
@@ -36,11 +36,11 @@ self_deposit.perf_archive.add:
       node_type:
         type: entity:node_type
 
-self_deposit.perf_archive.add_child:
-  path: '/perf_archive/add_child/{node_type}/{parent}'
+asu_deposit_methods.sheet_music.add_child:
+  path: '/sheet_music/add_child/{node_type}/{parent}'
   defaults:
-    _entity_form: 'node.perf_archive_child'
-    _title: 'Add Performance Archive Child Item'
+    _entity_form: 'node.sheet_music_child'
+    _title: 'Add Sheet Music Child Item'
   requirements:
     _node_add_access: 'node:asu_repository_item'
   options:

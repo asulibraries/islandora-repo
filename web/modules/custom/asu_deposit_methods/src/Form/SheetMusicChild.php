@@ -1,13 +1,13 @@
 <?php
 
-namespace Drupal\self_deposit\Form;
+namespace Drupal\asu_deposit_methods\Form;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\Entity\File;
 use Drupal\media\Entity\Media;
 
 /**
- * Helper; redirect to the given node when ingesting media belonging to a node.
+ * Custom form handling for sheet music children.
  */
 class SheetMusicChild {
 
@@ -21,7 +21,7 @@ class SheetMusicChild {
    * Delegated hook_form_alter().
    */
   public static function alter(array &$form, FormStateInterface $form_state) {
-    $config = \Drupal::config('self_deposit.selfdepositsettings');
+    $config = \Drupal::config('asu_deposit_methods.depositsettings');
     $form['#title'] = t("Add Sheet Music Child Item");
     // Prepopulate member_of.
     $parent_from_url = \Drupal::routeMatch()->getParameter('parent');
@@ -101,7 +101,7 @@ class SheetMusicChild {
     if ($node_id) {
       $existing_weight = $form_state->getValue('field_weight', 0, 'value');
       $new_weight = $existing_weight[0]['value'] + 1;
-      $form_state->setRedirect('self_deposit.sheet_music.add_child', [
+      $form_state->setRedirect('asu_deposit_methods.sheet_music.add_child', [
         'node_type' => 'asu_repository_item',
         'parent' => $node_id,
       ], [
