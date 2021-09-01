@@ -1,0 +1,31 @@
+dependencies:
+  enforced:
+    module:
+      - asu_migrate
+
+id: p_c4_node_weights
+label: Import Collection 4 Weights from CSV
+migration_group: migrate_c4_csv
+
+source:
+  plugin: csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/att_file_4_weights_and_nids.csv
+
+  header_row_count: 1
+
+  ids:
+    - nid
+
+
+process:
+  nid: nid
+  field_weight:
+    plugin: skip_on_empty
+    method: process
+    source: attachment weight
+
+destination:
+  plugin: 'entity:node'
+  default_bundle: asu_repository_item
+  overwrite_properties:
+    - field_weight
