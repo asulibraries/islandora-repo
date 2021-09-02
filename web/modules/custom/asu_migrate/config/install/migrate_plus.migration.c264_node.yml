@@ -410,7 +410,7 @@ process:
     #   source: Contributors-Corporate
     -
       plugin: explode
-      delimiter: ' || '
+      delimiter: '||'
       source: Contributors-Corporate
     -
       plugin: callback
@@ -475,3 +475,15 @@ process:
 destination:
   plugin: 'entity:node'
   default_bundle: asu_repository_item
+  overwrite_properties:
+    - field_history
+    - field_linked_agent
+    - field_subject
+    - field_complex_object_child
+    - field_member_of
+    - field_model
+    - field_reuse_permissions
+    - field_copyright_statement
+    - field_note_para
+    - field_preferred_citation
+    - field_language
