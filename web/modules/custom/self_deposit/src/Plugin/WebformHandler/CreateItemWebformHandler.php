@@ -5,9 +5,14 @@ namespace Drupal\self_deposit\Plugin\WebformHandler;
 use Drupal\node\Entity\Node;
 use Drupal\media\Entity\Media;
 use Drupal\paragraphs\Entity\Paragraph;
-use Drupal\taxonomy\Entity\Term;
 use Drupal\webform\Plugin\WebformHandlerBase;
 use Drupal\webform\WebformSubmissionInterface;
+use Drupal\Core\Config\ConfigFactoryInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Logger\LoggerChannelFactoryInterface;
+use Drupal\webform\WebformSubmissionConditionsValidatorInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\asu_deposit_methods\DepositUtils;
 
 /**
  * Create a new repository item entity from a webform submission.
@@ -25,65 +30,80 @@ use Drupal\webform\WebformSubmissionInterface;
 class CreateItemWebformHandler extends WebformHandlerBase {
 
   /**
-   * Gets the model/media type from the type of file.
+   * @var \Drupal\Core\Config\ConfigFactoryInterface
    */
-  private function getModel($mime, $filename) {
-    $filename = strtolower($filename);
-    if (str_contains($mime, 'image') || str_contains($filename, ".jpg") || str_contains($filename, ".jpeg") || str_contains($filename, ".png")) {
-      $model = 'Image';
-      $media_type = 'image';
-      $field_name = 'field_media_image';
-      if (str_contains($filename, ".tif") || str_contains($filename, ".tiff")) {
-        $media_type = 'file';
-        $field_name = 'field_media_file';
-      }
-    }
-    if (str_contains($filename, ".pdf") || str_contains($filename, ".doc") || str_contains($filename, ".docx")) {
-      $model = 'Digital Document';
-      $media_type = 'document';
-      $field_name = 'field_media_document';
-    }
-    if (str_contains($mime, 'audio')) {
-      $model = 'Audio';
-      $media_type = 'audio';
-      $field_name = 'field_media_audio_file';
-    }
-    if (str_contains($mime, 'video')) {
-      $model = 'Video';
-      $media_type = 'video';
-      $field_name = 'field_media_video_file';
-    }
-    if (!isset($model)) {
-      $media_type = 'file';
-      $model = 'Binary';
-      $field_name = 'field_media_file';
-    }
+  protected $configFactory;
 
-    return [$model, $media_type, $field_name];
+  /**
+   * @var \Drupal\webform\WebformSubmissionConditionsValidatorInterface
+   */
+  protected $conditionsValidator;
+
+  /**
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * @var \Drupal\asu_deposit_methods\DepositUtils
+   */
+  protected $depositUtils;
+
+  /**
+   *
+   * @param array $configuration
+   * @param $plugin_id
+   * @param $plugin_definition
+   * @param \Drupal\Core\Logger\LoggerChannelFactoryInterface $logger_factory
+   * @param \Drupal\Core\Config\ConfigFactoryInterface $config_factory
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   * @param \Drupal\webform\WebformSubmissionConditionsValidatorInterface $conditions_validator
+   * @param \Drupal\asu_deposit_methods\DepositUtils $deposit_utils
+   */
+  public function __construct(
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
+    LoggerChannelFactoryInterface $logger_factory,
+    ConfigFactoryInterface $config_factory,
+    EntityTypeManagerInterface $entity_type_manager,
+    WebformSubmissionConditionsValidatorInterface $conditions_validator,
+    DepositUtils $deposit_utils
+  ) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->loggerFactory = $logger_factory->get('custom_webform_handler');
+    $this->configFactory = $config_factory;
+    $this->conditionsValidator = $conditions_validator;
+    $this->entityTypeManager = $entity_type_manager;
+    $this->depositUtils = $deposit_utils;
   }
 
   /**
-   * Gets or creates taxo terms.
+   * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
+   * @param array $configuration
+   * @param string $plugin_id
+   * @param mixed $plugin_definition
+   *
+   * @return \Drupal\Core\Plugin\ContainerFactoryPluginInterface|EmailWebformHandler|WebformHandlerBase|WebformHandlerInterface|WebformHandlerMessageInterface|static
    */
-  private function getOrCreateTerm($string, $vocab, $relator = NULL) {
-    $taxo_manager = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
-    $arr = $taxo_manager->loadByProperties(['name' => $string, 'vid' => $vocab]);
-    if (count($arr) > 0) {
-      $term = reset($arr);
-    }
-    else {
-      $term = Term::create([
-        'name' => $string,
-        'vid' => $vocab,
-        'langcode' => 'en',
-      ]);
-      $term->save();
-    }
-    $term_arr = ['target_id' => $term->id()];
-    if ($relator) {
-      $term_arr['rel_type'] = $relator;
-    }
-    return $term_arr;
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('logger.factory'),
+      $container->get('config.factory'),
+      $container->get('entity_type.manager'),
+      $container->get('webform_submission.conditions_validator'),
+      $container->get('asu_deposit_methods.deposit_utils')
+    );
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function defaultConfiguration() {
+    return [];
   }
 
   /**
@@ -98,7 +118,7 @@ class CreateItemWebformHandler extends WebformHandlerBase {
 
     $keywords = [];
     foreach ($values['keywords'] as $key) {
-      $kterm = $this->getOrCreateTerm($key, 'subject');
+      $kterm = $this->depositUtils->getOrCreateTerm($key, 'subject');
       array_push($keywords, $kterm);
     }
 
@@ -150,38 +170,6 @@ class CreateItemWebformHandler extends WebformHandlerBase {
   }
 
   /**
-   * Actually creates the media.
-   */
-  private function createMedia($media_type, $field_name, $file_id, $nid) {
-    $of_terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties(['name' => 'Original File']);
-    $original_file = reset($of_terms);
-
-    $media_args = [
-      'bundle' => $media_type,
-      'uid' => \Drupal::currentUser()->id(),
-      'field_media_of' => [
-        ['target_id' => $nid],
-      ],
-      'field_media_use' => [
-        ['target_id' => $original_file->id()],
-      ],
-    ];
-
-    $taxo_manager = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
-    $perm_term_arr = $taxo_manager->loadByProperties(['name' => 'ASU Only']);
-    $perm_term = reset($perm_term_arr);
-
-    $media_args['field_access_terms'] = [
-      ['target_id' => $perm_term->id()],
-    ];
-    $media_args[$field_name] = [
-      ['target_id' => $file_id],
-    ];
-    $media = Media::create($media_args);
-    $media->save();
-  }
-
-  /**
    * {@inheritdoc}
    */
   public function preSave(WebformSubmissionInterface $webform_submission) {
@@ -193,10 +181,10 @@ class CreateItemWebformHandler extends WebformHandlerBase {
       $model = 'Complex Object';
       $child_files = [];
       foreach ($files as $file_id) {
-        $file = \Drupal::entityTypeManager()->getStorage('file')->load(intval($file_id));
+        $file = $this->entityTypeManager->getStorage('file')->load(intval($file_id));
         $mime = $file->getMimeType();
         $filename = $file->getFilename();
-        list($fmodel, $fmedia_type, $ffield_name) = $this->getModel($mime, $filename);
+        list($fmodel, $fmedia_type, $ffield_name) = $this->depositUtils->getModel($mime, $filename);
         $child_files[$file_id] = [
           'model' => $fmodel,
           'media_type' => $fmedia_type,
@@ -206,14 +194,14 @@ class CreateItemWebformHandler extends WebformHandlerBase {
       }
     }
     else {
-      $file = \Drupal::entityTypeManager()->getStorage('file')->load(intval($files[0]));
+      $file = $this->entityTypeManager->getStorage('file')->load(intval($files[0]));
       $mime = $file->getMimeType();
       $filename = $file->getFilename();
-      list($model, $media_type, $field_name) = $this->getModel($mime, $filename);
+      list($model, $media_type, $field_name) = $this->depositUtils->getModel($mime, $filename);
     }
 
     $term = $model;
-    $taxo_manager = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
+    $taxo_manager = $this->entityTypeManager->getStorage('taxonomy_term');
     $taxo_terms = $taxo_manager->loadByProperties(['name' => $term]);
     $taxo_term = reset($taxo_terms);
 
@@ -224,7 +212,7 @@ class CreateItemWebformHandler extends WebformHandlerBase {
     $taxo_manager->loadByProperties(['name' => $values['file_permissions_select']]);
     $perm_term = reset($perm_term_arr);
 
-    $config = \Drupal::config('self_deposit.selfdepositsettings');
+    $config = $this->configFactory->get('self_deposit.selfdepositsettings');
     if ($config->get('collection_for_deposits')) {
       $member_of = $config->get('collection_for_deposits');
     }
@@ -236,12 +224,12 @@ class CreateItemWebformHandler extends WebformHandlerBase {
         $ftaxo_terms = $taxo_manager->loadByProperties(['name' => $cfvalues['model']]);
         $ftaxo_term = reset($ftaxo_terms);
         $child_node = $this->createNode($webform_submission, $values, $cfvalues['file_name'], $ftaxo_term, $copyright_term, $perm_term, $fmember_of);
-        $this->createMedia($cfvalues['media_type'], $cfvalues['field_name'], $cfkey, $child_node->id());
+        $this->depositUtils->createMedia($cfvalues['media_type'], $cfvalues['field_name'], $cfkey, $child_node->id());
       }
     }
     else {
       $node = $this->createNode($webform_submission, $values, $values['item_title'], $taxo_term, $copyright_term, $perm_term, $member_of);
-      $this->createMedia($media_type, $field_name, $files[0], $node->id());
+      $this->depositUtils->createMedia($media_type, $field_name, $files[0], $node->id());
     }
 
     $webform_submission->setElementData('item_node', $node->id());

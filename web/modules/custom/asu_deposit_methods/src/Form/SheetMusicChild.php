@@ -57,7 +57,7 @@ class SheetMusicChild {
       '#title' => t('File'),
       '#upload_location' => "fedora://sheet_music",
       '#upload_validators' => [
-        'file_validate_extensions' => ["txt rtf doc docx ppt pptx xls xlsx pdf odf odg odp ods odt fodt fods fodp fodg key numbers pages tiff tif jp2 xml jpf mp3 wav aac aif aiff mid flac m4a mp4"],
+        'file_validate_extensions' => ["txt rtf doc docx ppt pptx xls xlsx pdf odf odg odp ods odt fodt fods fodp fodg key numbers pages tiff tif jp2 xml jpf mp3 wav aac aif aiff mid flac m4a mp4 jpg"],
       ],
     ];
 

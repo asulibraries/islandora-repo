@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\self_deposit\Plugin\WebformHandler;
+namespace Drupal\asu_deposit_methods\Plugin\WebformHandler;
 
 use Drupal\node\Entity\Node;
 use Drupal\media\Entity\Media;
@@ -18,16 +18,16 @@ use Drupal\asu_deposit_methods\DepositUtils;
  * Create a new repository item entity from a webform submission.
  *
  * @WebformHandler(
- *   id = "Create a Barrett repository item",
- *   label = @Translation("Create a Barrett repository item"),
+ *   id = "create_morrison_repository_item",
+ *   label = @Translation("Create a Morrison repository item"),
  *   category = @Translation("Entity Creation"),
- *   description = @Translation("Creates a new Barrett repository item from Webform Submissions."),
+ *   description = @Translation("Creates a new Morrison repository item from Webform Submissions."),
  *   cardinality = \Drupal\webform\Plugin\WebformHandlerInterface::CARDINALITY_UNLIMITED,
  *   results = \Drupal\webform\Plugin\WebformHandlerInterface::RESULTS_PROCESSED,
  *   submission = \Drupal\webform\Plugin\WebformHandlerInterface::SUBMISSION_REQUIRED,
  * )
  */
-class CreateBarrettItemWebformHandler extends WebformHandlerBase {
+class CreateMorrisonItemWebformHandler extends WebformHandlerBase {
 
   /**
    * @var \Drupal\Core\Config\ConfigFactoryInterface
@@ -109,7 +109,7 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
   /**
    * Actually creates the node.
    */
-  private function createNode($webform_submission, $values, $title, $model, $copyright_term, $perm_term, $member_of, $user = NULL) {
+  private function createNode($webform_submission, $values, $title, $model, $copyright_term, $perm_term, $member_of) {
     $paragraph = Paragraph::create(
       ['type' => 'complex_title', 'field_main_title' => $title]
     );
@@ -122,99 +122,13 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
       array_push($keywords, $kterm);
     }
 
-    $contribs = [];
-    if (array_key_exists('your_name', $values)) {
-      array_push($contribs, $this->depositUtils->getOrCreateTerm($values['your_name'], 'person', 'relators:aut'));
-    }
-    else {
-      array_push($contribs, $this->depositUtils->getOrCreateTerm($values['student_name']['last'] . ", " . $values['student_name']['first'], 'person', 'relators:aut'));
-    }
-    foreach ($values['group_members'] as $gm) {
-      // Make group members as aut.
-      array_push($contribs, $this->depositUtils->getOrCreateTerm($gm['last'] . ", " . $gm['first'], 'person', 'barrettrelators:cau'));
-    }
-
-    foreach ($values['thesis_director'] as $td) {
-      // Make group members as ths.
-      array_push($contribs, $this->depositUtils->getOrCreateTerm($td['last'] . ", " . $td['first'], 'person', 'barrettrelators:ths'));
-    }
-
-    foreach ($values['committee_members'] as $cm) {
-      // Make group members as dgc.
-      array_push($contribs, $this->depositUtils->getOrCreateTerm($cm['last'] . ", " . $cm['first'], 'person', 'barrettrelators:dgc'));
-    }
-
-    foreach ($values['additional_contributors'] as $ac) {
-      // Make additional contribs as ctb.
-      array_push($contribs, $this->depositUtils->getOrCreateTerm($ac['last'] . ", " . $ac['first'], 'person', 'relators:ctb'));
-    }
-
-    foreach ($values['institutional_contributors'] as $ic) {
-      // Make insitutional contribs as ctb.
-      array_push($contribs, $this->depositUtils->getOrCreateTerm($ic, 'corporate_body', 'relators:ctb'));
-    }
-
-    array_push($contribs, $this->depositUtils->getOrCreateTerm('Barrett, The Honors College', 'corporate_body', 'relators:ctb'));
-
-    if ($user && $user->hasField('field_programs')) {
-      $prgs = $user->get('field_programs')->value;
-      if (is_array($prgs)) {
-        foreach ($prgs as $prg) {
-          array_push($contribs, $this->depositUtils->getOrCreateTerm($prg, 'corporate_body', 'relators:ctb'));
-        }
-      }
-      else {
-        if ($prgs != "") {
-          array_push($contribs, $this->depositUtils->getOrCreateTerm($prgs, 'corporate_body', 'relators:ctb'));
-        }
-      }
-    }
-
-    if (array_key_exists('series', $values) && $values['series'] != "") {
-      $series_val = $values['series'];
-    }
-
-    if (array_key_exists('date_created', $values) && $values['date_created'] != "") {
-      $created_date_val = $values['date_created'];
-    }
-
-    $date_submitted = $webform_submission->getCreatedTime();
-    $month = \Drupal::service('date.formatter')->format($date_submitted, 'custom', 'm');
-    $year =
-    \Drupal::service('date.formatter')->format($date_submitted, 'custom', 'Y');
-    if ($month <= 7) {
-      $spring_year = $year;
-      $created_month = "05";
-    }
-    if ($month >= 8) {
-      $created_month = "12";
-      $fall_year = $year;
-    }
-    if (!isset($fall_year)) {
-      $fall_year = $spring_year - 1;
-    }
-    if (!isset($spring_year)) {
-      $spring_year = $fall_year + 1;
-    }
-    if (!isset($series_val)) {
-      $series_val = "Academic Year " . $fall_year . "-" . $spring_year;
-    }
-    if (!isset($created_date_val)) {
-      $created_date_val = $year . "-" . $created_month;
-    }
-
-    $mod_state = 'draft';
-    if ($webform_submission->getWebform()->id() == 'barrett_staff_submission') {
-      $mod_state = 'published';
-    }
-
     $node_args = [
       'type' => 'asu_repository_item',
       'langcode' => 'en',
       'created' => time(),
       'changed' => time(),
       'uid' => \Drupal::currentUser()->id(),
-      'moderation_state' => $mod_state,
+      'moderation_state' => 'draft',
       'field_title' => [
         [
           'target_id' => $paragraph->id(),
@@ -228,14 +142,7 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
       'field_reuse_permissions' => [
         ['target_id' => $values['reuse_permissions']],
       ],
-      'field_subject' => $keywords,
-      'field_linked_agent' => $contribs,
-      'field_edtf_date_created' => [
-        'value' => $created_date_val,
-      ],
-      'field_series' => [
-        'value' => $series_val,
-      ],
+      'field_subjects' => $keywords,
       'field_copyright_statement' => [
         ['target_id' => $copyright_term->id()],
       ],
@@ -245,24 +152,16 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
       'field_default_original_file_perm' => [
         ['target_id' => $perm_term->id()],
       ],
+      'field_embargo_release_date' => [
+        $values['embargo_release_date'] . "T23:59:59",
+      ],
       'field_model' => [
         ['target_id' => $model->id()],
-      ],
-      'field_extent' => [
-        ['value' => $values['number_of_pages']],
       ],
       'field_member_of' => [
         ['target_id' => $member_of],
       ],
     ];
-
-    if (array_key_exists('embargo_release_date', $values)) {
-      $embargo_vals = explode('T', $values['embargo_release_date']);
-      $node_args['field_embargo_release_date'] = ['value' => $embargo_vals[0] . "T23:59:59"];
-    }
-    if (array_key_exists('language1', $values)) {
-      $node_args['field_language'] = [['target_id' => $values['language1']]];
-    }
 
     $node = Node::create($node_args);
     $node->save();
@@ -309,47 +208,31 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
     $copyright_term_arr = $taxo_manager->loadByProperties(['name' => 'In Copyright']);
     $copyright_term = reset($copyright_term_arr);
 
-    $perm_term_arr = $taxo_manager->loadByProperties(['name' => 'ASU Only']);
+    $perm_term_arr =
+    $taxo_manager->loadByProperties(['name' => $values['file_permissions_select']]);
     $perm_term = reset($perm_term_arr);
-    $config = \Drupal::config('self_deposit.selfdepositsettings');
-    if ($config->get('barrett_collection_for_deposits')) {
-      $member_of = $config->get('barrett_collection_for_deposits');
-    }
 
-    // Create user, populate from student_asurite, student_id.
-    $user = user_load_by_name($values['student_asurite']);
-    if ($user == NULL) {
-      $user = User::create();
-      $user->enforceIsNew();
-      $user->setEmail($values['student_asurite'] . "@asu.edu");
-      $user->setUsername($values['student_asurite']);
-      $user->set('field_last_name', $values['student_name']['last']);
-      $user->set('field_first_name', $values['student_name']['first']);
-      $user->set('field_honors', TRUE);
-      $user->set('field_emplid', $values['student_id']);
-      $user->save();
-      \Drupal::moduleHandler()->invoke('asu_permissions', 'user_insert', [$user]);
+    $config = \Drupal::config('self_deposit.selfdepositsettings');
+    if ($config->get('collection_for_deposits')) {
+      $member_of = $config->get('collection_for_deposits');
     }
 
     if ($model == 'Complex Object') {
-      $node = $this->createNode($webform_submission, $values, $values['item_title'], $taxo_term, $copyright_term, $perm_term, $member_of, $user);
+      $node = $this->createNode($webform_submission, $values, $values['item_title'], $taxo_term, $copyright_term, $perm_term, $member_of);
       foreach ($child_files as $cfkey => $cfvalues) {
         $fmember_of = $node->id();
         $ftaxo_terms = $taxo_manager->loadByProperties(['name' => $cfvalues['model']]);
         $ftaxo_term = reset($ftaxo_terms);
         $child_node = $this->createNode($webform_submission, $values, $cfvalues['file_name'], $ftaxo_term, $copyright_term, $perm_term, $fmember_of);
-        $media = $this->depositUtils->createMedia($cfvalues['media_type'], $cfvalues['field_name'], $cfkey, $child_node->id());
+        $this->depositUtils->createMedia($cfvalues['media_type'], $cfvalues['field_name'], $cfkey, $child_node->id());
       }
     }
     else {
-      $node = $this->createNode($webform_submission, $values, $values['item_title'], $taxo_term, $copyright_term, $perm_term, $member_of, $user);
-      $media = $this->depositUtils->createMedia($media_type, $field_name, $files[0], $node->id());
+      $node = $this->createNode($webform_submission, $values, $values['item_title'], $taxo_term, $copyright_term, $perm_term, $member_of);
+      $this->depositUtils->createMedia($media_type, $field_name, $files[0], $node->id());
     }
-    $node->set('uid', $user->id());
-    $webform_submission->setOwnerId($user->id());
 
     $webform_submission->setElementData('item_node', $node->id());
-    \Drupal::moduleHandler()->invoke('islandora', 'media_insert', [$media]);
   }
 
 }
