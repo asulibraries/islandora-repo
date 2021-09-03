@@ -288,6 +288,15 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
         $link = $link->toRenderable();
         $output_links[] = render($link);
       }
+
+      // Solr Reindex link.
+      $url = Url::fromUri(
+            $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
+            '/' . $route_part . '/' . $node->id() . '/reindexSolr', ['attributes' => ['class' => 'nav-link']]
+        );
+      $link = Link::fromTextAndUrl($this->t('Reindex Solr node &nbsp; <i class="fas fa-database"></i>'), $url);
+      $link = $link->toRenderable();
+      $output_links[] = render($link);
     }
     if (in_array('administrator', $this->currentUser->getRoles())) {
       $mapper = \Drupal::service('islandora.entity_mapper');
