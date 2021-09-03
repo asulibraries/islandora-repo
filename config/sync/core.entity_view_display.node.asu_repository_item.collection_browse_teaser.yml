@@ -95,11 +95,6 @@ targetEntityType: node
 bundle: asu_repository_item
 mode: collection_browse_teaser
 content:
-  display_media_child_thumbnail:
-    weight: 10
-    settings: {  }
-    third_party_settings: {  }
-    region: content
   display_media_thumbnail:
     weight: 0
     region: content
@@ -123,12 +118,14 @@ content:
     region: content
 hidden:
   content_moderation_control: true
+  display_media_child_thumbnail: true
   display_media_download_button: true
   display_media_entity_view_1: true
   display_media_entity_view_2: true
   display_media_entity_view_3: true
   display_media_entity_view_4: true
   display_media_service_file: true
+  display_media_thumbnail_card: true
   field_additional_memberships: true
   field_cataloging_standards: true
   field_complex_object_child: true
