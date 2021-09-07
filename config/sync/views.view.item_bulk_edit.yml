@@ -4,7 +4,6 @@ dependencies:
   config:
     - search_api.index.default_solr_index
     - system.menu.admin
-    - taxonomy.vocabulary.islandora_models
     - user.role.administrator
     - user.role.metadata_manager
     - user.role.repositor_manager
@@ -134,79 +133,87 @@ display:
           clear_on_exposed: true
           action_title: Action
           selected_actions:
-            -
+            0:
+              action_id: solr_reindex_child_item
+              preconfiguration:
+                add_confirmation: false
+            1:
+              action_id: solr_reindex_item
+              preconfiguration:
+                add_confirmation: false
+            2:
               action_id: mint_handle
               preconfiguration:
                 add_confirmation: false
-            -
+            4:
               action_id: bag_node
               preconfiguration:
                 add_confirmation: false
-            -
+            5:
               action_id: emit_node_event
               preconfiguration:
                 add_confirmation: false
-            -
+            6:
               action_id: generate_audio_derivative
               preconfiguration:
                 add_confirmation: false
-            -
+            7:
               action_id: generate_fits_derivative
               preconfiguration:
                 add_confirmation: false
-            -
+            8:
               action_id: generate_image_derivative
               preconfiguration:
                 add_confirmation: false
-            -
+            9:
               action_id: generate_ocr_derivative
               preconfiguration:
                 add_confirmation: false
-            -
+            10:
               action_id: generate_video_derivative
               preconfiguration:
                 add_confirmation: false
-            -
-              action_id: node_unpromote_action
-              preconfiguration:
-                add_confirmation: false
-            -
-              action_id: node_assign_owner_action
-              preconfiguration:
-                add_confirmation: false
-            -
-              action_id: node_unpublish_by_keyword_action
-              preconfiguration:
-                add_confirmation: false
-            -
-              action_id: node_make_unsticky_action
-              preconfiguration:
-                add_confirmation: false
-            -
-              action_id: node_make_sticky_action
-              preconfiguration:
-                add_confirmation: false
-            -
+            11:
               action_id: node_promote_action
               preconfiguration:
                 add_confirmation: false
-            -
+            12:
+              action_id: node_make_sticky_action
+              preconfiguration:
+                add_confirmation: false
+            13:
+              action_id: node_unpromote_action
+              preconfiguration:
+                add_confirmation: false
+            14:
+              action_id: node_assign_owner_action
+              preconfiguration:
+                add_confirmation: false
+            15:
+              action_id: node_unpublish_by_keyword_action
+              preconfiguration:
+                add_confirmation: false
+            16:
+              action_id: node_make_unsticky_action
+              preconfiguration:
+                add_confirmation: false
+            17:
               action_id: views_bulk_edit
               preconfiguration:
                 add_confirmation: false
                 get_bundles_from_results: true
-            -
+            18:
               action_id: views_bulk_operations_delete_entity
-            -
-              action_id: 'entity:save_action:node'
+            19:
+              action_id: 'entity:publish_action:node'
               preconfiguration:
                 add_confirmation: false
-            -
+            20:
               action_id: 'entity:unpublish_action:node'
               preconfiguration:
                 add_confirmation: false
-            -
-              action_id: 'entity:publish_action:node'
+            21:
+              action_id: 'entity:save_action:node'
               preconfiguration:
                 add_confirmation: false
           force_selection_info: false
@@ -264,307 +271,8 @@ display:
           multi_type: separator
           multi_separator: ', '
           plugin_id: search_api
-        nid:
-          id: nid
-          table: search_api_datasource_default_solr_index_entity_node
-          field: nid
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: ID
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: number_integer
-          settings:
-            thousand_separator: ''
-            prefix_suffix: true
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          field_rendering: true
-          fallback_handler: search_api_numeric
-          fallback_options:
-            set_precision: false
-            precision: 0
-            decimal: .
-            separator: ','
-            format_plural: false
-            format_plural_string: !!binary MQNAY291bnQ=
-            prefix: ''
-            suffix: ''
-            link_to_item: false
-            use_highlighting: false
-            multi_type: separator
-            multi_separator: ', '
-            format_plural_values:
-              - '1'
-              - '@count'
-          entity_type: node
-          plugin_id: search_api_field
-        created:
-          id: created
-          table: search_api_datasource_default_solr_index_entity_node
-          field: created
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: 'Authored on'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: timestamp
-          settings:
-            date_format: medium
-            custom_date_format: ''
-            timezone: ''
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          field_rendering: true
-          fallback_handler: search_api_date
-          fallback_options:
-            date_format: fallback
-            custom_date_format: ''
-            timezone: ''
-            link_to_item: false
-            use_highlighting: false
-            multi_type: separator
-            multi_separator: ', '
-          entity_type: node
-          plugin_id: search_api_field
-        field_media_use:
-          id: field_media_use
-          table: search_api_index_default_solr_index
-          field: field_media_use
-          relationship: none
-          group_type: group
-          admin_label: ''
-          label: 'Media Use (indexed field)'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: string
-          settings:
-            link_to_entity: false
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          field_rendering: true
-          fallback_handler: search_api
-          fallback_options:
-            link_to_item: false
-            use_highlighting: false
-            multi_type: separator
-            multi_separator: ', '
-          plugin_id: search_api_field
-      filters:
-        field_model:
-          id: field_model
-          table: search_api_index_default_solr_index
-          field: field_model
-          relationship: none
-          group_type: group
-          admin_label: ''
-          operator: or
-          value: {  }
-          group: 1
-          exposed: true
-          expose:
-            operator_id: field_model_op
-            label: Model
-            description: ''
-            use_operator: false
-            operator: field_model_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: field_model
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-              fedoraadmin: '0'
-              content_approver: '0'
-              depositor: '0'
-              metadata_manager: '0'
-              preservationist: '0'
-              casuser: '0'
-              repositor_manager: '0'
-              collections_staff: '0'
-              honors_student: '0'
-              honors_staff: '0'
-              some_metadata: '0'
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          reduce_duplicates: false
-          type: select
-          limit: true
-          vid: islandora_models
-          hierarchy: false
-          error_message: true
-          plugin_id: search_api_term
-      sorts:
-        created:
-          id: created
-          table: search_api_index_default_solr_index
-          field: created
-          relationship: none
-          group_type: group
-          admin_label: ''
-          order: DESC
-          exposed: true
-          expose:
-            label: 'Authored on'
-          plugin_id: search_api
+      filters: {  }
+      sorts: {  }
       title: 'Item Bulk Edit'
       header:
         result:
@@ -615,13 +323,9 @@ display:
     cache_metadata:
       max-age: 0
       contexts:
-        - 'languages:language_content'
         - 'languages:language_interface'
         - url
         - url.query_args
-        - 'url.query_args:sort_by'
-        - 'url.query_args:sort_order'
-        - user
         - 'user.node_grants:view'
         - user.roles
       tags:
@@ -646,13 +350,9 @@ display:
     cache_metadata:
       max-age: 0
       contexts:
-        - 'languages:language_content'
         - 'languages:language_interface'
         - url
         - url.query_args
-        - 'url.query_args:sort_by'
-        - 'url.query_args:sort_order'
-        - user
         - 'user.node_grants:view'
         - user.roles
       tags:

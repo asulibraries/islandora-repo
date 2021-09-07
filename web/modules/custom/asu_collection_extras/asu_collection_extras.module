@@ -9,38 +9,6 @@ use Drupal\media\Entity\Media;
  */
 
 /**
- * This is used by the blocks in this module to get children of a collection.
- *
- * @param mixed $collection_node
- *   Can take a node object or the node ID value.
- * @param bool $sort_by_date
- *   (OPTIONAL) whether or not to sort by date, default is FALSE.
- * @param int $limit
- *   The number of results to return (to provide the recent additions for the
- *   block that only displays only 4 items)
- */
-function asu_collection_extras_get_collection_children($collection_node, $sort_by_date = FALSE, $limit = 0, $items_only = TRUE) {
-  $collection_nid = (is_object($collection_node) ? $collection_node->id() : $collection_node);
-  $childrenQuery = \Drupal::entityQuery('node');
-  $childrenQuery
-    ->condition('field_member_of', $collection_nid)
-    ->condition('status', 1);
-  if ($items_only) {
-    $childrenQuery
-      ->condition('type', 'asu_repository_item');
-  }
-  if ($sort_by_date) {
-    $childrenQuery
-      ->sort('changed', 'DESC');
-  }
-  if ($limit) {
-    $childrenQuery
-      ->range(0, $limit);
-  }
-  return $childrenQuery->execute();
-}
-
-/**
  * This is also used by the blocks in this module to get collection items.
  *
  * The main difference between this and asu_collection_extras_get_collection_children
@@ -80,23 +48,28 @@ function asu_collection_extras_solr_get_collection_children($collection_node) {
     $models = [];
     $solariumQuery->setStart($count)->setRows(1);
     $nids = $solrConnector->execute($solariumQuery);
-    $first_record = $nids->getDocuments()[0];
-    if ($first_record) {
-      $result_set['recent_change'] = $first_record->ds_changed;
-    }
-    else {
-      $result_set['recent_change'] = NULL;
-    }
-    $model_facet = $nids->getFacetSet()->getFacet('model');
-    foreach ($model_facet as $value => $mod_count) {
-      if (!in_array($value, $models)) {
-        $models[] = $value;
+    $count = $nids->getNumFound();
+    if ($count) {
+      $first_record = $nids->getDocuments()[0];
+      if ($first_record) {
+        $result_set['recent_change'] = $first_record->ds_changed;
+      }
+      else {
+        $result_set['recent_change'] = NULL;
+      }
+      $model_facet = $nids->getFacetSet()->getFacet('model');
+      foreach ($model_facet as $value => $mod_count) {
+        if (!in_array($value, $models)) {
+          $models[] = $value;
+        }
       }
     }
-    $count = $nids->getNumFound();
     $result_set['item_count'] = $count;
     $model_count = count($models);
     $result_set['model_count'] = $model_count;
+  }
+  else {
+    $result_set['recent_change'] = NULL;
   }
   return $result_set;
 }
