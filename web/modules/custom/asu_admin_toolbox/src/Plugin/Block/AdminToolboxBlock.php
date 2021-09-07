@@ -289,7 +289,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
         $output_links[] = render($link);
       }
     }
-    // Bulk edit collection items link.
+    // Solr reindex / Bulk edit collection items link.
     if ($is_collection || $is_asu_repository_item && ($user_is_admin_or_metadata_manager)) {
       // Two different possibilities here -- if single item, redirect to Solr
       // reindexing page, else a collection would go through Bulk Edit form.
@@ -298,7 +298,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
               $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
               '/admin/item-bulk-edit/' . $node->id(), ['attributes' => ['class' => 'nav-link']]
           );
-        $link_text = $this->t('Bulk edit items &nbsp; <i class="fas fa-database"></i>');
+        $link_text = $this->t('Bulk edit items');
       }
       else {
         $url = Url::fromUri(

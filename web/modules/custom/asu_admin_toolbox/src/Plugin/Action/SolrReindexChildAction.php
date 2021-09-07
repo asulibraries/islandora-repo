@@ -18,7 +18,7 @@ use Drupal\asu_islandora_utils\AsuUtils;
  *
  * @Action(
  *   id = "solr_reindex_children",
- *   label = @Translation("Solr Reindex Children"),
+ *   label = @Translation("Solr Reindex Item and Children"),
  *   type = "node"
  * )
  */
@@ -105,7 +105,7 @@ class SolrReindexChildAction extends ActionBase implements ContainerFactoryPlugi
 
     $content_type = $entity->bundle();
     if ($entity->getEntityTypeId() == 'node' && $content_type == 'asu_repository_item') {
-      \Drupal::logger('solr reindex children action')->info("about to reindex children");
+      \Drupal::logger('solr reindex item and children action')->info("about to reindex item and children");
       if ($entity->hasField('field_model') && !$entity->get('field_model')->isEmpty()) {
         $model_term = $entity->get('field_model')->referencedEntities()[0];
         $model = $model_term->getName();
