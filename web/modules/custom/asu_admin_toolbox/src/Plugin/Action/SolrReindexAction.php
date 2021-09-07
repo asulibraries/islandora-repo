@@ -5,7 +5,6 @@ namespace Drupal\asu_admin_toolbox\Plugin\Action;
 use Drupal\Core\Action\ActionBase;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Url;
 use Symfony\Component\Process\Process;
@@ -24,13 +23,6 @@ class SolrReindexAction extends ActionBase implements ContainerFactoryPluginInte
 {
 
   /**
-   * Logger.
-   *
-   * @var Psr\Log\LoggerInterface
-   */
-  protected $logger;
-
-  /**
    * Constructor.
    *
    * @param array $configuration
@@ -39,17 +31,13 @@ class SolrReindexAction extends ActionBase implements ContainerFactoryPluginInte
    *   The plugin ID for the plugin instance.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
-   * @param Psr\Log\LoggerInterface $logger
-   *   Logger.
    */
   public function __construct(
       array $configuration,
       $plugin_id,
-      $plugin_definition,
-      LoggerInterface $logger
+      $plugin_definition
   ) {
       parent::__construct($configuration, $plugin_id, $plugin_definition);
-      $this->logger = $logger;
   }
 
   /**
@@ -59,8 +47,7 @@ class SolrReindexAction extends ActionBase implements ContainerFactoryPluginInte
     return new static(
       $configuration,
       $plugin_id,
-      $plugin_definition,
-      $container->get('logger.channel.islandora')
+      $plugin_definition
     );
   }
 
@@ -79,7 +66,6 @@ class SolrReindexAction extends ActionBase implements ContainerFactoryPluginInte
 
     $content_type = $entity->bundle();
     if ($entity->getEntityTypeId() == 'node' && $content_type == 'asu_repository_item') {
-      \Drupal::logger('solr reindex item action')->info("about to reindex item");
       search_api_entity_update($entity);
     }
   }

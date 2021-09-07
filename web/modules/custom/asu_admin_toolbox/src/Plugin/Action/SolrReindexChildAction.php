@@ -5,7 +5,6 @@ namespace Drupal\asu_admin_toolbox\Plugin\Action;
 use Drupal\Core\Action\ActionBase;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountInterface;
-use Psr\Log\LoggerInterface;
 use Drupal\Core\Entity\EntityTypeManager;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Url;
@@ -33,13 +32,6 @@ class SolrReindexChildAction extends ActionBase implements ContainerFactoryPlugi
   protected $entityTypeManager;
 
   /**
-   * Logger.
-   *
-   * @var Psr\Log\LoggerInterface
-   */
-  protected $logger;
-
-  /**
    * The AsuUtils definition.
    *
    * @var \Drupal\asu_islandora_utils\AsuUtils
@@ -57,8 +49,6 @@ class SolrReindexChildAction extends ActionBase implements ContainerFactoryPlugi
    *   The plugin implementation definition.
    * @param Drupal\Core\Entity\EntityTypeManager $entityTypeManager
    *   The entityTypeManager definition.
-   * @param Psr\Log\LoggerInterface $logger
-   *   Logger.
    * @param $ASUUtils
    *   The ASU Utils service.
    */
@@ -67,12 +57,10 @@ class SolrReindexChildAction extends ActionBase implements ContainerFactoryPlugi
       $plugin_id,
       $plugin_definition,
       EntityTypeManager $entityTypeManager,
-      LoggerInterface $logger,
       AsuUtils $ASUUtils
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->entityTypeManager = $entityTypeManager;
-    $this->logger = $logger;
     $this->asuUtils = $ASUUtils;
   }
 
@@ -85,7 +73,6 @@ class SolrReindexChildAction extends ActionBase implements ContainerFactoryPlugi
       $plugin_id,
       $plugin_definition,
       $container->get('entity_type.manager'),
-      $container->get('logger.channel.islandora'),
       $container->get('asu_utils')
     );
   }
@@ -105,7 +92,7 @@ class SolrReindexChildAction extends ActionBase implements ContainerFactoryPlugi
 
     $content_type = $entity->bundle();
     if ($entity->getEntityTypeId() == 'node' && $content_type == 'asu_repository_item') {
-      \Drupal::logger('solr reindex item and children action')->info("about to reindex item and children");
+      search_api_entity_update($entity);
       if ($entity->hasField('field_model') && !$entity->get('field_model')->isEmpty()) {
         $model_term = $entity->get('field_model')->referencedEntities()[0];
         $model = $model_term->getName();
@@ -117,7 +104,6 @@ class SolrReindexChildAction extends ActionBase implements ContainerFactoryPlugi
           }
         }
       }
-      search_api_entity_update($entity);
     }
   }
 
