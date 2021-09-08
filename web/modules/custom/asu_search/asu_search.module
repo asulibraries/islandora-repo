@@ -128,11 +128,20 @@ function asu_search_preprocess_views_view(&$variables) {
         unset($variables['header']['view']);
       }
     }
+    else {
+      $display_count_text = $variables['header']['result']['#markup'];
+      $temp = str_replace(['Displaying ', ' - ', ' of '], '|', $display_count_text);
+      $temp_parts = explode("|", $temp);
+      $variables['header']['result']['#markup'] =
+        (array_key_exists(1, $temp_parts) ? 'Displaying ' . number_format($temp_parts[1]) : '') .
+        (array_key_exists(2, $temp_parts) ? ' - ' . number_format($temp_parts[2]) : '') .
+        (array_key_exists(3, $temp_parts) ? ' of ' . number_format($temp_parts[3]) : '');
+    }
   }
 }
 
 function asu_search_views_pre_render(ViewExecutable $view) {
-  if ($view->id() == 'solr_search_content' && $view->current_display === 'page_1') {
+  if ($view->id() == 'solr_search_content' && ($view->current_display === 'page_1' || $view->current_display === 'page_4')) {
     $results = $view->result;
     $ids = [];
     $user = User::load(\Drupal::currentUser()->id());
