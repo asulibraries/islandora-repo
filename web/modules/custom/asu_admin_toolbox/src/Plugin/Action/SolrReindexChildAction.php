@@ -97,9 +97,9 @@ class SolrReindexChildAction extends ActionBase implements ContainerFactoryPlugi
         $model_term = $entity->get('field_model')->referencedEntities()[0];
         $model = $model_term->getName();
         if ($model == 'Complex Object') {
-          $child_nids = $this->asuUtils->getCollectionChildren($entity, FALSE);
-          foreach ($child_nids as $nid) {
-            $node = $this->entityTypeManager->getStorage('node')->load($nid);
+          $child_nids = $this->asuUtils->getNodeChildren($entity, FALSE);
+          $child_nodes = $this->entityTypeManager->getStorage('node')->loadMultiple($child_nids);
+          foreach ($child_nodes as $node) {
             search_api_entity_update($node);
           }
         }
