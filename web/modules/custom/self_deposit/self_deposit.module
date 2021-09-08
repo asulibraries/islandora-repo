@@ -9,6 +9,7 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\user\Entity\User;
 use Drupal\self_deposit\Form\PerfArchiveChild;
+use Drupal\Core\Url;
 
 /**
  * Implements hook_help().
@@ -125,5 +126,27 @@ function self_deposit_perf_archive_parent_submit(array &$form, FormStateInterfac
       'node_type' => 'asu_repository_item',
       'parent' => $node_id,
     ]);
+  }
+}
+
+
+/**
+ * To add query params to the CSV view from the table view
+ */
+function self_deposit_preprocess_views_view(&$variables) {
+  if ($variables['id'] == "barrett_submissions") {
+    $view = $variables['view'];
+    if ($view->current_display == 'page_1') {
+      $query_params = \Drupal::request()->query->all();
+      if ($query_params) {
+        $label = "Download CSV";
+        $url = Url::fromRoute('view.barrett_submissions.data_export_1');
+        $url->setOptions(array('query' => $query_params));
+        $link = '<p><a href="' . $url->toString() . '" class="btn btn-md btn-maroon">' . $label . '</a></p>';
+        if (array_key_exists('area', $variables['header'])) {
+          $variables['header']['area']['#text'] = $link;
+        }
+      }
+    }
   }
 }
