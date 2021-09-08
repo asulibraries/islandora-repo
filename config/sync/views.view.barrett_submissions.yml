@@ -618,6 +618,66 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           plugin_id: numeric
+        created:
+          id: created
+          table: node_field_data
+          field: created
+          relationship: none
+          group_type: group
+          admin_label: ''
+          operator: between
+          value:
+            min: ''
+            max: ''
+            value: ''
+            type: date
+          group: 1
+          exposed: true
+          expose:
+            operator_id: created_op
+            label: 'Date uploaded'
+            description: ''
+            use_operator: false
+            operator: created_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: created
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              fedoraadmin: '0'
+              content_approver: '0'
+              depositor: '0'
+              metadata_manager: '0'
+              preservationist: '0'
+              casuser: '0'
+              repositor_manager: '0'
+              collections_staff: '0'
+              honors_student: '0'
+              honors_staff: '0'
+              some_metadata: '0'
+            placeholder: ''
+            min_placeholder: 'start date, like 2020-09-01'
+            max_placeholder: 'end date, like 2020-09-02'
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          entity_type: node
+          entity_field: created
+          plugin_id: date
       sorts:
         created:
           id: created
@@ -673,6 +733,7 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - url
         - url.query_args
         - 'user.node_grants:view'
         - user.roles
@@ -1175,6 +1236,7 @@ display:
         - 'languages:language_content'
         - 'languages:language_interface'
         - request_format
+        - url
         - 'user.node_grants:view'
         - user.roles
       tags:
@@ -1674,7 +1736,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          label: 'Date uplodaed'
+          label: 'Date uploaded'
           exclude: false
           alter:
             alter_text: false
@@ -1802,6 +1864,7 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - url
         - url.query_args
         - 'user.node_grants:view'
         - user.roles
@@ -2051,7 +2114,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
-          label: 'Date uplodaed'
+          label: 'Date uploaded'
           exclude: false
           alter:
             alter_text: false
