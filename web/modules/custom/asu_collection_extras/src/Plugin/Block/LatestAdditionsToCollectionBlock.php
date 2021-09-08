@@ -100,7 +100,7 @@ class LatestAdditionsToCollectionBlock extends BlockBase implements ContainerFac
    */
   public function build() {
     $collection_node = $this->currentRouteMatch->getParameter('node');
-    $children_nids = $this->asuUtils->getCollectionChildren($collection_node, TRUE, 4);
+    $children_nids = $this->asuUtils->getNodeChildren($collection_node, TRUE, 4);
 
     $rendered_nodes = $this->renderNodes($children_nids);
 
