@@ -191,7 +191,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
           }
         }
         if ($deposit_config->get('sheet_music_default_collection')) {
-          if ($node->get('field_member_of') && $node->get('field_member_of')->entity->id() == $deposit_config->get('sheet_music_default_collection')) {
+          if ($node->get('field_member_of') && $node->get('field_member_of')->entity && $node->get('field_member_of')->entity->id() == $deposit_config->get('sheet_music_default_collection')) {
             $pa_url = Url::fromRoute('asu_deposit_methods.sheet_music.add_child', [
               'node_type' => 'asu_repository_item',
               'parent' => $node->id()
