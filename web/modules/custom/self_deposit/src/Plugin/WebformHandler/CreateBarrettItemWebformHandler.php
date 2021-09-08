@@ -4,6 +4,7 @@ namespace Drupal\self_deposit\Plugin\WebformHandler;
 
 use Drupal\node\Entity\Node;
 use Drupal\media\Entity\Media;
+use Drupal\user\Entity\User;
 use Drupal\paragraphs\Entity\Paragraph;
 use Drupal\webform\Plugin\WebformHandlerBase;
 use Drupal\webform\WebformSubmissionInterface;
@@ -213,7 +214,6 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
       'langcode' => 'en',
       'created' => time(),
       'changed' => time(),
-      'uid' => \Drupal::currentUser()->id(),
       'moderation_state' => $mod_state,
       'field_title' => [
         [
@@ -255,6 +255,12 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
         ['target_id' => $member_of],
       ],
     ];
+    if ($user) {
+      $node_args['uid'] = $user->id();
+    }
+    else {
+      $node_args['uid'] = \Drupal::currentUser()->id();
+    }
 
     if (array_key_exists('embargo_release_date', $values)) {
       $embargo_vals = explode('T', $values['embargo_release_date']);
@@ -337,7 +343,7 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
         $fmember_of = $node->id();
         $ftaxo_terms = $taxo_manager->loadByProperties(['name' => $cfvalues['model']]);
         $ftaxo_term = reset($ftaxo_terms);
-        $child_node = $this->createNode($webform_submission, $values, $cfvalues['file_name'], $ftaxo_term, $copyright_term, $perm_term, $fmember_of);
+        $child_node = $this->createNode($webform_submission, $values, $cfvalues['file_name'], $ftaxo_term, $copyright_term, $perm_term, $fmember_of, $user);
         $media = $this->depositUtils->createMedia($cfvalues['media_type'], $cfvalues['field_name'], $cfkey, $child_node->id());
       }
     }
@@ -345,7 +351,7 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
       $node = $this->createNode($webform_submission, $values, $values['item_title'], $taxo_term, $copyright_term, $perm_term, $member_of, $user);
       $media = $this->depositUtils->createMedia($media_type, $field_name, $files[0], $node->id());
     }
-    $node->set('uid', $user->id());
+
     $webform_submission->setOwnerId($user->id());
 
     $webform_submission->setElementData('item_node', $node->id());
