@@ -7,6 +7,7 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Routing\CurrentRouteMatch;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\asu_islandora_utils\AsuUtils;
 
 /**
  * Provides a 'Latest additions to collection' Block.
@@ -34,6 +35,13 @@ class LatestAdditionsToCollectionBlock extends BlockBase implements ContainerFac
   protected $currentRouteMatch;
 
   /**
+   * The AsuUtils definition.
+   *
+   * @var \Drupal\asu_islandora_utils\AsuUtils
+   */
+  protected $asuUtils;
+
+  /**
    * Construct method.
    *
    * @param array $configuration
@@ -46,16 +54,20 @@ class LatestAdditionsToCollectionBlock extends BlockBase implements ContainerFac
    *   The entityTypeManager definition.
    * @param \Drupal\Core\Routing\CurrentRouteMatch $currentRouteMatch
    *   The currentRouteMatch definition.
+   * @param $ASUUtils
+   *   The ASU Utils service.
    */
   public function __construct(
     array $configuration,
     $plugin_id,
     $plugin_definition,
     EntityTypeManagerInterface $entityTypeManager,
-    CurrentRouteMatch $currentRouteMatch) {
+    CurrentRouteMatch $currentRouteMatch,
+    AsuUtils $ASUUtils) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->entityTypeManager = $entityTypeManager;
     $this->currentRouteMatch = $currentRouteMatch;
+    $this->asuUtils = $ASUUtils;
   }
 
   /**
@@ -78,7 +90,8 @@ class LatestAdditionsToCollectionBlock extends BlockBase implements ContainerFac
       $plugin_id,
       $plugin_definition,
       $container->get('entity_type.manager'),
-      $container->get('current_route_match')
+      $container->get('current_route_match'),
+      $container->get('asu_utils')
     );
   }
 
@@ -87,7 +100,7 @@ class LatestAdditionsToCollectionBlock extends BlockBase implements ContainerFac
    */
   public function build() {
     $collection_node = $this->currentRouteMatch->getParameter('node');
-    $children_nids = asu_collection_extras_get_collection_children($collection_node, TRUE, 4);
+    $children_nids = $this->asuUtils->getNodeChildren($collection_node, TRUE, 4);
 
     $rendered_nodes = $this->renderNodes($children_nids);
 

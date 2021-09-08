@@ -77,4 +77,35 @@ class AsuUtils {
     return round($bytes, $precision) . ' ' . $units[$pow];
   }
 
+  /**
+   * This is used by the blocks in this module to get children of any item.
+   *
+   * @param mixed $node
+   *   Can take a node object or the node ID value.
+   * @param bool $sort_by_date
+   *   (OPTIONAL) whether or not to sort by date, default is FALSE.
+   * @param int $limit
+   *   The number of results to return (to provide the recent additions for the
+   *   block that only displays only 4 items)
+   */
+  function getNodeChildren($node, $sort_by_date = FALSE, $limit = 0, $items_only = TRUE) {
+    $nid = (is_object($node) ? $node->id() : $node);
+    $childrenQuery = \Drupal::entityQuery('node');
+    $childrenQuery
+      ->condition('field_member_of', $nid)
+      ->condition('status', 1);
+    if ($items_only) {
+      $childrenQuery
+        ->condition('type', 'asu_repository_item');
+    }
+    if ($sort_by_date) {
+      $childrenQuery
+        ->sort('changed', 'DESC');
+    }
+    if ($limit) {
+      $childrenQuery
+        ->range(0, $limit);
+    }
+    return $childrenQuery->execute();
+  }
 }

@@ -134,79 +134,87 @@ display:
           clear_on_exposed: true
           action_title: Action
           selected_actions:
-            -
+            0:
+              action_id: solr_reindex_children
+              preconfiguration:
+                add_confirmation: false
+            1:
+              action_id: solr_reindex_item
+              preconfiguration:
+                add_confirmation: false
+            2:
               action_id: mint_handle
               preconfiguration:
                 add_confirmation: false
-            -
+            4:
               action_id: bag_node
               preconfiguration:
                 add_confirmation: false
-            -
+            5:
               action_id: emit_node_event
               preconfiguration:
                 add_confirmation: false
-            -
+            6:
               action_id: generate_audio_derivative
               preconfiguration:
                 add_confirmation: false
-            -
+            7:
               action_id: generate_fits_derivative
               preconfiguration:
                 add_confirmation: false
-            -
+            8:
               action_id: generate_image_derivative
               preconfiguration:
                 add_confirmation: false
-            -
+            9:
               action_id: generate_ocr_derivative
               preconfiguration:
                 add_confirmation: false
-            -
+            10:
               action_id: generate_video_derivative
               preconfiguration:
                 add_confirmation: false
-            -
-              action_id: node_unpromote_action
-              preconfiguration:
-                add_confirmation: false
-            -
-              action_id: node_assign_owner_action
-              preconfiguration:
-                add_confirmation: false
-            -
-              action_id: node_unpublish_by_keyword_action
-              preconfiguration:
-                add_confirmation: false
-            -
-              action_id: node_make_unsticky_action
-              preconfiguration:
-                add_confirmation: false
-            -
-              action_id: node_make_sticky_action
-              preconfiguration:
-                add_confirmation: false
-            -
+            11:
               action_id: node_promote_action
               preconfiguration:
                 add_confirmation: false
-            -
+            12:
+              action_id: node_make_sticky_action
+              preconfiguration:
+                add_confirmation: false
+            13:
+              action_id: node_unpromote_action
+              preconfiguration:
+                add_confirmation: false
+            14:
+              action_id: node_assign_owner_action
+              preconfiguration:
+                add_confirmation: false
+            15:
+              action_id: node_unpublish_by_keyword_action
+              preconfiguration:
+                add_confirmation: false
+            16:
+              action_id: node_make_unsticky_action
+              preconfiguration:
+                add_confirmation: false
+            17:
               action_id: views_bulk_edit
               preconfiguration:
                 add_confirmation: false
                 get_bundles_from_results: true
-            -
+            18:
               action_id: views_bulk_operations_delete_entity
-            -
-              action_id: 'entity:save_action:node'
+            19:
+              action_id: 'entity:publish_action:node'
               preconfiguration:
                 add_confirmation: false
-            -
+            20:
               action_id: 'entity:unpublish_action:node'
               preconfiguration:
                 add_confirmation: false
-            -
-              action_id: 'entity:publish_action:node'
+            21:
+              action_id: 'entity:save_action:node'
               preconfiguration:
                 add_confirmation: false
           force_selection_info: false

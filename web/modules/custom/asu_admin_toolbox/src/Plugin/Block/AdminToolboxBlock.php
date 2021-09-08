@@ -289,6 +289,28 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
         $output_links[] = render($link);
       }
     }
+    // Solr reindex / Bulk edit collection items link.
+    if ($is_collection || $is_asu_repository_item && ($user_is_admin_or_metadata_manager)) {
+      // Two different possibilities here -- if single item, redirect to Solr
+      // reindexing page, else a collection would go through Bulk Edit form.
+      if ($is_collection) {
+        $url = Url::fromUri(
+              $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
+              '/admin/item-bulk-edit/' . $node->id(), ['attributes' => ['class' => 'nav-link']]
+          );
+        $link_text = $this->t('Bulk edit items');
+      }
+      else {
+        $url = Url::fromUri(
+              $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
+              '/' . $route_part . '/' . $node->id() . '/reindexSolr', ['attributes' => ['class' => 'nav-link']]
+          );
+        $link_text = $this->t('Reindex item in Solr &nbsp; <i class="fas fa-database"></i>');
+      }
+      $link = Link::fromTextAndUrl($link_text, $url);
+      $link = $link->toRenderable();
+      $output_links[] = render($link);
+    }
     if (in_array('administrator', $this->currentUser->getRoles())) {
       $mapper = \Drupal::service('islandora.entity_mapper');
       $flysystem_config = Settings::get('flysystem');
