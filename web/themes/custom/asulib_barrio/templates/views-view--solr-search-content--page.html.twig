@@ -47,18 +47,15 @@
   {{ title_suffix }}
   {% if header %}
     <div class="view-header">
-      {% if total_rows_formatted %}
-        <h2>Matching Items ({{ total_rows_formatted }})</h2>
-      {% endif %}
       {{ header }}
     </div>
-    {% if display_id == "page_1" %}
+    {% if display_id == "page_4" %}
       {{ drupal_block('asu_facets_summary_block:facet_summary', wrapper=false) }}
     {% elseif display_id == "page_3" %}
       {{ drupal_block('asu_facets_summary_block:facet_summary_col', wrapper=false) }}
     {% endif %}
-  {% endif %}
-
+  {% endif %}  
+  
   {% if exposed %}
     <div class="view-filters">
       {{ exposed }}
