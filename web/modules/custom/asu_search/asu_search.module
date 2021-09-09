@@ -107,7 +107,7 @@ function asu_search_preprocess_node(&$variables) {
 function asu_search_preprocess_views_view(&$variables) {
   if ($variables['id'] == "solr_search_content") {
     $view = $variables['view'];
-    $search_displays = ['page_1', 'page_2', 'page_3', 'page_4'];
+    $search_displays = ['page_1', 'page_2', 'page_3'];
     if (!(array_search($view->current_display, $search_displays) === FALSE)) {
       // Get the query count and set a variable for output in a custom twig for
       // this view's header.
@@ -153,7 +153,7 @@ function asu_search_preprocess_views_view(&$variables) {
 }
 
 function asu_search_views_pre_render(ViewExecutable $view) {
-  if ($view->id() == 'solr_search_content' && ($view->current_display === 'page_1' || $view->current_display === 'page_4')) {
+  if ($view->id() == 'solr_search_content' && $view->current_display === 'page_1') {
     $results = $view->result;
     $ids = [];
     $user = User::load(\Drupal::currentUser()->id());
