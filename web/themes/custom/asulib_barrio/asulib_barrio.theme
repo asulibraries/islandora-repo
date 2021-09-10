@@ -238,6 +238,10 @@ function asulib_barrio_preprocess_user(&$variables) {
  */
 function asulib_barrio_preprocess_page(&$variables) {
   $variables['site_name'] = \Drupal::config('system.site')->get('name');
+  $variables['content_attributes']['class'][] = 'order-1';
+  $variables['content_attributes']['class'][] = 'order-md-12';
+  $variables['sidebar_first_attributes']['class'][] = 'order-md-1';
+  $variables['sidebar_first_attributes']['class'][] = 'order-12';
 }
 
 /**
