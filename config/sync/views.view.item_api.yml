@@ -79,6 +79,97 @@ display:
           quantity: 9
       style:
         type: views_bootstrap_table
+        options:
+          grouping: {  }
+          row_class: ''
+          default_row_class: true
+          override: 1
+          sticky: 0
+          caption: ''
+          summary: ''
+          description: ''
+          columns:
+            nid: nid
+            field_title: field_title
+            view_node: view_node
+            field_rich_description: field_rich_description
+            field_linked_agent: field_linked_agent
+            field_model: field_model
+            field_member_of: field_member_of
+            nothing: nothing
+            field_complex_object_child: field_complex_object_child
+            nothing_1: nothing_1
+          info:
+            nid:
+              sortable: 0
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: 0
+              responsive: ''
+            field_title:
+              align: ''
+              separator: ''
+              empty_column: 0
+              responsive: ''
+            view_node:
+              sortable: 0
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: 0
+              responsive: ''
+            field_rich_description:
+              sortable: 0
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: 0
+              responsive: ''
+            field_linked_agent:
+              align: ''
+              separator: ''
+              empty_column: 0
+              responsive: ''
+            field_model:
+              sortable: 0
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: 0
+              responsive: ''
+            field_member_of:
+              sortable: 0
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: 0
+              responsive: ''
+            nothing:
+              align: ''
+              separator: ''
+              empty_column: 0
+              responsive: ''
+            field_complex_object_child:
+              sortable: 0
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: 0
+              responsive: ''
+            nothing_1:
+              align: ''
+              separator: ''
+              empty_column: 0
+              responsive: ''
+          default: '-1'
+          empty_table: 0
+          responsive: 0
+          bootstrap_styles:
+            striped: 0
+            bordered: 0
+            hover: 0
+            condensed: 0
       row:
         type: fields
       fields:
@@ -166,7 +257,7 @@ display:
             external: false
             replace_spaces: false
             path_case: none
-            trim_whitespace: false
+            trim_whitespace: true
             alt: ''
             rel: ''
             link_class: ''
@@ -522,7 +613,7 @@ display:
           group_type: group
           admin_label: 'Thumbnail URL'
           label: 'Thumbnail URL'
-          exclude: false
+          exclude: true
           alter:
             alter_text: true
             text: "{% set view_o = drupal_view('display_media', 'thumbnail_url', nid) %}\r\n{% spaceless %}\r\n{{view_o}}\r\n{% endspaceless %}"
@@ -628,6 +719,55 @@ display:
           separator: ', '
           field_api_classes: false
           plugin_id: field
+        nothing_1:
+          id: nothing_1
+          table: views
+          field: nothing
+          relationship: none
+          group_type: group
+          admin_label: 'Thumbnail URL'
+          label: 'Thumbnail URL'
+          exclude: false
+          alter:
+            alter_text: true
+            text: '{{ nothing|trim }}'
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: false
+          plugin_id: custom
       filters:
         status:
           value: '1'
@@ -746,6 +886,9 @@ display:
         type: data_field
         options:
           field_options:
+            nid:
+              alias: ''
+              raw_output: false
             field_title:
               alias: ''
               raw_output: false
@@ -764,7 +907,10 @@ display:
             field_member_of:
               alias: ''
               raw_output: false
-            nothing:
+            field_complex_object_child:
+              alias: ''
+              raw_output: false
+            nothing_1:
               alias: thumbnail_url
               raw_output: false
       pager:
@@ -827,6 +973,9 @@ display:
         type: data_field
         options:
           field_options:
+            nid:
+              alias: ''
+              raw_output: false
             field_title:
               alias: ''
               raw_output: false
@@ -845,7 +994,10 @@ display:
             field_member_of:
               alias: ''
               raw_output: false
-            nothing:
+            field_complex_object_child:
+              alias: ''
+              raw_output: false
+            nothing_1:
               alias: thumbnail_url
               raw_output: false
       pager:
@@ -946,6 +1098,9 @@ display:
         type: data_field
         options:
           field_options:
+            nid:
+              alias: ''
+              raw_output: false
             field_title:
               alias: ''
               raw_output: false
@@ -964,7 +1119,10 @@ display:
             field_member_of:
               alias: ''
               raw_output: false
-            nothing:
+            field_complex_object_child:
+              alias: ''
+              raw_output: false
+            nothing_1:
               alias: thumbnail_url
               raw_output: false
       pager:
@@ -1063,6 +1221,9 @@ display:
         type: data_field
         options:
           field_options:
+            nid:
+              alias: ''
+              raw_output: false
             field_title:
               alias: ''
               raw_output: false
@@ -1081,7 +1242,10 @@ display:
             field_member_of:
               alias: ''
               raw_output: false
-            nothing:
+            field_complex_object_child:
+              alias: ''
+              raw_output: false
+            nothing_1:
               alias: thumbnail_url
               raw_output: false
       pager:
