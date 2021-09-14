@@ -4,8 +4,10 @@ dependencies: {  }
 id: node__asu_repository_item
 label: 'Content: ASU Repository Item'
 tags:
-  citation_technical_report_institution: '[islandoratokens:agent_publisher]'
-  citation_pdf_url: '[islandoratokens:pdf_url]'
-  citation_title: '[node:title]'
+  keywords: '[node:field_geographic_subject] [node:field_subjects_name] [node:field_name_title_subject] [node:field_title_subject] [node:field_subject]'
+  description: '[node:field_rich_description:value]'
   citation_publication_date: '[islandoratokens:publication_date]'
-  citation_author: '[islandoratokens:agent_author]'
+  citation_technical_report_institution: '[islandoratokens:agent_publisher]'
+  citation_title: '[node:title]'
+  citation_author: '[islandoratokens:agent_contributor]'
+  citation_pdf_url: '[islandoratokens:pdf_url]'
