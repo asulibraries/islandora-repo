@@ -75,9 +75,9 @@
 <article{{ attributes.addClass(classes) }}>
   <div class="container">
     <div class="row">
-      <div class="col-3"><a href="{{node.field_link.0.url}}">{{content.field_feature_image}}</a></div>
+      <div class="col-3"><a href="{{node.field_link.0.url}}"{% if langcode is not empty %} hreflang="{{ langcode }}"{% endif %}>{{content.field_feature_image}}</a></div>
       <div class="col-9">
-        <h4><a href="{{node.field_link.0.url}}">{{label}}</a></h4>
+        <h4><a href="{{node.field_link.0.url}}"{% if langcode is not empty %} hreflang="{{ langcode }}"{% endif %}>{{label}}</a></h4>
         <p>{{content.body}}</p>
         <p>
 		      <a class="btn btn-maroon" href="{{node.field_link.0.url}}" target="_blank">Explore</a>

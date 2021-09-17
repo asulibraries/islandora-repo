@@ -113,6 +113,6 @@
 		</h3>
 	</div>
 	<div class="card-body">
-		<a role="button" href="/items/{{ node.id }}" class="stretched-link"></a>
+		<a role="button" href="/items/{{ node.id }}" class="stretched-link"{% if langcode is not empty %} hreflang="{{ langcode }}"{% endif %}></a>
 	</div>
 </div>

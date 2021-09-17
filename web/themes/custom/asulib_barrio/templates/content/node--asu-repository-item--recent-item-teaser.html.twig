@@ -106,7 +106,7 @@
 		</h3>
 	</div>
 	<div class="card-body">
-        <a role="button" href="/items/{{ node.id }}" class="stretched-link"></a>
+        <a role="button" href="/items/{{ node.id }}" class="stretched-link"{% if langcode is not empty %} hreflang="{{ langcode }}"{% endif %}></a>
 		{%  if changed_ago %}
 			<p class="card-text">{{ changed_ago }}
 				ago</p>
