@@ -74,7 +74,8 @@ function asu_search_preprocess_node(&$variables) {
           $date_formatter->formatTimeDiffSince($variables['node']->getChangedTime(), ['granularity' => 2, 'return_as_object' => TRUE])->toRenderable();
       }
       if ($variables['node']->get('field_language')) {
-        $variables['langcode'] = $variables['node']->get('field_language')->entity->get('langcode')->value;
+        $variables['langcode'] = (!is_null($variables['node']->get('field_language')->entity)) ?
+           $variables['node']->get('field_language')->entity->get('langcode')->value : "";
       }
       if ($variables['node']->get('field_model') != NULL && count($variables['node']->get('field_model')) > 0) {
         $model = $variables['node']->get('field_model')->referencedEntities()[0]->getName();
