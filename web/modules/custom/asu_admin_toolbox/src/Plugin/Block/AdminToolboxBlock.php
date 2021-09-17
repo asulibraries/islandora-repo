@@ -290,7 +290,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
       }
     }
     // Solr reindex / Bulk edit collection items link.
-    if ($is_collection || $is_asu_repository_item && ($user_is_admin_or_metadata_manager)) {
+    if (($is_collection || $is_asu_repository_item) && ($user_is_admin_or_metadata_manager)) {
       // Two different possibilities here -- if single item, redirect to Solr
       // reindexing page, else a collection would go through Bulk Edit form.
       if ($is_collection) {
