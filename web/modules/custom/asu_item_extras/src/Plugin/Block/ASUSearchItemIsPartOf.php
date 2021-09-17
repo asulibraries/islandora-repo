@@ -92,10 +92,10 @@ class ASUSearchItemIsPartOf extends BlockBase implements ContainerFactoryPluginI
       $parent_node_id = $block_config['parent_node_id'];
       $first_title_view = $para->view(['type' => 'complex_title_formatter']);
       $parent_title = $this->renderer->render($first_title_view);
-      $parent_url = Url::fromRoute('entity.node.canonical', ['node' => $parent_node_id], ['absolute' => TRUE]);
-      $link = Link::fromTextAndUrl($parent_title, $parent_url)->toRenderable();
-      $rendered_link = render($link);
-      $output = 'Part of ' . $rendered_link;
+      $parent_entity = $this->entityTypeManager->getStorage('node')->load($parent_node_id);
+      $link = $parent_entity->toLink();
+      $link->setText($parent_title);
+      $output = 'Part of ' . $link->toString();
     }
     return [
       '#markup' => $output,
