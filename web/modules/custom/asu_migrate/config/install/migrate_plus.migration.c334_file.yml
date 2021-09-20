@@ -34,7 +34,7 @@ source:
     # Everything gets created as admin
     uid: 1
     baseurl: "https://repository.asu.edu"
-    basepath: "/mnt/libfile/Repository/old-repo-data/filestore/"
+    basepath: "/mnt/libfile/Repository/prod-data/media/filestore/"
 
 process:
 
@@ -104,11 +104,7 @@ process:
       - constants/basepath
       - storage path
 
-  uri:
-    plugin: file_copy
-    source:
-      - '@localfilelocation'
-      - '@destination' # The destination entry from above
+  uri: '@destination' # The destination entry from above
 
 
 destination:
