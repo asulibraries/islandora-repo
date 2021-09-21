@@ -33,7 +33,8 @@ Note: I only have gotten this working on my local machine, not the vagrant envir
 
 Requirements:
 * node.js
-(if you do not have node, do `sudo apt update` and `sudo apt install nodejs npm`
+(if you do not have node, do `sudo apt update` and `curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+sudo apt-get install -y nodejs` `sudo apt install npm`
 
 1. cd into `/web/themes/custom/asulib_barrio`
 2. Install gulp with `npm install --global gulp-cli`
