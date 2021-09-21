@@ -1,0 +1,22 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - ctools
+    - taxonomy
+id: corporate_bodies
+label: 'Corporate bodies'
+type: 'canonical_entities:taxonomy_term'
+pattern: '/corporate bodies/[term:name]'
+selection_criteria:
+  d3564123-ce9a-4ce8-b432-2b1f5966091a:
+    id: 'entity_bundle:taxonomy_term'
+    bundles:
+      corporate_body: corporate_body
+    negate: false
+    context_mapping:
+      taxonomy_term: taxonomy_term
+    uuid: d3564123-ce9a-4ce8-b432-2b1f5966091a
+selection_logic: and
+weight: -5
+relationships: {  }

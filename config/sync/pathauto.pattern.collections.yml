@@ -3,19 +3,19 @@ status: true
 dependencies:
   module:
     - node
-id: items_nids
-label: 'Items nids'
+id: collections
+label: Collections
 type: 'canonical_entities:node'
-pattern: '/items/[node:nid]'
+pattern: '/collections/[node:title]'
 selection_criteria:
-  236fa3de-aeac-411c-bfb2-29428c25e37b:
+  83b325ab-2006-4033-85ed-c22cf5274a3f:
     id: node_type
     bundles:
-      asu_repository_item: asu_repository_item
+      collection: collection
     negate: false
     context_mapping:
       node: node
-    uuid: 236fa3de-aeac-411c-bfb2-29428c25e37b
+    uuid: 83b325ab-2006-4033-85ed-c22cf5274a3f
 selection_logic: and
-weight: -5
+weight: -10
 relationships: {  }
