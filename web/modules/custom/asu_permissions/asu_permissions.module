@@ -463,7 +463,7 @@ function asu_permissions_file_download($uri) {
       return NULL;
     }
     foreach ($medias as $mid => $media) {
-      // $node = $utils->getParentNode($media);
+      $node = $utils->getParentNode($media);
       $user = \Drupal::currentUser();
       if (!$media->access('view', $user)) {
         // if (!$node->access('view')) {
@@ -471,7 +471,7 @@ function asu_permissions_file_download($uri) {
         // Drupal to block access to the file currently being requested.
         return -1;
       }
-      if ($media->hasField('field_media_of') && $media->get('field_media_of')->entity) {
+      if ($node) {
         $node = $media->get('field_media_of')->entity;
         $date = new \DateTime();
         $today = $date->format("c");
