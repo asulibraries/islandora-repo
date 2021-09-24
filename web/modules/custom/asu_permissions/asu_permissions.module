@@ -475,8 +475,10 @@ function asu_permissions_file_download($uri) {
         $node = $media->get('field_media_of')->entity;
         $date = new \DateTime();
         $today = $date->format("c");
+        \Drupal::logger('asu permissions')->info("checking the embargo release date");
         if ($node && $node->hasField('field_embargo_release_date') && $node->get('field_embargo_release_date') && $node->get('field_embargo_release_date')->value >= $today
         ) {
+          \Drupal::logger('asu permissions')->info("its embargoed");
           return -1;
         }
       }
