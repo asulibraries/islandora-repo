@@ -400,6 +400,7 @@ function asu_permissions_media_access(EntityInterface $entity, $operation, Accou
   }
   if (isset($access_result)) {
     $access_result->addCacheableDependency($entity);
+    $access_result->addCacheableDependency($account);
     $access_result->addCacheContexts(['theme']);
     return $access_result;
   }
@@ -463,7 +464,8 @@ function asu_permissions_file_download($uri) {
     }
     foreach ($medias as $mid => $media) {
       // $node = $utils->getParentNode($media);
-      if (!$media->access('view')) {
+      $user = \Drupal::currentUser();
+      if (!$media->access('view', $user)) {
         // if (!$node->access('view')) {
         // If the user isn't allowed to view the media, return -1 to tell
         // Drupal to block access to the file currently being requested.

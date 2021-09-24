@@ -179,15 +179,16 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
    */
   public function getCacheTags() {
     // With this when your node change your block will rebuild.
+    $user = $this->currentUser;
+    $parentTags = parent::getCacheTags();
+    $tags = Cache::mergeTags($parentTags, ['user:' . $user->id()]);
+
     if ($node = $this->routeMatch->getParameter('node')) {
       // If there is node add its cachetag.
       $nid = is_string($node) ? $node : $node->id();
-      return Cache::mergeTags(parent::getCacheTags(), ['node:' . $nid]);
+      return Cache::mergeTags($tags, ['node:' . $nid]);
     }
-    else {
-      // Return default tags instead.
-      return parent::getCacheTags();
-    }
+    return $tags;
   }
 
   /**
@@ -197,12 +198,16 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
     // If you depends on \Drupal::routeMatch().
     // You must set context of this block with 'route' context tag.
     // Every new route this block will rebuild.
+    $parContexts = parent::getCacheContexts();
     return Cache::mergeContexts(parent::getCacheContexts(), ['route']);
   }
 
   private function canAccessItemMedia($node) {
     // Get the media for "Original File" and check for any access restrictions
     // on it.
+    if (in_array('administrator', $this->currentUser->getRoles(), TRUE)) {
+      return true;
+    }
     $default_config = \Drupal::config('asu_default_fields.settings');
     $origfile_term = $default_config->get('original_file_taxonomy_term');
     $origfile = $this->entityTypeManager->getStorage('media')->loadByProperties([
@@ -215,12 +220,6 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
       $origfile = NULL;
     }
     $origfile_access = (!is_null($origfile) && $origfile->access('view', $this->currentUser));
-    $date = new \DateTime();
-    $today = $date->format("c");
-    if ($node->hasField('field_embargo_release_date') && $node->get('field_embargo_release_date') && $node->get('field_embargo_release_date')->value >= $today
-    ) {
-      $origfile_access = false;
-    }
     return $origfile_access;
   }
 

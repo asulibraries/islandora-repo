@@ -137,7 +137,6 @@ class ViewerController extends ControllerBase {
           if ( $node->hasField('field_embargo_release_date') && $node->get('field_embargo_release_date') && $node->get('field_embargo_release_date')->value >= $today) {
             return AccessResult::forbidden();
           }
-
           return AccessResult::allowed();
         }
         elseif (is_null($origfile)) {
