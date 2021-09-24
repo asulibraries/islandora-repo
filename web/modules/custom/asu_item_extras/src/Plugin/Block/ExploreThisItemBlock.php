@@ -219,7 +219,15 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
     } else {
       $origfile = NULL;
     }
+
     $origfile_access = (!is_null($origfile) && $origfile->access('view', $this->currentUser));
+    $date = new \DateTime();
+    $today = $date->format("c");
+    if (
+      $node->hasField('field_embargo_release_date') && $node->get('field_embargo_release_date') && $node->get('field_embargo_release_date')->value >= $today
+    ) {
+      $origfile_access = false;
+    }
     return $origfile_access;
   }
 

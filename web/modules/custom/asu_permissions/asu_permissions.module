@@ -471,6 +471,15 @@ function asu_permissions_file_download($uri) {
         // Drupal to block access to the file currently being requested.
         return -1;
       }
+      if ($media->hasField('field_media_of') && $media->get('field_media_of')->entity) {
+        $node = $media->get('field_media_of')->entity;
+        $date = new \DateTime();
+        $today = $date->format("c");
+        if ($node && $node->hasField('field_embargo_release_date') && $node->get('field_embargo_release_date') && $node->get('field_embargo_release_date')->value >= $today
+        ) {
+          return -1;
+        }
+      }
     }
   }
 }
