@@ -28,7 +28,7 @@ class CallsToActionBlock extends BlockBase {
       preservation and ongoing access.
    </p>
    <br/><br/>
-   <a role="button" class="btn btn-md btn-maroon" href="/self_deposit/asu_repository_item">Share your work!</a>
+   <a role="button" class="btn btn-md btn-maroon" href="/share">Share your work!</a>
 </div>';
     $contact = '<div class="card-header">
    <h3 class="card-title">Get in touch</h3>
