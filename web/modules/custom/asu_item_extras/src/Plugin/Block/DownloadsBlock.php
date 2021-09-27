@@ -227,7 +227,18 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     }
 
     if ($links == [] && in_array('anonymous', $user_roles)) {
-      $markup = "<i class='fas fa-lock'></i> Download restricted. Please <a href=''>sign in</a>.";
+      $moduleHandler = \Drupal::service('module_handler');
+      if ($moduleHandler->moduleExists('cas')) {
+        $url = new Url('cas.login', array(), array(
+          'attributes' => array(
+            'class' => array('cas-login-link'),
+          ),
+        ));
+      }
+      else {
+        $url = "/user/login";
+      }
+      $markup = "<i class='fas fa-lock'></i> Download restricted. Please <a href='".$url."'>sign in</a>.";
     }
     $date = new \DateTime();
     $today = $date->format("c");
