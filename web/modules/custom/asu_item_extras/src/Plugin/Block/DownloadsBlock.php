@@ -229,11 +229,7 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     if ($links == [] && in_array('anonymous', $user_roles)) {
       $moduleHandler = \Drupal::service('module_handler');
       if ($moduleHandler->moduleExists('cas')) {
-        $url = new Url('cas.login', array(), array(
-          'attributes' => array(
-            'class' => array('cas-login-link'),
-          ),
-        ));
+        $url = Url::fromRoute('cas.login')->toString();
       }
       else {
         $url = "/user/login";
