@@ -234,8 +234,7 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
       else {
         $url = "/user/login";
       }
-      $current_path = \Drupal::service('path.current')->getPath();
-      $markup = "<i class='fas fa-lock'></i> Download restricted. Please <a href='".$url. "?destination=".$current_path."'>sign in</a>.";
+      $markup = "<i class='fas fa-lock'></i> Download restricted. Please <a href='".$url."'>sign in</a>.";
     }
     $date = new \DateTime();
     $today = $date->format("c");
