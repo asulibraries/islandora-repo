@@ -251,23 +251,23 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
    * {@inheritdoc}
    */
   public function getCacheTags() {
+    $user = $this->currentUser;
+    $parentTags = parent::getCacheTags();
+    $tags = Cache::mergeTags($parentTags, ['user:' . $user->id()]);
     $block_config = BlockBase::getConfiguration();
     if (is_array($block_config) && array_key_exists('child_node_id', $block_config)) {
       $nid = $block_config['child_node_id'];
-    }
-    else {
+    } else {
       if ($this->routeMatch->getParameter('node')) {
         $node = $this->routeMatch->getParameter('node');
         $nid = (is_string($node) ? $node : $node->id());
       }
     }
     if (isset($nid)) {
-      return Cache::mergeTags(parent::getCacheTags(), ['node:' . $nid]);
+      // If there is node add its cachetag.
+      return Cache::mergeTags($tags, ['node:' . $nid]);
     }
-    else {
-      // Return default tags instead.
-      return parent::getCacheTags();
-    }
+    return $tags;
   }
 
   /**
