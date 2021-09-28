@@ -2901,7 +2901,7 @@ display:
           exclude: true
           alter:
             alter_text: true
-            text: '<div class="col-3">{{field_collection_thumbnail}}</div>'
+            text: '{{field_collection_thumbnail}}'
             make_link: false
             path: ''
             absolute: false
@@ -2941,8 +2941,8 @@ display:
           click_sort_column: target_id
           type: media_thumbnail
           settings:
-            image_style: square_thumb
-            image_link: content
+            image_style: card_image
+            image_link: ''
           group_column: target_id
           group_columns: {  }
           group_rows: true
