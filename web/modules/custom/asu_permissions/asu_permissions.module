@@ -456,26 +456,31 @@ function asu_permissions_file_download($uri) {
   $files = \Drupal::entityTypeManager()
     ->getStorage('file')
     ->loadByProperties(['uri' => $uri]);
+  $utils = \Drupal::service('islandora.utils');
+  $user = \Drupal::currentUser();
   foreach ($files as $f) {
-    $utils = \Drupal::service('islandora.utils');
+    if (in_array('administrator', $user->getRoles())) {
+      \Drupal::logger('asu permissions')->info("let admin in");
+      return 1;
+    }
     $medias = $utils->getReferencingMedia($f->id());
     if (count($medias) == 0) {
       return NULL;
     }
     foreach ($medias as $mid => $media) {
       $node = $utils->getParentNode($media);
-      $user = \Drupal::currentUser();
       if (!$media->access('view', $user)) {
         // if (!$node->access('view')) {
         // If the user isn't allowed to view the media, return -1 to tell
         // Drupal to block access to the file currently being requested.
+        \Drupal::logger('asu permissions')->info("no media access");
         return -1;
       }
       if ($node) {
         $node = $media->get('field_media_of')->entity;
         $date = new \DateTime();
         $today = $date->format("c");
-        \Drupal::logger('asu permissions')->info("checking the embargo release date");
+        \Drupal::logger('asu permissions')->info("checking the embargo release date for node " . $node->id());
         if ($node && $node->hasField('field_embargo_release_date') && $node->get('field_embargo_release_date') && $node->get('field_embargo_release_date')->value >= $today
         ) {
           \Drupal::logger('asu permissions')->info("its embargoed");
