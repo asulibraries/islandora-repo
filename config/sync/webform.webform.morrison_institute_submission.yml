@@ -3,7 +3,6 @@ status: open
 dependencies:
   module:
     - asu_deposit_methods
-    - self_deposit
 open: null
 close: null
 weight: 0
@@ -15,6 +14,11 @@ title: 'Morrison Institute Submission'
 description: 'Form for Morrison Institute staff to submit to their collection'
 category: ''
 elements: |-
+  processed_text:
+    '#type': processed_text
+    '#text': |
+      <h1>Morrison Institute Deposit Form</h1>
+    '#format': full_html
   item_title:
     '#type': textarea
     '#title': Title
@@ -24,6 +28,7 @@ elements: |-
     '#type': textfield
     '#title': 'Alternate Title'
     '#multiple': true
+    '#multiple__add_more_input': false
   item_description:
     '#type': textarea
     '#title': Description
@@ -35,7 +40,7 @@ elements: |-
     '#multiple': true
     '#title_display': ''
     '#multiple__header': true
-    '#multiple__header_label': 'Additional Contributors'
+    '#multiple__header_label': 'Personal Contributors'
     '#multiple__add_more': false
     '#multiple__add_more_input': false
     '#wrapper_type': container
@@ -50,10 +55,12 @@ elements: |-
     '#type': textfield
     '#title': 'Institutional Contributors'
     '#multiple': true
+    '#multiple__add_more_input': false
   event_contributors:
     '#type': textfield
     '#title': 'Event Contributors'
     '#multiple': true
+    '#multiple__add_more_input': false
   language1:
     '#type': entity_autocomplete
     '#title': Language
@@ -67,16 +74,17 @@ elements: |-
   genre:
     '#type': textfield
     '#title': Genre
+    '#multiple': true
   place_of_publication:
     '#type': textfield
     '#title': 'Place of Publication'
   date_created:
     '#type': textfield
     '#title': 'Date created'
-    '#description': 'Must follow YYYY[-MM[-DD]] format. Leave blank for auto-populating.'
+    '#description': 'Must follow YYYY[-MM[-DD]] format.'
+    '#required': true
     '#pattern': '^[0-9]{4}(-[0-9]{2}(-[0-9]{2})?)?$'
     '#pattern_error': 'Date must be in YYYY-MM-DD format where at least the year is required.'
-    '#required': true
   copyright_date:
     '#type': textfield
     '#title': 'Copyright Date'
@@ -86,7 +94,6 @@ elements: |-
   series:
     '#type': textfield
     '#title': Series
-    '#description': 'Leave blank for auto-populating.'
   edition:
     '#type': textfield
     '#title': Edition
@@ -132,6 +139,9 @@ elements: |-
   open_access:
     '#type': checkbox
     '#title': 'Open Access'
+  number_of_pages:
+    '#type': textfield
+    '#title': 'Number of Pages'
   file:
     '#type': managed_file
     '#title': File
@@ -155,7 +165,7 @@ settings:
   ajax_effect: ''
   ajax_speed: null
   page: true
-  page_submit_path: ''
+  page_submit_path: /morrison-submission
   page_confirm_path: ''
   page_theme_name: ''
   form_title: webform
@@ -163,7 +173,7 @@ settings:
   form_exception_message: ''
   form_open_message: ''
   form_close_message: ''
-  form_previous_submissions: true
+  form_previous_submissions: false
   form_confidential: false
   form_confidential_message: ''
   form_disable_remote_addr: false
@@ -247,7 +257,7 @@ settings:
   draft_pending_multiple_message: ''
   confirmation_type: url_message
   confirmation_title: ''
-  confirmation_message: 'Thank you for submitting a new Barrett Thesis item to KEEP.'
+  confirmation_message: 'Thank you for submitting a new Morrison Institute item to KEEP.'
   confirmation_url: '/node/[webform_submission:values:item_node]'
   confirmation_attributes: {  }
   confirmation_back: true
@@ -260,7 +270,7 @@ settings:
   limit_total_interval: null
   limit_total_message: ''
   limit_total_unique: false
-  limit_user: 1
+  limit_user: null
   limit_user_interval: null
   limit_user_message: ''
   limit_user_unique: false
@@ -281,7 +291,7 @@ access:
   create:
     roles:
       - administrator
-      - honors_staff
+      - morrison_staff
     users: {  }
     permissions: {  }
   view_any:
@@ -291,7 +301,7 @@ access:
       - content_approver
       - metadata_manager
       - repositor_manager
-      - honors_staff
+      - morrison_staff
     users: {  }
     permissions: {  }
   update_any:
@@ -300,7 +310,7 @@ access:
       - content_approver
       - metadata_manager
       - repositor_manager
-      - honors_staff
+      - morrison_staff
     users: {  }
     permissions: {  }
   delete_any:
@@ -336,527 +346,6 @@ access:
     users: {  }
     permissions: {  }
 handlers:
-  create_a_barrett_repository_item:
-    id: 'Create a Barrett repository item'
-    label: 'Create a Barrett repository item'
-    notes: ''
-    handler_id: null
-    status: true
-    conditions: {  }
-    weight: null
-    settings:
-      id: 'Create a Barrett repository item'
-      label: 'Create a Barrett repository item'
-      notes: ''
-      handler_id: null
-      status: true
-      conditions: {  }
-      weight: null
-      settings:
-        id: 'Create a Barrett repository item'
-        label: 'Create a Barrett repository item'
-        notes: ''
-        handler_id: null
-        status: true
-        conditions: {  }
-        weight: null
-        settings:
-          id: 'Create a Barrett repository item'
-          label: 'Create a Barrett repository item'
-          notes: ''
-          handler_id: null
-          status: true
-          conditions: {  }
-          weight: null
-          settings:
-            id: 'Create a Barrett repository item'
-            label: 'Create a Barrett repository item'
-            notes: ''
-            handler_id: null
-            status: true
-            conditions: {  }
-            weight: null
-            settings:
-              id: 'Create a Barrett repository item'
-              label: 'Create a Barrett repository item'
-              notes: ''
-              handler_id: null
-              status: true
-              conditions: {  }
-              weight: null
-              settings:
-                id: 'Create a Barrett repository item'
-                label: 'Create a Barrett repository item'
-                notes: ''
-                handler_id: null
-                status: true
-                conditions: {  }
-                weight: null
-                settings:
-                  id: 'Create a Barrett repository item'
-                  label: 'Create a Barrett repository item'
-                  notes: ''
-                  handler_id: null
-                  status: true
-                  conditions: {  }
-                  weight: null
-                  settings:
-                    id: 'Create a Barrett repository item'
-                    label: 'Create a Barrett repository item'
-                    notes: ''
-                    handler_id: null
-                    status: true
-                    conditions: {  }
-                    weight: null
-                    settings:
-                      id: 'Create a Barrett repository item'
-                      label: 'Create a Barrett repository item'
-                      notes: ''
-                      handler_id: null
-                      status: true
-                      conditions: {  }
-                      weight: null
-                      settings:
-                        id: 'Create a Barrett repository item'
-                        label: 'Create a Barrett repository item'
-                        notes: ''
-                        handler_id: null
-                        status: true
-                        conditions: {  }
-                        weight: null
-                        settings:
-                          id: 'Create a Barrett repository item'
-                          label: 'Create a Barrett repository item'
-                          notes: ''
-                          handler_id: null
-                          status: true
-                          conditions: {  }
-                          weight: null
-                          settings:
-                            id: 'Create a Barrett repository item'
-                            label: 'Create a Barrett repository item'
-                            notes: ''
-                            handler_id: null
-                            status: true
-                            conditions: {  }
-                            weight: null
-                            settings:
-                              id: 'Create a Barrett repository item'
-                              label: 'Create a Barrett repository item'
-                              notes: ''
-                              handler_id: null
-                              status: true
-                              conditions: {  }
-                              weight: null
-                              settings:
-                                id: 'Create a Barrett repository item'
-                                label: 'Create a Barrett repository item'
-                                notes: ''
-                                handler_id: null
-                                status: true
-                                conditions: {  }
-                                weight: null
-                                settings:
-                                  id: 'Create a Barrett repository item'
-                                  label: 'Create a Barrett repository item'
-                                  notes: ''
-                                  handler_id: null
-                                  status: true
-                                  conditions: {  }
-                                  weight: null
-                                  settings:
-                                    id: 'Create a Barrett repository item'
-                                    label: 'Create a Barrett repository item'
-                                    notes: ''
-                                    handler_id: null
-                                    status: true
-                                    conditions: {  }
-                                    weight: null
-                                    settings:
-                                      id: 'Create a Barrett repository item'
-                                      label: 'Create a Barrett repository item'
-                                      notes: ''
-                                      handler_id: null
-                                      status: true
-                                      conditions: {  }
-                                      weight: null
-                                      settings:
-                                        id: 'Create a Barrett repository item'
-                                        label: 'Create a Barrett repository item'
-                                        notes: ''
-                                        handler_id: null
-                                        status: true
-                                        conditions: {  }
-                                        weight: null
-                                        settings:
-                                          id: 'Create a Barrett repository item'
-                                          label: 'Create a Barrett repository item'
-                                          notes: ''
-                                          handler_id: null
-                                          status: true
-                                          conditions: {  }
-                                          weight: null
-                                          settings:
-                                            id: 'Create a Barrett repository item'
-                                            label: 'Create a Barrett repository item'
-                                            notes: ''
-                                            handler_id: null
-                                            status: true
-                                            conditions: {  }
-                                            weight: null
-                                            settings:
-                                              id: 'Create a Barrett repository item'
-                                              label: 'Create a Barrett repository item'
-                                              notes: ''
-                                              handler_id: null
-                                              status: true
-                                              conditions: {  }
-                                              weight: null
-                                              settings:
-                                                id: 'Create a Barrett repository item'
-                                                label: 'Create a Barrett repository item'
-                                                notes: ''
-                                                handler_id: null
-                                                status: true
-                                                conditions: {  }
-                                                weight: null
-                                                settings:
-                                                  id: 'Create a Barrett repository item'
-                                                  label: 'Create a Barrett repository item'
-                                                  notes: ''
-                                                  handler_id: null
-                                                  status: true
-                                                  conditions: {  }
-                                                  weight: null
-                                                  settings:
-                                                    id: 'Create a Barrett repository item'
-                                                    label: 'Create a Barrett repository item'
-                                                    notes: ''
-                                                    handler_id: null
-                                                    status: true
-                                                    conditions: {  }
-                                                    weight: null
-                                                    settings:
-                                                      id: 'Create a Barrett repository item'
-                                                      label: 'Create a Barrett repository item'
-                                                      notes: ''
-                                                      handler_id: null
-                                                      status: true
-                                                      conditions: {  }
-                                                      weight: null
-                                                      settings:
-                                                        id: 'Create a Barrett repository item'
-                                                        label: 'Create a Barrett repository item'
-                                                        notes: ''
-                                                        handler_id: null
-                                                        status: true
-                                                        conditions: {  }
-                                                        weight: null
-                                                        settings:
-                                                          id: 'Create a Barrett repository item'
-                                                          label: 'Create a Barrett repository item'
-                                                          notes: ''
-                                                          handler_id: null
-                                                          status: true
-                                                          conditions: {  }
-                                                          weight: null
-                                                          settings:
-                                                            id: 'Create a Barrett repository item'
-                                                            label: 'Create a Barrett repository item'
-                                                            notes: ''
-                                                            handler_id: null
-                                                            status: true
-                                                            conditions: {  }
-                                                            weight: null
-                                                            settings:
-                                                              id: 'Create a Barrett repository item'
-                                                              label: 'Create a Barrett repository item'
-                                                              notes: ''
-                                                              handler_id: null
-                                                              status: 1
-                                                              conditions: {  }
-                                                              weight: ''
-                                                              settings:
-                                                                id: 'Create a Barrett repository item'
-                                                                label: 'Create a Barrett repository item'
-                                                                notes: ''
-                                                                handler_id: null
-                                                                status: 1
-                                                                conditions: {  }
-                                                                weight: ''
-                                                                settings:
-                                                                  id: 'Create a Barrett repository item'
-                                                                  label: 'Create a Barrett repository item'
-                                                                  notes: ''
-                                                                  handler_id: null
-                                                                  status: true
-                                                                  conditions: {  }
-                                                                  weight: null
-                                                                  settings:
-                                                                    id: 'Create a Barrett repository item'
-                                                                    label: 'Create a Barrett repository item'
-                                                                    notes: ''
-                                                                    handler_id: null
-                                                                    status: true
-                                                                    conditions: {  }
-                                                                    weight: null
-                                                                    settings:
-                                                                      id: 'Create a Barrett repository item'
-                                                                      label: 'Create a Barrett repository item'
-                                                                      notes: ''
-                                                                      handler_id: null
-                                                                      status: true
-                                                                      conditions: {  }
-                                                                      weight: null
-                                                                      settings:
-                                                                        id: 'Create a Barrett repository item'
-                                                                        label: 'Create a Barrett repository item'
-                                                                        notes: ''
-                                                                        handler_id: null
-                                                                        status: 1
-                                                                        conditions: {  }
-                                                                        weight: ''
-                                                                        settings:
-                                                                          id: 'Create a Barrett repository item'
-                                                                          label: 'Create a Barrett repository item'
-                                                                          notes: ''
-                                                                          handler_id: null
-                                                                          status: 1
-                                                                          conditions: {  }
-                                                                          weight: ''
-                                                                          settings:
-                                                                            id: 'Create a Barrett repository item'
-                                                                            label: 'Create a Barrett repository item'
-                                                                            notes: ''
-                                                                            handler_id: null
-                                                                            status: true
-                                                                            conditions: {  }
-                                                                            weight: null
-                                                                            settings:
-                                                                              id: 'Create a Barrett repository item'
-                                                                              label: 'Create a Barrett repository item'
-                                                                              notes: ''
-                                                                              handler_id: null
-                                                                              status: true
-                                                                              conditions: {  }
-                                                                              weight: null
-                                                                              settings:
-                                                                                id: 'Create a Barrett repository item'
-                                                                                label: 'Create a Barrett repository item'
-                                                                                notes: ''
-                                                                                handler_id: null
-                                                                                status: true
-                                                                                conditions: {  }
-                                                                                weight: null
-                                                                                settings:
-                                                                                  id: 'Create a Barrett repository item'
-                                                                                  label: 'Create a Barrett repository item'
-                                                                                  notes: ''
-                                                                                  handler_id: null
-                                                                                  status: true
-                                                                                  conditions: {  }
-                                                                                  weight: null
-                                                                                  settings:
-                                                                                    id: 'Create a Barrett repository item'
-                                                                                    label: 'Create a Barrett repository item'
-                                                                                    notes: ''
-                                                                                    handler_id: null
-                                                                                    status: true
-                                                                                    conditions: {  }
-                                                                                    weight: null
-                                                                                    settings:
-                                                                                      id: 'Create a Barrett repository item'
-                                                                                      label: 'Create a Barrett repository item'
-                                                                                      notes: ''
-                                                                                      handler_id: null
-                                                                                      status: true
-                                                                                      conditions: {  }
-                                                                                      weight: null
-                                                                                      settings:
-                                                                                        id: 'Create a Barrett repository item'
-                                                                                        label: 'Create a Barrett repository item'
-                                                                                        notes: ''
-                                                                                        handler_id: null
-                                                                                        status: true
-                                                                                        conditions: {  }
-                                                                                        weight: null
-                                                                                        settings:
-                                                                                          id: 'Create a Barrett repository item'
-                                                                                          label: 'Create a Barrett repository item'
-                                                                                          notes: ''
-                                                                                          handler_id: null
-                                                                                          status: true
-                                                                                          conditions: {  }
-                                                                                          weight: null
-                                                                                          settings:
-                                                                                            id: 'Create a Barrett repository item'
-                                                                                            label: 'Create a Barrett repository item'
-                                                                                            notes: ''
-                                                                                            handler_id: null
-                                                                                            status: true
-                                                                                            conditions: {  }
-                                                                                            weight: null
-                                                                                            settings:
-                                                                                              id: 'Create a Barrett repository item'
-                                                                                              label: 'Create a Barrett repository item'
-                                                                                              notes: ''
-                                                                                              handler_id: null
-                                                                                              status: true
-                                                                                              conditions: {  }
-                                                                                              weight: null
-                                                                                              settings:
-                                                                                                id: 'Create a Barrett repository item'
-                                                                                                label: 'Create a Barrett repository item'
-                                                                                                notes: ''
-                                                                                                handler_id: null
-                                                                                                status: true
-                                                                                                conditions: {  }
-                                                                                                weight: null
-                                                                                                settings:
-                                                                                                  id: 'Create a Barrett repository item'
-                                                                                                  label: 'Create a Barrett repository item'
-                                                                                                  notes: ''
-                                                                                                  handler_id: null
-                                                                                                  status: true
-                                                                                                  conditions: {  }
-                                                                                                  weight: null
-                                                                                                  settings:
-                                                                                                    id: 'Create a Barrett repository item'
-                                                                                                    label: 'Create a Barrett repository item'
-                                                                                                    notes: ''
-                                                                                                    handler_id: null
-                                                                                                    status: true
-                                                                                                    conditions: {  }
-                                                                                                    weight: null
-                                                                                                    settings:
-                                                                                                      id: 'Create a Barrett repository item'
-                                                                                                      label: 'Create a Barrett repository item'
-                                                                                                      notes: ''
-                                                                                                      handler_id: null
-                                                                                                      status: true
-                                                                                                      conditions: {  }
-                                                                                                      weight: null
-                                                                                                      settings:
-                                                                                                        id: 'Create a Barrett repository item'
-                                                                                                        label: 'Create a Barrett repository item'
-                                                                                                        notes: ''
-                                                                                                        handler_id: null
-                                                                                                        status: true
-                                                                                                        conditions: {  }
-                                                                                                        weight: null
-                                                                                                        settings:
-                                                                                                          id: 'Create a Barrett repository item'
-                                                                                                          label: 'Create a Barrett repository item'
-                                                                                                          notes: ''
-                                                                                                          handler_id: null
-                                                                                                          status: true
-                                                                                                          conditions: {  }
-                                                                                                          weight: -50
-                                                                                                          settings:
-                                                                                                            id: 'Create a Barrett repository item'
-                                                                                                            label: 'Create a Barrett repository item'
-                                                                                                            notes: ''
-                                                                                                            handler_id: null
-                                                                                                            status: true
-                                                                                                            conditions: {  }
-                                                                                                            weight: null
-                                                                                                            settings:
-                                                                                                              id: 'Create a Barrett repository item'
-                                                                                                              label: 'Create a Barrett repository item'
-                                                                                                              notes: ''
-                                                                                                              handler_id: null
-                                                                                                              status: true
-                                                                                                              conditions: {  }
-                                                                                                              weight: -50
-                                                                                                              settings:
-                                                                                                                id: 'Create a Barrett repository item'
-                                                                                                                label: 'Create a Barrett repository item'
-                                                                                                                notes: ''
-                                                                                                                handler_id: null
-                                                                                                                status: true
-                                                                                                                conditions: {  }
-                                                                                                                weight: -50
-                                                                                                                settings:
-                                                                                                                  id: 'Create a Barrett repository item'
-                                                                                                                  label: 'Create a Barrett repository item'
-                                                                                                                  notes: ''
-                                                                                                                  handler_id: null
-                                                                                                                  status: true
-                                                                                                                  conditions: {  }
-                                                                                                                  weight: -50
-                                                                                                                  settings:
-                                                                                                                    id: 'Create a Barrett repository item'
-                                                                                                                    label: 'Create a Barrett repository item'
-                                                                                                                    notes: ''
-                                                                                                                    handler_id: null
-                                                                                                                    status: true
-                                                                                                                    conditions: {  }
-                                                                                                                    weight: null
-                                                                                                                    settings:
-                                                                                                                      id: 'Create a Barrett repository item'
-                                                                                                                      label: 'Create a Barrett repository item'
-                                                                                                                      notes: ''
-                                                                                                                      handler_id: null
-                                                                                                                      status: true
-                                                                                                                      conditions: {  }
-                                                                                                                      weight: null
-                                                                                                                      settings:
-                                                                                                                        id: 'Create a Barrett repository item'
-                                                                                                                        label: 'Create a Barrett repository item'
-                                                                                                                        notes: ''
-                                                                                                                        handler_id: null
-                                                                                                                        status: true
-                                                                                                                        conditions: {  }
-                                                                                                                        weight: null
-                                                                                                                        settings:
-                                                                                                                          id: 'Create a Barrett repository item'
-                                                                                                                          label: 'Create a Barrett repository item'
-                                                                                                                          notes: ''
-                                                                                                                          handler_id: null
-                                                                                                                          status: true
-                                                                                                                          conditions: {  }
-                                                                                                                          weight: null
-                                                                                                                          settings:
-                                                                                                                            id: 'Create a Barrett repository item'
-                                                                                                                            label: 'Create a Barrett repository item'
-                                                                                                                            notes: ''
-                                                                                                                            handler_id: null
-                                                                                                                            status: true
-                                                                                                                            conditions: {  }
-                                                                                                                            weight: null
-                                                                                                                            settings:
-                                                                                                                              id: 'Create a Barrett repository item'
-                                                                                                                              label: 'Create a Barrett repository item'
-                                                                                                                              notes: ''
-                                                                                                                              handler_id: null
-                                                                                                                              status: true
-                                                                                                                              conditions: {  }
-                                                                                                                              weight: null
-                                                                                                                              settings:
-                                                                                                                                id: 'Create a Barrett repository item'
-                                                                                                                                label: 'Create a Barrett repository item'
-                                                                                                                                notes: ''
-                                                                                                                                handler_id: null
-                                                                                                                                status: true
-                                                                                                                                conditions: {  }
-                                                                                                                                weight: null
-                                                                                                                                settings:
-                                                                                                                                  id: 'Create a Barrett repository item'
-                                                                                                                                  label: 'Create a Barrett repository item'
-                                                                                                                                  notes: ''
-                                                                                                                                  handler_id: null
-                                                                                                                                  status: true
-                                                                                                                                  conditions: {  }
-                                                                                                                                  weight: null
-                                                                                                                                  settings:
-                                                                                                                                    id: 'Create a Barrett repository item'
-                                                                                                                                    label: 'Create a Barrett repository item'
-                                                                                                                                    notes: ''
-                                                                                                                                    handler_id: create_a_barrett_repository_item
-                                                                                                                                    status: true
-                                                                                                                                    conditions: {  }
-                                                                                                                                    weight: 0
-                                                                                                                                    settings: {  }
   create_a_morrison_repository_item:
     id: create_morrison_repository_item
     label: 'Create a Morrison repository item'
@@ -904,422 +393,14 @@ handlers:
               handler_id: null
               status: true
               conditions: {  }
-              weight: null
+              weight: -50
               settings:
                 id: create_morrison_repository_item
                 label: 'Create a Morrison repository item'
                 notes: ''
-                handler_id: null
+                handler_id: create_a_morrison_repository_item
                 status: true
                 conditions: {  }
-                weight: null
-                settings:
-                  id: create_morrison_repository_item
-                  label: 'Create a Morrison repository item'
-                  notes: ''
-                  handler_id: null
-                  status: true
-                  conditions: {  }
-                  weight: null
-                  settings:
-                    id: create_morrison_repository_item
-                    label: 'Create a Morrison repository item'
-                    notes: ''
-                    handler_id: null
-                    status: true
-                    conditions: {  }
-                    weight: null
-                    settings:
-                      id: create_morrison_repository_item
-                      label: 'Create a Morrison repository item'
-                      notes: ''
-                      handler_id: null
-                      status: true
-                      conditions: {  }
-                      weight: null
-                      settings:
-                        id: create_morrison_repository_item
-                        label: 'Create a Morrison repository item'
-                        notes: ''
-                        handler_id: null
-                        status: true
-                        conditions: {  }
-                        weight: null
-                        settings:
-                          id: create_morrison_repository_item
-                          label: 'Create a Morrison repository item'
-                          notes: ''
-                          handler_id: null
-                          status: true
-                          conditions: {  }
-                          weight: null
-                          settings:
-                            id: create_morrison_repository_item
-                            label: 'Create a Morrison repository item'
-                            notes: ''
-                            handler_id: null
-                            status: true
-                            conditions: {  }
-                            weight: null
-                            settings:
-                              id: create_morrison_repository_item
-                              label: 'Create a Morrison repository item'
-                              notes: ''
-                              handler_id: null
-                              status: true
-                              conditions: {  }
-                              weight: null
-                              settings:
-                                id: create_morrison_repository_item
-                                label: 'Create a Morrison repository item'
-                                notes: ''
-                                handler_id: null
-                                status: true
-                                conditions: {  }
-                                weight: null
-                                settings:
-                                  id: create_morrison_repository_item
-                                  label: 'Create a Morrison repository item'
-                                  notes: ''
-                                  handler_id: null
-                                  status: true
-                                  conditions: {  }
-                                  weight: null
-                                  settings:
-                                    id: create_morrison_repository_item
-                                    label: 'Create a Morrison repository item'
-                                    notes: ''
-                                    handler_id: null
-                                    status: true
-                                    conditions: {  }
-                                    weight: null
-                                    settings:
-                                      id: create_morrison_repository_item
-                                      label: 'Create a Morrison repository item'
-                                      notes: ''
-                                      handler_id: null
-                                      status: true
-                                      conditions: {  }
-                                      weight: null
-                                      settings:
-                                        id: create_morrison_repository_item
-                                        label: 'Create a Morrison repository item'
-                                        notes: ''
-                                        handler_id: null
-                                        status: true
-                                        conditions: {  }
-                                        weight: null
-                                        settings:
-                                          id: create_morrison_repository_item
-                                          label: 'Create a Morrison repository item'
-                                          notes: ''
-                                          handler_id: null
-                                          status: true
-                                          conditions: {  }
-                                          weight: null
-                                          settings:
-                                            id: create_morrison_repository_item
-                                            label: 'Create a Morrison repository item'
-                                            notes: ''
-                                            handler_id: null
-                                            status: true
-                                            conditions: {  }
-                                            weight: null
-                                            settings:
-                                              id: create_morrison_repository_item
-                                              label: 'Create a Morrison repository item'
-                                              notes: ''
-                                              handler_id: null
-                                              status: true
-                                              conditions: {  }
-                                              weight: null
-                                              settings:
-                                                id: create_morrison_repository_item
-                                                label: 'Create a Morrison repository item'
-                                                notes: ''
-                                                handler_id: null
-                                                status: true
-                                                conditions: {  }
-                                                weight: null
-                                                settings:
-                                                  id: create_morrison_repository_item
-                                                  label: 'Create a Morrison repository item'
-                                                  notes: ''
-                                                  handler_id: null
-                                                  status: true
-                                                  conditions: {  }
-                                                  weight: null
-                                                  settings:
-                                                    id: create_morrison_repository_item
-                                                    label: 'Create a Morrison repository item'
-                                                    notes: ''
-                                                    handler_id: null
-                                                    status: true
-                                                    conditions: {  }
-                                                    weight: null
-                                                    settings:
-                                                      id: create_morrison_repository_item
-                                                      label: 'Create a Morrison repository item'
-                                                      notes: ''
-                                                      handler_id: null
-                                                      status: true
-                                                      conditions: {  }
-                                                      weight: null
-                                                      settings:
-                                                        id: create_morrison_repository_item
-                                                        label: 'Create a Morrison repository item'
-                                                        notes: ''
-                                                        handler_id: null
-                                                        status: true
-                                                        conditions: {  }
-                                                        weight: null
-                                                        settings:
-                                                          id: create_morrison_repository_item
-                                                          label: 'Create a Morrison repository item'
-                                                          notes: ''
-                                                          handler_id: null
-                                                          status: true
-                                                          conditions: {  }
-                                                          weight: null
-                                                          settings:
-                                                            id: create_morrison_repository_item
-                                                            label: 'Create a Morrison repository item'
-                                                            notes: ''
-                                                            handler_id: null
-                                                            status: true
-                                                            conditions: {  }
-                                                            weight: null
-                                                            settings:
-                                                              id: create_morrison_repository_item
-                                                              label: 'Create a Morrison repository item'
-                                                              notes: ''
-                                                              handler_id: null
-                                                              status: 1
-                                                              conditions: {  }
-                                                              weight: ''
-                                                              settings:
-                                                                id: create_morrison_repository_item
-                                                                label: 'Create a Morrison repository item'
-                                                                notes: ''
-                                                                handler_id: null
-                                                                status: 1
-                                                                conditions: {  }
-                                                                weight: ''
-                                                                settings:
-                                                                  id: create_morrison_repository_item
-                                                                  label: 'Create a Morrison repository item'
-                                                                  notes: ''
-                                                                  handler_id: null
-                                                                  status: true
-                                                                  conditions: {  }
-                                                                  weight: null
-                                                                  settings:
-                                                                    id: create_morrison_repository_item
-                                                                    label: 'Create a Morrison repository item'
-                                                                    notes: ''
-                                                                    handler_id: null
-                                                                    status: true
-                                                                    conditions: {  }
-                                                                    weight: null
-                                                                    settings:
-                                                                      id: create_morrison_repository_item
-                                                                      label: 'Create a Morrison repository item'
-                                                                      notes: ''
-                                                                      handler_id: null
-                                                                      status: true
-                                                                      conditions: {  }
-                                                                      weight: null
-                                                                      settings:
-                                                                        id: create_morrison_repository_item
-                                                                        label: 'Create a Morrison repository item'
-                                                                        notes: ''
-                                                                        handler_id: null
-                                                                        status: 1
-                                                                        conditions: {  }
-                                                                        weight: ''
-                                                                        settings:
-                                                                          id: create_morrison_repository_item
-                                                                          label: 'Create a Morrison repository item'
-                                                                          notes: ''
-                                                                          handler_id: null
-                                                                          status: 1
-                                                                          conditions: {  }
-                                                                          weight: ''
-                                                                          settings:
-                                                                            id: create_morrison_repository_item
-                                                                            label: 'Create a Morrison repository item'
-                                                                            notes: ''
-                                                                            handler_id: null
-                                                                            status: true
-                                                                            conditions: {  }
-                                                                            weight: null
-                                                                            settings:
-                                                                              id: create_morrison_repository_item
-                                                                              label: 'Create a Morrison repository item'
-                                                                              notes: ''
-                                                                              handler_id: null
-                                                                              status: true
-                                                                              conditions: {  }
-                                                                              weight: null
-                                                                              settings:
-                                                                                id: create_morrison_repository_item
-                                                                                label: 'Create a Morrison repository item'
-                                                                                notes: ''
-                                                                                handler_id: null
-                                                                                status: true
-                                                                                conditions: {  }
-                                                                                weight: null
-                                                                                settings:
-                                                                                  id: create_morrison_repository_item
-                                                                                  label: 'Create a Morrison repository item'
-                                                                                  notes: ''
-                                                                                  handler_id: null
-                                                                                  status: true
-                                                                                  conditions: {  }
-                                                                                  weight: null
-                                                                                  settings:
-                                                                                    id: create_morrison_repository_item
-                                                                                    label: 'Create a Morrison repository item'
-                                                                                    notes: ''
-                                                                                    handler_id: null
-                                                                                    status: true
-                                                                                    conditions: {  }
-                                                                                    weight: null
-                                                                                    settings:
-                                                                                      id: create_morrison_repository_item
-                                                                                      label: 'Create a Morrison repository item'
-                                                                                      notes: ''
-                                                                                      handler_id: null
-                                                                                      status: true
-                                                                                      conditions: {  }
-                                                                                      weight: null
-                                                                                      settings:
-                                                                                        id: create_morrison_repository_item
-                                                                                        label: 'Create a Morrison repository item'
-                                                                                        notes: ''
-                                                                                        handler_id: null
-                                                                                        status: true
-                                                                                        conditions: {  }
-                                                                                        weight: null
-                                                                                        settings:
-                                                                                          id: create_morrison_repository_item
-                                                                                          label: 'Create a Morrison repository item'
-                                                                                          notes: ''
-                                                                                          handler_id: null
-                                                                                          status: true
-                                                                                          conditions: {  }
-                                                                                          weight: null
-                                                                                          settings:
-                                                                                            id: create_morrison_repository_item
-                                                                                            label: 'Create a Morrison repository item'
-                                                                                            notes: ''
-                                                                                            handler_id: null
-                                                                                            status: true
-                                                                                            conditions: {  }
-                                                                                            weight: null
-                                                                                            settings:
-                                                                                              id: create_morrison_repository_item
-                                                                                              label: 'Create a Morrison repository item'
-                                                                                              notes: ''
-                                                                                              handler_id: null
-                                                                                              status: true
-                                                                                              conditions: {  }
-                                                                                              weight: null
-                                                                                              settings:
-                                                                                                id: create_morrison_repository_item
-                                                                                                label: 'Create a Morrison repository item'
-                                                                                                notes: ''
-                                                                                                handler_id: null
-                                                                                                status: true
-                                                                                                conditions: {  }
-                                                                                                weight: null
-                                                                                                settings:
-                                                                                                  id: create_morrison_repository_item
-                                                                                                  label: 'Create a Morrison repository item'
-                                                                                                  notes: ''
-                                                                                                  handler_id: null
-                                                                                                  status: true
-                                                                                                  conditions: {  }
-                                                                                                  weight: null
-                                                                                                  settings:
-                                                                                                    id: create_morrison_repository_item
-                                                                                                    label: 'Create a Morrison repository item'
-                                                                                                    notes: ''
-                                                                                                    handler_id: null
-                                                                                                    status: true
-                                                                                                    conditions: {  }
-                                                                                                    weight: null
-                                                                                                    settings:
-                                                                                                      id: create_morrison_repository_item
-                                                                                                      label: 'Create a Morrison repository item'
-                                                                                                      notes: ''
-                                                                                                      handler_id: null
-                                                                                                      status: true
-                                                                                                      conditions: {  }
-                                                                                                      weight: null
-                                                                                                      settings:
-                                                                                                        id: create_morrison_repository_item
-                                                                                                        label: 'Create a Morrison repository item'
-                                                                                                        notes: ''
-                                                                                                        handler_id: null
-                                                                                                        status: true
-                                                                                                        conditions: {  }
-                                                                                                        weight: null
-                                                                                                        settings:
-                                                                                                          id: create_morrison_repository_item
-                                                                                                          label: 'Create a Morrison repository item'
-                                                                                                          notes: ''
-                                                                                                          handler_id: null
-                                                                                                          status: true
-                                                                                                          conditions: {  }
-                                                                                                          weight: -50
-                                                                                                          settings:
-                                                                                                            id: create_morrison_repository_item
-                                                                                                            label: 'Create a Morrison repository item'
-                                                                                                            notes: ''
-                                                                                                            handler_id: null
-                                                                                                            status: true
-                                                                                                            conditions: {  }
-                                                                                                            weight: null
-                                                                                                            settings:
-                                                                                                              id: create_morrison_repository_item
-                                                                                                              label: 'Create a Morrison repository item'
-                                                                                                              notes: ''
-                                                                                                              handler_id: null
-                                                                                                              status: true
-                                                                                                              conditions: {  }
-                                                                                                              weight: -50
-                                                                                                              settings:
-                                                                                                                id: create_morrison_repository_item
-                                                                                                                label: 'Create a Morrison repository item'
-                                                                                                                notes: ''
-                                                                                                                handler_id: null
-                                                                                                                status: true
-                                                                                                                conditions: {  }
-                                                                                                                weight: -50
-                                                                                                                settings:
-                                                                                                                  id: create_morrison_repository_item
-                                                                                                                  label: 'Create a Morrison repository item'
-                                                                                                                  notes: ''
-                                                                                                                  handler_id: null
-                                                                                                                  status: true
-                                                                                                                  conditions: {  }
-                                                                                                                  weight: -50
-                                                                                                                  settings:
-                                                                                                                    id: create_morrison_repository_item
-                                                                                                                    label: 'Create a Morrison repository item'
-                                                                                                                    notes: ''
-                                                                                                                    handler_id: null
-                                                                                                                    status: true
-                                                                                                                    conditions: {  }
-                                                                                                                    weight: null
-                                                                                                                    settings:
-                                                                                                                      id: create_morrison_repository_item
-                                                                                                                      label: 'Create a Morrison repository item'
-                                                                                                                      notes: ''
-                                                                                                                      handler_id: create_a_morrison_repository_item
-                                                                                                                      status: true
-                                                                                                                      conditions: {  }
-                                                                                                                      weight: 0
-                                                                                                                      settings: {  }
+                weight: 0
+                settings: {  }
 variants: {  }

@@ -115,6 +115,47 @@ class CreateMorrisonItemWebformHandler extends WebformHandlerBase {
     );
 
     $paragraph->save();
+    $titles = $contribs = [];
+    $titles[] = [
+      'target_id' => $paragraph->id(),
+      'target_revision_id' => $paragraph->getRevisionId(),
+    ];
+
+    if (array_key_exists('alternate_title', $values)) {
+      foreach ($values['alternate_title'] as $alt) {
+        $alt_title = Paragraph::create(
+          ['type' => 'complex_title', 'field_main_title' => $alt]
+        );
+        $alt_title->save();
+        $titles[] = [
+          'target_id' => $alt_title->id(),
+          'target_revision_id' => $alt_title->getRevisionId(),
+        ];
+      }
+    }
+
+    foreach ($values['additional_contributors'] as $ac) {
+      // Make additional contribs as ctb.
+      array_push($contribs, $this->depositUtils->getOrCreateTerm($ac['last'] . ", " . $ac['first'], 'person', 'relators:ctb'));
+    }
+    foreach ($values['institutional_contributors'] as $ic) {
+      // Make insitutional contribs as ctb.
+      array_push($contribs, $this->depositUtils->getOrCreateTerm($ic, 'corporate_body', 'relators:ctb'));
+    }
+
+    foreach ($values['event_contributors'] as $ic) {
+      // Make event contribs as ctb.
+      array_push($contribs, $this->depositUtils->getOrCreateTerm($ic, 'conference', 'relators:ctb'));
+    }
+
+    if (array_key_exists('series', $values) && $values['series'] != "") {
+      $series_val = $values['series'];
+    }
+
+    if (array_key_exists('date_created', $values) && $values['date_created'] != "") {
+      $created_date_val = $values['date_created'];
+    }
+
 
     $keywords = [];
     foreach ($values['keywords'] as $key) {
@@ -128,13 +169,8 @@ class CreateMorrisonItemWebformHandler extends WebformHandlerBase {
       'created' => time(),
       'changed' => time(),
       'uid' => \Drupal::currentUser()->id(),
-      'moderation_state' => 'draft',
-      'field_title' => [
-        [
-          'target_id' => $paragraph->id(),
-          'target_revision_id' => $paragraph->getRevisionId(),
-        ],
-      ],
+      'moderation_state' => 'published',
+      'field_title' => $titles,
       'field_rich_description' => [
         'value' => $values['item_description'],
         'format' => 'description_restricted_items',
@@ -143,17 +179,24 @@ class CreateMorrisonItemWebformHandler extends WebformHandlerBase {
         ['target_id' => $values['reuse_permissions']],
       ],
       'field_subjects' => $keywords,
+      'field_linked_agent' => $contribs,
+      'field_edtf_date_created' => [
+        'value' => $created_date_val,
+      ],
+      'field_series' => [
+        'value' => $series_val,
+      ],
+      'field_extent' => [
+        ['value' => $values['number_of_pages']],
+      ],
       'field_copyright_statement' => [
-        ['target_id' => $copyright_term->id()],
+        ['target_id' => $values['copyright_statement']],
       ],
       'field_default_derivative_file_pe' => [
         ['target_id' => $perm_term->id()],
       ],
       'field_default_original_file_perm' => [
         ['target_id' => $perm_term->id()],
-      ],
-      'field_embargo_release_date' => [
-        $values['embargo_release_date'] . "T23:59:59",
       ],
       'field_model' => [
         ['target_id' => $model->id()],
@@ -162,6 +205,43 @@ class CreateMorrisonItemWebformHandler extends WebformHandlerBase {
         ['target_id' => $member_of],
       ],
     ];
+
+    if (array_key_exists('embargo_release_date', $values)) {
+      $embargo_vals = explode('T', $values['embargo_release_date']);
+      $node_args['field_embargo_release_date'] = ['value' => $embargo_vals[0] . "T23:59:59"];
+    }
+    if (array_key_exists('language1', $values)) {
+      $node_args['field_language'] = [['target_id' => $values['language1']]];
+    }
+    if (array_key_exists('copyright_date', $values) && $values['copyright_date'] != "") {
+      $node_args['field_edtf_copyright_date'] = ['value' => $values['copyright_date']];
+    }
+    if (array_key_exists('open_access', $values) && $values['open_access'] != "") {
+      $node_args['field_open_access'] = ['value' => $values['open_access']];
+    }
+    if (array_key_exists('issuance', $values) && $values['issuance'] != "") {
+      $node_args['field_issuance'] = ['value' => $values['issuance']];
+    }
+    if (array_key_exists('edition', $values) && $values['edition'] != "") {
+      $node_args['field_edition'] = ['value' => $values['edition']];
+    }
+
+    if (array_key_exists('preferred_citation', $values) && $values['preferred_citation'] != "") {
+      $node_args['field_preferred_citation'] = ['value' => $values['preferred_citation'], 'format' => 'basic_html'];
+    }
+    
+    if (array_key_exists('place_of_publication', $values) && $values['place_of_publication'] != "") {
+      $node_args['field_place_published'] = ['value' => $values['place_of_publication']];
+    }
+
+    $genres = [];
+    foreach ($values['genre'] as $key) {
+      $kterm = $this->depositUtils->getOrCreateTerm($key, 'genre');
+      array_push($genres, $kterm);
+    }
+    if (count($genres) > 0) {
+      $node_args['field_genre'] = $genres;
+    }
 
     $node = Node::create($node_args);
     $node->save();
@@ -205,16 +285,14 @@ class CreateMorrisonItemWebformHandler extends WebformHandlerBase {
     $taxo_terms = $taxo_manager->loadByProperties(['name' => $term]);
     $taxo_term = reset($taxo_terms);
 
-    $copyright_term_arr = $taxo_manager->loadByProperties(['name' => 'In Copyright']);
+    $copyright_term_arr = $taxo_manager->loadByProperties(['name' => $values['copyright_statement']]);
     $copyright_term = reset($copyright_term_arr);
 
-    $perm_term_arr =
-    $taxo_manager->loadByProperties(['name' => $values['file_permissions_select']]);
-    $perm_term = reset($perm_term_arr);
-
-    $config = \Drupal::config('self_deposit.selfdepositsettings');
-    if ($config->get('collection_for_deposits')) {
-      $member_of = $config->get('collection_for_deposits');
+    $config = \Drupal::config('asu_deposit_methods.depositsettings');
+    if ($config->get('collection_for_morrison')) {
+      $member_of = $config->get('collection_for_morrison');
+      $collection = $this->entityTypeManager->getStorage('node')->load($member_of);
+      $perm_term = $collection->get('field_default_original_file_perm')->entity;
     }
 
     if ($model == 'Complex Object') {

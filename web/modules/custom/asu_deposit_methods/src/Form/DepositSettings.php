@@ -103,6 +103,15 @@ class DepositSettings extends ConfigFormBase {
       '#default_value' => $config ? $this->entityTypeManager->getStorage('node')->load($config->get('sheet_music_default_collection')) : '',
     ];
 
+    $form['collection_for_morrison'] = [
+      '#type' => 'entity_autocomplete',
+      '#title' => $this->t('Default Collection for Morrison Insitute Form'),
+      '#description' => $this->t('The default collection to apply to node forms in the Morrison Institute form'),
+      '#target_type' => 'node',
+      '#selection_settings' => ['target_bundles' => ['collection']],
+      '#default_value' => $config ? $this->entityTypeManager->getStorage('node')->load($config->get('collection_for_morrison')) : '',
+    ];
+
     return parent::buildForm($form, $form_state);
   }
 
@@ -118,6 +127,7 @@ class DepositSettings extends ConfigFormBase {
       ->set('sheet_music_default_model', $form_state->getValue('sheet_music_default_model'))
       ->set('sheet_music_default_identifier_type', $form_state->getValue('sheet_music_default_identifier_type'))
       ->set('sheet_music_default_collection', $form_state->getValue('sheet_music_default_collection'))
+      ->set('collection_for_morrison', $form_state->getValue('collection_for_morrison'))
       ->save();
   }
 
