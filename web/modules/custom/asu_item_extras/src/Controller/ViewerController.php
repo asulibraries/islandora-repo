@@ -123,6 +123,10 @@ class ViewerController extends ControllerBase {
       if (!$node instanceof NodeInterface) {
         $node = Node::load($node);
       }
+      if (in_array('administrator', $account->getRoles())) {
+        return AccessResult::allowed();
+      }
+      // TODO - this may be too restrictive?
       if ($node->access('view', $account)) {
         // user can at least view the node
         // can user view the media though?
