@@ -98,13 +98,11 @@
 
         {% if drupal_view_result('collections', 'sub_collections', node.id) is empty %}
             <h2>{{ 'About this collection'|t }}</h2>
-            <div class="col-md-12">
+            <div class="col-md-12 xs-padding-bottom">
                 {{ drupal_block('about_this_collection_block') }}
             </div>
-            <br/>
-                <h2>{{ 'Latest additions'|t }}</h2>
-                {{ drupal_block('latest_additions_to_collection_block') }}
-            <br/>
+            <h2 class="xs-padding-top">{{ 'Latest additions'|t }}</h2>
+            {{ drupal_block('latest_additions_to_collection_block') }}
         {% else %}
             <h2>{{ 'Included in this collection'|t }}</h2>
             {{ drupal_view('collections', 'sub_collections', node.id) }}
