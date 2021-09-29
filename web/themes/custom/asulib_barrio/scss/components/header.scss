@@ -61,18 +61,7 @@
 #navbar-top {
     @extend .container;
 }
-// #block-mainnavigation {
-//     // background-color: $header-dark;
-// }
-// ul.sf-menu a {
-//     color: $header-text;
-//     font-weight: bold;
-//     // background: $header-dark;
-//     padding: 21px 25px;
-// }
-// li.sf-depth-2 {
-    // background: $header-dark;
-// }
+
 header {
     margin-bottom: 20px;
 }
@@ -89,88 +78,17 @@ header {
     font-weight: normal;
 }
 
-// #superfish-main {
-//     a:focus, a:hover, a.is-active, a:active, .sfHover > a {
-//         background: $black;
-//         color: $header-hover;
-//     }
-//     a:focus {
-//         outline: 2px solid $focus-color;
-//         box-shadow: 0px 0px 5px $focus-color;
-//     }
-//     .menuparent {
-//         ul {
-//             padding: 10px 0;
-//             border-radius: 0 0 4px 4px;
-//             position: absolute;
-//             top: 100%;
-//             z-index: 1000;
-//             background-color: $header-dark;
-//             @include box-shadow(0 5px 10px rgba(0,0,0,0.2));
-//             a {
-//                 padding: 9px 10px 10px 25px;
-//                 font-weight: normal;
-//                 line-height: 1;
-//                 color: $header-text;
-//                 border-bottom: 0;
-//             }
-//         }
-//         li > a:hover {
-//             color: $header-text;
-//         }
-//     }
-// }
-
-// #main-standardfront-page {
-//     a.sf-depth-1 {
-//         // color: $header-dark;
-//         height: 58px;
-//         width: 65px;
-//         overflow: hidden;
-//         &:before {
-//             content: "\f015";
-//             font-family: "Font Awesome 5 Free";
-//             color: $header-text;
-//         }
-//         &:hover, &:active, &:focus {
-//             color: $black;
-//         }
-//         &:hover::before, &:active::before, &:focus::before {
-//             color: $header-hover;
-//         }
-//     }
-//     a.is-active {
-//         color: $black;
-//     }
-//     a.is-active::before {
-//         color: $header-hover;
-//     }
-// }
-
 .unpublished_title {
     background-color: #fff4da;
     font-style: italic;
     padding: 16px 8px;
 }
 
-// ul.sf-menu .sf-sub-indicator::after {
-//     font-size: .75rem;
-// }
-
-// ul.sf-menu .sf-sub-indicator {
-//     right: 1rem;
-// }
-
-// a.menuparent:hover .sf-sub-indicator::after {
-//     color: #ffb204;
-// }
-
-
 @media (min-width: 12660px) {
-.navbar-expand-xl .navbar-nav .nav-link {
-    padding-right: 0.5rem;
-    padding-left: 0.5rem;
-}
+    .navbar-expand-xl .navbar-nav .nav-link {
+        padding-right: 0.5rem;
+        padding-left: 0.5rem;
+    }
 }
 
 .navbar-nav {
@@ -200,38 +118,38 @@ header {
     }
 }
 
-// #header-main .navbar-toggler .fa-circle {
-//     font-size: 2rem;
-//     margin-left: -8px;
-//     margin-top: 2px;
-// }
+#header-main .navbar-toggler .fa-circle {
+    font-size: 2rem;
+    margin-left: -8px;
+    margin-top: 2px;
+}
 
-// #header-main .navbar-toggler .fa-times {
-//     margin-left: 0;
-// }
+#header-main .navbar-toggler .fa-times {
+    margin-left: 0;
+}
 
-// #header-main .nav-link {
-//     line-height: 1;
-// }
+#header-main .nav-link {
+    line-height: 1;
+}
 
-// #header-main .dropdown-item:hover {
-//     background-color: transparent;
-// }
+#header-main .dropdown-item:hover {
+    background-color: transparent;
+}
 
-// #header-main .dropdown-menu {
-//     border-radius: 0;
-// }
+#header-main .dropdown-menu {
+    border-radius: 0;
+}
 
 
 #asu-header + div, #asu-header + main {
     margin-top: 0;
 }
 
-// #header-main {
-//     .dropdown:not(:last-child) {
-//         margin-bottom: 1px;
-//     }
-//     .dropdown-menu {
-//         border-top: none;
-//     }
-// }
+#header-main {
+    .dropdown:not(:last-child) {
+        margin-bottom: 1px;
+    }
+    .dropdown-menu {
+        border-top: none;
+    }
+}
