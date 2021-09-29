@@ -64,7 +64,7 @@ class SearchForm extends FormBase {
       '#title' => $this->t('Search'),
       '#weight' => '0',
       '#value' => 'Search',
-      '#attributes' => ['class' => ['col-md-3', 'form--inline'], 'aria-label' => 'Search ' + $config->get('name')],
+      '#attributes' => ['class' => ['col-md-3', 'form--inline'], 'aria-label' => ['Search ' + $config->get('name')]],
     ];
     return $form;
   }
