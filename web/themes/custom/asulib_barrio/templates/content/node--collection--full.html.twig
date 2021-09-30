@@ -101,13 +101,18 @@
             <div class="col-md-12 xs-padding-bottom">
                 {{ drupal_block('about_this_collection_block') }}
             </div>
-            <h2 class="xs-padding-top">{{ 'Latest additions'|t }}</h2>
-            {{ drupal_block('latest_additions_to_collection_block') }}
+            <h2 class="xs-margin-top">{{ 'Latest additions'|t }}</h2>
+            <div class="col-md-12 xs-padding-bottom">
+                {{ drupal_block('latest_additions_to_collection_block') }}
+            </div>
         {% else %}
-            <h2>{{ 'Included in this collection'|t }}</h2>
-            {{ drupal_view('collections', 'sub_collections', node.id) }}
+            <h2 class="xs-margin-top">{{ 'Included in this collection'|t }}</h2>
+            <div class="col-md-12 xs-padding-bottom">
+                {{ drupal_view('collections', 'sub_collections', node.id) }}
+            </div>
         {% endif %}
-        <br/>
-        {{ content.field_preferred_citation }}
+        <div class="xs-padding-top">
+            {{ content.field_preferred_citation }}
+        </div>
     </div>
 </article>
