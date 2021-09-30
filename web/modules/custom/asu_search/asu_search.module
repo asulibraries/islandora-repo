@@ -72,25 +72,25 @@ function asu_search_preprocess_node(&$variables) {
         $variables['changed_ago'] =
           $date_formatter->formatTimeDiffSince($variables['node']->getChangedTime(), ['granularity' => 2, 'return_as_object' => TRUE])->toRenderable();
       }
-      if ($variables['node']->get('field_model') != NULL && count($variables['node']->get('field_model')) > 0) {
-        $model = $variables['node']->get('field_model')->referencedEntities()[0]->getName();
-        if ($model == "Complex Object") {
-          $complex_obj_child = \Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['field_member_of' => $variables['node']->id()]);
-          $utils = \Drupal::service('islandora.utils');
-          // loop through the children
-          foreach ($complex_obj_child as $child) {
-            // for each child, get the thumbnail media
-            // if no thumbnail media continue
-            // if found, return and set that thumbnail as a variable
-            $thumbn_term = $utils->getTermForUri('http://pcdm.org/use#ThumbnailImage');
-            $thumb_media = $utils->getMediaWithTerm($child, $thumbn_term);
-            if ($thumb_media) {
-              $variables['complex_obj_thumb'] = $thumb_media->get('field_media_image')->entity->createFileUrl();
-              break;
-            }
-          }
-        }
-      }
+      // if ($variables['node']->get('field_model') != NULL && count($variables['node']->get('field_model')) > 0) {
+      //   $model = $variables['node']->get('field_model')->referencedEntities()[0]->getName();
+      //   if ($model == "Complex Object") {
+      //     $complex_obj_child = \Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['field_member_of' => $variables['node']->id()]);
+      //     $utils = \Drupal::service('islandora.utils');
+      //     // loop through the children
+      //     foreach ($complex_obj_child as $child) {
+      //       // for each child, get the thumbnail media
+      //       // if no thumbnail media continue
+      //       // if found, return and set that thumbnail as a variable
+      //       $thumbn_term = $utils->getTermForUri('http://pcdm.org/use#ThumbnailImage');
+      //       $thumb_media = $utils->getMediaWithTerm($child, $thumbn_term);
+      //       if ($thumb_media) {
+      //         $variables['complex_obj_thumb'] = $thumb_media->get('field_media_image')->entity->createFileUrl();
+      //         break;
+      //       }
+      //     }
+      //   }
+      // }
     }
     if ($variables['view_mode'] == 'asu_complex_object') {
       $childs = \Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['field_member_of' => $variables['node']->id()]);
@@ -114,38 +114,39 @@ function asu_search_preprocess_views_view(&$variables) {
       $view->get_total_rows = TRUE;
       $view->execute($view->current_display);
       $variables['total_rows_formatted'] = number_format($view->total_rows);
-    }
-    // inspect the query from the URL and if there are any facets, suppress
-    // the inclusion of the collections block at the top of the /search page.
-    $facet_filters = \Drupal::request()->query->get('f');
-    if (is_array($facet_filters) && count($facet_filters) > 0) {
-      // Since there are multiple header elements, check to be sure that the
-      // "view" is in the header... and only get rid of the header element that
-      // matches for a theme name of "view_view__solr_search_content__block_1".
-      if (
-        array_key_exists('view', $variables['header']) && !(array_search('views_view__solr_search_content__block_1', $variables['header']['view']['#theme']) === FALSE)
-      ) {
-        unset($variables['header']['view']);
+    
+      // inspect the query from the URL and if there are any facets, suppress
+      // the inclusion of the collections block at the top of the /search page.
+      $facet_filters = \Drupal::request()->query->get('f');
+      if (is_array($facet_filters) && count($facet_filters) > 0) {
+        // Since there are multiple header elements, check to be sure that the
+        // "view" is in the header... and only get rid of the header element that
+        // matches for a theme name of "view_view__solr_search_content__block_1".
+        if (
+          array_key_exists('view', $variables['header']) && !(array_search('views_view__solr_search_content__block_1', $variables['header']['view']['#theme']) === FALSE)
+        ) {
+          unset($variables['header']['view']);
+        }
       }
-    }
-    // Replace the numeric part with the formatted numeric part in h2.
-    if (array_key_exists('area', $variables['header'])) {
-      preg_match_all("/\([^\]]*\)/", strip_tags($variables['header']['area']['#text']), $matches);
-      if (is_array($matches) && array_key_exists(0, $matches) && array_key_exists(0, $matches[0])) {
-        $item_count = number_format(str_replace(['(', ')'], '', ($matches[0][0])));
-        $variables['header']['area']['#text'] = '<h2 class="search-header">Matching Items (' .
-          $item_count . ')</h2>';
+      // Replace the numeric part with the formatted numeric part in h2.
+      if (array_key_exists('area', $variables['header'])) {
+        preg_match_all("/\([^\]]*\)/", strip_tags($variables['header']['area']['#text']), $matches);
+        if (is_array($matches) && array_key_exists(0, $matches) && array_key_exists(0, $matches[0])) {
+          $item_count = number_format(str_replace(['(', ')'], '', ($matches[0][0])));
+          $variables['header']['area']['#text'] = '<h2 class="search-header">Matching Items (' .
+            $item_count . ')</h2>';
+        }
       }
-    }
-    // Also do this in the results summary if it is displayed.
-    if (array_key_exists('result', $variables['header'])) {
-      $temp = $variables['header']['result']['#markup'];
-      $temp = str_replace(['Displaying ', ' - ', ' of '], '|', $temp);
-      $temp_parts = explode("|", $temp);
-      $variables['header']['result']['#markup'] =
-        (array_key_exists(1, $temp_parts) ? 'Displaying ' . number_format($temp_parts[1]) : '') .
-        (array_key_exists(2, $temp_parts) ? ' - ' . number_format($temp_parts[2]) : '') .
-        (array_key_exists(3, $temp_parts) ? ' of ' . number_format($temp_parts[3]) : '');
+      // Also do this in the results summary if it is displayed.
+      if (array_key_exists('result', $variables['header'])) {
+        $temp = $variables['header']['result']['#markup'];
+        $temp = str_replace(['Displaying ', ' - ', ' of '], '|', $temp);
+        $temp_parts = explode("|", $temp);
+        $variables['header']['result']['#markup'] =
+          (array_key_exists(1, $temp_parts) ? 'Displaying ' . number_format($temp_parts[1]) : '') .
+          (array_key_exists(2, $temp_parts) ? ' - ' . number_format($temp_parts[2]) : '') .
+          (array_key_exists(3, $temp_parts) ? ' of ' . number_format($temp_parts[3]) : '');
+      }
     }
   }
 }
