@@ -173,8 +173,8 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     $node_language = $node->get('field_language')->entity;
     $link_hreflang = [];
     if ($node_language) {
-      if ($node_language->hasField('langcode_2digits') && $node_language->get('langcode_2digits')->value) {
-        $link_hreflang = ['hreflang' => $node_language->get('langcode_2digits')->value];
+      if ($node_language->hasField('field_langcode_2digits') && $node_language->get('field_langcode_2digits')->value) {
+        $link_hreflang = ['hreflang' => $node_language->get('field_langcode_2digits')->value];
       }
     }
     if ($origfile && $origfile->bundle() <> 'remote_video') {
