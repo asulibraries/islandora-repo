@@ -99,7 +99,7 @@
     <div class="content-section row">
       <div class="col-md-5 file-container">
         {% if of_access %}
-          <a href="{{ url }}/view" class="image-link">{{ content.display_media_thumbnail }}</a>
+          <a href="{{ url }}/view" class="image-link"{% if hreflang_attr %} hreflang="{{ hreflang_attr }}"{% endif %}>{{ content.display_media_thumbnail }}</a>
         {% else %}
           {{ content.display_media_thumbnail }}
         {% endif %}
