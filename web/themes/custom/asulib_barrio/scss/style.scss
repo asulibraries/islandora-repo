@@ -246,3 +246,37 @@ article ul:not(.field__items):not(.contextual-links):not(.pagination) {
 .page-item {
   margin: 0 0.25rem;
 }
+
+ul.pagination {
+  padding-top: $small-padding;
+}
+
+.pager__item--next .page-link-icon:after {
+  display: inline-block;
+  font-size: inherit;
+  @include bg-arrow-icon('currentColor', right);
+  transform: rotate(270deg);
+  float: right;
+  height: $uds-component-pager-icon-height;
+  width: $uds-component-pager-icon-width;
+  margin-left: $uds-component-pager-icon-margin;
+}
+.page-item:nth-child(2) .page-link-icon:before {
+  display: inline-block;
+  font-size: inherit;
+  @include bg-arrow-icon('currentColor', left);
+  transform: rotate(90deg);
+  float: left;
+  height: $uds-component-pager-icon-height;
+  width: $uds-component-pager-icon-width;
+  margin-right: $uds-component-pager-icon-margin;
+}
+
+@media (max-width: 768px) {
+  .page-link-icon {
+    height: 35px;
+  }
+  .page-link span {
+    display: none;
+  }
+}
