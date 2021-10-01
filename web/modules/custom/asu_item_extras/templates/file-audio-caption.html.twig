@@ -17,7 +17,7 @@
 */
 #}
 <div id="audioTrack"></div>
-<audio {{ attributes }} controlslist="nodownload">
+<audio {{ attributes }} controlslist="nodownload" oncontextmenu="return false;">
 	{% for file in files %}
 		<source {{ file.source_attributes }} crossorigin="anonymous"/>
 		{% if tracks %}
