@@ -275,8 +275,11 @@ ul.pagination {
 @media (max-width: 768px) {
   .page-link-icon {
     height: 35px;
+    span {
+      display: none;
+    }
   }
-  .page-link span {
+  .page-number:not(.active) {
     display: none;
   }
 }
