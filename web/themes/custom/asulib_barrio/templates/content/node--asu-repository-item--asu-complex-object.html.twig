@@ -99,7 +99,7 @@
     <div class="content-section row">
       {% if drupal_view('display_media', 'thumbnail', node.id)|render|striptags|trim|length > 0 %}
         <div class="col-md-5 file-container">
-          <a href="{{ url }}/members" class="image-link">{{ drupal_view('display_media', 'thumbnail', node.id) }}</a>
+          <a href="/items/{{ node.id }}/members" class="image-link">{{ drupal_view('display_media', 'thumbnail', node.id) }}</a>
         </div>
         {% set desc_width = "col-md-7" %}
       {% else %}
@@ -123,7 +123,7 @@
       </div>
       <br class="clearfloat">
       <div><p><strong>
-        <a href="{{ url }}/members" class="btn btn-primary">View all associated media</a></strong></p></div><br/>
+        <a href="/items/{{ node.id }}/members" class="btn btn-primary">View all associated media</a></strong></p></div><br/>
     </div>
     <div id="details" class="content-section details">
       <h2>{{ 'Details'|t }}</h2>
@@ -170,7 +170,7 @@
       <div>
         <p>
           <strong>
-            <a class="icon-link" href="{{ url }}/metadata">
+            <a class="icon-link" href="/items/{{ node.id }}/metadata">
               <i class="fa fa-lg fa-list-ul"></i>
               <span>{{ 'View full metadata'|t }}</span>
             </a>

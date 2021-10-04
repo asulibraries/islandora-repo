@@ -99,7 +99,7 @@
     <div class="content-section row">
       <div class="col-md-5 file-container">
         {% if of_access %}
-          <a href="{{ url }}/view" class="image-link">{{ content.display_media_thumbnail }}</a>
+          <a href="/items/{{ node.id }}/view" class="image-link">{{ content.display_media_thumbnail }}</a>
         {% else %}
           {{ content.display_media_thumbnail }}
         {% endif %}
@@ -166,7 +166,7 @@
       <div>
         <p>
           <strong>
-            <a class="icon-link" href="{{ url }}/metadata"><i class="fa fa-lg fa-list-ul"></i><span>{{ 'View full metadata'|t }}</span></a>
+            <a class="icon-link" href="/items/{{ node.id }}/metadata"><i class="fa fa-lg fa-list-ul"></i><span>{{ 'View full metadata'|t }}</span></a>
           </strong>
         </p>
       </div>
