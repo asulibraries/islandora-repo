@@ -176,7 +176,7 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
         $of_file = ($origfile->hasField($source_field) && (is_object($origfile->get($source_field)) && $origfile->get($source_field)->referencedEntities() != NULL) ? $origfile->get($source_field)->referencedEntities()[0] : FALSE);
         if ($of_file) {
           $of_uri = $islandora_utils->getDownloadUrl($of_file);
-          $of_link = Link::fromTextAndUrl($this->t('Original'), Url::fromUri($of_uri, ['attributes' => ['class' => ['dropdown-item'], 'download' => TRUE]]));
+          $of_link = Link::fromTextAndUrl($this->t('Original'), Url::fromUri($of_uri, ['attributes' => ['class' => ['dropdown-item'], 'download' => TRUE, 'title' => $this->t('Download original')]]));
           $file_size = $origfile->get('field_file_size')->value;
           $download_info .= " " . $origfile->get('field_mime_type')->value;
         }
@@ -189,7 +189,7 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
         $sf_file = ($servicefile->hasField($source_field) && (is_object($servicefile->get($source_field)) && $servicefile->get($source_field)->referencedEntities() != NULL) ? $servicefile->get($source_field)->referencedEntities()[0] : FALSE);
         if ($sf_file) {
           $sf_uri = $islandora_utils->getDownloadUrl($sf_file);
-          $sf_link = Link::fromTextAndUrl($this->t('Derivative'), Url::fromUri($sf_uri, ['attributes' => ['class' => ['dropdown-item']]]));
+          $sf_link = Link::fromTextAndUrl($this->t('Derivative'), Url::fromUri($sf_uri, ['attributes' => ['class' => ['dropdown-item'], 'title' => $this->t('Download derivative')]]));
           // $download_info .= $servicefile->get('field_mime_type')->value;
         }
       }
@@ -199,7 +199,7 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
       if (!empty($source_field)) {
         $pmf_file = $masterfile->get($source_field)->referencedEntities()[0];
         $pmf_uri = $islandora_utils->getDownloadUrl($pmf_file);
-        $pmf_link = Link::fromTextAndUrl($this->t('Master'), Url::fromUri($pmf_uri, ['attributes' => ['class' => ['dropdown-item']]]));
+        $pmf_link = Link::fromTextAndUrl($this->t('Master'), Url::fromUri($pmf_uri, ['attributes' => ['class' => ['dropdown-item'], 'title' => $this->t('Download original')]]));
         // $download_info .= $masterfile->get('field_mime_type')->value;
       }
     }
