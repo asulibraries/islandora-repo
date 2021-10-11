@@ -169,7 +169,13 @@ function asu_search_views_pre_render(ViewExecutable $view) {
       $query_parts = \Drupal::request()->query->all();
       $query_string_parts = [];
       foreach ($query_parts as $query_key => $query_value) {
-        $query_string_parts[] = $query_key . '=' . $query_value;
+        if (is_array($query_value)) {
+          foreach ($query_value as $key_key => $query_value_value) {
+            $query_string_parts[] = $query_key . '[' . $key_key . ']=' . $query_value_value;
+          }
+        } else {
+          $query_string_parts[] = $query_key . '=' . $query_value;
+        }
       }
       $query_string = implode("&", $query_string_parts);
       $view->header['area_1']->options['content']['value'] .= ' | ' . "<a href='" .
