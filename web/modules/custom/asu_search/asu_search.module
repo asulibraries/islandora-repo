@@ -19,8 +19,7 @@ function asu_search_form_views_exposed_form_alter(&$form, \Drupal\Core\Form\Form
   if (!is_object($node) && $node) {
     $node = \Drupal::entityTypeManager()->getStorage('node')->load($node);
   }
-  if ($form['#id'] == 'views-exposed-form-solr-search-content-page-3') {
-
+  if ($form['#id'] == 'views-exposed-form-solr-search-content-page-3' || $form['#id'] == 'views-exposed-form-solr-search-content-page-4') {
     // Collection searching.
     // Since this block is configured to only display on content type = "Collection"
     // we don't need to check the node's content type.
