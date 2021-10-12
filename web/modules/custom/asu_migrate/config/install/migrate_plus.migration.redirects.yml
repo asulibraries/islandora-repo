@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - asu_migrate
+id: redirects
+migration_group: migrate_redirects
+label: 'Redirects for the legacy repository'
+source:
+  plugin: 'csv'
+  path: modules/custom/asu_taxonomies/migrate/redirect_info_keep.csv
+  # path: modules/custom/asu_taxonomies/migrate/redirect_info_prism.csv
+  header_row_count: 1
+  # fields:
+  #  title, "Content type", NID, "Legacy ID"
+  ids:
+    - NID
+process:
+  name: name
+  vid: vid
+destination:
+  plugin: 'entity:taxonomy_term'
+  default_bundle: note_types
+
+
+
+
