@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - field.field.taxonomy_term.language.field_authority_link
+    - field.field.taxonomy_term.language.field_langcode_2digits
     - taxonomy.vocabulary.language
   module:
     - controlled_access_terms
@@ -14,12 +15,12 @@ bundle: language
 mode: default
 content:
   description:
-    type: text_textfield
+    type: text_textarea
     weight: 0
     region: content
     settings:
-      size: 60
       placeholder: ''
+      rows: 5
     third_party_settings: {  }
   field_authority_link:
     weight: 31
@@ -28,6 +29,14 @@ content:
       placeholder_title: ''
     third_party_settings: {  }
     type: authority_link_default
+    region: content
+  field_langcode_2digits:
+    weight: 3
+    settings:
+      size: 2
+      placeholder: ''
+    third_party_settings: {  }
+    type: string_textfield
     region: content
   langcode:
     type: language_select
@@ -59,7 +68,7 @@ content:
     third_party_settings: {  }
   translation:
     weight: 10
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden: {  }
