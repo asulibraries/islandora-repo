@@ -28,7 +28,7 @@ source:
     uid: 1
 
 process:
-
+  field_file_size: file size
   name:
     source: item title
     plugin: substr
@@ -130,6 +130,8 @@ process:
       bundle_key: vid
       entity_type: taxonomy_term
       value_key: name
+  
+  field_file_size: file size
 
 destination:
   # These are 'document' media we're making. - could this be dynamic?
