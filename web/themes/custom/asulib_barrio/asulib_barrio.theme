@@ -259,3 +259,15 @@ function asulib_barrio_preprocess_image(&$variables) {
     $variables['attributes']['class'][] = 'card-img-top';
   }
 }
+
+/**
+ * Implements hook_preprocess_views_exposed_form()
+ */
+function asulib_barrio_preprocess_views_exposed_form(&$variables) {
+  if ($variables['form']['#id'] == "views-exposed-form-solr-search-content-page-3") {
+    $variables['form']['actions']['submit']['#attributes']['title'] = 'Search collection';
+  }
+  elseif ($variables['form']['#id'] == "views-exposed-form-solr-search-content-page-1") {
+    $variables['form']['actions']['submit']['#attributes']['title'] = 'Search';
+  }
+}
