@@ -96,6 +96,13 @@ function asulib_barrio_preprocess_node(&$variables) {
       $domain = $url_parts[2];
       $variables['oai_base_url'] = $site_url . 'oai/request?verb=GetRecord&metadataPrefix=oai_dc&identifier=oai:' . $domain . ':node-';
     }
+    $node_language = $node->get('field_language')->entity;
+    $variables['hreflang_attr'] = '';
+    if ($node_language) {
+      if ($node_language->hasField('field_langcode_2digits') && $node_language->get('field_langcode_2digits')->value) {
+        $variables['hreflang_attr'] = $node_language->get('field_langcode_2digits')->value;
+      }
+    }
     if ($variables['view_mode'] == 'complex_object_child_box') {
       // since we are pulling the $node var from the route, we're actually already on the parent obj page
       $parent_obj = \Drupal::request()->attributes->get('node');

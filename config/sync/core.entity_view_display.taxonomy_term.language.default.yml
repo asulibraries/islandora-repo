@@ -3,6 +3,7 @@ status: true
 dependencies:
   config:
     - field.field.taxonomy_term.language.field_authority_link
+    - field.field.taxonomy_term.language.field_langcode_2digits
     - taxonomy.vocabulary.language
   module:
     - text
@@ -32,5 +33,6 @@ content:
     region: content
 hidden:
   field_authority_link: true
+  field_langcode_2digits: true
   langcode: true
   search_api_excerpt: true
