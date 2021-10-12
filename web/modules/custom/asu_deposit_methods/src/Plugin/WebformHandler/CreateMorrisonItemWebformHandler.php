@@ -229,7 +229,7 @@ class CreateMorrisonItemWebformHandler extends WebformHandlerBase {
     if (array_key_exists('preferred_citation', $values) && $values['preferred_citation'] != "") {
       $node_args['field_preferred_citation'] = ['value' => $values['preferred_citation'], 'format' => 'basic_html'];
     }
-    
+
     if (array_key_exists('place_of_publication', $values) && $values['place_of_publication'] != "") {
       $node_args['field_place_published'] = ['value' => $values['place_of_publication']];
     }
@@ -307,7 +307,7 @@ class CreateMorrisonItemWebformHandler extends WebformHandlerBase {
     }
     else {
       $node = $this->createNode($webform_submission, $values, $values['item_title'], $taxo_term, $copyright_term, $perm_term, $member_of);
-      $this->depositUtils->createMedia($media_type, $field_name, $files[0], $node->id());
+      $this->depositUtils->createMedia($media_type, $field_name, $files[0], $node->id(), 'Public');
     }
 
     $webform_submission->setElementData('item_node', $node->id());

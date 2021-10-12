@@ -90,7 +90,7 @@ class DepositUtils {
   /**
    * Actually creates the media.
    */
-  public function createMedia($media_type, $field_name, $file_id, $nid) {
+  public function createMedia($media_type, $field_name, $file_id, $nid, $pterm='ASU Only') {
     $of_terms = $this->entityTypeManager->getStorage('taxonomy_term')->loadByProperties(['name' => 'Original File']);
     $original_file = reset($of_terms);
 
@@ -106,7 +106,7 @@ class DepositUtils {
     ];
 
     $taxo_manager = $this->entityTypeManager->getStorage('taxonomy_term');
-    $perm_term_arr = $taxo_manager->loadByProperties(['name' => 'ASU Only']);
+    $perm_term_arr = $taxo_manager->loadByProperties(['name' => $pterm]);
     $perm_term = reset($perm_term_arr);
 
     $media_args['field_access_terms'] = [
