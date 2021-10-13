@@ -15,12 +15,11 @@ source:
   #  title, "Content type", NID, "Legacy ID"
   ids:
     - NID
-constants:
-  # We want to generate 301 permanent redirects as opposed to 302 temporary redirects.
-  status_code: 301
-  source_prefix: 'https://repository.asu.edu/items/'
-  redirect_prefix: 'internal:/items/'
-  # redirect_prefix: 'internal:/collections/'
+  constants:
+    # We want to generate 301 permanent redirects as opposed to 302 temporary redirects.
+    status_code: 301
+    source_prefix: 'https://repository.asu.edu/items/'
+    redirect_prefix: 'internal:/items/'
 process:
   redirect_source:
     plugin: 'concat'
