@@ -39,7 +39,11 @@ process:
     default_value: constants/uid
     plugin: user_lookup
   bundle: file type
-  field_original_name: file original_filename
+  field_original_name: 
+    source: file original_filename
+    plugin: skip_on_value
+    method: row
+    value: NULL
 
   # Make the media an 'Original File'
   field_media_use:
