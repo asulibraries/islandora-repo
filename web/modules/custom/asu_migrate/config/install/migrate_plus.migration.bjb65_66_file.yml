@@ -50,6 +50,10 @@ process:
       plugin: transliteration
       source: file original_filename
     -
+      plugin: skip_on_value
+      method: row
+      value: NULL
+    -
       plugin: str_replace
       search: " "
       replace: "_"
