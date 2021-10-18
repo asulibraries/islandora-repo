@@ -48,13 +48,10 @@ process:
 
   # Lookup the migrated node in the node migration
   field_media_of:
-    -
-      plugin: concat
-      source: item id
-    -
-      plugin: migration_lookup
-      migration: c130_node
-      no_stub: true
+    source: item id
+    plugin: migration_lookup
+    migration: c130_node
+    no_stub: true
 
   created:
     plugin: format_date
