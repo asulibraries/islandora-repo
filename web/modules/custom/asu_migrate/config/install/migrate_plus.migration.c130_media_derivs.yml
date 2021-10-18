@@ -1,0 +1,92 @@
+# Uninstall this config when the feature is uninstalled
+dependencies:
+  enforced:
+    module:
+      - asu_migrate
+
+id: c130_media_derivs
+label: Import Collection 130 Derivative Media from CSV
+migration_group: migrate_c130_csv
+
+source:
+  plugin: csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/data/migration_data/c130_video_derivs.csv
+
+  # 1 means you have a header row, 0 means you don't
+  header_row_count: 1
+
+  # Each migration needs a unique key per row in the csv.  Here we're using the file path.
+  ids:
+    - item id
+
+  # You can't enter string literals into a process plugin, but you can give it a constant as a 'source'.
+  constants:
+    # We're tagging our media as Original Files
+    use: Service File
+    aunder: "a_"
+    # Everything gets created as admin
+    uid: 1
+
+process:
+
+  name: item title
+  uid: constants/uid
+  bundle: media type
+  field_media_use:
+    plugin: entity_lookup
+    source: constants/use
+    entity_type: taxonomy_term
+    value_key: name
+    bundle_key: vid
+    bundle: islandora_media_use
+
+  field_media_video_file:
+    source: item id
+    plugin: migration_lookup
+    migration: c130_file_derivs
+    no_stub: true
+
+  # Lookup the migrated node in the node migration
+  field_media_of:
+    -
+      plugin: concat
+      source: attachment id
+    -
+      plugin: migration_lookup
+      migration: c130_node
+      no_stub: true
+
+  created:
+    plugin: format_date
+    source: file created
+    from_format: 'Y-m-d G:i:s.uP'
+    to_format: 'U'
+    from_timezone: 'UTC'
+    to_timezone: 'UTC'
+
+  field_access_terms:
+    -
+      plugin: static_map
+      source: attachment derivative access
+      map:
+        1: "Public" #OpenAccess
+        2: "ASU Only" #ASU
+        3: "Private" #Closed
+    -
+      plugin: entity_lookup
+      bundle: islandora_access
+      bundle_key: vid
+      entity_type: taxonomy_term
+      value_key: name
+
+destination:
+  # These are 'document' media we're making. - could this be dynamic?
+  # perhaps even just a static map lookup by the mime type
+  plugin: 'entity:media'
+  default_bundle: document
+
+migration_dependencies:
+  required:
+    - migrate_plus.migration.c130_file_derivs
+    - migrate_plus.migration.c130_node
+  optional: {  }
