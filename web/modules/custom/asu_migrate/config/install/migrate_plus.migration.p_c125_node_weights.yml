@@ -1,0 +1,63 @@
+dependencies:
+  enforced:
+    module:
+      - asu_migrate
+
+id: p_c125_node_weights
+label: Import Collection 125 Weights and PIDs from CSV
+migration_group: migrate_c125_csv
+
+source:
+  plugin: csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/c125_weights.csv
+  header_row_count: 1
+  ids:
+    - nid
+  constants:
+    handle: "https://hdl.handle.net/2286/R.A."
+
+process:
+  nid:
+    plugin: skip_on_empty
+    method: process
+    source: nid
+  field_weight: weight
+  field_pid: good pid
+  field_handle:
+    -
+      plugin: skip_on_value
+      source: bad pid
+      method: process
+      value: 
+        - 14203
+        - 15344
+        - 18371
+        - 25308
+        - 38972
+        - 40090
+        - 40437
+        - 40573
+        - 41172
+        - 41906
+        - 41909
+        - 43370
+        - 48397
+        - 51207
+        - 51453
+        - 52412
+        - 54542
+        - 55878
+    -
+      plugin: concat
+      source:
+        - constants/handle
+        - bad pid
+
+
+destination:
+  plugin: 'entity:node'
+  default_bundle: asu_repository_item
+  overwrite_properties:
+    - field_weight
+    - field_pid
+    - field_handle
