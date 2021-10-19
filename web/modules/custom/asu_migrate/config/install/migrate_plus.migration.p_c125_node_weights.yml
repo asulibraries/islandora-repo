@@ -15,6 +15,7 @@ source:
     - nid
   constants:
     handle: "https://hdl.handle.net/2286/R.A."
+    handle_i: "https://hdl.handle.net/2286/R.I."
 
 process:
   nid:
@@ -23,7 +24,7 @@ process:
     source: nid
   field_weight: weight
   field_pid: good pid
-  field_handle:
+  h1:
     -
       plugin: skip_on_value
       source: bad pid
@@ -52,6 +53,41 @@ process:
       source:
         - constants/handle
         - bad pid
+  h2:
+    -
+      plugin: skip_on_value
+      source: bad pid
+      not_equal: true
+      method: process
+      value: 
+        - 14203
+        - 15344
+        - 18371
+        - 25308
+        - 38972
+        - 40090
+        - 40437
+        - 40573
+        - 41172
+        - 41906
+        - 41909
+        - 43370
+        - 48397
+        - 51207
+        - 51453
+        - 52412
+        - 54542
+        - 55878
+    -
+      plugin: concat
+      source:
+        - constants/handle_i
+        - bad pid
+  field_handle:
+    plugin: concat
+    source:
+      - '@h1'
+      - '@h2'
 
 
 destination:
