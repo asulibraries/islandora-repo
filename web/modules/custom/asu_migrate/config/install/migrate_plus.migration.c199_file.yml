@@ -104,9 +104,11 @@ process:
       - constants/basepath
       - storage path
 
-  uri: '@destination' # The destination entry from above
-
-
+  uri: 
+    plugin: file_copy
+    source:
+      - '@localfilelocation'
+      - '@destination' # The destination entry from above
 
 destination:
   # These are Drupal 'image' entities we're making, not just plain 'file' entities.
