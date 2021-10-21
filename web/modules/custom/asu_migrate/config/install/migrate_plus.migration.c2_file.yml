@@ -104,8 +104,11 @@ process:
       - constants/basepath
       - storage path
 
-  uri: '@destination' # The destination entry from above
-
+  uri:
+    plugin: file_copy
+    source:
+      - '@localfilelocation'
+      - '@destination' # The destination entry from above
 
 
 destination:
