@@ -532,8 +532,14 @@ function asu_permissions_user_insert(UserInterface $entity) {
         if (array_key_exists('preferred_first_name', $json['person'])) {
           $fname = $json['person']['preferred_first_name'] != '' ? $json['person']['preferred_first_name'] : $json['person']['first_name'];
         }
+        else {
+          $fname = $json['person']['first_name'];
+        }
         if (array_key_exists('preferred_last_name', $json['person'])) {
           $lname = $json['person']['preferred_last_name'] != '' ? $json['person']['preferred_last_name'] : $json['person']['last_name'];
+        }
+        else {
+          $lname = $json['person']['last_name'];
         }
         $honors = $json['honors'];
         $emplid = $json['person']['emplid'];
@@ -542,6 +548,7 @@ function asu_permissions_user_insert(UserInterface $entity) {
         $entity->set('field_last_name', $lname);
         $entity->set('field_honors', $honors);
         $entity->set('field_emplid', $emplid);
+        $campus = '';
         if ($honors) {
           $entity->addRole('honors_student');
           foreach ($json['stuplan'] as $plan) {
