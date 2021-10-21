@@ -4,13 +4,13 @@ dependencies:
     module:
       - asu_migrate
 
-id: c2_file_derivs
-label: Import Collection 2 Derivative Files
-migration_group: migrate_c2_csv
+id: missing_file_derivs
+label: Import Missing Service File Derivative Files
+migration_group: migrate_missing_csv
 
 source:
   plugin: csv
-  path: /var/www/html/drupal/web/modules/custom/asu_migrate/data/migration_data/att_file_2_v2.csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/missing_service_files.csv
   delimiter: ','
 
   # 1 means you have a header row, 0 means you don't
@@ -41,12 +41,12 @@ process:
   has_deriv:
     plugin: skip_on_empty
     method: row
-    source: video deriv file
+    source: derivative
   uid: constants/uid
   type: file type
   fname:
     plugin: str_replace
-    source: video deriv file
+    source: derivative
     search: "s3://digital-repository-media/repository/"
     replace: ""
 
