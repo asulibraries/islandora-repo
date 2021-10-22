@@ -1,0 +1,36 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - asu_migrate
+id: redirects_collections
+migration_group: migrate_redirects
+label: 'Redirects collections in either KEEP / PRISM for the legacy repository'
+source:
+  plugin: 'csv'
+  path: modules/custom/asu_landing_site/data/migration/col_url_export.csv
+  header_row_count: 1
+  # fields:
+  #  col id,title,url,"new url"
+  ids:
+    - NID
+  constants:
+    # We want to generate 301 permanent redirects as opposed to 302 temporary redirects.
+    status_code: 301
+    source_prefix: 'https://repository.asu.edu/items/'
+    redirect_prefix: 'items/'
+process:
+  redirect_source:
+    plugin: 'concat'
+    source:
+      - 'constants/redirect_prefix'
+      - NID
+  redirect_redirect:
+    plugin: 'concat'
+    source:
+      - 'constants/source_prefix'
+      - 'Legacy ID'
+destination:
+  plugin: 'entity:redirect'
+  
