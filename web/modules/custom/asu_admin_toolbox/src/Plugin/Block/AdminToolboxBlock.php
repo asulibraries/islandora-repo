@@ -249,6 +249,20 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
         $link = Link::fromTextAndUrl($this->t('Statistics &nbsp; <i class="fas fa-chart-bar"></i>'), $url);
         $link = $link->toRenderable();
         $output_links[] = render($link);
+
+        $group_contents = \Drupal::entityTypeManager()
+        ->getStorage('group_content')
+          ->loadByEntity($node);
+        if (count($group_contents)>0) {
+          foreach ($group_contents as $group_content) {
+            /** @var \Drupal\group\Entity\GroupContentInterface $group_content */
+            $group = $group_content->getGroup();
+          }
+          $group_url = Url::fromRoute('view.group_members.page_1', ['group' => $group->id()], ['attributes' => ['class' => 'nav-link']]);
+          $group_link = Link::fromTextAndUrl($this->t('Manage Users &nbsp; <i class="fas fa-users"></i>'), $group_url);
+          $group_link = $group_link->toRenderable();
+          $output_links[] = render($group_link);
+        }
       }
       if ($node->hasField('field_model') && $node->get('field_model')->entity != NULL
       ) {
