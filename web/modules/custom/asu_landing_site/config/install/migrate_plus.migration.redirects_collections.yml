@@ -7,6 +7,8 @@ dependencies:
 id: redirects_collections
 migration_group: migrate_redirects
 label: 'Redirects collections in either KEEP / PRISM for the legacy repository'
+# NOTE: cannot use the "url" value without trimming the leading "/", so for
+# this script, it will use the concat of a constant "collections" and "col id". 
 source:
   plugin: 'csv'
   path: modules/custom/asu_landing_site/data/migration/col_url_export.csv
@@ -14,23 +16,31 @@ source:
   # fields:
   #  col id,title,url,"new url"
   ids:
-    - NID
+    - 'col id'
   constants:
     # We want to generate 301 permanent redirects as opposed to 302 temporary redirects.
     status_code: 301
-    source_prefix: 'https://repository.asu.edu/items/'
-    redirect_prefix: 'items/'
+    redirect_prefix: 'collections/'
 process:
+  type:
+    plugin: skip_on_value
+    method: row
+    equals: true
+    value:
+      - '/collection-not-migrated'
+    source: 'new url'
+  # Path:
   redirect_source:
     plugin: 'concat'
     source:
       - 'constants/redirect_prefix'
-      - NID
+      - 'col id'
+  # To:
   redirect_redirect:
     plugin: 'concat'
     source:
-      - 'constants/source_prefix'
-      - 'Legacy ID'
+      - 'new url'
+  status_code: constants/status_code
 destination:
   plugin: 'entity:redirect'
   
