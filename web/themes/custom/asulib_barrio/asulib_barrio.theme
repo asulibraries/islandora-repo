@@ -73,7 +73,7 @@ function asulib_barrio_preprocess_breadcrumb(&$variables) {
           'attributes' => new Attribute(['class' => ['is_active']])
         ];
       }
-      else {
+      elseif ($current_route == "view.solr_search_content.page_1" || $curent_route == "view.solr_search_content.page_3") {
         $variables['breadcrumb'][] = [
           'text' => 'Search',
           'attributes' => new Attribute(['class' => ['is_active']])
