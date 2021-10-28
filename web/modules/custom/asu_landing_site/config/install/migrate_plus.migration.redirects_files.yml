@@ -27,16 +27,13 @@ process:
     method: row
     source: NID
   # Path/FROM
-  redirect_source:
-    plugin: 'concat'
-    source:
-      - 'url trimmed'
+  redirect_source: legacy path
   # To:
   redirect_redirect:
     plugin: 'concat'
     source:
       - 'constants/to_domain_prefix'
-      - subdomain
+      - repo
       - 'constants/to_domain_suffix'
       - NID
   status_code: constants/status_code
