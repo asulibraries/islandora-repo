@@ -187,10 +187,10 @@ class ASUStatisticsReportsController extends ControllerBase {
     ];
     $summary_row = $total_file_size;
     return [
+      '#theme' => 'asu_statistics_chart',
       '#download_url' => $download_url,
       '#download_stat_summary_url' => $download_stat_summary_url,
       '#download_downloads_url' => $download_downloads_url,
-      '#theme' => 'asu_statistics_chart',
       '#total_items' => $total_items,
       '#stats_table' => $stats_table,
       '#content_counts_table' => $content_counts_table,
@@ -279,7 +279,6 @@ class ASUStatisticsReportsController extends ControllerBase {
     return $this->doCsvDownload($written_filename);
   }
 
-
   /**
    * Will cause the browser to download the given file.
    *
@@ -356,7 +355,7 @@ class ASUStatisticsReportsController extends ControllerBase {
    *   The title value.
    */
   public function getTitle($node = NULL) {
-    return (($node) ? $node->getTitle() . " " : "") . "Statistics";
+    return (($node) ? $node->getTitle() . " - " : "") . "Statistics";
   }
 
   /**
