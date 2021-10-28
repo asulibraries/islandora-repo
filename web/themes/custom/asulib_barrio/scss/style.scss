@@ -163,9 +163,12 @@ article:not(.node--view-mode-full-metadata) .inline-list, .field--name-field-cop
   display: block;
 }
 
-.all-subjects .inline-list,
-.all-memberships .inline-list,
-.agents .inline-list,
+.all-subjects .inline-list li,
+.all-memberships .inline-list li,
+.agents .inline-list li{
+  display: inline;
+}
+
 .inline-list li {
   display: inline;
 }
