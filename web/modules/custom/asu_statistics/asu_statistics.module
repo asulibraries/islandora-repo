@@ -7,6 +7,17 @@
 
 /**
  * Implements hook_theme().
+ * 
+ * The asu_statistics_chart template will display the statistics for the entire
+ * site at /admin/reports/asu_statistics item accessions and downloads as well
+ * as a table which breaks down each collection's total size.
+ * 
+ * For each collection, this same template will display the statistics for
+ * all item accessions combined with a breakdown of content types in the
+ * collection at the route /collections/{node}/statistics for all.
+ * 
+ * The logic for populating all of these variables in in the
+ * ASUStatisticsReportController's main() method.
  */
 function asu_statistics_theme($existing, $type, $theme, $path) {
   return [
