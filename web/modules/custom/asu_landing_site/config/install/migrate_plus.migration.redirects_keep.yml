@@ -3,34 +3,34 @@ status: true
 dependencies:
   enforced:
     module:
-      - asu_migrate
+      - asu_landing_site
 id: redirects_keep
 migration_group: migrate_redirects
-label: 'Redirects for the legacy repository'
+label: 'Redirects for the legacy repository - KEEP items'
 source:
   plugin: 'csv'
-  path: modules/custom/asu_landing_site/data/migration/redirect_info_keep.csv
+  path: /var/www/html/drupal/web/modules/custom/asu_landing_site/data/redirect_info_keep.csv
   header_row_count: 1
-  # fields:
-  #  title, "Content type", NID, "Legacy ID"
   ids:
     - NID
   constants:
     # We want to generate 301 permanent redirects as opposed to 302 temporary redirects.
     status_code: 301
-    source_prefix: 'https://repository.asu.edu/items/'
-    redirect_prefix: 'items/'
+    redirect_prefix: 'https://keep.lib.asu.edu/items/'
+    source_prefix: 'items/'
 process:
+  # Path/FROM
   redirect_source:
+    plugin: 'concat'
+    source:
+      - 'constants/source_prefix'
+      - Legacy ID
+  # TO
+  redirect_redirect:
     plugin: 'concat'
     source:
       - 'constants/redirect_prefix'
       - NID
-  redirect_redirect:
-    plugin: 'concat'
-    source:
-      - 'constants/source_prefix'
-      - 'Legacy ID'
   status_code: constants/status_code
 destination:
   plugin: 'entity:redirect'

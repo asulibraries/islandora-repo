@@ -3,13 +3,13 @@ status: true
 dependencies:
   enforced:
     module:
-      - asu_migrate
+      - asu_landing_site
 id: redirects_files
 migration_group: migrate_redirects
-label: 'Redirects for the legacy repository'
+label: 'Redirects for the legacy repository files'
 source:
   plugin: 'csv'
-  path: modules/custom/asu_landing_site/data/migration/att_url_export_merged.csv
+  path: /var/www/html/drupal/web/modules/custom/asu_landing_site/data/att_url_export_matched.csv
   header_row_count: 1
   # fields:
   #  "att id", "item id", url, "NID keep", "NID prism", NID, subdomain
@@ -26,17 +26,14 @@ process:
     plugin: skip_on_empty
     method: row
     source: NID
-  # Path:
-  redirect_source:
-    plugin: 'concat'
-    source:
-      - 'url trimmed'
+  # Path/FROM
+  redirect_source: legacy_path
   # To:
   redirect_redirect:
     plugin: 'concat'
     source:
       - 'constants/to_domain_prefix'
-      - subdomain
+      - repo
       - 'constants/to_domain_suffix'
       - NID
   status_code: constants/status_code
