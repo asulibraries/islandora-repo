@@ -73,6 +73,12 @@ function asulib_barrio_preprocess_breadcrumb(&$variables) {
           'attributes' => new Attribute(['class' => ['is_active']])
         ];
       }
+      else {
+        $variables['breadcrumb'][] = [
+          'text' => 'Search',
+          'attributes' => new Attribute(['class' => ['is_active']])
+        ];
+      }
     }
   }
   $variables['#cache']['contexts'][] = 'url';
