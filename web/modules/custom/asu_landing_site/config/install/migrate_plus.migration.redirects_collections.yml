@@ -3,7 +3,7 @@ status: true
 dependencies:
   enforced:
     module:
-      - asu_migrate
+      - asu_landing_site
 id: redirects_collections
 migration_group: migrate_redirects
 label: 'Redirects collections in either KEEP / PRISM for the legacy repository'
@@ -11,7 +11,7 @@ label: 'Redirects collections in either KEEP / PRISM for the legacy repository'
 # this script, it will use the concat of a constant "collections" and "col id". 
 source:
   plugin: 'csv'
-  path: modules/custom/asu_landing_site/data/migration/col_url_export.csv
+  path: /var/www/html/drupal/web/modules/custom/asu_landing_site/data/col_url_export.csv
   header_row_count: 1
   # fields:
   #  col id,title,url,"new url"
@@ -29,17 +29,14 @@ process:
     value:
       - '/collection-not-migrated'
     source: 'new url'
-  # Path:
+  # Path/FROM
   redirect_source:
     plugin: 'concat'
     source:
       - 'constants/redirect_prefix'
       - 'col id'
   # To:
-  redirect_redirect:
-    plugin: 'concat'
-    source:
-      - 'new url'
+  redirect_redirect: new url
   status_code: constants/status_code
 destination:
   plugin: 'entity:redirect'
