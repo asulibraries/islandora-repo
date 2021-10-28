@@ -73,9 +73,30 @@ function asulib_barrio_preprocess_breadcrumb(&$variables) {
           'attributes' => new Attribute(['class' => ['is_active']])
         ];
       }
+      else {
+        $variables['breadcrumb'][] = [
+          'text' => 'Search',
+          'attributes' => new Attribute(['class' => ['is_active']])
+        ];
+      }
     }
   }
   $variables['#cache']['contexts'][] = 'url';
+}
+
+/**
+ * Implements hook_preprocess_region()
+ */
+function asulib_barrio_preprocess_region(&$variables) {
+  if ($variables['region'] == 'sidebar_first') {
+    $referer_url = $_SERVER['HTTP_REFERER'];
+    // If this referer_url contains "/search" make a link back to that...
+    $current_route = \Drupal::routeMatch()->getRouteName();
+    if ($current_route == 'entity.node.canonical' && $referer_url && strstr($referer_url, "/search")) {
+      $url = Url::fromUri($referer_url);
+      $variables['backtosearch'] = Link::fromTextAndUrl(" Back to search results", $url);
+    }
+  }
 }
 
 /**
@@ -90,6 +111,8 @@ function asulib_barrio_preprocess_node(&$variables) {
     $node = \Drupal::entityTypeManager()->getStorage('node')->load($node);
   }
   if ($node && $node->getType() == 'asu_repository_item') {
+    $referer_url = $_SERVER['HTTP_REFERER'];
+    $variables['referer_url'] = (($referer_url) ? "$referer_url<br>": "<div class='back_to_search'><a href='javascript:goback();'>Back to search results</a></div>");
     if ($variables['view_mode'] == 'full' || $variables['view_mode'] == 'asu_audio' || $variables['view_mode'] == 'asu_complex_object' || $variables['view_mode'] == 'asu_document' || $variables['view_mode'] == 'asu_image' || $variables['view_mode'] == 'asu_video' || $variables['view_mode'] == 'full_metadata') {
       $site_url = \Drupal::urlGenerator()->generateFromRoute('<front>', [], ['absolute' => TRUE]);
       $url_parts = explode('/', $site_url, -1);
