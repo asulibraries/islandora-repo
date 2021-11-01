@@ -14,7 +14,10 @@
 #}
 {% if content %}
   {% if backtosearch %}
-    {{ backtosearch }}
+    <div class="backtosearch-link">
+    <a href="{{ backtosearch }}"><i class="fas fa-arrow-left"></i></a> 
+    <a href="{{ backtosearch }}">Back to search</a>
+    </div>
   {% endif %}
   {{ content }}
 {% endif %}

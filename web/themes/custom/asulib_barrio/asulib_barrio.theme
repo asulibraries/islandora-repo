@@ -87,8 +87,7 @@ function asulib_barrio_preprocess_region(&$variables) {
     // If this referer_url contains "/search" make a link back to that...
     $current_route = \Drupal::routeMatch()->getRouteName();
     if ($current_route == 'entity.node.canonical' && $referer_url && strstr($referer_url, "/search")) {
-      $url = Url::fromUri($referer_url);
-      $variables['backtosearch'] = Link::fromTextAndUrl(" Back to search results", $url);
+      $variables['backtosearch'] = $referer_url;
     }
   }
 }
