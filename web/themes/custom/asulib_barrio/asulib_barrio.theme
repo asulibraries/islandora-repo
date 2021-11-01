@@ -116,7 +116,7 @@ function asulib_barrio_preprocess_node(&$variables) {
         }
       }
     }
-    if ($variables['view_mode'] == 'asu_video' || $variables['view_mode'] == 'asu_audio' || $variables['view_mode'] == 'asu_document' || $variables['view_mode'] == 'asu_image' || $variables['view_mode'] == 'complex_object_child_box') {
+    if ($variables['view_mode'] == 'asu_video' || $variables['view_mode'] == 'asu_audio' || $variables['view_mode'] == 'asu_document' || $variables['view_mode'] == 'asu_image' || $variables['view_mode'] == 'complex_object_child_box' || $variables['view_mode'] == 'full') {
       $default_config = \Drupal::config('asu_default_fields.settings');
       $origfile_term = $default_config->get('original_file_taxonomy_term');
       $origfile = \Drupal::entityTypeManager()->getStorage('media')->loadByProperties([

@@ -88,9 +88,6 @@ function repo_bento_search_block_view_alter(array &$build, BlockPluginInterface 
   if ($block_id === 'bento_second_i8_results_block') {
     $build['#pre_render'][] = 'repo_bento_search_bento_second_i8_results_block_prerender';
   }
-  if ($block_id === 'bento_legacy_repo_results_block') {
-    $build['#pre_render'][] = 'repo_bento_search_bento_legacy_repo_results_block_prerender';
-  }
   if ($block_id === 'bento_dataverse_results_block') {
     $build['#pre_render'][] = 'repo_bento_search_bento_dataverse_results_block_prerender';
   }
@@ -113,16 +110,6 @@ function repo_bento_search_bento_second_i8_results_block_prerender(array $build)
   $build['#configuration']['label'] = \Drupal::config('repo_bento_search.bentosettings')
     ->get('titles_second_i8') ?
       \Drupal::config('repo_bento_search.bentosettings')->get('titles_second_i8') : t('DIGITAL COLLECTIONS');
-  return $build;
-}
-
-/**
- * Prerender for legacy repo.
- */
-function repo_bento_search_bento_legacy_repo_results_block_prerender(array $build) {
-  $build['#configuration']['label'] = \Drupal::config('repo_bento_search.bentosettings')
-    ->get('titles_legacy_repo') ?
-      \Drupal::config('repo_bento_search.bentosettings')->get('titles_legacy_repo') : t('Repository');
   return $build;
 }
 

@@ -159,9 +159,16 @@ article:not(.node--view-mode-full-metadata) .inline-list, .field--name-field-cop
   padding: 0;
 }
 
-.all-subjects .inline-list,
-.all-memberships .inline-list,
-.agents .inline-list,
+.field:not(.field--name-field-note-para):not(.field--name-field-linked-agent) .inline-list li {
+  display: block;
+}
+
+.all-subjects .inline-list li,
+.all-memberships .inline-list li,
+.agents .inline-list li{
+  display: inline;
+}
+
 .inline-list li {
   display: inline;
 }
@@ -179,10 +186,6 @@ article:not(.node--view-mode-full-metadata) .inline-list, .field--name-field-cop
   content: '';
   margin-left: 0;
   margin-right: 0;
-}
-
-.field:not(.field--name-field-note-para) .inline-list li {
-  display: block;
 }
 
 /* Handling icon fallbacks for items */

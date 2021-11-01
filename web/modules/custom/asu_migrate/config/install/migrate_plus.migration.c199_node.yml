@@ -164,9 +164,13 @@ process:
     method: process
 
   field_series:
-    plugin: skip_on_empty
-    source: Series
-    method: process
+    -
+      plugin: skip_on_empty
+      source: Series
+      method: process
+    -
+      plugin: explode
+      delimiter: '||'
 
   title:
     -
@@ -475,3 +479,5 @@ process:
 destination:
   plugin: 'entity:node'
   default_bundle: asu_repository_item
+  overwrite_properties:
+    - field_series
