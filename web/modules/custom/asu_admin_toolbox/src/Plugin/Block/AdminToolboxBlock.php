@@ -293,10 +293,10 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
       // Legacy item link... look up the node's field_pid value and if the
       // first character is not an "a"
       // If both of these are true, then the link would be to:
-      // repository.asu.edu/items/{node.field_pid}
+      // legacy-repo.lib.asu.edu/items/{node.field_pid}
       $field_pid = $node->get('field_pid')->getString();
       if ($field_pid && (strtolower(substr($field_pid, 0, 1)) <> "a")) {
-        $legacy_uri = "https://repository.asu.edu/items/" . $field_pid;
+        $legacy_uri = "https://legacy-repo.lib.asu.edu/items/" . $field_pid;
         $url = Url::fromUri($legacy_uri, ['attributes' => ['target' => '_blank', 'rel' => 'noopener', 'class' => 'nav-link']]);
         $link = Link::fromTextAndUrl($this->t('Legacy URI<span class="visually-hidden">, opens in a new window</span> &nbsp; <i class="fas fa-external-link-alt"></i>'), $url);
         $link = $link->toRenderable();
