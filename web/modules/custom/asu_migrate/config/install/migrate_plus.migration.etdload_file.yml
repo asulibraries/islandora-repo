@@ -1,0 +1,92 @@
+dependencies:
+  enforced:
+    module:
+      - asu_migrate
+
+id: etdload_file
+label: Import ETD Files
+migration_group: migrate_etdload_csv
+
+source:
+  plugin: csv
+  path: /var/www/html/etdload/events.csv
+  delimiter: ','
+  header_row_count: 1
+  ids:
+    - file_path
+  constants:
+    destination_dir: 'fedora://c7'
+    uid: 1
+
+process:
+  uid: constants/uid
+  fname:
+    -
+      plugin: skip_on_empty
+      method: row
+      source: file_path
+    -
+      plugin: explode
+      delimiter: "/"
+    -
+      plugin: array_pop
+
+  field_original_name/value: '@fname'
+  filename:
+    -
+      plugin: transliteration
+      source: '@fname'
+    -
+      plugin: str_replace
+      search: " "
+      replace: "_"
+    -
+      plugin: str_replace
+      search: "'"
+      replace: ""
+    -
+      plugin: str_replace
+      search: ","
+      replace: ""
+    -
+      plugin: str_replace
+      search: ")"
+      replace: ""
+    -
+      plugin: str_replace
+      search: "("
+      replace: ""
+    -
+      plugin: str_replace
+      search: "&"
+      replace: ""
+    -
+      plugin: str_replace
+      search: "["
+      replace: ""
+    -
+      plugin: str_replace
+      search: "]"
+      replace: ""
+
+
+  # Construct the destination URI using the file name.
+  destination:
+    plugin: concat
+    delimiter: /
+    source:
+      - constants/destination_dir
+      - '@filename'
+
+  localfilelocation: file_path
+
+  uri:
+    plugin: file_copy
+    source:
+      - file_path
+      - '@destination' # The destination entry from above
+
+
+destination:
+  plugin: 'entity:file'
+  type: 'file'
