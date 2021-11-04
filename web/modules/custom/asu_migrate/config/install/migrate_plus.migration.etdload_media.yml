@@ -13,7 +13,7 @@ source:
   path: /var/www/html/etdload/events.csv
   header_row_count: 1
   ids:
-    - file_path
+    - item_id
   constants:
     use: Original File
     uid: 1
@@ -70,7 +70,7 @@ process:
       plugin: migration_lookup
       migration: etdload_file
       no_stub: true
-      source: file_path
+      source: item_id
 
   field_media_image:
     -
@@ -83,7 +83,7 @@ process:
       plugin: migration_lookup
       migration: etdload_file
       no_stub: true
-      source: file_path
+      source: item_id
 
   field_media_video_file:
     -
@@ -94,7 +94,7 @@ process:
       value: "Video"
     -
       plugin: migration_lookup
-      source: file_path
+      source: item_id
       migration: etdload_file
       no_stub: true
 
@@ -109,7 +109,7 @@ process:
       plugin: migration_lookup
       migration: etdload_file
       no_stub: true
-      source: file_path
+      source: item_id
 
   field_media_file:
     -
@@ -122,7 +122,7 @@ process:
       plugin: migration_lookup
       migration: etdload_file
       no_stub: true
-      source: file_path
+      source: item_id
 
   field_media_of:
     plugin: migration_lookup
