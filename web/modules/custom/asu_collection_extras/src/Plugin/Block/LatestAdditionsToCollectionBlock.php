@@ -103,7 +103,7 @@ class LatestAdditionsToCollectionBlock extends BlockBase implements ContainerFac
     $children_nids = $this->asuUtils->getNodeChildren($collection_node, TRUE, 4);
 
     $rendered_nodes = $this->renderNodes($children_nids);
-    if (count($children_nids) > 4) {
+    if (count($children_nids) > 0) {
       $rendered_nodes .= '<br class="clearfloat"><div><p><strong><a class="btn btn-maroon" href="' .
          '/collections/'. $collection_node->id() . '/search/?search_api_fulltext=">Explore all items</a></strong></p></div>';
     }
