@@ -3,17 +3,18 @@ status: true
 dependencies:
   module:
     - field_permissions
-    - node
-    - taxonomy
+    - group
 third_party_settings:
   field_permissions:
     permission_type: public
-id: node.field_preservation_state
-field_name: field_preservation_state
-entity_type: node
-type: entity_reference
+id: group.field_group_description
+field_name: field_group_description
+entity_type: group
+type: string
 settings:
-  target_type: taxonomy_term
+  max_length: 255
+  is_ascii: false
+  case_sensitive: false
 module: core
 locked: false
 cardinality: 1
