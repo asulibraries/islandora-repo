@@ -89,7 +89,7 @@ function asulib_barrio_preprocess_region(&$variables) {
     $current_route = \Drupal::routeMatch()->getRouteName();
     if ($current_route == 'entity.node.canonical' && $referer_url && strstr($referer_url, "/search") &&
       strstr($referer_url, $this_server)) {
-      $variables['backtosearch'] = $referer_url . '|' . $this_url;
+      $variables['backtosearch'] = $referer_url;
     }
   }
 }
