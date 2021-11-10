@@ -124,7 +124,10 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
     }
 
     $contribs = [];
-    if (array_key_exists('your_name', $values)) {
+    if (array_key_exists('full_name', $values)) {
+      array_push($contribs, $this->depositUtils->getOrCreateTerm($values['full_name']['last'] . ", " . $values['full_name']['first'], 'person', 'relators:aut'));
+    }
+    else if (array_key_exists('your_name', $values)) {
       array_push($contribs, $this->depositUtils->getOrCreateTerm($values['your_name'], 'person', 'relators:aut'));
     }
     else {
