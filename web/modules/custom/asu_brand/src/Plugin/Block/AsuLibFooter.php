@@ -3,7 +3,6 @@
 namespace Drupal\asu_brand\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
-use Drupal\Core\Url;
 
 /**
  * Provides a 'AsuLibFooter' block.
@@ -81,7 +80,7 @@ class AsuLibFooter extends BlockBase {
                   </h5>
                 </div>
                 <div id="footlink-two" class="collapse card-body show" aria-labelledby="footlink-header-two">
-                  <a class="nav-link" href="/about/termsofdeposit" title="Terms of Deposit">Terms of Deposit</a>
+                  <a class="nav-link" href="https://keep.lib.asu.edu/about/termsofdeposit" title="Terms of Deposit">Terms of Deposit</a>
                   <a class="nav-link" href="https://libguides.asu.edu/digitalrepository/home" title="ASU Digital Repository Guide">Sharing Materials: ASU Digital Repository Guide</a>
                   <a class="nav-link" href="http://libguides.asu.edu/openaccess" title="Open Access at ASU">Open Access at ASU</a>
                 </div>
