@@ -126,19 +126,27 @@ class ViewerController extends ControllerBase {
       if (in_array('administrator', $account->getRoles())) {
         return AccessResult::allowed();
       }
-      // TODO - this may be too restrictive?
+      // @todo this may be too restrictive?
       if ($node->access('view', $account)) {
-        // user can at least view the node
+        // User can at least view the node
         // can user view the media though?
         $islandora_utils = \Drupal::service('islandora.utils');
         $origfile_term = $islandora_utils->getTermForUri('http://pcdm.org/use#OriginalFile');
         $origfile = $islandora_utils->getMediaWithTerm($node, $origfile_term);
-
-        if (!is_null($origfile) && $origfile->access('view', $account)) {
-          // User can access media
-          $date = new \DateTime();
-          $today = $date->format("c");
-          if ( $node->hasField('field_embargo_release_date') && $node->get('field_embargo_release_date') && $node->get('field_embargo_release_date')->value >= $today) {
+        $svfile_term = $islandora_utils->getTermForUri('http://pcdm.org/use#ServiceFile');
+        $svfile = $islandora_utils->getMediaWithTerm($node, $svfile_term);
+        $date = new \DateTime();
+        $today = $date->format("c");
+        if (!is_null($svfile) && $svfile->access('view', $account)) {
+          if ($node->hasField('field_embargo_release_date') && $node->get('field_embargo_release_date') && $node->get('field_embargo_release_date')->value >= $today) {
+            return AccessResult::forbidden();
+          }
+          return AccessResult::allowed();
+        }
+        elseif (!is_null($origfile) && $origfile->access('view', $account)) {
+          // User can access media.
+          
+          if ($node->hasField('field_embargo_release_date') && $node->get('field_embargo_release_date') && $node->get('field_embargo_release_date')->value >= $today) {
             return AccessResult::forbidden();
           }
           return AccessResult::allowed();
@@ -146,7 +154,8 @@ class ViewerController extends ControllerBase {
         elseif (is_null($origfile)) {
           // Must allow in order for the redirect in renderView above to work.
           return AccessResult::allowed();
-        } else {
+        }
+        else {
           return AccessResult::forbidden();
         }
       }

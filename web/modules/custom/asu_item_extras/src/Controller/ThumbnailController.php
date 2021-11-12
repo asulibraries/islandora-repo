@@ -55,7 +55,7 @@ class ThumbnailController extends ControllerBase {
         $utils = \Drupal::service('islandora.utils');
         $thumbn_term = $utils->getTermForUri('http://pcdm.org/use#ThumbnailImage');
 
-        // get the thumbnail
+        // Get the thumbnail.
         $thumb_media = $utils->getMediaWithTerm($node, $thumbn_term);
         if ($thumb_media) {
           $file = $thumb_media->get('field_media_image')->entity;
@@ -67,7 +67,8 @@ class ThumbnailController extends ControllerBase {
           $url = file_create_url($file->getFileUri());
           if (str_contains($url, "keep.lib") || str_contains($url, "prism.lib")) {
             $response = new RedirectResponse($url);
-          } else {
+          }
+          else {
             $response = (new TrustedRedirectResponse($url))->addCacheableDependency((new CacheableMetadata())->setCacheMaxAge(0));
           }
           return $response;
