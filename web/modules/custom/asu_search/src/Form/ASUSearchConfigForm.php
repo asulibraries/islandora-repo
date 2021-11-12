@@ -1,14 +1,13 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\asu_search\Form\ASUSearchConfigForm
- */
 namespace Drupal\asu_search\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 
+/**
+ *
+ */
 class ASUSearchConfigForm extends ConfigFormBase {
 
   /**
@@ -43,11 +42,11 @@ class ASUSearchConfigForm extends ConfigFormBase {
     ];
     $form['fieldset_wrapper']['asu_search_filters'] = [
       '#type' => 'select',
-      '#multiple' => true,
+      '#multiple' => TRUE,
       '#size' => 8,
       '#title' => $this->t('Filters'),
       '#description' => $this->t('Select facets'),
-      '#options' => $this-> get_facets(),
+      '#options' => $this->get_facets(),
       '#default_value' => $config->get('content_change_digest_facets'),
     ];
 
@@ -68,9 +67,10 @@ class ASUSearchConfigForm extends ConfigFormBase {
   /**
    *
    */
-  function get_facets() {
-    // run a query against in solr for all of the possible facets.
-    $facets = array();
+  public function get_facets() {
+    // Run a query against in solr for all of the possible facets.
+    $facets = [];
     return $facets;
   }
+
 }

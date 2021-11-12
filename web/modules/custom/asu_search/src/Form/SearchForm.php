@@ -2,8 +2,6 @@
 
 namespace Drupal\asu_search\Form;
 
-use Drupal\Component\Utility\Html;
-use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -58,7 +56,7 @@ class SearchForm extends FormBase {
       '#size' => 30,
       '#weight' => '0',
       '#title_display' => 'invisible',
-      '#attributes' => ['placeholder' => $placeholder ],
+      '#attributes' => ['placeholder' => $placeholder],
     ];
     $form['actions']['submit'] = [
       '#type' => 'submit',

@@ -34,7 +34,8 @@ class TypedRelationBriefFormatter extends EntityReferenceLabelFormatter {
         if (!$delta_to_update) {
           $unique_tids[$delta] = $this_tid;
           $elements[$delta]['#suffix'] = ' (' . $this->cleanUpRelator($rel_type) . ')';
-        } else {
+        }
+        else {
           $delta_to_update = array_search($this_tid, $unique_tids);
           $suffix_before = $elements[$delta_to_update]['#suffix'];
           $suffix_parts = explode(" ( ", $suffix_before);
@@ -50,6 +51,9 @@ class TypedRelationBriefFormatter extends EntityReferenceLabelFormatter {
     return $elements;
   }
 
+  /**
+   *
+   */
   private function cleanUpRelator($rel_type) {
     $re = '/(.*) \(\S*/m';
     $str = $rel_type;

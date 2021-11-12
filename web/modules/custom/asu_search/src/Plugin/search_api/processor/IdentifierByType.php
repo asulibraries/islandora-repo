@@ -74,4 +74,5 @@ class IdentifierByType extends ProcessorPluginBase {
       }
     }
   }
+
 }
