@@ -4,6 +4,9 @@ namespace Drupal\asu_mods\Encoder;
 
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 
+/**
+ *
+ */
 class BarrettEncoder extends XmlEncoder {
 
   const ROOT_NODE_NAME = 'xml_root_node_name';
@@ -46,13 +49,11 @@ class BarrettEncoder extends XmlEncoder {
   public function encode($data, $format, array $context = []) {
     $context[self::ROOT_NODE_NAME] = 'xml';
     $new_data = [];
-    foreach($data as $k=>$v) {
+    foreach ($data as $k => $v) {
       array_push($new_data, ['user' => $v]);
     }
     $nd = ['submitted_list' => $new_data];
     $xml = parent::encode($nd, $format, $context);
-
-
 
     $search = [
       '<?xml version="1.0"?>\n',
@@ -69,4 +70,5 @@ class BarrettEncoder extends XmlEncoder {
 
     return str_replace($search, $replace, $xml);
   }
+
 }
