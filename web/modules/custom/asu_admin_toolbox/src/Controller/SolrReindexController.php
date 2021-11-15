@@ -4,12 +4,6 @@ namespace Drupal\asu_admin_toolbox\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
 use Drupal\Core\Url;
-use Drupal\Core\Access\AccessResult;
-use Drupal\Core\Routing\RouteMatch;
-use Drupal\Core\Messenger\MessengerInterface;
-use Drupal\node\NodeInterface;
-use Drupal\node\Entity\Node;
-use Drupal\Core\Session\AccountInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
@@ -27,7 +21,7 @@ class SolrReindexController extends ControllerBase {
 
   /**
    * The messenger service.
-   * 
+   *
    * @var \Drupal\Core\Messenger\MessengerInterface
    */
   protected $messenger;

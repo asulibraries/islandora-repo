@@ -7,9 +7,6 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Url;
-use Symfony\Component\Process\Process;
-use Symfony\Component\Process\Exception\ProcessFailedException;
 use Drupal\asu_islandora_utils\AsuUtils;
 
 /**
@@ -21,8 +18,7 @@ use Drupal\asu_islandora_utils\AsuUtils;
  *   type = "node"
  * )
  */
-class SolrReindexChildAction extends ActionBase implements ContainerFactoryPluginInterface
-{
+class SolrReindexChildAction extends ActionBase implements ContainerFactoryPluginInterface {
 
   /**
    * The entityTypeManager definition.
@@ -110,8 +106,7 @@ class SolrReindexChildAction extends ActionBase implements ContainerFactoryPlugi
   /**
    * {@inheritdoc}
    */
-  public function access($object, AccountInterface $account = NULL, $return_as_object = FALSE)
-  {
+  public function access($object, AccountInterface $account = NULL, $return_as_object = FALSE) {
     return $object->access('edit', $account, $return_as_object);
   }
 

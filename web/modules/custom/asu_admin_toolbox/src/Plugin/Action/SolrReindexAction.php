@@ -6,9 +6,6 @@ use Drupal\Core\Action\ActionBase;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Url;
-use Symfony\Component\Process\Process;
-use Symfony\Component\Process\Exception\ProcessFailedException;
 
 /**
  * Reindex an item in Solr.
@@ -19,8 +16,7 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
  *   type = "node"
  * )
  */
-class SolrReindexAction extends ActionBase implements ContainerFactoryPluginInterface
-{
+class SolrReindexAction extends ActionBase implements ContainerFactoryPluginInterface {
 
   /**
    * Constructor.
@@ -37,7 +33,7 @@ class SolrReindexAction extends ActionBase implements ContainerFactoryPluginInte
       $plugin_id,
       $plugin_definition
   ) {
-      parent::__construct($configuration, $plugin_id, $plugin_definition);
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
   }
 
   /**
@@ -73,9 +69,8 @@ class SolrReindexAction extends ActionBase implements ContainerFactoryPluginInte
   /**
    * {@inheritdoc}
    */
-  public function access($object, AccountInterface $account = NULL, $return_as_object = FALSE)
-  {
-      return $object->access('edit', $account, $return_as_object);
+  public function access($object, AccountInterface $account = NULL, $return_as_object = FALSE) {
+    return $object->access('edit', $account, $return_as_object);
   }
 
 }

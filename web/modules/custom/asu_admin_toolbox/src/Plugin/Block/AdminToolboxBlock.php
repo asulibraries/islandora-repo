@@ -12,7 +12,6 @@ use Drupal\Core\Session\AccountProxy;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Drupal\group\GroupMembershipLoaderInterface;
-use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Site\Settings;
 
@@ -159,7 +158,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
         ->getStorage('taxonomy_term')
         ->load($field_model_tid);
       $is_complex_object = (((isset($field_model_term) && is_object($field_model_term)) ?
-        $field_model_term->getName() : '') == 'Complex Object');
+        $field_model_term->getName() : '') == 'Complex Object' || 'Paged Content');
     }
     $canUpdate = $node->access('update', $this->currentUser);
     $output_links = [];
@@ -182,10 +181,10 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
       if ($is_complex_object) {
         $link = Link::fromTextAndUrl($this->t('Add media &nbsp; <i class="fas fa-plus-circle"></i>'), $url);
         if ($config->get('perf_archive_default_collection')) {
-          if ($node->get('field_member_of') && $node->get('field_member_of')->entity->id() == $config->get('perf_archive_default_collection')){
+          if ($node->get('field_member_of') && $node->get('field_member_of')->entity->id() == $config->get('perf_archive_default_collection')) {
             $pa_url = Url::fromRoute('self_deposit.perf_archive.add_child', [
               'node_type' => 'asu_repository_item',
-              'parent' => $node->id()
+              'parent' => $node->id(),
             ], ['attributes' => ['class' => 'nav-link']]);
             $link = Link::fromTextAndUrl($this->t('Add Performance Archive Child item &nbsp; <i class="fas fa-plus-circle"></i>'), $pa_url);
           }
@@ -194,7 +193,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
           if ($node->get('field_member_of') && $node->get('field_member_of')->entity && $node->get('field_member_of')->entity->id() == $deposit_config->get('sheet_music_default_collection')) {
             $pa_url = Url::fromRoute('asu_deposit_methods.sheet_music.add_child', [
               'node_type' => 'asu_repository_item',
-              'parent' => $node->id()
+              'parent' => $node->id(),
             ], ['attributes' => ['class' => 'nav-link']]);
             $link = Link::fromTextAndUrl($this->t('Add Sheet Music Child item &nbsp; <i class="fas fa-plus-circle"></i>'), $pa_url);
           }
@@ -203,9 +202,9 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
       else {
         $link = Link::fromTextAndUrl($this->t('Add item &nbsp; <i class="fas fa-plus-circle"></i>'), $url);
         if ($is_collection && $config->get('perf_archive_default_collection')) {
-          if ($node->id() == $config->get('perf_archive_default_collection')){
+          if ($node->id() == $config->get('perf_archive_default_collection')) {
             $pa_url = Url::fromRoute('self_deposit.perf_archive.add', [
-              'node_type' => 'asu_repository_item'
+              'node_type' => 'asu_repository_item',
             ], ['attributes' => ['class' => 'nav-link']]);
             $link = Link::fromTextAndUrl($this->t('Add Performance Archive item &nbsp; <i class="fas fa-plus-circle"></i>'), $pa_url);
           }
@@ -213,7 +212,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
         if ($is_collection && $deposit_config->get('sheet_music_default_collection')) {
           if ($node->id() == $deposit_config->get('sheet_music_default_collection')) {
             $pa_url = Url::fromRoute('asu_deposit_methods.sheet_music.add', [
-              'node_type' => 'asu_repository_item'
+              'node_type' => 'asu_repository_item',
             ], ['attributes' => ['class' => 'nav-link']]);
             $link = Link::fromTextAndUrl($this->t('Add Sheet Music item &nbsp; <i class="fas fa-plus-circle"></i>'), $pa_url);
           }
@@ -234,7 +233,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
       $link = $link->toRenderable();
       $output_links[] = render($link);
       if ($canUpdate && $is_complex_object) {
-        // Reorder items
+        // Reorder items.
         $url = Url::fromUri(
               $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
               '/node/' . $node->id() . '/members/reorder', ['attributes' => ['class' => 'nav-link']]
@@ -251,9 +250,9 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
         $output_links[] = render($link);
 
         $group_contents = \Drupal::entityTypeManager()
-        ->getStorage('group_content')
+          ->getStorage('group_content')
           ->loadByEntity($node);
-        if (count($group_contents)>0) {
+        if (count($group_contents) > 0) {
           foreach ($group_contents as $group_content) {
             /** @var \Drupal\group\Entity\GroupContentInterface $group_content */
             $group = $group_content->getGroup();
@@ -293,7 +292,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
       // Legacy item link... look up the node's field_pid value and if the
       // first character is not an "a"
       // If both of these are true, then the link would be to:
-      // legacy-repo.lib.asu.edu/items/{node.field_pid}
+      // legacy-repo.lib.asu.edu/items/{node.field_pid}.
       $field_pid = $node->get('field_pid')->getString();
       if ($field_pid && (strtolower(substr($field_pid, 0, 1)) <> "a")) {
         $legacy_uri = "https://legacy-repo.lib.asu.edu/items/" . $field_pid;
@@ -333,14 +332,14 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
       $path = $mapper->getFedoraPath($node->uuid());
       $path = trim($path, '/');
       $fedora_uri = "$fedora_root/$path";
-      $url = Url::fromUri($fedora_uri, ['attributes' => ['target' => '_blank', 'rel' =>'noopener', 'class' => 'nav-link']]);
+      $url = Url::fromUri($fedora_uri, ['attributes' => ['target' => '_blank', 'rel' => 'noopener', 'class' => 'nav-link']]);
       $link = Link::fromTextAndUrl($this->t('Fedora URI<span class="visually-hidden">, opens in a new window</span> &nbsp; <i class="fas fa-external-link-alt"></i>'), $url);
       $link = $link->toRenderable();
       $output_links[] = render($link);
     }
     return [
       '#markup' => (count($output_links) > 0) ?
-      "<div class='pseudo_block'><h2>Admin toolbox</h2><nav class='sidebar'>".implode('', $output_links)."</nav></div>" :
+      "<div class='pseudo_block'><h2>Admin toolbox</h2><nav class='sidebar'>" . implode('', $output_links) . "</nav></div>" :
       "",
       '#attached' => [
         'library' => [
@@ -394,4 +393,3 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
   }
 
 }
-
