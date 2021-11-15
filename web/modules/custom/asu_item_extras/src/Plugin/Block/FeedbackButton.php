@@ -13,7 +13,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 
-
 /**
  * Provides a 'Feedback' Block.
  *
@@ -61,7 +60,7 @@ class FeedbackButton extends BlockBase implements ContainerFactoryPluginInterfac
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, Request $currentRequest, RouteMatchInterface$route_match, EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, Request $currentRequest, RouteMatchInterface $route_match, EntityTypeManagerInterface $entity_type_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->currentRequest = $currentRequest;
     $this->routeMatch = $route_match;
@@ -96,7 +95,8 @@ class FeedbackButton extends BlockBase implements ContainerFactoryPluginInterfac
     }
     if (isset($node)) {
       $cid = $this->getCollectionParent($node);
-    } else {
+    }
+    else {
       $cid = 0;
     }
     $url_base = $this->currentRequest->getSchemeAndHttpHost();

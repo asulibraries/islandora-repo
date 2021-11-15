@@ -60,7 +60,7 @@ class AboutThisItemBlock extends BlockBase implements ContainerFactoryPluginInte
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
    *   The entity type manager.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $route_match, RequestStack$request_stack, EntityTypeManagerInterface $entity_type_manager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $route_match, RequestStack $request_stack, EntityTypeManagerInterface $entity_type_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->routeMatch = $route_match;
     $this->requestStack = $request_stack;
@@ -97,7 +97,7 @@ class AboutThisItemBlock extends BlockBase implements ContainerFactoryPluginInte
     // Since this block should be set to display on node/[nid] pages that are
     // either "Repository Item", "ASU Repository Item", or "Collection",
     // the underlying node can be accessed via the path.
-    // TODO - use dependency injection.
+    // @todo use dependency injection.
     $node = $this->routeMatch->getParameter('node');
     $node = is_string($node) ? $this->entityTypeManager->getStorage('node')->load($node) : $node;
     if ($node) {
@@ -112,7 +112,7 @@ class AboutThisItemBlock extends BlockBase implements ContainerFactoryPluginInte
     $output_links = [];
     // Add a link for the "Overview" of this node.
     $variables['nodeid'] = $nid;
-    $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/items/' .$nid, ['attributes' => ['class' => 'nav-link']]);
+    $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/items/' . $nid, ['attributes' => ['class' => 'nav-link']]);
     $link = Link::fromTextAndUrl($this->t('Overview'), $url);
     $link = $link->toRenderable();
     $output_links[] = render($link);
@@ -142,8 +142,7 @@ class AboutThisItemBlock extends BlockBase implements ContainerFactoryPluginInte
   /**
    * {@inheritdoc}
    */
-  public function getCacheTags()
-  {
+  public function getCacheTags() {
     if ($this->routeMatch->getParameter('node')) {
       $node = $this->routeMatch->getParameter('node');
     }
@@ -152,7 +151,8 @@ class AboutThisItemBlock extends BlockBase implements ContainerFactoryPluginInte
     }
     if (!isset($node)) {
       return parent::getCacheTags();
-    } else {
+    }
+    else {
       return Cache::mergeTags(parent::getCacheTags(), ['node:' . $node->id()]);
     }
   }
@@ -160,8 +160,7 @@ class AboutThisItemBlock extends BlockBase implements ContainerFactoryPluginInte
   /**
    * {@inheritdoc}
    */
-  public function getCacheContexts()
-  {
+  public function getCacheContexts() {
     // If you depends on \Drupal::routeMatch().
     // You must set context of this block with 'route' context tag.
     // Every new route this block will rebuild.
@@ -169,4 +168,3 @@ class AboutThisItemBlock extends BlockBase implements ContainerFactoryPluginInte
   }
 
 }
-

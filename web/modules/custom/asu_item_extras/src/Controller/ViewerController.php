@@ -145,7 +145,6 @@ class ViewerController extends ControllerBase {
         }
         elseif (!is_null($origfile) && $origfile->access('view', $account)) {
           // User can access media.
-          
           if ($node->hasField('field_embargo_release_date') && $node->get('field_embargo_release_date') && $node->get('field_embargo_release_date')->value >= $today) {
             return AccessResult::forbidden();
           }

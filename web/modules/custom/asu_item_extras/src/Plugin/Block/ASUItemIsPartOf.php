@@ -174,7 +174,8 @@ class ASUItemIsPartOf extends BlockBase implements ContainerFactoryPluginInterfa
         $nid = $nid->id();
       }
       return Cache::mergeTags(parent::getCacheTags(), ['node:' . $nid]);
-    } else {
+    }
+    else {
       // Return default tags instead.
       return parent::getCacheTags();
     }

@@ -61,7 +61,7 @@ class ExploreForm extends FormBase {
     $form['members_link'] = [
       '#markup' =>
       (($link) ?
-        render($link):
+        render($link) :
         ""),
     ];
     $form['search_api_fulltext'] = [
@@ -92,4 +92,3 @@ class ExploreForm extends FormBase {
   }
 
 }
-

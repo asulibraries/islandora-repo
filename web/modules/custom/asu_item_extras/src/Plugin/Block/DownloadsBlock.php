@@ -61,7 +61,6 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
    */
   protected $currentUser;
 
-
   /**
    * Constructor for About this Collection Block.
    *
@@ -133,15 +132,17 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
 
     if (array_key_exists('origfile', $block_config)) {
       $origfile = $block_config['origfile'];
-    } else {
+    }
+    else {
       $origfile_term = $default_config->get('original_file_taxonomy_term');
       $origfile = $this->entityTypeManager->getStorage('media')->loadByProperties([
         'field_media_use' => ['target_id' => $origfile_term],
-        'field_media_of' => ['target_id' => $nid]
+        'field_media_of' => ['target_id' => $nid],
       ]);
       if (count($origfile) > 0) {
         $origfile = reset($origfile);
-      } else {
+      }
+      else {
         $origfile = NULL;
       }
     }
@@ -150,11 +151,12 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
       $servicefile_term = $default_config->get('service_file_taxonomy_term');
       $servicefile = $this->entityTypeManager->getStorage('media')->loadByProperties([
         'field_media_use' => ['target_id' => $servicefile_term],
-        'field_media_of' => ['target_id' => $nid]
+        'field_media_of' => ['target_id' => $nid],
       ]);
       if (count($servicefile) > 0) {
         $servicefile = reset($servicefile);
-      } else {
+      }
+      else {
         $servicefile = NULL;
       }
     }
@@ -162,11 +164,12 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     $default_config->get('preservation_master_taxonomy_term');
     $masterfile = $this->entityTypeManager->getStorage('media')->loadByProperties([
       'field_media_use' => ['target_id' => $masterfile_term],
-      'field_media_of' => ['target_id' => $nid]
+      'field_media_of' => ['target_id' => $nid],
     ]);
     if (count($masterfile) > 0) {
       $masterfile = reset($masterfile);
-    } else {
+    }
+    else {
       $masterfile = NULL;
     }
 
@@ -188,7 +191,7 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
           $download_info .= " " . $origfile->get('field_mime_type')->value;
         }
       }
-      // TODO populate $download_info with the filesize in human readable format and the extension of the fiel
+      // @todo populate $download_info with the filesize in human readable format and the extension of the fiel.
     }
     if ($servicefile && ($servicefile->bundle() <> 'remote_video' && $servicefile->bundle() <> "audio" && $servicefile->bundle() <> "video")) {
       $source_field = $media_source_service->getSourceFieldName($servicefile->bundle());
@@ -242,12 +245,12 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
         $url = "/user/login";
       }
       $currentPath = \Drupal::service('path.current')->getPath();
-      $markup = "<i class='fas fa-lock'></i> Download restricted. Please <a href='".$url. "?returnto=".$currentPath."'>sign in</a>.";
+      $markup = "<i class='fas fa-lock'></i> Download restricted. Please <a href='" . $url . "?returnto=" . $currentPath . "'>sign in</a>.";
     }
     $date = new \DateTime();
     $today = $date->format("c");
     if ($node->hasField('field_embargo_release_date') && $node->get('field_embargo_release_date') && $node->get('field_embargo_release_date')->value != NULL && $node->get('field_embargo_release_date')->value != 'T23:59:59' && $node->get('field_embargo_release_date')->value >= $today) {
-    // if its embargoed, remove the download options entirely.
+      // If its embargoed, remove the download options entirely.
       $markup = "<i class='fas fa-lock'></i> Download restricted until " . $node->get('field_embargo_release_date')->date->format('Y-m-d') . ".";
     }
 
@@ -272,7 +275,8 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     $block_config = BlockBase::getConfiguration();
     if (is_array($block_config) && array_key_exists('child_node_id', $block_config)) {
       $nid = $block_config['child_node_id'];
-    } else {
+    }
+    else {
       if ($this->routeMatch->getParameter('node')) {
         $node = $this->routeMatch->getParameter('node');
         $nid = (is_string($node) ? $node : $node->id());

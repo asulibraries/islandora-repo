@@ -155,14 +155,14 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
     }
     elseif ($field_model == 'Paged Content' || $field_model == 'Page' ||
       $field_model == 'Digital Document') {
-        if ($this->canAccessItemMedia($node)) {
-          // "Start reading" and "Show all pages" links as well as a search box.
-          // get the node's openseadragon viewer url.
-          $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/items/' . $nid . '/view', ['attributes' => ['class' => 'nav-link']]);
-          $link = Link::fromTextAndUrl($this->t('Explore Document'), $url);
-          $link = $link->toRenderable();
-          $output_links[] = render($link);
-        }
+      if ($this->canAccessItemMedia($node)) {
+        // "Start reading" and "Show all pages" links as well as a search box.
+        // get the node's openseadragon viewer url.
+        $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/items/' . $nid . '/view', ['attributes' => ['class' => 'nav-link']]);
+        $link = Link::fromTextAndUrl($this->t('Explore Document'), $url);
+        $link = $link->toRenderable();
+        $output_links[] = render($link);
+      }
     }
     // If there has been nothing added to $output_links, return empty array.
     $return = (count($output_links) > 0) ? [
@@ -202,21 +202,25 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
     return Cache::mergeContexts(parent::getCacheContexts(), ['route']);
   }
 
+  /**
+   *
+   */
   private function canAccessItemMedia($node) {
     // Get the media for "Original File" and check for any access restrictions
     // on it.
     if (in_array('administrator', $this->currentUser->getRoles(), TRUE)) {
-      return true;
+      return TRUE;
     }
     $default_config = \Drupal::config('asu_default_fields.settings');
     $origfile_term = $default_config->get('original_file_taxonomy_term');
     $origfile = $this->entityTypeManager->getStorage('media')->loadByProperties([
       'field_media_use' => ['target_id' => $origfile_term],
-      'field_media_of' => ['target_id' => $node->id()]
+      'field_media_of' => ['target_id' => $node->id()],
     ]);
     if (count($origfile) > 0) {
       $origfile = reset($origfile);
-    } else {
+    }
+    else {
       $origfile = NULL;
     }
 
@@ -226,10 +230,9 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
     if (
       $node->hasField('field_embargo_release_date') && $node->get('field_embargo_release_date') && $node->get('field_embargo_release_date')->value >= $today
     ) {
-      $origfile_access = false;
+      $origfile_access = FALSE;
     }
     return $origfile_access;
   }
 
 }
-
