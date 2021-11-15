@@ -4,9 +4,7 @@ namespace Drupal\asu_migrate\Plugin\migrate\process;
 
 use Drupal\migrate\ProcessPluginBase;
 use Drupal\migrate\MigrateExecutableInterface;
-use Drupal\migrate\MigrateSkipProcessException;
 use Drupal\migrate\Row;
-use Drupal\taxonomy\Entity\Term;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -63,7 +61,8 @@ class EntityLookupByField extends ProcessPluginBase implements ContainerFactoryP
     );
   }
 
-  /** @inheritdoc */
+  /**
+   * @inheritdoc */
   public function transform($string, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
     return $this->getTidByValue($string, $this->configuration['lookup_field'], $this->configuration['bundle']);
   }
@@ -77,7 +76,7 @@ class EntityLookupByField extends ProcessPluginBase implements ContainerFactoryP
       $properties['vid'] = [$bundle];
     }
     if (!empty($value) && !empty($field)) {
-      if (strpos($field, '/') !== false) {
+      if (strpos($field, '/') !== FALSE) {
         $field = explode('/', $field);
         $properties[$field[0]][$field[1]] = $value;
       }
@@ -85,9 +84,10 @@ class EntityLookupByField extends ProcessPluginBase implements ContainerFactoryP
         $properties[$field] = $value;
       }
     }
-    // @todo - possible improvement would be to limit by the bundle available in the config
+    // @todo possible improvement would be to limit by the bundle available in the config
     $terms = $this->entityTypeManager->getStorage('taxonomy_term')->loadByProperties($properties);
     $term = reset($terms);
     return !empty($term) ? $term->id() : 0;
   }
+
 }

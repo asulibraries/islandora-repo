@@ -13,7 +13,6 @@ use Drupal\migrate\Row;
  * @MigrateProcessPlugin(
  *   id = "str_to_geolocation"
  * )
- *
  */
 class StrToGeolocation extends ProcessPluginBase {
 

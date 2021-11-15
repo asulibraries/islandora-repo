@@ -7,7 +7,6 @@ use Drupal\migrate\MigrateExecutableInterface;
 use Drupal\migrate\Row;
 use Drupal\user\Entity\User;
 
-
 /**
  * Look up user by name.
  *
@@ -23,7 +22,8 @@ use Drupal\user\Entity\User;
  */
 class UserLookup extends ProcessPluginBase {
 
-  /** @inheritdoc */
+  /**
+   * @inheritdoc */
   public function transform($string, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
     if ($string != "" && $string != NULL) {
       $user = user_load_by_name($string);

@@ -74,7 +74,8 @@ class NameURILookup extends ProcessPluginBase implements ContainerFactoryPluginI
       $thisone = array_map('trim', explode($delimiter, $name_uri_pair));
       if (count($thisone) > 1) {
         list($this->name, $this->uri) = $thisone;
-      } else {
+      }
+      else {
         $this->name = $thisone[0];
         $this->uri = NULL;
       }
@@ -85,8 +86,9 @@ class NameURILookup extends ProcessPluginBase implements ContainerFactoryPluginI
     elseif ($tid = $this->getTidByName($this->name)) {
       $term = Term::load($tid);
     }
-    return  isset($term) && is_object($term) ? $term->id() : 0 ;
+    return isset($term) && is_object($term) ? $term->id() : 0;
   }
+
   /**
    * Load term by URI.
    */
@@ -104,6 +106,7 @@ class NameURILookup extends ProcessPluginBase implements ContainerFactoryPluginI
     $term = reset($terms);
     return !empty($term) ? $term->id() : 0;
   }
+
   /**
    * Load term by name.
    */
@@ -121,4 +124,5 @@ class NameURILookup extends ProcessPluginBase implements ContainerFactoryPluginI
     $term = reset($terms);
     return !empty($term) ? $term->id() : 0;
   }
+
 }

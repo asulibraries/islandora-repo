@@ -2,11 +2,10 @@
 
 namespace Drupal\asu_migrate\Plugin\migrate\process;
 
-use Drupal\migrate\ProcessPluginBase;
 use Drupal\migrate\MigrateExecutableInterface;
-use Drupal\migrate\MigrateSkipProcessException;
 use Drupal\migrate\Row;
 use Drupal\taxonomy\Entity\Term;
+
 /**
  * Check if term exists and create new if doesn't.
  *
@@ -25,6 +24,7 @@ class NameURIGenerate extends NameURILookup {
     'aat' => '|https?://vocab.getty.edu/page/aat/.+|',
     'lcgft' => '|https?://id.loc.gov/authorities/genreForms/.+|',
   ];
+
   /**
    * {@inheritdoc}
    */
@@ -64,6 +64,7 @@ class NameURIGenerate extends NameURILookup {
       }
       return $tid;
     }
-    return  0 ;
+    return 0;
   }
+
 }

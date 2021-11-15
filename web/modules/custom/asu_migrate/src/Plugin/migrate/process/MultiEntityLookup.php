@@ -3,11 +3,9 @@
 namespace Drupal\asu_migrate\Plugin\migrate\process;
 
 use Drupal\migrate\MigrateExecutableInterface;
-use Drupal\migrate\MigrateSkipProcessException;
 use Drupal\migrate\Row;
 use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate_plus\Plugin\migrate\process\EntityLookup;
-use Drupal\taxonomy\Entity\Term;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -56,7 +54,7 @@ class MultiEntityLookup extends EntityLookup implements ContainerFactoryPluginIn
   }
 
   /**
-   * TODO: write the comment correctly.
+   * @todo write the comment correctly.
    */
   public static function create(ContainerInterface $container, array $configuration, $pluginId, $pluginDefinition, MigrationInterface $migration = NULL) {
     return new static(
@@ -68,7 +66,8 @@ class MultiEntityLookup extends EntityLookup implements ContainerFactoryPluginIn
     );
   }
 
-  /** @inheritdoc */
+  /**
+   * @inheritdoc */
   public function transform($arr, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
     $item_parent = $arr[0];
     if (count($arr) > 1) {
@@ -79,7 +78,7 @@ class MultiEntityLookup extends EntityLookup implements ContainerFactoryPluginIn
         $par = $this->entityTypeManager->getStorage('node')->loadByProperties([$this->configuration['lookup_field'] => $item_parent]);
       }
       else {
-        // default is the pid field
+        // Default is the pid field.
         $par = $this->entityTypeManager->getStorage('node')->loadByProperties(['field_pid' => $item_parent]);
       }
       $par = array_keys($par)[0];
@@ -91,4 +90,5 @@ class MultiEntityLookup extends EntityLookup implements ContainerFactoryPluginIn
     }
     return $par;
   }
+
 }

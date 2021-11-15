@@ -5,7 +5,6 @@ namespace Drupal\asu_migrate\Plugin\Field\FieldFormatter;
 use Drupal\Core\Field\Plugin\Field\FieldFormatter\EntityReferenceLabelFormatter;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Form\FormStateInterface;
-use Drupal\taxonomy\Entity\Term;
 
 /**
  * Plugin implementation of the 'TypedRelationCSVFormatter'.
@@ -20,42 +19,42 @@ use Drupal\taxonomy\Entity\Term;
  */
 class ParentTypeCSVFormatter extends EntityReferenceLabelFormatter {
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function defaultSettings() {
-      return [
-        'parent_type' => 'collection',
-      ] + parent::defaultSettings();
-    }
+  /**
+   * {@inheritdoc}
+   */
+  public static function defaultSettings() {
+    return [
+      'parent_type' => 'collection',
+    ] + parent::defaultSettings();
+  }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function settingsForm(array $form, FormStateInterface $form_state) {
-      $default_value = $this->getSetting('parent_type') ?
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsForm(array $form, FormStateInterface $form_state) {
+    $default_value = $this->getSetting('parent_type') ?
         $this->getSetting('parent_type') : 'collection';
-      $element['parent_type'] = [
-        '#title' => t('Parent type'),
-        '#type' => 'select',
-        '#options' => [
-          'collection' => 'Collection',
-          'complex_object' => 'Complex Object',
-        ],
-        '#default_value' => $default_value,
-        '#required' => TRUE,
-      ];
-      return $element;
-    }
+    $element['parent_type'] = [
+      '#title' => t('Parent type'),
+      '#type' => 'select',
+      '#options' => [
+        'collection' => 'Collection',
+        'complex_object' => 'Complex Object',
+      ],
+      '#default_value' => $default_value,
+      '#required' => TRUE,
+    ];
+    return $element;
+  }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function settingsSummary() {
-      $summary = [];
-      $summary[] = t('Parent type: @parent_type', ['@parent_type' => $this->getSetting('parent_type')]);
-      return $summary;
-    }
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsSummary() {
+    $summary = [];
+    $summary[] = t('Parent type: @parent_type', ['@parent_type' => $this->getSetting('parent_type')]);
+    return $summary;
+  }
 
   /**
    * {@inheritdoc}
@@ -88,7 +87,8 @@ class ParentTypeCSVFormatter extends EntityReferenceLabelFormatter {
           if ($parent_type == "collection") {
             $string_value = (array_key_exists("#plain_text", $elements[$delta]) ?
               $elements[$delta]['#plain_text'] : $elements[$delta]["#title"]);
-          } else {
+          }
+          else {
             $string_value = (array_key_exists("#plain_text", $elements[$delta]) ?
               $elements[$delta]['#plain_text'] : $item_entity->id());
           }

@@ -312,14 +312,14 @@ class TypedRelationGenerate extends NameURIGenerate {
       else {
         $parts = explode($this->configuration['delimiter'], $value);
         if (count($parts) > 1) {
-          // allows the configuration to specify which order the relator is in
+          // Allows the configuration to specify which order the relator is in.
           if (array_key_exists('relator_position', $this->configuration)) {
             $relator_position = $this->configuration['relator_position'];
             $relator_string = $parts[$relator_position];
             unset($parts[$relator_position]);
           }
           else {
-            // assumes an order of name|uri|relator
+            // Assumes an order of name|uri|relator.
             $relator_string = array_pop($parts);
           }
           $relator = $this->lookUpRelator($relator_string);

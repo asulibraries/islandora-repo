@@ -8,7 +8,6 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 
-
 /**
  * Plugin implementation of the 'VisibilityCSVFormatter'.
  *
@@ -75,7 +74,7 @@ class VisibilityCSVFormatter extends IntegerFormatter implements ContainerFactor
     // This takes each node and converts the moderation_state of it into the
     // Visibility value.
     //  - Private: draft
-    //  - Public: published
+    //  - Public: published.
     foreach ($items as $delta => $item) {
       $item_entity_id = $item->value;
       $item_entity = @$this->entityTypeManager->getStorage('node')->load($item_entity_id);

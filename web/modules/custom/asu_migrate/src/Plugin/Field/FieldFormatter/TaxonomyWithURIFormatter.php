@@ -4,9 +4,9 @@ namespace Drupal\asu_migrate\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\Plugin\Field\FieldFormatter\EntityReferenceLabelFormatter;
 use Drupal\Core\Field\FieldItemListInterface;
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+
 // If this needs a Settings form.
-// use Drupal\Core\Form\FormStateInterface;
+// use Drupal\Core\Form\FormStateInterface;.
 
 /**
  * Plugin implementation of the 'TaxonomyWithURIFormatter'.
@@ -57,7 +57,7 @@ class TaxonomyWithURIFormatter extends EntityReferenceLabelFormatter {
   //    $summary = [];
   //    $summary[] = t('URI field name: @uri_field_name', ['@uri_field_name' => $this->getSetting('uri_field_name')]);
   //    return $summary;
-  //  }
+  //  }.
 
   /**
    * {@inheritdoc}
@@ -66,7 +66,7 @@ class TaxonomyWithURIFormatter extends EntityReferenceLabelFormatter {
     // Should return the taxonommy term AND uri together with delimiter "|"
     // like: "Weight loss|http://id.loc.gov/authorities/subjects/sh85112135".
     // If this needs a Settings form.
-    // $uri_field_name = $this->getSetting('uri_field_name');
+    // $uri_field_name = $this->getSetting('uri_field_name');.
     $uri_field_name = 'field_authority_link';
     $elements = parent::viewElements($items, $langcode);
     foreach ($items as $delta => $item) {
@@ -76,7 +76,7 @@ class TaxonomyWithURIFormatter extends EntityReferenceLabelFormatter {
         $authority_field_uri = $authority_link->uri;
         $term_name = $taxo_term->getName();
         $elements[$delta]['#plain_text'] = $term_name .
-          (($authority_field_uri) ?  "|" . $authority_field_uri : "");
+          (($authority_field_uri) ? "|" . $authority_field_uri : "");
       }
     }
     return $elements;
