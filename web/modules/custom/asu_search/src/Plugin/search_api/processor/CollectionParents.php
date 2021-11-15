@@ -3,7 +3,6 @@
 namespace Drupal\asu_search\Plugin\search_api\processor;
 
 use Drupal\search_api\Datasource\DatasourceInterface;
-use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
 use Drupal\search_api\Processor\ProcessorProperty;
 
@@ -25,8 +24,7 @@ class CollectionParents extends ProcessorPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function getPropertyDefinitions(DatasourceInterface $datasource = NULL)
-  {
+  public function getPropertyDefinitions(DatasourceInterface $datasource = NULL) {
     $properties = [];
 
     if (!$datasource) {
@@ -41,7 +39,6 @@ class CollectionParents extends ProcessorPluginBase {
 
     return $properties;
   }
-
 
   /**
    * {@inheritdoc}
