@@ -238,8 +238,13 @@ function asu_permissions_node_access(NodeInterface $node, $op, AccountInterface 
           if ($par->uuid() != $node->uuid()) {
             // This line enforces if you can't view a parent then you can't view child.
             $taccess = $par->access($op, $account);
+            if ($taccess == FALSE) {
+              $access_result = AccessResult::forbidden();
+              break;
+            }
             if ($par->hasField('field_enabled') && $par->get('field_enabled') && $par->get('field_enabled')->value == 0) {
               $access_result = AccessResult::forbidden();
+              break;
             } else {
               $access_result = AccessResult::forbiddenIf($taccess == FALSE);
             }
