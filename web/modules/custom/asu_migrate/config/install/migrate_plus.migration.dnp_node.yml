@@ -21,6 +21,7 @@ source:
     cataloging_standards: "asu1"
     level_of_coding: "intermediate"
     pub: 1
+    copyright: "In Copyright"
 
 process:
   field_embargo_release_date:
@@ -59,6 +60,7 @@ process:
       method: process
     -
       plugin: entity_lookup
+      source: constants/copyright
       entity_type: taxonomy_term
       value_key: name
       bundle_key: vid
