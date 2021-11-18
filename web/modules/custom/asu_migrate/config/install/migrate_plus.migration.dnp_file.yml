@@ -77,11 +77,11 @@ process:
       - constants/destination_dir
       - '@filename'
     #   - file id
-    
+
   uri:
     plugin: file_copy
     source:
-      - File Location
+      - Download url
       - '@destination' # The destination entry from above
 
 
