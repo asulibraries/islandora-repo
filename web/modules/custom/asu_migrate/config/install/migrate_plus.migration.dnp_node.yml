@@ -20,6 +20,7 @@ source:
     handle: "https://hdl.handle.net/2286/R.I."
     cataloging_standards: "asu1"
     level_of_coding: "intermediate"
+    pub: 1
 
 process:
   field_embargo_release_date:
@@ -94,7 +95,7 @@ process:
 
   moderation_state:
     plugin: static_map
-    source: Visibility
+    source: constants/pub
     map:
       Private: draft
       Public: published
