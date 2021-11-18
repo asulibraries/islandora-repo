@@ -21,7 +21,7 @@ source:
     use: Original File
     uid: 1
     media_type: file
-    pub: 1
+    pub: Public
 
 process:
 
@@ -59,19 +59,12 @@ process:
     no_stub: true
 
   field_access_terms:
-    -
-      plugin: static_map
-      source: constants/pub
-      map:
-        1: "Public" #OpenAccess
-        2: "ASU Only" #ASU
-        3: "Private" #Closed
-    -
-      plugin: entity_lookup
-      bundle: islandora_access
-      bundle_key: vid
-      entity_type: taxonomy_term
-      value_key: name
+    source: constants/pub
+    plugin: entity_lookup
+    bundle: islandora_access
+    bundle_key: vid
+    entity_type: taxonomy_term
+    value_key: name
 
 destination:
   # These are 'document' media we're making. - could this be dynamic?
