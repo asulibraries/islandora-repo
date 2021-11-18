@@ -1,0 +1,86 @@
+# Uninstall this config when the feature is uninstalled
+dependencies:
+  enforced:
+    module:
+      - asu_migrate
+
+id: dnp_media
+label: Import Collection 260 Media from CSV
+migration_group: migrate_dnp_csv
+
+source:
+  plugin: csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/dnp_may2021.csv
+
+  header_row_count: 1
+
+  ids:
+    - File Location
+
+  constants:
+    use: Original File
+    uid: 1
+    media_type: file
+    pub: 1
+
+process:
+
+  name: Title
+  uid: constants/uid
+  # todo set to asurite
+  bundle: constants/media_type
+  field_original_name: Filename
+
+  # Make the media an 'Original File'
+  field_media_use:
+    plugin: entity_lookup
+    source: constants/use
+    entity_type: taxonomy_term
+    value_key: name
+    bundle_key: vid
+    bundle: islandora_media_use
+
+  # Lookup the migrated file in the file migration.
+  field_media_document:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: File Location
+    -
+      plugin: migration_lookup
+      migration: dnp_file
+      no_stub: true
+
+  # Lookup the migrated node in the node migration
+  field_media_of:
+    plugin: migration_lookup
+    source: File Location
+    migration: dnp_node
+    no_stub: true
+
+  field_access_terms:
+    -
+      plugin: static_map
+      source: constants/pub
+      map:
+        1: "Public" #OpenAccess
+        2: "ASU Only" #ASU
+        3: "Private" #Closed
+    -
+      plugin: entity_lookup
+      bundle: islandora_access
+      bundle_key: vid
+      entity_type: taxonomy_term
+      value_key: name
+
+destination:
+  # These are 'document' media we're making. - could this be dynamic?
+  # perhaps even just a static map lookup by the mime type
+  plugin: 'entity:media'
+  default_bundle: document
+
+migration_dependencies:
+  required:
+    - migrate_plus.migration.dnp_file
+    - migrate_plus.migration.dnp_node
+  optional: {  }

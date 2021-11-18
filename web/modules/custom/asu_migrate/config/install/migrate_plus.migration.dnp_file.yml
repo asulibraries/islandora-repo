@@ -1,0 +1,91 @@
+dependencies:
+  enforced:
+    module:
+      - asu_migrate
+
+id: dnp_file
+label: Import Collection 260 Files
+migration_group: migrate_dnp_csv
+
+source:
+  plugin: csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/dnp_may2021.csv
+  delimiter: ','
+  header_row_count: 1
+  ids:
+    - File Location
+  constants:
+    destination_dir: 'fedora://dnp'
+    uid: 1
+    baseurl: "https://repository.asu.edu"
+    basepath: "/mnt/libfile/Repository/old-repo-data/filestore/"
+    type: file
+
+process:
+
+  # Set these properties from constants.
+#   filemime: file mime
+  uid: constants/uid
+  # todo set to asurite
+  type: 'constants/type'
+
+  field_original_name/value: Filename
+  filename:
+    -
+      plugin: transliteration
+      source: Filename
+    -
+      plugin: str_replace
+      search: " "
+      replace: "_"
+    -
+      plugin: str_replace
+      search: "'"
+      replace: ""
+    -
+      plugin: str_replace
+      search: ","
+      replace: ""
+    -
+      plugin: str_replace
+      search: ")"
+      replace: ""
+    -
+      plugin: str_replace
+      search: "("
+      replace: ""
+    -
+      plugin: str_replace
+      search: "&"
+      replace: ""
+    -
+      plugin: str_replace
+      search: "["
+      replace: ""
+    -
+      plugin: str_replace
+      search: "]"
+      replace: ""
+
+
+
+  # Construct the destination URI using the file name.
+  destination:
+    plugin: concat
+    delimiter: /
+    source:
+      - constants/destination_dir
+      - '@filename'
+    #   - file id
+    
+  uri:
+    plugin: file_copy
+    source:
+      - File Location
+      - '@destination' # The destination entry from above
+
+
+destination:
+  # These are Drupal 'image' entities we're making, not just plain 'file' entities.
+  plugin: 'entity:file'
+  # type: file
