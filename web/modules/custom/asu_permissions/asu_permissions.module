@@ -245,8 +245,6 @@ function asu_permissions_node_access(NodeInterface $node, $op, AccountInterface 
             if ($par->hasField('field_enabled') && $par->get('field_enabled') && $par->get('field_enabled')->value == 0) {
              $access_result = AccessResult::forbidden();
              break;
-            } else {
-              $access_result = AccessResult::forbiddenIf($taccess == FALSE);
             }
           }
         }
@@ -256,24 +254,24 @@ function asu_permissions_node_access(NodeInterface $node, $op, AccountInterface 
       // if its not published then we should check the group membership
       $access_result = AccessResult::forbidden();
     }
-
-    $groups = [];
-    $grp_membership_service = \Drupal::service('group.membership_loader');
-    $grps = $grp_membership_service->loadByUser($account);
-    foreach ($grps as $grp) {
-      $groups[] = $grp->getGroup()->id();
-    }
-    if (count($groups) > 0) {
-      $node_groups = _get_groups_from_node($node);
-      $plugin_id = 'group_node:' . $node->bundle();
-      foreach ($node_groups as $group) {
-        if ($group->hasPermission("view unpublished $plugin_id entity", $account) && $group->getMember($account)) {
-          // This is what gives metadata managers and admins their power.
-          $access_result = AccessResult::allowed();
-        }
-        else {
-          // Forbid if not explictly allowed by group. This is powerful.
-          $access_result = AccessResult::forbidden();
+    if (isset($access_result) && $access_result == AccessResult::forbidden()) {
+      $groups = [];
+      $grp_membership_service = \Drupal::service('group.membership_loader');
+      $grps = $grp_membership_service->loadByUser($account);
+      foreach ($grps as $grp) {
+        $groups[] = $grp->getGroup()->id();
+      }
+      if (count($groups) > 0) {
+        $node_groups = _get_groups_from_node($node);
+        $plugin_id = 'group_node:' . $node->bundle();
+        foreach ($node_groups as $group) {
+          if ($group->hasPermission("view unpublished $plugin_id entity", $account) && $group->getMember($account)) {
+            // This is what gives metadata managers and admins their power.
+            $access_result = AccessResult::allowed();
+          } else {
+            // Forbid if not explictly allowed by group. This is powerful.
+            $access_result = AccessResult::forbidden();
+          }
         }
       }
     }
