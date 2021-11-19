@@ -72,9 +72,10 @@ class ComplexTitle extends ProcessorPluginBase {
         foreach ($fields as $field) {
           $field->addValue($nm);
         }
-        $fields = $this->getFieldsHelper()->filterForPropertyPath($fields, NULL, 'main_sub_title');
-        foreach ($fields as $field) {
-          $field->addValue($main_sub);
+        $fields2 = $item->getFields(FALSE);
+        $fields2 = $this->getFieldsHelper()->filterForPropertyPath($fields2, NULL, 'main_sub_title');
+        foreach ($fields2 as $field2) {
+          $field2->addValue($main_sub);
         }
       }
     }
