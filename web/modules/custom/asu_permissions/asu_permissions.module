@@ -227,7 +227,7 @@ function asu_permissions_node_access(NodeInterface $node, $op, AccountInterface 
   if ($node->bundle() == "collection" || $node->bundle() == "asu_repository_item") {
     if ($account->isAuthenticated() && (in_array("administrator", $account->getRoles()) || in_array("metadata_manager", $account->getRoles()))) {
       // Allow if admin or metadata manager.
-      return AccessResult::neutral();
+      return AccessResult::allowed();
     }
     // if the node is published and there is parent access, don't bother checking the groups
     if ($node->isPublished()) {
@@ -239,12 +239,12 @@ function asu_permissions_node_access(NodeInterface $node, $op, AccountInterface 
             // This line enforces if you can't view a parent then you can't view child.
             $taccess = $par->access($op, $account);
             if ($taccess == FALSE) {
-              $access_result = AccessResult::forbidden();
-              break;
+             $access_result = AccessResult::forbidden();
+             break;
             }
             if ($par->hasField('field_enabled') && $par->get('field_enabled') && $par->get('field_enabled')->value == 0) {
-              $access_result = AccessResult::forbidden();
-              break;
+             $access_result = AccessResult::forbidden();
+             break;
             } else {
               $access_result = AccessResult::forbiddenIf($taccess == FALSE);
             }
@@ -279,9 +279,9 @@ function asu_permissions_node_access(NodeInterface $node, $op, AccountInterface 
     }
   }
   if (isset($access_result)) {
-    // $access_result->addCacheableDependency($node);
-    // $access_result->addCacheableDependency($op);
-    // $access_result->addCacheContexts(['theme']);
+    $access_result->addCacheableDependency($node);
+    $access_result->addCacheableDependency($op);
+    $access_result->addCacheContexts(['theme']);
     return $access_result;
   }
   else {
