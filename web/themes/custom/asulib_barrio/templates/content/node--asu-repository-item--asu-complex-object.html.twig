@@ -99,7 +99,7 @@
     <div class="content-section row">
       {% if content.field_model[0]['#plain_text'] == "Paged Content" %}
         {% set iiif_mani_url = "/node/" ~ node.id ~ "/book-manifest" %}
-        {{ drupal_block('mirador_block', {'iiif_manifest_url': iiif_mani_url})  }}
+          {{ drupal_block('mirador_block', {'iiif_manifest_url': iiif_mani_url}, wrapper=false)  }}
       {% endif %}
       {% if drupal_view('display_media', 'thumbnail', node.id)|render|striptags|trim|length > 0 %}
         <div class="col-md-5 file-container">
