@@ -281,9 +281,11 @@ function asulib_barrio_preprocess_user(&$variables) {
  */
 function asulib_barrio_preprocess_page(&$variables) {
   $variables['site_name'] = \Drupal::config('system.site')->get('name');
-  $variables['content_attributes']['class'][] = 'col-md-8 mt-2';
-  $variables['sidebar_first_attributes']['class'][] = 'collapse';
-  $variables['sidebar_first_attributes']->removeClass('col-md-4');
+  if (isset($variables['page']['sidebar_first']) && count($variables['page']['sidebar_first']) > 0) {
+    $variables['content_attributes']['class'][] = 'col-md-8 mt-2';
+    $variables['sidebar_first_attributes']['class'][] = 'collapse';
+    $variables['sidebar_first_attributes']->removeClass('col-md-4');
+  }
 }
 
 /**
