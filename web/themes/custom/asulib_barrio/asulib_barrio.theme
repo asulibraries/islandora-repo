@@ -79,6 +79,16 @@ function asulib_barrio_preprocess_breadcrumb(&$variables) {
           'attributes' => new Attribute(['class' => ['is_active']])
         ];
       }
+      elseif ($current_route == "view.collections.page_1") {
+        $route_match = \Drupal::routeMatch();
+        $last_bread = array_pop($variables['breadcrumb']);
+        $letter = $route_match->getParameter('arg_0');
+        if ($letter) {
+          $last_bread['text'] = strtoupper($letter);
+          $last_bread['url'] = $last_bread['url'] . "/" . $letter;
+          $variables['breadcrumb'][] = $last_bread;
+        }
+      }
     }
   }
   $variables['#cache']['contexts'][] = 'url';
@@ -138,7 +148,7 @@ function asulib_barrio_preprocess_node(&$variables) {
         if ($fields_to_display) {
           foreach($fields_to_display as $field) {
             $variables['co_child_fields'][] = $field->getName();
-          }  
+          }
         }
       }
     }
@@ -271,10 +281,9 @@ function asulib_barrio_preprocess_user(&$variables) {
  */
 function asulib_barrio_preprocess_page(&$variables) {
   $variables['site_name'] = \Drupal::config('system.site')->get('name');
-  $variables['content_attributes']['class'][] = 'order-1';
-  $variables['content_attributes']['class'][] = 'order-md-12';
-  $variables['sidebar_first_attributes']['class'][] = 'order-md-1';
-  $variables['sidebar_first_attributes']['class'][] = 'order-12';
+  $variables['content_attributes']['class'][] = 'col-md-8 mt-2';
+  $variables['sidebar_first_attributes']['class'][] = 'collapse';
+  $variables['sidebar_first_attributes']->removeClass('col-md-4');
 }
 
 /**
