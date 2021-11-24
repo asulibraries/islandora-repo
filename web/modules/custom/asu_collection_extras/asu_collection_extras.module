@@ -1,8 +1,6 @@
 <?php
 
 use Drupal\search_api\Entity\Index;
-use Drupal\media\Entity\Media;
-use Drupal\views\ViewExecutable;
 
 /**
  * @file
@@ -253,14 +251,4 @@ function asu_collection_extras_syncNodeMatomoStats($nid) {
       'downloads_modified' => time(),
     ])
     ->execute();
-}
-
-/**
- * {@inheritdoc}
- */
-function asu_collection_extras_views_post_render(ViewExecutable $view) {
-  if ($view->id() == 'collections') {
-    \Drupal::logger('asu_collection_extras')->info("in post render");
-    $do_stuff = true;
-  }
 }
