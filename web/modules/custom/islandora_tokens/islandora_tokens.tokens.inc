@@ -141,20 +141,20 @@ function _get_term_with_rel_type($node, $field_name, $relation_type = '', $remov
           if ($tid['rel_type'] == $relation_type) {
             $term = Term::load($tid['target_id']);
             if ($term) {
-              $matches[] = islandora_tokens_remove_comma($term->getName(), $remove_comma);
+              $matches[] = $term->getName();
             }
           }
         }
         else {
           $term = Term::load($tid['target_id']);
           if ($term) {
-            $matches[] = islandora_tokens_remove_comma($term->getName(), $remove_comma);
+            $matches[] = $term->getName();
           }
         }
       }
     }
   }
-  return implode(", ", $matches);
+  return implode("|", $matches);
 }
 
 /**
@@ -266,27 +266,5 @@ function _url_to_service_file_media_by_mimetype($node, $mime_type) {
         return $url;
       }
     }
-  }
-}
-
-/**
- * Conditionally removes any commas and reverse the order of the string values.
- *
- * @param string $input
- *   The string value to potentially remove and flip parts.
- * @param bool $remove_comma
- *   Whether or not to remove the comma and flip the parts.
- *
- * @return string
- *   The value of the label.
- */
-function islandora_tokens_remove_comma($input, $remove_comma = FALSE) {
-  if ($remove_comma) {
-    $parts = explode(",", $input);
-    $parts = array_reverse($parts);
-    return implode(" ", $parts);
-  }
-  else {
-    return $input;
   }
 }
