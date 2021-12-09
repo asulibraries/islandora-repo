@@ -130,7 +130,6 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
         }
       }
     }
-    $model = $node->get('field_model')->referencedEntities()[0]->label();
     $all_files = array();
 
     $default_config = \Drupal::config('asu_default_fields.settings');
@@ -233,7 +232,7 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     }
     $asuUtils = $this->asuUtils;
     $links = array_map(function($v) use ($link_hreflang, $asuUtils) {
-      return Link::fromTextAndUrl($v['ext'] . " (" . $asuUtils->formatBytes($v['file_size'], 1) . ")", Url::fromUri($v['link'], ['attributes' => array_merge($link_hreflang, ['class' => ['btn btn-md btn-gray'], 'title' => $this->t('Download '.$v['type'].' file' . $v['ext'])])]))->toRenderable();
+      return Link::fromTextAndUrl($v['ext'] . " (" . $asuUtils->formatBytes($v['file_size'], 1) . ")", Url::fromUri($v['link'], ['attributes' => array_merge($link_hreflang, ['class' => ['btn btn-md btn-gray'], 'title' => $this->t('Download '.$v['type'].' file ' . $v['ext'])])]))->toRenderable();
     }, $links);
 
     $return = [

@@ -10,7 +10,5 @@
 	{{ asu_download_restricted }}
 {% elseif asu_download_links is not empty %}
 	<h5>Downloads</h5>
-	<div class="btn-group" role="group">
-		{{ asu_download_links }}
-	</div>
+	{{ asu_download_links }}
 {% endif %}
