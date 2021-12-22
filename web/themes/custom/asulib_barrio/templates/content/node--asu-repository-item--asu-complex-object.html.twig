@@ -131,8 +131,10 @@
         {{ drupal_view('included_in_complex_object', 'three_included_items') }}
       </div>
       <br class="clearfloat">
-      <div><p><strong>
+      {% if child_count > 3 %}
+        <div><p><strong>
         <a href="{{ url }}/members" class="btn btn-primary">View all associated media</a></strong></p></div><br/>
+      {% endif %}
     </div>
     <div id="details" class="content-section details">
       <h2>{{ 'Details'|t }}</h2>
