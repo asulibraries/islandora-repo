@@ -296,7 +296,7 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
           "dimensions" => (isset($dimensions) ? $dimensions : NULL),
           "link" => $this->islandoraUtils->getDownloadUrl($of_file),
           "access" => $file->access('view', $this->currentUser),
-          "perms" => $file->get('field_access_terms')->referencedEntities()[0]->label(),
+          "perms" => count($file->get('field_access_terms')->referencedEntities()) > 0 ? $file->get('field_access_terms')->referencedEntities()[0]->label() : "Public",
           "type" => $type
         );
       }
