@@ -143,21 +143,8 @@
           {{ content.field_linked_agent }}
         </div>
       {% endif %}
-      <div>
-        <div class="field__label">
-          Date Created
-          <div class="uds-tooltip-container">
-            <button aria-describedby="tooltip-desc-1" class="uds-tooltip uds-tooltip-white" tabindex="0">
-              <i class="fas fa-question-circle"> &nbsp;</i>
-            </button>
-            <div class="uds-tooltip-description" id="tooltip-desc-1" role="tooltip">
-              The date the item was original created (prior to any relationship with the ASU Digital Repositories.)
-            </div>
-          </div>
-        </div>
-        {{ content.field_edtf_date_created }}
-      </div>
-            {# Use the node field to check if empty. Content field is less reliable. #}
+      <div>{{ content.field_edtf_date_created }}</div>
+      {# Use the node field to check if empty. Content field is less reliable. #}
       {% if (node.field_subject is not empty) or (node.field_geographic_subject is not empty) or (node.field_subjects_name is not empty) or (node.field_temporal_subject is not empty) or (node.field_title_subject is not empty) or (node.field_name_title_subject is not empty) %}
         <div class="all-subjects">
           <div class="field__label">{{ 'Subjects'|t }}</div>
