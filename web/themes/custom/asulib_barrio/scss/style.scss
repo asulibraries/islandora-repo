@@ -208,7 +208,7 @@ article:not(.node--view-mode-full-metadata) .inline-list, .field--name-field-cop
 }
 a.image-link,
 a.image-link:hover,
-a.image-link:focus { 
+a.image-link:focus {
   border: none;
   box-shadow: none !important;
 }
@@ -289,4 +289,9 @@ ul.pagination {
   .page-number:not(.active) {
     display: none;
   }
+}
+
+// fix for captcha
+#captcha img {
+  width: auto;
 }
