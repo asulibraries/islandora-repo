@@ -142,7 +142,7 @@
         </div>
       {% endif %}
       <div>{{ content.field_edtf_date_created }}</div>
-      {# Use the node field to check if empty. Content field is less reliable. #}
+            {# Use the node field to check if empty. Content field is less reliable. #}
       {% if (node.field_subject is not empty) or (node.field_geographic_subject is not empty) or (node.field_subjects_name is not empty) or (node.field_temporal_subject is not empty) or (node.field_title_subject is not empty) or (node.field_name_title_subject is not empty) %}
         <div class="all-subjects">
           <div class="field__label">{{ 'Subjects'|t }}</div>
