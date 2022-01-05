@@ -1,6 +1,6 @@
 {% if asu_download_restricted|render|striptags|trim is not empty %}
 	<b>
-	{% if file_size %}
+	{% if file_size and file_size > 0 %}
 	{{ file_size | format_bytes }}
 	{% endif %}
 	{{ asu_download_info }}
