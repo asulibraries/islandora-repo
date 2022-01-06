@@ -102,7 +102,7 @@ class DrushASUCalcViewsAndDownloads extends DrushCommands {
     // Get $options['howmany'] records that need to be processed.
     $query = \Drupal::database()->select('ace_items', 'ace_i');
     $query->addField('ace_i', 'i_nid');
-    $query->condition('downloads_modified', time(), "<")
+    $query->condition('downloads_modified', time() - 60 * 60 * 24, "<")
       ->range(0, $options['howmany']);
 
     $records = $query->execute();
