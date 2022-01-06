@@ -102,4 +102,3 @@ class ExploreForm extends FormBase {
   }
 
 }
-

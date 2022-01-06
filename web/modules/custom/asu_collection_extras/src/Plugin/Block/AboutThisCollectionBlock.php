@@ -195,7 +195,7 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
         // ROW 2.
       '<div class="row">' .
       implode('', $stat_box_row2) .
-      '</div>':
+      '</div>' :
       "",
       'lib' => [
         '#attached' => [

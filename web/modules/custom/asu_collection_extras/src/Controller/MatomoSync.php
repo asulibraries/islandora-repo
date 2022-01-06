@@ -3,7 +3,6 @@
 namespace Drupal\asu_collection_extras\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\node\NodeInterface;
 
 /**
  * A drush command file for collection summary tabulation.

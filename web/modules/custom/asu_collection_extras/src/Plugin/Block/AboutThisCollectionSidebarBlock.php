@@ -153,4 +153,3 @@ class AboutThisCollectionSidebarBlock extends BlockBase implements ContainerFact
   }
 
 }
-
