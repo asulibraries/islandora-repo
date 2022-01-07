@@ -57,8 +57,8 @@
 	<div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
 	{% for item in items %}
 		{% set description = item.content|render|trim|split(' ') %}
-		{% if description|length > 40 %}
-			{% set teaser = description|slice(0, 30)|join(' ')|trim('</p>', 'right') ~ '<span id="more-ellipse" class="collapse multi-collapse show">&hellip;</span></p>' %}
+		{% if description|length > 50 %}
+			{% set teaser = description|slice(0, 40)|join(' ')|trim('</p>', 'right') ~ '<span id="more-ellipse" class="collapse multi-collapse show">&hellip;</span></p>' %}
 			{#{% set remainder = description|slice(30)|join(' ') %}#}
       <div class="description-teaser collapse multi-collapse show">{{ teaser|raw }}</div>
       <div class="description-full multi-collapse collapse" id="full-content">{{ item.content }}</div>
