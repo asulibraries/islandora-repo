@@ -257,7 +257,7 @@ class CreateMorrisonItemWebformHandler extends WebformHandlerBase {
     $values = $webform_submission->getData();
     $files = $values['file'];
     $file_repository = \Drupal::service('file.repository');
-
+    $new_dest = "fedora://c6/" . \Drupal::currentUser()->id() . "/";
 
     if (count($files) > 1) {
       $model = 'Complex Object';
@@ -266,8 +266,7 @@ class CreateMorrisonItemWebformHandler extends WebformHandlerBase {
         $file = $this->entityTypeManager->getStorage('file')->load(intval($file_id));
         $mime = $file->getMimeType();
         $filename = $file->getFilename();
-        $new_dest = "fedora://c6/" . \Drupal::currentUser()->id();
-        $file_repository->move($file, $new_dest);
+        $file_repository->move($file, $new_dest . $filename);
         list($fmodel, $fmedia_type, $ffield_name) = $this->depositUtils->getModel($mime, $filename);
         $child_files[$file_id] = [
           'model' => $fmodel,
@@ -281,8 +280,7 @@ class CreateMorrisonItemWebformHandler extends WebformHandlerBase {
       $file = $this->entityTypeManager->getStorage('file')->load(intval($files[0]));
       $mime = $file->getMimeType();
       $filename = $file->getFilename();
-      $new_dest = "fedora://c6/" . \Drupal::currentUser()->id();
-      $file_repository->move($file, $new_dest);
+      $file_repository->move($file, $new_dest . $filename);
       list($model, $media_type, $field_name) = $this->depositUtils->getModel($mime, $filename);
     }
 
