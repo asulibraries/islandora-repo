@@ -286,6 +286,8 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
     // Get an array of the values from the submission.
     $values = $webform_submission->getData();
     $files = $values['file'];
+    $file_repository = \Drupal::service('file.repository');
+
 
     if (count($files) > 1) {
       $model = 'Complex Object';
@@ -295,7 +297,7 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
         $mime = $file->getMimeType();
         $filename = $file->getFilename();
         $new_dest = "fedora://barrett/" . \Drupal::currentUser()->id();
-        $file->move_uploaded_file($filename, $new_dest);  
+        $file_repository->move($file, $new_dest);
         list($fmodel, $fmedia_type, $ffield_name) = $this->depositUtils->getModel($mime, $filename);
         $child_files[$file_id] = [
           'model' => $fmodel,
@@ -310,7 +312,7 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
       $mime = $file->getMimeType();
       $filename = $file->getFilename();
       $new_dest = "fedora://barrett/" . \Drupal::currentUser()->id();
-      $file->move_uploaded_file($filename, $new_dest);
+      $file_repository->move($file, $new_dest);
       list($model, $media_type, $field_name) = $this->depositUtils->getModel($mime, $filename);
     }
 
