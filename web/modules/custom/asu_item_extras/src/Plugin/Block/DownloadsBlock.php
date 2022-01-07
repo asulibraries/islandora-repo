@@ -8,11 +8,11 @@ use Drupal\Core\Session\AccountProxy;
 use Drupal\Core\Url;
 use Drupal\Core\Link;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Entity\EntityTypeManager;
-use Drupal\Core\Form\FormBuilderInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Drupal\asu_islandora_utils\AsuUtils;
+
 
 /**
  * Provides a 'Downloads' Block.
@@ -33,26 +33,11 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
   protected $routeMatch;
 
   /**
-   * The requestStack definition.
-   *
-   * @var requestStack
-   */
-  protected $requestStack;
-
-  /**
    * The entityTypeManager definition.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManager
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
-
-  /**
-   * The form builder.
-   *
-   * @var \Drupal\Core\Form\FormBuilderInterface
-   */
-  protected $formBuilder;
-
 
   /**
    * Drupal\Core\Session\AccountProxy definition.
@@ -61,6 +46,22 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
    */
   protected $currentUser;
 
+  /**
+   * The AsuUtils definition.
+   *
+   * @var \Drupal\asu_islandora_utils\AsuUtils
+   */
+  protected $asuUtils;
+
+  /**
+   * IslandoraUtils class.
+   */
+  protected $islandoraUtils;
+
+  /**
+   * MediaSourceService class.
+   */
+  protected $mediaSourceService;
 
   /**
    * Constructor for About this Collection Block.
@@ -73,22 +74,25 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
    *   The plugin implementation definition.
    * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
    *   The route match.
-   * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
-   *   The request stack.
-   * @param \Drupal\Core\Entity\EntityTypeManager $entityTypeManager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entityTypeManager definition.
-   * @param \Drupal\Core\Form\FormBuilderInterface $formBuilder
-   *   The Drupal form builder.
    * @param \Drupal\Core\Session\AccountProxy $current_user
    *   The current user.
+   * @param mixed $islandora_utils
+   *   IslandoraUtils Utility class.
+   * @param $asu_utils
+   *   The ASU Utils service.
+   * @param mixed $media_source_service
+   *   MediaSourceService Utility class.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $route_match, RequestStack $request_stack, EntityTypeManager $entityTypeManager, FormBuilderInterface $formBuilder, AccountProxy $current_user) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $route_match, EntityTypeManagerInterface $entityTypeManager, AccountProxy $current_user, $islandora_utils, AsuUtils $asu_utils, $media_source_service) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->routeMatch = $route_match;
-    $this->requestStack = $request_stack;
     $this->entityTypeManager = $entityTypeManager;
-    $this->formBuilder = $formBuilder;
     $this->currentUser = $current_user;
+    $this->islandoraUtils = $islandora_utils;
+    $this->asuUtils = $asu_utils;
+    $this->mediaSourceService = $media_source_service;
   }
 
   /**
@@ -100,10 +104,11 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
       $plugin_id,
       $plugin_definition,
       $container->get('current_route_match'),
-      $container->get('request_stack'),
       $container->get('entity_type.manager'),
-      $container->get('form_builder'),
-      $container->get('current_user')
+      $container->get('current_user'),
+      $container->get('islandora.utils'),
+      $container->get('asu_utils'),
+      $container->get('islandora.media_source_service')
     );
   }
 
@@ -120,60 +125,115 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
       if ($this->routeMatch->getParameter('node')) {
         $node = $this->routeMatch->getParameter('node');
         $nid = (is_string($node) ? $node : $node->id());
+        if (is_string($node)) {
+          $node = $this->entityTypeManager->getStorage('node')->load($nid);
+        }
       }
     }
-    $download_info = $file_size = '';
-    $islandora_utils = \Drupal::service('islandora.utils');
-    $media_source_service = \Drupal::service('islandora.media_source_service');
-    $origfile_term = $islandora_utils->getTermForUri('http://pcdm.org/use#OriginalFile');
-    $origfile = $islandora_utils->getMediaWithTerm($node, $origfile_term);
-    $servicefile_term = $islandora_utils->getTermForUri('http://pcdm.org/use#ServiceFile');
-    $servicefile = $islandora_utils->getMediaWithTerm($node, $servicefile_term);
-    if ($origfile) {
-      $source_field = $media_source_service->getSourceFieldName($origfile->bundle());
-      if (!empty($source_field)) {
-        $of_file = $origfile->get($source_field)->referencedEntities()[0];
-        $of_uri = $islandora_utils->getDownloadUrl($of_file);
-        $of_link = Link::fromTextAndUrl($this->t('Original'), Url::fromUri($of_uri, ['attributes' => ['class' => ['dropdown-item']]]));
-        $file_size = $origfile->get('field_file_size')->value;
-        $download_info .= " " . $origfile->get('field_mime_type')->value;
-      }
-      // TODO populate $download_info with the filesize in human readable format and the extension of the fiel
+    $all_files = array();
+
+    $default_config = \Drupal::config('asu_default_fields.settings');
+    $user_roles = $this->currentUser->getRoles();
+
+    if (array_key_exists('origfile', $block_config)) {
+      $origfile = $block_config['origfile'];
     }
-    if ($servicefile) {
-      $source_field = $media_source_service->getSourceFieldName($servicefile->bundle());
-      if (!empty($source_field)) {
-        $sf_file = $servicefile->get($source_field)->referencedEntities()[0];
-        $sf_uri = $islandora_utils->getDownloadUrl($sf_file);
-        $sf_link = Link::fromTextAndUrl($this->t('Derivative'), Url::fromUri($sf_uri, ['attributes' => ['class' => ['dropdown-item']]]));
+    else {
+      $origfile_term = $default_config->get('original_file_taxonomy_term');
+      $origfile = $this->entityTypeManager->getStorage('media')->loadByProperties([
+        'field_media_use' => ['target_id' => $origfile_term],
+        'field_media_of' => ['target_id' => $nid],
+      ]);
+      if (count($origfile) > 0) {
+        $origfile = reset($origfile);
+      }
+      else {
+        $origfile = NULL;
       }
     }
 
-    $user_roles = $this->currentUser->getRoles();
+    if (array_key_exists('servicefile', $block_config)) {
+      $servicefile_term = $default_config->get('service_file_taxonomy_term');
+      $servicefile = $this->entityTypeManager->getStorage('media')->loadByProperties([
+        'field_media_use' => ['target_id' => $servicefile_term],
+        'field_media_of' => ['target_id' => $nid],
+      ]);
+      if (count($servicefile) > 0) {
+        $servicefile = reset($servicefile);
+      }
+      else {
+        $servicefile = NULL;
+      }
+    }
+    $presfile_term =
+    $default_config->get('preservation_master_taxonomy_term');
+    $presfile = $this->entityTypeManager->getStorage('media')->loadByProperties([
+      'field_media_use' => ['target_id' => $presfile_term],
+      'field_media_of' => ['target_id' => $nid],
+    ]);
+    if (count($presfile) > 0) {
+      $presfile = reset($presfile);
+    }
+    else {
+      $presfile = NULL;
+    }
+
+
+    if ($origfile && $origfile->bundle() <> 'remote_video') {
+      $all_files["original"] = $this->getFileDetails($origfile, "original");
+      $download_info = $all_files["original"]["mime_type"];
+      $file_size = $all_files["original"]["file_size"];
+    }
+    if ($servicefile && ($servicefile->bundle() <> 'remote_video' && $servicefile->bundle() <> "audio" && $servicefile->bundle() <> "video")) {
+      $all_files["derivative"] = $this->getFileDetails($servicefile, "derivative");
+    }
+    if ($presfile && $presfile->bundle() <> 'remote_video') {
+      $all_files["preservation"] = $this->getFileDetails($presfile, "preservation");
+    }
+
     $markup = '';
-    $links = [];
-    if (isset($of_file)) {
-      $access_of_media = $origfile->access('view', $this->currentUser);
-      if ($access_of_media) {
-        $links[] = $of_link->toRenderable();
-      }
-    }
-    if (isset($sf_file)) {
-      $access_sf_media = $servicefile->access('view', $this->currentUser);
-      if ($access_sf_media) {
-        $links[] = $sf_link->toRenderable();
-      }
-    }
+    $links = array_filter($all_files, function($v) {
+      return $v["access"];
+    });
 
     if ($links == [] && in_array('anonymous', $user_roles)) {
-      $markup = "<i class='fas fa-lock'></i> Download restricted. Please <a href=''>sign in.</a>";
+      $asu_only_links = array_filter($all_files, function ($v) {
+        return $v["perms"] == "ASU Only";
+      });
+      if (count($asu_only_links) > 0) {
+        $moduleHandler = \Drupal::service('module_handler');
+        if ($moduleHandler->moduleExists('cas')) {
+          $url = Url::fromRoute('cas.login')->toString();
+        }
+        else {
+          $url = "/user/login";
+        }
+        $currentPath = \Drupal::service('path.current')->getPath();
+        $markup = "<i class='fas fa-lock'></i> Download restricted. Please <a href='" . $url . "?returnto=" . $currentPath . "'>sign in</a>.";
+      }
+      else {
+        $markup = "<i class='fas fa-lock'></i> Download restricted.";
+      }
     }
+
     $date = new \DateTime();
     $today = $date->format("c");
-    if ($node->hasField('field_embargo_release_date') && $node->get('field_embargo_release_date') && $node->get('field_embargo_release_date')->value >= $today) {
-      // if its embargoed, remove the download options entirely.
+    if ($node->hasField('field_embargo_release_date') && $node->get('field_embargo_release_date') && $node->get('field_embargo_release_date')->value != NULL && $node->get('field_embargo_release_date')->value != 'T23:59:59' && $node->get('field_embargo_release_date')->value >= $today) {
+      // If its embargoed, remove the download options entirely.
       $markup = "<i class='fas fa-lock'></i> Download restricted until " . $node->get('field_embargo_release_date')->date->format('Y-m-d') . ".";
     }
+
+    $node_language = $node->get('field_language')->entity;
+    $link_hreflang = [];
+    if ($node_language) {
+      if ($node_language->hasField('field_langcode_2digits') && $node_language->get('field_langcode_2digits')->value) {
+        $link_hreflang = ['hreflang' => $node_language->get('field_langcode_2digits')->value];
+      }
+    }
+    $asuUtils = $this->asuUtils;
+    $links = array_map(function($v) use ($link_hreflang, $asuUtils) {
+      return Link::fromTextAndUrl($v['ext'] . " (" . $asuUtils->formatBytes($v['file_size'], 1) . ")", Url::fromUri($v['link'], ['attributes' => array_merge($link_hreflang, ['class' => ['btn btn-md btn-gray'], 'title' => $this->t('Download '.$v['type'].' file ' . $v['ext'])])]))->toRenderable();
+    }, $links);
 
     $return = [
       '#asu_download_info' => $download_info,
@@ -182,6 +242,7 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
       '#file_size' => $file_size,
       '#theme' => 'asu_item_extras_downloads_block',
     ];
+
     return $return;
   }
 
@@ -189,7 +250,9 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
    * {@inheritdoc}
    */
   public function getCacheTags() {
-
+    $user = $this->currentUser;
+    $parentTags = parent::getCacheTags();
+    $tags = Cache::mergeTags($parentTags, ['user:' . $user->id()]);
     $block_config = BlockBase::getConfiguration();
     if (is_array($block_config) && array_key_exists('child_node_id', $block_config)) {
       $nid = $block_config['child_node_id'];
@@ -202,12 +265,9 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     }
     if (isset($nid)) {
       // If there is node add its cachetag.
-      return Cache::mergeTags(parent::getCacheTags(), ['node:' . $nid]);
+      return Cache::mergeTags($tags, ['node:' . $nid]);
     }
-    else {
-      // Return default tags instead.
-      return parent::getCacheTags();
-    }
+    return $tags;
   }
 
   /**
@@ -218,6 +278,29 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     // You must set context of this block with 'route' context tag.
     // Every new route this block will rebuild.
     return Cache::mergeContexts(parent::getCacheContexts(), ['route']);
+  }
+
+  /**
+   * Extracts file and media info from the objects.
+   */
+  protected function getFileDetails($file, $type) {
+    $source_field = $this->mediaSourceService->getSourceFieldName($file->bundle());
+    if (!empty($source_field)) {
+      $of_file = ($file->hasField($source_field) && (is_object($file->get($source_field)) && $file->get($source_field)->referencedEntities() != NULL) ? $file->get($source_field)->referencedEntities()[0] : FALSE);
+      if ($of_file) {
+        $file_path_info = pathinfo($of_file->getFilename());
+        return array(
+          "file_size" => $file->get('field_file_size')->value,
+          "mime_type" => $file->get('field_mime_type')->value,
+          "ext" => $file_path_info['extension'],
+          "dimensions" => (isset($dimensions) ? $dimensions : NULL),
+          "link" => $this->islandoraUtils->getDownloadUrl($of_file),
+          "access" => $file->access('view', $this->currentUser),
+          "perms" => count($file->get('field_access_terms')->referencedEntities()) > 0 ? $file->get('field_access_terms')->referencedEntities()[0]->label() : "Public",
+          "type" => $type
+        );
+      }
+    }
   }
 
 }

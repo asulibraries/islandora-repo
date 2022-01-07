@@ -19,43 +19,43 @@ use Drupal\Core\Form\FormStateInterface;
  */
 class TypedRelationCSVFormatter extends EntityReferenceLabelFormatter {
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function defaultSettings() {
-      return [
-        'agent_type' => 'person',
-      ] + parent::defaultSettings();
-    }
+  /**
+   * {@inheritdoc}
+   */
+  public static function defaultSettings() {
+    return [
+      'agent_type' => 'person',
+    ] + parent::defaultSettings();
+  }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function settingsForm(array $form, FormStateInterface $form_state) {
-      $default_value = $this->getSetting('agent_type') ?
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsForm(array $form, FormStateInterface $form_state) {
+    $default_value = $this->getSetting('agent_type') ?
         $this->getSetting('agent_type') : 'person';
-      $element['agent_type'] = [
-        '#title' => t('URI field name'),
-        '#type' => 'select',
-        '#options' => [
-          'person' => 'Personal Contributor',
-          'corporate_body' => 'Corporate Contributor',
-          'conference' => 'Event Contributor'
-        ],
-        '#default_value' => $default_value,
-        '#required' => TRUE,
-      ];
-      return $element;
-    }
+    $element['agent_type'] = [
+      '#title' => t('URI field name'),
+      '#type' => 'select',
+      '#options' => [
+        'person' => 'Personal Contributor',
+        'corporate_body' => 'Corporate Contributor',
+        'conference' => 'Event Contributor',
+      ],
+      '#default_value' => $default_value,
+      '#required' => TRUE,
+    ];
+    return $element;
+  }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function settingsSummary() {
-      $summary = [];
-      $summary[] = t('Contributor type: @agent_type', ['@agent_type' => $this->getSetting('agent_type')]);
-      return $summary;
-    }
+  /**
+   * {@inheritdoc}
+   */
+  public function settingsSummary() {
+    $summary = [];
+    $summary[] = t('Contributor type: @agent_type', ['@agent_type' => $this->getSetting('agent_type')]);
+    return $summary;
+  }
 
   /**
    * {@inheritdoc}
@@ -101,10 +101,14 @@ class TypedRelationCSVFormatter extends EntityReferenceLabelFormatter {
     return $elements;
   }
 
+  /**
+   *
+   */
   private function getAuthorityLinkFieldName($term) {
     // Inspect all fields on this term until one that contains "authority_link"
     // is found.
     $fields = $term->getFields();
     return 'field_authority_link';
   }
+
 }

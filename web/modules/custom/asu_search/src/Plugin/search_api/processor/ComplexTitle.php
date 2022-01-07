@@ -38,6 +38,13 @@ class ComplexTitle extends ProcessorPluginBase {
         'processor_id' => $this->getPluginId(),
       ];
       $properties['complex_title'] = new ProcessorProperty($definition);
+      $definition = [
+        'label' => $this->t('Main + Subtitle'),
+        'description' => $this->t('A string that combines parts of a title'),
+        'type' => 'string',
+        'processor_id' => $this->getPluginId(),
+      ];
+      $properties['main_sub_title'] = new ProcessorProperty($definition);
     }
 
     return $properties;
@@ -59,9 +66,16 @@ class ComplexTitle extends ProcessorPluginBase {
         $nm = ($nonsort ? $nonsort . " " : "") .
         ($main ? $main : "[untitled]") .
         ($sub ? ": " . $sub : "");
+        $main_sub = ($main ? $main : "[untitled]") .
+        ($sub ? ": " . $sub : "");
         $fields = $this->getFieldsHelper()->filterForPropertyPath($fields, NULL, 'complex_title');
         foreach ($fields as $field) {
           $field->addValue($nm);
+        }
+        $fields2 = $item->getFields(FALSE);
+        $fields2 = $this->getFieldsHelper()->filterForPropertyPath($fields2, NULL, 'main_sub_title');
+        foreach ($fields2 as $field2) {
+          $field2->addValue($main_sub);
         }
       }
     }

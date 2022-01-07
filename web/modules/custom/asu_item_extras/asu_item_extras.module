@@ -1,8 +1,5 @@
 <?php
 
-use Drupal\views\ViewExecutable;
-use Drupal\views\Plugin\views\cache\CachePluginBase;
-
 /**
  * Implements hook_theme().
  */
@@ -27,11 +24,4 @@ function asu_item_extras_theme() {
         ]
       ]
   ];
-}
-
-/**
- * Implements hook_entity_type_build().
- */
-function asu_item_extras_entity_type_build(array &$entity_types) {
-  $entity_types['node']->setFormClass('perf_archive', 'Drupal\node\NodeForm');
 }

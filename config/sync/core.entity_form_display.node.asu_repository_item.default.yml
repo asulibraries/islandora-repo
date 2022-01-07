@@ -6,7 +6,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_additional_memberships
     - field.field.node.asu_repository_item.field_cataloging_standards
     - field.field.node.asu_repository_item.field_complex_object_child
-    - field.field.node.asu_repository_item.field_complex_subjects
+    - field.field.node.asu_repository_item.field_complex_subject
     - field.field.node.asu_repository_item.field_coordinates
     - field.field.node.asu_repository_item.field_copyright_statement
     - field.field.node.asu_repository_item.field_date_digitized
@@ -149,8 +149,8 @@ third_party_settings:
         - field_subjects_name
         - field_title_subject
         - field_name_title_subject
-        - field_complex_subjects
         - field_keyword
+        - field_complex_subject
       parent_name: group_tab_container
       weight: 2
       format_type: tab
@@ -261,17 +261,22 @@ content:
     third_party_settings: {  }
     type: boolean_checkbox
     region: content
-  field_complex_subjects:
-    type: entity_reference_paragraphs
-    weight: 39
+  field_complex_subject:
+    weight: 40
     settings:
-      title: Paragraph
-      title_plural: Paragraphs
-      edit_mode: open
-      add_mode: dropdown
-      form_display_mode: default
-      default_paragraph_type: ''
+      form_mode: simple_taxo_create
+      override_labels: true
+      label_singular: 'Complex subject'
+      label_plural: 'Complex subjects'
+      collapsible: true
+      allow_new: true
+      allow_existing: true
+      match_operator: STARTS_WITH
+      revision: false
+      collapsed: false
+      allow_duplicate: false
     third_party_settings: {  }
+    type: inline_entity_form_complex
     region: content
   field_coordinates:
     weight: 34
@@ -418,7 +423,7 @@ content:
     type: options_select
     region: content
   field_keyword:
-    weight: 40
+    weight: 39
     settings:
       match_operator: CONTAINS
       match_limit: 10
@@ -447,7 +452,7 @@ content:
     weight: 28
     settings:
       match_operator: CONTAINS
-      match_limit: 10
+      match_limit: 50
       size: 60
       placeholder: ''
     third_party_settings: {  }
@@ -627,7 +632,7 @@ content:
       label_plural: 'topical subjects'
       allow_new: true
       allow_existing: true
-      match_operator: CONTAINS
+      match_operator: STARTS_WITH
       revision: false
       collapsible: false
       collapsed: false
@@ -774,6 +779,11 @@ content:
       placeholder: ''
       match_limit: 10
     region: content
+    third_party_settings: {  }
+  url_redirects:
+    weight: 50
+    region: content
+    settings: {  }
     third_party_settings: {  }
 hidden:
   field_display_hints: true

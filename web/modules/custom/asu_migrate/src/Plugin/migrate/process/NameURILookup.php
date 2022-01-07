@@ -9,7 +9,7 @@ use Drupal\migrate\Row;
 use Drupal\taxonomy\Entity\Term;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 
 /**
  * Check if term exists and create new if doesn't.
@@ -25,21 +25,21 @@ class NameURILookup extends ProcessPluginBase implements ContainerFactoryPluginI
   /**
    * The entityTypeManager definition.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManager
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
 
   /**
    * Constructs a NameURILookup object.
    *
-   * @param Drupal\Core\Entity\EntityTypeManager $entityTypeManager
+   * @param Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   A drupal entity type manager object.
    */
   public function __construct(
       array $configuration,
       $plugin_id,
       $plugin_definition,
-      EntityTypeManager $entityTypeManager
+      EntityTypeManagerInterface $entityTypeManager
     ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->entityTypeManager = $entityTypeManager;
@@ -74,7 +74,8 @@ class NameURILookup extends ProcessPluginBase implements ContainerFactoryPluginI
       $thisone = array_map('trim', explode($delimiter, $name_uri_pair));
       if (count($thisone) > 1) {
         list($this->name, $this->uri) = $thisone;
-      } else {
+      }
+      else {
         $this->name = $thisone[0];
         $this->uri = NULL;
       }
@@ -85,8 +86,9 @@ class NameURILookup extends ProcessPluginBase implements ContainerFactoryPluginI
     elseif ($tid = $this->getTidByName($this->name)) {
       $term = Term::load($tid);
     }
-    return  isset($term) && is_object($term) ? $term->id() : 0 ;
+    return isset($term) && is_object($term) ? $term->id() : 0;
   }
+
   /**
    * Load term by URI.
    */
@@ -104,6 +106,7 @@ class NameURILookup extends ProcessPluginBase implements ContainerFactoryPluginI
     $term = reset($terms);
     return !empty($term) ? $term->id() : 0;
   }
+
   /**
    * Load term by name.
    */
@@ -121,4 +124,5 @@ class NameURILookup extends ProcessPluginBase implements ContainerFactoryPluginI
     $term = reset($terms);
     return !empty($term) ? $term->id() : 0;
   }
+
 }

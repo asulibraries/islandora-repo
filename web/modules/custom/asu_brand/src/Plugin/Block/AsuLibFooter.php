@@ -3,7 +3,6 @@
 namespace Drupal\asu_brand\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
-use Drupal\Core\Url;
 
 /**
  * Provides a 'AsuLibFooter' block.
@@ -81,7 +80,7 @@ class AsuLibFooter extends BlockBase {
                   </h5>
                 </div>
                 <div id="footlink-two" class="collapse card-body show" aria-labelledby="footlink-header-two">
-                  <a class="nav-link" href="/about/termsofdeposit" title="Terms of Deposit">Terms of Deposit</a>
+                  <a class="nav-link" href="https://keep.lib.asu.edu/about/termsofdeposit" title="Terms of Deposit">Terms of Deposit</a>
                   <a class="nav-link" href="https://libguides.asu.edu/digitalrepository/home" title="ASU Digital Repository Guide">Sharing Materials: ASU Digital Repository Guide</a>
                   <a class="nav-link" href="http://libguides.asu.edu/openaccess" title="Open Access at ASU">Open Access at ASU</a>
                 </div>
@@ -93,7 +92,17 @@ class AsuLibFooter extends BlockBase {
       </nav>
     </div>';
 
-    $build['asu_lib_footer_block']['#markup'] = $a1 . $a2;
+    $a3 = '<div class="wrapper" id="wrapper-footer-land-ack">
+      <div class="container">
+        <div class="row">
+          <div class="col-md">
+            <p>The ASU Library acknowledges the twenty-two Native Nations that have inhabited this land for centuries. Arizona State University\'s four campuses are located in the Salt River Valley on ancestral territories of Indigenous peoples, including the Akimel O’odham (Pima) and Pee Posh (Maricopa) Indian Communities, whose care and keeping of these lands allows us to be here today. ASU Library acknowledges the sovereignty of these nations and seeks to foster an environment of success and possibility for Native American students and patrons. We are advocates for the incorporation of Indigenous knowledge systems and research methodologies within contemporary library practice. ASU Library welcomes members of the Akimel O’odham and Pee Posh, and all Native nations to the Library.</p>
+          </div>
+        </div>
+      </div>
+    </div>';
+
+    $build['asu_lib_footer_block']['#markup'] = $a1 . $a2 . $a3;
 
     return $build;
   }

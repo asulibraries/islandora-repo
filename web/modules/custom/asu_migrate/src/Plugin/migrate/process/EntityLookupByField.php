@@ -4,12 +4,10 @@ namespace Drupal\asu_migrate\Plugin\migrate\process;
 
 use Drupal\migrate\ProcessPluginBase;
 use Drupal\migrate\MigrateExecutableInterface;
-use Drupal\migrate\MigrateSkipProcessException;
 use Drupal\migrate\Row;
-use Drupal\taxonomy\Entity\Term;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 
 /**
  * Check if term exists and create new if doesn't.
@@ -31,21 +29,21 @@ class EntityLookupByField extends ProcessPluginBase implements ContainerFactoryP
   /**
    * The entityTypeManager definition.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManager
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
 
   /**
    * Constructs a EntityLookupByField object.
    *
-   * @param Drupal\Core\Entity\EntityTypeManager $entityTypeManager
+   * @param Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   A drupal entity type manager object.
    */
   public function __construct(
       array $configuration,
       $plugin_id,
       $plugin_definition,
-      EntityTypeManager $entityTypeManager
+      EntityTypeManagerInterface $entityTypeManager
     ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->entityTypeManager = $entityTypeManager;
@@ -63,7 +61,8 @@ class EntityLookupByField extends ProcessPluginBase implements ContainerFactoryP
     );
   }
 
-  /** @inheritdoc */
+  /**
+   * @inheritdoc */
   public function transform($string, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
     return $this->getTidByValue($string, $this->configuration['lookup_field'], $this->configuration['bundle']);
   }
@@ -71,10 +70,13 @@ class EntityLookupByField extends ProcessPluginBase implements ContainerFactoryP
   /**
    * Load term by value.
    */
-  public function getTidByValue($value = NULL, $field = NULL) {
+  public function getTidByValue($value = NULL, $field = NULL, $bundle = NULL) {
     $properties = [];
+    if ($bundle) {
+      $properties['vid'] = [$bundle];
+    }
     if (!empty($value) && !empty($field)) {
-      if (strpos($field, '/') !== false) {
+      if (strpos($field, '/') !== FALSE) {
         $field = explode('/', $field);
         $properties[$field[0]][$field[1]] = $value;
       }
@@ -82,9 +84,10 @@ class EntityLookupByField extends ProcessPluginBase implements ContainerFactoryP
         $properties[$field] = $value;
       }
     }
-    // @todo - possible improvement would be to limit by the bundle available in the config
+    // @todo possible improvement would be to limit by the bundle available in the config
     $terms = $this->entityTypeManager->getStorage('taxonomy_term')->loadByProperties($properties);
     $term = reset($terms);
     return !empty($term) ? $term->id() : 0;
   }
+
 }

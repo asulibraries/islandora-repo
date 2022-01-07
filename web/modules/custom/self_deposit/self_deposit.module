@@ -5,8 +5,11 @@
  * Contains self_deposit.module.
  */
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\user\Entity\User;
+use Drupal\self_deposit\Form\PerfArchiveChild;
+use Drupal\Core\Url;
 
 /**
  * Implements hook_help().
@@ -30,9 +33,9 @@ function self_deposit_help($route_name, RouteMatchInterface $route_match) {
 function self_deposit_preprocess_node(&$variables) {
   if ($variables['node'] && $variables['node']->getType() == 'asu_repository_item') {
     $vm = $variables['view_mode'];
-    if ( $vm == 'full' || $vm == 'asu_document' || $vm == 'asu_audio' || $vm == 'asu_complex_object' || $vm == 'asu_image' || $vm == 'asu_video') {
+    if ($vm == 'full' || $vm == 'asu_document' || $vm == 'asu_audio' || $vm == 'asu_complex_object' || $vm == 'asu_image' || $vm == 'asu_video') {
       $current_user = User::load(\Drupal::currentUser()->id());
-      if ($current_user->hasRole('administrator') || $current_user->hasRole('content_approver') || $current_user->hasRole('metadata_manager')) {
+      if ($current_user->hasRole('administrator') || $current_user->hasRole('content_approver')) {
         $connection = \Drupal::database();
         $node_id = $variables['node']->id();
         $query = $connection->query(
@@ -51,6 +54,97 @@ function self_deposit_preprocess_node(&$variables) {
           $submission_id = $result[0]->sid;
           $url = "/webform/self_deposit/submissions/" . $submission_id;
           \Drupal::messenger()->addMessage(t('This node is related to a self deposit. <a href="@url">View original deposit.</a>', ['@url' => $url]));
+        }
+      }
+    }
+  }
+}
+
+/**
+ * Implements hook_entity_type_build().
+ */
+function self_deposit_entity_type_build(array &$entity_types) {
+  $entity_types['node']->setFormClass('perf_archive', 'Drupal\node\NodeForm');
+  $entity_types['node']->setFormClass('perf_archive_child', 'Drupal\node\NodeForm');
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function self_deposit_form_node_asu_repository_item_perf_archive_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  $config = \Drupal::config('self_deposit.selfdepositsettings');
+
+  if ($config->get('perf_archive_default_genre')) {
+    $default_genre = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($config->get('perf_archive_default_genre'));
+    $form['field_genre']['widget'][0]['target_id']['#default_value'] = $default_genre;
+  }
+
+  if ($config->get('perf_archive_default_copyright')) {
+    $form['field_copyright_statement']['widget']['#default_value'] = $config->get('perf_archive_default_copyright');
+  }
+
+  if ($config->get('perf_archive_default_reuse')) {
+    $form['field_reuse_permissions']['widget']['#default_value'] = $config->get('perf_archive_default_reuse');
+  }
+
+  if ($config->get('perf_archive_default_model')) {
+    $form['field_model']['widget']['#default_value'] = $config->get('perf_archive_default_model');
+  }
+
+  if ($config->get('perf_archive_default_identifier_type')) {
+    $form['field_typed_identifier']['widget'][0]['subform']['field_identifier_type']['widget']['#default_value'] = $config->get('perf_archive_default_identifier_type');
+  }
+
+  if ($config->get('perf_archive_default_collection')) {
+    $default_collection = \Drupal::entityTypeManager()->getStorage('node')->load($config->get('perf_archive_default_collection'));
+    $form['field_member_of']['widget'][0]['target_id']['#default_value'] = $default_collection;
+    $of_perms = $default_collection->get('field_default_original_file_perm')->entity;
+    $sf_perms = $default_collection->get('field_default_derivative_file_pe')->entity;
+    $form['field_default_derivative_file_pe']['widget'][0]['target_id']['#default_value'] = $sf_perms;
+    $form['field_default_original_file_perm']['widget'][0]['target_id']['#default_value'] = $of_perms;
+  }
+
+  $form['moderation_state']['widget'][0]['state']['#default_value'] = 'published';
+  $form['actions']['submit']['#submit'][] = 'self_deposit_perf_archive_parent_submit';
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function self_deposit_form_node_asu_repository_item_perf_archive_child_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  PerfArchiveChild::alter($form, $form_state);
+}
+
+/**
+ * Submit handling for perf archive parent.
+ */
+function self_deposit_perf_archive_parent_submit(array &$form, FormStateInterface $form_state) {
+  \Drupal::messenger()->addMessage(t('Peformance Archive item created. Add child items now.'));
+  $node_id = $form_state->getValue('nid');
+  if ($node_id) {
+    $form_state->setRedirect('self_deposit.perf_archive.add_child', [
+      'node_type' => 'asu_repository_item',
+      'parent' => $node_id,
+    ]);
+  }
+}
+
+
+/**
+ * To add query params to the CSV view from the table view
+ */
+function self_deposit_preprocess_views_view(&$variables) {
+  if ($variables['id'] == "barrett_submissions") {
+    $view = $variables['view'];
+    if ($view->current_display == 'page_1') {
+      $query_params = \Drupal::request()->query->all();
+      if ($query_params) {
+        $label = "Download CSV";
+        $url = Url::fromRoute('view.barrett_submissions.data_export_1');
+        $url->setOptions(array('query' => $query_params));
+        $link = '<p><a href="' . $url->toString() . '" class="btn btn-md btn-maroon">' . $label . '</a></p>';
+        if (array_key_exists('area', $variables['header'])) {
+          $variables['header']['area']['#text'] = $link;
         }
       }
     }

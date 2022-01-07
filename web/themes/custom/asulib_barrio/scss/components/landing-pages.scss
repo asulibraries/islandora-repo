@@ -1,28 +1,5 @@
-#keep-hero, #landing-hero, #prism-hero {
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center, center;
-    color: white;
-    height: 380px;
-    padding-top: 50px;
-    margin-bottom: 30px;
-
-    h1 {
-        background-color: rgba(0, 0, 0, 0.7);
-        padding: 20px;
-        max-width: fit-content;
-    }
-}
-#keep-hero {
-    background-image: url(https://islandora-drupal-landing-bucket.s3.us-west-2.amazonaws.com/s3fs-public/inline-images/2020_hero_keep.jpg?QuTYpYqxcIwNzQnMw7fhd2O0JAO4PNYL=);
-}
-
-#prism-hero {
-    background-image: url(https://islandora-drupal-landing-bucket.s3.us-west-2.amazonaws.com/s3fs-public/inline-images/20201104_wurzburger-luhrs-stained-glass-prism_1217_aw_1200x380hero.jpg?AzotdgqbxwQhzo73PRxMjPeAf4UG0T0P);
-}
-
-#landing-hero {
-    background-image: url(../images/2020_hero_repository-umbrella.jpg);
+.node--view-mode-recent-item-teaser-prism > .views-element-container {
+    padding-top: 0 !important;
 }
 
 .node--type-page {
@@ -30,23 +7,20 @@
         background-color: $gray-2;
     }
     .padded-content-box {
-        /*padding: 2.5rem 15px 1.5rem;*/
-        margin-bottom: 4rem;
+        margin-bottom: $large-padding;
     }
-    .view-id-content_recent .view-content {
-        background-color: rgba(242, 242, 242, 1);
-    }
-    .view-id-content_recent.view-display-id-block_4, .view-id-content_recent.view-display-id-block_5,
-    .view-id-content_recent.view-display-id-block_6 {
-        .view-content {
-            background-color: transparent;
-        }
-        img {
-            max-width: 60px;
-            height: auto;
+    .view-id-content_recent.view-display-id-block_4, .view-id-content_recent.view-display-id-block_5 {
+        i, .card-title {
+            display: inline;
         }
         i {
-            color: $gray-5;
+            color: $gray-7;
+            margin-right: .5rem;
+        }
+        .complex-object-icon {
+            display: inline-block;
+            height: 2rem;
+            margin-right: 0;
         }
     }
 
@@ -59,75 +33,21 @@
         }
     }
 
-    #block-views-block-content-recent-block-2, #block-views-block-content-recent-block-3,
-    #block-views-block-content-recent-block-4,
-    #block-views-block-content-recent-block-6,
-    #block-views-block-content-recent-block-5 {
-        margin-top: 40px;
-    }
-
-    #block-views-block-content-recent-block-4, #block-views-block-content-recent-block-5,
-    #block-views-block-content-recent-block-6 {
-        @extend .col-md-6;
-        display: inline-block;
-    }
-
-    #block-views-block-content-recent-block-4, #block-views-block-content-recent-block-6 {
-        margin-right: -20px;
-        padding-left: 0;
-    }
-    #block-views-block-content-recent-block-5 {
-        margin-left: 20px;
-        float: right;
-        padding-right: 0;
-        td:first-of-type {
-            padding-right: 0;
-            max-width: 60px;
-        }
-    }
-
-    #block-views-block-content-recent-block-4 img {
-        width: auto;
-        max-height: 75px;
-    }
-
-    #block-views-block-content-recent-block-2 {
-
-        .views-field-title {
-            padding-top: 10px;
-        }
-        img {
-            max-width: 150px;
-        }
-        .views-field-field-media-image > div{
-            text-align: center;
-        }
-    }
-
     .view-id-featured_collections {
         .slides > li > div {
-            border: 1px solid #d0d0d0;
             padding: 22px;
         }
-        .col-9 > a:not(.btn) {
-            @extend h3;
-        }
+        // .col-9 > a:not(.btn) {
+        //     @extend h3;
+        // }
         .flex-pauseplay {
             padding-top: 15px;
         }
-    }
-
-    #views-bootstrap-content-recent-block-2, #views-bootstrap-content-recent-block-3 {
-        width: 100%;
-        padding: 20px;
-        .carousel-caption {
-            position:relative;
-            left: 0;
-            display: inline-block !important;
-            top: auto;
-            bottom: auto;
+        .flexslider .slides img {
+            max-height: 250px;
         }
     }
+
     .flex-caption {
         word-wrap: break-word;
     }
@@ -139,50 +59,23 @@
 
 .calls-to-action {
     background: $gray-2;
-    padding: 40px;
-    .col-md-4 {
-        background: $white;
-        border: 1px solid $gray-3;
-        border-top: 5px solid $primary-shade;
-        min-height: 250px;
-        padding: 15px;
-        @media(min-width: map-get($grid-breakpoints, 'md')) {
-            &:nth-of-type(1) {
-                max-width: 31%;
-            }
-            &:nth-of-type(2) {
-                max-width: 32%;
-                margin-left: 3%;
-            }
-            &:nth-of-type(3) {
-                max-width: 31%;
-                margin-left: 3%;
-            }
-        }
-    }
-    p {
-        padding-top: 10px;
-    }
+    padding-top: $large-padding;
+    padding-bottom: $large-padding;
 }
 
-.path-frontpage header {
-    margin-bottom: 0;
-}
-.path-frontpage h2 {
-    margin-bottom: ($spacer * 1.5);
+.path-frontpage {
+    header {
+        margin-bottom: 0;
+    }
+    .node__content {
+        margin-top: 0;
+        padding-top: $large-padding;
+        padding-bottom: $small-padding;
+    }
 }
 
 .card-wrapper {
     margin-bottom: 1rem;
-}
-
-/* Mobile breakpoint */
-@media (max-width: 990px) {
-    .calls-to-action {
-        .col-md-4 {
-            margin-bottom: 2rem;
-        }
-    }
 }
 
 .prism-home-thumb {
@@ -192,4 +85,20 @@
 
 .prism-fullwidth-row {
     width: 100%;
+}
+
+.sm-top-lg-bottom-padded-content {
+    padding-top: $small-padding;
+    padding-bottom: $large-padding;
+}
+.sm-top-sm-bottom-padded-content {
+    padding-top: $small-padding;
+    padding-bottom: $small-padding;
+}
+
+/** Fix for heros on mobile devices **/
+div[class^=uds-hero] .hero {
+    @media only screen and (-webkit-min-device-pixel-ratio: 3) {
+        max-height: 300px;
+    }
 }

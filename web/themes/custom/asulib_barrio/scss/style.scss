@@ -16,23 +16,9 @@ body {
 
 /* COLORS
 --------------------------------------------------*/
-
-a {
-    color: $accent-shade;
-}
-a:hover,
-a:focus {
-  color: $brightmaroon;
-  text-decoration: none;
-}
-
 .bg-inverse {
     background: $primary-shade !important;
 }
-
-// .site-footer {
-//     background: $accent-shade !important;
-// }
 
 .menu--main li a {
     color: $primary-shade;
@@ -83,7 +69,9 @@ a:focus {
 
 .complex-object-child-box {
     img {
-      height: auto;
+      max-height: 300px;
+      width: auto;
+      max-width: 100%;
     }
     .node__title {
       overflow-wrap: break-word;
@@ -94,6 +82,10 @@ a:focus {
       padding: 15px 0;
     }
     padding-bottom: 30px;
+    .btn + .btn {
+      margin-left: 0;
+      margin-top: 5px;
+    }
 }
 
 .view-included-in-complex-object {
@@ -104,30 +96,9 @@ a:focus {
 /* remove padding from inside some views on repo item displays */
 .file-container .views-row { padding: 0; }
 
-.repo-item, .node--type-collection.node--view-mode-full {
-  h2 {
-    padding: 1.5rem 1rem;
-    background: $gray-2;
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 1.75rem;
-  }
-  h3 {
-    font-size: 1.25rem;
-    margin-bottom: 1rem;
-    font-weight: bold;
-  }
-  .field--name-field-rich-description {
-    margin-bottom: $spacer;
-  }
-  .content-section {
-    margin-bottom: ($spacer * 2);
-  }
-}
-
-.main-content a {
-  border-bottom: 1px dotted $maroon;
-}
+// .main-content a {
+//   border-bottom: 1px dotted $maroon;
+// }
 
 .social-icons a {
   border-bottom: none;
@@ -137,10 +108,7 @@ a.icon-link {
   border-bottom: none;
 }
 .icon-link i {
-     margin-right: .75rem;
-   }
-.icon-link span {
-  border-bottom: 1px dotted $maroon;
+  margin-right: .75rem;
 }
 
 /* This might be too general */
@@ -148,9 +116,6 @@ img { width: 100%; }
 
 /* Remove main content padding */
 .node__content.container {
-  padding: 0;
-}
-.node--type-collection .col-md-12 {
   padding: 0;
 }
 
@@ -176,6 +141,14 @@ img { width: 100%; }
 }
 .interact > div {
   margin-bottom: 2.5rem;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -ms-word-break: break-all;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
 }
 
 .citation ul {
@@ -185,23 +158,38 @@ img { width: 100%; }
 }
 
 /* Subjects and Linked Agent, and Collaborating institutions */
-article:not(.node--view-mode-full-metadata) .inline-list {
+article:not(.node--view-mode-full-metadata) .inline-list, .field--name-field-copyright-statement li, .field--name-field-reuse-permissions li, .field--name-field-resource-type li {
   list-style: none;
   padding: 0;
 }
 
-.all-subjects .inline-list,
-.all-memberships .inline-list,
+.field:not(.field--name-field-note-para):not(.field--name-field-linked-agent) .inline-list li {
+  display: block;
+}
+
+.all-subjects .inline-list li,
+.all-memberships .inline-list li,
+.agents .inline-list li{
+  display: inline-block;
+}
+
 .inline-list li {
   display: inline;
 }
 
 .inline-list li:not(:last-child)::after,
 .all-subjects ul:not(:first-of-type)::before,
+.agents ul:not(:first-of-type)::before,
 .all-memberships ul:not(:first-of-type)::before {
   content: '/';
   margin-left: 5px;
   margin-right: 5px;
+}
+
+.field--name-field-note-para .inline-list li:not(:last-child)::after {
+  content: '';
+  margin-left: 0;
+  margin-right: 0;
 }
 
 /* Handling icon fallbacks for items */
@@ -220,7 +208,10 @@ article:not(.node--view-mode-full-metadata) .inline-list {
 }
 a.image-link,
 a.image-link:hover,
-a.image-link:focus { border: none; }
+a.image-link:focus {
+  border: none;
+  box-shadow: none !important;
+}
 
 /* Mobile breakpoint */
 @media (max-width: 990px) {
@@ -241,3 +232,71 @@ a.image-link:focus { border: none; }
 //     padding-right: 0;
 //   }
 // }
+
+blockquote {
+    border-left: none;
+    padding-left: 4rem;
+}
+
+article ul:not(.field__items):not(.contextual-links):not(.pagination) {
+    @extend .uds-list;
+}
+
+#machine ul {
+    padding: 0 3rem;
+}
+
+.form-control.btn {
+  width:auto;
+}
+
+.page-item {
+  margin: 0 0.25rem;
+}
+
+ul.pagination {
+  padding-top: $small-padding;
+}
+
+.pager__item--next .page-link-icon:after {
+  display: inline-block;
+  font-size: inherit;
+  @include bg-arrow-icon('currentColor', right);
+  transform: rotate(270deg);
+  float: right;
+  height: $uds-component-pager-icon-height;
+  width: $uds-component-pager-icon-width;
+  margin-left: $uds-component-pager-icon-margin;
+}
+.page-item:nth-child(2) .page-link-icon:before {
+  display: inline-block;
+  font-size: inherit;
+  @include bg-arrow-icon('currentColor', left);
+  transform: rotate(90deg);
+  float: left;
+  height: $uds-component-pager-icon-height;
+  width: $uds-component-pager-icon-width;
+  margin-right: $uds-component-pager-icon-margin;
+}
+
+@media (max-width: 768px) {
+  .page-link-icon {
+    height: 35px;
+    span {
+      display: none;
+    }
+  }
+  .page-number:not(.active) {
+    display: none;
+  }
+}
+
+// fix for captcha
+#captcha img {
+  width: auto;
+}
+
+// mirador fixes
+.MuiAppBar-root {
+  z-index: 1009 !important;
+}

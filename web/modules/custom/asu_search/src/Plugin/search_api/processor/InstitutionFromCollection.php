@@ -7,7 +7,6 @@ use Drupal\search_api\Item\ItemInterface;
 use Drupal\node\NodeInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
 use Drupal\search_api\Processor\ProcessorProperty;
-use Drupal\paragraphs\Entity\Paragraph;
 
 /**
  * Gets the institution from the parent collection (field_member_of).
@@ -69,14 +68,14 @@ class InstitutionFromCollection extends ProcessorPluginBase {
   /**
    * Function to get parent of item that is a collection - recursive.
    *
-   * @param NodeInterface $node
+   * @param \Drupal\node\NodeInterface $node
    *   The node object for which to find the parent collection.
    * @param int $max_depth
    *   Search depth.
    * @param int $depth
    *   Current iteration's depth.
    *
-   * @return NodeInterface
+   * @return \Drupal\node\NodeInterface
    *   The parent collection.
    */
   private function getParentCollection(NodeInterface $node, $max_depth = 3, $depth = 0) {
@@ -95,6 +94,5 @@ class InstitutionFromCollection extends ProcessorPluginBase {
     }
     return $parent_collection;
   }
-
 
 }

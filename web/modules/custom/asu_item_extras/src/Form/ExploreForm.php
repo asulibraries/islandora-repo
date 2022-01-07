@@ -55,13 +55,13 @@ class ExploreForm extends FormBase {
   public function buildForm(array $form, FormStateInterface $form_state) {
     $node = $this->currentRouteMatch->getParameter('node');
     $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/items/' .
-       (($node) ? $node->id() : 0) . '/members');
+       (($node) ? $node->id() : 0) . '/members', ['attributes' => ['class' => 'nav-link']]);
     $link = Link::fromTextAndUrl($this->t('View all associated media'), $url);
     $link = $link->toRenderable();
     $form['members_link'] = [
       '#markup' =>
       (($link) ?
-        "<p>" . render($link) . "</p>" :
+        render($link) :
         ""),
     ];
     $form['search_api_fulltext'] = [

@@ -12,7 +12,7 @@ use Drupal\Core\Session\AccountProxy;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Drupal\group\GroupMembershipLoaderInterface;
-use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Site\Settings;
 
 /**
@@ -78,7 +78,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
    *   The current user.
    * @param \Drupal\group\GroupMembershipLoaderInterface $group_membership_loader
    *   The group membership loader.
-   * @param \Drupal\Core\Entity\EntityTypeManager $entityTypeManager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entityTypeManager definition.
    */
   public function __construct(
@@ -89,7 +89,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
         RequestStack $request_stack,
         AccountProxy $current_user,
         GroupMembershipLoaderInterface $group_membership_loader,
-        EntityTypeManager $entityTypeManager
+        EntityTypeManagerInterface $entityTypeManager
     ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->routeMatch = $route_match;
@@ -158,7 +158,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
         ->getStorage('taxonomy_term')
         ->load($field_model_tid);
       $is_complex_object = (((isset($field_model_term) && is_object($field_model_term)) ?
-        $field_model_term->getName() : '') == 'Complex Object');
+        $field_model_term->getName() : '') == 'Complex Object' || 'Paged Content');
     }
     $canUpdate = $node->access('update', $this->currentUser);
     $output_links = [];
@@ -174,17 +174,52 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
       $url = Url::fromUri(
             $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
             '/node/add/asu_repository_item?edit[field_member_of][widget][0][target_id]=' .
-            $node->id() . ($is_complex_object ? '&edit[field_complex_object_child][value]=1' : '')
+            $node->id() . ($is_complex_object ? '&edit[field_complex_object_child][value]=1' : ''), ['attributes' => ['class' => 'nav-link']]
         );
+      $config = \Drupal::config('self_deposit.selfdepositsettings');
+      $deposit_config = \Drupal::config('asu_deposit_methods.depositsettings');
       if ($is_complex_object) {
-        $link = Link::fromTextAndUrl($this->t('Add media'), $url);
+        $link = Link::fromTextAndUrl($this->t('Add media &nbsp; <i class="fas fa-plus-circle"></i>'), $url);
+        if ($config->get('perf_archive_default_collection')) {
+          if ($node->get('field_member_of') && $node->get('field_member_of')->entity->id() == $config->get('perf_archive_default_collection')) {
+            $pa_url = Url::fromRoute('self_deposit.perf_archive.add_child', [
+              'node_type' => 'asu_repository_item',
+              'parent' => $node->id(),
+            ], ['attributes' => ['class' => 'nav-link']]);
+            $link = Link::fromTextAndUrl($this->t('Add Performance Archive Child item &nbsp; <i class="fas fa-plus-circle"></i>'), $pa_url);
+          }
+        }
+        if ($deposit_config->get('sheet_music_default_collection')) {
+          if ($node->get('field_member_of') && $node->get('field_member_of')->entity && $node->get('field_member_of')->entity->id() == $deposit_config->get('sheet_music_default_collection')) {
+            $pa_url = Url::fromRoute('asu_deposit_methods.sheet_music.add_child', [
+              'node_type' => 'asu_repository_item',
+              'parent' => $node->id(),
+            ], ['attributes' => ['class' => 'nav-link']]);
+            $link = Link::fromTextAndUrl($this->t('Add Sheet Music Child item &nbsp; <i class="fas fa-plus-circle"></i>'), $pa_url);
+          }
+        }
       }
       else {
-        $link = Link::fromTextAndUrl($this->t('Add item'), $url);
+        $link = Link::fromTextAndUrl($this->t('Add item &nbsp; <i class="fas fa-plus-circle"></i>'), $url);
+        if ($is_collection && $config->get('perf_archive_default_collection')) {
+          if ($node->id() == $config->get('perf_archive_default_collection')) {
+            $pa_url = Url::fromRoute('self_deposit.perf_archive.add', [
+              'node_type' => 'asu_repository_item',
+            ], ['attributes' => ['class' => 'nav-link']]);
+            $link = Link::fromTextAndUrl($this->t('Add Performance Archive item &nbsp; <i class="fas fa-plus-circle"></i>'), $pa_url);
+          }
+        }
+        if ($is_collection && $deposit_config->get('sheet_music_default_collection')) {
+          if ($node->id() == $deposit_config->get('sheet_music_default_collection')) {
+            $pa_url = Url::fromRoute('asu_deposit_methods.sheet_music.add', [
+              'node_type' => 'asu_repository_item',
+            ], ['attributes' => ['class' => 'nav-link']]);
+            $link = Link::fromTextAndUrl($this->t('Add Sheet Music item &nbsp; <i class="fas fa-plus-circle"></i>'), $pa_url);
+          }
+        }
       }
       $link = $link->toRenderable();
-      $link_glyph = Link::fromTextAndUrl($this->t('<i class="fas fa-plus-circle"></i>'), $url)->toRenderable();
-      $output_links[] = render($link) . " &nbsp;" . render($link_glyph);
+      $output_links[] = render($link);
     }
 
     if ($canUpdate) {
@@ -192,44 +227,54 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
       // edit-own-asu-repository-item-content permissions.
       $url = Url::fromUri(
             $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
-            '/node/' . $node->id() . '/edit'
+            '/node/' . $node->id() . '/edit', ['attributes' => ['class' => 'nav-link']]
         );
-      $link = Link::fromTextAndUrl($this->t('Edit'), $url);
+      $link = Link::fromTextAndUrl($this->t('Edit &nbsp; <i class="fas fa-pencil-alt"></i>'), $url);
       $link = $link->toRenderable();
-      $link_glyph = Link::fromTextAndUrl($this->t('<i class="fas fa-pencil-alt"></i>'), $url)->toRenderable();
-      $output_links[] = render($link) . " &nbsp;" . render($link_glyph);
+      $output_links[] = render($link);
       if ($canUpdate && $is_complex_object) {
-        // Reorder items
+        // Reorder items.
         $url = Url::fromUri(
               $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
-              '/node/' . $node->id() . '/members/reorder'
+              '/node/' . $node->id() . '/members/reorder', ['attributes' => ['class' => 'nav-link']]
           );
-        $link = Link::fromTextAndUrl($this->t('Reorder items'), $url);
+        $link = Link::fromTextAndUrl($this->t('Reorder items &nbsp; <i class="fas fa-sort"></i>'), $url);
         $link = $link->toRenderable();
-        $link_glyph = Link::fromTextAndUrl($this->t('<i class="fas fa-sort"></i>'), $url)->toRenderable();
-        $output_links[] = render($link) . " &nbsp;" . render($link_glyph);
+        $output_links[] = render($link);
       }
       if ($is_collection) {
         // Statistics link.
-        $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/collections/' . $node->id() . '/statistics');
-        $link = Link::fromTextAndUrl($this->t('Statistics'), $url);
+        $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/collections/' . $node->id() . '/statistics', ['attributes' => ['class' => 'nav-link']]);
+        $link = Link::fromTextAndUrl($this->t('Statistics &nbsp; <i class="fas fa-chart-bar"></i>'), $url);
         $link = $link->toRenderable();
-        $link_glyph = Link::fromTextAndUrl($this->t('<i class="fas fa-chart-bar"></i>'), $url)->toRenderable();
-        $output_links[] = render($link) . " &nbsp;" . render($link_glyph);
+        $output_links[] = render($link);
+
+        $group_contents = \Drupal::entityTypeManager()
+          ->getStorage('group_content')
+          ->loadByEntity($node);
+        if (count($group_contents) > 0) {
+          foreach ($group_contents as $group_content) {
+            /** @var \Drupal\group\Entity\GroupContentInterface $group_content */
+            $group = $group_content->getGroup();
+          }
+          $group_url = Url::fromRoute('view.group_members.page_1', ['group' => $group->id()], ['attributes' => ['class' => 'nav-link']]);
+          $group_link = Link::fromTextAndUrl($this->t('Manage Users &nbsp; <i class="fas fa-users"></i>'), $group_url);
+          $group_link = $group_link->toRenderable();
+          $output_links[] = render($group_link);
+        }
       }
       if ($node->hasField('field_model') && $node->get('field_model')->entity != NULL
       ) {
-        $output_links[] = "<div class='field--label-inline'><div class='field__label'>Model</div>: " . $node->get('field_model')->entity->getName() . "</div>";
+        $output_links[] = "<a class='nav-link disabled field--label-inline'><div class='field__label'>Model</div>: " . $node->get('field_model')->entity->getName() . "</a>";
       }
       if (!($is_complex_object) && (!$is_collection)) {
         $url = Url::fromUri(
               $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
-              '/node/' . $node->id() . '/media/add'
+              '/node/' . $node->id() . '/media/add', ['attributes' => ['class' => 'nav-link']]
           );
-        $link = Link::fromTextAndUrl($this->t('Add media'), $url);
+        $link = Link::fromTextAndUrl($this->t('Add media &nbsp; <i class="fas fa-plus-circle"></i>'), $url);
         $link = $link->toRenderable();
-        $link_glyph = Link::fromTextAndUrl($this->t('<i class="fas fa-plus-circle"></i>'), $url)->toRenderable();
-        $output_links[] = render($link) . " &nbsp;" . render($link_glyph);
+        $output_links[] = render($link);
       }
     }
 
@@ -237,28 +282,47 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
       $route_part = ($is_collection) ? 'collections' : 'items';
       $url = Url::fromUri(
             $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
-            '/' . $route_part . '/' . $node->id() . '/csv'
+            '/' . $route_part . '/' . $node->id() . '/csv', ['attributes' => ['class' => 'nav-link']]
         );
-      $link = Link::fromTextAndUrl($this->t('Download CSV'), $url);
+      $link = Link::fromTextAndUrl($this->t('Download CSV &nbsp; <i class="fas fa-file-export"></i>'), $url);
       $link = $link->toRenderable();
-      $link_glyph = Link::fromTextAndUrl($this->t("<i class='fas fa-file-export'></i>"), $url)->toRenderable();
-      $output_links[] = render($link) . " &nbsp;" . render($link_glyph);
+      $output_links[] = render($link);
     }
     if ($user_is_admin_or_metadata_manager && $is_asu_repository_item) {
       // Legacy item link... look up the node's field_pid value and if the
       // first character is not an "a"
       // If both of these are true, then the link would be to:
-      // repository.asu.edu/items/{node.field_pid}
+      // legacy-repo.lib.asu.edu/items/{node.field_pid}.
       $field_pid = $node->get('field_pid')->getString();
       if ($field_pid && (strtolower(substr($field_pid, 0, 1)) <> "a")) {
-        $legacy_uri = "https://repository.asu.edu/items/" . $field_pid;
-        $url = Url::fromUri($legacy_uri, ['attributes' => ['target' => '_blank', 'rel' => 'noopener']]);
-        $link = Link::fromTextAndUrl($this->t('Legacy URI<span class="visually-hidden">, opens in a new window</span>'), $url);
-        $link_glyph = Link::fromTextAndUrl($this->t('<span class="visually-hidden">Legacy URI, opens in a new window</span><i class="fas fa-external-link-alt"></i>'), $url);
+        $legacy_uri = "https://legacy-repo.lib.asu.edu/items/" . $field_pid;
+        $url = Url::fromUri($legacy_uri, ['attributes' => ['target' => '_blank', 'rel' => 'noopener', 'class' => 'nav-link']]);
+        $link = Link::fromTextAndUrl($this->t('Legacy URI<span class="visually-hidden">, opens in a new window</span> &nbsp; <i class="fas fa-external-link-alt"></i>'), $url);
         $link = $link->toRenderable();
-        $link_glyph = $link_glyph->toRenderable();
-        $output_links[] = render($link) . ' &nbsp;' . render($link_glyph);
+        $output_links[] = render($link);
       }
+    }
+    // Solr reindex / Bulk edit collection items link.
+    if (($is_collection || $is_asu_repository_item) && ($user_is_admin_or_metadata_manager)) {
+      // Two different possibilities here -- if single item, redirect to Solr
+      // reindexing page, else a collection would go through Bulk Edit form.
+      if ($is_collection) {
+        $url = Url::fromUri(
+              $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
+              '/admin/item-bulk-edit/' . $node->id(), ['attributes' => ['class' => 'nav-link']]
+          );
+        $link_text = $this->t('Bulk edit items');
+      }
+      else {
+        $url = Url::fromUri(
+              $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
+              '/' . $route_part . '/' . $node->id() . '/reindexSolr', ['attributes' => ['class' => 'nav-link']]
+          );
+        $link_text = $this->t('Reindex item in Solr &nbsp; <i class="fas fa-database"></i>');
+      }
+      $link = Link::fromTextAndUrl($link_text, $url);
+      $link = $link->toRenderable();
+      $output_links[] = render($link);
     }
     if (in_array('administrator', $this->currentUser->getRoles())) {
       $mapper = \Drupal::service('islandora.entity_mapper');
@@ -268,16 +332,14 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
       $path = $mapper->getFedoraPath($node->uuid());
       $path = trim($path, '/');
       $fedora_uri = "$fedora_root/$path";
-      $url = Url::fromUri($fedora_uri, ['attributes' => ['target' => '_blank', 'rel' => 'noopener']]);
-      $link = Link::fromTextAndUrl($this->t('Fedora URI<span class="visually-hidden">, opens in a new window</span>'), $url);
+      $url = Url::fromUri($fedora_uri, ['attributes' => ['target' => '_blank', 'rel' => 'noopener', 'class' => 'nav-link']]);
+      $link = Link::fromTextAndUrl($this->t('Fedora URI<span class="visually-hidden">, opens in a new window</span> &nbsp; <i class="fas fa-external-link-alt"></i>'), $url);
       $link = $link->toRenderable();
-      $link_glyph = Link::fromTextAndUrl($this->t('<span class="visually-hidden">Fedora URI, opens in a new window</span><i class="fas fa-external-link-alt"></i>'), $url);
-      $link_glyph = $link_glyph->toRenderable();
-      $output_links[] = render($link) . ' &nbsp;' . render($link_glyph);
+      $output_links[] = render($link);
     }
     return [
       '#markup' => (count($output_links) > 0) ?
-      "<div class='pseudo_block'><h2>Admin toolbox</h2><nav><ul><li>" . implode("<hr>", $output_links) . "</li></ul></nav></div>" :
+      "<div class='pseudo_block'><h2>Admin toolbox</h2><nav class='sidebar'>" . implode('', $output_links) . "</nav></div>" :
       "",
       '#attached' => [
         'library' => [
@@ -310,7 +372,13 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
    */
   public function getCacheTags() {
     if ($node = $this->routeMatch->getParameter('node')) {
-      return Cache::mergeTags(parent::getCacheTags(), ['node:' . $node->id()]);
+      if (is_string($node)) {
+        $nid = $node;
+      }
+      else {
+        $nid = $node->id();
+      }
+      return Cache::mergeTags(parent::getCacheTags(), ['node:' . $nid]);
     }
     else {
       return parent::getCacheTags();

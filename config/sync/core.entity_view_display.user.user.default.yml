@@ -21,8 +21,42 @@ targetEntityType: user
 bundle: user
 mode: default
 content:
+  field_campus:
+    type: string
+    weight: 7
+    region: content
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_first_name:
+    type: string
+    weight: 5
+    region: content
+    label: visually_hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+  field_honors:
+    type: boolean
+    weight: 8
+    region: content
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+  field_last_name:
+    type: string
+    weight: 6
+    region: content
+    label: visually_hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
   field_opt_out_of_content_changed:
-    weight: 3
+    weight: 2
     label: above
     settings:
       format: default
@@ -33,14 +67,21 @@ content:
     region: content
   field_orcid_id:
     type: string
-    weight: 2
+    weight: 10
     region: content
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
+  field_programs:
+    type: basic_string
+    weight: 9
+    region: content
+    label: above
+    settings: {  }
+    third_party_settings: {  }
   field_terms_accepted:
-    weight: 4
+    weight: 3
     label: above
     settings:
       format: default
@@ -50,7 +91,7 @@ content:
     type: boolean
     region: content
   masquerade:
-    weight: 5
+    weight: 4
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -69,12 +110,7 @@ content:
     third_party_settings: {  }
     label: hidden
 hidden:
-  field_campus: true
   field_emplid: true
-  field_first_name: true
-  field_honors: true
-  field_last_name: true
-  field_programs: true
   langcode: true
   orcid: true
   search_api_excerpt: true

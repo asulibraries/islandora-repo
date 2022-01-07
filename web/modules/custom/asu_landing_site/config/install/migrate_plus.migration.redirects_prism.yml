@@ -1,0 +1,37 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - asu_landing_site
+id: redirects_prism
+migration_group: migrate_redirects
+label: 'Redirects for the legacy repository - PRISM items'
+source:
+  plugin: 'csv'
+  path: /var/www/html/drupal/web/modules/custom/asu_landing_site/data/redirect_info_prism.csv
+  header_row_count: 1
+  ids:
+    - NID
+  constants:
+    # We want to generate 301 permanent redirects as opposed to 302 temporary redirects.
+    status_code: 301
+    redirect_prefix: 'https://prism.lib.asu.edu/items/'
+    source_prefix: 'items/'
+process:
+  # Path/FROM
+  redirect_source:
+    plugin: 'concat'
+    source:
+      - 'constants/source_prefix'
+      - Legacy ID
+  # TO
+  redirect_redirect:
+    plugin: 'concat'
+    source:
+      - 'constants/redirect_prefix'
+      - NID
+  status_code: constants/status_code
+destination:
+  plugin: 'entity:redirect'
+  

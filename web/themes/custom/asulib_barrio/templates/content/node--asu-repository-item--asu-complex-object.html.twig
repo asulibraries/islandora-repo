@@ -97,6 +97,10 @@
   </header>
   <div{{ content_attributes.addClass('node__content', 'clearfix', 'container') }}>
     <div class="content-section row">
+      {% if content.field_model[0]['#plain_text'] == "Paged Content" %}
+        {% set iiif_mani_url = "/node/" ~ node.id ~ "/book-manifest" %}
+          {{ drupal_block('mirador_block', {'iiif_manifest_url': iiif_mani_url}, wrapper=false)  }}
+      {% endif %}
       {% if drupal_view('display_media', 'thumbnail', node.id)|render|striptags|trim|length > 0 %}
         <div class="col-md-5 file-container">
           <a href="{{ url }}/members" class="image-link">{{ drupal_view('display_media', 'thumbnail', node.id) }}</a>
@@ -108,7 +112,12 @@
       <div class="info-container {{ desc_width }}">
         <div>{{ content.field_rich_description }}</div>
         <div class="row">
-          <div class="col-md-6">{{ content.field_copyright_statement }}</div>
+          <div class="col-md-6">
+            {{ content.field_copyright_statement }}
+            {% if node.field_open_access.value == 1 %}
+              <div>{{ content.field_open_access }}</div>
+            {% endif %}
+          </div>
           <div class="col-md-6">{{ content.field_reuse_permissions }}</div>
         </div>
         <div class="altmetrics-info">
@@ -122,16 +131,15 @@
         {{ drupal_view('included_in_complex_object', 'three_included_items') }}
       </div>
       <br class="clearfloat">
-      <div><p><strong>
+      {% if child_count > 3 %}
+        <div><p><strong>
         <a href="{{ url }}/members" class="btn btn-primary">View all associated media</a></strong></p></div><br/>
+      {% endif %}
     </div>
     <div id="details" class="content-section details">
       <h2>{{ 'Details'|t }}</h2>
       {% if node.field_peer_reviewed.value == 1 %}
         <div>{{ content.field_peer_reviewed }}</div>
-      {% endif %}
-      {% if node.field_open_access.value == 1 %}
-        <div>{{ content.field_open_access }}</div>
       {% endif %}
       {% if node.field_linked_agent is not empty %}
         <div class="agents">
@@ -154,8 +162,6 @@
       {% endif %}
       <div>{{ content.field_resource_type }}</div>
        {{ drupal_block('asu_item_is_part_of', {'node': node}) }}
-      {% if node.field_member_of is not empty %}
-      {% endif %}
       {% if drupal_view('collaborating_institutions', 'block_1', node.id)|render|striptags|trim|length > 0 %}
         <div class="collab">
           <div class="field__label">{{ 'Collaborating institutions'|t }}</div>
@@ -166,6 +172,10 @@
       {% if (content.field_typed_identifier.0['#paragraph'].field_identifier_type is not empty) or (content.field_typed_identifier.0['#paragraph'].field_identifier_value is not empty) %}
         <div>{{ content.field_typed_identifier }}</div>
       {% endif %}
+      {% if content.field_note_para.0['#paragraph'].field_note_text is not empty %}
+        <div>{{ content.field_note_para }}</div>
+      {% endif %}
+      <div>{{content.field_table_of_contents}}</div>
       <div>
         <p>
           <strong>

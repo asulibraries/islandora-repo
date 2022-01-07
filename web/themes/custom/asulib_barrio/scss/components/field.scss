@@ -128,7 +128,7 @@ img.copyright-logo {
 
 .node--view-mode-search-result {
     .field--name-field-linked-agent .field__item {
-        display:inline-block;
+        display:inline-block !important;
         &:after {
             content: " /";
         }
@@ -144,15 +144,20 @@ img.copyright-logo {
     padding: 10px 0;
 }
 
+.icon-link:hover svg,
+.icon-link:focus svg {
+    fill: $brightmaroon;
+}
+
 .field--name-field-open-access svg {
     width: 1.75rem;
     margin-top: -15px;
     margin-left: -5px;
-    fill: $maroon;
+    fill: #F68207;
+    padding-top: 10px;
 }
-.icon-link:hover svg,
-.icon-link:focus svg {
-    fill: $brightmaroon;
+.field--name-field-open-access a.icon-link:hover svg {
+    fill: #F68207;
 }
 
 .field--name-field-peer-reviewed .fa-eye {
@@ -209,12 +214,16 @@ button.show-more {
 }
 
 .node--view-mode-full-metadata .field--name-field-typed-identifier > .field__items > .field__item {
-    display: block;
+    display: inline-block;
     border-bottom: 1px solid $border-color;
     margin-bottom: 10px;
     &:last-of-type {
         border-bottom: none;
     }
+}
+
+.field--name-field-typed-identifier .paragraph {
+    display: inline-block;
 }
 
 .node--view-mode-full-metadata .field--name-field-typed-identifier > .field__items > .field__item > .paragraph > .field--type-entity-reference > .field__item, .node--type-archival-resource > .field__label, .node--type-archival-object > .field__label, .node--type-repository > .field__label, .node--type-archival-top-container > .field__label {

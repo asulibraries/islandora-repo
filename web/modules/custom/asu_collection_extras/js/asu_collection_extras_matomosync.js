@@ -1,9 +1,9 @@
- /**
+/**
  * @file - asu_collection_extras.js
  */
 
 (function ($) {
-    $(document).ready(function(){
+    $(document).ready(function () {
         // create a URL that will trigger the PHP code to perform the heavy lifting
         // for this node.
         var this_uri = window.location.href;
@@ -27,14 +27,13 @@
             build_call_uri = build_call_uri + "/matomosync";
             var settings = [];
             $.ajax(build_call_uri, {
-                success: function(data) {
+                success: function (data) {
                     // alert('success ajax call to ' + build_call_uri);
             },
-                error: function() {
+                error: function () {
                     // alert('error ajax call to ' + build_call_uri);
                 }
               });
             }
-        });            
-    })
-(jQuery, Drupal);
+        });
+    })(jQuery, Drupal);

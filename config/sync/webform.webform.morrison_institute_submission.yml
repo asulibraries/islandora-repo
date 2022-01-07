@@ -1,0 +1,406 @@
+langcode: en
+status: open
+dependencies:
+  module:
+    - asu_deposit_methods
+open: null
+close: null
+weight: 0
+uid: 1
+template: false
+archive: false
+id: morrison_institute_submission
+title: 'Morrison Institute Submission'
+description: 'Form for Morrison Institute staff to submit to their collection'
+category: ''
+elements: |-
+  processed_text:
+    '#type': processed_text
+    '#text': |
+      <h1>Morrison Institute Deposit Form</h1>
+    '#format': full_html
+  item_title:
+    '#type': textarea
+    '#title': Title
+    '#rows': 2
+    '#required': true
+  alternate_title:
+    '#type': textfield
+    '#title': 'Alternate Title'
+    '#multiple': true
+    '#multiple__add_more_input': false
+  item_description:
+    '#type': textarea
+    '#title': Description
+    '#description': 'A brief description of the item.'
+    '#required': true
+  additional_contributors:
+    '#type': webform_name
+    '#title': 'Personal Contributors'
+    '#multiple': true
+    '#title_display': ''
+    '#multiple__header': true
+    '#multiple__header_label': 'Personal Contributors'
+    '#multiple__add_more': false
+    '#multiple__add_more_input': false
+    '#wrapper_type': container
+    '#title__access': false
+    '#first__title_display': before
+    '#middle__access': false
+    '#last__title_display': before
+    '#suffix__access': false
+    '#degree__access': false
+    '#flexbox': '1'
+  institutional_contributors:
+    '#type': textfield
+    '#title': 'Institutional Contributors'
+    '#multiple': true
+    '#multiple__add_more_input': false
+  event_contributors:
+    '#type': textfield
+    '#title': 'Event Contributors'
+    '#multiple': true
+    '#multiple__add_more_input': false
+  language1:
+    '#type': entity_autocomplete
+    '#title': Language
+    '#target_type': taxonomy_term
+    '#selection_handler': views
+    '#selection_settings':
+      view:
+        view_name: autocomplete_taxonomy_terms
+        display_name: entity_reference_1
+        arguments: {  }
+  genre:
+    '#type': textfield
+    '#title': Genre
+    '#multiple': true
+  place_of_publication:
+    '#type': textfield
+    '#title': 'Place of Publication'
+  date_created:
+    '#type': textfield
+    '#title': 'Date created'
+    '#description': 'Must follow YYYY[-MM[-DD]] format.'
+    '#required': true
+    '#pattern': '^[0-9]{4}(-[0-9]{2}(-[0-9]{2})?)?$'
+    '#pattern_error': 'Date must be in YYYY-MM-DD format where at least the year is required.'
+  copyright_date:
+    '#type': textfield
+    '#title': 'Copyright Date'
+    '#description': 'Must follow YYYY[-MM[-DD]] format.&nbsp;'
+    '#pattern': '^[0-9]{4}(-[0-9]{2}(-[0-9]{2})?)?$'
+    '#pattern_error': 'Date must be in YYYY-MM-DD format where at least the year is required.'
+  series:
+    '#type': textfield
+    '#title': Series
+  edition:
+    '#type': textfield
+    '#title': Edition
+  issuance:
+    '#type': select
+    '#title': Issuance
+    '#options':
+      'one time': 'One Time'
+      integrating: Integrating
+      ongoing: Ongoing
+  preferred_citation:
+    '#type': textarea
+    '#title': 'Preferred Citation'
+  keywords:
+    '#type': textfield
+    '#title': Keywords
+    '#multiple': true
+    '#description': 'Please describe the topics that this item is about.'
+    '#multiple__item_label': keyword
+    '#multiple__no_items_message': 'No keywords entered. Please add items below.'
+    '#multiple__sorting': false
+    '#multiple__add_more': false
+    '#multiple__add_more_input': false
+    '#multiple__add_more_input_label': 'more keywords'
+  copyright_statement:
+    '#type': webform_entity_select
+    '#title': 'Copyright statement'
+    '#required': true
+    '#target_type': taxonomy_term
+    '#selection_handler': 'default:taxonomy_term'
+    '#selection_settings':
+      target_bundles:
+        copyright_statements: copyright_statements
+  reuse_permissions:
+    '#type': webform_entity_select
+    '#title': 'Reuse permissions'
+    '#required': true
+    '#target_type': taxonomy_term
+    '#selection_handler': 'default:taxonomy_term'
+    '#selection_settings':
+      target_bundles:
+        reuse_permissions: reuse_permissions
+  open_access:
+    '#type': checkbox
+    '#title': 'Open Access'
+  number_of_pages:
+    '#type': textfield
+    '#title': 'Number of Pages'
+  file:
+    '#type': managed_file
+    '#title': File
+    '#multiple': true
+    '#required': true
+    '#uri_scheme': private
+    '#file_extensions': 'pdf avi mp3 mp4 wav mwv tiff tif aac m4a jpg jpeg gif png bmp mov'
+    '#sanitize': true
+  item_node:
+    '#type': value
+    '#title': 'Item Node'
+  actions:
+    '#type': webform_actions
+    '#title': 'Submit button(s)'
+css: ''
+javascript: ''
+settings:
+  ajax: false
+  ajax_scroll_top: form
+  ajax_progress_type: ''
+  ajax_effect: ''
+  ajax_speed: null
+  page: true
+  page_submit_path: /morrison-submission
+  page_confirm_path: ''
+  page_theme_name: ''
+  form_title: webform
+  form_submit_once: false
+  form_exception_message: ''
+  form_open_message: ''
+  form_close_message: ''
+  form_previous_submissions: false
+  form_confidential: false
+  form_confidential_message: ''
+  form_disable_remote_addr: false
+  form_convert_anonymous: false
+  form_prepopulate: false
+  form_prepopulate_source_entity: false
+  form_prepopulate_source_entity_required: false
+  form_prepopulate_source_entity_type: ''
+  form_reset: false
+  form_disable_autocomplete: false
+  form_novalidate: false
+  form_disable_inline_errors: false
+  form_required: false
+  form_unsaved: false
+  form_disable_back: false
+  form_submit_back: false
+  form_autofocus: false
+  form_details_toggle: false
+  form_access_denied: login
+  form_access_denied_title: ''
+  form_access_denied_message: ''
+  form_access_denied_attributes: {  }
+  form_file_limit: ''
+  share: false
+  share_node: false
+  share_theme_name: ''
+  share_title: true
+  share_page_body_attributes: {  }
+  submission_label: ''
+  submission_log: false
+  submission_views: {  }
+  submission_views_replace: {  }
+  submission_user_columns: {  }
+  submission_user_duplicate: false
+  submission_access_denied: default
+  submission_access_denied_title: ''
+  submission_access_denied_message: ''
+  submission_access_denied_attributes: {  }
+  submission_exception_message: ''
+  submission_locked_message: ''
+  submission_excluded_elements: {  }
+  submission_exclude_empty: false
+  submission_exclude_empty_checkbox: false
+  previous_submission_message: 'You can only submit your thesis one time. Please contact us if you believe there is an issue.'
+  previous_submissions_message: 'You can only submit your thesis one time. Please contact us if you believe there is an issue.'
+  autofill: false
+  autofill_message: ''
+  autofill_excluded_elements: {  }
+  wizard_progress_bar: true
+  wizard_progress_pages: false
+  wizard_progress_percentage: false
+  wizard_progress_link: false
+  wizard_progress_states: false
+  wizard_auto_forward: true
+  wizard_auto_forward_hide_next_button: false
+  wizard_keyboard: true
+  wizard_start_label: ''
+  wizard_preview_link: false
+  wizard_confirmation: true
+  wizard_confirmation_label: ''
+  wizard_track: ''
+  wizard_prev_button_label: ''
+  wizard_next_button_label: ''
+  wizard_toggle: true
+  wizard_toggle_show_label: ''
+  wizard_toggle_hide_label: ''
+  preview: 0
+  preview_label: ''
+  preview_title: ''
+  preview_message: ''
+  preview_attributes: {  }
+  preview_excluded_elements: {  }
+  preview_exclude_empty: true
+  preview_exclude_empty_checkbox: false
+  draft: none
+  draft_multiple: false
+  draft_auto_save: false
+  draft_saved_message: ''
+  draft_loaded_message: ''
+  draft_pending_single_message: ''
+  draft_pending_multiple_message: ''
+  confirmation_type: url_message
+  confirmation_title: ''
+  confirmation_message: 'Thank you for submitting a new Morrison Institute item to KEEP.'
+  confirmation_url: '/node/[webform_submission:values:item_node]'
+  confirmation_attributes: {  }
+  confirmation_back: true
+  confirmation_back_label: ''
+  confirmation_back_attributes: {  }
+  confirmation_exclude_query: false
+  confirmation_exclude_token: false
+  confirmation_update: false
+  limit_total: null
+  limit_total_interval: null
+  limit_total_message: ''
+  limit_total_unique: false
+  limit_user: null
+  limit_user_interval: null
+  limit_user_message: ''
+  limit_user_unique: false
+  entity_limit_total: null
+  entity_limit_total_interval: null
+  entity_limit_user: null
+  entity_limit_user_interval: null
+  purge: none
+  purge_days: null
+  results_disabled: false
+  results_disabled_ignore: false
+  results_customize: false
+  token_view: false
+  token_update: false
+  token_delete: false
+  serial_disabled: false
+access:
+  create:
+    roles:
+      - administrator
+      - morrison_staff
+    users: {  }
+    permissions: {  }
+  view_any:
+    roles:
+      - anonymous
+      - administrator
+      - content_approver
+      - metadata_manager
+      - repositor_manager
+      - morrison_staff
+    users: {  }
+    permissions: {  }
+  update_any:
+    roles:
+      - administrator
+      - content_approver
+      - metadata_manager
+      - repositor_manager
+      - morrison_staff
+    users: {  }
+    permissions: {  }
+  delete_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  purge_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  view_own:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  update_own:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  delete_own:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  administer:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  test:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  configuration:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+handlers:
+  create_a_morrison_repository_item:
+    id: create_morrison_repository_item
+    label: 'Create a Morrison repository item'
+    notes: ''
+    handler_id: null
+    status: true
+    conditions: {  }
+    weight: null
+    settings:
+      id: create_morrison_repository_item
+      label: 'Create a Morrison repository item'
+      notes: ''
+      handler_id: null
+      status: true
+      conditions: {  }
+      weight: null
+      settings:
+        id: create_morrison_repository_item
+        label: 'Create a Morrison repository item'
+        notes: ''
+        handler_id: null
+        status: true
+        conditions: {  }
+        weight: null
+        settings:
+          id: create_morrison_repository_item
+          label: 'Create a Morrison repository item'
+          notes: ''
+          handler_id: null
+          status: true
+          conditions: {  }
+          weight: null
+          settings:
+            id: create_morrison_repository_item
+            label: 'Create a Morrison repository item'
+            notes: ''
+            handler_id: null
+            status: true
+            conditions: {  }
+            weight: null
+            settings:
+              id: create_morrison_repository_item
+              label: 'Create a Morrison repository item'
+              notes: ''
+              handler_id: null
+              status: true
+              conditions: {  }
+              weight: -50
+              settings:
+                id: create_morrison_repository_item
+                label: 'Create a Morrison repository item'
+                notes: ''
+                handler_id: create_a_morrison_repository_item
+                status: true
+                conditions: {  }
+                weight: 0
+                settings: {  }
+variants: {  }

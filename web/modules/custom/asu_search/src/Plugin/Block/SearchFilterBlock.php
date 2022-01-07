@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @file
- * SearchFilterBlock
- */
 namespace Drupal\asu_search\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;

@@ -62,7 +62,7 @@ class ThisI8ApiService implements BentoApiInterface {
         $request = $this->httpClient->request('GET', $request_url);
         if ($request->getStatusCode() == 200) {
           $body = $request->getBody()->getContents();
-          $this->logger->info(print_r($body, TRUE));
+          // $this->logger->info(print_r($body, TRUE));
           // dsm(print_r($body, TRUE));.
           return $body;
         }
@@ -92,7 +92,11 @@ class ThisI8ApiService implements BentoApiInterface {
       }
       else {
         $request_url = $base_url . '?_format=json&items_per_page=' . $limit;
-        $request = $this->httpClient->request('GET', $request_url);
+        // $request = $this->httpClient->request('GET', $request_url);
+        $request_url = "https://keep.lib.asu.edu/api/recent";
+        $request = $this->httpClient->request('GET', $request_url, ['allow_redirects' => [
+          'max' => 100,
+        ]]);
         if ($request->getStatusCode() == 200) {
           $body = $request->getBody()->getContents();
           return $body;

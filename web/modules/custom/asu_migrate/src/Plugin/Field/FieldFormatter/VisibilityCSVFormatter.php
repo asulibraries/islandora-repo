@@ -6,8 +6,7 @@ use Drupal\Core\Field\Plugin\Field\FieldFormatter\IntegerFormatter;
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Entity\EntityTypeManager;
-
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 
 /**
  * Plugin implementation of the 'VisibilityCSVFormatter'.
@@ -25,7 +24,7 @@ class VisibilityCSVFormatter extends IntegerFormatter implements ContainerFactor
   /**
    * The entityTypeManager definition.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManager
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
 
@@ -39,14 +38,14 @@ class VisibilityCSVFormatter extends IntegerFormatter implements ContainerFactor
   /**
    * Constructs a VisibilityCSVFormatter object.
    *
-   * @param Drupal\Core\Entity\EntityTypeManager $entityTypeManager
+   * @param Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   A drupal entity type manager object.
    */
   public function __construct(
       array $configuration,
       $plugin_id,
       $plugin_definition,
-      EntityTypeManager $entityTypeManager,
+      EntityTypeManagerInterface $entityTypeManager,
       asu_utils $ASUUtils
     ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
@@ -75,7 +74,7 @@ class VisibilityCSVFormatter extends IntegerFormatter implements ContainerFactor
     // This takes each node and converts the moderation_state of it into the
     // Visibility value.
     //  - Private: draft
-    //  - Public: published
+    //  - Public: published.
     foreach ($items as $delta => $item) {
       $item_entity_id = $item->value;
       $item_entity = @$this->entityTypeManager->getStorage('node')->load($item_entity_id);

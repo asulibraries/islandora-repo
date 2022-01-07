@@ -61,10 +61,10 @@ function asulib_barrio_preprocess_breadcrumb(&$variables) {
         ];
       }
     } elseif ($current_route == 'asu_item_extras.complex_object_members') {
-        $variables['breadcrumb'][] = [
-          'text' => t('Associated media'),
-          'attributes' => new Attribute(['class' => ['is_active']])
-        ];
+      $variables['breadcrumb'][] = [
+        'text' => t('Associated media'),
+        'attributes' => new Attribute(['class' => ['is_active']])
+      ];
     } else {
       // Add the search text as a text-breadcrumb as text.
       if ($search_term && $search_term != "") {
@@ -73,9 +73,49 @@ function asulib_barrio_preprocess_breadcrumb(&$variables) {
           'attributes' => new Attribute(['class' => ['is_active']])
         ];
       }
+      elseif ($current_route == "view.solr_search_content.page_1" || $current_route == "view.solr_search_content.page_3") {
+        $variables['breadcrumb'][] = [
+          'text' => 'Search',
+          'attributes' => new Attribute(['class' => ['is_active']])
+        ];
+      }
+      elseif ($current_route == "view.collections.page_1") {
+        $route_match = \Drupal::routeMatch();
+        $last_bread = array_pop($variables['breadcrumb']);
+        $letter = $route_match->getParameter('arg_0');
+        if ($letter) {
+          $last_bread['text'] = strtoupper($letter);
+          $last_bread['url'] = $last_bread['url'] . "/" . $letter;
+          $variables['breadcrumb'][] = $last_bread;
+        }
+      }
     }
   }
   $variables['#cache']['contexts'][] = 'url';
+}
+
+/**
+ * Implements hook_preprocess_region()
+ */
+function asulib_barrio_preprocess_region(&$variables) {
+  if ($variables['region'] == 'sidebar_first') {
+    if (array_key_exists('HTTP_REFERER', $_SERVER)) {
+      $referer_url = $_SERVER['HTTP_REFERER'];
+      $this_server = $_SERVER['SERVER_NAME'];
+      // If this referer_url contains "/search" make a link back to that...
+      $current_route = \Drupal::routeMatch()->getRouteName();
+      $node = \Drupal::routeMatch()->getParameter('node');
+      if (
+        $current_route == 'entity.node.canonical' && $referer_url && strstr($referer_url, "/search") &&
+        strstr($referer_url, $this_server)
+      ) {
+        $variables['backtosearch'] = $referer_url;
+      }
+      if ($current_route == 'asu_item_extras.full_metadata_view' && $node instanceof \Drupal\node\NodeInterface) {
+        $variables['backtoitem'] = Url::fromRoute('entity.node.canonical', ['node' => $node->id()]);
+      }
+    }
+  }
 }
 
 /**
@@ -83,15 +123,86 @@ function asulib_barrio_preprocess_breadcrumb(&$variables) {
  * Builds OAI link out of site URL elements
  */
 function asulib_barrio_preprocess_node(&$variables) {
-  $node = \Drupal::request()->attributes->get('node');
+  if (array_key_exists('node', $variables)) {
+    $node = $variables['node'];
+  }
   if (!is_object($node) && is_string($node)) {
     $node = \Drupal::entityTypeManager()->getStorage('node')->load($node);
   }
   if ($node && $node->getType() == 'asu_repository_item') {
-    $site_url = \Drupal::urlGenerator()->generateFromRoute('<front>', [], ['absolute' => TRUE]);
-    $url_parts = explode('/', $site_url, -1);
-    $domain = $url_parts[2];
-    $variables['oai_base_url'] = $site_url . 'oai/request?verb=GetRecord&metadataPrefix=oai_dc&identifier=oai:' . $domain . ':node-';
+    if ($variables['view_mode'] == 'full' || $variables['view_mode'] == 'asu_audio' || $variables['view_mode'] == 'asu_complex_object' || $variables['view_mode'] == 'asu_document' || $variables['view_mode'] == 'asu_image' || $variables['view_mode'] == 'asu_video' || $variables['view_mode'] == 'full_metadata') {
+      $site_url = \Drupal::urlGenerator()->generateFromRoute('<front>', [], ['absolute' => TRUE]);
+      $url_parts = explode('/', $site_url, -1);
+      $domain = $url_parts[2];
+      $variables['oai_base_url'] = $site_url . 'oai/request?verb=GetRecord&metadataPrefix=oai_dc&identifier=oai:' . $domain . ':node-';
+    }
+    $node_language = $node->get('field_language')->entity;
+    $variables['hreflang_attr'] = '';
+    if ($node_language) {
+      if ($node_language->hasField('field_langcode_2digits') && $node_language->get('field_langcode_2digits')->value) {
+        $variables['hreflang_attr'] = $node_language->get('field_langcode_2digits')->value;
+      }
+    }
+    if ($variables['view_mode'] == 'complex_object_child_box') {
+      // since we are pulling the $node var from the route, we're actually already on the parent obj page
+      $parent_obj = \Drupal::request()->attributes->get('node');
+      $collection = $parent_obj->get('field_member_of')->entity;
+      if ($collection && $collection->bundle() == 'collection') {
+        $fields_to_display = $collection->get('field_fields_co_child')->referencedEntities();
+        if ($fields_to_display) {
+          foreach($fields_to_display as $field) {
+            $variables['co_child_fields'][] = $field->getName();
+          }
+        }
+      }
+    }
+    if ($variables['view_mode'] == 'asu_video' || $variables['view_mode'] == 'asu_audio' || $variables['view_mode'] == 'asu_document' || $variables['view_mode'] == 'asu_image' || $variables['view_mode'] == 'complex_object_child_box' || $variables['view_mode'] == 'full') {
+      $default_config = \Drupal::config('asu_default_fields.settings');
+      $origfile_term = $default_config->get('original_file_taxonomy_term');
+      $origfile = \Drupal::entityTypeManager()->getStorage('media')->loadByProperties([
+        'field_media_use' => ['target_id' => $origfile_term],
+        'field_media_of' => ['target_id' => $node->id()]
+      ]);
+      if (count($origfile) > 0) {
+        $origfile = reset($origfile);
+      } else {
+        $origfile = NULL;
+      }
+      $servicefile_term = $default_config->get('service_file_taxonomy_term');
+      $servicefile = \Drupal::entityTypeManager()->getStorage('media')->loadByProperties([
+        'field_media_use' => ['target_id' => $servicefile_term],
+        'field_media_of' => ['target_id' => $node->id()]
+      ]);
+      if (count($servicefile) > 0) {
+        $servicefile = reset($servicefile);
+      } else {
+        $servicefile = NULL;
+      }
+      if (isset($origfile)) {
+        $of_access = $origfile->access('view', \Drupal::currentUser());
+        $variables['original_file'] = $origfile;
+        $variables['of_access'] = $of_access;
+      } else {
+        $variables['of_access'] = FALSE;
+      }
+      if (isset($servicefile)) {
+        $sf_access = $servicefile->access('view', \Drupal::currentUser());
+        $variables['service_file'] = $servicefile;
+        $variables['sf_access'] = $sf_access;
+      } else {
+        $variables['sf_access'] = FALSE;
+      }
+      $field_model = $node->get('field_model')->entity;
+      if ($field_model != NULL) {
+        $field_model = $field_model->getName();
+      }
+      if ($field_model <> 'Complex Object' && ($variables['view_mode'] == "asu_audio" || $variables['view_mode'] == "asu_video" || $variables['view_mode'] == "complex_object_child_box")) {
+        if (is_object($servicefile) && ($servicefile->bundle() == 'video' ||
+        $servicefile->bundle() == 'audio')) {
+          $variables['#attached']['library'] = 'asu_statistics/track';
+        }
+      }
+    }
   }
 }
 
@@ -102,20 +213,21 @@ function asulib_barrio_preprocess_node(&$variables) {
 function asulib_barrio_preprocess_paragraph(&$variables) {
   $paragraph = $variables['paragraph'];
   if ($paragraph->bundle() == 'typed_identifier' && $paragraph->hasField('field_identifier_type') &&
-    !is_null($paragraph->get('field_identifier_type')->referencedEntities()[0]) &&
-    $paragraph->get('field_identifier_type')->referencedEntities()[0]->label() == 'Digital object identifier') {
+    !is_null($paragraph->get('field_identifier_type')->entity)) {
     $identifier_value = $paragraph->get('field_identifier_value')->value;
     // If the value has http:// or https:// then use that link value, else
     // create a link that is https://doi.
     preg_match_all('/^http(s?):\/\//m', $identifier_value, $matches, PREG_SET_ORDER, 0);
+    $variables['Identifier_link_label'] = $paragraph->get('field_identifier_type')->referencedEntities()[0]->label();
     if (count($matches) > 0) {
       // Value is a link already.
       $url = Url::fromUri($identifier_value);
-      $variables['DOI_link'] = Link::fromTextAndUrl($identifier_value, $url);
+      $variables['Identifier_link'] = Link::fromTextAndUrl($identifier_value, $url);
     }
-    else {
+    // ONLY for DOI links, convert a string into the https://doi.org/{STRING_VALUE}.
+    elseif ($paragraph->get('field_identifier_type')->referencedEntities()[0]->label() == 'Digital object identifier') {
       $url = Url::fromUri('https://doi.org/' . $identifier_value);
-      $variables['DOI_link'] = Link::fromTextAndUrl($identifier_value, $url);
+      $variables['Identifier_link'] = Link::fromTextAndUrl($identifier_value, $url);
     }
   }
 }
@@ -165,5 +277,38 @@ function asulib_barrio_preprocess_user(&$variables) {
     ];
     // Remove the previous display for this field on the user page.
     unset($variables['content']['field_orcid_id']);
+  }
+}
+
+/**
+ * Implements hook_preprocess_page.
+ */
+function asulib_barrio_preprocess_page(&$variables) {
+  $variables['site_name'] = \Drupal::config('system.site')->get('name');
+  if (isset($variables['page']['sidebar_first']) && count($variables['page']['sidebar_first']) > 0) {
+    $variables['content_attributes']['class'][] = 'col-md-8 mt-2';
+    $variables['sidebar_first_attributes']['class'][] = 'collapse';
+    $variables['sidebar_first_attributes']->removeClass('col-md-4');
+  }
+}
+
+/**
+ * Implements hook_preprocess_image()
+ */
+function asulib_barrio_preprocess_image(&$variables) {
+  if ($variables['style_name'] == 'card_image') {
+    $variables['attributes']['class'][] = 'card-img-top';
+  }
+}
+
+/**
+ * Implements hook_preprocess_views_exposed_form()
+ */
+function asulib_barrio_preprocess_views_exposed_form(&$variables) {
+  if ($variables['form']['#id'] == "views-exposed-form-solr-search-content-page-3") {
+    $variables['form']['actions']['submit']['#attributes']['title'] = 'Search collection';
+  }
+  elseif ($variables['form']['#id'] == "views-exposed-form-solr-search-content-page-1") {
+    $variables['form']['actions']['submit']['#attributes']['title'] = 'Search';
   }
 }

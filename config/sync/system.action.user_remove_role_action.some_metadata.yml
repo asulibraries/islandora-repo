@@ -1,0 +1,13 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.some_metadata
+  module:
+    - user
+id: user_remove_role_action.some_metadata
+label: 'Remove the Some Metadata role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: some_metadata

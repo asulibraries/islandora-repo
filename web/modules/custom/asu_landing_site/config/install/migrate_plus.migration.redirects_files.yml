@@ -1,0 +1,42 @@
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - asu_landing_site
+id: redirects_files
+migration_group: migrate_redirects
+label: 'Redirects for the legacy repository files'
+source:
+  plugin: 'csv'
+  path: /var/www/html/drupal/web/modules/custom/asu_landing_site/data/att_url_export_matched.csv
+  header_row_count: 1
+  # fields:
+  #  "att id", "item id", url, "NID keep", "NID prism", NID, subdomain
+  ids:
+    - NID
+  constants:
+    # We want to generate 301 permanent redirects as opposed to 302 temporary redirects.
+    status_code: 301
+    # they follow a pattern of https://repository.asu.edu/attachments/[legacy id]/content/[file name here] 
+    to_domain_prefix: 'https://'
+    to_domain_suffix: '.lib.asu.edu/items/'
+process:
+  distinct_rows:
+    plugin: skip_on_empty
+    method: row
+    source: NID
+  # Path/FROM
+  redirect_source: legacy_path
+  # To:
+  redirect_redirect:
+    plugin: 'concat'
+    source:
+      - 'constants/to_domain_prefix'
+      - repo
+      - 'constants/to_domain_suffix'
+      - NID
+  status_code: constants/status_code
+destination:
+  plugin: 'entity:redirect'
+  

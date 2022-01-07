@@ -32,3 +32,30 @@
 .card-foldable .card-header h4 a.collapsed i.fa-chevron-up, .card-foldable .card-header h5 a.collapsed i.fa-chevron-up {
     transform: rotate(180deg);
 }
+
+#wrapper-footer-land-ack {
+    background: #1e1e1e;
+    color: $gray-1;
+    font-weight: 200;
+    p {
+       padding-bottom: 25px; 
+    }
+}
+
+#footer-columns {
+    padding-left: 6px;
+}
+
+#wrapper-footer-columns {
+    border-top: none !important;
+    #footer-columns {
+        border-top: 2px solid #393939;
+    }
+}
+
+
+body:not(.path-frontpage) {
+    .main-content {
+        padding-bottom: $large-padding;
+    }
+}

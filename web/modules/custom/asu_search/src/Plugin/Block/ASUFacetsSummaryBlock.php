@@ -93,6 +93,7 @@ class ASUFacetsSummaryBlock extends BlockBase implements FacetsSummaryBlockInter
     }
     return $this->facetsSummary;
   }
+
   /**
    * {@inheritdoc}
    */
@@ -136,6 +137,9 @@ class ASUFacetsSummaryBlock extends BlockBase implements FacetsSummaryBlockInter
     return [];
   }
 
+  /**
+   *
+   */
   public function facets_build(FacetsSummaryInterface $facets_summary) {
     $facetsource_id = $facets_summary->getFacetSourceId();
 
@@ -187,7 +191,7 @@ class ASUFacetsSummaryBlock extends BlockBase implements FacetsSummaryBlockInter
       '#attributes' => $build['#attributes'],
       '#facet_summary_id' => $build['#facet_summary_id'],
       '#theme' => $build['#theme'],
-      '#items' => []
+      '#items' => [],
     ];
     // Allow our Facets Summary processors to alter the build array in a
     // configured order.
@@ -233,7 +237,7 @@ class ASUFacetsSummaryBlock extends BlockBase implements FacetsSummaryBlockInter
         ];
         $item['#prefix'] = $facets_config[$result->getFacet()->id()]['label'] . ": ";
         $items[] = $item;
-     }
+      }
       if ($children = $result->getChildren()) {
         $items = array_merge($items, $this->buildResultTree($show_count, $children, $facets_config));
       }

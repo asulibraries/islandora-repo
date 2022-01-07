@@ -29,9 +29,11 @@ class MediaToFidFormatter extends FileFormatterBase {
     foreach ($items as $delta => $item) {
       // From the media object, based on the fields used by the type of media,
       // get the file object and return that id value.
-      $entity_type = $item->entity->getEntityTypeId();
-      if (!(array_search($entity_type, $formattable) === FALSE)) {
-        $elements[$delta]['#plain_text'] = $item->getValue()['target_id'];
+      if ($item->entity) {
+        $entity_type = $item->entity->getEntityTypeId();
+        if (!(array_search($entity_type, $formattable) === FALSE)) {
+          $elements[$delta]['#plain_text'] = $item->getValue()['target_id'];
+        }
       }
     }
 

@@ -8,7 +8,6 @@ use Drupal\search_api\Processor\ProcessorPluginBase;
 use Drupal\search_api\Processor\ProcessorProperty;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
-
 /**
  * Adds the original file count for a node.
  *
@@ -65,16 +64,16 @@ class OriginalFileCount extends ProcessorPluginBase {
    */
   public function addFieldValues(ItemInterface $item) {
     $node = $item->getOriginalObject()->getValue();
-    $original_file_tid = key(\Drupal::entityTypeManager()
+    $original_file_tid = key($this->entityTypeManager
       ->getStorage('taxonomy_term')
       ->loadByProperties(['name' => "Original File"]));
     $files = 0;
-    $mids = \Drupal::entityTypeManager()->getStorage('media')->getQuery()
+    $mids = $this->entityTypeManager->getStorage('media')->getQuery()
       ->condition('field_media_of', $node->id())
       ->condition('field_media_use', $original_file_tid)
       ->execute();
     foreach ($mids as $mid) {
-      $media = \Drupal::entityTypeManager()->getStorage('media')->load($mid);
+      $media = $this->entityTypeManager->getStorage('media')->load($mid);
       $files += (is_object($media) ? 1 : 0);
     }
 

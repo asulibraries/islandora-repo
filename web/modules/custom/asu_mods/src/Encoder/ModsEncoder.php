@@ -72,7 +72,7 @@ class ModsEncoder extends XmlEncoder {
           $vals = $field->referencedEntities();
         }
         if ($field_name == "uid") {
-          if (get_class($data) == 'Drupal\user\Entity\User' ) {
+          if (get_class($data) == 'Drupal\user\Entity\User') {
             $vals = [$data->getAccountName()];
           }
         }
@@ -97,8 +97,16 @@ class ModsEncoder extends XmlEncoder {
           }
           if ($cv == "bundle") {
             $cv = $val->bundle();
-            if ($cv == 'person') {
-              $cv = 'personal';
+            switch ($cv) {
+              // MODS schema requires "personal".
+              case 'person':
+                $cv = 'personal';
+                break;
+
+              // MODS schema requires "Corporate".
+              case 'corporate_body':
+                $cv = 'corporate';
+                break;
             }
           }
           elseif ($ck == "@supplied") {
@@ -127,7 +135,7 @@ class ModsEncoder extends XmlEncoder {
                     $field_arr[$ck] = self::get_field_values($val, $cv, $ck);
                   }
                 }
-                else if (str_contains($cv, 'field_') || (in_array($cv, self::MACHINE_FIELDS))) {
+                elseif (str_contains($cv, 'field_') || (in_array($cv, self::MACHINE_FIELDS))) {
                   $field_arr[$ck] = self::get_field_values($val, $cv, $ck);
                 }
                 else {
@@ -271,15 +279,20 @@ class ModsEncoder extends XmlEncoder {
         }
       }
     }
+
     return $this->fixData($new_data);
   }
 
+  /**
+   *
+   */
   private function fixData($data) {
     foreach ($data as $k => $v) {
       if (is_array($v)) {
         if (count($v) < 1) {
           unset($data[$k]);
-        } else {
+        }
+        else {
           $data[$k] = $this->fixData($v);
         }
       }
@@ -291,7 +304,7 @@ class ModsEncoder extends XmlEncoder {
    * {@inheritdoc}
    */
   public function encode($data, $format, array $context = []) {
-    // TODO set mods namespaces.
+    // @todo set mods namespaces.
     $mods_config = \Drupal::config('asu_mods.asu_repository_item');
     $all_records = [];
     if (is_array($data)) {

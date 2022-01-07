@@ -1,0 +1,231 @@
+dependencies:
+  enforced:
+    module:
+      - asu_migrate
+
+id: dnp_node
+label: Import Collection 260 from CSV
+migration_group: migrate_dnp_csv
+
+source:
+  plugin: csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/dnp_may2021.csv
+  header_row_count: 1
+  ids:
+    - File Location
+  constants:
+    model: Digital Document
+    collection_title: "Doctor of Nursing Practice (DNP) Final Projects"
+    pres_state: '558' # Not Preserved
+    handle: "https://hdl.handle.net/2286/R.I."
+    cataloging_standards: "asu1"
+    level_of_coding: "intermediate"
+    pub: 1
+    copyright: "In Copyright"
+
+process:
+  field_embargo_release_date:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: Embargo Release Date
+    -
+      plugin: format_date
+      from_format: 'Y-m-d'
+      to_format: 'Y-m-d\TH:i:s'
+      from_timezone: 'America/Phoenix'
+      to_timezone: 'America/Phoenix'
+
+  field_extent:
+    -
+      plugin: skip_on_empty
+      source: Extent
+      method: process
+    -
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: callback
+      callable: trim
+
+  field_edtf_date_created:
+    plugin: skip_on_empty
+    source: Date Created
+    method: process
+
+  field_copyright_statement:
+    -
+      plugin: skip_on_empty
+      source: Copyright Statement
+      method: process
+    -
+      plugin: entity_lookup
+      source: constants/copyright
+      entity_type: taxonomy_term
+      value_key: name
+      bundle_key: vid
+      bundle: copyright_statements
+
+  field_reuse_permissions:
+    -
+      plugin: skip_on_empty
+      source: Reuse Permissions
+      method: process
+    -
+      plugin: entity_lookup
+      entity_type: taxonomy_term
+      value_key: name
+      bundle_key: vid
+      bundle: reuse_permissions
+
+  moderation_state:
+    plugin: static_map
+    source: constants/pub
+    map:
+      Private: draft
+      Public: published
+      1: published
+      0: draft
+
+  field_model:
+    source: Model
+    plugin: entity_lookup
+    entity_type: taxonomy_term
+    value_key: name
+    bundle_key: vid
+    bundle: islandora_models
+
+  field_rich_description/value:
+    plugin: skip_on_empty
+    source: Description
+    method: process
+
+  field_rich_description/format:
+    plugin: default_value
+    default_value: "description_restricted_items"
+
+  uid:
+    plugin: user_lookup
+    source: System User
+    default_value: constants/uid
+
+  title:
+    plugin: substr
+    source: Title
+    start: 0
+    length: 254
+
+  field_title:
+    -
+      plugin: explode
+      delimiter: '||'
+      source: Title
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: paragraph_title_generate
+      paragraph_type: 'complex_title'
+      split_into_parts: true
+      fields:
+        field_nonsort: " "
+        field_main_title: " "
+        field_subtitle: " "
+
+  field_language:
+    -
+      plugin: skip_on_empty
+      source: Language
+      method: process
+    -
+      plugin: entity_lookup
+      entity_type: taxonomy_term
+      value_key: name
+      bundle_key: vid
+      bundle: language
+
+  field_member_of:
+    -
+      plugin: get
+      source:
+        - 'Parent Item'
+        - 'constants/collection_title'
+    -
+      plugin: multi_entity_lookup
+      entity_type: node
+      access_check: 0
+      bundle_key: type
+      bundle: collection
+      value_key: title
+
+  field_subject:
+    -
+      plugin: skip_on_empty
+      source: Topical Subjects
+      method: process
+    -
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: name_uri_generate
+      delimiter: '$$'
+      uri_field: field_authority_link
+      default_vocabulary: subject
+
+  contributors:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: Personal Contributors
+    -
+      plugin: explode
+      delimiter: ' || '
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: skip_on_empty
+      method: process
+    -
+      plugin: typed_relation_generate
+      delimiter: '|'
+      uri_field: field_authority_link
+      default_vocabulary: person
+
+  corporations:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: Corporate Contributors
+    -
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: skip_on_empty
+      method: process
+    -
+      plugin: typed_relation_generate
+      delimiter: '|'
+      uri_field: field_authority_link
+      default_vocabulary: corporate_body
+
+  field_linked_agent:
+    -
+      plugin: merge_skip_empty
+      source:
+        - '@contributors'
+        - '@corporations'
+    -
+      plugin: skip_on_empty
+      method: process
+
+# We're making nodes
+destination:
+  plugin: 'entity:node'
+  default_bundle: asu_repository_item

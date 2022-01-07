@@ -110,22 +110,18 @@
           </div>
           <br/>
           <div class="download-options">
-            {{ drupal_block('downloads_block', {'child_node_id': node.id}) }}
+            {{ drupal_block('downloads_block', {'child_node_id': node.id, 'origfile': original_file, 'servicefile': service_file}) }}
           </div>
           {% if mod == 'Image' or mod == 'Digital Document' %}
-            <a href="/items/{{ node.id }}/view">Preview</a><br/>
+            <a href="/items/{{ node.id }}/view"{% if hreflang_attr %} hreflang="{{ hreflang_attr }}"{% endif %}>Preview</a><br/>
           {% elseif (mod == 'Audio' or mod == 'Video') and (of_access or sf_access) %}
             <a data-toggle="collapse" href="#player{{ node.id }}" role="button" aria-expanded="false" aria-controls="player{{ node.id }}"><i class="far fa-play-circle"></i> Play</a><br/>
             <div id="player{{ node.id }}" class="collapse">
               <div class="mini-player">
-                {% if drupal_view_result('video_media_evas', 'service_file', node.id) is empty%}
-                  {% if of_access %}
-                    {{ drupal_view('video_media_evas', 'original_file', node.id) }}
-                  {% endif %}
-                {% else %}
-                  {% if sf_access %}
-                    {{ drupal_view('video_media_evas', 'service_file', node.id) }}
-                  {% endif %}
+                {% if drupal_view_result('video_media_evas', 'service_file', node.id) is empty and of_access %}
+                  {{ drupal_view('video_media_evas', 'original_file', node.id) }}
+                {% elseif sf_access %}
+                  {{ drupal_view('video_media_evas', 'service_file', node.id) }}
                 {% endif %}
               </div>
             </div>
@@ -137,6 +133,16 @@
         {% if node.field_handle[0].value %}
           <span class="copy_permalink_link" title="{{node.field_handle[0].value}}">Permanent Link</span> &nbsp;
             <span class="copy_permalink_link far fa-copy fa-lg" title="{{node.field_handle[0].value}}">&nbsp;</span>
+        {% endif %}
+        {% if co_child_fields %}
+          {% for f in co_child_fields %}
+            {% if f == "field_linked_agent" %}
+              {% if node.fields[f] is not empty %}
+                <div class="field__label">Contributors</div>
+              {% endif %}
+            {% endif %}
+            {{ node.fields[f]|view }}
+          {% endfor %}
         {% endif %}
 
     </header>

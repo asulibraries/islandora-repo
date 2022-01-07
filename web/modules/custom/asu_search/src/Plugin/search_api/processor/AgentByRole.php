@@ -6,7 +6,6 @@ use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\Processor\ProcessorPluginBase;
 use Drupal\search_api\Processor\ProcessorProperty;
-use Drupal\paragraphs\Entity\Paragraph;
 
 /**
  * Adds the item's linked agent separately by type.
@@ -27,8 +26,7 @@ class AgentByRole extends ProcessorPluginBase {
   /**
    * {@inheritdoc}
    */
-  public function getPropertyDefinitions(DatasourceInterface $datasource = NULL)
-  {
+  public function getPropertyDefinitions(DatasourceInterface $datasource = NULL) {
     $properties = [];
 
     if (!$datasource) {
@@ -38,11 +36,11 @@ class AgentByRole extends ProcessorPluginBase {
         'type' => 'string',
         'processor_id' => $this->getPluginId(),
       ];
-      //author
+      // Author.
       $properties['asu_agent_aut'] = new ProcessorProperty($definition);
-      // thesis advisor
+      // Thesis advisor.
       $properties['asu_agent_ths'] = new ProcessorProperty($definition);
-      // degree committee member
+      // Degree committee member.
       $properties['asu_agent_dgc'] = new ProcessorProperty($definition);
     }
 

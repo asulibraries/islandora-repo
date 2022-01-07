@@ -13,7 +13,161 @@ id: self_deposit
 title: 'Share Your Work'
 description: 'Form for faculty, staff, and students to self deposit their work into KEEP'
 category: ''
-elements: "into_text:\n  '#type': processed_text\n  '#text': |\n    <h1>Share your work</h1>\n\n    <p style=\"text-align:start; margin-bottom:16px\"><span style=\"color:#000000\"><span style=\"font-style:normal\"><span style=\"font-weight:normal\"><span style=\"white-space:normal\"><span style=\"text-decoration:none\"><span style=\"background-color:#ffffff\"><span style=\"box-sizing:border-box\"><span style=\"font-size:12pt\"><span style=\"font-family:Arial, sans-serif\"><span style=\"color:#282d31\">KEEP is the new and improved home for the preservation of scholarship produced by ASU faculty, staff, and students. Find and submit open access articles, collaborative research projects, musical performances, theses and dissertations and more!</span></span></span></span></span></span></span></span></span></span></p>\n\n    <p style=\"text-align:start; margin-bottom:16px\"><span style=\"color:#000000\"><span style=\"font-style:normal\"><span style=\"font-weight:normal\"><span style=\"white-space:normal\"><span style=\"text-decoration:none\"><span style=\"background-color:#ffffff\"><span style=\"box-sizing:border-box\"><span style=\"font-size:12pt\"><span style=\"font-family:Arial, sans-serif\"><span style=\"color:#282d31\">We are now accepting submissions of scholarly and academic works from ASU faculty and staff. ASU students should contact their program in order to submit a work to an existing collection. Program faculty and staff may fill out the <a href=\"https://keep.lib.asu.edu/form/new-collection-request\">\"New Collection Request\" form</a> to initiate the process with Digital Repository Services staff for starting a new collection in KEEP.&nbsp;</span></span></span></span></span></span></span></span></span></span></p>\n\n    <p>&nbsp;</p>\n\n    <h3>Please note</h3>\n\n    <p>If you have any questions or concerns, please&nbsp;<a href=\"/contact\">contact the Digital Repository Services team</a>&nbsp;for assistance with deposit.</p>\n\n    <p>If materials include data sets or were the product of funded research,&nbsp;<a href=\"https://lib.asu.edu/research/contact\">contact the Research Data Management team</a>&nbsp;for assistance with deposit.</p>\n  '#format': full_html\nabout_you:\n  '#type': webform_wizard_page\n  '#title': 'About you'\n  '#open': true\n  your_name:\n    '#type': textfield\n    '#title': 'Your name'\n    '#required': true\n  your_asurite:\n    '#type': textfield\n    '#title': 'Your ASUrite'\n    '#default_value': '[current-user:account-name]'\n  your_email:\n    '#type': email\n    '#title': 'Your email'\n    '#required': true\n  your_role_at_asu:\n    '#type': webform_checkboxes_other\n    '#title': 'Your role at ASU'\n    '#options':\n      Faculty: Faculty\n      'Academic Professional': 'Academic Professional'\n      Staff: Staff\n      'Graduate Student': 'Graduate Student'\n      'Undergraduate Student': 'Undergraduate Student'\n      TA/RA: TA/RA\n    '#other__option_label': Other\n  asu_unit:\n    '#type': textfield\n    '#title': 'ASU unit'\n    '#description': 'Please provide us with the ASU unit you are associated with.'\nabout_your_item_page:\n  '#type': webform_wizard_page\n  '#title': 'About your item'\n  '#open': true\n  item_title:\n    '#type': textarea\n    '#title': 'Item title'\n    '#description': 'The title of the item'\n    '#rows': 2\n    '#required': true\n  material_type:\n    '#type': webform_checkboxes_other\n    '#title': 'Material type'\n    '#options':\n      'Individual materials (examples: pre- or post-print articles, presentations, grey literature, faculty works or graduate student materials)': 'Individual materials (examples: pre- or post-print articles, presentations, grey literature, faculty works or graduate student materials)'\n      'Group project materials (examples: faculty or graduate student group project materials)': 'Group project materials (examples: faculty or graduate student group project materials)'\n      'Academic or research unit, department, center, label, or institute materials (examples: ASU-hosted conference proceedings, outreach or event publications, unit brochures, materials about the unit history)': 'Academic or research unit, department, center, label, or institute materials (examples: ASU-hosted conference proceedings, outreach or event publications, unit brochures, materials about the unit history)'\n    '#other__option_label': Other\n    '#other__placeholder': 'please describe'\n  item_description:\n    '#type': textarea\n    '#title': 'Item description'\n    '#description': 'A description of the item. This could be an abstract or a table of contents.'\n  suggested_collection:\n    '#type': entity_autocomplete\n    '#title': 'Suggested collection'\n    '#description': 'If you know which collection this item belongs to, please select it here.'\n    '#target_type': node\n    '#selection_handler': 'default:node'\n    '#selection_settings':\n      target_bundles:\n        collection: collection\n  creation_date:\n    '#type': textfield\n    '#title': 'Creation date'\n    '#description': 'Please provide the date the item was created with the most accuracy possible. The format should be YYYY-MM-DD'\n    '#required': true\n    '#pattern': '^[0-9]{4}(-[0-9]{2}(-[0-9]{2})?)?$'\n    '#pattern_error': 'Date must be in YYYY-MM-DD format where at least the year is required.'\n  keywords:\n    '#type': textfield\n    '#title': Keywords\n    '#multiple': true\n    '#description': 'Please describe the topics that this item is about.'\n    '#multiple__item_label': keyword\n    '#multiple__no_items_message': 'No keywords entered. Please add items below.'\n    '#multiple__sorting': false\n    '#multiple__add_more': false\n    '#multiple__add_more_input': false\n    '#multiple__add_more_input_label': 'more keywords'\n  contributors:\n    '#type': textfield\n    '#title': Contributors\n    '#multiple': true\n    '#description': 'Please provide the names of any person or entity who made a contribution to this resource (including yourself).'\n    '#multiple__item_label': contributor\n    '#multiple__no_items_message': 'No contributors entered. Please add items below.'\n    '#multiple__sorting': false\n    '#multiple__add_more': false\n    '#multiple__add_more_input': false\n    '#multiple__add_more_input_label': 'more contributors'\n  file_permissions_select:\n    '#type': select\n    '#title': 'File Permissions'\n    '#options':\n      Public: Public\n      'ASU Only': 'ASU Only'\n    '#default_value': Public\n  reuse_permissions:\n    '#type': webform_term_select\n    '#title': 'Reuse permissions'\n    '#description': '<a href=\"https://keep.lib.asu.edu/about/copyright\">Learn more about your copyright options.</a>'\n    '#default_value': '1090'\n    '#vocabulary': reuse_permissions\n    '#breadcrumb_delimiter': ''\n  embargo_release_date:\n    '#type': date\n    '#title': 'Embargo Release Date'\n    '#description': 'If this item is under embargo, please enter the embargo release date.'\n    '#date_date_format': ''\n  item_node:\n    '#type': value\n    '#title': 'Item Node'\n  dataset:\n    '#type': checkbox\n    '#title': 'Do you also have research datasets or supplementary material supporting your submission you need to publish as part of a funder or journal requirement?'\n    '#description': '<a href=\"https://libguides.asu.edu/data/dataverse\">Learn more about research datasets and Dataverse.</a>'\n    '#title_display': before\n    '#description_display': after\nadd_files:\n  '#type': webform_wizard_page\n  '#title': 'Add files'\n  '#open': true\n  file:\n    '#type': managed_file\n    '#title': Files\n    '#multiple': true\n    '#required': true\n    '#states':\n      visible:\n        ':input[name=\"file_type\"]':\n          value: file\n    '#uri_scheme': fedora\n    '#file_extensions': 'gif jpg jpeg png bmp eps tif pict psd txt rtf html odf pdf doc docx ppt pptx xls xlsx xml avi mov mp3 ogg wav bz2 dmg gz jar rar sit svg tar zip txt rtf pdf doc docx odt ppt pptx odp xls xlsx ods mp3 ogg wav gif jpg jpeg png avi mov mp4 ogg wav webm'\n    '#sanitize': true\nactions:\n  '#type': webform_actions\n  '#title': 'Submit button(s)'"
+elements: |-
+  into_text:
+    '#type': processed_text
+    '#text': |
+      <h1>Share your work</h1>
+
+      <p style="text-align:start; margin-bottom:16px"><span style="color:#000000"><span style="font-style:normal"><span style="font-weight:normal"><span style="white-space:normal"><span style="text-decoration:none"><span style="background-color:#ffffff"><span style="box-sizing:border-box"><span style="font-size:12pt"><span style="font-family:Arial, sans-serif"><span style="color:#282d31">KEEP is the new and improved home for the preservation of scholarship produced by ASU faculty, staff, and students. Find and submit open access articles, collaborative research projects, musical performances, theses and dissertations and more!</span></span></span></span></span></span></span></span></span></span></p>
+
+      <p style="text-align:start; margin-bottom:16px"><span style="color:#000000"><span style="font-style:normal"><span style="font-weight:normal"><span style="white-space:normal"><span style="text-decoration:none"><span style="background-color:#ffffff"><span style="box-sizing:border-box"><span style="font-size:12pt"><span style="font-family:Arial, sans-serif"><span style="color:#282d31">We are now accepting submissions of scholarly and academic works from ASU faculty and staff. ASU students should contact their program in order to submit a work to an existing collection. Program faculty and staff may fill out the <a href="https://keep.lib.asu.edu/form/new-collection-request">"New Collection Request" form</a> to initiate the process with Digital Repository Services staff for starting a new collection in KEEP.&nbsp;</span></span></span></span></span></span></span></span></span></span></p>
+
+      <p>&nbsp;</p>
+
+      <h3>Please note</h3>
+
+      <p>If you have any questions or concerns, please&nbsp;<a href="/contact">contact the Digital Repository Services team</a>&nbsp;for assistance with deposit.</p>
+
+      <p>If materials include data sets or were the product of funded research,&nbsp;<a href="https://lib.asu.edu/research/contact">contact the Research Data Management team</a>&nbsp;for assistance with deposit.</p>
+    '#format': full_html
+  about_you:
+    '#type': webform_wizard_page
+    '#title': 'About you'
+    '#open': true
+    your_name:
+      '#type': textfield
+      '#title': 'Your name'
+      '#required': true
+    your_asurite:
+      '#type': textfield
+      '#title': 'Your ASUrite'
+      '#default_value': '[current-user:account-name]'
+    your_email:
+      '#type': email
+      '#title': 'Your email'
+      '#required': true
+    your_role_at_asu:
+      '#type': webform_checkboxes_other
+      '#title': 'Your role at ASU'
+      '#options':
+        Faculty: Faculty
+        'Academic Professional': 'Academic Professional'
+        Staff: Staff
+        'Graduate Student': 'Graduate Student'
+        'Undergraduate Student': 'Undergraduate Student'
+        TA/RA: TA/RA
+      '#other__option_label': Other
+    asu_unit:
+      '#type': textfield
+      '#title': 'ASU unit'
+      '#description': 'Please provide us with the ASU unit you are associated with.'
+  about_your_item_page:
+    '#type': webform_wizard_page
+    '#title': 'About your item'
+    '#open': true
+    item_title:
+      '#type': textarea
+      '#title': 'Item title'
+      '#description': 'The title of the item'
+      '#rows': 2
+      '#required': true
+    material_type:
+      '#type': webform_checkboxes_other
+      '#title': 'Material type'
+      '#options':
+        'Individual materials (examples: pre- or post-print articles, presentations, grey literature, faculty works or graduate student materials)': 'Individual materials (examples: pre- or post-print articles, presentations, grey literature, faculty works or graduate student materials)'
+        'Group project materials (examples: faculty or graduate student group project materials)': 'Group project materials (examples: faculty or graduate student group project materials)'
+        'Academic or research unit, department, center, label, or institute materials (examples: ASU-hosted conference proceedings, outreach or event publications, unit brochures, materials about the unit history)': 'Academic or research unit, department, center, label, or institute materials (examples: ASU-hosted conference proceedings, outreach or event publications, unit brochures, materials about the unit history)'
+      '#other__option_label': Other
+      '#other__placeholder': 'please describe'
+    item_description:
+      '#type': textarea
+      '#title': 'Item description'
+      '#description': 'A description of the item. This could be an abstract or a table of contents.'
+    suggested_collection:
+      '#type': entity_autocomplete
+      '#title': 'Suggested collection'
+      '#description': 'If you know which collection this item belongs to, please select it here.'
+      '#target_type': node
+      '#selection_handler': 'default:node'
+      '#selection_settings':
+        target_bundles:
+          collection: collection
+    creation_date:
+      '#type': textfield
+      '#title': 'Creation date'
+      '#description': 'Please provide the date the item was created with the most accuracy possible. The format should be YYYY-MM-DD'
+      '#required': true
+      '#pattern': '^[0-9]{4}(-[0-9]{2}(-[0-9]{2})?)?$'
+      '#pattern_error': 'Date must be in YYYY-MM-DD format where at least the year is required.'
+    keywords:
+      '#type': textfield
+      '#title': Keywords
+      '#multiple': true
+      '#description': 'Please describe the topics that this item is about.'
+      '#multiple__item_label': keyword
+      '#multiple__no_items_message': 'No keywords entered. Please add items below.'
+      '#multiple__sorting': false
+      '#multiple__add_more': false
+      '#multiple__add_more_input': false
+      '#multiple__add_more_input_label': 'more keywords'
+    contributors:
+      '#type': textfield
+      '#title': Contributors
+      '#multiple': true
+      '#description': 'Please provide the names of any person or entity who made a contribution to this resource (including yourself).'
+      '#multiple__item_label': contributor
+      '#multiple__no_items_message': 'No contributors entered. Please add items below.'
+      '#multiple__sorting': false
+      '#multiple__add_more': false
+      '#multiple__add_more_input': false
+      '#multiple__add_more_input_label': 'more contributors'
+    file_permissions_select:
+      '#type': select
+      '#title': 'File Permissions'
+      '#options':
+        Public: Public
+        'ASU Only': 'ASU Only'
+      '#default_value': Public
+    reuse_permissions:
+      '#type': webform_term_select
+      '#title': 'Reuse permissions'
+      '#description': '<a href="https://keep.lib.asu.edu/about/copyright">Learn more about your copyright options.</a>'
+      '#default_value': '1090'
+      '#vocabulary': reuse_permissions
+      '#breadcrumb_delimiter': ''
+    embargo_release_date:
+      '#type': date
+      '#title': 'Embargo Release Date'
+      '#description': 'If this item is under embargo, please enter the embargo release date.'
+      '#date_date_format': ''
+    item_node:
+      '#type': value
+      '#title': 'Item Node'
+    dataset:
+      '#type': checkbox
+      '#title': 'Do you also have research datasets or supplementary material supporting your submission you need to publish as part of a funder or journal requirement?'
+      '#description': '<a href="https://libguides.asu.edu/data/dataverse">Learn more about research datasets and Dataverse.</a>'
+      '#title_display': before
+      '#description_display': after
+  add_files:
+    '#type': webform_wizard_page
+    '#title': 'Add files'
+    '#open': true
+    file:
+      '#type': managed_file
+      '#title': Files
+      '#multiple': true
+      '#required': true
+      '#unique': true
+      '#unique_entity': true
+      '#uri_scheme': fedora
+      '#file_extensions': 'gif jpg jpeg png bmp eps tif pict psd txt rtf html odf pdf doc docx ppt pptx xls xlsx xml avi mov mp3 ogg wav bz2 dmg gz jar rar sit svg tar zip txt rtf pdf doc docx odt ppt pptx odp xls xlsx ods mp3 ogg wav gif jpg jpeg png avi mov mp4 ogg wav webm'
+      '#sanitize': true
+  actions:
+    '#type': webform_actions
+    '#title': 'Submit button(s)'
 css: ''
 javascript: ''
 settings:

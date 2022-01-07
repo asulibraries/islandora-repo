@@ -1,0 +1,413 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.node.sheet_music
+    - core.entity_form_mode.taxonomy_term.simple_taxo_create
+    - field.field.node.asu_repository_item.field_additional_memberships
+    - field.field.node.asu_repository_item.field_cataloging_standards
+    - field.field.node.asu_repository_item.field_complex_object_child
+    - field.field.node.asu_repository_item.field_complex_subject
+    - field.field.node.asu_repository_item.field_coordinates
+    - field.field.node.asu_repository_item.field_copyright_statement
+    - field.field.node.asu_repository_item.field_date_digitized
+    - field.field.node.asu_repository_item.field_default_derivative_file_pe
+    - field.field.node.asu_repository_item.field_default_original_file_perm
+    - field.field.node.asu_repository_item.field_description_source
+    - field.field.node.asu_repository_item.field_display_hints
+    - field.field.node.asu_repository_item.field_edition
+    - field.field.node.asu_repository_item.field_edtf_copyright_date
+    - field.field.node.asu_repository_item.field_edtf_date_created
+    - field.field.node.asu_repository_item.field_embargo_release_date
+    - field.field.node.asu_repository_item.field_extent
+    - field.field.node.asu_repository_item.field_frequency
+    - field.field.node.asu_repository_item.field_genre
+    - field.field.node.asu_repository_item.field_geographic_subject
+    - field.field.node.asu_repository_item.field_handle
+    - field.field.node.asu_repository_item.field_history
+    - field.field.node.asu_repository_item.field_issuance
+    - field.field.node.asu_repository_item.field_keyword
+    - field.field.node.asu_repository_item.field_language
+    - field.field.node.asu_repository_item.field_level_of_coding
+    - field.field.node.asu_repository_item.field_linked_agent
+    - field.field.node.asu_repository_item.field_member_of
+    - field.field.node.asu_repository_item.field_model
+    - field.field.node.asu_repository_item.field_name_title_subject
+    - field.field.node.asu_repository_item.field_note_para
+    - field.field.node.asu_repository_item.field_oai_set
+    - field.field.node.asu_repository_item.field_open_access
+    - field.field.node.asu_repository_item.field_peer_reviewed
+    - field.field.node.asu_repository_item.field_pid
+    - field.field.node.asu_repository_item.field_place_of_publication_code
+    - field.field.node.asu_repository_item.field_place_published
+    - field.field.node.asu_repository_item.field_preferred_citation
+    - field.field.node.asu_repository_item.field_preservation_state
+    - field.field.node.asu_repository_item.field_related_item
+    - field.field.node.asu_repository_item.field_resource_type
+    - field.field.node.asu_repository_item.field_reuse_permissions
+    - field.field.node.asu_repository_item.field_rich_description
+    - field.field.node.asu_repository_item.field_series
+    - field.field.node.asu_repository_item.field_source
+    - field.field.node.asu_repository_item.field_statement_responsibility
+    - field.field.node.asu_repository_item.field_subject
+    - field.field.node.asu_repository_item.field_subjects_name
+    - field.field.node.asu_repository_item.field_table_of_contents
+    - field.field.node.asu_repository_item.field_temporal_subject
+    - field.field.node.asu_repository_item.field_title
+    - field.field.node.asu_repository_item.field_title_subject
+    - field.field.node.asu_repository_item.field_typed_identifier
+    - field.field.node.asu_repository_item.field_weight
+    - node.type.asu_repository_item
+  module:
+    - controlled_access_terms
+    - field_group
+    - inline_entity_form
+    - paragraphs
+    - text
+third_party_settings:
+  field_group:
+    group_basic:
+      children:
+        - field_title
+        - field_member_of
+        - field_rich_description
+        - field_linked_agent
+        - field_language
+        - field_subject
+        - field_additional_memberships
+        - field_copyright_statement
+        - field_reuse_permissions
+        - field_genre
+        - field_note_para
+        - field_typed_identifier
+        - field_edtf_date_created
+        - field_model
+      parent_name: group_tab_container
+      weight: 0
+      format_type: tab
+      region: content
+      format_settings:
+        description: ''
+        formatter: open
+        required_fields: true
+        id: ''
+        classes: ''
+        show_empty_fields: false
+      label: 'Sheet Music'
+    group_system:
+      children:
+        - langcode
+        - field_description_source
+        - field_source
+        - field_preservation_state
+        - field_pid
+        - field_oai_set
+        - field_level_of_coding
+        - field_history
+        - field_handle
+        - field_complex_object_child
+        - status
+        - field_cataloging_standards
+        - path
+        - moderation_state
+        - sticky
+        - promote
+        - created
+        - uid
+        - field_weight
+      parent_name: ''
+      weight: 9
+      format_type: tab
+      region: hidden
+      format_settings:
+        description: ''
+        formatter: closed
+        required_fields: true
+        id: ''
+        classes: ''
+      label: 'System Use and Display'
+    group_tab_container:
+      children:
+        - group_basic
+      parent_name: ''
+      weight: 1
+      format_type: tabs
+      region: hidden
+      format_settings:
+        id: ''
+        classes: ''
+        direction: vertical
+      label: 'Tab Container'
+    group_subjects:
+      children:
+        - field_complex_subject
+        - field_coordinates
+        - field_geographic_subject
+        - field_keyword
+        - field_name_title_subject
+        - field_subjects_name
+        - field_temporal_subject
+        - field_title_subject
+      parent_name: ''
+      weight: 5
+      format_type: tab
+      region: hidden
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+        formatter: closed
+        required_fields: true
+      label: Subjects
+    group_access_and_rights:
+      children:
+        - field_default_derivative_file_pe
+        - field_default_original_file_perm
+        - field_embargo_release_date
+        - field_statement_responsibility
+      parent_name: ''
+      weight: 7
+      format_type: tab
+      region: hidden
+      format_settings:
+        id: ''
+        classes: ''
+        description: ''
+        formatter: closed
+        required_fields: true
+      label: 'Access and Rights'
+    group_types_and_notes:
+      children:
+        - field_open_access
+        - field_peer_reviewed
+        - field_resource_type
+      parent_name: ''
+      weight: 6
+      format_type: tab
+      region: hidden
+      format_settings:
+        id: ''
+        classes: ''
+        direction: vertical
+        formatter: closed
+        description: ''
+        required_fields: true
+      label: 'Types and Notes'
+    group_additional_details_and_ide:
+      children:
+        - field_date_digitized
+        - field_edition
+        - field_edtf_copyright_date
+        - field_extent
+        - field_frequency
+        - field_issuance
+        - field_place_of_publication_code
+        - field_place_published
+        - field_preferred_citation
+        - field_related_item
+        - field_series
+        - field_table_of_contents
+      parent_name: ''
+      weight: 8
+      format_type: tab
+      region: hidden
+      format_settings:
+        description: ''
+        formatter: closed
+        required_fields: true
+        id: ''
+        classes: ''
+      label: 'Identifiers, Dates, and Additional Details'
+id: node.asu_repository_item.sheet_music
+targetEntityType: node
+bundle: asu_repository_item
+mode: sheet_music
+content:
+  field_additional_memberships:
+    weight: 29
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_copyright_statement:
+    weight: 30
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_edtf_date_created:
+    weight: 35
+    settings:
+      strict_dates: false
+      intervals: true
+      sets: false
+    third_party_settings: {  }
+    type: edtf_default
+    region: content
+  field_genre:
+    weight: 32
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_language:
+    weight: 27
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_linked_agent:
+    weight: 26
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: typed_relation_default
+    region: content
+  field_member_of:
+    weight: 24
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+    type: entity_reference_autocomplete
+    region: content
+  field_model:
+    weight: 36
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_note_para:
+    type: entity_reference_paragraphs
+    weight: 33
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
+    region: content
+  field_reuse_permissions:
+    weight: 31
+    settings: {  }
+    third_party_settings: {  }
+    type: options_select
+    region: content
+  field_rich_description:
+    weight: 25
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+    type: text_textarea
+    region: content
+  field_subject:
+    weight: 28
+    settings:
+      form_mode: simple_taxo_create
+      override_labels: true
+      label_singular: 'topical subject'
+      label_plural: 'topical subjects'
+      allow_new: true
+      allow_existing: true
+      match_operator: CONTAINS
+      revision: false
+      collapsible: false
+      collapsed: false
+      allow_duplicate: false
+    third_party_settings: {  }
+    type: inline_entity_form_complex
+    region: content
+  field_title:
+    type: entity_reference_paragraphs
+    weight: 23
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
+    region: content
+  field_typed_identifier:
+    type: entity_reference_paragraphs
+    weight: 34
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
+    region: content
+hidden:
+  created: true
+  field_cataloging_standards: true
+  field_complex_object_child: true
+  field_complex_subject: true
+  field_coordinates: true
+  field_date_digitized: true
+  field_default_derivative_file_pe: true
+  field_default_original_file_perm: true
+  field_description_source: true
+  field_display_hints: true
+  field_edition: true
+  field_edtf_copyright_date: true
+  field_embargo_release_date: true
+  field_extent: true
+  field_frequency: true
+  field_geographic_subject: true
+  field_handle: true
+  field_history: true
+  field_issuance: true
+  field_keyword: true
+  field_level_of_coding: true
+  field_name_title_subject: true
+  field_oai_set: true
+  field_open_access: true
+  field_peer_reviewed: true
+  field_pid: true
+  field_place_of_publication_code: true
+  field_place_published: true
+  field_preferred_citation: true
+  field_preservation_state: true
+  field_related_item: true
+  field_resource_type: true
+  field_series: true
+  field_source: true
+  field_statement_responsibility: true
+  field_subjects_name: true
+  field_table_of_contents: true
+  field_temporal_subject: true
+  field_title_subject: true
+  field_weight: true
+  langcode: true
+  moderation_state: true
+  path: true
+  promote: true
+  status: true
+  sticky: true
+  title: true
+  uid: true
+  url_redirects: true

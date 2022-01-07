@@ -144,10 +144,28 @@
 								</section>
 							</main>
 							{% if page.sidebar_first %}
+								<div class="col-md-4">
+								<div
+									aria-controls="sidebar_first"
+									aria-expanded="false"
+									class="sidebar-toggler"
+									data-target="#sidebar_first"
+									data-toggle="collapse"
+								>
+									<p>
+									{% if node %}
+										Quick actions
+									{% else %}
+										Filter my results
+									{% endif %}
+									</p>
+									<span class="fas fa-chevron-up" />
+								</div>
 								<div{{sidebar_first_attributes}}>
 									<aside class="section" role="complementary">
 										{{ page.sidebar_first }}
 									</aside>
+								</div>
 								</div>
 							{% endif %}
 							{% if page.sidebar_second %}

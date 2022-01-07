@@ -52,42 +52,30 @@
 ]
 %}
 
-{% if (field_name == 'field_linked_agent') or (field_name == 'field_subject') or (field_name ==
-  'field_geographic_subject') or (field_name == 'field_subjects_name') or (field_name == 'field_temporal_subject') or
-  (field_name == 'field_title_subject') or (field_name == 'field_member_of') or (field_name == 'field_additional_memberships')%}
-  {% if not label_hidden %}
-    <div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
+{% if label_hidden %}
+  {% if multiple %}
+    <ul{{ attributes.addClass(classes, 'field__items', 'inline-list') }}>
+      {% for item in items %}
+        <li{{ item.attributes.addClass('field__item') }}>{{ item.content }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    {% for item in items %}
+      <div{{ attributes.addClass(classes, 'field__item') }}>{{ item.content }}</div>
+    {% endfor %}
   {% endif %}
-  <ul class='inline-list field__items'>
+{% else %}
+  <div{{ attributes.addClass(classes) }}>
+    <div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
+    {% if multiple %}
+      <ul class='field__items inline-list'>
+    {% endif %}
     {% for item in items %}
       <li{{ item.attributes.addClass('field__item') }}>{{ item.content }}</li>
     {% endfor %}
-  </ul>
-{% else %}
-  {% if label_hidden %}
     {% if multiple %}
-      <div{{ attributes.addClass(classes, 'field__items') }}>
-        {% for item in items %}
-          <div{{ item.attributes.addClass('field__item') }}>{{ item.content }}</div>
-        {% endfor %}
-      </div>
-    {% else %}
-      {% for item in items %}
-        <div{{ attributes.addClass(classes, 'field__item') }}>{{ item.content }}</div>
-      {% endfor %}
+      </ul>
     {% endif %}
-  {% else %}
-    <div{{ attributes.addClass(classes) }}>
-      <div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
-      {% if multiple %}
-      <div class='field__items'>
-        {% endif %}
-        {% for item in items %}
-          <div{{ item.attributes.addClass('field__item') }}>{{ item.content }}</div>
-        {% endfor %}
-        {% if multiple %}
-      </div>
-      {% endif %}
-    </div>
-  {% endif %}
+  </div>
 {% endif %}
+

@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\islandora_matomo\IslandoraMatomoService;
-use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 
 /**
  * Provides a 'Downloads count' Block.
@@ -37,7 +37,7 @@ class ASUItemDownloads extends BlockBase implements ContainerFactoryPluginInterf
   /**
    * The entityTypeManager definition.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManager
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
 
@@ -54,10 +54,10 @@ class ASUItemDownloads extends BlockBase implements ContainerFactoryPluginInterf
    *   The route match.
    * @param \Drupal\islandora_matomo\IslandoraMatomoService $islandoraMatomo
    *   The islandoraMatomo service.
-   * @param Drupal\Core\Entity\EntityTypeManager $entityTypeManager
+   * @param Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   A drupal entity type manager object.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $route_match, IslandoraMatomoService $islandoraMatomo, EntityTypeManager $entityTypeManager) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $route_match, IslandoraMatomoService $islandoraMatomo, EntityTypeManagerInterface $entityTypeManager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->routeMatch = $route_match;
     $this->islandoraMatomo = $islandoraMatomo;
@@ -107,7 +107,9 @@ class ASUItemDownloads extends BlockBase implements ContainerFactoryPluginInterf
       $download_count = 0;
       foreach ($mids as $mid) {
         $fid = $this->islandoraMatomo->getFileFromMedia($mid);
-        $download_count += $this->islandoraMatomo->getDownloadsForFile(['fid' => $fid]);
+        if (isset($fid)) {
+          $download_count += ($fid) ? $this->islandoraMatomo->getDownloadsForFile(['fid' => $fid]) : 0;
+        }
       }
       return [
         '#cache' => ['max-age' => 0],

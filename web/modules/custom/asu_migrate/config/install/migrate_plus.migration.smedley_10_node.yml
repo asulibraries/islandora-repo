@@ -1,0 +1,441 @@
+# Uninstall this config when the feature is uninstalled
+dependencies:
+  enforced:
+    module:
+      - asu_migrate
+
+id: smedley_10_node
+label: Import Collection smedley_10 from CSV
+migration_group: migrate_smedley_10_csv
+
+source:
+  plugin: csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/c_smedley_v10_merged_v2.csv
+
+  # 1 means you have a header row, 0 means you don't
+  header_row_count: 1
+
+  # Each migration needs a unique key per row in the csv.  Here we're using the file path.
+  ids:
+    - ID
+
+  # You can't enter string literals into a process plugin, but you can give it a constant as a 'source'.
+  constants:
+    # We're tagging our nodes as Images
+    model: Digital Document
+    uid: 1
+    collection_title: 'Agnes Smedley Collection'
+    pres_state: '558' # Not Preserved
+    handle: "https://hdl.handle.net/2286/R.I."
+    cataloging_standards: "asu1"
+    level_of_coding: "minimal"
+
+process:
+  field_extent:
+    -
+      plugin: skip_on_empty
+      source: Extent
+      method: process
+    -
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: callback
+      callable: trim
+
+  field_edtf_date_created:
+    plugin: skip_on_empty
+    source: Date Created
+    method: process
+
+  field_date_digitized:
+    plugin: skip_on_empty
+    source: Date Digitized
+    method: process
+
+  field_default_derivative_file_pe:
+    -
+      plugin: skip_on_empty
+      source: Derivative File Permissions
+      method: process
+    -
+      plugin: entity_lookup
+      bundle: islandora_access
+      bundle_key: vid
+      entity_type: taxonomy_term
+      value_key: name
+
+  field_default_original_file_perm:
+    -
+      plugin: skip_on_empty
+      source: Original File Permissions
+      method: process
+    -
+      plugin: entity_lookup
+      bundle: islandora_access
+      bundle_key: vid
+      entity_type: taxonomy_term
+      value_key: name
+
+  field_copyright_statement:
+    -
+      plugin: skip_on_empty
+      source: Copyright Statement
+      method: process
+    -
+      plugin: entity_lookup
+      entity_type: taxonomy_term
+      value_key: name
+      bundle_key: vid
+      bundle: copyright_statements
+
+  field_reuse_permissions:
+    -
+      plugin: skip_on_empty
+      source: Reuse Permissions
+      method: process
+    -
+      plugin: entity_lookup
+      entity_type: taxonomy_term
+      value_key: name
+      bundle_key: vid
+      bundle: reuse_permissions
+
+  field_model:
+    source: Model
+    plugin: entity_lookup
+    entity_type: taxonomy_term
+    value_key: name
+    bundle_key: vid
+    bundle: islandora_models
+
+  field_rich_description/value:
+    plugin: skip_on_empty
+    source: Description
+    method: process
+
+  field_rich_description/format:
+    plugin: default_value
+    default_value: "description_restricted_items"
+
+  field_genre:
+    -
+      plugin: skip_on_empty
+      source: Genre
+      method: process
+    -
+      plugin: entity_lookup_by_field
+      lookup_field: name
+      entity_type: taxonomy_term
+      bundle: genre
+
+  field_preferred_citation:
+    plugin: skip_on_empty
+    source: Citation
+    method: process
+
+  uid:
+    -
+      plugin: skip_on_empty
+      source: System User
+      method: process
+    -
+      plugin: user_lookup
+      default_value: constants/uid
+
+  field_open_access:
+    plugin: skip_on_empty
+    source: Open Access
+    method: process
+
+  field_peer_reviewed:
+    plugin: skip_on_empty
+    source: Peer-reviewed
+    method: process
+
+  field_place_published:
+    plugin: skip_on_empty
+    source: Place of Publication Text
+    method: process
+
+  field_edition:
+    plugin: skip_on_empty
+    source: Edition
+    method: process
+
+  field_level_of_coding:
+    plugin: skip_on_empty
+    source: Level of Coding
+    method: process
+
+  field_issuance:
+    plugin: skip_on_empty
+    source: Issuance
+    method: process
+
+  field_frequency:
+    plugin: skip_on_empty
+    source: Frequency
+    method: process
+
+  field_complex_object_child:
+    plugin: skip_on_empty
+    source: Complex Object Child
+    method: process
+    default_value: 0
+
+  field_table_of_contents:
+    plugin: skip_on_empty
+    source: Table of Contents
+    method: process
+
+  field_series:
+    plugin: skip_on_empty
+    source: Series
+    method: process
+
+  title:
+    -
+      plugin: explode
+      delimiter: '||'
+      source: Title
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: substr
+      start: 0
+      length: 254
+
+
+  field_title:
+    -
+      plugin: explode
+      delimiter: '||'
+      source: Title
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: paragraph_title_generate
+      paragraph_type: 'complex_title'
+      split_into_parts: true
+      fields:
+        field_nonsort: " "
+        field_main_title: " "
+        field_subtitle: " "
+
+  field_language:
+    -
+      plugin: skip_on_empty
+      source: Language
+      method: process
+    -
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: entity_lookup
+      entity_type: taxonomy_term
+      value_key: name
+      bundle_key: vid
+      bundle: language
+
+  field_member_of:
+    -
+      plugin: get
+      source:
+        - 'Parent Item'
+        - 'constants/collection_title'
+    -
+      plugin: multi_entity_lookup
+      entity_type: node
+      access_check: 0
+      bundle_key: type
+      bundle: collection
+      value_key: title
+      lookup_field: title
+
+  field_embargo_release_date:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: Embargo Date
+    -
+      plugin: format_date
+      from_format: 'Y-m-d'
+      to_format: 'Y-m-d\TH:i:s'
+      from_timezone: 'America/Phoenix'
+      to_timezone: 'America/Phoenix'
+
+  field_subject:
+    -
+      plugin: skip_on_empty
+      source: Topical Subjects
+      method: process
+    -
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: name_uri_generate
+      delimiter: '|'
+      uri_field: field_authority_link
+      default_vocabulary: subject
+
+  field_temporal_subject:
+    -
+      plugin: skip_on_empty
+      source: Temporal Subject
+      method: process
+    -
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: name_uri_generate
+      delimiter: '|'
+      uri_field: field_authority_link
+      default_vocabulary: temporal
+
+  field_geographic_subject:
+    -
+      plugin: skip_on_empty
+      source: Geographic Subjects
+      method: process
+    -
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: name_uri_generate
+      delimiter: '|'
+      uri_field: field_authority_link
+      default_vocabulary: geo_location
+
+  field_name_title_subject:
+    -
+      plugin: skip_on_empty
+      source: Name Title Subjects
+      method: process
+    -
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: name_uri_generate
+      delimiter: '|'
+      uri_field: field_authority_link
+      default_vocabulary: name_titles
+
+  pers_names:
+    -
+      plugin: skip_on_empty
+      source: Personal Name Subjects
+      method: process
+    -
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: skip_on_empty
+      method: process
+    -
+      plugin: name_uri_generate
+      delimiter: '|'
+      uri_field: field_authority_link
+      default_vocabulary: person
+
+  corp_names:
+    -
+      plugin: skip_on_empty
+      source: Corporate Name Subjects
+      method: process
+    -
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: skip_on_empty
+      method: process
+    -
+      plugin: name_uri_generate
+      delimiter: '|'
+      uri_field: field_authority_link
+      default_vocabulary: corporate_body
+
+  field_subjects_name:
+    -
+      plugin: merge_skip_empty
+      source:
+        - '@pers_names'
+        - '@corp_names'
+    -
+      plugin: skip_on_empty
+      method: process
+
+  corporations:
+    # -
+    #   plugin: skip_on_empty
+    #   method: process
+    #   source: Contributors-Corporate
+    -
+      plugin: explode
+      delimiter: '||'
+      source: Contributors-Corporate
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: skip_on_empty
+      method: process
+    -
+      plugin: typed_relation_generate
+      delimiter: '|'
+      uri_field: field_authority_link
+      default_vocabulary: corporate_body
+      # relator: 'relators:ctb'
+
+  contributors:
+    -
+      plugin: explode
+      delimiter: '||'
+      source: Contributors-Person
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: skip_on_empty
+      method: process
+    -
+      plugin: typed_relation_generate
+      delimiter: '|'
+      uri_field: field_authority_link
+      default_vocabulary: person
+      # relator: 'relators:pht'
+
+  field_linked_agent:
+    -
+      plugin: merge_skip_empty
+      source:
+        - '@contributors'
+        - '@corporations'
+    -
+      plugin: skip_on_empty
+      method: process
+
+# We're making nodes
+destination:
+  plugin: 'entity:node'
+  default_bundle: asu_repository_item

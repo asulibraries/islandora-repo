@@ -81,6 +81,10 @@ process:
       plugin: str_replace
       search: "]"
       replace: ""
+    -
+      plugin: str_replace
+      search: "#"
+      replace: ""
 
 
   # Construct the destination URI using the file name.
@@ -103,12 +107,8 @@ process:
     source:
       - constants/basepath
       - storage path
+  uri: '@destination' # The destination entry from above
 
-  uri:
-    plugin: file_copy
-    source:
-      - '@localfilelocation'
-      - '@destination' # The destination entry from above
 
 
 destination:

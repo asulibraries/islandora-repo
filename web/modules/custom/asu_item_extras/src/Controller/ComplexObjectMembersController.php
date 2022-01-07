@@ -7,7 +7,6 @@ use Drupal\user\UserInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\Core\Entity\EntityTypeManager;
 use Drupal\views\Views;
 
 /**
@@ -22,23 +21,13 @@ class ComplexObjectMembersController extends ControllerBase implements Container
   protected $routeMatch;
 
   /**
-   * The entityTypeManager definition.
-   *
-   * @var \Drupal\Core\Entity\EntityTypeManager
-   */
-  protected $entityTypeManager;
-
-  /**
    * Constructs a ComplexObjectMembersController object.
    *
    * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
    *   The route match.
-   * @param Drupal\Core\Entity\EntityTypeManager $entityTypeManager
-   *   A drupal entity type manager object.
    */
-  public function __construct(RouteMatchInterface $route_match, EntityTypeManager $entityTypeManager) {
+  public function __construct(RouteMatchInterface $route_match) {
     $this->routeMatch = $route_match;
-    $this->entityTypeManager = $entityTypeManager;
   }
 
   /**
@@ -46,8 +35,7 @@ class ComplexObjectMembersController extends ControllerBase implements Container
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('current_route_match'),
-      $container->get('entity_type.manager'),
+      $container->get('current_route_match')
     );
   }
 
@@ -68,8 +56,7 @@ class ComplexObjectMembersController extends ControllerBase implements Container
       $content_type = $node->getType();
 
       // What is the model for this node?
-      $field_model_tid = $node->get('field_model')->getString();
-      $field_model_term = $this->entityTypeManager->getStorage('taxonomy_term')->load($field_model_tid);
+      $field_model_term = $node->get('field_model')->entity;
       $field_model = (isset($field_model_term) && is_object($field_model_term)) ?
         $field_model_term->getName() : '';
 
@@ -82,13 +69,12 @@ class ComplexObjectMembersController extends ControllerBase implements Container
           $view->setDisplay('all_included_items');
           $view->preExecute();
           $view->execute();
-          $build_output[] = $view->buildRenderable('all_included_items', $args);
+          $build_output[0] = $view->buildRenderable('all_included_items', $args);
         }
       }
     }
     return [
       '#markup' => '<h2>' . $this->t('Included in this item') . '</h2><div class="row">',
-      '#cache' => ['max-age' => 0],
       'build_output' => $build_output,
       '#suffix' => '</div>',
     ];

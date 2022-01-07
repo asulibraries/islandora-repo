@@ -13,13 +13,13 @@
 	}
 	.card-header h2 .btn:after {
                 font-family: "Font Awesome 5 Free";
-                content: "\f0d7";
+                content: "\f078";
                 float: right;
                 font-weight: 900;
         }
 	.card-header h2 .btn.collapsed:after {
     		/* symbol for "collapsed" panels */
-    		content: "\f0da";
+    		content: "\f077";
 	}
 	ul {
 		list-style: none;
@@ -30,11 +30,16 @@
     	padding-bottom: 5px;
 	}
 	.facet-item__count {
-		float: right;
+		margin-top: 0;
+		display: inline-flex;
+		height: fit-content;
+		margin-left: 10px;
 		color: $brand-primary;
+		text-decoration: none !important;
 	}
 	.facet-item__value {
 		color: #000;
+		flex-grow: 1;
 	}
 	.card {
 		border-radius: 0;
@@ -79,10 +84,13 @@ div#block-searchfilterblock {
 }
 
 .facet-item a {
-   display: table;
-   width: 100%;
+	display: flex;
+	width: 100%;
+    text-decoration: none;
+    padding-bottom: 5px;
+    padding-top: 5px;
 }
 
 .facet-item a .facet-item__value, .facet-item a .facet-item__count {
-   display: table-cell;
+	display: inline-flex;
 }

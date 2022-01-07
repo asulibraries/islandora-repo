@@ -62,9 +62,11 @@
 .view-id-solr_search_content {
     &.view-display-id-block_1 {
         background: #F2F2F2;
-        margin-bottom: 40px;
+        margin-bottom: $small-padding;
+        padding-bottom: $small-padding;
         .views-view-grid {
-            margin: 15px;
+            margin-left: 15px;
+            margin-right: 15px;
         }
         .collection-result {
             margin: 10px 10px 10px 0;
@@ -135,124 +137,17 @@
     }
 }
 
-
-/* adjust look for the summary links */
-.views-summary a {
-  margin-right: .8em;
-}
-.views-summary:not(:first-child) a {
-    margin-left: .6em;
-}
-.views-summary .is-active {
-  text-decoration: none;
-  font-weight: bold;
-  cursor: default;
-  color: $gray-7;
+.view-id-collections .views-view-grid .row {
+    @extend .row-spaced;
+    @extend .pt-2;
+    @extend .pb-2;
 }
 
-
-/* collection browse view */
-.views-view-grid {
+.view-id-collections.view-display-id-sub_collections {
     @extend .container;
-}
-.view-id-collections {
-    .view-header {
-        @extend .container;
+    .views-row {
+        margin-bottom: $xs-padding;
     }
-    .view-content {
-        @extend .container;
-    }
-}
-.view-collections {
-    .form-control {
-        border-radius: 0;
-    }
-    .form-actions,
-    .view-header {
-        padding-left: 0;
-    }
-    .view-content {
-        margin-bottom: ($spacer * 1.5);
-    }
-    .form-row fieldset {
-        padding-right: 0;
-    }
-    .view-display-id-block_1 .view-content {
-        padding: 0;
-    }
-    &.view-display-id-sub_collections {
-        .views-row.row {
-            margin-bottom: 1rem;
-            border-bottom: 1px solid rgba(0,0,0,0.125);
-            padding-bottom: .5rem;
-            img {
-                height: auto;
-            }
-            i {
-                color: $gray-5;
-            }
-        }
-        .col-3 {
-            display: flex;
-            justify-content: center;
-        }
-    }
-}
-
-.node--view-mode-collection-browse-teaser.node--type-collection {
-    height: calc(100% - 20px);
-}
-.collection-browse-object {
-    border: 1px solid $gray-5;
-    padding: 20px 20px 0px 20px;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    display: flex;
-    flex-direction: column;
-    .collection-browse-button {
-        width: 100%;
-        align-self: flex-end;
-        a {
-            background: $gray-5;
-            color: #FFF;
-            border-bottom: none;
-            border-radius: 0px;
-            border: 1px solid $gray-5;
-        }
-        .btn:nth-of-type(1) {
-            margin-left: -5px;
-            margin-right: 11px;
-        }
-        .btn:nth-of-type(2) {
-            margin-right: -5px;
-        }
-    }
-    .collection-browse-thumb {
-        padding-right: 10px;
-    }
-    img {
-        height: auto;
-    }
-    h2 {
-        font-size: 1.3rem;
-        font-weight: bold;
-    }
-    .row:last-of-type {
-        align-self: auto;
-        flex-grow: 1;
-    }
-    i {
-        color: $gray-5;
-    }
-    a {
-        border-bottom: none;
-    }
-}
-.collection-browse-object:nth-of-type(odd) {
-    margin-left: -15px;
-}
-.collection-browse-object:nth-of-type(even) {
-    margin-left: 15px;
 }
 
 /** Openseadragon **/
@@ -262,10 +157,13 @@
     }
 }
 
+.expand-image {
+    display: none;
+}
 
 .node--view-mode-asu-document, .node--view-mode-asu-image {
     /* Expand icon on thumbnail display */
-    span.expand-image {
+    a span.expand-image {
         position: absolute;
         bottom: 0px;
         right: 0px;
@@ -279,7 +177,7 @@
         height: 0;
         display: block;
     }
-    .expand-image i {
+    a .expand-image i {
         position: absolute;
         top: 0px;
         left: 0px;
@@ -298,6 +196,10 @@
 .repo-item {
     .view-display-id-thumbnail {
         border: 1px solid $border-color;
+        img {
+            max-height: 500px;
+            object-fit: contain;
+        }
     }
 }
 
@@ -307,6 +209,7 @@
     img {
         margin-bottom: 30px;
         height: auto;
+        border: 1px solid $gray-3;
     }
 }
 
@@ -330,11 +233,49 @@
   }
 }
 
-.thumb-image-border .views-field-field-media-image img, .thumb-image-border .icon-container {
-  border: 1px solid #D0D0D0;
-  padding: 8px;
+.collection-browse-object .icon-container a img {
+  max-width: 200px;
 }
+h3.card-title {
+  line-height: 1.4em;
+}
+h3.card-title a:hover, h3.card-title a:focus {
+  text-decoration: none;
+}
+
 
 .main-content .thumb-image-border a {
   border-bottom: none;
-} 
+}
+
+.view-id-content_recent .views-row {
+  margin-bottom: 1.5rem;
+}
+
+.view-id-collections .far {
+  color: $gray-5;
+}
+
+.collection-result img {
+  max-height: 200px;
+}
+
+/*fix for nouislider color*/
+.noUi-connect {
+    background: $gray-2 !important;
+}
+
+/*fix for double-rowing*/
+.view-display-id-three_included_items .view-content.row {
+    display: inline;
+}
+
+/*make barrett filter inline*/
+#views-exposed-form-barrett-submissions-page-1 {
+    #edit-created-wrapper fieldset {
+        display: inline;
+    }
+    #edit-actions {
+        margin-bottom: 2rem;
+    }
+}

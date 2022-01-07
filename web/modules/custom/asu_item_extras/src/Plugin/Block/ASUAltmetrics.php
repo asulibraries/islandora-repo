@@ -5,7 +5,7 @@ namespace Drupal\asu_item_extras\Plugin\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Routing\CurrentRouteMatch;
 use Drupal\Core\Cache\Cache;
 
@@ -23,7 +23,7 @@ class ASUAltmetrics extends BlockBase implements ContainerFactoryPluginInterface
   /**
    * The entityTypeManager definition.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManager
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
 
@@ -43,7 +43,7 @@ class ASUAltmetrics extends BlockBase implements ContainerFactoryPluginInterface
    *   The plugin_id for the formatter.
    * @param mixed $plugin_definition
    *   The plugin implementation definition.
-   * @param \Drupal\Core\Entity\EntityTypeManager $entityTypeManager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entityTypeManager definition.
    * @param \Drupal\Core\Routing\CurrentRouteMatch $currentRouteMatch
    *   The currentRouteMatch definition.
@@ -52,7 +52,7 @@ class ASUAltmetrics extends BlockBase implements ContainerFactoryPluginInterface
     array $configuration,
     $plugin_id,
     $plugin_definition,
-    EntityTypeManager $entityTypeManager,
+    EntityTypeManagerInterface $entityTypeManager,
     CurrentRouteMatch $currentRouteMatch) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->entityTypeManager = $entityTypeManager;
@@ -102,11 +102,11 @@ class ASUAltmetrics extends BlockBase implements ContainerFactoryPluginInterface
     if ($this->currentRouteMatch->getParameter('node')) {
       $node = $this->currentRouteMatch->getParameter('node');
     }
+    if (!isset($node)) {
+      return [];
+    }
     if (!is_object($node)) {
       $node = $this->entityTypeManager->getStorage('node')->load($node);
-    }
-    if (!$node) {
-      return [];
     }
     $doi_val = "";
     $typed_idents = $node->field_typed_identifier;
@@ -178,7 +178,7 @@ class ASUAltmetrics extends BlockBase implements ContainerFactoryPluginInterface
     if (!is_object($node)) {
       $node = $this->entityTypeManager->getStorage('node')->load($node);
     }
-    if (!$node) {
+    if (!isset($node)) {
       return parent::getCacheTags();
     }
     else {

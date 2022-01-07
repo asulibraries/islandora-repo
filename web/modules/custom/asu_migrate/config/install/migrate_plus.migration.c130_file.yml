@@ -42,9 +42,9 @@ process:
 #   filemime: file mime
   uid: constants/uid
   # todo set to asurite
-  type: 'file type'
+  type: file type
 
-  field_original_name/value: 'file original_filename'
+  field_original_name/value: file original_filename
   filename:
     -
       plugin: transliteration
@@ -57,6 +57,30 @@ process:
       plugin: str_replace
       search: "'"
       replace: ""
+    -
+      plugin: str_replace
+      search: ","
+      replace: ""
+    -
+      plugin: str_replace
+      search: ")"
+      replace: ""
+    -
+      plugin: str_replace
+      search: "("
+      replace: ""
+    -
+      plugin: str_replace
+      search: "&"
+      replace: ""
+    -
+      plugin: str_replace
+      search: "["
+      replace: ""
+    -
+      plugin: str_replace
+      search: "]"
+      replace: ""
 
 
   # Construct the destination URI using the file name.
@@ -65,8 +89,8 @@ process:
     delimiter: /
     source:
       - constants/destination_dir
+      - 'file id'
       - '@filename'
-    #   - file id
 
   filelocation:
     plugin: concat
@@ -80,11 +104,7 @@ process:
       - constants/basepath
       - storage path
 
-  uri:
-    plugin: file_copy
-    source:
-      - '@localfilelocation'
-      - '@destination' # The destination entry from above
+  uri: '@destination' # The destination entry from above
 
 
 destination:

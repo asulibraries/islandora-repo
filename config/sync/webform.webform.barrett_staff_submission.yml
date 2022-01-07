@@ -1,0 +1,439 @@
+langcode: en
+status: open
+dependencies:
+  module:
+    - self_deposit
+open: null
+close: null
+weight: 0
+uid: 1
+template: false
+archive: false
+id: barrett_staff_submission
+title: 'Barrett Staff Submission'
+description: 'Form for Barrett Honors College staff to submit on behalf of students'
+category: ''
+elements: |-
+  into_text:
+    '#type': processed_text
+    '#text': |
+      <h2>--For Staff Use Only--</h2>
+
+      <h2>Thesis/Creative Project Digital Submission Staff Form</h2>
+
+      <p><strong>Before filling out this form, please prepare:</strong></p>
+
+      <ol>
+      	<li><strong>a brief summary of your project</strong></li>
+      	<li><strong>a PDF of your final approved written thesis saved as LastName_Semester_Year (Ex: Schultz_Spring_2021)</strong></li>
+      	<li><strong>If applicable, additional files or creative components (photos, videos, etc.)</strong></li>
+      </ol>
+
+      <p>&nbsp;</p>
+
+      <p><strong>Group Projects</strong>: Each Barrett student is required to upload a digital submission. Consult with your group to ensure you each have the same title, summary, and documentation.</p>
+    '#format': full_html
+  item_title:
+    '#type': textarea
+    '#title': 'Thesis title'
+    '#rows': 2
+    '#required': true
+  item_description:
+    '#type': textarea
+    '#title': Abstract
+    '#description': 'A brief summary of your project.'
+    '#required': true
+  student_name:
+    '#type': webform_name
+    '#title': 'Student Name'
+    '#required': true
+    '#title__access': false
+    '#first__title': 'Student First Name'
+    '#first__required': true
+    '#middle__access': false
+    '#last__title': 'Student Last Name'
+    '#last__required': true
+    '#suffix__access': false
+    '#degree__access': false
+  student_asurite:
+    '#type': textfield
+    '#title': 'Student Asurite'
+    '#required': true
+  student_id:
+    '#type': textfield
+    '#title': 'Student ID'
+    '#required': true
+  keywords:
+    '#type': textfield
+    '#title': Keywords
+    '#multiple': true
+    '#description': 'Please describe the topics that this item is about.'
+    '#multiple__item_label': keyword
+    '#multiple__no_items_message': 'No keywords entered. Please add items below.'
+    '#multiple__sorting': false
+    '#multiple__add_more': false
+    '#multiple__add_more_input': false
+    '#multiple__add_more_input_label': 'more keywords'
+  group_members:
+    '#type': webform_name
+    '#title': 'Group Members'
+    '#multiple': true
+    '#title_display': ''
+    '#multiple__header': true
+    '#multiple__header_label': 'Group members'
+    '#multiple__add_more': false
+    '#multiple__add_more_input': false
+    '#wrapper_type': container
+    '#title__access': false
+    '#first__description': 'If other Barrett students worked with you on this thesis, add their names here.'
+    '#first__title_display': before
+    '#middle__access': false
+    '#last__title_display': before
+    '#suffix__access': false
+    '#degree__access': false
+    '#flexbox': '1'
+  thesis_director:
+    '#type': webform_name
+    '#title': 'Thesis Director'
+    '#multiple': true
+    '#title_display': ''
+    '#required': true
+    '#multiple__header': true
+    '#multiple__header_label': 'Thesis Director'
+    '#multiple__add_more': false
+    '#multiple__add_more_input': false
+    '#wrapper_type': container
+    '#title__access': false
+    '#first__title_display': before
+    '#middle__access': false
+    '#last__title_display': before
+    '#suffix__access': false
+    '#degree__access': false
+    '#flexbox': '1'
+  committee_members:
+    '#type': webform_name
+    '#title': 'Committee Members'
+    '#multiple': true
+    '#title_display': ''
+    '#required': true
+    '#multiple__header': true
+    '#multiple__header_label': 'Committee Members'
+    '#multiple__add_more': false
+    '#multiple__add_more_input': false
+    '#wrapper_type': container
+    '#title__access': false
+    '#first__title_display': before
+    '#middle__access': false
+    '#last__title_display': before
+    '#suffix__access': false
+    '#degree__access': false
+    '#flexbox': '1'
+  additional_contributors:
+    '#type': webform_name
+    '#title': 'Additional Contributors'
+    '#multiple': true
+    '#title_display': ''
+    '#multiple__header': true
+    '#multiple__header_label': 'Additional Contributors'
+    '#multiple__add_more': false
+    '#multiple__add_more_input': false
+    '#wrapper_type': container
+    '#title__access': false
+    '#first__title_display': before
+    '#middle__access': false
+    '#last__title_display': before
+    '#suffix__access': false
+    '#degree__access': false
+    '#flexbox': '1'
+  institutional_contributors:
+    '#type': textfield
+    '#title': 'Institutional Contributors'
+    '#multiple': true
+  number_of_pages:
+    '#type': textfield
+    '#title': 'Number of Pages'
+    '#required': true
+  embargo_release_date:
+    '#type': datetime
+    '#title': 'Embargo Release Date'
+    '#date_date_format': ''
+    '#date_time_element': none
+  language1:
+    '#type': entity_autocomplete
+    '#title': Language
+    '#target_type': taxonomy_term
+    '#selection_handler': views
+    '#selection_settings':
+      view:
+        view_name: autocomplete_taxonomy_terms
+        display_name: entity_reference_1
+        arguments: {  }
+  series:
+    '#type': textfield
+    '#title': Series
+    '#description': 'Leave blank for auto-populating.'
+  date_created:
+    '#type': textfield
+    '#title': 'Date created'
+    '#description': 'Must follow YYYY[-MM[-DD]] format. Leave blank for auto-populating.'
+  file:
+    '#type': managed_file
+    '#title': File
+    '#multiple': true
+    '#required': true
+    '#uri_scheme': fedora
+    '#file_extensions': 'pdf avi mp3 mp4 wav mwv tiff tif aac m4a jpg jpeg gif png bmp mov'
+    '#sanitize': true
+  reuse_permissions:
+    '#type': webform_entity_select
+    '#title': 'Reuse Permissions'
+    '#default_value': '1095'
+    '#access': false
+    '#target_type': taxonomy_term
+    '#selection_handler': 'default:taxonomy_term'
+    '#selection_settings':
+      target_bundles:
+        reuse_permissions: reuse_permissions
+  item_node:
+    '#type': value
+    '#title': 'Item Node'
+  actions:
+    '#type': webform_actions
+    '#title': 'Submit button(s)'
+css: ''
+javascript: ''
+settings:
+  ajax: false
+  ajax_scroll_top: form
+  ajax_progress_type: ''
+  ajax_effect: ''
+  ajax_speed: null
+  page: true
+  page_submit_path: /barrett-staff-form
+  page_confirm_path: ''
+  page_theme_name: ''
+  form_title: webform
+  form_submit_once: false
+  form_exception_message: ''
+  form_open_message: ''
+  form_close_message: ''
+  form_previous_submissions: true
+  form_confidential: false
+  form_confidential_message: ''
+  form_disable_remote_addr: false
+  form_convert_anonymous: false
+  form_prepopulate: false
+  form_prepopulate_source_entity: false
+  form_prepopulate_source_entity_required: false
+  form_prepopulate_source_entity_type: ''
+  form_reset: false
+  form_disable_autocomplete: false
+  form_novalidate: false
+  form_disable_inline_errors: false
+  form_required: false
+  form_unsaved: false
+  form_disable_back: false
+  form_submit_back: false
+  form_autofocus: false
+  form_details_toggle: false
+  form_access_denied: login
+  form_access_denied_title: ''
+  form_access_denied_message: ''
+  form_access_denied_attributes: {  }
+  form_file_limit: ''
+  share: false
+  share_node: false
+  share_theme_name: ''
+  share_title: true
+  share_page_body_attributes: {  }
+  submission_label: ''
+  submission_log: false
+  submission_views: {  }
+  submission_views_replace: {  }
+  submission_user_columns: {  }
+  submission_user_duplicate: false
+  submission_access_denied: default
+  submission_access_denied_title: ''
+  submission_access_denied_message: ''
+  submission_access_denied_attributes: {  }
+  submission_exception_message: ''
+  submission_locked_message: ''
+  submission_excluded_elements: {  }
+  submission_exclude_empty: false
+  submission_exclude_empty_checkbox: false
+  previous_submission_message: 'You can only submit your thesis one time. Please contact us if you believe there is an issue.'
+  previous_submissions_message: 'You can only submit your thesis one time. Please contact us if you believe there is an issue.'
+  autofill: false
+  autofill_message: ''
+  autofill_excluded_elements: {  }
+  wizard_progress_bar: true
+  wizard_progress_pages: false
+  wizard_progress_percentage: false
+  wizard_progress_link: false
+  wizard_progress_states: false
+  wizard_auto_forward: true
+  wizard_auto_forward_hide_next_button: false
+  wizard_keyboard: true
+  wizard_start_label: ''
+  wizard_preview_link: false
+  wizard_confirmation: true
+  wizard_confirmation_label: ''
+  wizard_track: ''
+  wizard_prev_button_label: ''
+  wizard_next_button_label: ''
+  wizard_toggle: true
+  wizard_toggle_show_label: ''
+  wizard_toggle_hide_label: ''
+  preview: 0
+  preview_label: ''
+  preview_title: ''
+  preview_message: ''
+  preview_attributes: {  }
+  preview_excluded_elements: {  }
+  preview_exclude_empty: true
+  preview_exclude_empty_checkbox: false
+  draft: none
+  draft_multiple: false
+  draft_auto_save: false
+  draft_saved_message: ''
+  draft_loaded_message: ''
+  draft_pending_single_message: ''
+  draft_pending_multiple_message: ''
+  confirmation_type: url_message
+  confirmation_title: ''
+  confirmation_message: 'Thank you for submitting a new Barrett Thesis item to KEEP.'
+  confirmation_url: '/node/[webform_submission:values:item_node]'
+  confirmation_attributes: {  }
+  confirmation_back: true
+  confirmation_back_label: ''
+  confirmation_back_attributes: {  }
+  confirmation_exclude_query: false
+  confirmation_exclude_token: false
+  confirmation_update: false
+  limit_total: null
+  limit_total_interval: null
+  limit_total_message: ''
+  limit_total_unique: false
+  limit_user: 1
+  limit_user_interval: null
+  limit_user_message: ''
+  limit_user_unique: false
+  entity_limit_total: null
+  entity_limit_total_interval: null
+  entity_limit_user: null
+  entity_limit_user_interval: null
+  purge: none
+  purge_days: null
+  results_disabled: false
+  results_disabled_ignore: false
+  results_customize: false
+  token_view: false
+  token_update: false
+  token_delete: false
+  serial_disabled: false
+access:
+  create:
+    roles:
+      - administrator
+      - honors_staff
+    users: {  }
+    permissions: {  }
+  view_any:
+    roles:
+      - anonymous
+      - administrator
+      - content_approver
+      - metadata_manager
+      - repositor_manager
+      - honors_staff
+    users: {  }
+    permissions: {  }
+  update_any:
+    roles:
+      - administrator
+      - content_approver
+      - metadata_manager
+      - repositor_manager
+      - honors_staff
+    users: {  }
+    permissions: {  }
+  delete_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  purge_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  view_own:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  update_own:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  delete_own:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  administer:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  test:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  configuration:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+handlers:
+  email:
+    id: email
+    label: 'Email to libanswers'
+    notes: ''
+    handler_id: email
+    status: false
+    conditions: {  }
+    weight: -49
+    settings:
+      states:
+        - completed
+      to_mail: repository@asu.libanswers.com
+      to_options: {  }
+      cc_mail: ''
+      cc_options: {  }
+      bcc_mail: ''
+      bcc_options: {  }
+      from_mail: _default
+      from_options: {  }
+      from_name: _default
+      subject: 'KEEP self deposit from [webform_submission:user]'
+      body: "A new self deposit has been submitted on KEEP<br />\r\n<br />\r\n&lt;p&gt;Submitted on [webform_submission:created]&lt;/p&gt;<br />\r\n&lt;p&gt;Submitted by: [webform_submission:user]&lt;/p&gt;<br />\r\n&lt;p&gt;Submitted values are:&lt;/p&gt;<br />\r\n[webform_submission:values]<br />\r\n&nbsp;"
+      excluded_elements: {  }
+      ignore_access: false
+      exclude_empty: true
+      exclude_empty_checkbox: false
+      exclude_attachments: false
+      html: true
+      attachments: false
+      twig: false
+      debug: false
+      reply_to: ''
+      return_path: ''
+      sender_mail: ''
+      sender_name: ''
+      theme_name: ''
+      parameters: {  }
+  create_a_barrett_repository_item:
+    id: 'Create a Barrett repository item'
+    label: 'Create a Barrett repository item'
+    notes: ''
+    handler_id: create_a_barrett_repository_item
+    status: true
+    conditions: {  }
+    weight: 0
+    settings: {  }
+variants: {  }

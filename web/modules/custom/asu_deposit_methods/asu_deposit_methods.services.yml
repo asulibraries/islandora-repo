@@ -1,0 +1,4 @@
+services:
+  asu_deposit_methods.deposit_utils:
+    class: Drupal\asu_deposit_methods\DepositUtils
+    arguments: ['@entity_type.manager']

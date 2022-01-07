@@ -1,0 +1,52 @@
+asu_deposit_methods.settings:
+  path: '/admin/config/asu_deposit_methods/settings'
+  defaults:
+    _form: '\Drupal\asu_deposit_methods\Form\DepositSettings'
+    _title: 'ASU Deposit Settings'
+  requirements:
+    _permission: 'administer site configuration'
+  options:
+    _admin_route: TRUE
+
+asu_deposit_methods.sheet_music.edit:
+  path: '/sheet_music/{node}/edit'
+  defaults:
+    _entity_form: 'node.sheet_music'
+    _title: 'Edit Sheet Music Item'
+  requirements:
+    node: '\d+'
+    _entity_access: 'node.update'
+  options:
+    _node_operation_route: TRUE
+    parameters:
+      node:
+        type: entity:node
+    no_cache: 'TRUE'
+
+asu_deposit_methods.sheet_music.add:
+  path: '/sheet_music/add/{node_type}'
+  defaults:
+    _entity_form: 'node.sheet_music'
+    _title: 'Add Sheet Music Item'
+  requirements:
+    _node_add_access: 'node:asu_repository_item'
+  options:
+    _node_operation_route: TRUE
+    parameters:
+      node_type:
+        type: entity:node_type
+
+asu_deposit_methods.sheet_music.add_child:
+  path: '/sheet_music/add_child/{node_type}/{parent}'
+  defaults:
+    _entity_form: 'node.sheet_music_child'
+    _title: 'Add Sheet Music Child Item'
+  requirements:
+    _node_add_access: 'node:asu_repository_item'
+  options:
+    _node_operation_route: TRUE
+    parameters:
+      node_type:
+        type: entity:node_type
+      parent:
+        type: entity:node

@@ -3,7 +3,6 @@
 namespace Drupal\asu_collection_extras\Commands;
 
 use Drush\Commands\DrushCommands;
-use Drupal\node\NodeInterface;
 
 /**
  * A drush command file for collection summary tabulation.
@@ -103,18 +102,19 @@ class DrushASUCalcViewsAndDownloads extends DrushCommands {
     // Get $options['howmany'] records that need to be processed.
     $query = \Drupal::database()->select('ace_items', 'ace_i');
     $query->addField('ace_i', 'i_nid');
-    $query->condition('downloads_modified', 0)
+    $query->condition('downloads_modified', time() - 60 * 60 * 24, "<")
       ->range(0, $options['howmany']);
 
     $records = $query->execute();
+    // @todo possible refactor as loadMultiple.
     foreach ($records as $record) {
       $node = \Drupal::entityTypeManager()->getStorage('node')->load($record->i_nid);
       if (is_object($node)) {
         \Drupal::logger('asu_collection_extras')->info('it is in the endpoint! node id = ' . $node->id());
         $node_relations = asu_collection_extras_syncNodeRelations($node);
         $node_matomo_stats = asu_collection_extras_syncNodeMatomoStats($node->id());
-        \Drupal::logger('asu_collection_extras')->info('$node_relations = ' . print_r($node_relations, true));
-        \Drupal::logger('asu_collection_extras')->info('$node_matomo_stats = ' . print_r($node_matomo_stats, true));
+        \Drupal::logger('asu_collection_extras')->info('$node_relations = ' . print_r($node_relations, TRUE));
+        \Drupal::logger('asu_collection_extras')->info('$node_matomo_stats = ' . print_r($node_matomo_stats, TRUE));
       }
     }
   }
@@ -125,13 +125,13 @@ class DrushASUCalcViewsAndDownloads extends DrushCommands {
    *
    * @param array $matomo_data
    *   Key represents the page that was returned from matomo and the value is
-   * the views for that page.
+   *   the views for that page.
    */
   private function rekeyData(array $matomo_data) {
     $return_arr = [];
     foreach ($matomo_data as $page => $views) {
       if (is_int($page)) {
-        // normalize the key for the array
+        // Normalize the key for the array.
         if (strstr($page, '?')) {
           list($page, $fragment) = explode("?", $page);
         }

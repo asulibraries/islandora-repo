@@ -57,11 +57,12 @@ class ASUComplexTitle extends BlockBase {
         $para_render = trim(\Drupal::service('renderer')->render($first_title_view));
         if ($current_route_name == 'asu_statistics.collection_statistics_view') {
           $para_render .= ' Statistics';
-        } elseif ($current_route_name == 'view.solr_search_content.page_2') {
+        }
+        elseif ($current_route_name == 'view.solr_search_content.page_2') {
           $para_render = 'Explore "' . $para_render . '"';
         }
         if ($i == 0) {
-          $para_render = '<h1 class="title' .
+          $para_render = '<h1 class="article title' .
             ($node_is_published ? "" : " unpublished_title") . '">' . ($node_is_published ? '' : '<i class="fa fa-lock"></i>&nbsp;') . $para_render . '</h1>';
         }
         else {
@@ -91,7 +92,8 @@ class ASUComplexTitle extends BlockBase {
         $node = \Drupal::entityTypeManager()->getStorage('node')->load($node);
       }
       return Cache::mergeTags(parent::getCacheTags(), ['node:' . $node->id()]);
-    } else {
+    }
+    else {
       return parent::getCacheTags();
     }
   }

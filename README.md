@@ -33,18 +33,24 @@ Note: I only have gotten this working on my local machine, not the vagrant envir
 
 Requirements:
 * node.js
+(if you do not have node, do `sudo apt update` and `curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
+sudo apt-get install -y nodejs` `sudo apt install npm`
 
 1. cd into `/web/themes/custom/asulib_barrio`
 2. Install gulp with `npm install --global gulp-cli`
-3. Install dependencies including Bootstrap latest version: `npm install`
-4. Update `gulpfile.js` with your local URL
+3. Install yarn with `npm install --global yarn`
+4. add `@asu-design-system:registry=https://registry.web.asu.edu` to your `~/.npmrc`
+5. run `npm adduser --registry https://registry.web.asu.edu` and make a user
+6. Install dependencies including Bootstrap latest version: `yarn install`
+7. cd into the theme then `node_modules/@asu-design-system/bootstrap4-theme` and `npm install`
+8. Update `gulpfile.js` with your local URL
 
 Example:
 
     browserSync.init({
         proxy: 'http://localhost:8000/',
     })
-5). Run `gulp`
+9). Run `gulp`
 
 "This will generate a style.css file with mappings for debugging and a style.min.css file for production. You will need to change the reference to the file manually on your SUBTHEME.libraries.yml file."
 

@@ -87,13 +87,13 @@ class ExploreThisCollectionBlock extends BlockBase implements ContainerFactoryPl
   /**
    * {@inheritdoc}
    */
-  public function getCacheTags()
-  {
+  public function getCacheTags() {
     // With this when your node change your block will rebuild.
     if ($node = $this->routeMatch->getParameter('node')) {
       // If there is node add its cachetag.
       return Cache::mergeTags(parent::getCacheTags(), ['node:' . $node->id()]);
-    } else {
+    }
+    else {
       // Return default tags instead.
       return parent::getCacheTags();
     }
@@ -102,8 +102,7 @@ class ExploreThisCollectionBlock extends BlockBase implements ContainerFactoryPl
   /**
    * {@inheritdoc}
    */
-  public function getCacheContexts()
-  {
+  public function getCacheContexts() {
     // If you depends on \Drupal::routeMatch().
     // You must set context of this block with 'route' context tag.
     // Every new route this block will rebuild.

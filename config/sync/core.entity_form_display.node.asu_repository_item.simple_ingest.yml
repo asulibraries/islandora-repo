@@ -6,7 +6,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_additional_memberships
     - field.field.node.asu_repository_item.field_cataloging_standards
     - field.field.node.asu_repository_item.field_complex_object_child
-    - field.field.node.asu_repository_item.field_complex_subjects
+    - field.field.node.asu_repository_item.field_complex_subject
     - field.field.node.asu_repository_item.field_coordinates
     - field.field.node.asu_repository_item.field_copyright_statement
     - field.field.node.asu_repository_item.field_date_digitized
@@ -200,12 +200,17 @@ content:
     settings:
       include_locked: true
     third_party_settings: {  }
+  url_redirects:
+    weight: 50
+    settings: {  }
+    third_party_settings: {  }
+    region: content
 hidden:
   created: true
   field_additional_memberships: true
   field_cataloging_standards: true
   field_complex_object_child: true
-  field_complex_subjects: true
+  field_complex_subject: true
   field_coordinates: true
   field_date_digitized: true
   field_description_source: true

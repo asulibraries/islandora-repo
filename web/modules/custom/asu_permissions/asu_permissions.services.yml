@@ -1,5 +1,5 @@
 services:
-  mymodule.exception.subscriber:
+  asu_permissions.exception.subscriber:
     class: Drupal\asu_permissions\EventSubscriber\LibauthExceptionSubscriber
     arguments: ['@logger.factory']
     tags:

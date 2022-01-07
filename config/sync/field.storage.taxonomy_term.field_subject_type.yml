@@ -1,0 +1,38 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - options
+    - taxonomy
+id: taxonomy_term.field_subject_type
+field_name: field_subject_type
+entity_type: taxonomy_term
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: topical
+      label: Topical
+    -
+      value: name
+      label: Name
+    -
+      value: nametitle
+      label: Name-Title
+    -
+      value: geographic
+      label: Geographic
+    -
+      value: temporal
+      label: Temporal
+    -
+      value: title
+      label: Title
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

@@ -70,6 +70,7 @@
     not node.isPublished() ? 'node--unpublished',
     view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
     'card',
+    'col-3'
 ]
 %}
 
@@ -101,7 +102,7 @@
               {{ drupal_view('display_media', 'thumbnail', node.id) }}
             {% endif %}
         </div>
-        <div class="card-body">
+        <div class="card-header">
             <h5{{ title_attributes.addClass('node__title', 'card-title') }}>
                 {% set title = content.field_title[0]|render|trim|slice(0, 40) %}
                 <a href="{{ url }}" rel="bookmark">{{ title|raw }}

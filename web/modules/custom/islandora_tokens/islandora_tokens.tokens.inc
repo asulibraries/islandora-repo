@@ -141,20 +141,20 @@ function _get_term_with_rel_type($node, $field_name, $relation_type = '', $remov
           if ($tid['rel_type'] == $relation_type) {
             $term = Term::load($tid['target_id']);
             if ($term) {
-              $matches[] = islandora_tokens_remove_comma($term->getName(), $remove_comma);
+              $matches[] = $term->getName();
             }
           }
         }
         else {
           $term = Term::load($tid['target_id']);
           if ($term) {
-            $matches[] = islandora_tokens_remove_comma($term->getName(), $remove_comma);
+            $matches[] = $term->getName();
           }
         }
       }
     }
   }
-  return implode(", ", $matches);
+  return implode("|", $matches);
 }
 
 /**
@@ -231,9 +231,21 @@ function _normalize_date_format($node, $field_name, $original) {
  *   The tokenized value for the given data.
  */
 function _url_to_service_file_media_by_mimetype($node, $mime_type) {
-  $islandora_utils = \Drupal::service('islandora.utils');
-  $origfile_term = $islandora_utils->getTermForUri('http://pcdm.org/use#OriginalFile');
-  $origfile_media = $islandora_utils->getMediaWithTerm($node, $origfile_term);
+  // making a huge assumption that since we're looking for a PDF that its a document model
+  if ($node->get('field_model')->entity == NULL || $node->get('field_model')->entity->getName() != "Digital Document") {
+    return;
+  }
+  $default_config = \Drupal::config('asu_default_fields.settings');
+  $origfile_term = $default_config->get('original_file_taxonomy_term');
+  $origfile_media = \Drupal::entityTypeManager()->getStorage('media')->loadByProperties([
+    'field_media_use' => ['target_id' => $origfile_term],
+    'field_media_of' => ['target_id' => $node->id()]
+  ]);
+  if (count($origfile_media) > 0) {
+    $origfile_media = reset($origfile_media);
+  } else {
+    $origfile_media = NULL;
+  }
   // Get the media file's mime_type value.
   if (is_object($origfile_media)) {
     $origfile_mime_type = ($origfile_media->hasField('field_mime_type')) ?
@@ -245,44 +257,14 @@ function _url_to_service_file_media_by_mimetype($node, $mime_type) {
       $origfile_mime_type[0]['value'] : '';
     // Compare the media file's mime_type to the given value.
     if ($origfile_mime_type == $mime_type) {
-      $vid = $origfile_media->id();
-      if (!is_null($vid)) {
-        $media = Media::load($vid);
-        $bundle = $media->bundle();
-        // Since this is Islandora and we assume the Original File is a
-        // Document type... but doing it dynamically.
-        $fid = $media->get('field_media_' . $bundle)->getValue();
-        $fid_value = (is_array($fid) && array_key_exists(0, $fid) &&
-          array_key_exists('target_id', $fid[0])) ?
-          $fid[0]['target_id'] : NULL;
-        if (!is_null($fid_value)) {
-          $file = File::load($fid_value);
-          $url = file_create_url($file->getFileUri());
-          return $url;
-        }
+      $bundle = $origfile_media->bundle();
+      // Since this is Islandora and we assume the Original File is a
+      // Document type... but doing it dynamically.
+      $file = $origfile_media->get('field_media_' . $bundle)->entity;
+      if (!is_null($file)) {
+        $url = file_create_url($file->getFileUri());
+        return $url;
       }
     }
-  }
-}
-
-/**
- * Conditionally removes any commas and reverse the order of the string values.
- *
- * @param string $input
- *   The string value to potentially remove and flip parts.
- * @param bool $remove_comma
- *   Whether or not to remove the comma and flip the parts.
- *
- * @return string
- *   The value of the label.
- */
-function islandora_tokens_remove_comma($input, $remove_comma = FALSE) {
-  if ($remove_comma) {
-    $parts = explode(",", $input);
-    $parts = array_reverse($parts);
-    return implode(" ", $parts);
-  }
-  else {
-    return $input;
   }
 }

@@ -6,7 +6,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_additional_memberships
     - field.field.node.asu_repository_item.field_cataloging_standards
     - field.field.node.asu_repository_item.field_complex_object_child
-    - field.field.node.asu_repository_item.field_complex_subjects
+    - field.field.node.asu_repository_item.field_complex_subject
     - field.field.node.asu_repository_item.field_coordinates
     - field.field.node.asu_repository_item.field_copyright_statement
     - field.field.node.asu_repository_item.field_date_digitized
@@ -46,6 +46,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_reuse_permissions
     - field.field.node.asu_repository_item.field_rich_description
     - field.field.node.asu_repository_item.field_series
+    - field.field.node.asu_repository_item.field_source
     - field.field.node.asu_repository_item.field_statement_responsibility
     - field.field.node.asu_repository_item.field_subject
     - field.field.node.asu_repository_item.field_subjects_name
@@ -108,38 +109,13 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  display_media_child_thumbnail:
-    weight: 10
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  display_media_download_button:
-    weight: 14
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  display_media_entity_view_1:
-    weight: 56
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   display_media_entity_view_3:
     weight: 12
     region: content
     settings: {  }
     third_party_settings: {  }
-  display_media_entity_view_4:
-    weight: 15
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  display_media_service_file:
-    weight: 51
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   display_media_thumbnail:
-    weight: 57
+    weight: 0
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -530,41 +506,17 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-  openseadragon_media_evas_entity_view_1:
-    weight: 49
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  openseadragon_media_evas_service_file:
-    weight: 55
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  pdfjs_media_evas_entity_view_1:
-    weight: 48
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  video_media_evas_original_file:
-    weight: 10
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  video_media_evas_preservation_master:
-    weight: 12
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  video_media_evas_service_file:
-    weight: 13
-    region: content
-    settings: {  }
-    third_party_settings: {  }
 hidden:
+  display_media_child_thumbnail: true
+  display_media_download_button: true
+  display_media_entity_view_1: true
   display_media_entity_view_2: true
+  display_media_entity_view_4: true
+  display_media_service_file: true
+  display_media_thumbnail_card: true
   field_cataloging_standards: true
   field_complex_object_child: true
-  field_complex_subjects: true
+  field_complex_subject: true
   field_default_derivative_file_pe: true
   field_default_original_file_perm: true
   field_description_source: true
@@ -572,8 +524,15 @@ hidden:
   field_keyword: true
   field_level_of_coding: true
   field_oai_set: true
+  field_source: true
   islandora_fits_checksum: true
+  openseadragon_media_evas_entity_view_1: true
   openseadragon_media_evas_entity_view_2: true
+  openseadragon_media_evas_service_file: true
+  pdfjs_media_evas_entity_view_1: true
   pdfjs_media_evas_entity_view_2: true
   pdfjs_media_evas_service_file: true
   search_api_excerpt: true
+  video_media_evas_original_file: true
+  video_media_evas_preservation_master: true
+  video_media_evas_service_file: true

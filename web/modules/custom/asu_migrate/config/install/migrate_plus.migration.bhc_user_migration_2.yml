@@ -1,0 +1,24 @@
+dependencies:
+  enforced:
+    module:
+      - asu_migrate
+id: bhc_user_migration_2
+label: BHC User migration
+source: 
+  plugin: csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/bhc_drupal_users_v2.csv
+  header_row_count: 1
+  ids:
+    - uid
+process:
+  uid: uid
+  name: asurite_id
+  field_campus: campus
+  field_programs: acad_plan_descr
+
+destination:
+  plugin: entity:user
+  overwrite_properties:
+    - field_campus
+    - field_programs
+
