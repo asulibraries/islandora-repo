@@ -184,6 +184,8 @@ class CreateItemWebformHandler extends WebformHandlerBase {
         $file = $this->entityTypeManager->getStorage('file')->load(intval($file_id));
         $mime = $file->getMimeType();
         $filename = $file->getFilename();
+        $new_dest = "fedora://self_deposit/" . \Drupal::currentUser()->id();
+        $file->move_uploaded_file($filename, $new_dest);  
         list($fmodel, $fmedia_type, $ffield_name) = $this->depositUtils->getModel($mime, $filename);
         $child_files[$file_id] = [
           'model' => $fmodel,
@@ -197,6 +199,8 @@ class CreateItemWebformHandler extends WebformHandlerBase {
       $file = $this->entityTypeManager->getStorage('file')->load(intval($files[0]));
       $mime = $file->getMimeType();
       $filename = $file->getFilename();
+      $new_dest = "fedora://self_deposit/" . \Drupal::currentUser()->id();
+      $file->move_uploaded_file($filename, $new_dest);
       list($model, $media_type, $field_name) = $this->depositUtils->getModel($mime, $filename);
     }
 
