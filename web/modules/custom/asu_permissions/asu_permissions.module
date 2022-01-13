@@ -402,7 +402,6 @@ function array_merge_recursive_unique($array1, $array2) {
  * Implements hook_file_download.
  */
 function asu_permissions_file_download($uri) {
-  // @todo
   /* @var \Drupal\file\FileInterface[] $files */
   $files = \Drupal::entityTypeManager()
     ->getStorage('file')
@@ -411,7 +410,7 @@ function asu_permissions_file_download($uri) {
   $user = \Drupal::currentUser();
   foreach ($files as $f) {
     if (in_array('administrator', $user->getRoles())) {
-      \Drupal::logger('asu permissions')->info("let admin in");
+      // \Drupal::logger('asu permissions')->info("let admin in");
       return 1;
     }
     $medias = $utils->getReferencingMedia($f->id());
@@ -424,7 +423,7 @@ function asu_permissions_file_download($uri) {
         // if (!$node->access('view')) {
         // If the user isn't allowed to view the media, return -1 to tell
         // Drupal to block access to the file currently being requested.
-        \Drupal::logger('asu permissions')->info("no media access");
+        // \Drupal::logger('asu permissions')->info("no media access");
         return -1;
       }
       if ($node) {
@@ -432,9 +431,10 @@ function asu_permissions_file_download($uri) {
         $date = new \DateTime();
         $today = $date->format("c");
         // \Drupal::logger('asu permissions')->info("checking the embargo release date for node " . $node->id());
-        if ($node && $node->hasField('field_embargo_release_date') && $node->get('field_embargo_release_date') && $node->get('field_embargo_release_date')->value >= $today
+        if (
+          $node && $node->hasField('field_embargo_release_date') && $node->get('field_embargo_release_date') && $node->get('field_embargo_release_date')->value != "T23:59:59" && $node->get('field_embargo_release_date')->value >= $today
         ) {
-          \Drupal::logger('asu permissions')->info("its embargoed");
+          // \Drupal::logger('asu permissions')->info("its embargoed");
           return -1;
         }
       }
