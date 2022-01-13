@@ -318,7 +318,7 @@ function asu_permissions_media_access(EntityInterface $entity, $operation, Accou
     foreach ($all_parents as $par) {
       $date = new \DateTime();
       $today = $date->format("c");
-      if ($par->hasField('field_embargo_release_date') && $par->get('field_embargo_release_date') && $par->get('field_embargo_release_date')->value >= $today) {
+      if ($par->hasField('field_embargo_release_date') && $par->get('field_embargo_release_date') && $par->get('field_embargo_release_date')->value != "T23:59:59" && $par->get('field_embargo_release_date')->value >= $today) {
         $access_term = "Private";
         $taccess = 0;
       }

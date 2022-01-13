@@ -228,7 +228,8 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
     $date = new \DateTime();
     $today = $date->format("c");
     if (
-      $node->hasField('field_embargo_release_date') && $node->get('field_embargo_release_date') && $node->get('field_embargo_release_date')->value >= $today
+      $node->hasField('field_embargo_release_date') && $node->get('field_embargo_release_date')
+      && $node->get('field_embargo_release_date')->value != "T23:59:59" && $node->get('field_embargo_release_date')->value >= $today
     ) {
       $origfile_access = FALSE;
     }

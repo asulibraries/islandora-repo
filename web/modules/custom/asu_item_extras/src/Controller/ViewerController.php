@@ -138,14 +138,14 @@ class ViewerController extends ControllerBase {
         $date = new \DateTime();
         $today = $date->format("c");
         if (!is_null($svfile) && $svfile->access('view', $account)) {
-          if ($node->hasField('field_embargo_release_date') && $node->get('field_embargo_release_date') && $node->get('field_embargo_release_date')->value >= $today) {
+          if ($node->hasField('field_embargo_release_date') && $node->get('field_embargo_release_date') && $node->get('field_embargo_release_date')->value != "T23:59:59" && $node->get('field_embargo_release_date')->value >= $today) {
             return AccessResult::forbidden();
           }
           return AccessResult::allowed();
         }
         elseif (!is_null($origfile) && $origfile->access('view', $account)) {
           // User can access media.
-          if ($node->hasField('field_embargo_release_date') && $node->get('field_embargo_release_date') && $node->get('field_embargo_release_date')->value >= $today) {
+          if ($node->hasField('field_embargo_release_date') && $node->get('field_embargo_release_date') && $node->get('field_embargo_release_date')->value != "T23:59:59" && $node->get('field_embargo_release_date')->value >= $today) {
             return AccessResult::forbidden();
           }
           return AccessResult::allowed();
