@@ -36,6 +36,7 @@ class ASUDefaultFieldsSettingsForm extends ConfigFormBase {
       $container->get('entity_type.manager')
     );
   }
+
   /**
    * {@inheritdoc}
    */
@@ -56,6 +57,7 @@ class ASUDefaultFieldsSettingsForm extends ConfigFormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    // @todo possible refactor for loadMultiple to get all the existing configs at once or may not even need to actually load the taxo terms and just have the tids.
     $config = $this->config('asu_default_fields.settings');
     $form['disable_handle_generation'] = [
       '#type' => 'checkbox',
@@ -111,4 +113,5 @@ class ASUDefaultFieldsSettingsForm extends ConfigFormBase {
       ->set('preservation_master_taxonomy_term', $form_state->getValue('preservation_master_taxonomy_term'))
       ->save();
   }
+
 }

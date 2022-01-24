@@ -7,9 +7,6 @@ use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Url;
-use Symfony\Component\Process\Process;
-use Symfony\Component\Process\Exception\ProcessFailedException;
 
 /**
  * Create a handle for an object.
@@ -20,8 +17,7 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
  *   type = "node"
  * )
  */
-class MintHandle extends ActionBase implements ContainerFactoryPluginInterface
-{
+class MintHandle extends ActionBase implements ContainerFactoryPluginInterface {
 
   /**
    * Logger.
@@ -48,8 +44,8 @@ class MintHandle extends ActionBase implements ContainerFactoryPluginInterface
       $plugin_definition,
       LoggerInterface $logger
   ) {
-      parent::__construct($configuration, $plugin_id, $plugin_definition);
-      $this->logger = $logger;
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->logger = $logger;
   }
 
   /**
@@ -93,7 +89,8 @@ class MintHandle extends ActionBase implements ContainerFactoryPluginInterface
       if ($persister->persist($entity, $pid)) {
         \Drupal::logger('persistent_identifiers')->info(t("Persistent identifier %pid created for node @nid.", ['%pid' => $pid, '@nid' => $entity->id()]));
         \Drupal::messenger()->addStatus(t("Persistent identifier %pid created for this node.", ['%pid' => $pid]));
-      } else {
+      }
+      else {
         \Drupal::logger('persistent_identifiers')->warning(t("Persistent identifier not created for node @nid.", ['@nid' => $entity->id()]));
         \Drupal::messenger()->addWarning(t("Problem creating persistent identifier for this node. Details are available in the Drupal system log."));
       }
@@ -103,8 +100,8 @@ class MintHandle extends ActionBase implements ContainerFactoryPluginInterface
   /**
    * {@inheritdoc}
    */
-  public function access($object, AccountInterface $account = NULL, $return_as_object = FALSE)
-  {
-      return $object->access('edit', $account, $return_as_object);
+  public function access($object, AccountInterface $account = NULL, $return_as_object = FALSE) {
+    return $object->access('edit', $account, $return_as_object);
   }
+
 }
