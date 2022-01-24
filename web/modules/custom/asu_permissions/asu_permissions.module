@@ -408,8 +408,9 @@ function asu_permissions_file_download($uri) {
     ->loadByProperties(['uri' => $uri]);
   $utils = \Drupal::service('islandora.utils');
   $user = \Drupal::currentUser();
+  $uroles = $user->getRoles();
   foreach ($files as $f) {
-    if (in_array('administrator', $user->getRoles())) {
+    if (in_array('administrator', $uroles) || in_array('metadata_manager', $uroles)) {
       // \Drupal::logger('asu permissions')->info("let admin in");
       return 1;
     }
