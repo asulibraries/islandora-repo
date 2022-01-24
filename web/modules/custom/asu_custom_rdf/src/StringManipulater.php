@@ -3,7 +3,6 @@
 namespace Drupal\asu_custom_rdf;
 
 use Drupal\rdf\CommonDataConverter;
-use Drupal\user\Entity\User;
 
 /**
  * {@inheritdoc}
