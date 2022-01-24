@@ -1,15 +1,14 @@
 <?php
 
-/**
- * @file
- * Contains Drupal\content_change_digest\Form\ContentDigestConfigForm.
- */
 namespace Drupal\content_change_digest\Form;
 
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\user\Entity\User;
 
+/**
+ *
+ */
 class ContentDigestConfigForm extends ConfigFormBase {
 
   /**
@@ -37,7 +36,7 @@ class ContentDigestConfigForm extends ConfigFormBase {
     $form['fieldset_wrapper'] = [
       '#type' => 'fieldset',
       '#title' => t('Email Digest Recipients'),
-      '#description' => 'Individual users may opt out of the emailing by visiting their user edit page <code>user/{uid}/edit</code>'
+      '#description' => 'Individual users may opt out of the emailing by visiting their user edit page <code>user/{uid}/edit</code>',
     ];
     $form['fieldset_wrapper']['description_item'] = [
       '#type' => 'item',
@@ -45,20 +44,20 @@ class ContentDigestConfigForm extends ConfigFormBase {
     ];
     $form['fieldset_wrapper']['content_change_digest_roles'] = [
       '#type' => 'select',
-      '#multiple' => true,
+      '#multiple' => TRUE,
       '#size' => 8,
       '#title' => $this->t('Roles'),
       '#description' => $this->t('Select roles'),
-      '#options' => $this-> get_roles(),
+      '#options' => $this->get_roles(),
       '#default_value' => $config->get('content_change_digest_roles'),
     ];
     $form['fieldset_wrapper']['content_change_digest_users'] = [
       '#type' => 'select',
-      '#multiple' => true,
+      '#multiple' => TRUE,
       '#size' => 14,
       '#title' => $this->t('Users'),
       '#description' => $this->t('Select individual users'),
-      '#options' => $this-> get_users(),
+      '#options' => $this->get_users(),
       '#default_value' => $config->get('content_change_digest_users'),
     ];
 
@@ -80,22 +79,26 @@ class ContentDigestConfigForm extends ConfigFormBase {
   /**
    *
    */
-  function get_roles() {
+  public function get_roles() {
     $roles = array_map(['\Drupal\Component\Utility\Html', 'escape'], user_role_names(TRUE));
     return $roles;
   }
 
-  function get_users() {
+  /**
+   *
+   */
+  public function get_users() {
     $ids = \Drupal::entityQuery('user')
       ->condition('status', 1)
       ->execute();
     $users = User::loadMultiple($ids);
-    $userlist = array();
-    foreach($users as $user){
+    $userlist = [];
+    foreach ($users as $user) {
       $username = $user->get('name')->value;
       $uid = $user->get('uid')->value;
       $userlist[$uid] = $username;
     }
     return $userlist;
   }
+
 }

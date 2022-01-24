@@ -2,10 +2,7 @@
 
 namespace Drupal\content_change_digest\Plugin\views\filter;
 
-use Drupal\views\Plugin\views\display\DisplayPluginBase;
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\views\Plugin\views\filter\FilterPluginBase;
-use Drupal\views\ViewExecutable;
 use Drupal\views\Views;
 
 /**
