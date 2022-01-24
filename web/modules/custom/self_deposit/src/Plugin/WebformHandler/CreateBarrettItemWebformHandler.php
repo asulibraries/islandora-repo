@@ -252,7 +252,7 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
         ['target_id' => $model->id()],
       ],
       'field_extent' => [
-        ['value' => $values['number_of_pages']],
+        ['value' => $values['number_of_pages'] . " pages"],
       ],
       'field_member_of' => [
         ['target_id' => $member_of],
