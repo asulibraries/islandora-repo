@@ -123,7 +123,8 @@ class ViewerController extends ControllerBase {
       if (!$node instanceof NodeInterface) {
         $node = Node::load($node);
       }
-      if (in_array('administrator', $account->getRoles())) {
+      $user_roles = $account->getRoles();
+      if (in_array('administrator', $user_roles ) || in_array("metadata_manager", $user_roles)) {
         return AccessResult::allowed();
       }
       // @todo this may be too restrictive?

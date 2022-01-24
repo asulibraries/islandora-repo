@@ -48,7 +48,7 @@ class VocabSwitchForm extends FormBase {
         'view' => [
           'view_name' => 'autocomplete_taxonomy_terms',
           'display_name' => 'entity_reference_2',
-          'arguments' => []
+          'arguments' => [],
         ],
       ],
       '#weight' => '0',
@@ -73,7 +73,7 @@ class VocabSwitchForm extends FormBase {
    */
   public function validateForm(array &$form, FormStateInterface $form_state) {
     foreach ($form_state->getValues() as $key => $value) {
-      // @TODO: Validate fields.
+      // @todo Validate fields.
     }
     parent::validateForm($form, $form_state);
   }
@@ -83,12 +83,12 @@ class VocabSwitchForm extends FormBase {
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
     // Display result.
-   $term_to_change = $form_state->getValue('term_to_change');
-   $destination_vocab = $form_state->getValue('destination_vocabulary');
-   $term = $this->entityTypeManager->getStorage('taxonomy_term')->load($term_to_change);
-   $term->vid->setValue($destination_vocab);
-   $term->save();
-   $this->messenger()->addMessage('saved ' . $term->getName() . ' to ' . $destination_vocab);
+    $term_to_change = $form_state->getValue('term_to_change');
+    $destination_vocab = $form_state->getValue('destination_vocabulary');
+    $term = $this->entityTypeManager->getStorage('taxonomy_term')->load($term_to_change);
+    $term->vid->setValue($destination_vocab);
+    $term->save();
+    $this->messenger()->addMessage('saved ' . $term->getName() . ' to ' . $destination_vocab);
   }
 
 }

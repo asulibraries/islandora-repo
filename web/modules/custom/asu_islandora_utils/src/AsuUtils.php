@@ -88,7 +88,7 @@ class AsuUtils {
    *   The number of results to return (to provide the recent additions for the
    *   block that only displays only 4 items)
    */
-  function getNodeChildren($node, $sort_by_date = FALSE, $limit = 0, $items_only = TRUE) {
+  public function getNodeChildren($node, $sort_by_date = FALSE, $limit = 0, $items_only = TRUE) {
     $nid = (is_object($node) ? $node->id() : $node);
     $childrenQuery = \Drupal::entityQuery('node');
     $childrenQuery
@@ -108,4 +108,5 @@ class AsuUtils {
     }
     return $childrenQuery->execute();
   }
+
 }
