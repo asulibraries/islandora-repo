@@ -2,11 +2,11 @@
 
 namespace Drupal\asu_statistics\Controller;
 
+use Drupal\Core\Url;
 use Drupal\Core\Controller\ControllerBase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\search_api\Entity\Index;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
-use Drupal\Core\Url;
 use Drupal\Core\Link;
 
 /**
@@ -258,7 +258,7 @@ class ASUStatisticsReportsController extends ControllerBase {
    * @return binary
    *   Stream of the summary CSV file.
    */
-  function downloadDownloadStats() {
+  public function downloadDownloadStats() {
     $rows = [];
     $node = $this->currentRouteMatch->getParameter('node');
     $collection_node_id = ($node) ? $node->id() : NULL;
@@ -466,7 +466,6 @@ class ASUStatisticsReportsController extends ControllerBase {
     return $sums;
   }
 
-
   /**
    * Gets the Collection Nids using ancestors by running a Solr query.
    *
@@ -534,7 +533,7 @@ class ASUStatisticsReportsController extends ControllerBase {
     $options = ['absolute' => TRUE];
     foreach ($collection_item_views as $c_obj) {
       $nid = $c_obj->nid;
-      $url = \Drupal\Core\Url::fromRoute('entity.node.canonical', ['node' => $nid], $options);
+      $url = Url::fromRoute('entity.node.canonical', ['node' => $nid], $options);
       $node_title = $this->getNodeComplexTitle($nid);
       $link = Link::fromTextAndUrl($node_title, $url);
       $link = $link->toRenderable();
@@ -542,13 +541,13 @@ class ASUStatisticsReportsController extends ControllerBase {
         'raw_title' => $node_title,
         'title' => render($link),
         'downloads' => $c_obj->downloads,
-        'url' => $url->toString()
+        'url' => $url->toString(),
       ];
       $collection_downloads += $c_obj->downloads;
-   }
+    }
     return [
       'collection_downloads' => $collection_downloads,
-      'collection_download_rows' => $collection_download_rows
+      'collection_download_rows' => $collection_download_rows,
     ];
   }
 
@@ -565,7 +564,7 @@ class ASUStatisticsReportsController extends ControllerBase {
     $title = '';
     $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
     if (is_object($node) && $node->bundle() == 'asu_repository_item') {
-      $first_title =  $node->field_title[0];
+      $first_title = $node->field_title[0];
       $view = ['type' => 'complex_title_formatter'];
       $first_title_view = $first_title->view($view);
       $title = \Drupal::service('renderer')->render($first_title_view);

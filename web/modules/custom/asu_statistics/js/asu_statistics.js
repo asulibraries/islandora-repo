@@ -13,8 +13,8 @@ Drupal.behaviors.asu_statistics = {
       var page_pathname = window.location.pathname;
       // remove leading "/" character.
       page_pathname = page_pathname.substring(1, page_pathname.length);
-      $('audio').each( function() {
-          $(this, context).once('asu_statistics').on("play", function() {
+      $('audio').each( function () {
+          $(this, context).once('asu_statistics').on("play", function () {
               var article = $(this).closest("article");
               // Check if this node is the child of a complex object.
               var article_node_id = article.attr('data-history-node-id');
@@ -25,8 +25,8 @@ Drupal.behaviors.asu_statistics = {
               _paq.push(['trackEvent', 'MediaEvents', 'Play audio', page_pathname]);
           });
       });
-      $('video').each( function() {
-          $(this, context).once('asu_statistics').on("play", function() {
+      $('video').each( function () {
+          $(this, context).once('asu_statistics').on("play", function () {
               var article = $(this).closest("article");
               var article_node_id = article.attr('data-history-node-id');
               // Check if this node is the child of a complex object.
