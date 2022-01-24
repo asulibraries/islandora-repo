@@ -90,7 +90,7 @@ class DepositUtils {
   /**
    * Actually creates the media.
    */
-  public function createMedia($media_type, $field_name, $file_id, $nid, $pterm='ASU Only') {
+  public function createMedia($media_type, $field_name, $file_id, $nid, $pterm = 'ASU Only') {
     $of_terms = $this->entityTypeManager->getStorage('taxonomy_term')->loadByProperties(['name' => 'Original File']);
     $original_file = reset($of_terms);
 
