@@ -80,8 +80,7 @@ class ASUBreadcrumbBuilder implements BreadcrumbBuilderInterface {
     }
     if (!empty($mid)) {
       $media = $this->mediaStorage->load($mid);
-      return
-        (!empty($media) && $media->hasField('field_media_of'));
+      return (!empty($media) && $media->hasField('field_media_of'));
     }
   }
 
@@ -105,16 +104,18 @@ class ASUBreadcrumbBuilder implements BreadcrumbBuilderInterface {
     $chain = [];
     if (isset($media)) {
       $this->walkMembership($media, $chain);
-    } else {
+    }
+    else {
       $this->walkMembership($node, $chain);
     }
 
     if (!$this->config->get('includeSelf')) {
       array_pop($chain);
     }
-    if (isset($node)){
+    if (isset($node)) {
       $breadcrumb->addCacheableDependency($node);
-    } elseif (isset($media)) {
+    }
+    elseif (isset($media)) {
       $breadcrumb->addCacheableDependency($media);
     }
 
@@ -173,7 +174,8 @@ class ASUBreadcrumbBuilder implements BreadcrumbBuilderInterface {
         $entity->get($this->config->get('referenceField'))->entity instanceof EntityInterface) {
         $this->walkMembership($entity->get($this->config->get('referenceField'))->entity, $crumbs);
       }
-    } elseif ($entityBundle == 'media') {
+    }
+    elseif ($entityBundle == 'media') {
       // Find the next in the chain, if there are any.
       $x = $entity->get('field_media_of')->entity;
       if ($entity->hasField('field_media_of') &&
@@ -193,8 +195,8 @@ class ASUBreadcrumbBuilder implements BreadcrumbBuilderInterface {
   private function getNodeLink(RouteMatchInterface $route_match) {
     $node = $route_match->getParameter('node');
     if (!is_object($node)) {
-      $node_id = is_array($node) ? $node[0]: $node;
-      $node = (!is_array($node) && $node_id) ? $this->nodeStorage->load($node_id): NULL;
+      $node_id = is_array($node) ? $node[0] : $node;
+      $node = (!is_array($node) && $node_id) ? $this->nodeStorage->load($node_id) : NULL;
     }
     if (isset($node)) {
       $options = ['absolute' => TRUE];
