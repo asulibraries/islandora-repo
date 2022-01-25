@@ -312,3 +312,15 @@ function asulib_barrio_preprocess_views_exposed_form(&$variables) {
     $variables['form']['actions']['submit']['#attributes']['title'] = 'Search';
   }
 }
+
+/**
+ * Implements hook_page_attachments_alter().
+ */
+function asulib_barrio_page_attachments_alter(array &$attachments)
+{
+  // Use the dev library if we're developing locally.
+  if (in_array('asulib_barrio/react_app', $attachments['#attached']['library']) && file_exists(__DIR__ . '/js/dist_dev')) {
+    $index = array_search('asulib_barrio/react_app', $attachments['#attached']['library']);
+    $attachments['#attached']['library'][$index] = 'asulib_barrio/react_app_dev';
+  }
+}

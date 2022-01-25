@@ -21,3 +21,15 @@ global-js:
     - core/jquery
     - core/drupal
     - asulib_barrio/global-styling
+react_app:
+  version: VERSION
+  js:
+    js/dist/main.min.js: {minified: true}
+  dependencies:
+    - core/drupalSettings
+react_app_dev:
+  version: VERSION
+  js:
+    js/dist_dev/main.min.js: {minified: true}
+  dependencies:
+    - core/drupalSettings

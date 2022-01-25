@@ -31,9 +31,7 @@ const paths = {
     bootstrap: './node_modules/bootstrap/dist/js/bootstrap.min.js',
     jquery: './node_modules/jquery/dist/jquery.min.js',
     popper: './node_modules/popper.js/dist/umd/popper.min.js',
-    barrio: '../../contrib/bootstrap_barrio/js/barrio.js',
     poppermap: './node_modules/popper.js/dist/umd/popper.min.js.map',
-    // asuheader: './node_modules/@asu-design-system/bootstrap4-theme/src/js/global-header.js',
     dest: './js'
   },
   img: {
@@ -43,7 +41,6 @@ const paths = {
     dest: './images'
   }
 }
-//     // barrio: '../../contrib/bootstrap_barrio/js/barrio.js',
 
 // Compile sass into CSS & auto-inject into browsers
 function styles() {
@@ -79,7 +76,7 @@ function styles() {
 // Move the javascript files into our js folder
 // removed  paths.js.asuheader from below
 function js() {
-  return gulp.src([paths.js.bootstrap, paths.js.jquery, paths.js.popper, paths.js.poppermap, paths.js.barrio])
+  return gulp.src([paths.js.bootstrap, paths.js.jquery, paths.js.popper, paths.js.poppermap])
     .pipe(gulp.dest(paths.js.dest))
     .pipe(browserSync.stream())
 }

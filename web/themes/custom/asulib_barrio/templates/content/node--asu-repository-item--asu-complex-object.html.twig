@@ -127,9 +127,11 @@
     </div>
     <div id="included-this-item" class="content-section">
       <h2>{{ 'Included in this item'|t }} ({{ child_count }})</h2>
-      <div class="children-3-wide">
+      {# TODO maybe be able to do child count from the react app also? #}
+      {{ drupal_block('included_in_this_item_block', {'node': node}) }}
+      {# <div class="children-3-wide">
         {{ drupal_view('included_in_complex_object', 'three_included_items') }}
-      </div>
+      </div> #}
       <br class="clearfloat">
       {% if child_count > 3 %}
         <div><p><strong>
