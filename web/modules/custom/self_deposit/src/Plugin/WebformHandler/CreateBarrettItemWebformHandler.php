@@ -110,7 +110,7 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
   /**
    * Actually creates the node.
    */
-  private function createNode($webform_submission, $values, $title, $model, $copyright_term, $perm_term, $member_of, $user = NULL) {
+  private function createNode($webform_submission, $values, $title, $model, $copyright_term, $perm_term, $member_of, $user = NULL, $child = FALSE) {
     $paragraph = Paragraph::create(
       ['type' => 'complex_title', 'field_main_title' => $title]
     );
@@ -251,13 +251,15 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
       'field_model' => [
         ['target_id' => $model->id()],
       ],
-      'field_extent' => [
-        ['value' => $values['number_of_pages'] . " pages"],
-      ],
       'field_member_of' => [
         ['target_id' => $member_of],
       ],
     ];
+    if ($values['number_of_pages'] && $child == TRUE) {
+      $node_args['field_extent'] = [
+        ['value' => $values['number_of_pages'] . " pages"],
+      ];
+    }
     if ($user) {
       $node_args['uid'] = $user->id();
     }
@@ -346,17 +348,17 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
     }
 
     if ($model == 'Complex Object') {
-      $node = $this->createNode($webform_submission, $values, $values['item_title'], $taxo_term, $copyright_term, $perm_term, $member_of, $user);
+      $node = $this->createNode($webform_submission, $values, $values['item_title'], $taxo_term, $copyright_term, $perm_term, $member_of, $user, FALSE);
       foreach ($child_files as $cfkey => $cfvalues) {
         $fmember_of = $node->id();
         $ftaxo_terms = $taxo_manager->loadByProperties(['name' => $cfvalues['model']]);
         $ftaxo_term = reset($ftaxo_terms);
-        $child_node = $this->createNode($webform_submission, $values, $cfvalues['file_name'], $ftaxo_term, $copyright_term, $perm_term, $fmember_of, $user);
+        $child_node = $this->createNode($webform_submission, $values, $cfvalues['file_name'], $ftaxo_term, $copyright_term, $perm_term, $fmember_of, $user, TRUE);
         $media = $this->depositUtils->createMedia($cfvalues['media_type'], $cfvalues['field_name'], $cfkey, $child_node->id());
       }
     }
     else {
-      $node = $this->createNode($webform_submission, $values, $values['item_title'], $taxo_term, $copyright_term, $perm_term, $member_of, $user);
+      $node = $this->createNode($webform_submission, $values, $values['item_title'], $taxo_term, $copyright_term, $perm_term, $member_of, $user, FALSE);
       $media = $this->depositUtils->createMedia($media_type, $field_name, $files[0], $node->id());
     }
 
