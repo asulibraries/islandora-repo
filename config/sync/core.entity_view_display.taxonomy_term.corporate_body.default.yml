@@ -19,14 +19,14 @@ bundle: corporate_body
 mode: default
 content:
   description:
-    label: hidden
     type: text_default
-    weight: 5
+    label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 5
     region: content
   field_authority_link:
-    weight: 1
+    type: authority_formatter_default
     label: above
     settings:
       trim_length: 80
@@ -35,10 +35,10 @@ content:
       rel: ''
       target: _blank
     third_party_settings: {  }
-    type: authority_formatter_default
+    weight: 1
     region: content
   field_cat_date_begin:
-    weight: 2
+    type: edtf_default
     label: above
     settings:
       date_separator: dash
@@ -46,10 +46,10 @@ content:
       month_format: mm
       day_format: dd
     third_party_settings: {  }
-    type: edtf_default
+    weight: 2
     region: content
   field_cat_date_end:
-    weight: 3
+    type: edtf_default
     label: above
     settings:
       date_separator: dash
@@ -57,29 +57,29 @@ content:
       month_format: mm
       day_format: dd
     third_party_settings: {  }
-    type: edtf_default
+    weight: 3
     region: content
   field_corp_alt_name:
-    weight: 4
+    type: basic_string
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: basic_string
+    weight: 4
     region: content
   field_relationships:
-    weight: 7
+    type: typed_relation_default
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    type: typed_relation_default
+    weight: 7
     region: content
   field_type:
-    weight: 0
+    type: list_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: list_default
+    weight: 0
     region: content
 hidden:
   langcode: true

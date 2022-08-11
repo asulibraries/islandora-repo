@@ -1,0 +1,80 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - search_api.index.default_solr_index
+    - views.view.solr_search_content
+  module:
+    - search_api
+id: duplicate_of_all_subjects
+name: 'Duplicate of All Subjects'
+weight: 0
+min_count: 1
+url_alias: all_subjects
+facet_source_id: 'search_api:views_page__solr_search_content__page_4'
+field_identifier: all_subjects
+query_operator: or
+hard_limit: 100
+exclude: false
+use_hierarchy: false
+keep_hierarchy_parents_active: false
+expand_hierarchy: false
+enable_parent_when_child_gets_disabled: true
+widget:
+  type: links
+  config:
+    show_numbers: true
+    soft_limit: 5
+    show_reset_link: false
+    reset_text: 'Show all'
+    hide_reset_when_no_selection: false
+    soft_limit_settings:
+      show_less_label: 'Show less'
+      show_more_label: 'Show more'
+empty_behavior:
+  behavior: none
+only_visible_when_facet_source_is_visible: false
+show_only_one_result: false
+show_title: false
+processor_configs:
+  active_widget_order:
+    processor_id: active_widget_order
+    weights:
+      sort: 20
+    settings:
+      sort: ASC
+  count_limit:
+    processor_id: count_limit
+    weights:
+      build: 50
+    settings:
+      minimum_items: 1
+      maximum_items: null
+  count_widget_order:
+    processor_id: count_widget_order
+    weights:
+      sort: 30
+    settings:
+      sort: DESC
+  display_value_widget_order:
+    processor_id: display_value_widget_order
+    weights:
+      sort: 40
+    settings:
+      sort: ASC
+  hide_1_result_facet:
+    processor_id: hide_1_result_facet
+    weights:
+      build: 50
+    settings: {  }
+  translate_entity_aggregated_fields:
+    processor_id: translate_entity_aggregated_fields
+    weights:
+      build: 5
+    settings: {  }
+  url_processor_handler:
+    processor_id: url_processor_handler
+    weights:
+      pre_query: 50
+      build: 15
+    settings: {  }

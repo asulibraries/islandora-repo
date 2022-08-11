@@ -66,17 +66,17 @@ third_party_settings:
   field_group:
     group_basic:
       children: {  }
+      label: Basic
+      region: hidden
       parent_name: ''
       weight: 47
       format_type: tab
-      region: hidden
       format_settings:
-        id: ''
         classes: ''
+        id: ''
+        formatter: closed
         description: ''
         required_fields: true
-        formatter: closed
-      label: Basic
     group_system:
       children:
         - status
@@ -89,29 +89,29 @@ third_party_settings:
         - field_handle
         - field_pid
         - field_preservation_state
+      label: System
+      region: hidden
       parent_name: ''
       weight: 48
       format_type: details_sidebar
-      region: hidden
       format_settings:
-        id: ''
         classes: ''
-        description: ''
+        id: ''
         open: false
+        description: ''
         required_fields: true
         weight: 0
-      label: System
 id: node.asu_repository_item.simple_ingest
 targetEntityType: node
 bundle: asu_repository_item
 mode: simple_ingest
 content:
   field_copyright_statement:
+    type: options_select
     weight: 7
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: options_select
-    region: content
   field_default_derivative_file_pe:
     type: entity_reference_autocomplete
     weight: 10
@@ -133,24 +133,24 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_edtf_date_created:
+    type: edtf_default
     weight: 3
+    region: content
     settings:
       strict_dates: false
       intervals: true
       sets: false
     third_party_settings: {  }
-    type: edtf_default
-    region: content
   field_linked_agent:
+    type: typed_relation_default
     weight: 6
+    region: content
     settings:
       match_operator: CONTAINS
       match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: typed_relation_default
-    region: content
   field_member_of:
     type: entity_reference_autocomplete
     weight: 11
@@ -168,11 +168,11 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_reuse_permissions:
+    type: options_select
     weight: 8
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: options_select
-    region: content
   field_rich_description:
     type: text_textarea
     weight: 1
@@ -184,6 +184,7 @@ content:
   field_title:
     type: entity_reference_paragraphs
     weight: 0
+    region: content
     settings:
       title: Title
       title_plural: Titles
@@ -192,7 +193,6 @@ content:
       form_display_mode: simple_title
       default_paragraph_type: complex_title
     third_party_settings: {  }
-    region: content
   langcode:
     type: language_select
     weight: 4
@@ -202,9 +202,9 @@ content:
     third_party_settings: {  }
   url_redirects:
     weight: 50
+    region: content
     settings: {  }
     third_party_settings: {  }
-    region: content
 hidden:
   created: true
   field_additional_memberships: true

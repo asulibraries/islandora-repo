@@ -73,31 +73,31 @@ third_party_settings:
   field_group:
     group_sidebar:
       children: {  }
+      label: Sidebar
       parent_name: ''
+      region: hidden
       weight: 76
       format_type: details_sidebar
-      region: hidden
       format_settings:
-        id: ''
         classes: ''
-        description: ''
+        id: ''
         open: false
-        weight: 0
+        description: ''
         required_fields: false
-      label: Sidebar
+        weight: 0
     group_details:
       children: {  }
+      label: Details
       parent_name: ''
+      region: hidden
       weight: 77
       format_type: details
-      region: hidden
       format_settings:
-        id: ''
         classes: ''
-        description: ''
+        id: ''
         open: false
+        description: ''
         required_fields: false
-      label: Details
 id: node.asu_repository_item.asu_complex_object
 targetEntityType: node
 bundle: asu_repository_item
@@ -109,32 +109,32 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_additional_memberships:
-    weight: 15
+    type: entity_reference_entity_view
     label: hidden
     settings:
-      link: true
       view_mode: default
+      link: true
     third_party_settings: {  }
-    type: entity_reference_entity_view
+    weight: 15
     region: content
   field_coordinates:
-    weight: 14
+    type: geolocation_latlng
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: geolocation_latlng
+    weight: 14
     region: content
   field_copyright_statement:
     type: entity_reference_entity_view
-    weight: 31
-    region: content
     label: above
     settings:
       view_mode: image_as_link
       link: false
     third_party_settings: {  }
+    weight: 31
+    region: content
   field_date_digitized:
-    weight: 10
+    type: edtf_default
     label: above
     settings:
       date_separator: dash
@@ -142,26 +142,26 @@ content:
       month_format: mm
       day_format: dd
     third_party_settings: {  }
-    type: edtf_default
+    weight: 10
     region: content
   field_default_derivative_file_pe:
-    weight: 28
+    type: entity_reference_label
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 28
     region: content
   field_default_original_file_perm:
-    weight: 27
+    type: entity_reference_label
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 27
     region: content
   field_edtf_date_created:
-    weight: 2
+    type: edtf_default
     label: above
     settings:
       date_separator: dash
@@ -169,23 +169,23 @@ content:
       month_format: mm
       day_format: dd
     third_party_settings: {  }
-    type: edtf_default
+    weight: 2
     region: content
   field_embargo_release_date:
-    weight: 24
+    type: datetime_default
     label: above
     settings:
-      format_type: medium
       timezone_override: ''
+      format_type: medium
     third_party_settings: {  }
-    type: datetime_default
+    weight: 24
     region: content
   field_frequency:
-    weight: 7
+    type: list_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: list_default
+    weight: 7
     region: content
   field_gemini_uri:
     weight: 21
@@ -193,32 +193,32 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_geographic_subject:
-    weight: 17
+    type: searchable_entity_formatter
     label: hidden
     settings:
-      link: true
       search_link: 'search?f[0]'
       search_var: all_subjects
       search_term: false
+      link: true
     third_party_settings: {  }
-    type: searchable_entity_formatter
+    weight: 17
     region: content
   field_history:
-    weight: 26
+    type: jsonb_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: jsonb_default
+    weight: 26
     region: content
   field_issuance:
-    weight: 6
+    type: list_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: list_default
+    weight: 6
     region: content
   field_language:
-    weight: 1
+    type: searchable_entity_formatter
     label: above
     settings:
       search_link: 'search?f[0]'
@@ -226,97 +226,105 @@ content:
       search_term: true
       link: true
     third_party_settings: {  }
-    type: searchable_entity_formatter
+    weight: 1
     region: content
   field_linked_agent:
     type: typed_relation_brief
-    weight: 32
-    region: content
     label: visually_hidden
     settings:
       link: true
     third_party_settings: {  }
+    weight: 32
+    region: content
   field_member_of:
     type: entity_reference_label
-    weight: 29
-    region: content
     label: hidden
     settings:
       link: true
     third_party_settings: {  }
+    weight: 29
+    region: content
+  field_model:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: false
+    third_party_settings: {  }
+    weight: 36
+    region: content
   field_name_title_subject:
-    weight: 20
+    type: searchable_entity_formatter
     label: hidden
     settings:
-      link: true
       search_link: 'search?f[0]'
       search_var: all_subjects
       search_term: false
+      link: true
     third_party_settings: {  }
-    type: searchable_entity_formatter
+    weight: 20
     region: content
   field_note_para:
     type: entity_reference_revisions_entity_view
-    weight: 34
-    region: content
     label: above
     settings:
       view_mode: default
       link: ''
     third_party_settings: {  }
+    weight: 34
+    region: content
   field_open_access:
-    weight: 5
+    type: boolean
     label: above
     settings:
       format: default
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    type: boolean
+    weight: 5
     region: content
   field_peer_reviewed:
-    weight: 4
+    type: boolean
     label: above
     settings:
       format: default
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    type: boolean
+    weight: 4
     region: content
   field_pid:
-    weight: 9
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 9
     region: content
   field_place_of_publication_code:
-    weight: 25
+    type: entity_reference_label
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 25
     region: content
   field_preferred_citation:
     type: text_default
-    weight: 35
-    region: content
     label: above
     settings: {  }
     third_party_settings: {  }
+    weight: 35
+    region: content
   field_related_item:
-    weight: 12
+    type: typed_relation_default
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    type: typed_relation_default
+    weight: 12
     region: content
   field_resource_type:
-    weight: 8
+    type: searchable_entity_formatter
     label: above
     settings:
       search_link: 'search?f[0]'
@@ -324,101 +332,101 @@ content:
       search_term: true
       link: true
     third_party_settings: {  }
-    type: searchable_entity_formatter
+    weight: 8
     region: content
   field_reuse_permissions:
-    weight: 3
+    type: entity_reference_entity_view
     label: above
     settings:
       view_mode: image_as_link
       link: false
     third_party_settings: {  }
-    type: entity_reference_entity_view
+    weight: 3
     region: content
   field_rich_description:
     type: text_default
-    weight: 30
-    region: content
     label: above
     settings: {  }
     third_party_settings: {  }
+    weight: 30
+    region: content
   field_series:
-    weight: 11
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 11
     region: content
   field_statement_responsibility:
-    weight: 13
+    type: basic_string
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: basic_string
+    weight: 13
     region: content
   field_subject:
-    weight: 16
+    type: searchable_entity_formatter
     label: hidden
     settings:
-      link: true
       search_link: 'search?f[0]'
       search_var: all_subjects
       search_term: false
+      link: true
     third_party_settings: {  }
-    type: searchable_entity_formatter
+    weight: 16
     region: content
   field_subjects_name:
-    weight: 19
+    type: searchable_entity_formatter
     label: hidden
     settings:
-      link: true
       search_link: 'search?f[0]'
       search_var: all_subjects
       search_term: false
+      link: true
     third_party_settings: {  }
-    type: searchable_entity_formatter
+    weight: 19
     region: content
   field_temporal_subject:
-    weight: 18
+    type: searchable_entity_formatter
     label: hidden
     settings:
-      link: true
       search_link: 'search?f[0]'
       search_var: all_subjects
       search_term: false
+      link: true
     third_party_settings: {  }
-    type: searchable_entity_formatter
+    weight: 18
     region: content
   field_title_subject:
-    weight: 23
+    type: searchable_entity_formatter
     label: above
     settings:
-      link: true
       search_link: 'search?f[0]'
       search_var: all_subjects
       search_term: false
+      link: true
     third_party_settings: {  }
-    type: searchable_entity_formatter
+    weight: 23
     region: content
   field_typed_identifier:
     type: entity_reference_revisions_entity_view
-    weight: 33
-    region: content
     label: above
     settings:
       view_mode: default
       link: ''
     third_party_settings: {  }
+    weight: 33
+    region: content
   langcode:
     type: language
-    weight: 22
-    region: content
     label: above
     settings:
       link_to_entity: false
       native_language: false
     third_party_settings: {  }
+    weight: 22
+    region: content
 hidden:
   display_media_child_thumbnail: true
   display_media_download_button: true
@@ -441,7 +449,6 @@ hidden:
   field_handle: true
   field_keyword: true
   field_level_of_coding: true
-  field_model: true
   field_oai_set: true
   field_place_published: true
   field_preservation_state: true

@@ -15,25 +15,25 @@ mode: token
 content:
   field_main_title:
     type: basic_string
-    weight: 1
-    region: content
     label: above
     settings: {  }
     third_party_settings: {  }
+    weight: 1
+    region: content
   field_nonsort:
-    weight: 0
+    type: string
     label: hidden
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 0
     region: content
   field_subtitle:
-    weight: 2
+    type: basic_string
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    type: basic_string
+    weight: 2
     region: content
 hidden:
   field_supplied: true

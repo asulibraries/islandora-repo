@@ -18,17 +18,17 @@ third_party_settings:
         - translation
         - path
         - status
+      label: 'Advanced fields'
+      region: content
       parent_name: ''
       weight: 2
       format_type: details
-      region: content
       format_settings:
-        id: ''
         classes: ''
-        description: ''
+        id: ''
         open: false
+        description: ''
         required_fields: true
-      label: 'Advanced fields'
 id: taxonomy_term.conference.default
 targetEntityType: taxonomy_term
 bundle: conference
@@ -39,17 +39,17 @@ content:
     weight: 3
     region: content
     settings:
-      placeholder: ''
       rows: 5
+      placeholder: ''
     third_party_settings: {  }
   field_authority_link:
+    type: authority_link_default
     weight: 1
+    region: content
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
-    type: authority_link_default
-    region: content
   langcode:
     type: language_select
     weight: 4
@@ -73,10 +73,10 @@ content:
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    settings:
-      display_label: true
     weight: 7
     region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   translation:
     weight: 5

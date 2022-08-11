@@ -14,21 +14,21 @@ bundle: country_codes
 mode: simple_taxo_create
 content:
   field_country_code:
+    type: string_textfield
     weight: 2
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_external_authority_link:
+    type: authority_link_brief
     weight: 1
+    region: content
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
-    type: authority_link_brief
-    region: content
   name:
     type: string_textfield
     weight: 0

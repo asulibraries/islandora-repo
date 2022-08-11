@@ -1,0 +1,44 @@
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:b4226fb4-f1e0-41c9-9ff0-bf22e565e204'
+  module:
+    - block_content
+    - context
+    - islandora
+    - system
+  theme:
+    - asulib_barrio
+id: keephero_2
+theme: asulib_barrio
+region: content
+weight: -37
+provider: null
+plugin: 'block_content:b4226fb4-f1e0-41c9-9ff0-bf22e565e204'
+settings:
+  id: 'block_content:b4226fb4-f1e0-41c9-9ff0-bf22e565e204'
+  label: 'Keep hero'
+  label_display: '0'
+  provider: block_content
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: null
+    pages: ''
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    view_inclusion: {  }
+  media_source_mimetype:
+    id: media_source_mimetype
+    mimetype: ''
+    negate: false
+    context_mapping: {  }
+  request_path:
+    id: request_path
+    negate: false
+    pages: '<front>'

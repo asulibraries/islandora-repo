@@ -1,0 +1,33 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.group.collection_group.field_group_description
+    - group.type.collection_group
+id: group.collection_group.default
+targetEntityType: group
+bundle: collection_group
+mode: default
+content:
+  field_group_description:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: -4
+    region: content
+  label:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: -5
+    region: content
+hidden:
+  changed: true
+  created: true
+  langcode: true
+  search_api_excerpt: true
+  uid: true

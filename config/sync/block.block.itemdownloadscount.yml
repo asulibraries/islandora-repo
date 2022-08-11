@@ -9,22 +9,22 @@ dependencies:
 id: itemdownloadscount
 theme: asulib_barrio
 region: sidebar_first
-weight: 12
+weight: 19
 provider: null
 plugin: asu_item_downloads
 settings:
   id: asu_item_downloads
   label: 'Item downloads count'
-  provider: asu_item_extras
   label_display: '0'
+  provider: asu_item_extras
 visibility:
   request_path_exclusion:
     id: request_path_exclusion
-    pages: ''
     negate: null
     context_mapping: {  }
+    pages: ''
   view_inclusion:
     id: view_inclusion
     negate: null
-    view_inclusion: {  }
     context_mapping: {  }
+    view_inclusion: {  }

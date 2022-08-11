@@ -72,12 +72,12 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_opt_out_of_content_changed:
+    type: boolean_checkbox
     weight: 7
+    region: content
     settings:
       display_label: true
     third_party_settings: {  }
-    type: boolean_checkbox
-    region: content
   field_orcid_id:
     type: string_textfield
     weight: 15
@@ -95,12 +95,12 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_terms_accepted:
+    type: boolean_checkbox
     weight: 9
+    region: content
     settings:
       display_label: true
     third_party_settings: {  }
-    type: boolean_checkbox
-    region: content
   google_analytics:
     weight: 3
     region: content
@@ -129,11 +129,11 @@ content:
     third_party_settings: {  }
   user_picture:
     type: image_image
+    weight: 1
+    region: content
     settings:
       progress_indicator: throbber
       preview_image_style: thumbnail
     third_party_settings: {  }
-    weight: 1
-    region: content
 hidden:
   langcode: true

@@ -78,69 +78,11 @@ base_table: search_api_index_default_solr_index
 base_field: search_api_id
 display:
   default:
-    display_plugin: default
     id: default
     display_title: Master
+    display_plugin: default
     position: 0
     display_options:
-      access:
-        type: role
-        options:
-          role:
-            administrator: administrator
-            content_approver: content_approver
-            depositor: depositor
-            metadata_manager: metadata_manager
-            repositor_manager: repositor_manager
-            collections_staff: collections_staff
-            honors_staff: honors_staff
-            some_metadata: some_metadata
-      cache:
-        type: tag
-        options: {  }
-      query:
-        type: views_query
-        options:
-          skip_access: 0
-          bypass_access: 0
-          preserve_facet_query_args: 1
-      exposed_form:
-        type: basic
-        options:
-          submit_button: Apply
-          reset_button: false
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
-          expose_sort_order: true
-          sort_asc_label: Asc
-          sort_desc_label: Desc
-      pager:
-        type: mini
-        options:
-          items_per_page: 10
-          offset: 0
-          id: 0
-          total_pages: null
-          expose:
-            items_per_page: false
-            items_per_page_label: 'Items per page'
-            items_per_page_options: '5, 10, 25, 50'
-            items_per_page_options_all: false
-            items_per_page_options_all_label: '- All -'
-            offset: false
-            offset_label: Offset
-          tags:
-            previous: ‹‹
-            next: ››
-      style:
-        type: serializer
-      row:
-        type: fields
-        options:
-          inline: {  }
-          separator: ''
-          hide_empty: false
-          default_field_elements: true
       fields:
         nid:
           id: nid
@@ -149,6 +91,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: ID
           exclude: false
           alter:
@@ -223,8 +167,6 @@ display:
             format_plural_values:
               - '1'
               - '@count'
-          entity_type: node
-          plugin_id: search_api_field
         field_title:
           id: field_title
           table: search_api_datasource_default_solr_index_entity_node
@@ -232,6 +174,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: Title
           exclude: false
           alter:
@@ -294,8 +238,6 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-          entity_type: node
-          plugin_id: search_api_field
         field_rich_description:
           id: field_rich_description
           table: search_api_datasource_default_solr_index_entity_node
@@ -303,6 +245,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: Description
           exclude: false
           alter:
@@ -364,8 +308,6 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-          entity_type: node
-          plugin_id: search_api_field
         field_linked_agent:
           id: field_linked_agent
           table: search_api_datasource_default_solr_index_entity_node
@@ -373,6 +315,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: 'Personal Contributor'
           exclude: false
           alter:
@@ -435,8 +379,6 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-          entity_type: node
-          plugin_id: search_api_field
         field_linked_agent_1:
           id: field_linked_agent_1
           table: search_api_datasource_default_solr_index_entity_node
@@ -444,6 +386,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: 'Corporate Contributor'
           exclude: false
           alter:
@@ -506,8 +450,6 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-          entity_type: node
-          plugin_id: search_api_field
         field_linked_agent_2:
           id: field_linked_agent_2
           table: search_api_datasource_default_solr_index_entity_node
@@ -515,6 +457,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: 'Event Contributor'
           exclude: false
           alter:
@@ -577,8 +521,6 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-          entity_type: node
-          plugin_id: search_api_field
         field_subject:
           id: field_subject
           table: search_api_datasource_default_solr_index_entity_node
@@ -586,6 +528,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: 'Topical Subject'
           exclude: false
           alter:
@@ -727,8 +671,6 @@ display:
               titles:
                 display_method: label
                 view_mode: default
-          entity_type: node
-          plugin_id: search_api_field
         field_geographic_subject:
           id: field_geographic_subject
           table: search_api_datasource_default_solr_index_entity_node
@@ -736,6 +678,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: 'Geographic Subject'
           exclude: false
           alter:
@@ -877,8 +821,6 @@ display:
               titles:
                 display_method: label
                 view_mode: default
-          entity_type: node
-          plugin_id: search_api_field
         field_subjects_name:
           id: field_subjects_name
           table: search_api_datasource_default_solr_index_entity_node
@@ -886,6 +828,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: 'Personal Name Subject'
           exclude: false
           alter:
@@ -1027,8 +971,6 @@ display:
               titles:
                 display_method: label
                 view_mode: default
-          entity_type: node
-          plugin_id: search_api_field
         field_name_title_subject:
           id: field_name_title_subject
           table: search_api_datasource_default_solr_index_entity_node
@@ -1036,6 +978,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: 'Title Subject'
           exclude: false
           alter:
@@ -1177,8 +1121,6 @@ display:
               titles:
                 display_method: label
                 view_mode: default
-          entity_type: node
-          plugin_id: search_api_field
         field_temporal_subject:
           id: field_temporal_subject
           table: search_api_datasource_default_solr_index_entity_node
@@ -1186,6 +1128,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: 'Temporal Subject'
           exclude: false
           alter:
@@ -1327,8 +1271,6 @@ display:
               titles:
                 display_method: label
                 view_mode: default
-          entity_type: node
-          plugin_id: search_api_field
         field_genre:
           id: field_genre
           table: search_api_datasource_default_solr_index_entity_node
@@ -1336,6 +1278,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: Genre
           exclude: false
           alter:
@@ -1477,8 +1421,6 @@ display:
               titles:
                 display_method: label
                 view_mode: default
-          entity_type: node
-          plugin_id: search_api_field
         field_table_of_contents:
           id: field_table_of_contents
           table: search_api_datasource_default_solr_index_entity_node
@@ -1486,6 +1428,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: 'Table Of Contents'
           exclude: false
           alter:
@@ -1547,8 +1491,6 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-          entity_type: node
-          plugin_id: search_api_field
         langcode:
           id: langcode
           table: search_api_datasource_default_solr_index_entity_node
@@ -1556,6 +1498,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: Language
           exclude: false
           alter:
@@ -1619,8 +1563,6 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-          entity_type: node
-          plugin_id: search_api_field
         field_extent:
           id: field_extent
           table: search_api_datasource_default_solr_index_entity_node
@@ -1628,6 +1570,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: Extent
           exclude: false
           alter:
@@ -1690,8 +1634,6 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-          entity_type: node
-          plugin_id: search_api_field
         field_preferred_citation:
           id: field_preferred_citation
           table: search_api_datasource_default_solr_index_entity_node
@@ -1699,6 +1641,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: 'Preferred Citation'
           exclude: false
           alter:
@@ -1760,8 +1704,6 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-          entity_type: node
-          plugin_id: search_api_field
         field_copyright_statement:
           id: field_copyright_statement
           table: search_api_datasource_default_solr_index_entity_node
@@ -1769,6 +1711,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: 'Copyright Statement'
           exclude: false
           alter:
@@ -1910,8 +1854,6 @@ display:
               titles:
                 display_method: label
                 view_mode: default
-          entity_type: node
-          plugin_id: search_api_field
         field_reuse_permissions:
           id: field_reuse_permissions
           table: search_api_datasource_default_solr_index_entity_node
@@ -1919,6 +1861,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: 'Reuse Permissions'
           exclude: false
           alter:
@@ -2060,8 +2004,6 @@ display:
               titles:
                 display_method: label
                 view_mode: default
-          entity_type: node
-          plugin_id: search_api_field
         field_handle:
           id: field_handle
           table: search_api_datasource_default_solr_index_entity_node
@@ -2069,6 +2011,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: Handle
           exclude: false
           alter:
@@ -2131,8 +2075,6 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-          entity_type: node
-          plugin_id: search_api_field
         field_pid:
           id: field_pid
           table: search_api_datasource_default_solr_index_entity_node
@@ -2140,6 +2082,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: 'Legacy Identifier'
           exclude: false
           alter:
@@ -2202,8 +2146,6 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-          entity_type: node
-          plugin_id: search_api_field
         uid:
           id: uid
           table: search_api_datasource_default_solr_index_entity_node
@@ -2211,6 +2153,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: 'System Creator'
           exclude: false
           alter:
@@ -2277,8 +2221,6 @@ display:
               user:
                 display_method: label
                 view_mode: default
-          entity_type: node
-          plugin_id: search_api_field
         created:
           id: created
           table: search_api_datasource_default_solr_index_entity_node
@@ -2286,6 +2228,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: 'System Created'
           exclude: false
           alter:
@@ -2353,8 +2297,6 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-          entity_type: node
-          plugin_id: search_api_field
         field_edtf_date_created:
           id: field_edtf_date_created
           table: search_api_datasource_default_solr_index_entity_node
@@ -2362,6 +2304,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: 'Date Created'
           exclude: false
           alter:
@@ -2490,8 +2434,6 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-          entity_type: node
-          plugin_id: search_api_field
         field_peer_reviewed:
           id: field_peer_reviewed
           table: search_api_datasource_default_solr_index_entity_node
@@ -2499,6 +2441,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: Peer-reviewed
           exclude: false
           alter:
@@ -2544,8 +2488,8 @@ display:
           type: boolean
           settings:
             format: boolean
-            format_custom_true: ''
             format_custom_false: ''
+            format_custom_true: ''
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -2567,8 +2511,6 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-          entity_type: node
-          plugin_id: search_api_field
         field_open_access:
           id: field_open_access
           table: search_api_datasource_default_solr_index_entity_node
@@ -2576,6 +2518,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: 'Open Access'
           exclude: false
           alter:
@@ -2621,8 +2565,8 @@ display:
           type: boolean
           settings:
             format: boolean
-            format_custom_true: ''
             format_custom_false: ''
+            format_custom_true: ''
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -2644,8 +2588,6 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-          entity_type: node
-          plugin_id: search_api_field
         field_series:
           id: field_series
           table: search_api_datasource_default_solr_index_entity_node
@@ -2653,6 +2595,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: Series
           exclude: false
           alter:
@@ -2715,8 +2659,6 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-          entity_type: node
-          plugin_id: search_api_field
         field_edtf_copyright_date:
           id: field_edtf_copyright_date
           table: search_api_datasource_default_solr_index_entity_node
@@ -2724,6 +2666,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: 'Copyright Date'
           exclude: false
           alter:
@@ -2845,8 +2789,6 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-          entity_type: node
-          plugin_id: search_api_field
         field_date_digitized:
           id: field_date_digitized
           table: search_api_datasource_default_solr_index_entity_node
@@ -2854,6 +2796,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: 'Date Digitized'
           exclude: false
           alter:
@@ -2975,8 +2919,6 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-          entity_type: node
-          plugin_id: search_api_field
         field_edition:
           id: field_edition
           table: search_api_datasource_default_solr_index_entity_node
@@ -2984,6 +2926,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: Edition
           exclude: false
           alter:
@@ -3046,8 +2990,6 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-          entity_type: node
-          plugin_id: search_api_field
         field_frequency:
           id: field_frequency
           table: search_api_datasource_default_solr_index_entity_node
@@ -3055,6 +2997,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: Frequency
           exclude: false
           alter:
@@ -3116,8 +3060,6 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-          entity_type: node
-          plugin_id: search_api_field
         field_issuance:
           id: field_issuance
           table: search_api_datasource_default_solr_index_entity_node
@@ -3125,6 +3067,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: Issuance
           exclude: false
           alter:
@@ -3186,8 +3130,6 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-          entity_type: node
-          plugin_id: search_api_field
         field_related_item:
           id: field_related_item
           table: search_api_datasource_default_solr_index_entity_node
@@ -3195,6 +3137,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: 'Related Item'
           exclude: false
           alter:
@@ -3257,8 +3201,6 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-          entity_type: node
-          plugin_id: search_api_field
         institution_from_collection:
           id: institution_from_collection
           table: search_api_index_default_solr_index
@@ -3266,6 +3208,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: search_api
           label: 'Collaborating Institution'
           exclude: false
           alter:
@@ -3311,7 +3254,6 @@ display:
           use_highlighting: false
           multi_type: separator
           multi_separator: ' || '
-          plugin_id: search_api
         field_complex_object_child:
           id: field_complex_object_child
           table: search_api_datasource_default_solr_index_entity_node
@@ -3319,6 +3261,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: 'Complex Object Child'
           exclude: false
           alter:
@@ -3364,8 +3308,8 @@ display:
           type: boolean
           settings:
             format: boolean
-            format_custom_true: ''
             format_custom_false: ''
+            format_custom_true: ''
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -3387,8 +3331,6 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-          entity_type: node
-          plugin_id: search_api_field
         field_model:
           id: field_model
           table: search_api_datasource_default_solr_index_entity_node
@@ -3396,6 +3338,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: Model
           exclude: false
           alter:
@@ -3537,8 +3481,6 @@ display:
               titles:
                 display_method: label
                 view_mode: default
-          entity_type: node
-          plugin_id: search_api_field
         field_statement_responsibility:
           id: field_statement_responsibility
           table: search_api_datasource_default_solr_index_entity_node
@@ -3546,6 +3488,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: 'Statement of Responsibility'
           exclude: false
           alter:
@@ -3607,8 +3551,6 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-          entity_type: node
-          plugin_id: search_api_field
         field_member_of_2:
           id: field_member_of_2
           table: search_api_datasource_default_solr_index_entity_node
@@ -3616,6 +3558,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: 'Parent Item'
           exclude: false
           alter:
@@ -3694,8 +3638,6 @@ display:
               page:
                 display_method: label
                 view_mode: default
-          entity_type: node
-          plugin_id: search_api_field
         field_member_of_3:
           id: field_member_of_3
           table: search_api_datasource_default_solr_index_entity_node
@@ -3703,6 +3645,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: 'Parent Collection'
           exclude: false
           alter:
@@ -3781,8 +3725,6 @@ display:
               page:
                 display_method: label
                 view_mode: default
-          entity_type: node
-          plugin_id: search_api_field
         field_additional_memberships_1:
           id: field_additional_memberships_1
           table: search_api_datasource_default_solr_index_entity_node
@@ -3790,6 +3732,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: 'Additional Memberships'
           exclude: false
           alter:
@@ -3868,8 +3812,6 @@ display:
               page:
                 display_method: label
                 view_mode: default
-          entity_type: node
-          plugin_id: search_api_field
         field_coordinates:
           id: field_coordinates
           table: search_api_datasource_default_solr_index_entity_node
@@ -3877,6 +3819,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: Coordinates
           exclude: false
           alter:
@@ -3943,8 +3887,6 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-          entity_type: node
-          plugin_id: search_api_field
         field_note_para:
           id: field_note_para
           table: search_api_datasource_default_solr_index_entity_node
@@ -3952,6 +3894,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: Note
           exclude: false
           alter:
@@ -4014,8 +3958,6 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-          entity_type: node
-          plugin_id: search_api_field
         field_place_of_publication_code:
           id: field_place_of_publication_code
           table: search_api_datasource_default_solr_index_entity_node
@@ -4023,6 +3965,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: 'Place of Publication Code'
           exclude: false
           alter:
@@ -4164,8 +4108,6 @@ display:
               titles:
                 display_method: label
                 view_mode: default
-          entity_type: node
-          plugin_id: search_api_field
         field_place_published:
           id: field_place_published
           table: search_api_datasource_default_solr_index_entity_node
@@ -4173,6 +4115,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: 'Place of Publication Text'
           exclude: false
           alter:
@@ -4235,8 +4179,6 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-          entity_type: node
-          plugin_id: search_api_field
         field_typed_identifier:
           id: field_typed_identifier
           table: search_api_datasource_default_solr_index_entity_node
@@ -4244,6 +4186,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: Identifier
           exclude: false
           alter:
@@ -4306,8 +4250,6 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-          entity_type: node
-          plugin_id: search_api_field
         field_cataloging_standards:
           id: field_cataloging_standards
           table: search_api_datasource_default_solr_index_entity_node
@@ -4315,6 +4257,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: 'Cataloging Standards'
           exclude: false
           alter:
@@ -4456,8 +4400,6 @@ display:
               titles:
                 display_method: label
                 view_mode: default
-          entity_type: node
-          plugin_id: search_api_field
         field_default_derivative_file_pe:
           id: field_default_derivative_file_pe
           table: search_api_datasource_default_solr_index_entity_node
@@ -4465,6 +4407,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: 'Derivative File Permissions'
           exclude: false
           alter:
@@ -4606,8 +4550,6 @@ display:
               titles:
                 display_method: label
                 view_mode: default
-          entity_type: node
-          plugin_id: search_api_field
         field_default_original_file_perm:
           id: field_default_original_file_perm
           table: search_api_datasource_default_solr_index_entity_node
@@ -4615,6 +4557,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: 'Original File Permissions'
           exclude: false
           alter:
@@ -4756,8 +4700,6 @@ display:
               titles:
                 display_method: label
                 view_mode: default
-          entity_type: node
-          plugin_id: search_api_field
         field_description_source:
           id: field_description_source
           table: search_api_datasource_default_solr_index_entity_node
@@ -4765,6 +4707,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: 'Description Source'
           exclude: false
           alter:
@@ -4826,8 +4770,6 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-          entity_type: node
-          plugin_id: search_api_field
         field_embargo_release_date:
           id: field_embargo_release_date
           table: search_api_datasource_default_solr_index_entity_node
@@ -4835,6 +4777,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: 'Embargo Release Date'
           exclude: false
           alter:
@@ -4898,8 +4842,6 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-          entity_type: node
-          plugin_id: search_api_field
         field_level_of_coding:
           id: field_level_of_coding
           table: search_api_datasource_default_solr_index_entity_node
@@ -4907,6 +4849,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api_field
           label: 'Level of Coding'
           exclude: false
           alter:
@@ -4968,8 +4912,6 @@ display:
             use_highlighting: false
             multi_type: separator
             multi_separator: ', '
-          entity_type: node
-          plugin_id: search_api_field
         moderation_state:
           id: moderation_state
           table: search_api_datasource_default_solr_index_entity_node
@@ -4977,6 +4919,8 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: node
+          plugin_id: search_api
           label: Visibility
           exclude: false
           alter:
@@ -5022,8 +4966,87 @@ display:
           use_highlighting: false
           multi_type: separator
           multi_separator: ', '
-          entity_type: node
+      pager:
+        type: mini
+        options:
+          offset: 0
+          items_per_page: 10
+          total_pages: null
+          id: 0
+          tags:
+            next: ››
+            previous: ‹‹
+          expose:
+            items_per_page: false
+            items_per_page_label: 'Items per page'
+            items_per_page_options: '5, 10, 25, 50'
+            items_per_page_options_all: false
+            items_per_page_options_all_label: '- All -'
+            offset: false
+            offset_label: Offset
+      exposed_form:
+        type: basic
+        options:
+          submit_button: Apply
+          reset_button: false
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          expose_sort_order: true
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      access:
+        type: role
+        options:
+          role:
+            administrator: administrator
+            content_approver: content_approver
+            depositor: depositor
+            metadata_manager: metadata_manager
+            repositor_manager: repositor_manager
+            collections_staff: collections_staff
+            honors_staff: honors_staff
+            some_metadata: some_metadata
+      cache:
+        type: none
+        options: {  }
+      empty: {  }
+      sorts: {  }
+      arguments:
+        field_ancestors:
+          id: field_ancestors
+          table: search_api_index_default_solr_index
+          field: field_ancestors
+          relationship: none
+          group_type: group
+          admin_label: ''
           plugin_id: search_api
+          default_action: default
+          exception:
+            value: all
+            title_enable: false
+            title: All
+          title_enable: false
+          title: ''
+          default_argument_type: node
+          default_argument_options: {  }
+          default_argument_skip_url: false
+          summary_options: {  }
+          summary:
+            sort_order: asc
+            number_of_records: 0
+            format: default_summary
+          specify_validation: true
+          validate:
+            type: 'entity:node'
+            fail: 'not found'
+          validate_options:
+            bundles:
+              collection: collection
+            access: false
+            operation: view
+            multiple: 0
+          break_phrase: false
+          not: false
       filters:
         type:
           id: type
@@ -5032,6 +5055,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: search_api_options
           operator: or
           value:
             asu_repository_item: asu_repository_item
@@ -5065,7 +5089,6 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           reduce_duplicates: false
-          plugin_id: search_api_options
         search_api_fulltext:
           id: search_api_fulltext
           table: search_api_index_default_solr_index
@@ -5073,6 +5096,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: search_api_fulltext
           operator: or
           value: ''
           group: 1
@@ -5101,8 +5125,8 @@ display:
               casuser: '0'
               repositor_manager: '0'
               collections_staff: '0'
-            placeholder: ''
             expose_fields: false
+            placeholder: ''
             searched_fields_id: search_api_fulltext_searched_fields
           is_grouped: false
           group_info:
@@ -5119,48 +5143,24 @@ display:
           parse_mode: terms
           min_length: null
           fields: {  }
-          plugin_id: search_api_fulltext
-      sorts: {  }
+      style:
+        type: serializer
+      row:
+        type: fields
+        options:
+          default_field_elements: true
+          inline: {  }
+          separator: ''
+          hide_empty: false
+      query:
+        type: search_api_query
+        options:
+          skip_access: 0
+          bypass_access: 0
+          preserve_facet_query_args: 1
+      relationships: {  }
       header: {  }
       footer: {  }
-      empty: {  }
-      relationships: {  }
-      arguments:
-        field_ancestors:
-          id: field_ancestors
-          table: search_api_index_default_solr_index
-          field: field_ancestors
-          relationship: none
-          group_type: group
-          admin_label: ''
-          default_action: default
-          exception:
-            value: all
-            title_enable: false
-            title: All
-          title_enable: false
-          title: ''
-          default_argument_type: node
-          default_argument_options: {  }
-          default_argument_skip_url: false
-          summary_options: {  }
-          summary:
-            sort_order: asc
-            number_of_records: 0
-            format: default_summary
-          specify_validation: true
-          validate:
-            type: 'entity:node'
-            fail: 'not found'
-          validate_options:
-            bundles:
-              collection: collection
-            operation: view
-            multiple: 0
-            access: false
-          break_phrase: false
-          not: false
-          plugin_id: search_api
       display_extenders: {  }
     cache_metadata:
       max-age: -1
@@ -5259,18 +5259,16 @@ display:
         - 'config_split_state:field.storage.node.field_title'
         - 'config_split_state:field.storage.node.field_typed_identifier'
   data_export_1:
-    display_plugin: data_export
     id: data_export_1
     display_title: 'Data export : Collection'
+    display_plugin: data_export
     position: 1
     display_options:
-      display_extenders: {  }
-      path: collections/%/csv
       pager:
         type: some
         options:
-          items_per_page: 99999
           offset: 0
+          items_per_page: 99999
       style:
         type: data_export
         options:
@@ -5293,15 +5291,17 @@ display:
               alias: ''
               raw_output: false
       display_description: ''
+      display_extenders: {  }
+      path: collections/%/csv
       filename: 'collection_[date:html_date].csv'
       automatic_download: false
-      store_in_public_file_directory: false
-      redirect_to_display: none
-      custom_redirect_path: false
-      include_query_params: false
       export_method: batch
       export_batch_size: 200
       facet_settings: 'search_api:views_page__solr_search_content__page_3'
+      store_in_public_file_directory: false
+      custom_redirect_path: false
+      redirect_to_display: none
+      include_query_params: false
     cache_metadata:
       max-age: -1
       contexts:
@@ -5398,18 +5398,52 @@ display:
         - 'config_split_state:field.storage.node.field_title'
         - 'config_split_state:field.storage.node.field_typed_identifier'
   data_export_2:
-    display_plugin: data_export
     id: data_export_2
     display_title: 'Data export : Item'
+    display_plugin: data_export
     position: 2
     display_options:
-      display_extenders: {  }
-      path: items/%/csv
       pager:
         type: some
         options:
-          items_per_page: 1
           offset: 0
+          items_per_page: 1
+      arguments:
+        nid:
+          id: nid
+          table: search_api_index_default_solr_index
+          field: nid
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: search_api
+          default_action: default
+          exception:
+            value: all
+            title_enable: false
+            title: All
+          title_enable: false
+          title: ''
+          default_argument_type: node
+          default_argument_options: {  }
+          default_argument_skip_url: false
+          summary_options: {  }
+          summary:
+            sort_order: asc
+            number_of_records: 0
+            format: default_summary
+          specify_validation: true
+          validate:
+            type: 'entity:node'
+            fail: 'not found'
+          validate_options:
+            bundles:
+              asu_repository_item: asu_repository_item
+            access: false
+            operation: view
+            multiple: 0
+          break_phrase: false
+          not: false
       style:
         type: data_export
         options:
@@ -5579,52 +5613,18 @@ display:
             moderation_state:
               alias: ''
               raw_output: false
-      arguments:
-        nid:
-          id: nid
-          table: search_api_index_default_solr_index
-          field: nid
-          relationship: none
-          group_type: group
-          admin_label: ''
-          default_action: default
-          exception:
-            value: all
-            title_enable: false
-            title: All
-          title_enable: false
-          title: ''
-          default_argument_type: node
-          default_argument_options: {  }
-          default_argument_skip_url: false
-          summary_options: {  }
-          summary:
-            sort_order: asc
-            number_of_records: 0
-            format: default_summary
-          specify_validation: true
-          validate:
-            type: 'entity:node'
-            fail: 'not found'
-          validate_options:
-            bundles:
-              asu_repository_item: asu_repository_item
-            operation: view
-            multiple: 0
-            access: false
-          break_phrase: false
-          not: false
-          plugin_id: search_api
       defaults:
         arguments: false
       display_description: ''
+      display_extenders: {  }
+      path: items/%/csv
       filename: 'item_[date:html_date].csv'
       automatic_download: false
-      store_in_public_file_directory: false
-      redirect_to_display: none
-      custom_redirect_path: false
-      include_query_params: false
       facet_settings: 'search_api:views_page__solr_search_content__page_2'
+      store_in_public_file_directory: false
+      custom_redirect_path: false
+      redirect_to_display: none
+      include_query_params: false
     cache_metadata:
       max-age: -1
       contexts:
@@ -5721,18 +5721,17 @@ display:
         - 'config_split_state:field.storage.node.field_title'
         - 'config_split_state:field.storage.node.field_typed_identifier'
   data_export_3:
-    display_plugin: data_export
     id: data_export_3
     display_title: 'Data export : Search'
+    display_plugin: data_export
     position: 1
     display_options:
-      display_extenders: {  }
-      path: search/csv
       pager:
         type: some
         options:
-          items_per_page: 99999
           offset: 0
+          items_per_page: 99999
+      arguments: {  }
       style:
         type: data_export
         options:
@@ -5754,19 +5753,20 @@ display:
             all_subjects:
               alias: ''
               raw_output: false
-      display_description: ''
-      arguments: {  }
       defaults:
         arguments: false
+      display_description: ''
+      display_extenders: {  }
+      path: search/csv
       filename: 'search_[date:html_date].csv'
       automatic_download: false
-      store_in_public_file_directory: false
-      redirect_to_display: none
-      custom_redirect_path: false
-      include_query_params: false
       export_method: batch
       export_batch_size: 200
       facet_settings: 'search_api:views_page__solr_search_content__page_1'
+      store_in_public_file_directory: false
+      custom_redirect_path: false
+      redirect_to_display: none
+      include_query_params: false
     cache_metadata:
       max-age: -1
       contexts:
@@ -5863,18 +5863,17 @@ display:
         - 'config_split_state:field.storage.node.field_title'
         - 'config_split_state:field.storage.node.field_typed_identifier'
   rest_export_3:
-    display_plugin: rest_export
     id: rest_export_3
     display_title: 'Search CSV Export'
+    display_plugin: rest_export
     position: 1
     display_options:
-      display_extenders: {  }
-      path: search/csv
       pager:
         type: some
         options:
-          items_per_page: 99999
           offset: 0
+          items_per_page: 99999
+      arguments: {  }
       style:
         type: data_export
         options:
@@ -5896,10 +5895,11 @@ display:
             all_subjects:
               alias: ''
               raw_output: false
-      display_description: ''
-      arguments: {  }
       defaults:
         arguments: false
+      display_description: ''
+      display_extenders: {  }
+      path: search/csv
     cache_metadata:
       max-age: -1
       contexts:

@@ -4,11 +4,13 @@ dependencies: {  }
 id: environment_config
 label: 'Environment Config'
 description: 'Settings that are specific per environment'
+weight: 0
+storage: folder
 folder: ../config/env
 module:
   jwt: 0
 theme: {  }
-blacklist:
+complete_list:
   - context.context.openseadragon_block
   - context.context.open_seadragon
   - islandora.settings
@@ -17,11 +19,8 @@ blacklist:
   - islandora_riprap.settings
   - matomo.settings
   - clamav.settings
-graylist:
+partial_list:
   - islandora.settings
   - jwt.config
   - key.key.islandora_rsa_key
   - search_api.server.default_solr_server
-graylist_dependents: true
-graylist_skip_equal: true
-weight: 0

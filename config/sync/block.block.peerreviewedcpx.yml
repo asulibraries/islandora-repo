@@ -13,20 +13,20 @@ dependencies:
 id: peerreviewedcpx
 theme: asulib_barrio
 region: sidebar_first
-weight: -16
+weight: -19
 provider: null
 plugin: 'facet_block:peer_reviewed_cpx'
 settings:
   id: 'facet_block:peer_reviewed_cpx'
   label: Peer-reviewed
-  provider: facets
   label_display: visible
+  provider: facets
   block_id: peerreviewedcpx
 visibility:
   request_path_exclusion:
     id: request_path_exclusion
-    pages: ''
     negate: null
+    pages: ''
   view_inclusion:
     id: view_inclusion
     negate: null
@@ -38,5 +38,5 @@ visibility:
     context_mapping: {  }
   request_path:
     id: request_path
-    pages: '/items/*/search*'
     negate: false
+    pages: '/items/*/search*'

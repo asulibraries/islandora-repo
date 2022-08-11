@@ -1,35 +1,35 @@
 langcode: en
 status: true
 dependencies:
-  enforced:
-    module:
-      - islandora_defaults
   module:
     - islandora
     - islandora_bagger_integration
     - node
-name: repository_content
+  enforced:
+    module:
+      - islandora_defaults
 label: Content
+name: repository_content
 group: Indexing
 description: 'All repository content'
 requireAllConditions: false
 disabled: false
 conditions:
-  node_type:
-    id: node_type
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: c46fdfed-44fa-4a07-84dd-f218af00bd27
+    context_mapping:
+      node: '@node.node_route_context:node'
     bundles:
       asu_repository_item: asu_repository_item
       collection: collection
       islandora_object: islandora_object
-    negate: false
-    context_mapping:
-      node: '@node.node_route_context:node'
 reactions:
   index:
     id: index
     actions:
       index_node_in_fedora: index_node_in_fedora
-      index_node_in_triplestore: index_node_in_triplestore
     saved: false
   delete:
     id: delete

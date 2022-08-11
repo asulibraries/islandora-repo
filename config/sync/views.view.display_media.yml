@@ -15,9 +15,11 @@ dependencies:
     - image.style.card_image
     - image.style.square_thumb
     - responsive_image.styles.item_displays
-  enforced:
-    module:
-      - islandora_core_feature
+    - taxonomy.vocabulary.islandora_media_use
+  content:
+    - 'taxonomy_term:islandora_media_use:0275f595-4de7-4719-ab28-f4547934dd2b'
+    - 'taxonomy_term:islandora_media_use:1516b6b7-591f-4023-aa8c-90eb4ad14312'
+    - 'taxonomy_term:islandora_media_use:4075ec0f-14a4-44e5-acac-9be7d1f92381'
   module:
     - eva
     - file
@@ -26,6 +28,9 @@ dependencies:
     - responsive_image
     - taxonomy
     - user
+  enforced:
+    module:
+      - islandora_core_feature
 id: display_media
 label: 'Media EVAs'
 module: views
@@ -35,78 +40,34 @@ base_table: media_field_data
 base_field: mid
 display:
   default:
-    display_plugin: default
     id: default
     display_title: Master
+    display_plugin: default
     position: 0
     display_options:
-      access:
-        type: perm
-        options:
-          perm: 'view media'
-      cache:
-        type: tag
-        options: {  }
-      query:
-        type: views_query
-        options:
-          disable_sql_rewrite: false
-          distinct: false
-          replica: false
-          query_comment: ''
-          query_tags: {  }
-      exposed_form:
-        type: basic
-        options:
-          submit_button: Apply
-          reset_button: false
-          reset_button_label: Reset
-          exposed_sorts_label: 'Sort by'
-          expose_sort_order: true
-          sort_asc_label: Asc
-          sort_desc_label: Desc
-      pager:
-        type: some
-        options:
-          items_per_page: 1
-          offset: 0
-      style:
-        type: default
-        options:
-          row_class: ''
-          default_row_class: true
-          uses_fields: false
-      row:
-        type: 'entity:media'
-        options:
-          relationship: none
-          view_mode: source
+      title: ''
       fields:
         name:
           id: name
           table: media_field_data
           field: name
+          relationship: none
+          group_type: group
+          admin_label: ''
           entity_type: media
           entity_field: media
+          plugin_id: field
           label: ''
+          exclude: false
           alter:
             alter_text: false
             make_link: false
             absolute: false
-            trim: false
             word_boundary: false
             ellipsis: false
             strip_tags: false
+            trim: false
             html: false
-          hide_empty: false
-          empty_zero: false
-          settings:
-            link_to_entity: true
-          plugin_id: field
-          relationship: none
-          group_type: group
-          admin_label: ''
-          exclude: false
           element_type: ''
           element_class: ''
           element_label_type: ''
@@ -116,9 +77,13 @@ display:
           element_wrapper_class: ''
           element_default_classes: true
           empty: ''
+          hide_empty: false
+          empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
           type: string
+          settings:
+            link_to_entity: true
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -129,20 +94,79 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+      pager:
+        type: some
+        options:
+          offset: 0
+          items_per_page: 1
+      exposed_form:
+        type: basic
+        options:
+          submit_button: Apply
+          reset_button: false
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          expose_sort_order: true
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      access:
+        type: perm
+        options:
+          perm: 'view media'
+      cache:
+        type: tag
+        options: {  }
+      empty: {  }
+      sorts: {  }
+      arguments:
+        field_media_of_target_id:
+          id: field_media_of_target_id
+          table: media__field_media_of
+          field: field_media_of_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: numeric
+          default_action: default
+          exception:
+            value: all
+            title_enable: false
+            title: All
+          title_enable: false
+          title: ''
+          default_argument_type: node
+          default_argument_options: {  }
+          default_argument_skip_url: false
+          summary_options:
+            base_path: ''
+            count: true
+            override: false
+            items_per_page: 25
+          summary:
+            sort_order: asc
+            number_of_records: 0
+            format: default_summary
+          specify_validation: false
+          validate:
+            type: none
+            fail: 'not found'
+          validate_options: {  }
+          break_phrase: false
+          not: false
       filters:
         status:
-          value: '1'
+          id: status
           table: media_field_data
           field: status
-          plugin_id: boolean
           entity_type: media
           entity_field: status
-          id: status
+          plugin_id: boolean
+          value: '1'
+          group: 1
           expose:
             operator: ''
             operator_limit_selection: false
             operator_list: {  }
-          group: 1
         field_external_uri_uri:
           id: field_external_uri_uri
           table: taxonomy_term__field_external_uri
@@ -150,6 +174,7 @@ display:
           relationship: field_media_use
           group_type: group
           admin_label: ''
+          plugin_id: string
           operator: '='
           value: 'http://pcdm.org/use#ThumbnailImage'
           group: 1
@@ -181,12 +206,25 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          plugin_id: string
-      sorts: {  }
-      title: ''
-      header: {  }
-      footer: {  }
-      empty: {  }
+      style:
+        type: default
+        options:
+          row_class: ''
+          default_row_class: true
+          uses_fields: false
+      row:
+        type: 'entity:media'
+        options:
+          relationship: none
+          view_mode: source
+      query:
+        type: views_query
+        options:
+          query_comment: ''
+          disable_sql_rewrite: false
+          distinct: false
+          replica: false
+          query_tags: {  }
       relationships:
         field_media_use:
           id: field_media_use
@@ -195,43 +233,10 @@ display:
           relationship: none
           group_type: group
           admin_label: 'field_media_use: Taxonomy term'
-          required: false
           plugin_id: standard
-      arguments:
-        field_media_of_target_id:
-          id: field_media_of_target_id
-          table: media__field_media_of
-          field: field_media_of_target_id
-          relationship: none
-          group_type: group
-          admin_label: ''
-          default_action: default
-          exception:
-            value: all
-            title_enable: false
-            title: All
-          title_enable: false
-          title: ''
-          default_argument_type: node
-          default_argument_options: {  }
-          default_argument_skip_url: false
-          summary_options:
-            base_path: ''
-            count: true
-            items_per_page: 25
-            override: false
-          summary:
-            sort_order: asc
-            number_of_records: 0
-            format: default_summary
-          specify_validation: false
-          validate:
-            type: none
-            fail: 'not found'
-          validate_options: {  }
-          break_phrase: false
-          not: false
-          plugin_id: numeric
+          required: false
+      header: {  }
+      footer: {  }
       display_extenders: {  }
     cache_metadata:
       max-age: -1
@@ -242,55 +247,37 @@ display:
         - user.permissions
       tags: {  }
   child_thumbnail:
-    display_plugin: entity_view
     id: child_thumbnail
     display_title: 'Child thumbnail'
+    display_plugin: entity_view
     position: 7
     display_options:
-      display_extenders: {  }
-      entity_type: node
-      bundles: {  }
       title: 'Child thumbnail'
-      display_description: ''
-    cache_metadata:
-      max-age: -1
-      contexts:
-        - 'languages:language_content'
-        - 'languages:language_interface'
-        - url
-        - user.permissions
-      tags: {  }
-  download_button:
-    display_plugin: entity_view
-    id: download_button
-    display_title: 'Download button - EVA'
-    position: 1
-    display_options:
-      display_extenders: {  }
-      display_description: 'Download button'
       filters:
         status:
-          value: '1'
+          id: status
           table: media_field_data
           field: status
-          plugin_id: boolean
           entity_type: media
           entity_field: status
-          id: status
+          plugin_id: boolean
+          value: '1'
+          group: 1
           expose:
             operator: ''
             operator_limit_selection: false
             operator_list: {  }
-          group: 1
-        field_external_uri_uri:
-          id: field_external_uri_uri
-          table: taxonomy_term__field_external_uri
-          field: field_external_uri_uri
-          relationship: field_media_use
+        field_media_use_target_id:
+          id: field_media_use_target_id
+          table: media__field_media_use
+          field: field_media_use_target_id
+          relationship: none
           group_type: group
           admin_label: ''
-          operator: '='
-          value: 'http://pcdm.org/use#OriginalFile'
+          plugin_id: taxonomy_index_tid
+          operator: or
+          value:
+            22: 22
           group: 1
           exposed: false
           expose:
@@ -299,15 +286,15 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            placeholder: ''
-            operator_limit_selection: false
-            operator_list: {  }
+            reduce: false
           is_grouped: false
           group_info:
             label: ''
@@ -320,38 +307,41 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          plugin_id: string
-      defaults:
-        filters: false
-        filter_groups: false
-        style: false
-        row: false
-        fields: false
-        pager: false
+          reduce_duplicates: false
+          vid: islandora_media_use
+          type: select
+          hierarchy: false
+          limit: true
+          error_message: true
       filter_groups:
         operator: AND
         groups:
           1: AND
+      defaults:
+        relationships: false
+        filters: false
+        filter_groups: false
+      relationships: {  }
+      display_description: ''
+      display_extenders: {  }
       entity_type: node
-      bundles:
-        - asu_repository_item
-      argument_mode: id
-      default_argument: null
+      bundles: {  }
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
+        - user
+        - user.permissions
+      tags: {  }
+  download_button:
+    id: download_button
+    display_title: 'Download button - EVA'
+    display_plugin: entity_view
+    position: 1
+    display_options:
       title: 'Original File'
-      show_title: false
-      style:
-        type: default
-        options:
-          grouping: {  }
-          row_class: ''
-          default_row_class: false
-      row:
-        type: fields
-        options:
-          default_field_elements: true
-          inline: {  }
-          separator: ''
-          hide_empty: false
       fields:
         field_media_file:
           id: field_media_file
@@ -360,6 +350,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -414,7 +405,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         field_file_size:
           id: field_file_size
           table: media__field_file_size
@@ -422,6 +412,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -478,7 +469,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         field_mime_type:
           id: field_mime_type
           table: media__field_mime_type
@@ -486,6 +476,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -541,7 +532,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         field_width:
           id: field_width
           table: media__field_width
@@ -549,6 +539,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -605,7 +596,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         field_height:
           id: field_height
           table: media__field_height
@@ -613,6 +603,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -669,7 +660,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         field_media_image:
           id: field_media_image
           table: media__field_media_image
@@ -677,6 +667,7 @@ display:
           relationship: none
           group_type: group
           admin_label: 'Medium image 650'
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -732,7 +723,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         field_media_audio_file:
           id: field_media_audio_file
           table: media__field_media_audio_file
@@ -740,6 +730,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -794,7 +785,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         name:
           id: name
           table: media_field_data
@@ -802,6 +792,9 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          entity_type: media
+          entity_field: media
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -857,9 +850,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          entity_type: media
-          entity_field: media
-          plugin_id: field
         field_media_document:
           id: field_media_document
           table: media__field_media_document
@@ -867,6 +857,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -921,7 +912,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         field_media_video_file:
           id: field_media_video_file
           table: media__field_media_video_file
@@ -929,6 +919,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -983,7 +974,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         nothing:
           id: nothing
           table: views
@@ -991,6 +981,7 @@ display:
           relationship: none
           group_type: group
           admin_label: 'Print out file properties'
+          plugin_id: custom
           label: ''
           exclude: false
           alter:
@@ -1032,7 +1023,6 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: false
-          plugin_id: custom
         nothing_2:
           id: nothing_2
           table: views
@@ -1040,6 +1030,7 @@ display:
           relationship: none
           group_type: group
           admin_label: 'Service file from other display'
+          plugin_id: custom
           label: ''
           exclude: true
           alter:
@@ -1081,7 +1072,6 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: false
-          plugin_id: custom
         nothing_1:
           id: nothing_1
           table: views
@@ -1089,6 +1079,7 @@ display:
           relationship: none
           group_type: group
           admin_label: 'Content for dropdown button'
+          plugin_id: custom
           label: ''
           exclude: false
           alter:
@@ -1130,18 +1121,112 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: false
-          plugin_id: custom
       pager:
         type: some
         options:
-          items_per_page: 1
           offset: 0
+          items_per_page: 1
+      filters:
+        status:
+          id: status
+          table: media_field_data
+          field: status
+          entity_type: media
+          entity_field: status
+          plugin_id: boolean
+          value: '1'
+          group: 1
+          expose:
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+        field_media_use_target_id:
+          id: field_media_use_target_id
+          table: media__field_media_use
+          field: field_media_use_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: taxonomy_index_tid
+          operator: or
+          value:
+            19: 19
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          vid: islandora_media_use
+          type: select
+          hierarchy: false
+          limit: true
+          error_message: true
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
+      style:
+        type: default
+        options:
+          grouping: {  }
+          row_class: ''
+          default_row_class: false
+      row:
+        type: fields
+        options:
+          default_field_elements: true
+          inline: {  }
+          separator: ''
+          hide_empty: false
+      defaults:
+        pager: false
+        style: false
+        row: false
+        relationships: false
+        fields: false
+        filters: false
+        filter_groups: false
+      relationships: {  }
+      display_description: 'Download button'
+      display_extenders: {  }
+      entity_type: node
+      bundles:
+        - asu_repository_item
+      show_title: false
+      argument_mode: id
+      default_argument: null
     cache_metadata:
       max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url
+        - user
         - user.permissions
       tags:
         - 'config:field.storage.media.field_file_size'
@@ -1154,27 +1239,26 @@ display:
         - 'config:field.storage.media.field_mime_type'
         - 'config:field.storage.media.field_width'
   entity_view_1:
-    display_plugin: entity_view
     id: entity_view_1
     display_title: 'Preservation Master - Download'
+    display_plugin: entity_view
     position: 1
     display_options:
-      display_extenders: {  }
-      display_description: 'Best quality representation of the Object appropriate for long-term preservation.'
+      title: 'Preservation Master'
       filters:
         status:
-          value: '1'
+          id: status
           table: media_field_data
           field: status
-          plugin_id: boolean
           entity_type: media
           entity_field: status
-          id: status
+          plugin_id: boolean
+          value: '1'
+          group: 1
           expose:
             operator: ''
             operator_limit_selection: false
             operator_list: {  }
-          group: 1
         field_external_uri_uri:
           id: field_external_uri_uri
           table: taxonomy_term__field_external_uri
@@ -1182,6 +1266,7 @@ display:
           relationship: field_media_use
           group_type: group
           admin_label: ''
+          plugin_id: string
           operator: '='
           value: 'http://pcdm.org/use#PreservationMasterFile'
           group: 1
@@ -1192,6 +1277,8 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
@@ -1199,8 +1286,6 @@ display:
             remember_roles:
               authenticated: authenticated
             placeholder: ''
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1213,20 +1298,20 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          plugin_id: string
-      defaults:
-        filters: false
-        filter_groups: false
       filter_groups:
         operator: AND
         groups:
           1: AND
+      defaults:
+        filters: false
+        filter_groups: false
+      display_description: 'Best quality representation of the Object appropriate for long-term preservation.'
+      display_extenders: {  }
       entity_type: node
       bundles: {  }
+      show_title: false
       argument_mode: id
       default_argument: null
-      title: 'Preservation Master'
-      show_title: false
     cache_metadata:
       max-age: -1
       contexts:
@@ -1236,27 +1321,26 @@ display:
         - user.permissions
       tags: {  }
   entity_view_2:
-    display_plugin: entity_view
     id: entity_view_2
     display_title: 'Original File - Download'
+    display_plugin: entity_view
     position: 1
     display_options:
-      display_extenders: {  }
-      display_description: 'The original creation format of a file'
+      title: 'Original File'
       filters:
         status:
-          value: '1'
+          id: status
           table: media_field_data
           field: status
-          plugin_id: boolean
           entity_type: media
           entity_field: status
-          id: status
+          plugin_id: boolean
+          value: '1'
+          group: 1
           expose:
             operator: ''
             operator_limit_selection: false
             operator_list: {  }
-          group: 1
         field_external_uri_uri:
           id: field_external_uri_uri
           table: taxonomy_term__field_external_uri
@@ -1264,6 +1348,7 @@ display:
           relationship: field_media_use
           group_type: group
           admin_label: ''
+          plugin_id: string
           operator: '='
           value: 'http://pcdm.org/use#OriginalFile'
           group: 1
@@ -1274,6 +1359,8 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
@@ -1281,8 +1368,6 @@ display:
             remember_roles:
               authenticated: authenticated
             placeholder: ''
-            operator_limit_selection: false
-            operator_list: {  }
           is_grouped: false
           group_info:
             label: ''
@@ -1295,20 +1380,20 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          plugin_id: string
-      defaults:
-        filters: false
-        filter_groups: false
       filter_groups:
         operator: AND
         groups:
           1: AND
+      defaults:
+        filters: false
+        filter_groups: false
+      display_description: 'The original creation format of a file'
+      display_extenders: {  }
       entity_type: node
       bundles: {  }
+      show_title: false
       argument_mode: id
       default_argument: null
-      title: 'Original File'
-      show_title: false
     cache_metadata:
       max-age: -1
       contexts:
@@ -1318,96 +1403,12 @@ display:
         - user.permissions
       tags: {  }
   entity_view_4:
-    display_plugin: entity_view
     id: entity_view_4
     display_title: 'Service File for insert into Download button'
+    display_plugin: entity_view
     position: 1
     display_options:
-      display_extenders: {  }
-      display_description: ''
-      filters:
-        status:
-          value: '1'
-          table: media_field_data
-          field: status
-          plugin_id: boolean
-          entity_type: media
-          entity_field: status
-          id: status
-          expose:
-            operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
-          group: 1
-        field_external_uri_uri:
-          id: field_external_uri_uri
-          table: taxonomy_term__field_external_uri
-          field: field_external_uri_uri
-          relationship: field_media_use
-          group_type: group
-          admin_label: ''
-          operator: '='
-          value: 'http://pcdm.org/use#ServiceFile'
-          group: 1
-          exposed: false
-          expose:
-            operator_id: ''
-            label: ''
-            description: ''
-            use_operator: false
-            operator: ''
-            identifier: ''
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            placeholder: ''
-            operator_limit_selection: false
-            operator_list: {  }
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          plugin_id: string
-      defaults:
-        filters: false
-        filter_groups: false
-        title: false
-        style: false
-        row: false
-        fields: false
-        arguments: false
-        pager: false
-      filter_groups:
-        operator: AND
-        groups:
-          1: AND
-      entity_type: node
-      bundles: {  }
       title: 'Service File'
-      show_title: false
-      style:
-        type: default
-        options:
-          row_class: ''
-          default_row_class: true
-          uses_fields: false
-      row:
-        type: fields
-        options:
-          default_field_elements: true
-          inline: {  }
-          separator: ''
-          hide_empty: false
       fields:
         field_width:
           id: field_width
@@ -1416,6 +1417,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: ''
           exclude: true
           alter:
@@ -1472,7 +1474,6 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
         field_media_image:
           id: field_media_image
           table: media__field_media_image
@@ -1480,6 +1481,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -1535,7 +1537,11 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
+      pager:
+        type: some
+        options:
+          offset: 0
+          items_per_page: 0
       arguments:
         field_media_of_target_id:
           id: field_media_of_target_id
@@ -1544,6 +1550,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: numeric
           default_action: 'not found'
           exception:
             value: all
@@ -1557,8 +1564,8 @@ display:
           summary_options:
             base_path: ''
             count: true
-            items_per_page: 25
             override: false
+            items_per_page: 25
           summary:
             sort_order: asc
             number_of_records: 0
@@ -1570,55 +1577,31 @@ display:
           validate_options: {  }
           break_phrase: false
           not: false
-          plugin_id: numeric
-      argument_mode: null
-      default_argument: null
-      pager:
-        type: some
-        options:
-          items_per_page: 0
-          offset: 0
-    cache_metadata:
-      max-age: -1
-      contexts:
-        - 'languages:language_content'
-        - 'languages:language_interface'
-        - url
-        - user.permissions
-      tags:
-        - 'config:field.storage.media.field_media_image'
-        - 'config:field.storage.media.field_width'
-  service_file:
-    display_plugin: entity_view
-    id: service_file
-    display_title: 'Service File'
-    position: 1
-    display_options:
-      display_extenders: {  }
-      display_description: 'A medium quality representation of the Object appropriate for serving to users.'
       filters:
         status:
-          value: '1'
+          id: status
           table: media_field_data
           field: status
-          plugin_id: boolean
           entity_type: media
           entity_field: status
-          id: status
+          plugin_id: boolean
+          value: '1'
+          group: 1
           expose:
             operator: ''
             operator_limit_selection: false
             operator_list: {  }
-          group: 1
-        field_external_uri_uri:
-          id: field_external_uri_uri
-          table: taxonomy_term__field_external_uri
-          field: field_external_uri_uri
-          relationship: field_media_use
+        field_media_use_target_id:
+          id: field_media_use_target_id
+          table: media__field_media_use
+          field: field_media_use_target_id
+          relationship: none
           group_type: group
           admin_label: ''
-          operator: '='
-          value: 'http://pcdm.org/use#ServiceFile'
+          plugin_id: taxonomy_index_tid
+          operator: or
+          value:
+            21: 21
           group: 1
           exposed: false
           expose:
@@ -1627,15 +1610,15 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            placeholder: ''
-            operator_limit_selection: false
-            operator_list: {  }
+            reduce: false
           is_grouped: false
           group_info:
             label: ''
@@ -1648,116 +1631,156 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          plugin_id: string
-      defaults:
-        filters: false
-        filter_groups: false
-        title: false
+          reduce_duplicates: false
+          vid: islandora_media_use
+          type: select
+          hierarchy: false
+          limit: true
+          error_message: true
       filter_groups:
         operator: AND
         groups:
           1: AND
-      entity_type: node
-      bundles: {  }
-      title: 'Service File'
-      show_title: false
-    cache_metadata:
-      max-age: -1
-      contexts:
-        - 'languages:language_content'
-        - 'languages:language_interface'
-        - url
-        - user.permissions
-      tags: {  }
-  thumbnail:
-    display_plugin: entity_view
-    id: thumbnail
-    display_title: Thumbnail
-    position: 1
-    display_options:
-      display_extenders: {  }
-      display_description: 'A low resolution image representation of the Object appropriate for using as an icon.'
-      filters:
-        status:
-          value: '1'
-          table: media_field_data
-          field: status
-          plugin_id: boolean
-          entity_type: media
-          entity_field: status
-          id: status
-          expose:
-            operator: ''
-            operator_limit_selection: false
-            operator_list: {  }
-          group: 1
-        field_external_uri_uri:
-          id: field_external_uri_uri
-          table: taxonomy_term__field_external_uri
-          field: field_external_uri_uri
-          relationship: field_media_use
-          group_type: group
-          admin_label: ''
-          operator: '='
-          value: 'http://pcdm.org/use#ThumbnailImage'
-          group: 1
-          exposed: false
-          expose:
-            operator_id: ''
-            label: ''
-            description: ''
-            use_operator: false
-            operator: ''
-            identifier: ''
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            placeholder: ''
-            operator_limit_selection: false
-            operator_list: {  }
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-          plugin_id: string
-      defaults:
-        filters: false
-        filter_groups: false
-        title: false
-        style: false
-        row: false
-        fields: false
-      filter_groups:
-        operator: AND
-        groups:
-          1: AND
-      entity_type: node
-      bundles: {  }
-      title: Thumbnail
-      show_title: false
       style:
         type: default
         options:
-          grouping: {  }
           row_class: ''
-          default_row_class: false
+          default_row_class: true
+          uses_fields: false
       row:
         type: fields
         options:
           default_field_elements: true
           inline: {  }
           separator: ''
-          hide_empty: true
+          hide_empty: false
+      defaults:
+        title: false
+        pager: false
+        style: false
+        row: false
+        relationships: false
+        fields: false
+        arguments: false
+        filters: false
+        filter_groups: false
+      relationships: {  }
+      display_description: ''
+      display_extenders: {  }
+      entity_type: node
+      bundles: {  }
+      show_title: false
+      argument_mode: null
+      default_argument: null
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
+        - user
+        - user.permissions
+      tags:
+        - 'config:field.storage.media.field_media_image'
+        - 'config:field.storage.media.field_width'
+  service_file:
+    id: service_file
+    display_title: 'Service File'
+    display_plugin: entity_view
+    position: 1
+    display_options:
+      title: 'Service File'
+      filters:
+        status:
+          id: status
+          table: media_field_data
+          field: status
+          entity_type: media
+          entity_field: status
+          plugin_id: boolean
+          value: '1'
+          group: 1
+          expose:
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+        field_media_use_target_id:
+          id: field_media_use_target_id
+          table: media__field_media_use
+          field: field_media_use_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: taxonomy_index_tid
+          operator: or
+          value:
+            21: 21
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          vid: islandora_media_use
+          type: select
+          hierarchy: false
+          limit: true
+          error_message: true
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
+      defaults:
+        title: false
+        relationships: false
+        filters: false
+        filter_groups: false
+      relationships: {  }
+      display_description: 'A medium quality representation of the Object appropriate for serving to users.'
+      display_extenders: {  }
+      entity_type: node
+      bundles: {  }
+      show_title: false
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
+        - user
+        - user.permissions
+      tags: {  }
+  thumbnail:
+    id: thumbnail
+    display_title: Thumbnail
+    display_plugin: entity_view
+    position: 1
+    display_options:
+      title: Thumbnail
       fields:
         field_media_image:
           id: field_media_image
@@ -1766,6 +1789,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -1822,47 +1846,31 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
-    cache_metadata:
-      max-age: -1
-      contexts:
-        - 'languages:language_content'
-        - 'languages:language_interface'
-        - url
-        - user.permissions
-      tags:
-        - 'config:field.storage.media.field_media_image'
-  thumbnail_card:
-    display_plugin: entity_view
-    id: thumbnail_card
-    display_title: 'Thumbnail Card'
-    position: 1
-    display_options:
-      display_extenders: {  }
-      display_description: 'A low resolution image representation of the Object appropriate for using as an icon.'
       filters:
         status:
-          value: '1'
+          id: status
           table: media_field_data
           field: status
-          plugin_id: boolean
           entity_type: media
           entity_field: status
-          id: status
+          plugin_id: boolean
+          value: '1'
+          group: 1
           expose:
             operator: ''
             operator_limit_selection: false
             operator_list: {  }
-          group: 1
-        field_external_uri_uri:
-          id: field_external_uri_uri
-          table: taxonomy_term__field_external_uri
-          field: field_external_uri_uri
-          relationship: field_media_use
+        field_media_use_target_id:
+          id: field_media_use_target_id
+          table: media__field_media_use
+          field: field_media_use_target_id
+          relationship: none
           group_type: group
           admin_label: ''
-          operator: '='
-          value: 'http://pcdm.org/use#ThumbnailImage'
+          plugin_id: taxonomy_index_tid
+          operator: or
+          value:
+            - 22
           group: 1
           exposed: false
           expose:
@@ -1871,15 +1879,15 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            placeholder: ''
-            operator_limit_selection: false
-            operator_list: {  }
+            reduce: false
           is_grouped: false
           group_info:
             label: ''
@@ -1892,22 +1900,16 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          plugin_id: string
-      defaults:
-        filters: false
-        filter_groups: false
-        title: false
-        style: false
-        row: false
-        fields: false
+          reduce_duplicates: false
+          vid: islandora_media_use
+          type: textfield
+          hierarchy: false
+          limit: true
+          error_message: true
       filter_groups:
         operator: AND
         groups:
           1: AND
-      entity_type: node
-      bundles: {  }
-      title: 'Thumbnail Card'
-      show_title: false
       style:
         type: default
         options:
@@ -1917,10 +1919,41 @@ display:
       row:
         type: fields
         options:
-          default_field_elements: false
+          default_field_elements: true
           inline: {  }
           separator: ''
           hide_empty: true
+      defaults:
+        title: false
+        style: false
+        row: false
+        relationships: false
+        fields: false
+        filters: false
+        filter_groups: false
+      relationships: {  }
+      display_description: 'A low resolution image representation of the Object appropriate for using as an icon.'
+      display_extenders: {  }
+      entity_type: node
+      bundles: {  }
+      show_title: false
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
+        - user
+        - user.permissions
+      tags:
+        - 'config:field.storage.media.field_media_image'
+  thumbnail_card:
+    id: thumbnail_card
+    display_title: 'Thumbnail Card'
+    display_plugin: entity_view
+    position: 1
+    display_options:
+      title: 'Thumbnail Card'
       fields:
         field_media_image:
           id: field_media_image
@@ -1929,6 +1962,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -1973,8 +2007,10 @@ display:
           click_sort_column: target_id
           type: image
           settings:
-            image_style: card_image
             image_link: ''
+            image_style: card_image
+            image_loading:
+              attribute: lazy
           group_column: ''
           group_columns: {  }
           group_rows: true
@@ -1985,47 +2021,31 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
-    cache_metadata:
-      max-age: -1
-      contexts:
-        - 'languages:language_content'
-        - 'languages:language_interface'
-        - url
-        - user.permissions
-      tags:
-        - 'config:field.storage.media.field_media_image'
-  thumbnail_url:
-    display_plugin: block
-    id: thumbnail_url
-    display_title: 'Thumbnail URL'
-    position: 1
-    display_options:
-      display_extenders: {  }
-      display_description: 'A low resolution image representation of the Object appropriate for using as an icon.'
       filters:
         status:
-          value: '1'
+          id: status
           table: media_field_data
           field: status
-          plugin_id: boolean
           entity_type: media
           entity_field: status
-          id: status
+          plugin_id: boolean
+          value: '1'
+          group: 1
           expose:
             operator: ''
             operator_limit_selection: false
             operator_list: {  }
-          group: 1
-        field_external_uri_uri:
-          id: field_external_uri_uri
-          table: taxonomy_term__field_external_uri
-          field: field_external_uri_uri
-          relationship: field_media_use
+        field_media_use_target_id:
+          id: field_media_use_target_id
+          table: media__field_media_use
+          field: field_media_use_target_id
+          relationship: none
           group_type: group
           admin_label: ''
-          operator: '='
-          value: 'http://pcdm.org/use#ThumbnailImage'
+          plugin_id: taxonomy_index_tid
+          operator: or
+          value:
+            - 22
           group: 1
           exposed: false
           expose:
@@ -2034,15 +2054,15 @@ display:
             description: ''
             use_operator: false
             operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
             identifier: ''
             required: false
             remember: false
             multiple: false
             remember_roles:
               authenticated: authenticated
-            placeholder: ''
-            operator_limit_selection: false
-            operator_list: {  }
+            reduce: false
           is_grouped: false
           group_info:
             label: ''
@@ -2055,20 +2075,16 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-          plugin_id: string
-      defaults:
-        filters: false
-        filter_groups: false
-        title: false
-        style: false
-        row: false
-        fields: false
-        show_admin_links: false
+          reduce_duplicates: false
+          vid: islandora_media_use
+          type: textfield
+          hierarchy: false
+          limit: true
+          error_message: true
       filter_groups:
         operator: AND
         groups:
           1: AND
-      title: ''
       style:
         type: default
         options:
@@ -2078,10 +2094,41 @@ display:
       row:
         type: fields
         options:
-          default_field_elements: false
+          default_field_elements: true
           inline: {  }
           separator: ''
           hide_empty: true
+      defaults:
+        title: false
+        style: false
+        row: false
+        relationships: false
+        fields: false
+        filters: false
+        filter_groups: false
+      relationships: {  }
+      display_description: 'A low resolution image representation of the Object appropriate for using as an icon.'
+      display_extenders: {  }
+      entity_type: node
+      bundles: {  }
+      show_title: false
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
+        - user
+        - user.permissions
+      tags:
+        - 'config:field.storage.media.field_media_image'
+  thumbnail_url:
+    id: thumbnail_url
+    display_title: 'Thumbnail URL'
+    display_plugin: block
+    position: 1
+    display_options:
+      title: ''
       fields:
         field_media_image:
           id: field_media_image
@@ -2090,6 +2137,7 @@ display:
           relationship: none
           group_type: group
           admin_label: ''
+          plugin_id: field
           label: ''
           exclude: false
           alter:
@@ -2145,14 +2193,103 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          plugin_id: field
+      filters:
+        status:
+          id: status
+          table: media_field_data
+          field: status
+          entity_type: media
+          entity_field: status
+          plugin_id: boolean
+          value: '1'
+          group: 1
+          expose:
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+        field_media_use_target_id:
+          id: field_media_use_target_id
+          table: media__field_media_use
+          field: field_media_use_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: taxonomy_index_tid
+          operator: or
+          value:
+            22: 22
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          vid: islandora_media_use
+          type: select
+          hierarchy: false
+          limit: true
+          error_message: true
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
+      style:
+        type: default
+        options:
+          grouping: {  }
+          row_class: ''
+          default_row_class: false
+      row:
+        type: fields
+        options:
+          default_field_elements: false
+          inline: {  }
+          separator: ''
+          hide_empty: true
+      defaults:
+        title: false
+        show_admin_links: false
+        style: false
+        row: false
+        relationships: false
+        fields: false
+        filters: false
+        filter_groups: false
+      relationships: {  }
+      display_description: 'A low resolution image representation of the Object appropriate for using as an icon.'
       show_admin_links: false
+      display_extenders: {  }
     cache_metadata:
       max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url
+        - user
         - user.permissions
       tags:
         - 'config:field.storage.media.field_media_image'

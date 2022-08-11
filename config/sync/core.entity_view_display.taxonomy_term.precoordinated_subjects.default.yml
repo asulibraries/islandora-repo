@@ -16,14 +16,14 @@ bundle: precoordinated_subjects
 mode: default
 content:
   description:
-    label: hidden
     type: text_default
-    weight: 0
-    region: content
+    label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
   field_authority_link:
-    weight: 1
+    type: authority_formatter_default
     label: above
     settings:
       trim_length: 80
@@ -32,22 +32,22 @@ content:
       rel: ''
       target: _blank
     third_party_settings: {  }
-    type: authority_formatter_default
+    weight: 1
     region: content
   field_subject_part:
-    weight: 2
+    type: entity_reference_label
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 2
     region: content
   field_subject_type:
-    weight: 3
+    type: list_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: list_default
+    weight: 3
     region: content
 hidden:
   langcode: true

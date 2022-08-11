@@ -3,8 +3,8 @@ status: true
 dependencies:
   module:
     - islandora
-name: pdfjs
 label: 'PDFjs Viewer'
+name: pdfjs
 group: Display
 description: 'Displays file using the PDFjs viewer'
 requireAllConditions: false
@@ -13,9 +13,9 @@ conditions:
   node_has_term:
     id: node_has_term
     negate: false
-    uri: 'http://mozilla.github.io/pdf.js'
     context_mapping:
       node: '@node.node_route_context:node'
+    uri: 'http://mozilla.github.io/pdf.js'
     logic: and
 reactions:
   view_mode_alter:

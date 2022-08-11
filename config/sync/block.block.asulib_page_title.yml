@@ -16,24 +16,24 @@ plugin: page_title_block
 settings:
   id: page_title_block
   label: 'Page title'
-  provider: core
   label_display: '0'
+  provider: core
 visibility:
   request_path:
     id: request_path
-    pages: "/user/*\r\n<front>\r\n/search*"
     negate: true
     context_mapping: {  }
+    pages: "/user/*\r\n<front>\r\n/search*"
   request_path_exclusion:
     id: request_path_exclusion
-    pages: ''
     negate: null
     context_mapping: {  }
+    pages: ''
   'entity_bundle:node':
     id: 'entity_bundle:node'
-    bundles:
-      asu_repository_item: asu_repository_item
-      collection: collection
     negate: true
     context_mapping:
       node: '@node.node_route_context:node'
+    bundles:
+      asu_repository_item: asu_repository_item
+      collection: collection

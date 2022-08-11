@@ -9,29 +9,29 @@ dependencies:
 id: asulib_local_tasks
 theme: asulib_barrio
 region: content
-weight: -28
+weight: -40
 provider: null
 plugin: local_tasks_block
 settings:
   id: local_tasks_block
   label: Tabs
-  provider: core
   label_display: '0'
+  provider: core
   primary: true
   secondary: true
 visibility:
   request_path_exclusion:
     id: request_path_exclusion
-    pages: ''
     negate: null
     context_mapping: {  }
+    pages: ''
   view_inclusion:
     id: view_inclusion
     negate: null
-    view_inclusion: {  }
     context_mapping: {  }
+    view_inclusion: {  }
   request_path:
     id: request_path
-    pages: '<front>'
     negate: true
     context_mapping: {  }
+    pages: '<front>'

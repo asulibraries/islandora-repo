@@ -19,14 +19,14 @@ plugin: 'facet_block:series'
 settings:
   id: 'facet_block:series'
   label: Series
-  provider: facets
   label_display: visible
+  provider: facets
   block_id: series
 visibility:
   request_path_exclusion:
     id: request_path_exclusion
-    pages: ''
     negate: true
+    pages: ''
   view_inclusion:
     id: view_inclusion
     negate: false
@@ -38,5 +38,24 @@ visibility:
     context_mapping: {  }
   request_path:
     id: request_path
-    pages: "/collections/126577/search*\r\n/collections/130827/search*"
     negate: false
+    pages: "/collections/126577/search*\r\n/collections/130827/search*\r\n/collections/143915/search*"
+  context_all:
+    id: context_all
+    negate: null
+    values: ''
+  user_status:
+    id: user_status
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    user_status:
+      viewing_profile: '0'
+      logged_viewing_profile: '0'
+      own_page_true: '0'
+      field_value: '0'
+    user_fields: uid
+  context:
+    id: context
+    negate: null
+    values: ''

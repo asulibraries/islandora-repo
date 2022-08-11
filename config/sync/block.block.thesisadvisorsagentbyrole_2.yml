@@ -1,0 +1,42 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.thesis_advisors_agent_by_role_col
+  module:
+    - context
+    - facets
+    - islandora
+    - system
+  theme:
+    - asulib_barrio
+id: thesisadvisorsagentbyrole_2
+theme: asulib_barrio
+region: sidebar_first
+weight: -4
+provider: null
+plugin: 'facet_block:thesis_advisors_agent_by_role_col'
+settings:
+  id: 'facet_block:thesis_advisors_agent_by_role_col'
+  label: 'Thesis Directors'
+  label_display: visible
+  provider: facets
+  block_id: thesisadvisorsagentbyrole_2
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: true
+    pages: ''
+  view_inclusion:
+    id: view_inclusion
+    negate: false
+    view_inclusion: {  }
+  media_source_mimetype:
+    id: media_source_mimetype
+    mimetype: ''
+    negate: false
+    context_mapping: {  }
+  request_path:
+    id: request_path
+    negate: false
+    pages: '/collections/130827/search*'

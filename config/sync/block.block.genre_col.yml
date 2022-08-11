@@ -12,28 +12,28 @@ dependencies:
 id: genre_col
 theme: asulib_barrio
 region: sidebar_first
-weight: -8
+weight: -12
 provider: null
 plugin: 'facet_block:genre_col'
 settings:
   id: 'facet_block:genre_col'
   label: Genre
-  provider: facets
   label_display: visible
+  provider: facets
   block_id: genre_col
 visibility:
   request_path_exclusion:
     id: request_path_exclusion
-    pages: ''
     negate: null
     context_mapping: {  }
+    pages: ''
   view_inclusion:
     id: view_inclusion
     negate: null
-    view_inclusion: {  }
     context_mapping: {  }
+    view_inclusion: {  }
   request_path:
     id: request_path
-    pages: '/collections/*/search*'
     negate: false
     context_mapping: {  }
+    pages: '/collections/*/search*'

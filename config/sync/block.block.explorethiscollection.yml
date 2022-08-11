@@ -11,34 +11,34 @@ dependencies:
 id: explorethiscollection
 theme: asulib_barrio
 region: sidebar_first
-weight: -34
+weight: -38
 provider: null
 plugin: explore_this_collection_block
 settings:
   id: explore_this_collection_block
   label: 'Explore this collection'
-  provider: asu_collection_extras
   label_display: visible
+  provider: asu_collection_extras
 visibility:
   request_path_exclusion:
     id: request_path_exclusion
-    pages: ''
     negate: null
     context_mapping: {  }
+    pages: ''
   view_inclusion:
     id: view_inclusion
     negate: null
-    view_inclusion: {  }
     context_mapping: {  }
-  node_type:
-    id: node_type
-    bundles:
-      collection: collection
+    view_inclusion: {  }
+  request_path:
+    id: request_path
+    negate: true
+    context_mapping: {  }
+    pages: "/node/add/collection\r\n/node/*/edit"
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
     negate: false
     context_mapping:
       node: '@node.node_route_context:node'
-  request_path:
-    id: request_path
-    pages: "/node/add/collection\r\n/node/*/edit"
-    negate: true
-    context_mapping: {  }
+    bundles:
+      collection: collection

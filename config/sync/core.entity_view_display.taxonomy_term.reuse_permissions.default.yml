@@ -15,22 +15,22 @@ bundle: reuse_permissions
 mode: default
 content:
   description:
-    label: hidden
     type: text_default
-    weight: 0
-    region: content
+    label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
   field_copyright_logo:
-    weight: 2
+    type: file_default
     label: above
     settings:
       use_description_as_link_text: true
     third_party_settings: {  }
-    type: file_default
+    weight: 2
     region: content
   field_source:
-    weight: 1
+    type: link
     label: above
     settings:
       trim_length: 80
@@ -39,7 +39,7 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    type: link
+    weight: 1
     region: content
 hidden:
   langcode: true

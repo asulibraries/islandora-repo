@@ -1,0 +1,33 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.duplicate_of_creators
+  module:
+    - facets
+    - islandora
+    - system
+  theme:
+    - asulib_barrio
+id: duplicateofcreators
+theme: asulib_barrio
+region: sidebar_first
+weight: 3
+provider: null
+plugin: 'facet_block:duplicate_of_creators'
+settings:
+  id: 'facet_block:duplicate_of_creators'
+  label: Contributors
+  label_display: visible
+  provider: facets
+  block_id: duplicateofcreators
+visibility:
+  media_source_mimetype:
+    id: media_source_mimetype
+    mimetype: ''
+    negate: false
+    context_mapping: {  }
+  request_path:
+    id: request_path
+    negate: false
+    pages: '/collections/*/search-alt*'

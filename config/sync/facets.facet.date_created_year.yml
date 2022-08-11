@@ -8,12 +8,18 @@ dependencies:
     - search_api
 id: date_created_year
 name: 'Date Created'
-url_alias: date_created_year
 weight: 0
 min_count: 1
-show_only_one_result: true
-field_identifier: etdf_created_year_only
+url_alias: date_created_year
 facet_source_id: 'search_api:views_page__solr_search_content__page_1'
+field_identifier: etdf_created_year_only
+query_operator: or
+hard_limit: 0
+exclude: false
+use_hierarchy: false
+keep_hierarchy_parents_active: false
+expand_hierarchy: false
+enable_parent_when_child_gets_disabled: true
 widget:
   type: range_slider
   config:
@@ -25,14 +31,11 @@ widget:
     max_type: search_result
     max_value: !!float 10
     step: !!float 1
-query_operator: or
-use_hierarchy: false
-keep_hierarchy_parents_active: false
-expand_hierarchy: false
-enable_parent_when_child_gets_disabled: true
-hard_limit: 0
-exclude: false
+empty_behavior:
+  behavior: none
 only_visible_when_facet_source_is_visible: false
+show_only_one_result: true
+show_title: false
 processor_configs:
   count_limit:
     processor_id: count_limit
@@ -59,6 +62,3 @@ processor_configs:
       pre_query: 50
       build: 15
     settings: {  }
-empty_behavior:
-  behavior: none
-show_title: false

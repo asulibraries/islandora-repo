@@ -4,6 +4,8 @@ dependencies: {  }
 id: dev_config
 label: 'Development Config'
 description: 'Settings that are specific for the dev environment'
+weight: 0
+storage: folder
 folder: ../config/dev
 module:
   devel: 0
@@ -11,11 +13,8 @@ module:
   migrate_devel: 0
   upgrade_status: 0
 theme: {  }
-blacklist:
+complete_list:
   - devel.settings
   - devel.toolbar.settings
   - upgrade_status.settings
-graylist: {  }
-graylist_dependents: true
-graylist_skip_equal: true
-weight: 0
+partial_list: {  }

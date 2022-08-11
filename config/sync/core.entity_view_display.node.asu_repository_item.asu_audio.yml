@@ -73,31 +73,31 @@ third_party_settings:
   field_group:
     group_sidebar:
       children: {  }
+      label: Sidebar
       parent_name: ''
+      region: hidden
       weight: 69
       format_type: details_sidebar
-      region: hidden
       format_settings:
-        id: ''
         classes: ''
-        description: ''
+        id: ''
         open: false
-        weight: 0
+        description: ''
         required_fields: false
-      label: Sidebar
+        weight: 0
     group_details:
       children: {  }
+      label: Details
       parent_name: ''
+      region: hidden
       weight: 70
       format_type: details
-      region: hidden
       format_settings:
-        id: ''
         classes: ''
-        description: ''
+        id: ''
         open: false
+        description: ''
         required_fields: false
-      label: Details
 id: node.asu_repository_item.asu_audio
 targetEntityType: node
 bundle: asu_repository_item
@@ -109,37 +109,37 @@ content:
     settings: {  }
     third_party_settings: {  }
   display_media_entity_view_3:
-    weight: 10
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 10
+    region: content
   field_additional_memberships:
-    weight: 39
+    type: entity_reference_entity_view
     label: hidden
     settings:
-      link: true
       view_mode: default
+      link: true
     third_party_settings: {  }
-    type: entity_reference_entity_view
+    weight: 39
     region: content
   field_coordinates:
-    weight: 38
+    type: geolocation_latlng
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: geolocation_latlng
+    weight: 38
     region: content
   field_copyright_statement:
-    weight: 25
+    type: entity_reference_entity_view
     label: above
     settings:
       view_mode: image_as_link
       link: false
     third_party_settings: {  }
-    type: entity_reference_entity_view
+    weight: 25
     region: content
   field_date_digitized:
-    weight: 34
+    type: edtf_default
     label: above
     settings:
       date_separator: dash
@@ -147,34 +147,34 @@ content:
       month_format: mm
       day_format: dd
     third_party_settings: {  }
-    type: edtf_default
+    weight: 34
     region: content
   field_default_derivative_file_pe:
-    weight: 55
+    type: entity_reference_label
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 55
     region: content
   field_default_original_file_perm:
-    weight: 54
+    type: entity_reference_label
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 54
     region: content
   field_edition:
-    weight: 17
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 17
     region: content
   field_edtf_date_created:
-    weight: 16
+    type: edtf_default
     label: above
     settings:
       date_separator: dash
@@ -182,31 +182,31 @@ content:
       month_format: mm
       day_format: dd
     third_party_settings: {  }
-    type: edtf_default
+    weight: 16
     region: content
   field_embargo_release_date:
-    weight: 51
+    type: datetime_default
     label: above
     settings:
-      format_type: medium
       timezone_override: ''
+      format_type: medium
     third_party_settings: {  }
-    type: datetime_default
+    weight: 51
     region: content
   field_extent:
-    weight: 9
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 9
     region: content
   field_frequency:
-    weight: 30
+    type: list_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: list_default
+    weight: 30
     region: content
   field_gemini_uri:
     weight: 46
@@ -214,7 +214,7 @@ content:
     settings: {  }
     third_party_settings: {  }
   field_genre:
-    weight: 3
+    type: searchable_entity_formatter
     label: above
     settings:
       search_link: 'search?f[0]'
@@ -222,43 +222,43 @@ content:
       search_term: true
       link: true
     third_party_settings: {  }
-    type: searchable_entity_formatter
+    weight: 3
     region: content
   field_geographic_subject:
-    weight: 41
+    type: searchable_entity_formatter
     label: hidden
     settings:
-      link: true
       search_link: 'search?f[0]'
       search_var: all_subjects
       search_term: false
+      link: true
     third_party_settings: {  }
-    type: searchable_entity_formatter
+    weight: 41
     region: content
   field_handle:
-    weight: 14
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 14
     region: content
   field_history:
-    weight: 53
+    type: jsonb_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: jsonb_default
+    weight: 53
     region: content
   field_issuance:
-    weight: 29
+    type: list_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: list_default
+    weight: 29
     region: content
   field_language:
-    weight: 8
+    type: searchable_entity_formatter
     label: above
     settings:
       search_link: 'search?f[0]'
@@ -266,121 +266,121 @@ content:
       search_term: true
       link: true
     third_party_settings: {  }
-    type: searchable_entity_formatter
+    weight: 8
     region: content
   field_linked_agent:
-    weight: 4
+    type: typed_relation_brief
     label: hidden
     settings:
       link: true
     third_party_settings: {  }
-    type: typed_relation_brief
+    weight: 4
     region: content
   field_member_of:
-    weight: 5
+    type: entity_reference_label
     label: hidden
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 5
     region: content
   field_model:
-    weight: 20
+    type: entity_reference_label
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 20
     region: content
   field_name_title_subject:
-    weight: 44
+    type: searchable_entity_formatter
     label: hidden
     settings:
-      link: true
       search_link: 'search?f[0]'
       search_var: all_subjects
       search_term: false
+      link: true
     third_party_settings: {  }
-    type: searchable_entity_formatter
+    weight: 44
     region: content
   field_note_para:
     type: entity_reference_revisions_entity_view
-    weight: 23
     label: above
     settings:
       view_mode: default
       link: ''
     third_party_settings: {  }
+    weight: 23
     region: content
   field_open_access:
-    weight: 28
+    type: boolean
     label: hidden
     settings:
       format: custom
-      format_custom_true: 'Open Access'
       format_custom_false: ''
+      format_custom_true: 'Open Access'
     third_party_settings: {  }
-    type: boolean
+    weight: 28
     region: content
   field_peer_reviewed:
-    weight: 27
+    type: boolean
     label: hidden
     settings:
       format: custom
-      format_custom_true: Peer-reviewed
       format_custom_false: ''
+      format_custom_true: Peer-reviewed
     third_party_settings: {  }
-    type: boolean
+    weight: 27
     region: content
   field_pid:
-    weight: 32
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 32
     region: content
   field_place_of_publication_code:
-    weight: 52
+    type: entity_reference_label
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 52
     region: content
   field_place_published:
-    weight: 18
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 18
     region: content
   field_preferred_citation:
-    weight: 22
+    type: text_default
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    type: text_default
+    weight: 22
     region: content
   field_preservation_state:
-    weight: 19
+    type: entity_reference_label
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 19
     region: content
   field_related_item:
-    weight: 36
+    type: typed_relation_brief
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    type: typed_relation_brief
+    weight: 36
     region: content
   field_resource_type:
-    weight: 31
+    type: searchable_entity_formatter
     label: above
     settings:
       search_link: 'search?f[0]'
@@ -388,136 +388,136 @@ content:
       search_term: true
       link: true
     third_party_settings: {  }
-    type: searchable_entity_formatter
+    weight: 31
     region: content
   field_reuse_permissions:
-    weight: 26
+    type: entity_reference_entity_view
     label: above
     settings:
       view_mode: image_as_link
       link: false
     third_party_settings: {  }
-    type: entity_reference_entity_view
+    weight: 26
     region: content
   field_rich_description:
     type: text_default
-    weight: 2
-    region: content
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 2
+    region: content
   field_series:
-    weight: 35
+    type: string
     label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 35
     region: content
   field_statement_responsibility:
-    weight: 37
+    type: basic_string
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    type: basic_string
+    weight: 37
     region: content
   field_subject:
-    weight: 40
+    type: searchable_entity_formatter
     label: hidden
     settings:
-      link: true
       search_link: 'search?f[0]'
       search_var: all_subjects
       search_term: false
+      link: true
     third_party_settings: {  }
-    type: searchable_entity_formatter
+    weight: 40
     region: content
   field_subjects_name:
-    weight: 43
+    type: searchable_entity_formatter
     label: hidden
     settings:
-      link: true
       search_link: 'search?f[0]'
       search_var: all_subjects
       search_term: false
+      link: true
     third_party_settings: {  }
-    type: searchable_entity_formatter
+    weight: 43
     region: content
   field_table_of_contents:
-    weight: 7
+    type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: text_default
+    weight: 7
     region: content
   field_temporal_subject:
-    weight: 42
+    type: searchable_entity_formatter
     label: hidden
     settings:
-      link: true
       search_link: 'search?f[0]'
       search_var: all_subjects
       search_term: false
+      link: true
     third_party_settings: {  }
-    type: searchable_entity_formatter
+    weight: 42
     region: content
   field_title:
     type: entity_reference_revisions_entity_view
-    weight: 1
     label: above
     settings:
       view_mode: default
       link: ''
     third_party_settings: {  }
+    weight: 1
     region: content
   field_title_subject:
-    weight: 45
+    type: searchable_entity_formatter
     label: hidden
     settings:
-      link: true
       search_link: 'search?f[0]'
       search_var: all_subjects
       search_term: false
+      link: true
     third_party_settings: {  }
-    type: searchable_entity_formatter
+    weight: 45
     region: content
   field_typed_identifier:
     type: entity_reference_revisions_entity_view
-    weight: 24
     label: above
     settings:
       view_mode: default
       link: ''
     third_party_settings: {  }
+    weight: 24
     region: content
   field_weight:
-    weight: 21
+    type: number_integer
     label: above
     settings:
       thousand_separator: ''
       prefix_suffix: true
     third_party_settings: {  }
-    type: number_integer
+    weight: 21
     region: content
   langcode:
     type: language
-    weight: 47
-    region: content
     label: above
     settings:
       link_to_entity: false
       native_language: false
     third_party_settings: {  }
+    weight: 47
+    region: content
   links:
     weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
   video_media_evas_entity_view_1:
-    weight: 12
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 12
+    region: content
 hidden:
   display_media_child_thumbnail: true
   display_media_download_button: true

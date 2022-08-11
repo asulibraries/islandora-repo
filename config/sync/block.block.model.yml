@@ -14,23 +14,23 @@ dependencies:
 id: model
 theme: asulib_barrio
 region: sidebar_first
-weight: 0
+weight: -2
 provider: null
 plugin: 'facet_block:model_global'
 settings:
   id: 'facet_block:model_global'
   label: Model
-  provider: facets
   label_display: visible
+  provider: facets
   block_id: model
 visibility:
   request_path_exclusion:
     id: request_path_exclusion
+    negate: true
     pages: ''
-    negate: null
   view_inclusion:
     id: view_inclusion
-    negate: null
+    negate: false
     view_inclusion: {  }
   media_source_mimetype:
     id: media_source_mimetype
@@ -39,13 +39,32 @@ visibility:
     context_mapping: {  }
   request_path:
     id: request_path
-    pages: '/search*'
     negate: false
+    pages: '/search*'
   user_role:
     id: user_role
-    roles:
-      administrator: administrator
-      repositor_manager: repositor_manager
     negate: false
     context_mapping:
       user: '@user.current_user_context:current_user'
+    roles:
+      administrator: administrator
+      repositor_manager: repositor_manager
+  context_all:
+    id: context_all
+    negate: null
+    values: ''
+  user_status:
+    id: user_status
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    user_status:
+      viewing_profile: '0'
+      logged_viewing_profile: '0'
+      own_page_true: '0'
+      field_value: '0'
+    user_fields: uid
+  context:
+    id: context
+    negate: null
+    values: ''

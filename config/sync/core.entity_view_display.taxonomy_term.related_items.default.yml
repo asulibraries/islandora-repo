@@ -14,14 +14,14 @@ bundle: related_items
 mode: default
 content:
   description:
-    label: hidden
     type: text_default
-    weight: 0
-    region: content
+    label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
   field_external_uri:
-    weight: 1
+    type: link
     label: above
     settings:
       trim_length: 80
@@ -30,15 +30,15 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    type: link
+    weight: 1
     region: content
   field_local_item:
-    weight: 2
+    type: entity_reference_label
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 2
     region: content
 hidden:
   langcode: true

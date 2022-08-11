@@ -11,24 +11,23 @@ dependencies:
     - field.field.media.audio.field_original_name
     - field.field.media.audio.field_track
     - media.type.audio
+  module:
+    - islandora_audio
   enforced:
     module:
       - islandora_core_feature
-  module:
-    - islandora_audio
 id: media.audio.source
 targetEntityType: media
 bundle: audio
 mode: source
 content:
   field_gemini_uri:
-    weight: 100
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 100
+    region: content
   field_media_audio_file:
     type: islandora_file_audio
-    weight: 0
     label: visually_hidden
     settings:
       controls: true
@@ -36,6 +35,7 @@ content:
       autoplay: false
       loop: false
     third_party_settings: {  }
+    weight: 0
     region: content
 hidden:
   created: true

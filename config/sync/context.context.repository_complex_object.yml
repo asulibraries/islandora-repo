@@ -3,8 +3,8 @@ status: true
 dependencies:
   module:
     - islandora
-name: repository_complex_object
 label: 'Repository Complex Object'
+name: repository_complex_object
 group: Display
 description: 'Complex Object view mode and related'
 requireAllConditions: false
@@ -12,12 +12,12 @@ disabled: true
 conditions:
   node_has_term:
     id: node_has_term
-    logic: and
     negate: false
     uuid: 792a0004-5337-4696-b6c2-7b52e6461066
-    uri: 'https://schema.org/MediaObject'
     context_mapping:
       node: '@node.node_route_context:node'
+    uri: 'https://schema.org/MediaObject'
+    logic: and
 reactions:
   view_mode_alter:
     id: view_mode_alter

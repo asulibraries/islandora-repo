@@ -1,5 +1,5 @@
 field_title:
-  '_top': titleInfo
+  _top: titleInfo
   '@supplied': field_supplied
   title:
     '#': field_main_title
@@ -8,112 +8,112 @@ field_title:
 field_rich_description: abstract
 field_table_of_contents: tableOfContents
 field_linked_agent:
-  '_top': name
+  _top: name
   '@type': bundle
   '@authority': field_authority_link/source
   '@valueURI': field_authority_link/uri
   role:
     roleTerm:
-      '@type': 'code'
+      '@type': code
       '#': rel_type
   namePart: name
 field_language:
-  '_top': language
+  _top: language
   languageTerm:
-    '@type': "code"
-    '@authority': "iso639-2b"
+    '@type': code
+    '@authority': iso639-2b
     '#': name
 field_note_para:
-  '_top': note
+  _top: note
   '@type': field_note_type/name
   '#': field_note_text
 field_preferred_citation:
-  '_top': note
+  _top: note
   '@type': 'preferred citation'
   '#': field_preferred_citation
 field_statement_responsibility:
-  '_top': note
+  _top: note
   '@type': 'statement of responsibility'
   '#': field_statement_responsibility
 field_typed_identifier:
-  '_top': identifier
+  _top: identifier
   '@type': field_identifier_type/name
   '#': field_identifier_value
 field_handle:
-  '_top': identifier
-  '@type': 'hdl'
+  _top: identifier
+  '@type': hdl
   '#': field_handle
 field_peer_reviewed:
-  '_top': genre
-  '@authority': "getty"
-  "@valueURI": "http://vocab.getty.edu/page/aat/300380321"
+  _top: genre
+  '@authority': getty
+  '@valueURI': 'http://vocab.getty.edu/page/aat/300380321'
   '#': field_peer_reviewed
 field_open_access:
-  '_top': genre
-  '@authority': "local"
-  '@valueURI': "https://repository.lib.asu.edu/taxonomy/term/1"
+  _top: genre
+  '@authority': local
+  '@valueURI': 'https://repository.lib.asu.edu/taxonomy/term/1'
   '#': field_open_access
 field_genre:
-  '_top': genre
+  _top: genre
   '@authority': field_authority_link/source
   '@valueURI': field_authority_link/uri
   '#': name
 field_extent:
-  '_top': physicalDescription
+  _top: physicalDescription
   extent: field_extent
 status:
-  '_top': recordInfo
+  _top: recordInfo
   recordInfoNote:
-    '@type': "visibility"
+    '@type': visibility
     '#': status
 created:
-  '_top': recordInfo
+  _top: recordInfo
   recordCreationDate:
     '#': created
 changed:
-  '_top': recordInfo
+  _top: recordInfo
   recordChangeDate:
-    '@encoding': "iso8601"
+    '@encoding': iso8601
     '#': changed
 nid:
-  '_top': recordInfo
+  _top: recordInfo
   recordIdentifier:
-    '@source': 'aztes'
+    '@source': aztes
     '#': nid
 uid:
-  '_top': recordInfo
+  _top: recordInfo
   recordContentSource:
     '#': uid
 field_copyright_statement:
-  '_top': accessCondition
+  _top: accessCondition
   '@type': 'use and reproduction'
   '#': name
 field_reuse_permissions:
-  '_top': accessCondition
+  _top: accessCondition
   '@type': 'use and reproduction'
   '#': name
 field_member_of:
-  '_top': relatedItem
-  '@type': 'host'
+  _top: relatedItem
+  '@type': host
   '@xlink:href': field_handle
 field_additional_memberships:
-  '_top': relatedItem
-  '@type': 'host'
+  _top: relatedItem
+  '@type': host
   '@xlink:href': field_handle
 field_edtf_copyright_date:
-  '_top': originInfo
+  _top: originInfo
   copyrightDate: field_edtf_copyright_date
 field_edtf_date_created:
-  '_top': originInfo
+  _top: originInfo
   dateCreated: field_edtf_date_created
 field_edition:
-  '_top': originInfo
+  _top: originInfo
   edition: field_edition
 field_issuance:
-  '_top': originInfo
+  _top: originInfo
   issuance: field_issuance
 field_frequency:
-  '_top': originInfo
+  _top: originInfo
   frequency: field_frequency
 # TODO place/placeTerm doesn't work with triple nested
 # field_place_of_publication_code:
@@ -130,38 +130,36 @@ field_frequency:
 #       '#': field_place_published
 #       '@type': 'text'
 field_embargo_release_date:
-  '_top': originInfo
+  _top: originInfo
   dateOther:
-    '@type': 'embargo'
-    '@point': 'end'
-    '#': 'field_embargo_release_date'
+    '@type': embargo
+    '@point': end
+    '#': field_embargo_release_date
 field_resource_type:
-  '_top': typeOfResource
+  _top: typeOfResource
   '@authority': field_external_authority_link/source
   '@valueURI': field_external_authority_link/uri
   '#': name
 field_geographic_subject:
-  '_top': subject
+  _top: subject
   geographic:
     '@authority': field_authority_link/source
     '@valueURI': field_authority_link/uri
     '#': name
 field_temporal_subject:
-  '_top': subject
+  _top: subject
   temporal:
-    # '@point': todo
-    # '@encoding': todo
     '@authority': field_authority_link/source
     '@valueURI': field_authority_link/uri
     '#': name
 field_subject:
-  '_top': subject
+  _top: subject
   topic:
     '@authority': field_authority_link/source
     '@valueURI': field_authority_link/uri
     '#': name
 field_subjects_name:
-  '_top': subject
+  _top: subject
   name:
     '@authority': field_authority_link/source
     '@valueURI': field_authority_link/uri
@@ -171,7 +169,7 @@ field_subjects_name:
   # subject:
 # # TODO - figure out the storage on this one
 field_title_subject:
-  '_top': subject
+  _top: subject
   title:
     '@authority': field_authority_link/source
     '@valueURI': field_authority_link/uri

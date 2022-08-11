@@ -1,15 +1,15 @@
 langcode: en
 status: true
 dependencies:
-  enforced:
-    module:
-      - media
-      - islandora_core_feature
   module:
     - field_permissions
     - file
     - image
     - media
+  enforced:
+    module:
+      - media
+      - islandora_core_feature
 third_party_settings:
   field_permissions:
     permission_type: public
@@ -18,6 +18,9 @@ field_name: field_media_image
 entity_type: media
 type: image
 settings:
+  target_type: file
+  display_field: false
+  display_default: false
   uri_scheme: fedora
   default_image:
     uuid: ''
@@ -25,9 +28,6 @@ settings:
     title: ''
     width: null
     height: null
-  target_type: file
-  display_field: false
-  display_default: false
 module: image
 locked: false
 cardinality: 1

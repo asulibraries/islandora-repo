@@ -24,30 +24,30 @@ third_party_settings:
         - field_cat_date_end
         - field_relationships
         - status
+      label: 'Advanced fields'
+      region: content
       parent_name: ''
       weight: 2
       format_type: details
-      region: content
       format_settings:
-        id: ''
         classes: ''
-        effect: none
+        id: ''
         open: false
         required_fields: true
-      label: 'Advanced fields'
+        effect: none
     group_fields:
       children: {  }
+      label: Fields
+      region: hidden
       parent_name: ''
       weight: 4
       format_type: accordion_item
-      region: hidden
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         formatter: closed
-        required_fields: true
         description: ''
-      label: Fields
+        required_fields: true
 id: taxonomy_term.person.default
 targetEntityType: taxonomy_term
 bundle: person
@@ -62,13 +62,13 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_authority_link:
+    type: authority_link_default
     weight: 1
+    region: content
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
-    type: authority_link_default
-    region: content
   field_cat_date_begin:
     type: edtf_default
     weight: 25
@@ -130,3 +130,4 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+hidden: {  }

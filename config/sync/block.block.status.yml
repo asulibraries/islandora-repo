@@ -12,23 +12,23 @@ dependencies:
 id: status
 theme: asulib_barrio
 region: sidebar_first
-weight: -15
+weight: -18
 provider: null
 plugin: 'facet_block:status'
 settings:
   id: 'facet_block:status'
   label: Status
-  provider: facets
   label_display: visible
+  provider: facets
   block_id: status
 visibility:
   request_path_exclusion:
     id: request_path_exclusion
-    pages: ''
     negate: null
     context_mapping: {  }
+    pages: ''
   request_path:
     id: request_path
-    pages: '/search*'
     negate: false
     context_mapping: {  }
+    pages: '/search*'

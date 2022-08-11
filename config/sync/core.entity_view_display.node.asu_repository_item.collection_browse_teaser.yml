@@ -65,56 +65,56 @@ third_party_settings:
   field_group:
     group_sidebar:
       children: {  }
+      label: Sidebar
       parent_name: ''
+      region: hidden
       weight: 68
       format_type: details_sidebar
-      region: hidden
       format_settings:
-        id: ''
         classes: ''
-        description: ''
+        id: ''
         open: false
-        weight: 0
+        description: ''
         required_fields: false
-      label: Sidebar
+        weight: 0
     group_details:
       children: {  }
+      label: Details
       parent_name: ''
+      region: hidden
       weight: 69
       format_type: details
-      region: hidden
       format_settings:
-        id: ''
         classes: ''
-        description: ''
+        id: ''
         open: false
+        description: ''
         required_fields: false
-      label: Details
 id: node.asu_repository_item.collection_browse_teaser
 targetEntityType: node
 bundle: asu_repository_item
 mode: collection_browse_teaser
 content:
   display_media_thumbnail:
-    weight: 0
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
   field_model:
     type: entity_reference_label
-    weight: 2
-    region: content
     label: hidden
     settings:
       link: false
     third_party_settings: {  }
+    weight: 2
+    region: content
   field_title:
     type: complex_title_formatter
-    weight: 1
     label: above
     settings:
       link: ''
     third_party_settings: {  }
+    weight: 1
     region: content
 hidden:
   content_moderation_control: true

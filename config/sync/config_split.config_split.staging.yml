@@ -4,6 +4,8 @@ dependencies: {  }
 id: staging
 label: 'Staging Config'
 description: 'Staging Settings that are specific per environment'
+weight: 0
+storage: folder
 folder: ../config/staging
 module:
   hdl: 0
@@ -14,7 +16,7 @@ module:
   clamav: 0
   s3fs: 0
 theme: {  }
-blacklist:
+complete_list:
   - hdl.settings
   - matomo.settings
   - smtp.settings
@@ -22,7 +24,7 @@ blacklist:
   - cdn.settings
   - clamav.settings
   - s3fs.settings
-graylist:
+partial_list:
   - context.context.openseadragon_block
   - context.context.open_seadragon
   - islandora.settings
@@ -34,6 +36,3 @@ graylist:
   - matomo.settings
   - search_api.server.default_solr_server
   - simple_sitemap.settings
-graylist_dependents: false
-graylist_skip_equal: true
-weight: 0

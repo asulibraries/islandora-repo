@@ -1,8 +1,25 @@
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - media.type.audio
+    - media.type.document
+    - media.type.file
+    - media.type.image
+    - media.type.remote_video
+    - media.type.video
+  module:
+    - file_replace
+    - media
 id: fedoraadmin
 label: fedoraAdmin
 weight: 3
 is_admin: null
-permissions: {  }
+permissions:
+  - 'create audio media'
+  - 'create document media'
+  - 'create file media'
+  - 'create image media'
+  - 'create remote_video media'
+  - 'create video media'
+  - 'replace files'

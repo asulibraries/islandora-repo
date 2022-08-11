@@ -11,34 +11,34 @@ dependencies:
 id: aboutthisitem
 theme: asulib_barrio
 region: sidebar_first
-weight: -37
+weight: -41
 provider: null
 plugin: about_this_item_block
 settings:
   id: about_this_item_block
   label: 'About this item'
-  provider: asu_item_extras
   label_display: visible
+  provider: asu_item_extras
 visibility:
-  node_type:
-    id: node_type
-    bundles:
-      asu_repository_item: asu_repository_item
-    negate: false
-    context_mapping:
-      node: '@node.node_route_context:node'
   request_path_exclusion:
     id: request_path_exclusion
-    pages: ''
     negate: null
     context_mapping: {  }
+    pages: ''
   request_path:
     id: request_path
-    pages: "/node/add/asu_repository_item\r\n/node/*/edit"
     negate: true
     context_mapping: {  }
+    pages: "/node/add/asu_repository_item\r\n/node/*/edit"
   view_inclusion:
     id: view_inclusion
     negate: null
-    view_inclusion: {  }
     context_mapping: {  }
+    view_inclusion: {  }
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      asu_repository_item: asu_repository_item
