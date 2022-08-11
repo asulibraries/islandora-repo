@@ -15,29 +15,29 @@ bundle: precoordinated_subjects
 mode: simple_taxo_create
 content:
   field_authority_link:
+    type: authority_link_brief
     weight: 1
+    region: content
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
-    type: authority_link_brief
-    region: content
   field_subject_part:
+    type: entity_reference_autocomplete
     weight: 2
+    region: content
     settings:
       match_operator: STARTS_WITH
       match_limit: 25
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
   field_subject_type:
+    type: options_select
     weight: 3
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: options_select
-    region: content
   name:
     type: string_textfield
     weight: 0

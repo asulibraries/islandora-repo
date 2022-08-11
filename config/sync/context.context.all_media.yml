@@ -3,8 +3,8 @@ status: true
 dependencies:
   module:
     - islandora
-name: all_media
 label: 'All Media'
+name: all_media
 group: Indexing
 description: 'All media, regardless of where it lives'
 requireAllConditions: false
@@ -35,7 +35,6 @@ reactions:
     id: index
     actions:
       index_media_in_fedora: index_media_in_fedora
-      index_media_in_triplestore: index_media_in_triplestore
     saved: false
   delete:
     id: delete

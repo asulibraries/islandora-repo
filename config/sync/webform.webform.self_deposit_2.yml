@@ -1,0 +1,449 @@
+langcode: en
+status: open
+dependencies:
+  module:
+    - self_deposit
+weight: 0
+open: null
+close: null
+uid: 1
+template: false
+archive: false
+id: self_deposit_2
+title: 'Share Your Work'
+description: 'Form for faculty, staff, and students to self deposit their work into KEEP'
+category: ''
+elements: |-
+  into_text:
+    '#type': processed_text
+    '#text': |
+      <h1>Share your work</h1>
+      
+      <p style="text-align:start; margin-bottom:16px"><span style="color:#000000"><span style="font-style:normal"><span style="font-weight:normal"><span style="white-space:normal"><span style="text-decoration:none"><span style="background-color:#ffffff"><span style="box-sizing:border-box"><span style="font-size:12pt"><span style="font-family:Arial, sans-serif"><span style="color:#282d31">KEEP is the new and improved home for the preservation of scholarship produced by ASU faculty, staff, and students. Find and submit open access articles, collaborative research projects, musical performances, theses and dissertations and more!</span></span></span></span></span></span></span></span></span></span></p>
+      
+      <p style="text-align:start; margin-bottom:16px"><span style="color:#000000"><span style="font-style:normal"><span style="font-weight:normal"><span style="white-space:normal"><span style="text-decoration:none"><span style="background-color:#ffffff"><span style="box-sizing:border-box"><span style="font-size:12pt"><span style="font-family:Arial, sans-serif"><span style="color:#282d31">We are now accepting submissions of scholarly and academic works from ASU faculty and staff. ASU students should contact their program in order to submit a work to an existing collection. Program faculty and staff may contact the Digital Repository Services team for more information about setting up a new collection.&nbsp;</span></span></span></span></span></span></span></span></span></span></p>
+      
+      <p>&nbsp;</p>
+      
+      <h3>Please note</h3>
+      
+      <p>If you would like to deposit multiple files,&nbsp;<a href="/contact">contact the Digital Repository Services team</a>&nbsp;for assistance with deposit.</p>
+      
+      <p>If materials include data sets or were the product of funded research,&nbsp;<a href="https://lib.asu.edu/research/contact">contact the Research Data Management team</a>&nbsp;for assistance with deposit.</p>
+      
+    '#format': full_html
+  about_you:
+    '#type': webform_wizard_page
+    '#title': 'About you'
+    '#open': true
+    your_name:
+      '#type': textfield
+      '#title': 'Your name'
+      '#required': true
+    your_asurite:
+      '#type': textfield
+      '#title': 'Your ASUrite'
+      '#default_value': '[current-user:account-name]'
+    your_email:
+      '#type': email
+      '#title': 'Your email'
+      '#required': true
+    your_role_at_asu:
+      '#type': webform_checkboxes_other
+      '#title': 'Your role at ASU'
+      '#options':
+        Faculty: Faculty
+        'Academic Professional': 'Academic Professional'
+        Staff: Staff
+        'Graduate Student': 'Graduate Student'
+        'Undergraduate Student': 'Undergraduate Student'
+        TA/RA: TA/RA
+      '#other__option_label': Other
+    asu_unit:
+      '#type': textfield
+      '#title': 'ASU unit'
+      '#description': 'Please provide us with the ASU unit you are associated with.'
+  about_your_item_page:
+    '#type': webform_wizard_page
+    '#title': 'About your item'
+    '#open': true
+    item_title:
+      '#type': textarea
+      '#title': 'Item title'
+      '#description': 'The title of the item'
+      '#rows': 2
+      '#required': true
+    material_type:
+      '#type': webform_checkboxes_other
+      '#title': 'Material type'
+      '#options':
+        'Individual materials (examples: pre- or post-print articles, presentations, grey literature, faculty works or graduate student materials)': 'Individual materials (examples: pre- or post-print articles, presentations, grey literature, faculty works or graduate student materials)'
+        'Group project materials (examples: faculty or graduate student group project materials)': 'Group project materials (examples: faculty or graduate student group project materials)'
+        'Academic or research unit, department, center, label, or institute materials (examples: ASU-hosted conference proceedings, outreach or event publications, unit brochures, materials about the unit history)': 'Academic or research unit, department, center, label, or institute materials (examples: ASU-hosted conference proceedings, outreach or event publications, unit brochures, materials about the unit history)'
+      '#other__option_label': Other
+      '#other__placeholder': 'please describe'
+    item_description:
+      '#type': textarea
+      '#title': 'Item description'
+      '#description': 'A description of the item. This could be an abstract or a table of contents.'
+    suggested_collection:
+      '#type': entity_autocomplete
+      '#title': 'Suggested collection'
+      '#description': 'If you know which collection this item belongs to, please select it here.'
+      '#target_type': node
+      '#selection_handler': 'default:node'
+      '#selection_settings':
+        target_bundles:
+          collection: collection
+    creation_date:
+      '#type': textfield
+      '#title': 'Creation date'
+      '#description': 'Please provide the date the item was created with the most accuracy possible. The format should be YYYY-MM-DD'
+    date_created:
+      '#type': datelist
+      '#title': 'Date created'
+      '#description': 'Please enter the date this item was created - at least the year is required.'
+      '#default_value': today
+      '#date_part_order':
+        - year
+        - month
+        - day
+      '#date_text_parts':
+        - year
+      '#date_year_range': '1000:2025'
+      '#date_year_range_reverse': true
+    keywords:
+      '#type': textfield
+      '#title': Keywords
+      '#multiple': true
+      '#description': 'Please describe the topics that this item is about.'
+      '#multiple__item_label': keyword
+      '#multiple__no_items_message': 'No keywords entered. Please add items below.'
+      '#multiple__sorting': false
+      '#multiple__add_more': false
+      '#multiple__add_more_input': false
+      '#multiple__add_more_input_label': 'more keywords'
+    contributors:
+      '#type': textfield
+      '#title': Contributors
+      '#multiple': true
+      '#description': 'Please provide the names of any person or entity who made a contribution to this resource (including yourself).'
+      '#multiple__item_label': contributor
+      '#multiple__no_items_message': 'No contributors entered. Please add items below.'
+      '#multiple__sorting': false
+      '#multiple__add_more': false
+      '#multiple__add_more_input': false
+      '#multiple__add_more_input_label': 'more contributors'
+    file_permissions_select:
+      '#type': select
+      '#title': 'File Permissions'
+      '#options':
+        Public: Public
+        'ASU Only': 'ASU Only'
+      '#default_value': Public
+    reuse_permissions:
+      '#type': webform_term_select
+      '#title': 'Reuse permissions'
+      '#description': '<a href="https://keep.lib.asu.edu/about/copyright">Learn more about your copyright options.</a>'
+      '#default_value': '1090'
+      '#vocabulary': reuse_permissions
+      '#breadcrumb_delimiter': ''
+    embargo_release_date:
+      '#type': date
+      '#title': 'Embargo Release Date'
+      '#description': 'If this item is under embargo, please enter the embargo release date.'
+      '#date_date_format': ''
+    file_type:
+      '#type': select
+      '#title': 'File type'
+      '#options':
+        document: 'Document (txt, odf, pdf, xml, docx)'
+        image: 'Image (png, jpeg, jpg, gif)'
+        audio: 'Audio (aif, mp3, wav, aac)'
+        video: 'Video (mp4, mkv, avi, mov, dpx)'
+        file: 'Other File (any other file or type of files, including tif and jp2)'
+      '#required': true
+  add_files:
+    '#type': webform_wizard_page
+    '#title': 'Add files'
+    '#open': true
+    document:
+      '#type': webform_document_file
+      '#title': Document
+      '#states':
+        visible:
+          ':input[name="file_type"]':
+            value: document
+      '#uri_scheme': fedora
+      '#sanitize': true
+    audio:
+      '#type': webform_audio_file
+      '#title': Audio
+      '#states':
+        visible:
+          ':input[name="file_type"]':
+            value: audio
+      '#uri_scheme': fedora
+    file:
+      '#type': managed_file
+      '#title': File
+      '#states':
+        visible:
+          ':input[name="file_type"]':
+            value: file
+      '#uri_scheme': fedora
+    image:
+      '#type': webform_image_file
+      '#title': Image
+      '#states':
+        visible:
+          ':input[name="file_type"]':
+            value: image
+      '#uri_scheme': fedora
+    video:
+      '#type': webform_video_file
+      '#title': Video
+      '#states':
+        visible:
+          ':input[name="file_type"]':
+            value: video
+      '#uri_scheme': fedora
+  actions:
+    '#type': webform_actions
+    '#title': 'Submit button(s)'
+css: ''
+javascript: ''
+settings:
+  ajax: false
+  ajax_scroll_top: form
+  ajax_progress_type: ''
+  ajax_effect: ''
+  ajax_speed: null
+  page: false
+  page_submit_path: ''
+  page_confirm_path: ''
+  page_theme_name: ''
+  form_title: source_entity_webform
+  form_submit_once: false
+  form_open_message: ''
+  form_close_message: ''
+  form_exception_message: ''
+  form_previous_submissions: true
+  form_confidential: false
+  form_confidential_message: ''
+  form_disable_remote_addr: false
+  form_convert_anonymous: false
+  form_prepopulate: false
+  form_prepopulate_source_entity: false
+  form_prepopulate_source_entity_required: false
+  form_prepopulate_source_entity_type: ''
+  form_unsaved: false
+  form_disable_back: false
+  form_submit_back: false
+  form_disable_autocomplete: false
+  form_novalidate: false
+  form_disable_inline_errors: false
+  form_required: false
+  form_autofocus: false
+  form_details_toggle: false
+  form_reset: false
+  form_access_denied: login
+  form_access_denied_title: ''
+  form_access_denied_message: ''
+  form_access_denied_attributes: {  }
+  form_file_limit: ''
+  form_attributes: {  }
+  form_method: ''
+  form_action: ''
+  share: false
+  share_node: false
+  share_theme_name: ''
+  share_title: true
+  share_page_body_attributes: {  }
+  submission_label: ''
+  submission_exception_message: ''
+  submission_locked_message: ''
+  submission_log: false
+  submission_excluded_elements: {  }
+  submission_exclude_empty: false
+  submission_exclude_empty_checkbox: false
+  submission_views: {  }
+  submission_views_replace: {  }
+  submission_user_columns: {  }
+  submission_user_duplicate: false
+  submission_access_denied: default
+  submission_access_denied_title: ''
+  submission_access_denied_message: ''
+  submission_access_denied_attributes: {  }
+  previous_submission_message: ''
+  previous_submissions_message: ''
+  autofill: false
+  autofill_message: ''
+  autofill_excluded_elements: {  }
+  wizard_progress_bar: true
+  wizard_progress_pages: false
+  wizard_progress_percentage: false
+  wizard_progress_link: false
+  wizard_progress_states: false
+  wizard_start_label: ''
+  wizard_preview_link: false
+  wizard_confirmation: true
+  wizard_confirmation_label: ''
+  wizard_auto_forward: true
+  wizard_auto_forward_hide_next_button: false
+  wizard_keyboard: true
+  wizard_track: ''
+  wizard_prev_button_label: ''
+  wizard_next_button_label: ''
+  wizard_toggle: true
+  wizard_toggle_show_label: ''
+  wizard_toggle_hide_label: ''
+  preview: 0
+  preview_label: ''
+  preview_title: ''
+  preview_message: ''
+  preview_attributes: {  }
+  preview_excluded_elements: {  }
+  preview_exclude_empty: true
+  preview_exclude_empty_checkbox: false
+  draft: none
+  draft_multiple: false
+  draft_auto_save: false
+  draft_saved_message: ''
+  draft_loaded_message: ''
+  draft_pending_single_message: ''
+  draft_pending_multiple_message: ''
+  confirmation_type: url_message
+  confirmation_url: ''
+  confirmation_title: ''
+  confirmation_message: 'Thank you for submitting your item to KEEP. The staff will contact you to discuss your submission shortly.'
+  confirmation_attributes: {  }
+  confirmation_back: true
+  confirmation_back_label: ''
+  confirmation_back_attributes: {  }
+  confirmation_exclude_query: false
+  confirmation_exclude_token: false
+  confirmation_update: false
+  limit_total: null
+  limit_total_interval: null
+  limit_total_message: ''
+  limit_total_unique: false
+  limit_user: null
+  limit_user_interval: null
+  limit_user_message: ''
+  limit_user_unique: false
+  entity_limit_total: null
+  entity_limit_total_interval: null
+  entity_limit_user: null
+  entity_limit_user_interval: null
+  purge: none
+  purge_days: null
+  results_disabled: false
+  results_disabled_ignore: false
+  results_customize: false
+  token_view: false
+  token_update: false
+  token_delete: false
+  serial_disabled: false
+access:
+  create:
+    roles:
+      - authenticated
+    users: {  }
+    permissions: {  }
+  view_any:
+    roles:
+      - administrator
+      - content_approver
+      - metadata_manager
+      - repositor_manager
+    users: {  }
+    permissions: {  }
+  update_any:
+    roles:
+      - administrator
+      - content_approver
+      - metadata_manager
+      - repositor_manager
+    users: {  }
+    permissions: {  }
+  delete_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  purge_any:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  view_own:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  update_own:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  delete_own:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  administer:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  test:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+  configuration:
+    roles: {  }
+    users: {  }
+    permissions: {  }
+handlers:
+  email:
+    id: email
+    handler_id: email
+    label: 'Email to libanswers'
+    notes: ''
+    status: true
+    conditions: {  }
+    weight: -49
+    settings:
+      states:
+        - completed
+      to_mail: repository@asu.libanswers.com
+      to_options: {  }
+      bcc_mail: ''
+      bcc_options: {  }
+      cc_mail: ''
+      cc_options: {  }
+      from_mail: _default
+      from_options: {  }
+      from_name: _default
+      reply_to: ''
+      return_path: ''
+      sender_mail: ''
+      sender_name: ''
+      subject: 'KEEP self deposit from [webform_submission:user]'
+      body: "A new self deposit has been submitted on KEEP<br />\r\n<br />\r\n&lt;p&gt;Submitted on [webform_submission:created]&lt;/p&gt;<br />\r\n&lt;p&gt;Submitted by: [webform_submission:user]&lt;/p&gt;<br />\r\n&lt;p&gt;Submitted values are:&lt;/p&gt;<br />\r\n[webform_submission:values]<br />\r\n&nbsp;"
+      excluded_elements: {  }
+      ignore_access: false
+      exclude_empty: true
+      exclude_empty_checkbox: false
+      exclude_attachments: false
+      html: true
+      attachments: false
+      twig: false
+      theme_name: ''
+      parameters: {  }
+      debug: false
+  create_a_repository_item:
+    id: 'Create a repository item'
+    handler_id: create_a_repository_item
+    label: 'Create a repository item'
+    notes: ''
+    status: true
+    conditions: {  }
+    weight: -50
+    settings: {  }
+variants: {  }

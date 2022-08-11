@@ -12,22 +12,22 @@ dependencies:
     - field.field.media.document.field_mime_type
     - field.field.media.document.field_original_name
     - media.type.document
+  module:
+    - file
   enforced:
     module:
       - islandora_core_feature
-  module:
-    - file
 id: media.document.source
 targetEntityType: media
 bundle: document
 mode: source
 content:
   field_media_document:
+    type: file_default
     label: hidden
     settings:
       use_description_as_link_text: true
     third_party_settings: {  }
-    type: file_default
     weight: 0
     region: content
 hidden:

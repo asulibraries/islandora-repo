@@ -1,14 +1,14 @@
 rest_oai_pmh:
   entity_type: node
 view_displays:
-  'oai_pmh:primo_set': 'oai_pmh:primo_set'
-  'oai_pmh:research_set': 'oai_pmh:research_set'
+  'oai_pmh:all': 'oai_pmh:all'
+  'oai_pmh:repo_items': 'oai_pmh:repo_items'
 support_sets: 1
 mapping_source: rdf
 repository_name: 'ASU Library | KEEP'
 repository_email: digitalrepository@asu.edu
 expiration: '3600'
 metadata_map_plugins:
-  oai_dc: dublin_core_rdf
   oai_raw: default_metadata_map
-cache_technique: liberal_cache
+  oai_dc: dublin_core_rdf
+cache_technique: conservative_cache

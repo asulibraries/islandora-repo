@@ -18,24 +18,24 @@ plugin: 'views_block:collections-collection_top_content'
 settings:
   id: 'views_block:collections-collection_top_content'
   label: ''
-  provider: views
   label_display: '0'
+  provider: views
+  context_mapping: {  }
   views_label: ''
   items_per_page: none
-  context_mapping: {  }
 visibility:
   request_path_exclusion:
     id: request_path_exclusion
-    pages: ''
     negate: null
     context_mapping: {  }
+    pages: ''
   view_inclusion:
     id: view_inclusion
     negate: null
-    view_inclusion: {  }
     context_mapping: {  }
+    view_inclusion: {  }
   request_path:
     id: request_path
-    pages: '/collections/*'
     negate: false
     context_mapping: {  }
+    pages: '/collections/*'

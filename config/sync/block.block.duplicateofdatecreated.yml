@@ -1,0 +1,33 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.duplicate_of_date_created
+  module:
+    - facets
+    - islandora
+    - system
+  theme:
+    - asulib_barrio
+id: duplicateofdatecreated
+theme: asulib_barrio
+region: sidebar_first
+weight: 8
+provider: null
+plugin: 'facet_block:duplicate_of_date_created'
+settings:
+  id: 'facet_block:duplicate_of_date_created'
+  label: 'Date Created'
+  label_display: visible
+  provider: facets
+  block_id: duplicateofdatecreated
+visibility:
+  media_source_mimetype:
+    id: media_source_mimetype
+    mimetype: ''
+    negate: false
+    context_mapping: {  }
+  request_path:
+    id: request_path
+    negate: false
+    pages: '/collections/*/search-alt*'

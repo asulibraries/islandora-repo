@@ -1,19 +1,50 @@
 langcode: en
-status: false
+status: true
 dependencies:
   module:
+    - context
+    - islandora
+    - system
     - user
   theme:
     - asulib_barrio
 id: userlogin
 theme: asulib_barrio
-region: highlighted
-weight: -27
+region: content
+weight: 0
 provider: null
 plugin: user_login_block
 settings:
   id: user_login_block
   label: 'User login'
-  provider: user
   label_display: visible
-visibility: {  }
+  provider: user
+visibility:
+  context_all:
+    id: context_all
+    negate: null
+    values: ''
+  user_status:
+    id: user_status
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    user_status:
+      viewing_profile: '0'
+      logged_viewing_profile: '0'
+      own_page_true: '0'
+      field_value: '0'
+    user_fields: uid
+  context:
+    id: context
+    negate: null
+    values: ''
+  media_source_mimetype:
+    id: media_source_mimetype
+    mimetype: ''
+    negate: false
+    context_mapping: {  }
+  request_path:
+    id: request_path
+    negate: false
+    pages: /user/local/login

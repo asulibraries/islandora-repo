@@ -1,9 +1,6 @@
 langcode: en
 status: true
 dependencies:
-  enforced:
-    module:
-      - islandora_core_feature
   module:
     - basic_auth
     - jsonld
@@ -11,6 +8,10 @@ dependencies:
     - serialization
     - taxonomy
     - user
+    - users_jwt
+  enforced:
+    module:
+      - islandora_core_feature
 id: entity.taxonomy_term
 plugin_id: 'entity:taxonomy_term'
 granularity: method
@@ -20,27 +21,28 @@ configuration:
       - jsonld
       - json
     supported_auth:
-      - basic_auth
       - jwt_auth
+      - basic_auth
       - cookie
   POST:
     supported_formats:
       - json
     supported_auth:
-      - basic_auth
       - jwt_auth
+      - basic_auth
       - cookie
   DELETE:
     supported_formats:
       - json
     supported_auth:
-      - basic_auth
       - jwt_auth
+      - users_jwt_auth
+      - basic_auth
       - cookie
   PATCH:
     supported_formats:
       - json
     supported_auth:
-      - basic_auth
       - jwt_auth
+      - basic_auth
       - cookie

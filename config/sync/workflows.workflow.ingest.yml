@@ -20,51 +20,51 @@ type: content_moderation
 type_settings:
   states:
     approved_by_content_lead:
-      published: false
-      default_revision: false
       label: 'Approved by content lead'
       weight: -1
+      published: false
+      default_revision: false
     approved_by_metadata_team:
-      published: true
-      default_revision: true
       label: 'Approved by metadata team'
       weight: 0
-    declined:
-      published: false
-      default_revision: true
-      label: Declined
-      weight: 2
-    draft:
-      label: Draft
-      published: false
-      default_revision: false
-      weight: -3
-    initial_triage:
-      published: false
-      default_revision: false
-      label: 'Initial Triage Completed'
-      weight: -2
-    published:
-      label: Published
       published: true
       default_revision: true
-      weight: 1
-    soft_delet:
+    declined:
+      label: Declined
+      weight: 2
       published: false
       default_revision: true
+    draft:
+      label: Draft
+      weight: -3
+      published: false
+      default_revision: false
+    initial_triage:
+      label: 'Initial Triage Completed'
+      weight: -2
+      published: false
+      default_revision: false
+    published:
+      label: Published
+      weight: 1
+      published: true
+      default_revision: true
+    soft_delet:
       label: 'Soft Deleted'
       weight: 3
+      published: false
+      default_revision: true
   transitions:
     create_new_draft:
       label: 'Create New Draft'
-      to: draft
-      weight: 0
       from:
         - approved_by_content_lead
         - approved_by_metadata_team
         - draft
         - initial_triage
         - published
+      to: draft
+      weight: 0
     decline_submission:
       label: 'Decline Submission'
       from:
@@ -83,14 +83,14 @@ type_settings:
       weight: 3
     publish:
       label: Publish
-      to: published
-      weight: 1
       from:
         - approved_by_content_lead
         - approved_by_metadata_team
         - draft
         - initial_triage
         - published
+      to: published
+      weight: 1
     to_approved_by_content_lead:
       label: 'To Approved by Content Lead'
       from:

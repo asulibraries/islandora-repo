@@ -67,14 +67,12 @@ bundle: asu_repository_item
 mode: teaser
 content:
   display_media_thumbnail:
-    weight: 0
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
   field_edtf_date_created:
     type: edtf_default
-    weight: 2
-    region: content
     label: above
     settings:
       date_separator: dash
@@ -82,26 +80,28 @@ content:
       month_format: mm
       day_format: dd
     third_party_settings: {  }
+    weight: 2
+    region: content
   field_linked_agent:
     type: typed_relation_default
-    weight: 3
-    region: content
     label: inline
     settings:
       link: true
     third_party_settings: {  }
+    weight: 3
+    region: content
   field_rich_description:
     type: text_default
-    weight: 1
-    region: content
     label: above
     settings: {  }
     third_party_settings: {  }
-  links:
-    weight: 4
+    weight: 1
     region: content
+  links:
     settings: {  }
     third_party_settings: {  }
+    weight: 4
+    region: content
 hidden:
   content_moderation_control: true
   display_media_child_thumbnail: true

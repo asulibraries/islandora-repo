@@ -13,26 +13,26 @@ dependencies:
 id: creators
 theme: asulib_barrio
 region: sidebar_first
-weight: -29
+weight: -32
 provider: null
 plugin: 'facet_block:linked_agents'
 settings:
   id: 'facet_block:linked_agents'
   label: Contributors
-  provider: facets
   label_display: visible
+  provider: facets
   block_id: creators
 visibility:
   request_path_exclusion:
     id: request_path_exclusion
-    pages: ''
     negate: null
     context_mapping: {  }
+    pages: ''
   request_path:
     id: request_path
-    pages: '/search*'
     negate: false
     context_mapping: {  }
+    pages: '/search*'
   view_inclusion:
     id: view_inclusion
     negate: null

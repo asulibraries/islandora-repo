@@ -1,6 +1,17 @@
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - node.type.collection
+    - workflows.workflow.ingest
+  module:
+    - content_moderation
+    - islandora_repository_reports
+    - node
+    - system
+    - toolbar
+    - webform
+    - workbench
 id: content_approver
 label: 'Content Approver'
 weight: 4
@@ -12,13 +23,10 @@ permissions:
   - 'access webform submission user'
   - 'access workbench'
   - 'create collection content'
-  - 'edit field_keyword'
   - 'use ingest transition create_new_draft'
   - 'use ingest transition decline_submission'
   - 'use ingest transition to_approved_by_content_lead'
   - 'view any unpublished content'
-  - 'view field_keyword'
   - 'view islandora repository reports'
   - 'view latest version'
-  - 'view own field_keyword'
   - 'view own unpublished content'

@@ -13,20 +13,20 @@ dependencies:
 id: genrecpx
 theme: asulib_barrio
 region: sidebar_first
-weight: -7
+weight: -10
 provider: null
 plugin: 'facet_block:genre_cpx'
 settings:
   id: 'facet_block:genre_cpx'
   label: Genre
-  provider: facets
   label_display: visible
+  provider: facets
   block_id: genrecpx
 visibility:
   request_path_exclusion:
     id: request_path_exclusion
-    pages: ''
     negate: null
+    pages: ''
   view_inclusion:
     id: view_inclusion
     negate: null
@@ -38,5 +38,5 @@ visibility:
     context_mapping: {  }
   request_path:
     id: request_path
-    pages: '/items/*/search*'
     negate: false
+    pages: '/items/*/search*'

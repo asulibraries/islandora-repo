@@ -65,18 +65,18 @@ third_party_settings:
   field_group:
     group_sidebar:
       children: {  }
+      label: Sidebar
       parent_name: ''
+      region: hidden
       weight: 18
       format_type: details_sidebar
-      region: hidden
       format_settings:
-        id: ''
         classes: ''
-        description: ''
+        id: ''
         open: false
-        weight: 0
+        description: ''
         required_fields: false
-      label: Sidebar
+        weight: 0
     group_details:
       children:
         - langcode
@@ -138,35 +138,35 @@ third_party_settings:
         - field_note_para
         - field_open_access
         - links
+      label: Details
       parent_name: ''
+      region: hidden
       weight: 17
       format_type: details
-      region: hidden
       format_settings:
-        id: ''
         classes: ''
-        description: ''
+        id: ''
         open: false
+        description: ''
         required_fields: false
-      label: Details
   layout_builder:
-    allow_custom: false
     enabled: false
+    allow_custom: false
 id: node.asu_repository_item.thumbnail_check
 targetEntityType: node
 bundle: asu_repository_item
 mode: thumbnail_check
 content:
   display_media_entity_view_3:
+    settings: {  }
+    third_party_settings: {  }
     weight: 10
     region: content
+  display_media_thumbnail:
     settings: {  }
     third_party_settings: {  }
-  display_media_thumbnail:
     weight: 0
     region: content
-    settings: {  }
-    third_party_settings: {  }
 hidden:
   content_moderation_control: true
   display_media_child_media_name: true

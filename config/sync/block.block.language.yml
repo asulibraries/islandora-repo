@@ -12,23 +12,23 @@ dependencies:
 id: language
 theme: asulib_barrio
 region: sidebar_first
-weight: -24
+weight: -27
 provider: null
 plugin: 'facet_block:language'
 settings:
   id: 'facet_block:language'
   label: Language
-  provider: facets
   label_display: visible
+  provider: facets
   block_id: language
 visibility:
   request_path_exclusion:
     id: request_path_exclusion
-    pages: ''
     negate: null
     context_mapping: {  }
+    pages: ''
   request_path:
     id: request_path
-    pages: '/search*'
     negate: false
     context_mapping: {  }
+    pages: '/search*'

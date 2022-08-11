@@ -1,13 +1,13 @@
 langcode: en
 status: true
 dependencies:
+  module:
+    - islandora
   enforced:
     module:
       - islandora_defaults
-  module:
-    - islandora
-name: taxonomy_terms
 label: 'Taxonomy Terms'
+name: taxonomy_terms
 group: Indexing
 description: 'All taxonomy terms'
 requireAllConditions: false
@@ -15,17 +15,16 @@ disabled: false
 conditions:
   content_entity_type:
     id: content_entity_type
-    types:
-      taxonomy_term: taxonomy_term
     negate: false
     context_mapping:
       taxonomy_term: '@islandora.taxonomy_term_route_context_provider:taxonomy_term'
+    types:
+      taxonomy_term: taxonomy_term
 reactions:
   index:
     id: index
     actions:
       index_taxonomy_term_in_fedora: index_taxonomy_term_in_fedora
-      index_taxonomy_term_in_the_triplestore: index_taxonomy_term_in_the_triplestore
     saved: false
   delete:
     id: delete

@@ -13,20 +13,20 @@ dependencies:
 id: languagecpx
 theme: asulib_barrio
 region: sidebar_first
-weight: -22
+weight: -25
 provider: null
 plugin: 'facet_block:language_cpx'
 settings:
   id: 'facet_block:language_cpx'
   label: Language
-  provider: facets
   label_display: visible
+  provider: facets
   block_id: languagecpx
 visibility:
   request_path_exclusion:
     id: request_path_exclusion
-    pages: ''
     negate: null
+    pages: ''
   view_inclusion:
     id: view_inclusion
     negate: null
@@ -38,5 +38,5 @@ visibility:
     context_mapping: {  }
   request_path:
     id: request_path
-    pages: '/items/*/search*'
     negate: false
+    pages: '/items/*/search*'

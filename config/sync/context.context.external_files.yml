@@ -3,8 +3,8 @@ status: true
 dependencies:
   module:
     - islandora
-name: external_files
 label: 'External Files'
+name: external_files
 group: Indexing
 description: 'Files not in Fedora'
 requireAllConditions: false
@@ -12,11 +12,11 @@ disabled: false
 conditions:
   file_uses_filesystem:
     id: file_uses_filesystem
-    filesystems:
-      public: public
     negate: false
     context_mapping:
       file: '@islandora.file_route_context_provider:file'
+    filesystems:
+      public: public
 reactions:
   index:
     id: index

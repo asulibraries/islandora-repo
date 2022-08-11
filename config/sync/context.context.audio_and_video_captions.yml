@@ -1,0 +1,35 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora
+label: 'Audio and Video Captions'
+name: audio_and_video_captions
+group: Derivatives
+description: 'Generate captions for A/V using AWS.'
+requireAllConditions: false
+disabled: false
+conditions:
+  parent_node_has_term:
+    id: parent_node_has_term
+    negate: false
+    uuid: 3578236e-de19-4d1d-84cb-b1472337f9b4
+    context_mapping:
+      media: '@islandora.media_route_context_provider:media'
+    uri: 'http://purl.org/coar/resource_type/c_18cc,http://purl.org/coar/resource_type/c_12ce'
+    logic: or
+  media_has_term:
+    id: media_has_term
+    negate: false
+    uuid: 0c2e4eac-feb7-407f-b380-fb1014b74ffb
+    context_mapping:
+      media: '@islandora.media_route_context_provider:media'
+    uri: 'http://pcdm.org/use#OriginalFile'
+    logic: and
+reactions:
+  file_derivative:
+    id: file_derivative
+    actions:
+      caption_generate_captions_via_aws_transcribe_for_audio_video_onl: caption_generate_captions_via_aws_transcribe_for_audio_video_onl
+    saved: false
+weight: 0

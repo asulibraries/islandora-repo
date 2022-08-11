@@ -16,14 +16,14 @@ bundle: person
 mode: default
 content:
   description:
-    label: hidden
     type: text_default
-    weight: 4
+    label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 4
     region: content
   field_authority_link:
-    weight: 2
+    type: authority_formatter_default
     label: above
     settings:
       trim_length: 80
@@ -32,10 +32,10 @@ content:
       rel: ''
       target: _blank
     third_party_settings: {  }
-    type: authority_formatter_default
+    weight: 2
     region: content
   field_cat_date_begin:
-    weight: 6
+    type: edtf_default
     label: above
     settings:
       date_separator: space
@@ -43,10 +43,10 @@ content:
       month_format: mmm
       day_format: dd
     third_party_settings: {  }
-    type: edtf_default
+    weight: 6
     region: content
   field_cat_date_end:
-    weight: 7
+    type: edtf_default
     label: above
     settings:
       date_separator: space
@@ -54,15 +54,15 @@ content:
       month_format: mmm
       day_format: dd
     third_party_settings: {  }
-    type: edtf_default
+    weight: 7
     region: content
   field_relationships:
-    weight: 9
+    type: typed_relation_default
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    type: typed_relation_default
+    weight: 9
     region: content
 hidden:
   langcode: true

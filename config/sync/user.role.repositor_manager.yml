@@ -1,6 +1,14 @@
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - workflows.workflow.ingest
+  module:
+    - content_moderation
+    - islandora
+    - system
+    - toolbar
+    - webform
 id: repositor_manager
 label: 'Repository Manager'
 weight: 8
@@ -10,7 +18,6 @@ permissions:
   - 'access toolbar'
   - 'access webform overview'
   - 'access webform submission user'
-  - 'edit field_keyword'
   - 'manage media'
   - 'manage members'
   - 'use ingest transition create_new_draft'
@@ -18,12 +25,4 @@ permissions:
   - 'use ingest transition draft_to_triaged'
   - 'view any unpublished content'
   - 'view checksums'
-  - 'view field_cataloging_standards'
-  - 'view field_description_source'
-  - 'view field_keyword'
-  - 'view field_level_of_coding'
   - 'view latest version'
-  - 'view own field_cataloging_standards'
-  - 'view own field_description_source'
-  - 'view own field_keyword'
-  - 'view own field_level_of_coding'

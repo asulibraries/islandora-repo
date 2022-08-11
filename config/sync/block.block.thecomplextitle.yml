@@ -16,21 +16,21 @@ plugin: asu_complex_title
 settings:
   id: asu_complex_title
   label: 'The complex title'
-  provider: asu_search
   label_display: '0'
+  provider: asu_search
 visibility:
   request_path_exclusion:
     id: request_path_exclusion
-    pages: ''
     negate: null
     context_mapping: {  }
+    pages: ''
   view_inclusion:
     id: view_inclusion
     negate: null
-    view_inclusion: {  }
     context_mapping: {  }
+    view_inclusion: {  }
   request_path:
     id: request_path
-    pages: "/collections/*/search*\r\n/node/*/edit\r\n/items/*\r\n/collections/*"
     negate: false
     context_mapping: {  }
+    pages: "/collections/*/search*\r\n/node/*/edit\r\n/items/*\r\n/collections/*"

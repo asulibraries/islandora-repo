@@ -13,20 +13,20 @@ dependencies:
 id: openaccesscpx
 theme: asulib_barrio
 region: sidebar_first
-weight: -19
+weight: -22
 provider: null
 plugin: 'facet_block:open_access_cpx'
 settings:
   id: 'facet_block:open_access_cpx'
   label: 'Open Access'
-  provider: facets
   label_display: visible
+  provider: facets
   block_id: openaccesscpx
 visibility:
   request_path_exclusion:
     id: request_path_exclusion
-    pages: ''
     negate: null
+    pages: ''
   view_inclusion:
     id: view_inclusion
     negate: null
@@ -38,5 +38,5 @@ visibility:
     context_mapping: {  }
   request_path:
     id: request_path
-    pages: '/items/*/search*'
     negate: false
+    pages: '/items/*/search*'

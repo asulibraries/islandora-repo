@@ -13,35 +13,35 @@ dependencies:
 id: exposedformsolr_search_contentpage_3
 theme: asulib_barrio
 region: sidebar_first
-weight: 10
+weight: 18
 provider: null
 plugin: 'views_exposed_filter_block:solr_search_content-page_3'
 settings:
   id: 'views_exposed_filter_block:solr_search_content-page_3'
   label: ''
-  provider: views
   label_display: '0'
+  provider: views
   views_label: 'Explore this collection'
 visibility:
   request_path_exclusion:
     id: request_path_exclusion
-    pages: ''
     negate: null
     context_mapping: {  }
-  node_type:
-    id: node_type
-    bundles:
-      collection: collection
-    negate: false
-    context_mapping:
-      node: '@node.node_route_context:node'
+    pages: ''
   request_path:
     id: request_path
-    pages: /node/add/collection
     negate: true
     context_mapping: {  }
+    pages: /node/add/collection
   view_inclusion:
     id: view_inclusion
     negate: null
-    view_inclusion: {  }
     context_mapping: {  }
+    view_inclusion: {  }
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      collection: collection

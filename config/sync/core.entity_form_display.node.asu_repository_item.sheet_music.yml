@@ -82,18 +82,18 @@ third_party_settings:
         - field_typed_identifier
         - field_edtf_date_created
         - field_model
+      label: 'Sheet Music'
+      region: content
       parent_name: group_tab_container
       weight: 0
       format_type: tab
-      region: content
       format_settings:
-        description: ''
-        formatter: open
-        required_fields: true
-        id: ''
         classes: ''
         show_empty_fields: false
-      label: 'Sheet Music'
+        id: ''
+        formatter: open
+        description: ''
+        required_fields: true
     group_system:
       children:
         - langcode
@@ -115,29 +115,29 @@ third_party_settings:
         - created
         - uid
         - field_weight
+      label: 'System Use and Display'
+      region: hidden
       parent_name: ''
       weight: 9
       format_type: tab
-      region: hidden
       format_settings:
-        description: ''
-        formatter: closed
-        required_fields: true
-        id: ''
         classes: ''
-      label: 'System Use and Display'
+        id: ''
+        formatter: closed
+        description: ''
+        required_fields: true
     group_tab_container:
       children:
         - group_basic
+      label: 'Tab Container'
+      region: hidden
       parent_name: ''
       weight: 1
       format_type: tabs
-      region: hidden
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         direction: vertical
-      label: 'Tab Container'
     group_subjects:
       children:
         - field_complex_subject
@@ -148,51 +148,51 @@ third_party_settings:
         - field_subjects_name
         - field_temporal_subject
         - field_title_subject
+      label: Subjects
+      region: hidden
       parent_name: ''
       weight: 5
       format_type: tab
-      region: hidden
       format_settings:
-        id: ''
         classes: ''
-        description: ''
+        id: ''
         formatter: closed
+        description: ''
         required_fields: true
-      label: Subjects
     group_access_and_rights:
       children:
         - field_default_derivative_file_pe
         - field_default_original_file_perm
         - field_embargo_release_date
         - field_statement_responsibility
+      label: 'Access and Rights'
+      region: hidden
       parent_name: ''
       weight: 7
       format_type: tab
-      region: hidden
       format_settings:
-        id: ''
         classes: ''
-        description: ''
+        id: ''
         formatter: closed
+        description: ''
         required_fields: true
-      label: 'Access and Rights'
     group_types_and_notes:
       children:
         - field_open_access
         - field_peer_reviewed
         - field_resource_type
+      label: 'Types and Notes'
+      region: hidden
       parent_name: ''
       weight: 6
       format_type: tab
-      region: hidden
       format_settings:
-        id: ''
         classes: ''
-        direction: vertical
+        id: ''
         formatter: closed
         description: ''
         required_fields: true
-      label: 'Types and Notes'
+        direction: vertical
     group_additional_details_and_ide:
       children:
         - field_date_digitized
@@ -207,96 +207,97 @@ third_party_settings:
         - field_related_item
         - field_series
         - field_table_of_contents
+      label: 'Identifiers, Dates, and Additional Details'
+      region: hidden
       parent_name: ''
       weight: 8
       format_type: tab
-      region: hidden
       format_settings:
-        description: ''
-        formatter: closed
-        required_fields: true
-        id: ''
         classes: ''
-      label: 'Identifiers, Dates, and Additional Details'
+        id: ''
+        formatter: closed
+        description: ''
+        required_fields: true
 id: node.asu_repository_item.sheet_music
 targetEntityType: node
 bundle: asu_repository_item
 mode: sheet_music
 content:
   field_additional_memberships:
+    type: entity_reference_autocomplete
     weight: 29
+    region: content
     settings:
       match_operator: CONTAINS
       match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
   field_copyright_statement:
+    type: options_select
     weight: 30
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: options_select
-    region: content
   field_edtf_date_created:
+    type: edtf_default
     weight: 35
+    region: content
     settings:
       strict_dates: false
       intervals: true
       sets: false
     third_party_settings: {  }
-    type: edtf_default
-    region: content
   field_genre:
+    type: entity_reference_autocomplete
     weight: 32
+    region: content
     settings:
       match_operator: CONTAINS
       match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
   field_language:
+    type: entity_reference_autocomplete
     weight: 27
+    region: content
     settings:
       match_operator: CONTAINS
       match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
   field_linked_agent:
-    weight: 26
-    settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
     type: typed_relation_default
+    weight: 26
     region: content
-  field_member_of:
-    weight: 24
     settings:
       match_operator: CONTAINS
       match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_member_of:
     type: entity_reference_autocomplete
+    weight: 24
     region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_model:
+    type: options_select
     weight: 36
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: options_select
-    region: content
   field_note_para:
     type: entity_reference_paragraphs
     weight: 33
+    region: content
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -305,23 +306,24 @@ content:
       form_display_mode: default
       default_paragraph_type: ''
     third_party_settings: {  }
-    region: content
   field_reuse_permissions:
+    type: options_select
     weight: 31
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: options_select
-    region: content
   field_rich_description:
+    type: text_textarea
     weight: 25
+    region: content
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: text_textarea
-    region: content
   field_subject:
+    type: inline_entity_form_complex
     weight: 28
+    region: content
     settings:
       form_mode: simple_taxo_create
       override_labels: true
@@ -330,16 +332,15 @@ content:
       allow_new: true
       allow_existing: true
       match_operator: CONTAINS
-      revision: false
+      allow_duplicate: false
       collapsible: false
       collapsed: false
-      allow_duplicate: false
+      revision: false
     third_party_settings: {  }
-    type: inline_entity_form_complex
-    region: content
   field_title:
     type: entity_reference_paragraphs
     weight: 23
+    region: content
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -348,10 +349,10 @@ content:
       form_display_mode: default
       default_paragraph_type: ''
     third_party_settings: {  }
-    region: content
   field_typed_identifier:
     type: entity_reference_paragraphs
     weight: 34
+    region: content
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -360,7 +361,6 @@ content:
       form_display_mode: default
       default_paragraph_type: ''
     third_party_settings: {  }
-    region: content
 hidden:
   created: true
   field_cataloging_standards: true

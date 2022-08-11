@@ -3,8 +3,8 @@ status: true
 dependencies:
   module:
     - islandora
-name: video_original_file
 label: 'Video Derivatives'
+name: video_original_file
 group: Derivatives
 description: 'Derivatives for Video'
 requireAllConditions: true
@@ -13,16 +13,16 @@ conditions:
   media_has_term:
     id: media_has_term
     negate: false
-    uri: 'http://pcdm.org/use#OriginalFile'
     context_mapping:
       media: '@islandora.media_route_context_provider:media'
+    uri: 'http://pcdm.org/use#OriginalFile'
     logic: and
   parent_node_has_term:
     id: parent_node_has_term
     negate: false
-    uri: 'http://purl.org/coar/resource_type/c_12ce'
     context_mapping:
       media: '@islandora.media_route_context_provider:media'
+    uri: 'http://purl.org/coar/resource_type/c_12ce'
     logic: and
 reactions:
   derivative:

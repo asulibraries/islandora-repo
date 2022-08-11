@@ -24,17 +24,17 @@ third_party_settings:
         - path
         - status
         - field_relationships
+      label: 'Advanced fields'
+      region: content
       parent_name: ''
       weight: 2
       format_type: details
-      region: content
       format_settings:
-        id: ''
         classes: ''
-        description: ''
+        id: ''
         open: false
+        description: ''
         required_fields: true
-      label: 'Advanced fields'
 id: taxonomy_term.family.default
 targetEntityType: taxonomy_term
 bundle: family
@@ -45,45 +45,45 @@ content:
     weight: 3
     region: content
     settings:
-      placeholder: ''
       rows: 5
+      placeholder: ''
     third_party_settings: {  }
   field_authority_link:
+    type: authority_link_default
     weight: 1
+    region: content
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
-    type: authority_link_default
-    region: content
   field_cat_date_begin:
+    type: edtf_default
     weight: 5
+    region: content
     settings:
       strict_dates: false
       intervals: false
       sets: false
     third_party_settings: {  }
-    type: edtf_default
-    region: content
   field_cat_date_end:
+    type: edtf_default
     weight: 6
+    region: content
     settings:
       strict_dates: false
       intervals: false
       sets: false
     third_party_settings: {  }
-    type: edtf_default
-    region: content
   field_relationships:
+    type: typed_relation_default
     weight: 10
+    region: content
     settings:
       match_operator: CONTAINS
       size: '60'
       placeholder: ''
       match_limit: 10
     third_party_settings: {  }
-    type: typed_relation_default
-    region: content
   langcode:
     type: language_select
     weight: 4
@@ -107,10 +107,10 @@ content:
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    settings:
-      display_label: true
     weight: 9
     region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   translation:
     weight: 7

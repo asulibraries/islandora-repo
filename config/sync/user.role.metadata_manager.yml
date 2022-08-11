@@ -1,6 +1,47 @@
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.description_restricted
+    - media.type.audio
+    - media.type.document
+    - media.type.extracted_text
+    - media.type.file
+    - media.type.fits_technical_metadata
+    - media.type.image
+    - media.type.remote_video
+    - media.type.video
+    - node.type.asu_repository_item
+    - node.type.collection
+    - taxonomy.vocabulary.collaborating_institutions
+    - taxonomy.vocabulary.conference
+    - taxonomy.vocabulary.corporate_body
+    - taxonomy.vocabulary.family
+    - taxonomy.vocabulary.genre
+    - taxonomy.vocabulary.geo_location
+    - taxonomy.vocabulary.keywords
+    - taxonomy.vocabulary.name_titles
+    - taxonomy.vocabulary.person
+    - taxonomy.vocabulary.physical_form
+    - taxonomy.vocabulary.related_items
+    - taxonomy.vocabulary.subject
+    - taxonomy.vocabulary.temporal
+    - taxonomy.vocabulary.titles
+    - workflows.workflow.editorial
+    - workflows.workflow.ingest
+  module:
+    - content_moderation
+    - field_permissions
+    - file_replace
+    - filter
+    - islandora_repository_reports
+    - media
+    - node
+    - system
+    - taxonomy
+    - toolbar
+    - webform
+    - workbench
 id: metadata_manager
 label: 'Metadata Manager'
 weight: 5
@@ -13,10 +54,44 @@ permissions:
   - 'access workbench'
   - 'create asu_repository_item content'
   - 'create collection content'
-  - 'create field_cataloging_standards'
-  - 'create field_description_source'
-  - 'create field_keyword'
-  - 'create field_level_of_coding'
+  - 'create field_pid'
+  - 'create terms in collaborating_institutions'
+  - 'create terms in conference'
+  - 'create terms in corporate_body'
+  - 'create terms in family'
+  - 'create terms in genre'
+  - 'create terms in geo_location'
+  - 'create terms in keywords'
+  - 'create terms in name_titles'
+  - 'create terms in person'
+  - 'create terms in physical_form'
+  - 'create terms in related_items'
+  - 'create terms in subject'
+  - 'create terms in temporal'
+  - 'create terms in titles'
+  - 'delete any audio media'
+  - 'delete any document media'
+  - 'delete any extracted_text media'
+  - 'delete any file media'
+  - 'delete any fits_technical_metadata media'
+  - 'delete any image media'
+  - 'delete any media'
+  - 'delete any remote_video media'
+  - 'delete any video media'
+  - 'delete terms in collaborating_institutions'
+  - 'delete terms in conference'
+  - 'delete terms in corporate_body'
+  - 'delete terms in family'
+  - 'delete terms in genre'
+  - 'delete terms in geo_location'
+  - 'delete terms in keywords'
+  - 'delete terms in name_titles'
+  - 'delete terms in person'
+  - 'delete terms in physical_form'
+  - 'delete terms in related_items'
+  - 'delete terms in subject'
+  - 'delete terms in temporal'
+  - 'delete terms in titles'
   - 'edit any asu_repository_item content'
   - 'edit any audio media'
   - 'edit any collection content'
@@ -27,32 +102,43 @@ permissions:
   - 'edit any image media'
   - 'edit any remote_video media'
   - 'edit any video media'
-  - 'edit field_cataloging_standards'
-  - 'edit field_description_source'
-  - 'edit field_keyword'
-  - 'edit field_level_of_coding'
-  - 'edit own field_cataloging_standards'
-  - 'edit own field_description_source'
-  - 'edit own field_keyword'
-  - 'edit own field_level_of_coding'
+  - 'edit field_pid'
+  - 'edit own field_pid'
+  - 'edit terms in collaborating_institutions'
+  - 'edit terms in conference'
+  - 'edit terms in corporate_body'
+  - 'edit terms in family'
+  - 'edit terms in genre'
+  - 'edit terms in geo_location'
+  - 'edit terms in keywords'
+  - 'edit terms in name_titles'
+  - 'edit terms in person'
+  - 'edit terms in physical_form'
+  - 'edit terms in related_items'
+  - 'edit terms in subject'
+  - 'edit terms in temporal'
+  - 'edit terms in titles'
   - 'replace files'
   - 'revert asu_repository_item revisions'
   - 'revert collection revisions'
+  - 'update any media'
+  - 'use editorial transition archive'
+  - 'use editorial transition archived_draft'
+  - 'use editorial transition archived_published'
+  - 'use editorial transition create_new_draft'
+  - 'use editorial transition publish'
   - 'use ingest transition create_new_draft'
+  - 'use ingest transition decline_submission'
+  - 'use ingest transition draft_to_triaged'
   - 'use ingest transition publish'
+  - 'use ingest transition to_approved_by_content_lead'
   - 'use ingest transition to_approved_by_metadata_team'
   - 'use text format description_restricted'
   - 'view any unpublished content'
   - 'view asu_repository_item revisions'
   - 'view collection revisions'
-  - 'view field_cataloging_standards'
-  - 'view field_description_source'
-  - 'view field_keyword'
-  - 'view field_level_of_coding'
+  - 'view field_pid'
   - 'view islandora repository reports'
   - 'view latest version'
-  - 'view own field_cataloging_standards'
-  - 'view own field_description_source'
-  - 'view own field_keyword'
-  - 'view own field_level_of_coding'
+  - 'view own field_pid'
   - 'view own unpublished content'

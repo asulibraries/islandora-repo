@@ -69,16 +69,16 @@ mode: search_result
 content:
   field_complex_object_child:
     type: boolean
-    weight: 7
-    region: content
     label: above
     settings:
       format: boolean
-      format_custom_true: ''
       format_custom_false: ''
+      format_custom_true: ''
     third_party_settings: {  }
+    weight: 7
+    region: content
   field_edtf_date_created:
-    weight: 4
+    type: edtf_default
     label: visually_hidden
     settings:
       date_separator: dash
@@ -86,51 +86,51 @@ content:
       month_format: mm
       day_format: dd
     third_party_settings: {  }
-    type: edtf_default
+    weight: 4
     region: content
   field_linked_agent:
     type: typed_relation_brief
-    weight: 3
-    region: content
     label: visually_hidden
     settings:
       link: '1'
     third_party_settings: {  }
+    weight: 3
+    region: content
   field_member_of:
     type: entity_reference_entity_id
-    weight: 0
-    region: content
     label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
   field_model:
     type: entity_reference_label
-    weight: 6
-    region: content
     label: hidden
     settings:
       link: false
     third_party_settings: {  }
+    weight: 6
+    region: content
   field_rich_description:
     type: text_default
-    weight: 2
-    region: content
     label: above
     settings: {  }
     third_party_settings: {  }
+    weight: 2
+    region: content
   field_title:
     type: complex_title_formatter
-    weight: 1
-    region: content
     label: visually_hidden
     settings:
       link: ''
     third_party_settings: {  }
-  search_api_excerpt:
-    weight: 5
+    weight: 1
     region: content
+  search_api_excerpt:
     settings: {  }
     third_party_settings: {  }
+    weight: 5
+    region: content
 hidden:
   content_moderation_control: true
   display_media_child_thumbnail: true

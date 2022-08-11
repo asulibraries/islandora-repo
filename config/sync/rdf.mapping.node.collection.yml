@@ -3,11 +3,11 @@ status: true
 dependencies:
   config:
     - node.type.collection
+  module:
+    - node
   enforced:
     module:
       - islandora_defaults
-  module:
-    - node
 id: node.collection
 targetEntityType: node
 bundle: collection
@@ -47,9 +47,9 @@ fieldMappings:
   uid:
     properties:
       - 'relators:dtc'
-    mapping_type: property
     datatype_callback:
       callable: 'Drupal\asu_custom_rdf\UidLookup::username'
+    mapping_type: property
   status:
     properties:
       - 'asu:visibility'

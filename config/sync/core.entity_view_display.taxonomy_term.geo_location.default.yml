@@ -17,14 +17,14 @@ bundle: geo_location
 mode: default
 content:
   description:
-    label: hidden
     type: text_default
-    weight: 6
+    label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 6
     region: content
   field_authority_link:
-    weight: 1
+    type: authority_formatter_default
     label: inline
     settings:
       trim_length: 80
@@ -33,30 +33,30 @@ content:
       rel: ''
       target: _blank
     third_party_settings: {  }
-    type: authority_formatter_default
+    weight: 1
     region: content
   field_geo_alt_name:
-    weight: 4
+    type: string
     label: inline
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    type: string
+    weight: 4
     region: content
   field_geo_broader:
-    weight: 5
+    type: entity_reference_label
     label: inline
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 5
     region: content
   field_geo_geolocation:
-    weight: 2
+    type: geolocation_latlng
     label: inline
     settings: {  }
     third_party_settings: {  }
-    type: geolocation_latlng
+    weight: 2
     region: content
 hidden:
   langcode: true

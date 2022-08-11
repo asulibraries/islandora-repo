@@ -12,19 +12,19 @@ dependencies:
 id: admintoolbox
 theme: asulib_barrio
 region: sidebar_first
-weight: -38
+weight: -42
 provider: null
 plugin: admin_toolbox
 settings:
   id: admin_toolbox
   label: 'Admin toolbox'
-  provider: asu_admin_toolbox
   label_display: '0'
+  provider: asu_admin_toolbox
 visibility:
   request_path_exclusion:
     id: request_path_exclusion
-    pages: ''
     negate: null
+    pages: ''
   view_inclusion:
     id: view_inclusion
     negate: null
@@ -34,15 +34,15 @@ visibility:
     mimetype: ''
     negate: false
     context_mapping: {  }
-  node_type:
-    id: node_type
-    bundles:
-      asu_repository_item: asu_repository_item
-      collection: collection
+  request_path:
+    id: request_path
+    negate: true
+    pages: "/node/add*\r\n/node/*/edit*"
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
     negate: false
     context_mapping:
       node: '@node.node_route_context:node'
-  request_path:
-    id: request_path
-    pages: "/node/add*\r\n/node/*/edit*"
-    negate: true
+    bundles:
+      asu_repository_item: asu_repository_item
+      collection: collection

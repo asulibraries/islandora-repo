@@ -1,0 +1,33 @@
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.duplicate_of_genre
+  module:
+    - facets
+    - islandora
+    - system
+  theme:
+    - asulib_barrio
+id: duplicateofgenre
+theme: asulib_barrio
+region: sidebar_first
+weight: 5
+provider: null
+plugin: 'facet_block:duplicate_of_genre'
+settings:
+  id: 'facet_block:duplicate_of_genre'
+  label: Genre
+  label_display: visible
+  provider: facets
+  block_id: duplicateofgenre
+visibility:
+  media_source_mimetype:
+    id: media_source_mimetype
+    mimetype: ''
+    negate: false
+    context_mapping: {  }
+  request_path:
+    id: request_path
+    negate: false
+    pages: '/collections/*/search-alt*'

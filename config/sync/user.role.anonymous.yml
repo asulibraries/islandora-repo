@@ -1,6 +1,16 @@
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - filter.format.description_restricted_items
+    - filter.format.restricted_html
+    - rest.resource.oai_pmh
+  module:
+    - contact
+    - filter
+    - media
+    - rest
+    - system
 id: anonymous
 label: 'Anonymous user'
 weight: 0
@@ -9,7 +19,6 @@ permissions:
   - 'access content'
   - 'access site-wide contact form'
   - 'restful get oai_pmh'
-  - 'search content'
   - 'use text format description_restricted_items'
   - 'use text format restricted_html'
   - 'view media'

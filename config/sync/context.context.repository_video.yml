@@ -3,8 +3,8 @@ status: true
 dependencies:
   module:
     - islandora
-name: repository_video
 label: 'Repository Video'
+name: repository_video
 group: Display
 description: 'Video view mode and related'
 requireAllConditions: false
@@ -12,11 +12,11 @@ disabled: true
 conditions:
   node_has_term:
     id: node_has_term
-    logic: and
     negate: false
-    uri: 'http://purl.org/coar/resource_type/c_12ce'
     context_mapping:
       node: '@node.node_route_context:node'
+    uri: 'http://purl.org/coar/resource_type/c_12ce'
+    logic: and
 reactions:
   view_mode_alter:
     id: view_mode_alter

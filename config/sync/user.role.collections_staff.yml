@@ -1,6 +1,15 @@
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - node.type.collection
+    - workflows.workflow.ingest
+  module:
+    - content_moderation
+    - group
+    - node
+    - system
+    - toolbar
 id: collections_staff
 label: 'Collections Staff'
 weight: 9
@@ -10,9 +19,11 @@ permissions:
   - 'access toolbar'
   - 'create collection content'
   - 'create collection_group group'
-  - 'view field_cataloging_standards'
-  - 'view field_description_source'
-  - 'view field_level_of_coding'
-  - 'view own field_cataloging_standards'
-  - 'view own field_description_source'
-  - 'view own field_level_of_coding'
+  - 'edit any collection content'
+  - 'edit own collection content'
+  - 'use ingest transition create_new_draft'
+  - 'use ingest transition decline_submission'
+  - 'use ingest transition publish'
+  - 'use ingest transition to_approved_by_content_lead'
+  - 'view any unpublished content'
+  - 'view latest version'

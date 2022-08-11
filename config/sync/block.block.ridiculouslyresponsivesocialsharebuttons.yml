@@ -18,35 +18,35 @@ plugin: rrssb_block
 settings:
   id: rrssb_block
   label: 'Share this content'
-  provider: rrssb
   label_display: visible
+  provider: rrssb
   button_set: default
 visibility:
-  node_type:
-    id: node_type
-    bundles:
-      asu_repository_item: asu_repository_item
-      collection: collection
-    negate: false
-    context_mapping:
-      node: '@node.node_route_context:node'
   request_path_exclusion:
     id: request_path_exclusion
-    pages: ''
     negate: true
     context_mapping: {  }
+    pages: ''
   request_path:
     id: request_path
-    pages: "/node/add/*\r\n/node/*/edit\r\n/node/*/revisions/*"
     negate: true
     context_mapping: {  }
+    pages: "/node/add/*\r\n/node/*/edit\r\n/node/*/revisions/*"
   view_inclusion:
     id: view_inclusion
     negate: false
-    view_inclusion: {  }
     context_mapping: {  }
+    view_inclusion: {  }
   media_source_mimetype:
     id: media_source_mimetype
     mimetype: ''
     negate: false
     context_mapping: {  }
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      asu_repository_item: asu_repository_item
+      collection: collection

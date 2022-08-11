@@ -12,21 +12,21 @@ dependencies:
     - field.field.media.file.field_mime_type
     - field.field.media.file.field_original_name
     - media.type.file
+  module:
+    - openseadragon
   enforced:
     module:
       - islandora_defaults
-  module:
-    - openseadragon
 id: media.file.open_seadragon
 targetEntityType: media
 bundle: file
 mode: open_seadragon
 content:
   field_media_file:
+    type: openseadragon_image
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    type: openseadragon_image
     weight: 0
     region: content
 hidden:

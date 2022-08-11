@@ -1,9 +1,6 @@
 langcode: en
 status: true
 dependencies:
-  enforced:
-    module:
-      - islandora_core_feature
   module:
     - basic_auth
     - jsonld
@@ -12,6 +9,9 @@ dependencies:
     - rest_oai_pmh
     - serialization
     - user
+  enforced:
+    module:
+      - islandora_core_feature
 id: entity.node
 plugin_id: 'entity:node'
 granularity: method

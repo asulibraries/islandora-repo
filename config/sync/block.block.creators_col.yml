@@ -13,29 +13,29 @@ dependencies:
 id: creators_col
 theme: asulib_barrio
 region: sidebar_first
-weight: -30
+weight: -35
 provider: null
 plugin: 'facet_block:linked_agents_col'
 settings:
   id: 'facet_block:linked_agents_col'
   label: Contributors
-  provider: facets
   label_display: visible
+  provider: facets
   block_id: creators_col
 visibility:
   request_path_exclusion:
     id: request_path_exclusion
-    pages: ''
-    negate: null
+    negate: true
     context_mapping: {  }
+    pages: ''
   request_path:
     id: request_path
-    pages: '/collections/*/search*'
     negate: false
     context_mapping: {  }
+    pages: '/collections/*/search*'
   view_inclusion:
     id: view_inclusion
-    negate: null
+    negate: false
     view_inclusion: {  }
   media_source_mimetype:
     id: media_source_mimetype

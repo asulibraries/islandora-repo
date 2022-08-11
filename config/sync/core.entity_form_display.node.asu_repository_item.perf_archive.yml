@@ -91,30 +91,30 @@ third_party_settings:
         - uid
         - status
         - moderation_state
+      label: 'Performance Archive Item'
+      region: content
       parent_name: ''
       weight: 0
       format_type: tab
-      region: content
       format_settings:
-        description: ''
-        formatter: open
-        required_fields: true
-        id: ''
         classes: ''
-      label: 'Performance Archive Item'
+        id: ''
+        formatter: open
+        description: ''
+        required_fields: true
     group_system:
       children: {  }
+      label: 'System Use and Display'
+      region: hidden
       parent_name: group_tab_container
       weight: 3
       format_type: tab
-      region: hidden
       format_settings:
-        description: ''
-        formatter: closed
-        required_fields: true
-        id: ''
         classes: ''
-      label: 'System Use and Display'
+        id: ''
+        formatter: closed
+        description: ''
+        required_fields: true
     group_tab_container:
       children:
         - group_additional_details_and_ide
@@ -122,15 +122,15 @@ third_party_settings:
         - group_subjects
         - group_access_and_rights
         - group_types_and_notes
+      label: 'Tab Container'
+      region: hidden
       parent_name: ''
       weight: 38
       format_type: tabs
-      region: hidden
       format_settings:
-        id: ''
         classes: ''
+        id: ''
         direction: vertical
-      label: 'Tab Container'
     group_subjects:
       children:
         - field_coordinates
@@ -139,143 +139,144 @@ third_party_settings:
         - field_subjects_name
         - field_temporal_subject
         - field_title_subject
+      label: Subjects
+      region: hidden
       parent_name: group_tab_container
       weight: 5
       format_type: tab
-      region: hidden
       format_settings:
-        id: ''
         classes: ''
-        description: ''
+        id: ''
         formatter: closed
+        description: ''
         required_fields: true
-      label: Subjects
     group_access_and_rights:
       children: {  }
+      label: 'Access and Rights'
+      region: hidden
       parent_name: group_tab_container
       weight: 6
       format_type: tab
-      region: hidden
       format_settings:
-        id: ''
         classes: ''
-        description: ''
+        id: ''
         formatter: closed
+        description: ''
         required_fields: true
-      label: 'Access and Rights'
     group_types_and_notes:
       children: {  }
+      label: 'Types and Notes'
+      region: hidden
       parent_name: group_tab_container
       weight: 7
       format_type: tab
-      region: hidden
       format_settings:
-        id: ''
         classes: ''
-        direction: vertical
+        id: ''
         formatter: closed
         description: ''
         required_fields: true
-      label: 'Types and Notes'
+        direction: vertical
     group_additional_details_and_ide:
       children: {  }
+      label: 'Identifiers, Dates, and Additional Details'
+      region: hidden
       parent_name: group_tab_container
       weight: 2
       format_type: tab
-      region: hidden
       format_settings:
-        description: ''
-        formatter: closed
-        required_fields: true
-        id: ''
         classes: ''
-      label: 'Identifiers, Dates, and Additional Details'
+        id: ''
+        formatter: closed
+        description: ''
+        required_fields: true
 id: node.asu_repository_item.perf_archive
 targetEntityType: node
 bundle: asu_repository_item
 mode: perf_archive
 content:
   field_complex_object_child:
+    type: boolean_checkbox
     weight: 15
+    region: content
     settings:
       display_label: true
     third_party_settings: {  }
-    type: boolean_checkbox
-    region: content
   field_copyright_statement:
+    type: options_select
     weight: 5
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: options_select
-    region: content
   field_default_derivative_file_pe:
+    type: entity_reference_autocomplete
     weight: 7
+    region: content
     settings:
       match_operator: CONTAINS
       match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
   field_default_original_file_perm:
+    type: entity_reference_autocomplete
     weight: 8
+    region: content
     settings:
       match_operator: CONTAINS
       match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
   field_edtf_date_created:
+    type: edtf_default
     weight: 12
+    region: content
     settings:
       strict_dates: false
       intervals: true
       sets: false
     third_party_settings: {  }
-    type: edtf_default
-    region: content
   field_genre:
+    type: entity_reference_autocomplete
     weight: 9
+    region: content
     settings:
       match_operator: CONTAINS
       match_limit: 50
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
   field_linked_agent:
+    type: typed_relation_auto
     weight: 3
+    region: content
     settings:
       match_operator: CONTAINS
       match_limit: '30'
       size: '60'
       placeholder: ''
     third_party_settings: {  }
-    type: typed_relation_auto
-    region: content
   field_member_of:
+    type: entity_reference_autocomplete
     weight: 1
+    region: content
     settings:
       match_operator: CONTAINS
       match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: entity_reference_autocomplete
-    region: content
   field_model:
+    type: options_select
     weight: 14
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: options_select
-    region: content
   field_note_para:
     type: entity_reference_paragraphs
     weight: 10
+    region: content
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -284,31 +285,32 @@ content:
       form_display_mode: default
       default_paragraph_type: ''
     third_party_settings: {  }
-    region: content
   field_reuse_permissions:
+    type: options_select
     weight: 6
+    region: content
     settings: {  }
     third_party_settings: {  }
-    type: options_select
-    region: content
   field_rich_description:
+    type: text_textarea
     weight: 2
+    region: content
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: text_textarea
-    region: content
   field_series:
+    type: string_textfield
     weight: 13
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_subject:
+    type: inline_entity_form_complex
     weight: 4
+    region: content
     settings:
       form_mode: simple_taxo_create
       override_labels: true
@@ -317,16 +319,15 @@ content:
       allow_new: true
       allow_existing: true
       match_operator: STARTS_WITH
-      revision: false
+      allow_duplicate: false
       collapsible: false
       collapsed: false
-      allow_duplicate: false
+      revision: false
     third_party_settings: {  }
-    type: inline_entity_form_complex
-    region: content
   field_title:
     type: entity_reference_paragraphs
     weight: 0
+    region: content
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -335,10 +336,10 @@ content:
       form_display_mode: default
       default_paragraph_type: ''
     third_party_settings: {  }
-    region: content
   field_typed_identifier:
     type: entity_reference_paragraphs
     weight: 11
+    region: content
     settings:
       title: Paragraph
       title_plural: Paragraphs
@@ -347,36 +348,35 @@ content:
       form_display_mode: default
       default_paragraph_type: ''
     third_party_settings: {  }
-    region: content
   field_weight:
+    type: number
     weight: 16
+    region: content
     settings:
       placeholder: ''
     third_party_settings: {  }
-    type: number
-    region: content
   moderation_state:
     type: moderation_state_default
     weight: 19
-    settings: {  }
     region: content
+    settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    settings:
-      display_label: true
     weight: 18
     region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
     weight: 17
+    region: content
     settings:
       match_operator: CONTAINS
+      match_limit: 10
       size: 60
       placeholder: ''
-      match_limit: 10
-    region: content
     third_party_settings: {  }
 hidden:
   created: true

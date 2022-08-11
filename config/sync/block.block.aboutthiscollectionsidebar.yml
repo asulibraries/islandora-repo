@@ -4,6 +4,7 @@ dependencies:
   module:
     - asu_collection_extras
     - context
+    - islandora
     - node
     - system
   theme:
@@ -11,34 +12,39 @@ dependencies:
 id: aboutthiscollectionsidebar
 theme: asulib_barrio
 region: sidebar_first
-weight: -36
+weight: -40
 provider: null
 plugin: about_this_collection_sidebar_block
 settings:
   id: about_this_collection_sidebar_block
   label: 'About this collection'
-  provider: asu_collection_extras
   label_display: visible
+  provider: asu_collection_extras
 visibility:
   request_path_exclusion:
     id: request_path_exclusion
-    pages: ''
-    negate: null
+    negate: true
     context_mapping: {  }
+    pages: ''
   view_inclusion:
     id: view_inclusion
-    negate: null
-    view_inclusion: {  }
+    negate: false
     context_mapping: {  }
-  node_type:
-    id: node_type
-    bundles:
-      collection: collection
+    view_inclusion: {  }
+  request_path:
+    id: request_path
+    negate: true
+    context_mapping: {  }
+    pages: "/node/add/collection*\r\n/node/*/edit\r\n/collections/*/search*"
+  media_source_mimetype:
+    id: media_source_mimetype
+    mimetype: ''
+    negate: false
+    context_mapping: {  }
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
     negate: false
     context_mapping:
       node: '@node.node_route_context:node'
-  request_path:
-    id: request_path
-    pages: "/node/add/collection*\r\n/node/*/edit"
-    negate: true
-    context_mapping: {  }
+    bundles:
+      collection: collection
