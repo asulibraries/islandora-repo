@@ -11,41 +11,40 @@
         }
     ],
     "repositories": [
-      {
-          "type": "composer",
-          "url": "https://packages.drupal.org/8"
-      },
-    	{
-    	    "type": "composer",
-    	    "url": "https://asset-packagist.org"
-    	},
-      {
-       "type": "package",
-       "package": {
-          "name": "d3/d3",
-          "version": "v3.5.17",
-          "type": "drupal-library",
-          "source": {
-              "url": "https://github.com/d3/d3.git",
-              "type": "git",
-              "reference": "tags/v3.5.17"
-          }
+        {
+            "type": "composer",
+            "url": "https://packages.drupal.org/8"
+        },
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "d3/d3",
+                "version": "v3.5.17",
+                "type": "drupal-library",
+                "source": {
+                    "url": "https://github.com/d3/d3.git",
+                    "type": "git",
+                    "reference": "tags/v3.5.17"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "highlightjs/highlightjs",
+                "version": "9.7.0",
+                "type": "drupal-library",
+                "source": {
+                    "url": "https://github.com/highlightjs/highlight.js.git",
+                    "type": "git",
+                    "reference": "tags/9.7.0"
+                }
+            }
         }
-    },
-    {
-    "type": "package",
-    "package": {
-        "name": "highlightjs/highlightjs",
-        "version": "9.7.0",
-        "type": "drupal-library",
-        "source": {
-            "url": "https://github.com/highlightjs/highlight.js.git",
-            "type": "git",
-            "reference": "tags/9.7.0"
-        }
-      }
-    }
-
     ],
     "require": {
         "php": "^7.4||^8.0",
@@ -116,6 +115,7 @@
         "drupal/pathauto": "^1.8",
         "drupal/pdf": "1.x-dev",
         "drupal/rdfui": "^1.0-beta1",
+        "drupal/recaptcha_v3": "^1.6",
         "drupal/redirect": "^1.6",
         "drupal/rest_oai_pmh": "^1.0@beta",
         "drupal/restui": "^1.16",
@@ -167,13 +167,25 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "cweagans/composer-patches": true,
+            "composer/installers": true,
+            "drupal/core-composer-scaffold": true,
+            "drupal/core-project-message": true,
+            "zaporylie/composer-drupal-optimizations": true,
+            "drupal/console-extend-plugin": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "oomphinc/composer-installers-extender": true
+        }
     },
     "autoload": {
         "classmap": [
             "scripts/composer/ScriptHandler.php"
         ],
-        "files": ["load.environment.php"]
+        "files": [
+            "load.environment.php"
+        ]
     },
     "scripts": {
         "pre-install-cmd": [
@@ -195,14 +207,14 @@
         "patchLevel": {
             "drupal/core": "-p2"
         },
-	       "installer-paths": {
+        "installer-paths": {
             "web/core": [
                 "type:drupal-core"
             ],
             "web/libraries/{$name}": [
                 "type:drupal-library",
-		"vendor:npm-asset",
-		"vendor:bower-asset"
+                "vendor:npm-asset",
+                "vendor:bower-asset"
             ],
             "web/modules/contrib/{$name}": [
                 "type:drupal-module"
@@ -252,45 +264,44 @@
                 ".editorconfig": "../.editorconfig",
                 ".gitattributes": "../.gitattributes"
             },
-	    "locations": {
+            "locations": {
                 "web-root": "web/"
             }
         },
         "patches": {
             "drupal/captcha": {
                 "fix for permissions": "https://www.drupal.org/files/issues/2021-06-18/captcha-white-image-captcha-3211385-12.patch"
-	    },
+            },
             "drupal/context": {
                 "Views integration": "https://www.drupal.org/files/issues/context-views-condition-2938094-6.patch"
-	    },
-	    "drupal/core": {
-		"fix for taxo term save": "https://www.drupal.org/files/issues/2020-10-29/2893747-33.patch",
-		"fix for blocks not showing up": "https://www.drupal.org/files/issues/2018-10-27/2997898-21.patch"
-	    },
-            "drupal/devel": {
-                "fix for webprofiler search": "https://gitlab.com/drupalspoons/devel/uploads/46c76358f2ea033809bdfe015bb47c97/devel-372-symfony-4-events-supports.patch",
-		"fix for webprofiler on drupal 9.3": "https://gitlab.com/drupalspoons/devel/uploads/63e4e96921f8c05d3e98faf84d62d4e4/388-compatability-with-core-9.3.diff"
             },
-	    "drupal/google_analytics": {
-		"fix for GA version 4": "https://www.drupal.org/files/issues/2020-12-01/3178179-google-analytics-4.patch"
-	    },
-	    "drupal/facets": {
+            "drupal/core": {
+                "fix for taxo term save": "https://www.drupal.org/files/issues/2020-10-29/2893747-33.patch",
+                "fix for blocks not showing up": "https://www.drupal.org/files/issues/2018-10-27/2997898-21.patch"
+            },
+            "drupal/google_analytics": {
+                "fix for GA version 4": "https://www.drupal.org/files/issues/2020-12-01/3178179-google-analytics-4.patch"
+            },
+            "drupal/facets": {
                 "nouislider fix": "https://www.drupal.org/files/issues/2021-06-16/issue-3153622-nouislider_4.patch"
-	    },
-	    "drupal/metatag": {
+            },
+            "drupal/metatag": {
                 "fix for metatag delimiter": "https://git.drupalcode.org/project/metatag/-/merge_requests/20.diff"
-	    },
+            },
             "drupal/migrate_source_ui": {
                 "allow url as a migrate source": "https://raw.githubusercontent.com/asulibraries/islandora-repo/develop/web/modules/custom/asu_migrate/source_ui_url.patch"
             },
-	    "drupal/rest_oai_pmh": {
+            "drupal/rest_oai_pmh": {
                 "fix for empty values and incorrect namespaces": "https://raw.githubusercontent.com/asulibraries/islandora-repo/develop/web/modules/custom/asu_custom_rdf/ns_and_empty_fixes.patch"
-	    },
+            },
             "drupal/views_data_export": {
                 "fix for batch export": "https://www.drupal.org/files/issues/2021-02-12/3173296-9-batch-query-alter.patch"
-	    }
+            }
         },
-	"installer-types": ["npm-asset", "bower-asset"]
+        "installer-types": [
+            "npm-asset",
+            "bower-asset"
+        ]
     },
     "require-dev": {
         "phpspec/prophecy-phpunit": "^2.0",
