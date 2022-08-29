@@ -1,7 +1,12 @@
 <?php
+
+/**
+ * @file
+ * Custom RDF hooks.
+ */
+
 use Drupal\jsonld\Normalizer\NormalizerBase;
 use Drupal\Core\Entity\EntityInterface;
-use Drupal\paragraphs\Entity\Paragraph;
 
 /**
  * Implements hook_rdf_namespaces().
@@ -12,7 +17,7 @@ function asu_custom_rdf_rdf_namespaces() {
     'asu' => 'http://repository.lib.asu.edu/rdf/',
     'bf' => 'http://id.loc.gov/ontologies/bibframe/',
     'identifiers' => 'http://id.loc.gov/vocabulary/identifiers/',
-    'barrettrelators' => 'http://id.loc.gov/vocabulary/relators/'
+    'barrettrelators' => 'http://id.loc.gov/vocabulary/relators/',
   ];
 }
 
@@ -72,7 +77,7 @@ function asu_custom_rdf_jsonld_alter_normalized_array(EntityInterface $entity, a
         }
       }
 
-      // Change boolean for peer reviewed to an @id, not a boolean/value
+      // Change boolean for peer reviewed to an @id, not a boolean/value.
       if (array_key_exists('field_peer_reviewed', $current_rdf_mapping)) {
         foreach ($current_rdf_mapping['field_peer_reviewed']['properties'] as $predicate) {
           $predicate_normalized = NormalizerBase::escapePrefix($predicate, $context['namespaces']);
@@ -80,13 +85,13 @@ function asu_custom_rdf_jsonld_alter_normalized_array(EntityInterface $entity, a
             foreach ($gv as $this_key => $value_array) {
               foreach ($value_array as $k => $v) {
                 if ($k === "@value" && $v === "") {
-                  unset($normalized['@graph'][0][$gk]);
+                  unset($normalized['@graph'][0][$gk][$this_key]);
                 }
-                if ($k === "@value" && $v != "") {
+                elseif ($k === "@value" && $v != "") {
                   $normalized['@graph'][0][$gk][$this_key]['@id'] = $v;
                   unset($normalized['@graph'][0][$gk][$this_key]['@value']);
                 }
-                if ($k === "@type") {
+                elseif ($k === "@type") {
                   unset($normalized['@graph'][0][$gk][$this_key]["@type"]);
                 }
               }
@@ -95,7 +100,6 @@ function asu_custom_rdf_jsonld_alter_normalized_array(EntityInterface $entity, a
         }
       }
 
-
       // Make sure paragraph mappings don't leave behind empty ids.
       if (is_array($gv)) {
         foreach ($gv as $key => $val) {
@@ -103,7 +107,7 @@ function asu_custom_rdf_jsonld_alter_normalized_array(EntityInterface $entity, a
             foreach ($val as $kgv => $vgv) {
               if ($kgv === "@id" && $vgv === "") {
                 unset($gv[$key][$kgv]);
-                // TODO change current language to field language.
+                // @todo change current language to field language.
                 $gv[$key]['@language'] = $lang;
                 $normalized['@graph'][0][$gk] = $gv;
               }
@@ -150,7 +154,6 @@ function asu_custom_rdf_jsonld_alter_normalized_array(EntityInterface $entity, a
         }
       }
     }
-
 
     // Remove empty IDs created by the paragraph entities.
     if (count($normalized['@graph']) > 1) {
