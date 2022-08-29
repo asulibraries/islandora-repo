@@ -55,6 +55,7 @@ class ParseBoolean extends CommonDataConverter {
         return $val;
       }
     }
+    return '';
   }
 
 }
