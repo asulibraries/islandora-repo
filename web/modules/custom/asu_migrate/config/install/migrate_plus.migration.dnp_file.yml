@@ -67,8 +67,6 @@ process:
       search: "]"
       replace: ""
 
-
-
   # Construct the destination URI using the file name.
   destination:
     plugin: concat
@@ -79,11 +77,10 @@ process:
     #   - file id
 
   uri:
-    plugin: file_copy
+    plugin: download
     source:
-      - Download url
+      - 'Download url'
       - '@destination' # The destination entry from above
-
 
 destination:
   # These are Drupal 'image' entities we're making, not just plain 'file' entities.
