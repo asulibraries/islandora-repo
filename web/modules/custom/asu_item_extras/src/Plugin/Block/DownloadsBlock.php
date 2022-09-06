@@ -13,7 +13,6 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\asu_islandora_utils\AsuUtils;
 
-
 /**
  * Provides a 'Downloads' Block.
  *
@@ -55,11 +54,15 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
 
   /**
    * IslandoraUtils class.
+   *
+   * @var mixed
    */
   protected $islandoraUtils;
 
   /**
    * MediaSourceService class.
+   *
+   * @var mixed
    */
   protected $mediaSourceService;
 
@@ -80,7 +83,7 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
    *   The current user.
    * @param mixed $islandora_utils
    *   IslandoraUtils Utility class.
-   * @param $asu_utils
+   * @param \Drupal\asu_islandora_utils\AsuUtils $asu_utils
    *   The ASU Utils service.
    * @param mixed $media_source_service
    *   MediaSourceService Utility class.
@@ -130,7 +133,7 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
         }
       }
     }
-    $all_files = array();
+    $all_files = [];
 
     $default_config = \Drupal::config('asu_default_fields.settings');
     $user_roles = $this->currentUser->getRoles();
@@ -178,7 +181,6 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
       $presfile = NULL;
     }
 
-
     if ($origfile && $origfile->bundle() <> 'remote_video') {
       $all_files["original"] = $this->getFileDetails($origfile, "original");
       $download_info = $all_files["original"]["mime_type"];
@@ -192,7 +194,7 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     }
 
     $markup = '';
-    $links = array_filter($all_files, function($v) {
+    $links = array_filter($all_files, function ($v) {
       return $v["access"];
     });
 
@@ -231,8 +233,16 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
       }
     }
     $asuUtils = $this->asuUtils;
-    $links = array_map(function($v) use ($link_hreflang, $asuUtils) {
-      return Link::fromTextAndUrl($v['ext'] . " (" . $asuUtils->formatBytes($v['file_size'], 1) . ")", Url::fromUri($v['link'], ['attributes' => array_merge($link_hreflang, ['class' => ['btn btn-md btn-gray'], 'title' => $this->t('Download '.$v['type'].' file ' . $v['ext'])])]))->toRenderable();
+    $links = array_map(function ($v) use ($link_hreflang, $asuUtils) {
+      return Link::fromTextAndUrl($v['ext'] . " (" . $asuUtils->formatBytes($v['file_size'], 1) . ")", Url::fromUri($v['link'], [
+        'attributes' => array_merge($link_hreflang, [
+          'class' => ['btn btn-md btn-gray'],
+          'title' => $this->t('Download %type file %ext', [
+            '%type' => $v['type'],
+            '%ext' => $v['ext'],
+          ]),
+        ]),
+      ]))->toRenderable();
     }, $links);
 
     $return = [
@@ -241,6 +251,9 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
       '#asu_download_links' => $links,
       '#file_size' => $file_size,
       '#theme' => 'asu_item_extras_downloads_block',
+      '#cache' => [
+        'tags' => ["node:$nid"],
+      ],
     ];
 
     return $return;
@@ -289,16 +302,16 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
       $of_file = ($file->hasField($source_field) && (is_object($file->get($source_field)) && $file->get($source_field)->referencedEntities() != NULL) ? $file->get($source_field)->referencedEntities()[0] : FALSE);
       if ($of_file) {
         $file_path_info = pathinfo($of_file->getFilename());
-        return array(
+        return [
           "file_size" => $file->get('field_file_size')->value,
           "mime_type" => $file->get('field_mime_type')->value,
           "ext" => $file_path_info['extension'],
-          "dimensions" => (isset($dimensions) ? $dimensions : NULL),
+          "dimensions" => ($dimensions ?? NULL),
           "link" => $this->islandoraUtils->getDownloadUrl($of_file),
           "access" => $file->access('view', $this->currentUser),
           "perms" => count($file->get('field_access_terms')->referencedEntities()) > 0 ? $file->get('field_access_terms')->referencedEntities()[0]->label() : "Public",
-          "type" => $type
-        );
+          "type" => $type,
+        ];
       }
     }
   }
