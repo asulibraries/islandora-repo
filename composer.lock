@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "423667e8912987f0c9b2d338a1f9e1bd",
+    "content-hash": "53aa581d79b5cafd38e1f5a283dc1b0e",
     "packages": [
         {
             "name": "alchemy/zippy",
@@ -129,6 +129,53 @@
                 "source": "https://github.com/asm89/stack-cors/tree/1.3.0"
             },
             "time": "2019-12-24T22:41:47+00:00"
+        },
+        {
+            "name": "asulibraries/islandora_matomo",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/asulibraries/islandora_matomo.git",
+                "reference": "d3070474312773c3cf3f6776c8f32d66c33de912"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/asulibraries/islandora_matomo/zipball/d3070474312773c3cf3f6776c8f32d66c33de912",
+                "reference": "d3070474312773c3cf3f6776c8f32d66c33de912",
+                "shasum": ""
+            },
+            "require": {
+                "drupal/matomo": "^1.9"
+            },
+            "default-branch": true,
+            "type": "drupal-module",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Eli Zoller",
+                    "email": "eli.zoller@asu.edu",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "Willow Gillingham",
+                    "email": "willow.gillingham@asu.edu",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Islandora Matomo module",
+            "homepage": "https://github.com/asulibraries/islandora_matomo",
+            "keywords": [
+                "Islandora",
+                "drupal"
+            ],
+            "support": {
+                "issues": "https://github.com/asulibraries/islandora_matomo/issues",
+                "source": "https://github.com/asulibraries/islandora_matomo/tree/main"
+            },
+            "time": "2022-01-06T15:45:56+00:00"
         },
         {
             "name": "aws/aws-crt-php",
@@ -21842,6 +21889,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "asulibraries/islandora_matomo": 20,
         "drupal/advagg": 20,
         "drupal/auto_entitylabel": 10,
         "drupal/cas": 10,
@@ -21875,5 +21923,5 @@
         "php": "^7.4||^8.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.3.0"
 }
