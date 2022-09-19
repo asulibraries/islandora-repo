@@ -181,7 +181,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
       if ($is_complex_object) {
         $link = Link::fromTextAndUrl($this->t('Add media &nbsp; <i class="fas fa-plus-circle"></i>'), $url);
         if ($config->get('perf_archive_default_collection')) {
-          if ($node->get('field_member_of') && $node->get('field_member_of')->entity->id() == $config->get('perf_archive_default_collection')) {
+          if (!$node->get('field_member_of')->isEmpty() && $node->get('field_member_of')->entity->id() == $config->get('perf_archive_default_collection')) {
             $pa_url = Url::fromRoute('self_deposit.perf_archive.add_child', [
               'node_type' => 'asu_repository_item',
               'parent' => $node->id(),
