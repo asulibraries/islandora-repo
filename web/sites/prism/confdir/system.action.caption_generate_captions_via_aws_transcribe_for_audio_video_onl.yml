@@ -1,0 +1,20 @@
+uuid: e5230860-966c-4019-a95b-47458cc37806
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora
+id: caption_generate_captions_via_aws_transcribe_for_audio_video_onl
+label: 'Caption - Generate captions via AWS Transcribe (for Audio/Video only)'
+type: media
+plugin: generate_derivative_file
+configuration:
+  queue: islandora-connector-awstranscribe
+  event: 'Generate Derivative'
+  source_term_uri: 'http://pcdm.org/use#OriginalFile'
+  mimetype: text/vtt
+  args: ''
+  path: '[date:custom:Y]-[date:custom:m]/captions-[media:mid].vtt'
+  source_field_name: field_media_file
+  destination_field_name: field_track
+  scheme: null

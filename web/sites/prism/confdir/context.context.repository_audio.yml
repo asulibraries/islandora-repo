@@ -1,0 +1,26 @@
+uuid: a1340969-d01a-49f8-8f4d-6d0fff7f5a1b
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora
+label: 'Repository Audio'
+name: repository_audio
+group: Display
+description: 'Audio view mode and related'
+requireAllConditions: false
+disabled: true
+conditions:
+  node_has_term:
+    id: node_has_term
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    uri: 'http://purl.org/coar/resource_type/c_18cc'
+    logic: and
+reactions:
+  view_mode_alter:
+    id: view_mode_alter
+    mode: node.asu_audio
+    saved: false
+weight: 0

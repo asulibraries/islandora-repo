@@ -1,0 +1,23 @@
+uuid: 46fbe12e-686b-4f30-aa7e-5d43edbf5fb3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_enabled
+    - node.type.collection
+id: node.collection.field_enabled
+field_name: field_enabled
+entity_type: node
+bundle: collection
+label: Enabled
+description: 'Uncheck to completely disable this collection. This is useful in case we want to fully lock down access, even to the collection''s administrators. For example, in the case of copyright violation.'
+required: false
+translatable: false
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: Enabled
+  off_label: Disabled
+field_type: boolean

@@ -1,0 +1,85 @@
+uuid: 7a831d2b-b2ae-433d-b83c-2f315df70730
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora
+    - node
+  enforced:
+    module:
+      - islandora_defaults
+label: Collection
+name: collection
+group: Display
+description: 'Display block of children'
+requireAllConditions: false
+disabled: true
+conditions:
+  node_has_term:
+    id: node_has_term
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    uri: 'http://purl.org/dc/dcmitype/Collection'
+    logic: and
+  node_type:
+    id: node_type
+    negate: false
+    uuid: 52ed303c-c706-4386-9642-fa62f6f47ecf
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      collection: collection
+reactions:
+  blocks:
+    id: blocks
+    blocks:
+      41f1d520-14ae-479e-90d2-34aa6f4a750e:
+        id: 'views_block:members-block_1'
+        label: ''
+        provider: views
+        label_display: visible
+        region: content_suffix
+        weight: '0'
+        custom_id: views_block_members_block_1
+        theme: carapace
+        css_class: ''
+        unique: 0
+        context_id: collection
+        context_mapping: {  }
+        views_label: ''
+        items_per_page: none
+      c95fd2e7-0327-4901-9dfb-73252f8a2d42:
+        uuid: c95fd2e7-0327-4901-9dfb-73252f8a2d42
+        id: 'views_exposed_filter_block:solr_search_content-page_2'
+        label: ''
+        provider: views
+        label_display: visible
+        region: sidebar_first
+        weight: '-1'
+        custom_id: views_exposed_filter_block_solr_search_content_page_2
+        theme: asulib
+        css_class: ''
+        unique: 0
+        context_id: collection
+        context_mapping: {  }
+        views_label: ''
+      6b8d587e-ceb7-4c82-8ee5-18c368c8ec0a:
+        uuid: 6b8d587e-ceb7-4c82-8ee5-18c368c8ec0a
+        id: 'views_block:members-block_1'
+        label: ''
+        provider: views
+        label_display: visible
+        region: content
+        weight: '0'
+        custom_id: views_block_members_block_1
+        theme: asulib_barrio
+        css_class: ''
+        unique: 0
+        context_id: collection
+        context_mapping: {  }
+        views_label: ''
+        items_per_page: none
+    include_default_blocks: 1
+    saved: false
+weight: 1

@@ -1,0 +1,35 @@
+uuid: 0d82fd05-b4c8-4084-9353-88f44adeb884
+langcode: en
+status: true
+dependencies:
+  module:
+    - asu_header
+    - context
+    - islandora
+  theme:
+    - asulib_barrio
+id: asuuniversalfooter
+theme: asulib_barrio
+region: footer_fifth
+weight: 0
+provider: null
+plugin: asu_global_footer
+settings:
+  id: asu_global_footer
+  label: 'ASU Universal Footer'
+  label_display: '0'
+  provider: asu_header
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: null
+    pages: ''
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    view_inclusion: {  }
+  media_source_mimetype:
+    id: media_source_mimetype
+    mimetype: ''
+    negate: false
+    context_mapping: {  }

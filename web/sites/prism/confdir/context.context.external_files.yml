@@ -1,0 +1,32 @@
+uuid: 348388cf-4b62-4ae3-9e4f-1ff33a666c33
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora
+label: 'External Files'
+name: external_files
+group: Indexing
+description: 'Files not in Fedora'
+requireAllConditions: false
+disabled: false
+conditions:
+  file_uses_filesystem:
+    id: file_uses_filesystem
+    negate: false
+    context_mapping:
+      file: '@islandora.file_route_context_provider:file'
+    filesystems:
+      public: public
+reactions:
+  index:
+    id: index
+    actions:
+      index_file_as_fedora_external_content: index_file_as_fedora_external_content
+    saved: false
+  delete:
+    id: delete
+    actions:
+      delete_file_as_fedora_external_content: delete_file_as_fedora_external_content
+    saved: false
+weight: -7

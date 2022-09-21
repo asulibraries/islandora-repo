@@ -1,0 +1,28 @@
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora
+name: open_seadragon
+label: 'Open Seadragon'
+group: Display
+description: 'Open Seadragon viewer for Images'
+requireAllConditions: false
+disabled: false
+conditions:
+  node_has_term:
+    id: node_has_term
+    negate: false
+    tids:
+      -
+        target_id: '35'
+    context_mapping:
+      node: '@node.node_route_context:node'
+    uri: 'http://openseadragon.github.io'
+    logic: and
+reactions:
+  view_mode_alter:
+    id: view_mode_alter
+    mode: node.open_seadragon
+    saved: false
+weight: -2

@@ -1,0 +1,48 @@
+uuid: 66092a98-40a2-47ed-aac4-722231bbc40d
+langcode: en
+status: true
+dependencies:
+  content:
+    - 'block_content:basic:9a212904-573f-41ef-9139-348578767de4'
+  module:
+    - block_content
+    - context
+    - islandora
+    - system
+  theme:
+    - asulib_barrio
+id: prismhero
+theme: asulib_barrio
+region: content
+weight: -38
+provider: null
+plugin: 'block_content:9a212904-573f-41ef-9139-348578767de4'
+settings:
+  id: 'block_content:9a212904-573f-41ef-9139-348578767de4'
+  label: 'Prism Hero'
+  label_display: '0'
+  provider: block_content
+  status: true
+  info: ''
+  view_mode: full
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: null
+    context_mapping: {  }
+    pages: ''
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    context_mapping: {  }
+    view_inclusion: {  }
+  media_source_mimetype:
+    id: media_source_mimetype
+    mimetype: ''
+    negate: false
+    context_mapping: {  }
+  request_path:
+    id: request_path
+    negate: false
+    context_mapping: {  }
+    pages: '<front>'

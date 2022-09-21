@@ -1,0 +1,46 @@
+uuid: 6cf20056-e92d-4b15-a61b-5f2a3ede9ddb
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora
+    - islandora_mirador
+_core:
+  default_config_hash: NYCXM147rSAYyB-Vy7BCrnZA-vDWDfxURXPG-ZEgDxg
+label: 'Paged Content - Mirador'
+name: paged_content_mirador
+group: Display
+description: 'Displayed paged content with Mirador'
+requireAllConditions: false
+disabled: false
+conditions:
+  node_has_term:
+    id: node_has_term
+    negate: false
+    uuid: d43d2644-848e-46e7-a3ff-2023277aacc3
+    context_mapping:
+      node: '@node.node_route_context:node'
+    uri: 'https://schema.org/Book,https://projectmirador.org'
+    logic: and
+reactions:
+  blocks:
+    id: blocks
+    uuid: 89895eb1-11ad-4ffa-8eeb-82a1bd4f304d
+    blocks:
+      63a09ad0-d622-46db-abd7-f24c9b89688c:
+        uuid: 63a09ad0-d622-46db-abd7-f24c9b89688c
+        id: mirador_block
+        label: 'Mirador block'
+        provider: islandora_mirador
+        label_display: visible
+        region: content
+        weight: '0'
+        theme: bartik
+        css_class: ''
+        unique: 0
+        context_id: paged_content_mirador
+        context_mapping: {  }
+        iiif_manifest_url: 'http://localhost:8000/node/[node:nid]/book-manifest'
+    include_default_blocks: 1
+    saved: false
+weight: 0

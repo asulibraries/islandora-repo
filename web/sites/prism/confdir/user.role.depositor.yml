@@ -1,0 +1,35 @@
+uuid: cded46d6-d42f-4548-b9bf-490606bbd6c1
+langcode: en
+status: true
+dependencies:
+  config:
+    - media.type.audio
+    - media.type.document
+    - media.type.extracted_text
+    - media.type.file
+    - media.type.fits_technical_metadata
+    - media.type.image
+    - media.type.remote_video
+    - media.type.video
+    - node.type.asu_repository_item
+    - node.type.collection
+  module:
+    - media
+    - node
+id: depositor
+label: Depositor
+weight: 4
+is_admin: null
+permissions:
+  - 'create asu_repository_item content'
+  - 'create collection content'
+  - 'edit own asu_repository_item content'
+  - 'edit own audio media'
+  - 'edit own document media'
+  - 'edit own extracted_text media'
+  - 'edit own file media'
+  - 'edit own fits_technical_metadata media'
+  - 'edit own image media'
+  - 'edit own remote_video media'
+  - 'edit own video media'
+  - 'view own unpublished content'

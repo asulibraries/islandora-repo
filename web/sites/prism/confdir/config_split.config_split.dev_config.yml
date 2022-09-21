@@ -1,0 +1,21 @@
+uuid: 0072ad73-0ef5-432b-9c50-9e60ce39681c
+langcode: en
+status: true
+dependencies: {  }
+id: dev_config
+label: 'Development Config'
+description: 'Settings that are specific for the dev environment'
+weight: 0
+storage: folder
+folder: ../config/dev
+module:
+  devel: 0
+  devel_generate: 0
+  migrate_devel: 0
+  upgrade_status: 0
+theme: {  }
+complete_list:
+  - devel.settings
+  - devel.toolbar.settings
+  - upgrade_status.settings
+partial_list: {  }

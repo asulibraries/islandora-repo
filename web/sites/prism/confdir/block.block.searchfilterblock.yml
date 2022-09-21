@@ -1,0 +1,43 @@
+uuid: ec15d300-dbf5-451f-a505-3ce6f9be959f
+langcode: en
+status: true
+dependencies:
+  module:
+    - asu_search
+    - context
+    - islandora
+    - system
+  theme:
+    - asulib_barrio
+id: searchfilterblock
+theme: asulib_barrio
+region: sidebar_first
+weight: -37
+provider: null
+plugin: search_filter_block
+settings:
+  id: search_filter_block
+  label: 'Search Filters'
+  label_display: visible
+  provider: asu_search
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    context_mapping: {  }
+    pages: "/search*\r\n/collections/*/search*\r\n/items/*/search*"
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: null
+    context_mapping: {  }
+    pages: ''
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    context_mapping: {  }
+    view_inclusion: {  }
+  media_source_mimetype:
+    id: media_source_mimetype
+    mimetype: ''
+    negate: false
+    context_mapping: {  }

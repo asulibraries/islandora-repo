@@ -1,0 +1,25 @@
+uuid: 65595bf5-d84f-4bc6-b3f6-650cdf476014
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.description_restricted_items
+    - filter.format.restricted_html
+    - rest.resource.oai_pmh
+  module:
+    - contact
+    - filter
+    - media
+    - rest
+    - system
+id: anonymous
+label: 'Anonymous user'
+weight: 0
+is_admin: false
+permissions:
+  - 'access content'
+  - 'access site-wide contact form'
+  - 'restful get oai_pmh'
+  - 'use text format description_restricted_items'
+  - 'use text format restricted_html'
+  - 'view media'

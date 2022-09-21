@@ -64,8 +64,10 @@ function self_deposit_preprocess_node(&$variables) {
  * Implements hook_entity_type_build().
  */
 function self_deposit_entity_type_build(array &$entity_types) {
-  $entity_types['node']->setFormClass('perf_archive', 'Drupal\node\NodeForm');
-  $entity_types['node']->setFormClass('perf_archive_child', 'Drupal\node\NodeForm');
+  if (in_array('node', $entity_types)) {
+    $entity_types['node']->setFormClass('perf_archive', 'Drupal\node\NodeForm');
+    $entity_types['node']->setFormClass('perf_archive_child', 'Drupal\node\NodeForm');
+  }
 }
 
 /**

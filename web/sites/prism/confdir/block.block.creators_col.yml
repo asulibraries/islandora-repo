@@ -1,0 +1,45 @@
+uuid: 31cf5fa6-8542-4843-a9ce-2be29809b536
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.linked_agents_col
+  module:
+    - context
+    - facets
+    - islandora
+    - system
+  theme:
+    - asulib_barrio
+id: creators_col
+theme: asulib_barrio
+region: sidebar_first
+weight: -34
+provider: null
+plugin: 'facet_block:linked_agents_col'
+settings:
+  id: 'facet_block:linked_agents_col'
+  label: Contributors
+  label_display: visible
+  provider: facets
+  block_id: creators_col
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: null
+    context_mapping: {  }
+    pages: ''
+  request_path:
+    id: request_path
+    negate: false
+    context_mapping: {  }
+    pages: '/collections/*/search*'
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    view_inclusion: {  }
+  media_source_mimetype:
+    id: media_source_mimetype
+    mimetype: ''
+    negate: false
+    context_mapping: {  }

@@ -1,0 +1,36 @@
+uuid: 39d8841c-5a20-466a-ab19-6654995238cf
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.taxonomy_term.simple_taxo_create
+    - field.field.taxonomy_term.name_titles.field_authority_link
+    - taxonomy.vocabulary.name_titles
+  module:
+    - asu_item_extras
+id: taxonomy_term.name_titles.simple_taxo_create
+targetEntityType: taxonomy_term
+bundle: name_titles
+mode: simple_taxo_create
+content:
+  field_authority_link:
+    type: authority_link_brief
+    weight: 1
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  description: true
+  langcode: true
+  path: true
+  status: true

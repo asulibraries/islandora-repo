@@ -1,0 +1,31 @@
+uuid: c01b440f-133d-479b-9daf-40579087c02b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_geographic_subject
+    - node.type.asu_repository_item
+    - taxonomy.vocabulary.country_codes
+    - taxonomy.vocabulary.geo_location
+id: node.asu_repository_item.field_geographic_subject
+field_name: field_geographic_subject
+entity_type: node
+bundle: asu_repository_item
+label: 'Geographic Subject'
+description: 'If your geographic subject is not found above, please<a href="/admin/structure/taxonomy/manage/geo_location/add" target="_blank">add a new geographic subject</a>'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      country_codes: country_codes
+      geo_location: geo_location
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: country_codes
+field_type: entity_reference

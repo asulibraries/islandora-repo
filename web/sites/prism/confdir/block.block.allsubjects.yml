@@ -1,0 +1,40 @@
+uuid: 55a60214-148d-4b5b-a39c-9cf6bccbe3de
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.all_subjects
+  module:
+    - context
+    - facets
+    - system
+  theme:
+    - asulib_barrio
+id: allsubjects
+theme: asulib_barrio
+region: sidebar_first
+weight: -32
+provider: null
+plugin: 'facet_block:all_subjects'
+settings:
+  id: 'facet_block:all_subjects'
+  label: Subject
+  label_display: visible
+  provider: facets
+  block_id: allsubjects
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: null
+    context_mapping: {  }
+    pages: ''
+  request_path:
+    id: request_path
+    negate: false
+    context_mapping: {  }
+    pages: '/search*'
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    context_mapping: {  }
+    view_inclusion: {  }

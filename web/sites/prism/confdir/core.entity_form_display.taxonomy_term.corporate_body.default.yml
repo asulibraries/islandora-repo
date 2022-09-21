@@ -1,0 +1,138 @@
+uuid: 2fec9aa3-8ec5-43d5-a0b7-dfaf9c763d4b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.corporate_body.field_authority_link
+    - field.field.taxonomy_term.corporate_body.field_cat_date_begin
+    - field.field.taxonomy_term.corporate_body.field_cat_date_end
+    - field.field.taxonomy_term.corporate_body.field_corp_alt_name
+    - field.field.taxonomy_term.corporate_body.field_relationships
+    - field.field.taxonomy_term.corporate_body.field_type
+    - taxonomy.vocabulary.corporate_body
+  module:
+    - controlled_access_terms
+    - field_group
+    - path
+    - text
+third_party_settings:
+  field_group:
+    group_advanced_fields:
+      children:
+        - langcode
+        - path
+        - field_cat_date_begin
+        - field_cat_date_end
+        - field_corp_alt_name
+        - description
+        - field_relationships
+        - translation
+        - status
+      label: 'Advanced fields'
+      region: content
+      parent_name: ''
+      weight: 3
+      format_type: details
+      format_settings:
+        classes: ''
+        id: ''
+        open: false
+        description: ''
+        required_fields: true
+id: taxonomy_term.corporate_body.default
+targetEntityType: taxonomy_term
+bundle: corporate_body
+mode: default
+content:
+  description:
+    type: text_textarea
+    weight: 9
+    region: content
+    settings:
+      rows: 9
+      placeholder: ''
+    third_party_settings: {  }
+  field_authority_link:
+    type: authority_link_default
+    weight: 1
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+  field_cat_date_begin:
+    type: edtf_default
+    weight: 6
+    region: content
+    settings:
+      strict_dates: false
+      intervals: false
+      sets: false
+    third_party_settings: {  }
+  field_cat_date_end:
+    type: edtf_default
+    weight: 7
+    region: content
+    settings:
+      strict_dates: false
+      intervals: false
+      sets: false
+    third_party_settings: {  }
+  field_corp_alt_name:
+    type: string_textarea
+    weight: 8
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_relationships:
+    type: typed_relation_default
+    weight: 10
+    region: content
+    settings:
+      match_operator: CONTAINS
+      size: '60'
+      placeholder: ''
+      match_limit: 10
+    third_party_settings: {  }
+  field_type:
+    type: options_select
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  langcode:
+    type: language_select
+    weight: 4
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 5
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 12
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  translation:
+    weight: 11
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden: {  }

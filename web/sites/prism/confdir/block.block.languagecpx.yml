@@ -1,0 +1,43 @@
+uuid: ab6f270e-8a8d-4d4c-8675-a9f7f74911ac
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.language_cpx
+  module:
+    - context
+    - facets
+    - islandora
+    - system
+  theme:
+    - asulib_barrio
+id: languagecpx
+theme: asulib_barrio
+region: sidebar_first
+weight: -27
+provider: null
+plugin: 'facet_block:language_cpx'
+settings:
+  id: 'facet_block:language_cpx'
+  label: Language
+  label_display: visible
+  provider: facets
+  block_id: languagecpx
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: null
+    pages: ''
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    view_inclusion: {  }
+  media_source_mimetype:
+    id: media_source_mimetype
+    mimetype: ''
+    negate: false
+    context_mapping: {  }
+  request_path:
+    id: request_path
+    negate: false
+    pages: '/items/*/search*'

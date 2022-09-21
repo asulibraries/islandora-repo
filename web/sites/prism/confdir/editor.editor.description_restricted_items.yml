@@ -1,0 +1,32 @@
+uuid: bbae0697-e8a2-4512-ad32-f5ac00dbb0c3
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.description_restricted_items
+  module:
+    - ckeditor
+format: description_restricted_items
+editor: ckeditor
+settings:
+  toolbar:
+    rows:
+      -
+        -
+          name: Formatting
+          items:
+            - Bold
+            - Italic
+        -
+          name: Tools
+          items:
+            - Source
+  plugins: {  }
+image_upload:
+  status: false
+  scheme: public
+  directory: inline-images
+  max_size: ''
+  max_dimensions:
+    width: null
+    height: null

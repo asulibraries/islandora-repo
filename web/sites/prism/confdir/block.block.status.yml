@@ -1,0 +1,35 @@
+uuid: 677b76ef-d0c0-4bf0-817c-681c971059b9
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.status
+  module:
+    - context
+    - facets
+    - system
+  theme:
+    - asulib_barrio
+id: status
+theme: asulib_barrio
+region: sidebar_first
+weight: -20
+provider: null
+plugin: 'facet_block:status'
+settings:
+  id: 'facet_block:status'
+  label: Status
+  label_display: visible
+  provider: facets
+  block_id: status
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: null
+    context_mapping: {  }
+    pages: ''
+  request_path:
+    id: request_path
+    negate: false
+    context_mapping: {  }
+    pages: '/search*'

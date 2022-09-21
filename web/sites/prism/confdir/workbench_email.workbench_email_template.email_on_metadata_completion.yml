@@ -1,0 +1,57 @@
+uuid: b327ac2e-ca61-4f46-8cc3-523c57c8de83
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.administrator
+    - user.role.repositor_manager
+id: email_on_metadata_completion
+label: 'Email on Metadata Completion'
+subject: 'KEEP Self-Deposit Metadata Completed'
+recipient_types:
+  author:
+    id: author
+    provider: workbench_email
+    status: false
+    settings: {  }
+  email:
+    id: email
+    provider: workbench_email
+    status: false
+    settings:
+      fields: {  }
+  entity_reference_user:
+    id: entity_reference_user
+    provider: workbench_email
+    status: false
+    settings:
+      fields: {  }
+  fixed_email:
+    id: fixed_email
+    provider: workbench_email
+    status: false
+    settings:
+      recipients: ''
+  last_revision_author:
+    id: last_revision_author
+    provider: workbench_email
+    status: false
+    settings: {  }
+  role:
+    id: role
+    provider: workbench_email
+    status: true
+    settings:
+      roles:
+        administrator: administrator
+        repositor_manager: repositor_manager
+  roles_with_access:
+    id: roles_with_access
+    provider: workbench_email
+    status: false
+    settings:
+      roles: {  }
+bundles: {  }
+body:
+  value: "Metadata team has enriched and approved: [node:title]\r\n[node:url]"
+  format: plain_text

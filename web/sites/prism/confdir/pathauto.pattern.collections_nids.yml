@@ -1,0 +1,22 @@
+uuid: 4c9e79f4-0541-492c-a861-43dc18590f9b
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: collections_nids
+label: 'Collections Nids'
+type: 'canonical_entities:node'
+pattern: '/collections/[node:nid]'
+selection_criteria:
+  524fae2e-f383-4b3a-8ad3-cacec0680f0d:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: 524fae2e-f383-4b3a-8ad3-cacec0680f0d
+    context_mapping:
+      node: node
+    bundles:
+      collection: collection
+selection_logic: and
+weight: -5
+relationships: {  }

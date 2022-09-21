@@ -1,0 +1,34 @@
+uuid: c5a42e3c-5f7c-4d09-93a3-b25bffd52b5d
+langcode: und
+status: true
+dependencies:
+  config:
+    - views.view.content_browser
+  module:
+    - views
+  enforced:
+    module:
+      - content_browser
+name: browse_content_iframe
+label: 'Browser for Content (iFrame)'
+display: iframe
+display_configuration:
+  width: '1100'
+  height: '650'
+  link_text: 'Select content'
+  auto_open: true
+selection_display: no_display
+selection_display_configuration: {  }
+widget_selector: tabs
+widget_selector_configuration: {  }
+widgets:
+  57387ece-c090-4d22-9c00-eaaad74d642b:
+    id: view
+    uuid: 57387ece-c090-4d22-9c00-eaaad74d642b
+    label: 'Content listing'
+    weight: 0
+    settings:
+      submit_text: 'Select entities'
+      auto_select: false
+      view: content_browser
+      view_display: entity_browser

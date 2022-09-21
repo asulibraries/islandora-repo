@@ -1,0 +1,32 @@
+uuid: 981b1601-016e-4943-ab18-e96b082b0c51
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora
+  enforced:
+    module:
+      - islandora_defaults
+label: Binary
+name: binary
+group: Display
+description: 'Binary Object Display'
+requireAllConditions: false
+disabled: true
+conditions:
+  node_has_term:
+    id: node_has_term
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    uri: 'http://purl.org/coar/resource_type/c_1843'
+    logic: and
+    tids:
+      -
+        target_id: '5'
+reactions:
+  view_mode_alter:
+    id: view_mode_alter
+    mode: node.binary
+    saved: false
+weight: 0

@@ -1,0 +1,26 @@
+uuid: 168da8d0-28d8-4060-9e18-ee9e69547de4
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_complete
+    - media.type.fits_technical_metadata
+  enforced:
+    module:
+      - islandora_fits
+id: media.fits_technical_metadata.field_complete
+field_name: field_complete
+entity_type: media
+bundle: fits_technical_metadata
+label: Complete
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: Complete
+  off_label: Incomplete
+field_type: boolean

@@ -1,0 +1,36 @@
+uuid: 8d80310a-1072-4b06-9bf8-ae45377803eb
+langcode: en
+status: true
+dependencies:
+  module:
+    - context
+    - system
+  theme:
+    - asulib_barrio
+id: asulib_breadcrumbs
+theme: asulib_barrio
+region: breadcrumb
+weight: -30
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: Breadcrumbs
+  label_display: '0'
+  provider: system
+visibility:
+  request_path:
+    id: request_path
+    negate: true
+    context_mapping: {  }
+    pages: '<front>'
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: null
+    context_mapping: {  }
+    pages: ''
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    context_mapping: {  }
+    view_inclusion: {  }

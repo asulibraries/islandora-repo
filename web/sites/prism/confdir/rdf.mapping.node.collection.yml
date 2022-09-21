@@ -1,0 +1,71 @@
+uuid: 23eaab6e-c733-4824-9fe9-718aee03af15
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.collection
+  module:
+    - node
+  enforced:
+    module:
+      - islandora_defaults
+id: node.collection
+targetEntityType: node
+bundle: collection
+types:
+  - 'pcdm:Object'
+fieldMappings:
+  nid:
+    properties:
+      - 'dcterms:identifier'
+      - 'mods:identifier:local'
+  field_rich_description:
+    properties:
+      - 'dcterms:description'
+  field_handle:
+    properties:
+      - 'dcterms:identifier'
+      - 'mods:identifier:hdl'
+      - 'identifiers:hdl'
+  field_member_of:
+    properties:
+      - 'pcdm:memberOf'
+  title:
+    properties:
+      - 'dcterms:title'
+      - 'mods:title'
+  created:
+    properties:
+      - 'bf:creationDate'
+    datatype_callback:
+      callable: 'Drupal\rdf\CommonDataConverter::dateIso8601Value'
+  changed:
+    properties:
+      - 'bf:changeDate'
+      - 'schema:dateModified'
+    datatype_callback:
+      callable: 'Drupal\rdf\CommonDataConverter::dateIso8601Value'
+  uid:
+    properties:
+      - 'relators:dtc'
+    datatype_callback:
+      callable: 'Drupal\asu_custom_rdf\UidLookup::username'
+    mapping_type: property
+  status:
+    properties:
+      - 'asu:visibility'
+    datatype_callback:
+      callable: 'Drupal\asu_custom_rdf\ParseBoolean::tostring'
+      arguments:
+        - unpublished
+        - published
+  field_title:
+    properties:
+      - 'dcterms:title'
+      - 'mods:title'
+    datatype_callback:
+      callable: 'Drupal\asu_custom_rdf\ParagraphMapping::titlepartmerge'
+      arguments:
+        nonsort: field_nonsort
+        main: field_main_title
+        subtitle: field_subtitle

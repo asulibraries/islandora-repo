@@ -1,0 +1,26 @@
+uuid: 3a6a9be7-440c-4312-a118-d02ff7792f81
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_file_size
+    - media.type.image
+  enforced:
+    module:
+      - islandora_core_feature
+id: media.image.field_file_size
+field_name: field_file_size
+entity_type: media
+bundle: image
+label: 'File size'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: null
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

@@ -1,0 +1,40 @@
+uuid: bd5761e1-766b-4049-9ac6-e5a1be711404
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.open_access_col
+  module:
+    - context
+    - facets
+    - system
+  theme:
+    - asulib_barrio
+id: openaccess_col
+theme: asulib_barrio
+region: sidebar_first
+weight: -25
+provider: null
+plugin: 'facet_block:open_access_col'
+settings:
+  id: 'facet_block:open_access_col'
+  label: 'Open Access'
+  label_display: visible
+  provider: facets
+  block_id: openaccess_col
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: null
+    context_mapping: {  }
+    pages: ''
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    context_mapping: {  }
+    view_inclusion: {  }
+  request_path:
+    id: request_path
+    negate: false
+    context_mapping: {  }
+    pages: '/collections/*/search*'

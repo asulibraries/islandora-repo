@@ -1,0 +1,37 @@
+uuid: f335950f-03de-4772-afb8-fa73df504185
+langcode: en
+status: true
+dependencies:
+  module:
+    - asu_search
+    - context
+    - system
+  theme:
+    - asulib_barrio
+id: searchformforhomepage
+theme: asulib_barrio
+region: content
+weight: -37
+provider: null
+plugin: search_home_form_block
+settings:
+  id: search_home_form_block
+  label: 'Search form for Homepage'
+  label_display: '0'
+  provider: asu_search
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: null
+    context_mapping: {  }
+    pages: ''
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    context_mapping: {  }
+    view_inclusion: {  }
+  request_path:
+    id: request_path
+    negate: false
+    context_mapping: {  }
+    pages: '<front>'

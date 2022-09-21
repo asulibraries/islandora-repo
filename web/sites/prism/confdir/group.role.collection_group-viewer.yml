@@ -1,0 +1,22 @@
+uuid: 598b71a3-598a-48f2-9d2e-e4ef4417dc0d
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.collection_group
+id: collection_group-viewer
+label: Viewer
+weight: 102
+internal: false
+audience: member
+group_type: collection_group
+permissions_ui: true
+permissions:
+  - 'access content overview'
+  - 'access group_node overview'
+  - 'view group_node:asu_repository_item content'
+  - 'view group_node:asu_repository_item entity'
+  - 'view group_node:collection content'
+  - 'view group_node:collection entity'
+  - 'view unpublished group_node:asu_repository_item entity'
+  - 'view unpublished group_node:collection entity'

@@ -1,0 +1,39 @@
+uuid: 9a1f8a10-b036-42dd-a9a5-f1c0a3324166
+langcode: en
+status: true
+dependencies: {  }
+id: staging
+label: 'Staging Config'
+description: 'Staging Settings that are specific per environment'
+weight: 0
+storage: folder
+folder: ../config/staging
+module:
+  hdl: 0
+  matomo: 0
+  cas: 0
+  cas_attributes: 0
+  cdn: 0
+  clamav: 0
+  s3fs: 0
+theme: {  }
+complete_list:
+  - hdl.settings
+  - matomo.settings
+  - smtp.settings
+  - cas.settings
+  - cdn.settings
+  - clamav.settings
+  - s3fs.settings
+partial_list:
+  - context.context.openseadragon_block
+  - context.context.open_seadragon
+  - islandora.settings
+  - islandora_bagger_integration.settings
+  - islandora_iiif.settings
+  - islandora_riprap.settings
+  - jwt.config
+  - key.key.islandora_rsa_key
+  - matomo.settings
+  - search_api.server.default_solr_server
+  - simple_sitemap.settings

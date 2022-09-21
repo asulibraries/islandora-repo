@@ -1,0 +1,27 @@
+uuid: 7eeae3e7-96ff-4784-95e5-5778a72f2274
+langcode: en
+status: false
+dependencies: {  }
+id: environment_config
+label: 'Environment Config'
+description: 'Settings that are specific per environment'
+weight: 0
+storage: folder
+folder: ../config/env
+module:
+  jwt: 0
+theme: {  }
+complete_list:
+  - context.context.openseadragon_block
+  - context.context.open_seadragon
+  - islandora.settings
+  - islandora_bagger_integration.settings
+  - islandora_iiif.settings
+  - islandora_riprap.settings
+  - matomo.settings
+  - clamav.settings
+partial_list:
+  - islandora.settings
+  - jwt.config
+  - key.key.islandora_rsa_key
+  - search_api.server.default_solr_server

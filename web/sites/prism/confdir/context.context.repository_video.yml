@@ -1,0 +1,26 @@
+uuid: 6bd56a42-fdfb-4942-828c-8a0d8d1daa45
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora
+label: 'Repository Video'
+name: repository_video
+group: Display
+description: 'Video view mode and related'
+requireAllConditions: false
+disabled: true
+conditions:
+  node_has_term:
+    id: node_has_term
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    uri: 'http://purl.org/coar/resource_type/c_12ce'
+    logic: and
+reactions:
+  view_mode_alter:
+    id: view_mode_alter
+    mode: node.asu_video
+    saved: false
+weight: 0

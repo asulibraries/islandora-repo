@@ -1,0 +1,37 @@
+uuid: 84e276e9-5b92-4342-97d2-ed150e394ad4
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.islandora_display.field_external_uri
+    - taxonomy.vocabulary.islandora_display
+  module:
+    - link
+    - text
+id: taxonomy_term.islandora_display.default
+targetEntityType: taxonomy_term
+bundle: islandora_display
+mode: default
+content:
+  description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_external_uri:
+    type: link
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  langcode: true
+  search_api_excerpt: true

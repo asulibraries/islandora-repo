@@ -1,0 +1,35 @@
+uuid: dc1d5c59-93b7-4c2f-81fa-d44c63d1d820
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.language
+  module:
+    - context
+    - facets
+    - system
+  theme:
+    - asulib_barrio
+id: language
+theme: asulib_barrio
+region: sidebar_first
+weight: -29
+provider: null
+plugin: 'facet_block:language'
+settings:
+  id: 'facet_block:language'
+  label: Language
+  label_display: visible
+  provider: facets
+  block_id: language
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: null
+    context_mapping: {  }
+    pages: ''
+  request_path:
+    id: request_path
+    negate: false
+    context_mapping: {  }
+    pages: '/search*'
