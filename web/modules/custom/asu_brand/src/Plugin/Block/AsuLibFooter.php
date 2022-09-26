@@ -65,7 +65,7 @@ class AsuLibFooter extends BlockBase {
                   <a class="nav-link" href="https://repository.lib.asu.edu" title="Repository Services Home">Home</a>
                   <a class="nav-link" href="https://keep.lib.asu.edu" title="KEEP">KEEP</a>
                   <a class="nav-link" href="https://prism.lib.asu.edu" title="PRISM">PRISM</a>
-                  <a class="nav-link" href="https://dataverse.asu.edu" title="Dataverse">Dataverse</a>
+                  <a class="nav-link" href="https://dataverse.asu.edu" title="ASU Research Data Repository">ASU Research Data Repository</a>
                 </div>
               </div>
             </div>
