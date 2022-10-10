@@ -96,7 +96,7 @@ class AsuLibFooter extends BlockBase {
       <div class="container">
         <div class="row">
           <div class="col-md">
-            <p>The ASU Library acknowledges the twenty-two Native Nations that have inhabited this land for centuries. Arizona State University\'s four campuses are located in the Salt River Valley on ancestral territories of Indigenous peoples, including the Akimel O’odham (Pima) and Pee Posh (Maricopa) Indian Communities, whose care and keeping of these lands allows us to be here today. ASU Library acknowledges the sovereignty of these nations and seeks to foster an environment of success and possibility for Native American students and patrons. We are advocates for the incorporation of Indigenous knowledge systems and research methodologies within contemporary library practice. ASU Library welcomes members of the Akimel O’odham and Pee Posh, and all Native nations to the Library.</p>
+            <p>The ASU Library acknowledges the twenty-three Native Nations that have inhabited this land for centuries. Arizona State University\'s four campuses are located in the Salt River Valley on ancestral territories of Indigenous peoples, including the Akimel O’odham (Pima) and Pee Posh (Maricopa) Indian Communities, whose care and keeping of these lands allows us to be here today. ASU Library acknowledges the sovereignty of these nations and seeks to foster an environment of success and possibility for Native American students and patrons. We are advocates for the incorporation of Indigenous knowledge systems and research methodologies within contemporary library practice. ASU Library welcomes members of the Akimel O’odham and Pee Posh, and all Native nations to the Library.</p>
           </div>
         </div>
       </div>
