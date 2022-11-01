@@ -14,23 +14,25 @@ index 0e361c4..470388f 100644
        }
  
 diff --git a/src/Plugin/rest/resource/OaiPmh.php b/src/Plugin/rest/resource/OaiPmh.php
-index b0dabd5..ae9b907 100644
+index b3de55a..98a0862 100644
 --- a/src/Plugin/rest/resource/OaiPmh.php
 +++ b/src/Plugin/rest/resource/OaiPmh.php
-@@ -396,11 +396,15 @@ class OaiPmh extends ResourceBase {
+@@ -421,12 +421,16 @@ class OaiPmh extends ResourceBase {
      $context = new RenderContext();
      $result = \Drupal::service('renderer')->executeInRenderContext(
          $context, function () {
 -            $mapping_plugin = $this->getMetadataPlugin($this->metadataPrefix);
 -            $record = $mapping_plugin->transformRecord($this->entity);
 -            $metadata = $mapping_plugin->getMetadataWrapper();
--            $metadata[$this->metadataPrefix]['metadata-xml'] = trim($record);
+-            $wrapper_key = array_keys($metadata)[0];
+-            $metadata[$wrapper_key]['metadata-xml'] = trim($record);
 -            return $metadata;
 +          $mapping_plugin = $this->getMetadataPlugin($this->metadataPrefix);
 +          $record = $mapping_plugin->transformRecord($this->entity);
 +          $metadata = $mapping_plugin->getMetadataWrapper();
-+          $metadata[$this->metadataPrefix]['metadata-xml'] = trim($record);
-+          if ($this->metadataPrefix == 'oai_dc') {
++          $wrapper_key = array_keys($metadata)[0];
++          $metadata[$wrapper_key]['metadata-xml'] = trim($record);
++          if ($wrapper_key == 'oai_dc') {
 +            $metadata['oai_dc:dc'] = $metadata['oai_dc'];
 +            unset($metadata['oai_dc']);
 +          }
