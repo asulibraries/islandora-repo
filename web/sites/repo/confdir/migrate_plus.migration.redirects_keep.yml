@@ -1,0 +1,39 @@
+uuid: 7afa80bc-35e5-407e-b6fd-645e3ab347ef
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - asu_landing_site
+id: redirects_keep
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: null
+migration_group: migrate_redirects
+label: 'Redirects for the legacy repository - KEEP items'
+source:
+  plugin: csv
+  path: /var/www/html/drupal/web/modules/custom/asu_landing_site/data/redirect_info_keep.csv
+  header_row_count: 1
+  ids:
+    - NID
+  constants:
+    status_code: 301
+    redirect_prefix: 'https://keep.lib.asu.edu/items/'
+    source_prefix: items/
+process:
+  redirect_source:
+    plugin: concat
+    source:
+      - constants/source_prefix
+      - 'Legacy ID'
+  redirect_redirect:
+    plugin: concat
+    source:
+      - constants/redirect_prefix
+      - NID
+  status_code: constants/status_code
+destination:
+  plugin: 'entity:redirect'
+migration_dependencies: null

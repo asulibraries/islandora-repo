@@ -1,0 +1,37 @@
+uuid: 1404f793-d852-4223-bfa9-b3624c65811f
+langcode: en
+status: true
+dependencies:
+  module:
+    - context
+    - repo_bento_search
+    - system
+  theme:
+    - asulib_barrio
+id: bentoformforhomepage
+theme: asulib_barrio
+region: content
+weight: -4
+provider: null
+plugin: bento_home_form_block
+settings:
+  id: bento_home_form_block
+  label: 'Bento form for Homepage'
+  label_display: '0'
+  provider: repo_bento_search
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: null
+    context_mapping: {  }
+    pages: ''
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    context_mapping: {  }
+    view_inclusion: {  }
+  request_path:
+    id: request_path
+    negate: false
+    context_mapping: {  }
+    pages: '<front>'

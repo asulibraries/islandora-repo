@@ -112,7 +112,7 @@ class BentoSecondI8 extends BlockBase implements ContainerFactoryPluginInterface
       }
       else {
         $total_results_found = $results_arr['pager']['count'];
-        if (count($results_arr['search_results']) > $num_results) {
+        if (!empty($results_arr['search_results']) && count($results_arr['search_results']) > $num_results) {
           for ($p = count($results_arr['search_results']) - 1; $p >= $num_results; $p--) {
             unset($results_arr['search_results'][$p]);
           }

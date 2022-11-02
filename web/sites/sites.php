@@ -57,3 +57,4 @@
  */
 $sites['keep.traefik.me'] = 'default';
 $sites['prism.traefik.me'] = 'prism';
+$sites['repository.traefik.me'] = 'repo';

@@ -1,0 +1,27 @@
+uuid: 794a8639-d82b-43a9-8b0f-b8af028debc3
+langcode: en
+status: true
+dependencies:
+  module:
+    - system
+  theme:
+    - bootstrap_barrio
+_core:
+  default_config_hash: gJIY1Qtuq8yxK8coDyscLxO4RW7IagOmVBkXy6PR2Vc
+id: bootstrap_barrio_breadcrumbs
+theme: bootstrap_barrio
+region: top_header
+weight: 0
+provider: null
+plugin: system_breadcrumb_block
+settings:
+  id: system_breadcrumb_block
+  label: Breadcrumbs
+  label_display: '0'
+  provider: system
+visibility:
+  request_path:
+    id: request_path
+    negate: true
+    context_mapping: {  }
+    pages: '<front>'

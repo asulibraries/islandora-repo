@@ -1,0 +1,287 @@
+uuid: 17be6f95-8ef0-44d5-82d6-6a9587214609
+langcode: en
+status: true
+dependencies:
+  module:
+    - asu_landing_site
+    - flexslider_views
+id: landing_page_recent_keep_items
+label: 'Landing Page Recent KEEP Items'
+module: views
+description: ''
+tag: ''
+base_table: keep_item
+base_field: ''
+display:
+  default:
+    id: default
+    display_title: Master
+    display_plugin: default
+    position: 0
+    display_options:
+      title: 'Landing Page Recent KEEP Items'
+      fields:
+        field_handle:
+          id: field_handle
+          table: keep_item
+          field: field_handle
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: standard
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+        field_title:
+          id: field_title
+          table: keep_item
+          field: field_title
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: standard
+          label: ''
+          exclude: true
+          alter:
+            alter_text: true
+            text: '<a href="{{field_handle}}" target="_blank">{{field_title}}</a>'
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+        field_model:
+          id: field_model
+          table: keep_item
+          field: field_model
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: standard
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+        thumbnail_url:
+          id: thumbnail_url
+          table: keep_item
+          field: thumbnail_url
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: keep_thumbnail
+          label: ''
+          exclude: false
+          alter:
+            alter_text: true
+            text: '<a href="{{field_handle}}" target="_blank">{{thumbnail_url}}</a>'
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: "{%\r\n    set model_icons = {\r\n        \"Image\": \"far fa-file-image\",\r\n        \"Audio\": \"far fa-file-audio\",\r\n        \"Video\": \"far fa-file-video\",\r\n        \"Digital Document\": \"far fa-file-alt\",\r\n        \"Binary\": \"far fa-file\",\r\n        \"Complex Object\": \"far fa-copy\",\r\n        \"Paged Content\": \"far fa-copy\",\r\n    }\r\n\r\n%}\r\n\r\n{% set mod = field_model|render|trim %}\r\n{% for k, v in model_icons|filter((v, k) => k == mod) -%}\r\n   <div class=\"icon-container\"><i class=\"{{ v }} fa-7x\">&nbsp;</i></div>\r\n{% endfor %}"
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+      pager:
+        type: none
+        options:
+          offset: 0
+      exposed_form:
+        type: basic
+        options:
+          submit_button: Apply
+          reset_button: false
+          reset_button_label: Reset
+          exposed_sorts_label: 'Sort by'
+          expose_sort_order: true
+          sort_asc_label: Asc
+          sort_desc_label: Desc
+      access:
+        type: none
+        options: {  }
+      cache:
+        type: time
+        options:
+          results_lifespan: 3600
+          results_lifespan_custom: 0
+          output_lifespan: 3600
+          output_lifespan_custom: 0
+      empty: {  }
+      sorts: {  }
+      arguments: {  }
+      filters: {  }
+      style:
+        type: flexslider
+        options:
+          grouping: {  }
+          flexslider: null
+          optionset: flexslider_carousel_with_min_and_max_ranges
+          captionfield: field_title
+          id: flex-recent-keep-items
+      row:
+        type: fields
+        options:
+          default_field_elements: false
+          inline: {  }
+          separator: ''
+          hide_empty: false
+      query:
+        type: views_query
+        options: {  }
+      relationships: {  }
+      css_class: ''
+      header: {  }
+      footer: {  }
+      display_extenders: {  }
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_interface'
+      tags: {  }
+  block_1:
+    id: block_1
+    display_title: Block
+    display_plugin: block
+    position: 1
+    display_options:
+      display_extenders: {  }
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_interface'
+      tags: {  }

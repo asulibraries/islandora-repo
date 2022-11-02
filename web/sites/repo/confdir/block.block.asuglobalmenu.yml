@@ -1,0 +1,34 @@
+uuid: c6e78a51-debb-4d81-b015-bfaa5c84256c
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.asu_global
+  module:
+    - context
+    - system
+  theme:
+    - asulib_barrio
+id: asuglobalmenu
+theme: asulib_barrio
+region: top_header
+weight: 0
+provider: null
+plugin: 'system_menu_block:asu_global'
+settings:
+  id: 'system_menu_block:asu_global'
+  label: 'ASU Global menu'
+  label_display: '0'
+  provider: system
+  level: 1
+  depth: 0
+  expand_all_items: false
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: null
+    pages: ''
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    view_inclusion: {  }
