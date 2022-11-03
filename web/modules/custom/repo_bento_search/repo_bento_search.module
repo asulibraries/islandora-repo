@@ -33,7 +33,7 @@ function repo_bento_search_theme() {
     'dataverse_results' => [
       'template' => 'dataverse_results',
       'variables' => [
-        'label' => $config->get('titles_dataverse') ?: t('Dataverse'),
+        'label' => $config->get('titles_dataverse') ?: t('ASU Research Data Repository'),
         'tooltip_text' => $config->get('dataverse_tooltip') ?: '',
         'service_url' => NULL,
         'items' => NULL,
@@ -119,6 +119,6 @@ function repo_bento_search_bento_second_i8_results_block_prerender(array $build)
 function repo_bento_search_bento_dataverse_results_block_prerender(array $build) {
   $build['#configuration']['label'] = \Drupal::config('repo_bento_search.bentosettings')
     ->get('titles_dataverse') ?
-      \Drupal::config('repo_bento_search.bentosettings')->get('titles_dataverse') : t('Dataverse');
+      \Drupal::config('repo_bento_search.bentosettings')->get('titles_dataverse') : t('ASU Research Data Repository');
   return $build;
 }

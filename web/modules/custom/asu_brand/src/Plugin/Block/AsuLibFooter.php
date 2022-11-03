@@ -65,7 +65,7 @@ class AsuLibFooter extends BlockBase {
                   <a class="nav-link" href="https://repository.lib.asu.edu" title="Repository Services Home">Home</a>
                   <a class="nav-link" href="https://keep.lib.asu.edu" title="KEEP">KEEP</a>
                   <a class="nav-link" href="https://prism.lib.asu.edu" title="PRISM">PRISM</a>
-                  <a class="nav-link" href="https://dataverse.asu.edu" title="Dataverse">Dataverse</a>
+                  <a class="nav-link" href="https://dataverse.asu.edu" title="ASU Research Data Repository">ASU Research Data Repository</a>
                 </div>
               </div>
             </div>
@@ -96,7 +96,7 @@ class AsuLibFooter extends BlockBase {
       <div class="container">
         <div class="row">
           <div class="col-md">
-            <p>The ASU Library acknowledges the twenty-two Native Nations that have inhabited this land for centuries. Arizona State University\'s four campuses are located in the Salt River Valley on ancestral territories of Indigenous peoples, including the Akimel O’odham (Pima) and Pee Posh (Maricopa) Indian Communities, whose care and keeping of these lands allows us to be here today. ASU Library acknowledges the sovereignty of these nations and seeks to foster an environment of success and possibility for Native American students and patrons. We are advocates for the incorporation of Indigenous knowledge systems and research methodologies within contemporary library practice. ASU Library welcomes members of the Akimel O’odham and Pee Posh, and all Native nations to the Library.</p>
+            <p>The ASU Library acknowledges the twenty-three Native Nations that have inhabited this land for centuries. Arizona State University\'s four campuses are located in the Salt River Valley on ancestral territories of Indigenous peoples, including the Akimel O’odham (Pima) and Pee Posh (Maricopa) Indian Communities, whose care and keeping of these lands allows us to be here today. ASU Library acknowledges the sovereignty of these nations and seeks to foster an environment of success and possibility for Native American students and patrons. We are advocates for the incorporation of Indigenous knowledge systems and research methodologies within contemporary library practice. ASU Library welcomes members of the Akimel O’odham and Pee Posh, and all Native nations to the Library.</p>
           </div>
         </div>
       </div>

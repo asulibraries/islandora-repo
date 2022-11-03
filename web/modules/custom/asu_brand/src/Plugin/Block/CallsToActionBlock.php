@@ -44,7 +44,7 @@ class CallsToActionBlock extends BlockBase {
 <div class="card-body">
    <ul>
       <li><a href="http://libguides.asu.edu/openaccess">Open Access at ASU</a></li>
-      <li><a href="/policies">Repository Policies</a></li>
+      <!-- <li><a href="/policies">Repository Policies</a></li> -->
    </ul>
 </div>';
     $build['calls_to_action_block']['#markup'] = '<div class="calls-to-action">
