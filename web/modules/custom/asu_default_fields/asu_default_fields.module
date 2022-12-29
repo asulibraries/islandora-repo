@@ -18,8 +18,8 @@ function asu_default_fields_media_presave(MediaInterface $media) {
       if ($taxy->getName() == "Original File") {
         $node = $utils->getParentNode($media);
         // Note this only applies up the free one - complex objects may require reworking here.
-        if ($node) {
-          $mime = $media->get('field_mime_type')->value;
+        $mime = $media->get('field_mime_type')->value;
+        if ($node && !empty($mime)) {
           $mime = str_replace('/', '_', $mime);
           $mime = str_replace('.', '_', $mime);
           $res_type = \Drupal::config('asu_default_fields.mimesettings')->get($mime);
@@ -28,7 +28,7 @@ function asu_default_fields_media_presave(MediaInterface $media) {
           // but that view would also filter out children of complex objects
           // because as long as the parent complex object has at least 1 resource type, its ok
           $node->set('field_resource_type', ['target_id' => $res_type]);
-          $node->save();
+	  $node->save();
           // if ($node->hasField('field_complex_object_child') && $node->get('field_complex_object_child') == 1 && $node->hasField('field_member_of') && !$node->get('field_member_of')->isEmpty()) {
           //   $parent = $node->get('field_member_of')->entity;
           //   $current_types = $parent->get('field_resource_type');
