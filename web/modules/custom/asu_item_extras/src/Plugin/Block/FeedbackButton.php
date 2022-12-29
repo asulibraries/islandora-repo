@@ -154,15 +154,15 @@ class FeedbackButton extends BlockBase implements ContainerFactoryPluginInterfac
     }
     if (!$node->get('field_member_of')->isEmpty()) {
       $parent = $node->get('field_member_of')->entity;
-      if ($parent->bundle() == 'collection') {
-        return $parent->id();
+      if (isset($parent)) {
+        if ($parent->bundle() == 'collection') {
+          return $parent->id();
+        }
+        elseif ($parent->bundle() == 'asu_repository_item') {
+          return $this->getCollectionParent($parent);
+        }
       }
-      elseif ($parent->bundle() == 'asu_repository_item') {
-        return $this->getCollectionParent($parent);
-      }
-      else {
-        return NULL;
-      }
+      return NULL;
     }
   }
 
