@@ -368,7 +368,7 @@ class TypedRelationGenerate extends NameURIGenerate {
       if ($relator == "Advisor") {
         $relator = "Thesis advisor";
       }
-      $relator_found = array_search(strtolower($relator), array_map('strtolower', $this->relatorMap));
+      $relator_found = array_search(strtolower(trim($relator)), array_map('strtolower', $this->relatorMap));
     }
     return $relator_found;
   }
