@@ -161,13 +161,17 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
     array_push($contribs, $this->depositUtils->getOrCreateTerm('Barrett, The Honors College', 'corporate_body', 'relators:ctb'));
 
     if ($user && $user->hasField('field_programs')) {
-      $prgs = $user->get('field_programs')->value;
+      $prgs = $user->get('field_programs')->getValue();
       if (is_array($prgs)) {
         foreach ($prgs as $prg) {
           array_push($contribs, $this->depositUtils->getOrCreateTerm($prg, 'corporate_body', 'relators:ctb'));
         }
       }
       else {
+        // This code *should* be un-reachable as `getValue` should always
+        // return an array whereas the value property we called previously
+        // always returned a string. But we'll leave it here for now,
+        // just in case.
         if ($prgs != "") {
           array_push($contribs, $this->depositUtils->getOrCreateTerm($prgs, 'corporate_body', 'relators:ctb'));
         }
