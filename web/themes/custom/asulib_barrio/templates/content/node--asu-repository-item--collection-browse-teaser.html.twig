@@ -103,14 +103,14 @@
             {% endif %}
         </div>
         <div class="card-header">
-            <h5{{ title_attributes.addClass('node__title', 'card-title') }}>
-                {% set title = content.field_title[0]|render|trim|slice(0, 40) %}
-                <a href="{{ url }}" rel="bookmark">{{ title|raw }}
-                {% if content.field_title[0]|render|length > 40 %}
-                    ...
-                {% endif %}
-                </a>
-            </h5>
+          <h5{{ title_attributes.addClass('node__title', 'card-title') }}>
+            {% set title = node.label|trim|slice(0, 40) %}
+            <a href="{{ url }}" rel="bookmark">{{ title }}
+            {% if node.label|length > 40 %}
+                ...
+            {% endif %}
+            </a>
+        </h5>
         </div>
     </div>
 {# </div> #}
