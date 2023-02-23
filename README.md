@@ -7,13 +7,7 @@ It will also include ansible scripts for provisioning and deploying to additiona
 
 # Configuration Management
 
-The site uses the config_split module to separate out deployment-specific configurations and secrets. The base configurations for KEEP and PRISM are in `config/sync` and `config/prism`, respectively. Each also has site-specific configuration directories, `config/env_keep` and `config/env_prism` which *are not* included in the Git repository and need to be added manually:
-
-- hdl.settings
-- islandora.settings
-- islandora_iiif.settings
-- key.key.islandora_rsa_key
-- recaptcha_v3.settings
+The site uses the config_split module to separate out deployment-specific configurations and secrets. The base configurations for KEEP and PRISM are in `config/sync` and `config/prism`, respectively. Each also has site-specific configuration directories, `config/env_keep` and `config/env_prism` which *are not* included in the Git repository and need to be added manually. You can view the config_split configuration files for [KEEP](config/sync/config_split.config_split.env_keep.yml) and [PRISM](config/prism/config_split.config_split.env_prism.yml) to see what is currently included.
 
 Two other splits, "Development Config" and "AWS Deployment", need to be enabled using the sites' settings.php file. E.g. for AWS deployment, add `$config['config_split.config_split.aws_deployment']['status'] = TRUE;`. 
 Most of the configurations for both of these are included in the Git repository. The one exception, in AWS Deployment, is `smtp.settings.yml` needs to be added manually. E.g.
