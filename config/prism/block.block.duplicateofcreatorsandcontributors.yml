@@ -1,0 +1,34 @@
+uuid: c9046d51-664a-40ff-be09-742a28980849
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.duplicate_of_creators_and_contributors
+  module:
+    - facets
+    - islandora
+    - system
+  theme:
+    - asulib_barrio
+id: duplicateofcreatorsandcontributors
+theme: asulib_barrio
+region: sidebar_first
+weight: 0
+provider: null
+plugin: 'facet_block:duplicate_of_creators_and_contributors'
+settings:
+  id: 'facet_block:duplicate_of_creators_and_contributors'
+  label: Contributors
+  label_display: visible
+  provider: facets
+  block_id: duplicateofcreatorsandcontributors
+visibility:
+  media_source_mimetype:
+    id: media_source_mimetype
+    mimetype: ''
+    negate: false
+    context_mapping: {  }
+  request_path:
+    id: request_path
+    negate: false
+    pages: '/collections/*/search-alt*'

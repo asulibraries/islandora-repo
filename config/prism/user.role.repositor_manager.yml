@@ -1,0 +1,39 @@
+uuid: 8182be75-5944-433a-93f1-ef6883744695
+langcode: en
+status: true
+dependencies:
+  config:
+    - workflows.workflow.ingest
+  module:
+    - content_moderation
+    - field_permissions
+    - islandora
+    - system
+    - toolbar
+    - webform
+id: repositor_manager
+label: 'Repository Manager'
+weight: 8
+is_admin: null
+permissions:
+  - 'access administration pages'
+  - 'access toolbar'
+  - 'access webform overview'
+  - 'access webform submission user'
+  - 'edit field_keyword'
+  - 'manage media'
+  - 'manage members'
+  - 'use ingest transition create_new_draft'
+  - 'use ingest transition decline_submission'
+  - 'use ingest transition draft_to_triaged'
+  - 'view any unpublished content'
+  - 'view checksums'
+  - 'view field_cataloging_standards'
+  - 'view field_description_source'
+  - 'view field_keyword'
+  - 'view field_level_of_coding'
+  - 'view latest version'
+  - 'view own field_cataloging_standards'
+  - 'view own field_description_source'
+  - 'view own field_keyword'
+  - 'view own field_level_of_coding'

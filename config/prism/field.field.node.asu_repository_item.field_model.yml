@@ -1,0 +1,29 @@
+uuid: b285e6bb-b90d-4685-9d6d-24b2bc34e296
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_model
+    - node.type.asu_repository_item
+    - taxonomy.vocabulary.islandora_models
+id: node.asu_repository_item.field_model
+field_name: field_model
+entity_type: node
+bundle: asu_repository_item
+label: Model
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      islandora_models: islandora_models
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

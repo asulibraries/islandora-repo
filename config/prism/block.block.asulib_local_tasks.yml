@@ -1,0 +1,38 @@
+uuid: 65475604-3560-40e0-9bfa-09913e8ccebc
+langcode: en
+status: true
+dependencies:
+  module:
+    - context
+    - system
+  theme:
+    - asulib_barrio
+id: asulib_local_tasks
+theme: asulib_barrio
+region: content
+weight: -41
+provider: null
+plugin: local_tasks_block
+settings:
+  id: local_tasks_block
+  label: Tabs
+  label_display: '0'
+  provider: core
+  primary: true
+  secondary: true
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: null
+    context_mapping: {  }
+    pages: ''
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    context_mapping: {  }
+    view_inclusion: {  }
+  request_path:
+    id: request_path
+    negate: true
+    context_mapping: {  }
+    pages: '<front>'

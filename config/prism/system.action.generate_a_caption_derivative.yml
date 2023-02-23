@@ -1,0 +1,25 @@
+uuid: e8400cbd-a6b0-40e1-9152-70d23a619c76
+langcode: en
+status: true
+dependencies:
+  module:
+    - asu_derivatives
+  enforced:
+    module:
+      - asu_derivatives
+_core:
+  default_config_hash: 08GrTZ9zQAZzj3iRwtiZO3nes8FDfQcTbuyFpd3jNUk
+id: generate_a_caption_derivative
+label: 'Caption - Generate with AWS Transcribe (Audio/Video)'
+type: node
+plugin: generate_caption_derivative
+configuration:
+  queue: islandora-connector-awstranscribe
+  event: 'Generate Derivative'
+  source_term_uri: 'http://pcdm.org/use#OriginalFile'
+  derivative_term_uri: 'http://pcdm.org/use#Transcript'
+  args: null
+  mimetype: text/plain
+  destination_media_type: file
+  scheme: public
+  path: '[date:custom:Y]-[date:custom:m]/[node:nid]-[term:name].srt'

@@ -1,3 +1,4 @@
+uuid: 0ae45636-4fa0-418c-8ebf-de0fb254c088
 langcode: en
 status: true
 dependencies:
@@ -384,6 +385,20 @@ display:
     position: 1
     display_options:
       title: 'PDFjs - Service File'
+      sorts:
+        field_file_size_value:
+          id: field_file_size_value
+          table: media__field_file_size
+          field: field_file_size_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: standard
+          order: ASC
+          expose:
+            label: ''
+            field_identifier: ''
+          exposed: false
       filters:
         status:
           id: status
@@ -398,16 +413,16 @@ display:
             operator: ''
             operator_limit_selection: false
             operator_list: {  }
-        field_external_uri_uri:
-          id: field_external_uri_uri
-          table: taxonomy_term__field_external_uri
-          field: field_external_uri_uri
-          relationship: field_media_use
+        field_mime_type_value:
+          id: field_mime_type_value
+          table: media__field_mime_type
+          field: field_mime_type_value
+          relationship: none
           group_type: group
           admin_label: ''
           plugin_id: string
           operator: '='
-          value: 'http://pcdm.org/use#ServiceFile'
+          value: application/pdf
           group: 1
           exposed: false
           expose:
@@ -443,6 +458,7 @@ display:
           1: AND
       defaults:
         title: false
+        sorts: false
         filters: false
         filter_groups: false
       display_description: 'A medium quality representation of the Object appropriate for serving to users.'

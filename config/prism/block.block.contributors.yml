@@ -1,0 +1,43 @@
+uuid: 0f47d559-3a39-4ab2-8f15-0b0e1280668c
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.linked_agents
+  module:
+    - context
+    - facets
+    - islandora
+    - system
+  theme:
+    - asulib_barrio
+id: contributors
+theme: asulib_barrio
+region: sidebar_first
+weight: -35
+provider: null
+plugin: 'facet_block:linked_agents'
+settings:
+  id: 'facet_block:linked_agents'
+  label: Contributors
+  label_display: visible
+  provider: facets
+  block_id: contributors
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: null
+    pages: ''
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    view_inclusion: {  }
+  media_source_mimetype:
+    id: media_source_mimetype
+    mimetype: ''
+    negate: false
+    context_mapping: {  }
+  request_path:
+    id: request_path
+    negate: false
+    pages: '/search*'

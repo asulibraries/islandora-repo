@@ -1,0 +1,35 @@
+uuid: cdc8594b-d13f-4c4b-b0d7-226e31efef60
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_related_item
+    - node.type.asu_repository_item
+    - taxonomy.vocabulary.related_items
+  module:
+    - controlled_access_terms
+id: node.asu_repository_item.field_related_item
+field_name: field_related_item
+entity_type: node
+bundle: asu_repository_item
+label: 'Related Item'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      related_items: related_items
+    sort:
+      field: name
+      direction: asc
+    auto_create: 0
+    auto_create_bundle: ''
+  rel_types:
+    'mods:relatedPreceding': precededBy
+    'mods:relatedSucceeding': succeededBy
+    'dcterms:relation': relation
+field_type: typed_relation

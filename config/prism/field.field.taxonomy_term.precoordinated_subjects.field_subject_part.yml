@@ -1,0 +1,45 @@
+uuid: 4b4f4043-12a9-4a0d-886e-66f53b057a6d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_subject_part
+    - taxonomy.vocabulary.conference
+    - taxonomy.vocabulary.corporate_body
+    - taxonomy.vocabulary.family
+    - taxonomy.vocabulary.geo_location
+    - taxonomy.vocabulary.name_titles
+    - taxonomy.vocabulary.person
+    - taxonomy.vocabulary.precoordinated_subjects
+    - taxonomy.vocabulary.subject
+    - taxonomy.vocabulary.temporal
+    - taxonomy.vocabulary.titles
+id: taxonomy_term.precoordinated_subjects.field_subject_part
+field_name: field_subject_part
+entity_type: taxonomy_term
+bundle: precoordinated_subjects
+label: 'Subject Part'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      conference: conference
+      corporate_body: corporate_body
+      family: family
+      geo_location: geo_location
+      name_titles: name_titles
+      person: person
+      subject: subject
+      temporal: temporal
+      titles: titles
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: conference
+field_type: entity_reference

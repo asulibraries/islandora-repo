@@ -1,0 +1,21 @@
+uuid: bc4b5b12-6b15-4e1a-b91b-7332b5884b3a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_geo_geolocation
+    - taxonomy.vocabulary.geo_location
+  module:
+    - geolocation
+id: taxonomy_term.geo_location.field_geo_geolocation
+field_name: field_geo_geolocation
+entity_type: taxonomy_term
+bundle: geo_location
+label: Latitude/Longitude
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: geolocation

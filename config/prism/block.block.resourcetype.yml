@@ -1,0 +1,40 @@
+uuid: 9a921ec4-8371-4aa4-b33f-046a0fd5ded8
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.resource_type
+  module:
+    - context
+    - facets
+    - system
+  theme:
+    - asulib_barrio
+id: resourcetype
+theme: asulib_barrio
+region: sidebar_first
+weight: -11
+provider: null
+plugin: 'facet_block:resource_type'
+settings:
+  id: 'facet_block:resource_type'
+  label: 'Resource Type'
+  label_display: visible
+  provider: facets
+  block_id: resourcetype
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: null
+    context_mapping: {  }
+    pages: ''
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    context_mapping: {  }
+    view_inclusion: {  }
+  request_path:
+    id: request_path
+    negate: false
+    context_mapping: {  }
+    pages: '/search*'

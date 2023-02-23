@@ -1,0 +1,31 @@
+uuid: c57efed1-ac54-4e4e-b62c-82a6a7ee1056
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_media_of
+    - media.type.fits_technical_metadata
+    - node.type.asu_repository_item
+  enforced:
+    module:
+      - islandora_fits
+id: media.fits_technical_metadata.field_media_of
+field_name: field_media_of
+entity_type: media
+bundle: fits_technical_metadata
+label: 'Media of'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: unpublished
+  handler_settings:
+    target_bundles:
+      asu_repository_item: asu_repository_item
+    sort:
+      field: _none
+    auto_create: 0
+    auto_create_bundle: ''
+field_type: entity_reference

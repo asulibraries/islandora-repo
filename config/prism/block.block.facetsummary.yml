@@ -1,0 +1,39 @@
+uuid: b7e21692-0555-43c4-ab8c-e7fb351b996c
+langcode: en
+status: false
+dependencies:
+  config:
+    - facets_summary.facets_summary.facet_summary
+  module:
+    - context
+    - facets_summary
+    - system
+  theme:
+    - asulib_barrio
+id: facetsummary
+theme: asulib_barrio
+region: sidebar_first
+weight: 6
+provider: null
+plugin: 'facets_summary_block:facet_summary'
+settings:
+  id: 'facets_summary_block:facet_summary'
+  label: 'Facet Summary'
+  label_display: '0'
+  provider: facets_summary
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: null
+    context_mapping: {  }
+    pages: ''
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    context_mapping: {  }
+    view_inclusion: {  }
+  request_path:
+    id: request_path
+    negate: false
+    context_mapping: {  }
+    pages: '/search*'

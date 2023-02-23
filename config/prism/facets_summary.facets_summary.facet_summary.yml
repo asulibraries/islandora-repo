@@ -1,0 +1,93 @@
+uuid: 473a0caa-d35d-425a-8003-69d7c86f007c
+langcode: en
+status: true
+dependencies:
+  config:
+    - search_api.index.default_solr_index
+    - views.view.solr_search_content
+  module:
+    - search_api
+id: facet_summary
+name: 'Facet Summary'
+facets:
+  all_subjects:
+    checked: true
+    label: 'All Subjects'
+    separator: ', '
+    show_count: false
+    weight: 0
+  collection_primary_and_additional:
+    checked: true
+    label: 'Collection Memberships'
+    separator: ', '
+    show_count: false
+    weight: 0
+  date_created_year:
+    checked: true
+    label: 'Date Created'
+    separator: ', '
+    show_count: false
+    weight: 0
+  genre:
+    checked: true
+    label: Genre
+    separator: ', '
+    show_count: false
+    weight: 0
+  language:
+    checked: true
+    label: Language
+    separator: ', '
+    show_count: false
+    weight: 0
+  linked_agents:
+    checked: true
+    label: Creators
+    separator: ', '
+    show_count: false
+    weight: 0
+  open_access:
+    checked: true
+    label: 'Open Access'
+    separator: ', '
+    show_count: false
+    weight: 0
+  peer_reviewed:
+    checked: true
+    label: Peer-reviewed
+    separator: ', '
+    show_count: false
+    weight: 0
+  place_of_publication_code_:
+    checked: true
+    label: 'Place of Publication'
+    separator: ', '
+    show_count: false
+    weight: 0
+  resource_type:
+    checked: true
+    label: 'Resource Type'
+    separator: ', '
+    show_count: false
+    weight: 0
+  status:
+    checked: true
+    label: Status
+    separator: ', '
+    show_count: false
+    weight: 0
+  member_of:
+    checked: true
+    label: 'Member of'
+    separator: ', '
+    show_count: false
+    weight: 0
+facet_source_id: 'search_api:views_page__solr_search_content__page_1'
+processor_configs:
+  reset_facets:
+    processor_id: reset_facets
+    weights:
+      build: '30'
+    settings:
+      link_text: Reset
+      position: before

@@ -1,0 +1,24 @@
+uuid: a98e402c-a699-4f0f-851d-49fcd254b605
+langcode: en
+status: true
+dependencies:
+  config:
+    - block_content.type.complex_title_block
+    - field.field.block_content.complex_title_block.body
+  module:
+    - text
+id: block_content.complex_title_block.default
+targetEntityType: block_content
+bundle: complex_title_block
+mode: default
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  langcode: true
+  search_api_excerpt: true

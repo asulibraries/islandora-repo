@@ -1,0 +1,25 @@
+uuid: fbeb75b0-1dea-4c69-9d81-af3e39e07fa6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_external_authority_link
+    - taxonomy.vocabulary.country_codes
+  module:
+    - controlled_access_terms
+id: taxonomy_term.country_codes.field_external_authority_link
+field_name: field_external_authority_link
+entity_type: taxonomy_term
+bundle: country_codes
+label: 'External Authority Link'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  authority_sources:
+    loc: 'MARC List of Countries'
+  title: 1
+  link_type: 16
+field_type: authority_link

@@ -1,0 +1,42 @@
+uuid: f61d4d12-a0a8-4265-bbe9-54038185a471
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.collections
+  module:
+    - context
+    - system
+    - views
+  theme:
+    - asulib_barrio
+id: views_block__collections_collection_top_content
+theme: asulib_barrio
+region: top_content
+weight: 0
+provider: null
+plugin: 'views_block:collections-collection_top_content'
+settings:
+  id: 'views_block:collections-collection_top_content'
+  label: ''
+  label_display: '0'
+  provider: views
+  context_mapping: {  }
+  views_label: ''
+  items_per_page: none
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: null
+    context_mapping: {  }
+    pages: ''
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    context_mapping: {  }
+    view_inclusion: {  }
+  request_path:
+    id: request_path
+    negate: false
+    context_mapping: {  }
+    pages: '/collections/*'

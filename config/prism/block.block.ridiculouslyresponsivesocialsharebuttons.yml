@@ -1,0 +1,42 @@
+uuid: 4fa3ce74-45b1-4ecc-9f7e-238823bb3c77
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora
+    - node
+    - rrssb
+    - system
+  theme:
+    - asulib_barrio
+id: ridiculouslyresponsivesocialsharebuttons
+theme: asulib_barrio
+region: sidebar_first
+weight: -38
+provider: null
+plugin: rrssb_block
+settings:
+  id: rrssb_block
+  label: 'Share this content'
+  label_display: visible
+  provider: rrssb
+  button_set: default
+visibility:
+  request_path:
+    id: request_path
+    negate: true
+    context_mapping: {  }
+    pages: "/node/add/*\r\n/node/*/edit\r\n/node/*/revisions/*"
+  media_source_mimetype:
+    id: media_source_mimetype
+    mimetype: ''
+    negate: false
+    context_mapping: {  }
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      asu_repository_item: asu_repository_item
+      collection: collection

@@ -1,3 +1,4 @@
+uuid: 7909790c-fb8c-404c-9f0c-8847db6fec82
 langcode: en
 status: true
 dependencies:
@@ -10,6 +11,8 @@ id: place_of_publication_code_col
 name: 'Place of Publication'
 weight: 0
 min_count: 1
+missing: false
+missing_label: others
 url_alias: place_of_publication
 facet_source_id: 'search_api:views_page__solr_search_content__page_3'
 field_identifier: place_of_publication_code
@@ -17,6 +20,10 @@ query_operator: or
 hard_limit: 100
 exclude: false
 use_hierarchy: false
+keep_hierarchy_parents_active: false
+hierarchy:
+  type: taxonomy
+  config: {  }
 expand_hierarchy: false
 enable_parent_when_child_gets_disabled: true
 widget:

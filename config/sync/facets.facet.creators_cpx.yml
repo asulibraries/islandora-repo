@@ -1,3 +1,4 @@
+uuid: 7bc2801f-c518-44bf-8c09-53d345e2a6d7
 langcode: en
 status: true
 dependencies:
@@ -10,6 +11,8 @@ id: creators_cpx
 name: 'Creators (cpx)'
 weight: 0
 min_count: 1
+missing: false
+missing_label: others
 url_alias: linked_agents
 facet_source_id: 'search_api:views_page__solr_search_content__page_2'
 field_identifier: field_linked_agent
@@ -17,6 +20,10 @@ query_operator: or
 hard_limit: 0
 exclude: false
 use_hierarchy: false
+keep_hierarchy_parents_active: false
+hierarchy:
+  type: taxonomy
+  config: {  }
 expand_hierarchy: false
 enable_parent_when_child_gets_disabled: true
 widget:

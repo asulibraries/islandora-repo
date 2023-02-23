@@ -1,0 +1,53 @@
+uuid: 0a5f38eb-1c2d-4422-84a7-81313271a071
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora
+    - islandora_bagger_integration
+    - node
+  enforced:
+    module:
+      - islandora_defaults
+label: Content
+name: repository_content
+group: Indexing
+description: 'All repository content'
+requireAllConditions: false
+disabled: false
+conditions:
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: c46fdfed-44fa-4a07-84dd-f218af00bd27
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      asu_repository_item: asu_repository_item
+      collection: collection
+      islandora_object: islandora_object
+reactions:
+  index:
+    id: index
+    saved: false
+    actions:
+      index_node_in_fedora: index_node_in_fedora
+  delete:
+    id: delete
+    saved: false
+    actions:
+      delete_node_from_fedora: delete_node_from_fedora
+      delete_node_from_triplestore: delete_node_from_triplestore
+  islandora_map_uri_predicate:
+    id: islandora_map_uri_predicate
+    saved: false
+    drupal_uri_predicate: 'schema:sameAs'
+  alter_jsonld_type:
+    id: alter_jsonld_type
+    saved: false
+    source_field: field_model
+  islandora_bagger_integration_config_options:
+    id: islandora_bagger_integration_config_options
+    bagger_config_options: ''
+    saved: false
+weight: -5

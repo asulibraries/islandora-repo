@@ -1,0 +1,109 @@
+uuid: f02e12fc-e2b7-47c9-8351-b282b7e976c1
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - asu_migrate
+id: state_press_media
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: null
+migration_group: migrate_state_press_csv
+label: 'Import Collection State Press Media from CSV'
+source:
+  plugin: csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/data/migration_data/state_press.csv
+  header_row_count: 1
+  ids:
+    - 'File Name'
+  constants:
+    use: 'Original File'
+    uid: 1
+process:
+  name:
+    source: Title
+    plugin: substr
+    start: 0
+    length: 254
+  uid:
+    source: 'System Creator'
+    plugin: user_lookup
+    default_value: constants/uid
+  bundle: 'file type'
+  field_original_name: 'File Name'
+  field_media_use:
+    plugin: entity_lookup
+    source: constants/use
+    entity_type: taxonomy_term
+    value_key: name
+    bundle_key: vid
+    bundle: islandora_media_use
+  field_legacy_checksum: 'file checksum'
+  field_media_document:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: 'File Name'
+    -
+      plugin: migration_lookup
+      migration: state_press_file
+      no_stub: true
+  field_media_image:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: 'File Name'
+    -
+      plugin: migration_lookup
+      migration: state_press_file
+      no_stub: true
+  field_media_video_file:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: 'File Name'
+    -
+      plugin: migration_lookup
+      migration: state_press_file
+      no_stub: true
+  field_media_audio_file:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: 'File Name'
+    -
+      plugin: migration_lookup
+      migration: state_press_file
+      no_stub: true
+  field_media_file:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: 'File Name'
+    -
+      plugin: migration_lookup
+      migration: state_press_file
+      no_stub: true
+  field_media_of:
+    plugin: migration_lookup
+    source: Title
+    migration: state_press_node
+    no_stub: true
+  field_access_terms:
+    source: 'Original File Permissions'
+    plugin: entity_lookup
+    bundle: islandora_access
+    bundle_key: vid
+    entity_type: taxonomy_term
+    value_key: name
+    default_value: Public
+destination:
+  plugin: 'entity:media'
+  default_bundle: document
+migration_dependencies:
+  required:
+    - migrate_plus.migration.state_press_file
+    - migrate_plus.migration.state_press_node
+  optional: {  }

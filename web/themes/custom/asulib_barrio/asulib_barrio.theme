@@ -1,9 +1,13 @@
 <?php
 
+/**
+ * @file
+ */
+
+use Drupal\node\NodeInterface;
 use Drupal\Core\Template\Attribute;
 use Drupal\Core\Url;
 use Drupal\Core\Link;
-use Drupal\Core\Render\Element;
 
 /**
  * @file
@@ -18,24 +22,27 @@ use Drupal\Core\Form\FormStateInterface;
  * Replace Barrio setting options with subtheme ones.
  */
 function asulib_barrio_form_system_theme_settings_alter(&$form, FormStateInterface $form_state) {
-  $form['components']['navbar']['bootstrap_barrio_navbar_top_background']['#options'] = array(
+  $form['components']['navbar']['bootstrap_barrio_navbar_top_background']['#options'] = [
     'bg-primary' => t('Primary'),
     'bg-secondary' => t('Secondary'),
     'bg-light' => t('Light'),
     'bg-dark' => t('Dark'),
     'bg-white' => t('White'),
     'bg-transparent' => t('Transparent'),
-  );
-  $form['components']['navbar']['bootstrap_barrio_navbar_background']['#options'] = array(
+  ];
+  $form['components']['navbar']['bootstrap_barrio_navbar_background']['#options'] = [
     'bg-primary' => t('Primary'),
     'bg-secondary' => t('Secondary'),
     'bg-light' => t('Light'),
     'bg-dark' => t('Dark'),
     'bg-white' => t('White'),
     'bg-transparent' => t('Transparent'),
-  );
+  ];
 }
 
+/**
+ *
+ */
 function asulib_barrio_preprocess_breadcrumb(&$variables) {
   if ($variables['breadcrumb']) {
     // Add the node title to breadcrumbs as plain text.
@@ -51,32 +58,34 @@ function asulib_barrio_preprocess_breadcrumb(&$variables) {
       if ($current_route == 'view.solr_search_content.page_2') {
         $variables['breadcrumb'][] = [
           'text' => ($search_term) ? 'Search for "' . $search_term . '"' : 'Explore media',
-          'attributes' => new Attribute(['class' => ['is_active']])
+          'attributes' => new Attribute(['class' => ['is_active']]),
         ];
       }
       elseif (!empty($page_title)) {
         $variables['breadcrumb'][] = [
           'text' => $page_title,
-          'attributes' => new Attribute(['class' => ['is_active']])
+          'attributes' => new Attribute(['class' => ['is_active']]),
         ];
       }
-    } elseif ($current_route == 'asu_item_extras.complex_object_members') {
+    }
+    elseif ($current_route == 'asu_item_extras.complex_object_members') {
       $variables['breadcrumb'][] = [
         'text' => t('Associated media'),
-        'attributes' => new Attribute(['class' => ['is_active']])
+        'attributes' => new Attribute(['class' => ['is_active']]),
       ];
-    } else {
+    }
+    else {
       // Add the search text as a text-breadcrumb as text.
       if ($search_term && $search_term != "") {
         $variables['breadcrumb'][] = [
           'text' => 'Search for "' . $search_term . '"',
-          'attributes' => new Attribute(['class' => ['is_active']])
+          'attributes' => new Attribute(['class' => ['is_active']]),
         ];
       }
       elseif ($current_route == "view.solr_search_content.page_1" || $current_route == "view.solr_search_content.page_3") {
         $variables['breadcrumb'][] = [
           'text' => 'Search',
-          'attributes' => new Attribute(['class' => ['is_active']])
+          'attributes' => new Attribute(['class' => ['is_active']]),
         ];
       }
       elseif ($current_route == "view.collections.page_1") {
@@ -111,7 +120,7 @@ function asulib_barrio_preprocess_region(&$variables) {
       ) {
         $variables['backtosearch'] = $referer_url;
       }
-      if ($current_route == 'asu_item_extras.full_metadata_view' && $node instanceof \Drupal\node\NodeInterface) {
+      if ($current_route == 'asu_item_extras.full_metadata_view' && $node instanceof NodeInterface) {
         $variables['backtoitem'] = Url::fromRoute('entity.node.canonical', ['node' => $node->id()]);
       }
     }
@@ -144,14 +153,16 @@ function asulib_barrio_preprocess_node(&$variables) {
       }
     }
     if ($variables['view_mode'] == 'complex_object_child_box') {
-      // since we are pulling the $node var from the route, we're actually already on the parent obj page
+      // Since we are pulling the $node var from the route, we're actually already on the parent obj page.
       $parent_obj = \Drupal::request()->attributes->get('node');
-      $collection = $parent_obj->get('field_member_of')->entity;
-      if ($collection && $collection->bundle() == 'collection') {
-        $fields_to_display = $collection->get('field_fields_co_child')->referencedEntities();
-        if ($fields_to_display) {
-          foreach($fields_to_display as $field) {
-            $variables['co_child_fields'][] = $field->getName();
+      if ($parent_obj) {
+        $collection = $parent_obj->get('field_member_of')->entity;
+        if ($collection && $collection->bundle() == 'collection') {
+          $fields_to_display = $collection->get('field_fields_co_child')->referencedEntities();
+          if ($fields_to_display) {
+            foreach ($fields_to_display as $field) {
+              $variables['co_child_fields'][] = $field->getName();
+            }
           }
         }
       }
@@ -161,35 +172,39 @@ function asulib_barrio_preprocess_node(&$variables) {
       $origfile_term = $default_config->get('original_file_taxonomy_term');
       $origfile = \Drupal::entityTypeManager()->getStorage('media')->loadByProperties([
         'field_media_use' => ['target_id' => $origfile_term],
-        'field_media_of' => ['target_id' => $node->id()]
+        'field_media_of' => ['target_id' => $node->id()],
       ]);
       if (count($origfile) > 0) {
         $origfile = reset($origfile);
-      } else {
+      }
+      else {
         $origfile = NULL;
       }
       $servicefile_term = $default_config->get('service_file_taxonomy_term');
       $servicefile = \Drupal::entityTypeManager()->getStorage('media')->loadByProperties([
         'field_media_use' => ['target_id' => $servicefile_term],
-        'field_media_of' => ['target_id' => $node->id()]
+        'field_media_of' => ['target_id' => $node->id()],
       ]);
       if (count($servicefile) > 0) {
         $servicefile = reset($servicefile);
-      } else {
+      }
+      else {
         $servicefile = NULL;
       }
       if (isset($origfile)) {
         $of_access = $origfile->access('view', \Drupal::currentUser());
         $variables['original_file'] = $origfile;
         $variables['of_access'] = $of_access;
-      } else {
+      }
+      else {
         $variables['of_access'] = FALSE;
       }
       if (isset($servicefile)) {
         $sf_access = $servicefile->access('view', \Drupal::currentUser());
         $variables['service_file'] = $servicefile;
         $variables['sf_access'] = $sf_access;
-      } else {
+      }
+      else {
         $variables['sf_access'] = FALSE;
       }
       $field_model = $node->get('field_model')->entity;
@@ -247,7 +262,7 @@ function asulib_barrio_theme_suggestions_field_alter(&$suggestions, $variables) 
 }
 
 /**
- * Process block content
+ * Process block content.
  */
 function asulib_barrio_preprocess_block(&$variables) {
   if ($variables['plugin_id'] == 'asu_item_is_part_of') {
@@ -262,7 +277,7 @@ function asulib_barrio_preprocess_block(&$variables) {
  * Preprocess user content.
  */
 function asulib_barrio_preprocess_user(&$variables) {
-//  // Helpful $content variable for templates.
+  // // Helpful $content variable for templates.
   $account = $variables['elements']['#user'];
   if (array_key_exists('field_orcid_id', $variables['content'])) {
     $orcid_id = $account->get('field_orcid_id')->value;

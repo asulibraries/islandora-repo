@@ -1,0 +1,91 @@
+uuid: 92eecabc-00e7-49dd-bd28-c7b2c4ba9df6
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - asu_migrate
+id: claraza_file
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: null
+migration_group: migrate_claraza_csv
+label: 'Import Collection laraza Files'
+source:
+  plugin: csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/data/migration_data/att_file_laraza.csv
+  delimiter: ','
+  header_row_count: 1
+  ids:
+    - 'file id'
+  constants:
+    destination_dir: 'fedora://claraza'
+    uid: 1
+    baseurl: 'https://repository.asu.edu'
+    basepath: /mnt/libfile/Repository/old-repo-data/filestore/
+process:
+  uid: constants/uid
+  type: 'file type'
+  field_original_name/value: 'file original_filename'
+  filename:
+    -
+      plugin: transliteration
+      source: 'file original_filename'
+    -
+      plugin: str_replace
+      search: ' '
+      replace: _
+    -
+      plugin: str_replace
+      search: ''''
+      replace: ''
+    -
+      plugin: str_replace
+      search: ','
+      replace: ''
+    -
+      plugin: str_replace
+      search: )
+      replace: ''
+    -
+      plugin: str_replace
+      search: (
+      replace: ''
+    -
+      plugin: str_replace
+      search: '&'
+      replace: ''
+    -
+      plugin: str_replace
+      search: '['
+      replace: ''
+    -
+      plugin: str_replace
+      search: ']'
+      replace: ''
+  destination:
+    plugin: concat
+    delimiter: /
+    source:
+      - constants/destination_dir
+      - 'file id'
+      - '@filename'
+  filelocation:
+    plugin: concat
+    source:
+      - constants/baseurl
+      - 'file url'
+  localfilelocation:
+    plugin: concat
+    source:
+      - constants/basepath
+      - 'storage path'
+  uri:
+    plugin: file_copy
+    source:
+      - '@localfilelocation'
+      - '@destination'
+destination:
+  plugin: 'entity:file'
+migration_dependencies: null

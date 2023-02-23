@@ -1,0 +1,50 @@
+uuid: 39207888-bfea-4499-8a4a-fbcad88590df
+langcode: en
+status: true
+dependencies:
+  module:
+    - basic_auth
+    - jsonld
+    - jwt
+    - node
+    - rest_oai_pmh
+    - serialization
+    - user
+  enforced:
+    module:
+      - islandora_core_feature
+id: entity.node
+plugin_id: 'entity:node'
+granularity: method
+configuration:
+  GET:
+    supported_formats:
+      - jsonld
+      - oai_dc
+      - mods
+      - json
+    supported_auth:
+      - jwt_auth
+      - basic_auth
+      - cookie
+  POST:
+    supported_formats:
+      - json
+    supported_auth:
+      - jwt_auth
+      - basic_auth
+      - cookie
+  DELETE:
+    supported_formats:
+      - json
+    supported_auth:
+      - jwt_auth
+      - basic_auth
+      - cookie
+  PATCH:
+    supported_formats:
+      - json
+    supported_auth:
+      - jwt_auth
+      - basic_auth
+      - cookie

@@ -1,3 +1,4 @@
+uuid: 9ae24963-639f-4bb3-ac40-899075a8ae1b
 langcode: en
 status: true
 dependencies:
@@ -260,8 +261,12 @@ display:
     display_plugin: block
     position: 1
     display_options:
+      pager:
+        type: none
+        options:
+          offset: 0
       defaults:
-        pager: true
+        pager: false
       display_description: ''
       display_extenders: {  }
     cache_metadata:

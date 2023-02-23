@@ -1,0 +1,43 @@
+uuid: 89b3cd0c-560d-4e3d-9876-37d80eb12fe2
+langcode: en
+status: false
+dependencies:
+  module:
+    - asu_brand
+    - context
+    - islandora
+    - system
+  theme:
+    - asulib_barrio
+id: callstoactionblockforprism
+theme: asulib_barrio
+region: content
+weight: -28
+provider: null
+plugin: calls_to_action_prism_block
+settings:
+  id: calls_to_action_prism_block
+  label: 'Calls to action block (for PRISM)'
+  label_display: '0'
+  provider: asu_brand
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: null
+    context_mapping: {  }
+    pages: ''
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    context_mapping: {  }
+    view_inclusion: {  }
+  media_source_mimetype:
+    id: media_source_mimetype
+    mimetype: ''
+    negate: false
+    context_mapping: {  }
+  request_path:
+    id: request_path
+    negate: false
+    context_mapping: {  }
+    pages: '<front>'

@@ -1,0 +1,41 @@
+uuid: 969fcb8f-fbe6-405a-b573-aa19875f1e45
+langcode: en
+status: true
+dependencies:
+  config:
+    - views.view.solr_search_content
+  module:
+    - context
+    - system
+    - views
+  theme:
+    - asulib_barrio
+id: views_block__solr_search_content_block_1
+theme: asulib_barrio
+region: content
+weight: -42
+provider: null
+plugin: 'views_block:solr_search_content-block_1'
+settings:
+  id: 'views_block:solr_search_content-block_1'
+  label: ''
+  label_display: '0'
+  provider: views
+  views_label: ''
+  items_per_page: none
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    context_mapping: {  }
+    pages: "/search/*\r\n/search?*"
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: null
+    context_mapping: {  }
+    pages: ''
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    context_mapping: {  }
+    view_inclusion: {  }

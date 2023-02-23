@@ -1,0 +1,26 @@
+uuid: 836076b4-185f-4b2c-a3e0-cc521ebe6ff1
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_authority_link
+    - taxonomy.vocabulary.conference
+  module:
+    - controlled_access_terms
+id: taxonomy_term.conference.field_authority_link
+field_name: field_authority_link
+entity_type: taxonomy_term
+bundle: conference
+label: 'Authority Sources'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  authority_sources:
+    naf: 'NACO Authority File'
+    lcnaf: 'Library of Congress Name Authority File'
+  title: 1
+  link_type: 16
+field_type: authority_link

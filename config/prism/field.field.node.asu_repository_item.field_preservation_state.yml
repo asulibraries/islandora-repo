@@ -1,0 +1,29 @@
+uuid: 90d46e48-c112-4654-8db3-dca4d050344b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_preservation_state
+    - node.type.asu_repository_item
+    - taxonomy.vocabulary.preservation_states
+id: node.asu_repository_item.field_preservation_state
+field_name: field_preservation_state
+entity_type: node
+bundle: asu_repository_item
+label: 'Preservation State'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      preservation_states: preservation_states
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

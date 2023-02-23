@@ -1,0 +1,21 @@
+uuid: 01b6f839-6d40-43ef-a6f1-c6ccb2af98cb
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.collection_group
+  enforced:
+    config:
+      - user.role.fedoraadmin
+id: collection_group-58e20e9c6
+label: fedoraAdmin
+weight: 3
+internal: true
+audience: outsider
+group_type: collection_group
+permissions_ui: false
+permissions:
+  - 'view group_node:asu_repository_item entity'
+  - 'view group_node:collection entity'
+  - 'view unpublished group_node:asu_repository_item entity'
+  - 'view unpublished group_node:collection entity'

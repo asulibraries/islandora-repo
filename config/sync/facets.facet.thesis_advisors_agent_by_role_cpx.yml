@@ -1,3 +1,4 @@
+uuid: cf0850d7-b4ed-4443-a19a-ca961beff34d
 langcode: en
 status: true
 dependencies:
@@ -10,6 +11,8 @@ id: thesis_advisors_agent_by_role_cpx
 name: 'Thesis Advisors (Agent by Role) (cpx)'
 weight: 0
 min_count: 1
+missing: false
+missing_label: others
 url_alias: thesis_advisors_agent_by_role_
 facet_source_id: 'search_api:views_page__solr_search_content__page_2'
 field_identifier: asu_agent_ths
@@ -17,6 +20,10 @@ query_operator: or
 hard_limit: 0
 exclude: false
 use_hierarchy: false
+keep_hierarchy_parents_active: false
+hierarchy:
+  type: taxonomy
+  config: {  }
 expand_hierarchy: false
 enable_parent_when_child_gets_disabled: true
 widget:

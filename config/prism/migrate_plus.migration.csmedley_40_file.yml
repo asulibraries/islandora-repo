@@ -1,0 +1,81 @@
+uuid: dcce0136-fcbc-40f0-90e6-3e142e49fb0e
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - asu_migrate
+id: csmedley_40_file
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: null
+migration_group: migrate_csmedley_40_csv
+label: 'Import Collection smedley_40 Files'
+source:
+  plugin: csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/c_smedley_v40_merged_v2.csv
+  delimiter: ','
+  header_row_count: 1
+  ids:
+    - ID
+  constants:
+    destination_dir: 'fedora://smedley_40'
+    uid: 1
+    baseurl: 'https://repository.asu.edu'
+    basepath: /mnt/libfile/Repository/old-repo-data/filestore/
+    file_type: image
+process:
+  uid: constants/uid
+  type: constanst/file_type
+  field_original_name/value: 'File original_filename'
+  filename:
+    -
+      plugin: transliteration
+      source: 'File original_filename'
+    -
+      plugin: str_replace
+      search: ' '
+      replace: _
+    -
+      plugin: str_replace
+      search: ''''
+      replace: ''
+    -
+      plugin: str_replace
+      search: ','
+      replace: ''
+    -
+      plugin: str_replace
+      search: )
+      replace: ''
+    -
+      plugin: str_replace
+      search: (
+      replace: ''
+    -
+      plugin: str_replace
+      search: '&'
+      replace: ''
+    -
+      plugin: str_replace
+      search: '['
+      replace: ''
+    -
+      plugin: str_replace
+      search: ']'
+      replace: ''
+  destination:
+    plugin: concat
+    delimiter: /
+    source:
+      - constants/destination_dir
+      - '@filename'
+  uri:
+    plugin: file_copy
+    source:
+      - 'File Location'
+      - '@destination'
+destination:
+  plugin: 'entity:file'
+migration_dependencies: null

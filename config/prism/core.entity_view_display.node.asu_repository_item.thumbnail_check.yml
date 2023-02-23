@@ -1,0 +1,229 @@
+uuid: 2a12f4c8-40ff-40b8-9f08-63ddd80033dc
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.thumbnail_check
+    - field.field.node.asu_repository_item.field_additional_memberships
+    - field.field.node.asu_repository_item.field_cataloging_standards
+    - field.field.node.asu_repository_item.field_complex_object_child
+    - field.field.node.asu_repository_item.field_complex_subject
+    - field.field.node.asu_repository_item.field_coordinates
+    - field.field.node.asu_repository_item.field_copyright_statement
+    - field.field.node.asu_repository_item.field_date_digitized
+    - field.field.node.asu_repository_item.field_default_derivative_file_pe
+    - field.field.node.asu_repository_item.field_default_original_file_perm
+    - field.field.node.asu_repository_item.field_description_source
+    - field.field.node.asu_repository_item.field_display_hints
+    - field.field.node.asu_repository_item.field_edition
+    - field.field.node.asu_repository_item.field_edtf_copyright_date
+    - field.field.node.asu_repository_item.field_edtf_date_created
+    - field.field.node.asu_repository_item.field_embargo_release_date
+    - field.field.node.asu_repository_item.field_extent
+    - field.field.node.asu_repository_item.field_frequency
+    - field.field.node.asu_repository_item.field_genre
+    - field.field.node.asu_repository_item.field_geographic_subject
+    - field.field.node.asu_repository_item.field_handle
+    - field.field.node.asu_repository_item.field_history
+    - field.field.node.asu_repository_item.field_issuance
+    - field.field.node.asu_repository_item.field_keyword
+    - field.field.node.asu_repository_item.field_language
+    - field.field.node.asu_repository_item.field_level_of_coding
+    - field.field.node.asu_repository_item.field_linked_agent
+    - field.field.node.asu_repository_item.field_member_of
+    - field.field.node.asu_repository_item.field_model
+    - field.field.node.asu_repository_item.field_name_title_subject
+    - field.field.node.asu_repository_item.field_note_para
+    - field.field.node.asu_repository_item.field_oai_set
+    - field.field.node.asu_repository_item.field_open_access
+    - field.field.node.asu_repository_item.field_peer_reviewed
+    - field.field.node.asu_repository_item.field_pid
+    - field.field.node.asu_repository_item.field_place_of_publication_code
+    - field.field.node.asu_repository_item.field_place_published
+    - field.field.node.asu_repository_item.field_preferred_citation
+    - field.field.node.asu_repository_item.field_preservation_state
+    - field.field.node.asu_repository_item.field_related_item
+    - field.field.node.asu_repository_item.field_resource_type
+    - field.field.node.asu_repository_item.field_reuse_permissions
+    - field.field.node.asu_repository_item.field_rich_description
+    - field.field.node.asu_repository_item.field_series
+    - field.field.node.asu_repository_item.field_source
+    - field.field.node.asu_repository_item.field_statement_responsibility
+    - field.field.node.asu_repository_item.field_subject
+    - field.field.node.asu_repository_item.field_subjects_name
+    - field.field.node.asu_repository_item.field_table_of_contents
+    - field.field.node.asu_repository_item.field_temporal_subject
+    - field.field.node.asu_repository_item.field_title
+    - field.field.node.asu_repository_item.field_title_subject
+    - field.field.node.asu_repository_item.field_typed_identifier
+    - field.field.node.asu_repository_item.field_weight
+    - node.type.asu_repository_item
+  module:
+    - field_group
+    - layout_builder
+    - user
+third_party_settings:
+  field_group:
+    group_sidebar:
+      children:
+        - field_edition
+        - field_edtf_date_created
+        - field_extent
+        - field_genre
+        - field_language
+        - field_linked_agent
+        - field_member_of
+        - field_model
+        - field_note_para
+        - field_place_published
+        - field_preferred_citation
+        - field_preservation_state
+        - field_table_of_contents
+        - field_weight
+        - display_media_download_button
+        - display_media_entity_view_4
+        - video_media_evas_original_file
+        - video_media_evas_preservation_master
+        - video_media_evas_service_file
+        - links
+      label: Sidebar
+      parent_name: ''
+      region: hidden
+      weight: 44
+      format_type: details_sidebar
+      format_settings:
+        classes: ''
+        id: ''
+        open: false
+        description: ''
+        required_fields: false
+        weight: 0
+    group_details:
+      children:
+        - field_coordinates
+        - field_copyright_statement
+        - field_date_digitized
+        - field_frequency
+        - field_issuance
+        - field_open_access
+        - field_peer_reviewed
+        - field_pid
+        - field_related_item
+        - field_resource_type
+        - field_reuse_permissions
+        - field_series
+        - field_statement_responsibility
+        - field_typed_identifier
+      label: Details
+      parent_name: ''
+      region: hidden
+      weight: 45
+      format_type: details
+      format_settings:
+        classes: ''
+        id: ''
+        open: false
+        description: ''
+        required_fields: false
+  layout_builder:
+    enabled: false
+    allow_custom: false
+id: node.asu_repository_item.thumbnail_check
+targetEntityType: node
+bundle: asu_repository_item
+mode: thumbnail_check
+content:
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  display_media_entity_view_3:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  display_media_thumbnail:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  display_media_child_media_name: true
+  display_media_child_thumbnail: true
+  display_media_download_button: true
+  display_media_entity_view_1: true
+  display_media_entity_view_2: true
+  display_media_entity_view_4: true
+  display_media_service_file: true
+  display_media_thumbnail_card: true
+  field_additional_memberships: true
+  field_cataloging_standards: true
+  field_complex_object_child: true
+  field_complex_subject: true
+  field_coordinates: true
+  field_copyright_statement: true
+  field_date_digitized: true
+  field_default_derivative_file_pe: true
+  field_default_original_file_perm: true
+  field_description_source: true
+  field_display_hints: true
+  field_edition: true
+  field_edtf_copyright_date: true
+  field_edtf_date_created: true
+  field_embargo_release_date: true
+  field_extent: true
+  field_frequency: true
+  field_gemini_uri: true
+  field_genre: true
+  field_geographic_subject: true
+  field_handle: true
+  field_history: true
+  field_issuance: true
+  field_keyword: true
+  field_language: true
+  field_level_of_coding: true
+  field_linked_agent: true
+  field_member_of: true
+  field_model: true
+  field_name_title_subject: true
+  field_note_para: true
+  field_oai_set: true
+  field_open_access: true
+  field_peer_reviewed: true
+  field_pid: true
+  field_place_of_publication_code: true
+  field_place_published: true
+  field_preferred_citation: true
+  field_preservation_state: true
+  field_related_item: true
+  field_resource_type: true
+  field_reuse_permissions: true
+  field_rich_description: true
+  field_series: true
+  field_source: true
+  field_statement_responsibility: true
+  field_subject: true
+  field_subjects_name: true
+  field_table_of_contents: true
+  field_temporal_subject: true
+  field_title: true
+  field_title_subject: true
+  field_typed_identifier: true
+  field_weight: true
+  islandora_fits_checksum: true
+  langcode: true
+  links: true
+  mirador_evas_entity_view_1: true
+  mirador_evas_entity_view_2: true
+  mirador_evas_entity_view_3: true
+  openseadragon_media_evas_entity_view_1: true
+  openseadragon_media_evas_entity_view_2: true
+  openseadragon_media_evas_service_file: true
+  pdfjs_media_evas_entity_view_1: true
+  pdfjs_media_evas_entity_view_2: true
+  pdfjs_media_evas_service_file: true
+  search_api_excerpt: true
+  video_media_evas_original_file: true
+  video_media_evas_preservation_master: true
+  video_media_evas_service_file: true

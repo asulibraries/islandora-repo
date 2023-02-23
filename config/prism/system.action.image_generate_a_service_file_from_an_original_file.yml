@@ -1,0 +1,20 @@
+uuid: b8118ddb-9611-4b08-8a11-73e4003d0f45
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora_image
+id: image_generate_a_service_file_from_an_original_file
+label: 'Image - Generate a service file from an original file'
+type: node
+plugin: generate_image_derivative
+configuration:
+  queue: islandora-connector-houdini
+  event: 'Generate Derivative'
+  destination_media_type: image
+  source_term_uri: 'http://pcdm.org/use#OriginalFile'
+  derivative_term_uri: 'http://pcdm.org/use#ServiceFile'
+  mimetype: image/jpeg
+  args: ''
+  scheme: public
+  path: '[date:custom:Y]-[date:custom:m]/[node:nid]-[term:name].jpg'

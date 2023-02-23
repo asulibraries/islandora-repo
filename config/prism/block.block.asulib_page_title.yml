@@ -1,0 +1,40 @@
+uuid: e1b3020e-2da5-4bf2-bcd4-5877ca2939ff
+langcode: en
+status: true
+dependencies:
+  module:
+    - context
+    - node
+    - system
+  theme:
+    - asulib_barrio
+id: asulib_page_title
+theme: asulib_barrio
+region: top_content
+weight: -29
+provider: null
+plugin: page_title_block
+settings:
+  id: page_title_block
+  label: 'Page title'
+  label_display: '0'
+  provider: core
+visibility:
+  request_path:
+    id: request_path
+    negate: true
+    context_mapping: {  }
+    pages: "/user/*\r\n<front>\r\n/search*"
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: null
+    context_mapping: {  }
+    pages: ''
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: true
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      asu_repository_item: asu_repository_item
+      collection: collection

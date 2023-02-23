@@ -1,0 +1,40 @@
+uuid: cfc1ec8d-b7a3-4c05-b57f-137c28e79a2f
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.resource_type_col
+  module:
+    - context
+    - facets
+    - system
+  theme:
+    - asulib_barrio
+id: resourcetype_col
+theme: asulib_barrio
+region: sidebar_first
+weight: -10
+provider: null
+plugin: 'facet_block:resource_type_col'
+settings:
+  id: 'facet_block:resource_type_col'
+  label: 'Resource Type'
+  label_display: visible
+  provider: facets
+  block_id: resourcetype_col
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: null
+    context_mapping: {  }
+    pages: ''
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    context_mapping: {  }
+    view_inclusion: {  }
+  request_path:
+    id: request_path
+    negate: false
+    context_mapping: {  }
+    pages: '/collections/*/search*'

@@ -1,0 +1,28 @@
+uuid: b721880f-9758-4569-a46e-7ee2b9f7d2cb
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.description_restricted
+  module:
+    - ckeditor
+format: description_restricted
+editor: ckeditor
+settings:
+  toolbar:
+    rows:
+      -
+        -
+          name: Links
+          items:
+            - DrupalLink
+            - DrupalUnlink
+  plugins: {  }
+image_upload:
+  status: false
+  scheme: public
+  directory: inline-images
+  max_size: ''
+  max_dimensions:
+    width: null
+    height: null

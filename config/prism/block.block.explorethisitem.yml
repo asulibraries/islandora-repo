@@ -1,0 +1,45 @@
+uuid: d869532c-41fd-4c72-8326-4eac4127f70a
+langcode: en
+status: true
+dependencies:
+  module:
+    - asu_item_extras
+    - context
+    - node
+    - system
+  theme:
+    - asulib_barrio
+id: explorethisitem
+theme: asulib_barrio
+region: sidebar_first
+weight: -40
+provider: null
+plugin: explore_this_item_block
+settings:
+  id: explore_this_item_block
+  label: 'Explore this item'
+  label_display: visible
+  provider: asu_item_extras
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: null
+    context_mapping: {  }
+    pages: ''
+  request_path:
+    id: request_path
+    negate: true
+    context_mapping: {  }
+    pages: "/node/add/asu_repository_item\r\n/node/*/edit"
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    context_mapping: {  }
+    view_inclusion: {  }
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      asu_repository_item: asu_repository_item

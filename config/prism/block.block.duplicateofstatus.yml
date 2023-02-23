@@ -1,0 +1,34 @@
+uuid: cd6fa354-dda9-4bda-8f89-ff1a949d1210
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.duplicate_of_status
+  module:
+    - facets
+    - islandora
+    - system
+  theme:
+    - asulib_barrio
+id: duplicateofstatus
+theme: asulib_barrio
+region: sidebar_first
+weight: 4
+provider: null
+plugin: 'facet_block:duplicate_of_status'
+settings:
+  id: 'facet_block:duplicate_of_status'
+  label: Status
+  label_display: visible
+  provider: facets
+  block_id: duplicateofstatus
+visibility:
+  media_source_mimetype:
+    id: media_source_mimetype
+    mimetype: ''
+    negate: false
+    context_mapping: {  }
+  request_path:
+    id: request_path
+    negate: false
+    pages: '/collections/*/search-alt*'

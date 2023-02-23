@@ -1,0 +1,49 @@
+uuid: 57ca82d2-b14a-44c4-8017-fca3e4a9cecb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.complex_title.field_main_title
+    - field.field.paragraph.complex_title.field_nonsort
+    - field.field.paragraph.complex_title.field_subtitle
+    - field.field.paragraph.complex_title.field_supplied
+    - paragraphs.paragraphs_type.complex_title
+id: paragraph.complex_title.default
+targetEntityType: paragraph
+bundle: complex_title
+mode: default
+content:
+  field_main_title:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_nonsort:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_subtitle:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_supplied:
+    type: boolean
+    label: above
+    settings:
+      format: default
+      format_custom_false: ''
+      format_custom_true: ''
+    third_party_settings: {  }
+    weight: 4
+    region: content
+hidden:
+  search_api_excerpt: true

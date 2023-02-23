@@ -1,0 +1,43 @@
+uuid: ea551a15-13ce-4229-b54f-d5abb58b1da3
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.place_of_publication_cpx
+  module:
+    - context
+    - facets
+    - islandora
+    - system
+  theme:
+    - asulib_barrio
+id: placeofpublicationcpx
+theme: asulib_barrio
+region: sidebar_first
+weight: -15
+provider: null
+plugin: 'facet_block:place_of_publication_cpx'
+settings:
+  id: 'facet_block:place_of_publication_cpx'
+  label: 'Place of Publication'
+  label_display: visible
+  provider: facets
+  block_id: placeofpublicationcpx
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: null
+    pages: ''
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    view_inclusion: {  }
+  media_source_mimetype:
+    id: media_source_mimetype
+    mimetype: ''
+    negate: false
+    context_mapping: {  }
+  request_path:
+    id: request_path
+    negate: false
+    pages: '/items/*/search*'
