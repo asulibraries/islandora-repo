@@ -1,0 +1,87 @@
+uuid: 5c960366-ea45-4da0-bd55-8a38798a972b
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - asu_migrate
+id: state_press_file
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: null
+migration_group: migrate_state_press_csv
+label: 'Import Collection state_press Files'
+source:
+  plugin: csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/data/migration_data/state_press.csv
+  delimiter: ','
+  header_row_count: 1
+  ids:
+    - 'File Name'
+  constants:
+    destination_dir: 'fedora://state_press'
+    uid: 1
+    baseurl: 'https://repository.asu.edu'
+    basepath: /mnt/libfile
+process:
+  uid: constants/uid
+  type: 'file type'
+  field_original_name/value: 'File Name'
+  filename:
+    -
+      plugin: transliteration
+      source: 'File Name'
+    -
+      plugin: str_replace
+      search: ' '
+      replace: _
+    -
+      plugin: str_replace
+      search: ''''
+      replace: ''
+    -
+      plugin: str_replace
+      search: ','
+      replace: ''
+    -
+      plugin: str_replace
+      search: )
+      replace: ''
+    -
+      plugin: str_replace
+      search: (
+      replace: ''
+    -
+      plugin: str_replace
+      search: '&'
+      replace: ''
+    -
+      plugin: str_replace
+      search: '['
+      replace: ''
+    -
+      plugin: str_replace
+      search: ']'
+      replace: ''
+  destination:
+    plugin: concat
+    delimiter: /
+    source:
+      - constants/destination_dir
+      - '@filename'
+  localfilelocation:
+    plugin: concat
+    delimiter: /
+    source:
+      - constants/basepath
+      - Location
+      - 'File Name'
+  uri:
+    plugin: file_copy
+    source:
+      - '@localfilelocation'
+      - '@destination'
+destination:
+  plugin: 'entity:file'
+migration_dependencies: null

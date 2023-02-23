@@ -1,0 +1,14 @@
+uuid: fdec2442-2de5-42ea-8882-b5906dad0182
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.repositor_manager
+  module:
+    - user
+id: user_remove_role_action.repositor_manager
+label: 'Remove the Repositor Manager role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: repositor_manager

@@ -1,3 +1,4 @@
+uuid: dd219905-da4c-4163-9126-9c1296848fc6
 langcode: en
 status: true
 dependencies:
@@ -10,6 +11,8 @@ id: series
 name: Series
 weight: 0
 min_count: 1
+missing: false
+missing_label: others
 url_alias: series
 facet_source_id: 'search_api:views_page__solr_search_content__page_3'
 field_identifier: field_series
@@ -18,6 +21,9 @@ hard_limit: 0
 exclude: false
 use_hierarchy: false
 keep_hierarchy_parents_active: false
+hierarchy:
+  type: taxonomy
+  config: {  }
 expand_hierarchy: false
 enable_parent_when_child_gets_disabled: true
 widget:

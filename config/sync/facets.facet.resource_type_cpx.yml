@@ -1,3 +1,4 @@
+uuid: 2b17e35f-87b5-465c-a760-be51877f7171
 langcode: en
 status: true
 dependencies:
@@ -10,6 +11,8 @@ id: resource_type_cpx
 name: 'Resource Type (cpx)'
 weight: 0
 min_count: 1
+missing: false
+missing_label: others
 url_alias: resource_type
 facet_source_id: 'search_api:views_page__solr_search_content__page_2'
 field_identifier: resource_type_name
@@ -17,6 +20,10 @@ query_operator: or
 hard_limit: 0
 exclude: false
 use_hierarchy: false
+keep_hierarchy_parents_active: false
+hierarchy:
+  type: taxonomy
+  config: {  }
 expand_hierarchy: false
 enable_parent_when_child_gets_disabled: true
 widget:

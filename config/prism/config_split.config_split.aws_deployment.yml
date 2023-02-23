@@ -1,0 +1,23 @@
+uuid: 855af19d-63bf-427b-9e51-8a2f79adae9c
+langcode: en
+status: false
+dependencies: {  }
+id: aws_deployment
+label: 'AWS Deployment'
+description: 'Modules we enable when deploying to staging and production.'
+weight: 0
+stackable: false
+storage: folder
+folder: ../config/deployed
+module:
+  captcha: 0
+  cas: 0
+  cas_attributes: 0
+  cdn: 0
+  clamav: 0
+  islandora_bagger_integration: 0
+  islandora_riprap: 0
+theme: {  }
+complete_list:
+  - smtp.settings
+partial_list: {  }

@@ -1,0 +1,43 @@
+uuid: 3c1bbe2e-cdc3-45fc-8429-f0ce32721b7c
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.genre_cpx
+  module:
+    - context
+    - facets
+    - islandora
+    - system
+  theme:
+    - asulib_barrio
+id: genrecpx
+theme: asulib_barrio
+region: sidebar_first
+weight: -12
+provider: null
+plugin: 'facet_block:genre_cpx'
+settings:
+  id: 'facet_block:genre_cpx'
+  label: Genre
+  label_display: visible
+  provider: facets
+  block_id: genrecpx
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: null
+    pages: ''
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    view_inclusion: {  }
+  media_source_mimetype:
+    id: media_source_mimetype
+    mimetype: ''
+    negate: false
+    context_mapping: {  }
+  request_path:
+    id: request_path
+    negate: false
+    pages: '/items/*/search*'

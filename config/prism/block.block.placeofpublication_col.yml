@@ -1,0 +1,40 @@
+uuid: e4f6d636-4691-4e12-a302-655dbf70be8c
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.place_of_publication_code_col
+  module:
+    - context
+    - facets
+    - system
+  theme:
+    - asulib_barrio
+id: placeofpublication_col
+theme: asulib_barrio
+region: sidebar_first
+weight: -16
+provider: null
+plugin: 'facet_block:place_of_publication_code_col'
+settings:
+  id: 'facet_block:place_of_publication_code_col'
+  label: 'Place of Publication'
+  label_display: visible
+  provider: facets
+  block_id: placeofpublication_col
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: null
+    context_mapping: {  }
+    pages: ''
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    context_mapping: {  }
+    view_inclusion: {  }
+  request_path:
+    id: request_path
+    negate: false
+    context_mapping: {  }
+    pages: '/collections/*/search*'

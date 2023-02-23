@@ -1,3 +1,4 @@
+uuid: 41694c73-e173-4413-b096-ac4037e93ee1
 langcode: en
 status: true
 dependencies:
@@ -8,14 +9,6 @@ dependencies:
     - search_api
 id: facet_summary_cpx
 name: 'Facet Summary (cpx)'
-facet_source_id: 'search_api:views_page__solr_search_content__page_2'
-processor_configs:
-  reset_facets:
-    processor_id: reset_facets
-    weights:
-      build: '30'
-    settings:
-      link_text: Reset
 facets:
   all_subjects_cpx:
     checked: true
@@ -77,3 +70,12 @@ facets:
     separator: ', '
     show_count: false
     weight: 0
+facet_source_id: 'search_api:views_page__solr_search_content__page_2'
+processor_configs:
+  reset_facets:
+    processor_id: reset_facets
+    weights:
+      build: '30'
+    settings:
+      link_text: Reset
+      position: before

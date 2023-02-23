@@ -1,0 +1,91 @@
+uuid: 79023c91-5271-4766-8b42-d1e2cd112459
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - asu_migrate
+id: missing_media_derivs
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: null
+migration_group: migrate_missing_csv
+label: 'Import Collection 2 Derivative Media from CSV'
+source:
+  plugin: csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/missing_service_files.csv
+  header_row_count: 1
+  ids:
+    - 'file id'
+  constants:
+    use: 'Service File'
+    aunder: a_
+    uid: 1
+    c: c
+    undernode: _node
+process:
+  has_deriv:
+    plugin: skip_on_empty
+    method: row
+    source: derivative
+  name: 'item title'
+  uid: constants/uid
+  bundle: 'media type'
+  field_media_use:
+    plugin: entity_lookup
+    source: constants/use
+    entity_type: taxonomy_term
+    value_key: name
+    bundle_key: vid
+    bundle: islandora_media_use
+  field_media_video_file:
+    source: 'file id'
+    plugin: migration_lookup
+    migration: missing_file_derivs
+    no_stub: true
+  collection_mig_name:
+    plugin: concat
+    source:
+      - constants/c
+      - 'collection id'
+      - constants/undernode
+  field_media_of:
+    source: 'item id'
+    plugin: migration_lookup
+    migration: c90_node
+    no_stub: true
+  created:
+    plugin: format_date
+    source: 'file created'
+    from_format: 'Y-m-d G:i:s.uP'
+    to_format: U
+    from_timezone: UTC
+    to_timezone: UTC
+  field_access_terms:
+    -
+      plugin: static_map
+      source: 'attachment derivative access'
+      map:
+        1: Public
+        2: 'ASU Only'
+        3: Private
+    -
+      plugin: entity_lookup
+      bundle: islandora_access
+      bundle_key: vid
+      entity_type: taxonomy_term
+      value_key: name
+destination:
+  plugin: 'entity:media'
+  default_bundle: document
+migration_dependencies:
+  required:
+    - migrate_plus.migration.missing_file_derivs
+  optional:
+    - migrate_plus.migration.c90_node
+    - migrate_plus.migration.c339_node
+    - migrate_plus.migration.c342_node
+    - migrate_plus.migration.c157_node
+    - migrate_plus.migration.c124_node
+    - migrate_plus.migration.c330_node

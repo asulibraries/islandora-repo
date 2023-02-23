@@ -1,0 +1,27 @@
+uuid: f67b3773-6e23-45d1-9aec-f36fabb0fbd2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_copyright_logo
+    - taxonomy.vocabulary.reuse_permissions
+  module:
+    - file
+id: taxonomy_term.reuse_permissions.field_copyright_logo
+field_name: field_copyright_logo
+entity_type: taxonomy_term
+bundle: reuse_permissions
+label: 'Reuse Logo'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:file'
+  handler_settings: {  }
+  file_directory: '[date:custom:Y]-[date:custom:m]'
+  file_extensions: 'png gif jpg jpeg svg'
+  max_filesize: ''
+  description_field: false
+field_type: file

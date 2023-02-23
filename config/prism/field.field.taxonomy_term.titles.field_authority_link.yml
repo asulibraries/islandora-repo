@@ -1,0 +1,31 @@
+uuid: 5de7b2f1-fac5-4ca0-a707-7015e0191740
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_authority_link
+    - taxonomy.vocabulary.titles
+  module:
+    - controlled_access_terms
+id: taxonomy_term.titles.field_authority_link
+field_name: field_authority_link
+entity_type: taxonomy_term
+bundle: titles
+label: 'Authority Sources'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  authority_sources:
+    din1430: 'Key Title nach DIN 1430 (Berlin: Beuth)'
+    din1502: 'Regeln für das Kürzen von Wörtern in Titeln und für das Kürzen der Titel von Veröffentlichungen: DIN 1502 (Berlin; Köln: Beuth)'
+    dnlm: 'National Library of Medicine Locatorplus (Bethesda, MD: National Library of Medicine)'
+    hlasja: 'HLAS journal abbreviations (Washington, DC: Library of Congress, Hispanic Division'
+    inisaljt: 'INIS: authority list for journal titles'
+    issnkey: 'Abbreviated key titles External Link'
+    other: Other
+  title: 1
+  link_type: 16
+field_type: authority_link

@@ -1,0 +1,60 @@
+uuid: cd3bed32-68f7-4cc5-8cd5-e1fc54744a54
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - asu_migrate
+id: missing_file_derivs
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: null
+migration_group: migrate_missing_csv
+label: 'Import Missing Service File Derivative Files'
+source:
+  plugin: csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/missing_service_files.csv
+  delimiter: ','
+  header_row_count: 1
+  ids:
+    - 'file id'
+  constants:
+    destination_dir: 'public://2021-10'
+    uid: 1
+    baseurl: 'https://repository.asu.edu'
+    basepath: /mnt/libfile/Repository/old-repo-data/filestore/
+    local_dir: /home/ubuntu/legacy-repo-s3/repository
+process:
+  has_deriv:
+    plugin: skip_on_empty
+    method: row
+    source: derivative
+  uid: constants/uid
+  type: 'file type'
+  fname:
+    plugin: str_replace
+    source: derivative
+    search: 's3://digital-repository-media/repository/'
+    replace: ''
+  filename: '@fname'
+  destination:
+    plugin: concat
+    delimiter: /
+    source:
+      - constants/destination_dir
+      - '@fname'
+  localfilelocation:
+    plugin: concat
+    delimiter: /
+    source:
+      - constants/local_dir
+      - '@fname'
+  uri:
+    plugin: file_copy
+    source:
+      - '@localfilelocation'
+      - '@destination'
+destination:
+  plugin: 'entity:file'
+migration_dependencies: null

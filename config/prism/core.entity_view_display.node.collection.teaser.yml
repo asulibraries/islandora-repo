@@ -1,0 +1,114 @@
+uuid: 4ecbf80b-2d67-4ea3-9df0-ee9f22e2d1c0
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.collection.field_collaborating_institutions
+    - field.field.node.collection.field_collection_thumbnail
+    - field.field.node.collection.field_default_derivative_file_pe
+    - field.field.node.collection.field_default_original_file_perm
+    - field.field.node.collection.field_enabled
+    - field.field.node.collection.field_external_links
+    - field.field.node.collection.field_fields_co_child
+    - field.field.node.collection.field_handle
+    - field.field.node.collection.field_member_of
+    - field.field.node.collection.field_model
+    - field.field.node.collection.field_oai_set
+    - field.field.node.collection.field_preferred_citation
+    - field.field.node.collection.field_primary_contact
+    - field.field.node.collection.field_rich_description
+    - field.field.node.collection.field_title
+    - image.style.thumbnail
+    - node.type.collection
+  module:
+    - asu_search
+    - media
+    - user
+id: node.collection.teaser
+targetEntityType: node
+bundle: collection
+mode: teaser
+content:
+  display_media_child_thumbnail:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  field_collection_thumbnail:
+    type: media_thumbnail
+    label: visually_hidden
+    settings:
+      image_link: content
+      image_style: thumbnail
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_gemini_uri:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+  field_title:
+    type: complex_title_formatter
+    label: visually_hidden
+    settings:
+      link: ''
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  flag_email_node:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  flag_subscribe_node:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  video_media_evas_original_file:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  video_media_evas_preservation_master:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  video_media_evas_service_file:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+hidden:
+  display_media_entity_view_1: true
+  display_media_entity_view_2: true
+  display_media_entity_view_4: true
+  display_media_service_file: true
+  display_media_thumbnail: true
+  field_collaborating_institutions: true
+  field_def: true
+  field_default_derivative_file_pe: true
+  field_default_original_file_perm: true
+  field_enabled: true
+  field_external_links: true
+  field_fields_co_child: true
+  field_handle: true
+  field_member_of: true
+  field_model: true
+  field_oai_set: true
+  field_preferred_citation: true
+  field_primary_contact: true
+  field_rich_description: true
+  islandora_fits_checksum: true
+  langcode: true
+  links: true
+  openseadragon_media_evas_entity_view_1: true
+  openseadragon_media_evas_entity_view_2: true
+  openseadragon_media_evas_service_file: true
+  pdfjs_media_evas_entity_view_1: true
+  pdfjs_media_evas_entity_view_2: true
+  pdfjs_media_evas_service_file: true
+  search_api_excerpt: true

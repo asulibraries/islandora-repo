@@ -1,0 +1,47 @@
+uuid: d0feb516-55bb-43d8-8411-f0d62c4889c5
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.taxonomy_term.simple_taxo_create
+    - field.field.taxonomy_term.corporate_body.field_authority_link
+    - field.field.taxonomy_term.corporate_body.field_cat_date_begin
+    - field.field.taxonomy_term.corporate_body.field_cat_date_end
+    - field.field.taxonomy_term.corporate_body.field_corp_alt_name
+    - field.field.taxonomy_term.corporate_body.field_relationships
+    - field.field.taxonomy_term.corporate_body.field_type
+    - taxonomy.vocabulary.corporate_body
+  module:
+    - asu_item_extras
+id: taxonomy_term.corporate_body.simple_taxo_create
+targetEntityType: taxonomy_term
+bundle: corporate_body
+mode: simple_taxo_create
+content:
+  field_authority_link:
+    type: authority_link_brief
+    weight: 1
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  description: true
+  field_cat_date_begin: true
+  field_cat_date_end: true
+  field_corp_alt_name: true
+  field_relationships: true
+  field_type: true
+  langcode: true
+  path: true
+  status: true
+  translation: true

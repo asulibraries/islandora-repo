@@ -1,0 +1,66 @@
+uuid: bda18e9e-c956-4dc8-94f4-a41ff8f48b07
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - asu_migrate
+id: horizon_file
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: null
+migration_group: horizon_csv
+label: 'Horizon Files'
+source:
+  plugin: csv
+  path: /mnt/libfile/Repository/migrations/prism/metadata/horizon.csv
+  delimiter: ','
+  header_row_count: 1
+  ids:
+    - 'File Location'
+  constants:
+    destination_dir: 'fedora://c257'
+    uid: 1
+process:
+  uid: constants/uid
+  filemime:
+    plugin: default_value
+    default_value: video/mp4
+  filename:
+    -
+      plugin: callback
+      callable: basename
+      source: 'File Location'
+    -
+      plugin: skip_on_empty
+      method: row
+      message: 'Cannot import empty image filename.'
+  field_original_name/value: '@filename'
+  new_filename:
+    -
+      plugin: transliteration
+      source: '@filename'
+    -
+      plugin: str_replace
+      search: ''''
+      replace: ''
+    -
+      plugin: str_replace
+      regex: true
+      search: '/[ '',()&[]#]+/'
+      replace: _
+  destination:
+    plugin: concat
+    delimiter: /
+    source:
+      - constants/destination_dir
+      - '@new_filename'
+  uri:
+    plugin: file_copy
+    source:
+      - 'File Location'
+      - '@destination'
+destination:
+  plugin: 'entity:file'
+migration_dependencies: null

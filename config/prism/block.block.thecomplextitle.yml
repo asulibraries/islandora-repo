@@ -1,0 +1,37 @@
+uuid: 3d554c39-34f0-4386-b7b2-3e591fcf8e72
+langcode: en
+status: true
+dependencies:
+  module:
+    - asu_search
+    - context
+    - system
+  theme:
+    - asulib_barrio
+id: thecomplextitle
+theme: asulib_barrio
+region: top_content
+weight: -28
+provider: null
+plugin: asu_complex_title
+settings:
+  id: asu_complex_title
+  label: 'The complex title'
+  label_display: '0'
+  provider: asu_search
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: null
+    context_mapping: {  }
+    pages: ''
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    context_mapping: {  }
+    view_inclusion: {  }
+  request_path:
+    id: request_path
+    negate: false
+    context_mapping: {  }
+    pages: "/collections/*/search*\r\n/node/*/edit\r\n/items/*\r\n/collections/*"

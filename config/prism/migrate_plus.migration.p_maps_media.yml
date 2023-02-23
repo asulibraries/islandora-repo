@@ -1,0 +1,64 @@
+uuid: e9472d39-2544-45b7-87f9-be02cda23317
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - asu_migrate
+id: p_maps_media
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: null
+migration_group: migrate_cmaps_csv
+label: 'Import Collection maps Media from CSV'
+source:
+  plugin: csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/data/maps_metadata.csv
+  header_row_count: 1
+  ids:
+    - 'File Location'
+  constants:
+    use: 'Original File'
+    uid: 1
+process:
+  name: Title
+  uid: constants/uid
+  bundle: file
+  field_original_name: 'Original File Name'
+  field_media_use:
+    plugin: entity_lookup
+    source: constants/use
+    entity_type: taxonomy_term
+    value_key: name
+    bundle_key: vid
+    bundle: islandora_media_use
+  field_media_file:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: 'Original File Name'
+    -
+      plugin: migration_lookup
+      migration: p_maps_file
+      no_stub: true
+  field_media_of:
+    plugin: migration_lookup
+    source: 'Original File Name'
+    migration: p_maps_node
+    no_stub: true
+  field_access_terms:
+    source: 'Original File Permissions'
+    plugin: entity_lookup
+    bundle: islandora_access
+    bundle_key: vid
+    entity_type: taxonomy_term
+    value_key: name
+destination:
+  plugin: 'entity:media'
+  default_bundle: file
+migration_dependencies:
+  required:
+    - migrate_plus.migration.p_maps_file
+    - migrate_plus.migration.p_maps_node
+  optional: {  }

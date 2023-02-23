@@ -1,0 +1,39 @@
+uuid: 6bc5a3f7-fe8e-4d24-84c8-6b575bb58d13
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.language.field_authority_link
+    - field.field.taxonomy_term.language.field_langcode_2digits
+    - taxonomy.vocabulary.language
+  module:
+    - text
+id: taxonomy_term.language.default
+targetEntityType: taxonomy_term
+bundle: language
+mode: default
+content:
+  description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_authority_sources:
+    type: authority_formatter_default
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: _blank
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  field_authority_link: true
+  field_langcode_2digits: true
+  langcode: true
+  search_api_excerpt: true

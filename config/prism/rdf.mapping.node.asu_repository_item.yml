@@ -1,0 +1,224 @@
+uuid: 891f6f16-50df-4f03-b8b4-709b48cb25f4
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.asu_repository_item
+  module:
+    - node
+  enforced:
+    module:
+      - islandora_defaults
+id: node.asu_repository_item
+targetEntityType: node
+bundle: asu_repository_item
+types:
+  - 'pcdm:Object'
+fieldMappings:
+  field_linked_agent:
+    properties:
+      - 'dcterms:contributor'
+  field_handle:
+    properties:
+      - 'dcterms:identifier'
+      - 'mods:identifier'
+      - 'identifiers:hdl'
+  nid:
+    properties:
+      - 'dcterms:identifier'
+      - 'mods:identifier'
+  field_coordinates:
+    properties:
+      - 'dcterms:spatial'
+      - 'mods:cartographicsCoordinates'
+  field_date_digitized:
+    properties:
+      - 'premis:dateCreatedByApplication'
+  field_collaborating_institutions:
+    properties:
+      - 'dcterms:contributor'
+  field_pid:
+    properties:
+      - 'dcterms:identifier'
+      - 'mods:identifier'
+  field_edtf_date_created:
+    properties:
+      - 'dcterms:created'
+      - 'mods:dateCreated'
+    datatype_callback:
+      callable: 'Drupal\controlled_access_terms\EDTFConverter::dateIso8601Value'
+  field_edtf_copyright_date:
+    properties:
+      - 'dcterms:dateCopyrighted'
+      - 'mods:dateOfCopyright'
+    datatype_callback:
+      callable: 'Drupal\controlled_access_terms\EDTFConverter::dateIso8601Value'
+  field_preferred_citation:
+    properties:
+      - 'dcterms:bibliographicCitation'
+  field_issuance:
+    properties:
+      - 'rdau:P60051'
+      - 'mods:issuance'
+  field_frequency:
+    properties:
+      - 'mods:frequency'
+      - 'rdau:P60538'
+  field_genre:
+    properties:
+      - 'dcterms:type'
+      - 'mods:genre'
+  field_resource_type:
+    properties:
+      - 'dcterms:type'
+      - 'mods:genre'
+  field_statement_responsibility:
+    properties:
+      - 'mods:statementOfResponsibility'
+  field_copyright_statement:
+    properties:
+      - 'dcterms:rights'
+    datatype_callback:
+      callable: 'Drupal\jsonld\EntityReferenceConverter::linkFieldPassthrough'
+      arguments:
+        link_field: field_source
+  field_reuse_permissions:
+    properties:
+      - 'dcterms:license'
+    datatype_callback:
+      callable: 'Drupal\jsonld\EntityReferenceConverter::linkFieldPassthrough'
+      arguments:
+        link_field: field_source
+  field_rich_description:
+    properties:
+      - 'dcterms:description'
+      - 'mods:abstract'
+  field_extent:
+    properties:
+      - 'dcterms:extent'
+      - 'mods:physicalExtent'
+  field_member_of:
+    properties:
+      - 'pcdm:memberOf'
+    mapping_type: rel
+  field_additional_memberships:
+    properties:
+      - 'pcdm:memberOf'
+    mapping_type: rel
+  field_language:
+    properties:
+      - 'dcterms:language'
+      - 'mods:languageOfResource'
+  field_edition:
+    properties:
+      - 'rdau:P60329'
+      - 'mods:edition'
+  field_place_published:
+    properties:
+      - 'mods:placeOfOrigin'
+  field_place_of_publication_code:
+    properties:
+      - 'mods:placeOfOrigin'
+  field_table_of_contents:
+    properties:
+      - 'dcterms:tableOfContents'
+      - 'mods:tableOfContents'
+  field_note_para:
+    properties:
+      - 'mods:note'
+      - 'dcterms:description'
+    datatype_callback:
+      callable: 'Drupal\asu_custom_rdf\ParagraphMapping::singlefield'
+      arguments:
+        - field_note_text
+  field_weight:
+    properties:
+      - 'co:index'
+  created:
+    properties:
+      - 'bf:creationDate'
+      - 'schema:dateCreated'
+    datatype_callback:
+      callable: 'Drupal\rdf\CommonDataConverter::dateIso8601Value'
+  changed:
+    properties:
+      - 'bf:changeDate'
+      - 'schema:dateModified'
+    datatype_callback:
+      callable: 'Drupal\rdf\CommonDataConverter::dateIso8601Value'
+  uid:
+    properties:
+      - 'relators:dtc'
+    datatype_callback:
+      callable: 'Drupal\asu_custom_rdf\UidLookup::username'
+    mapping_type: property
+  field_open_access:
+    properties:
+      - 'dcterms:accessRights'
+    datatype_callback:
+      callable: 'Drupal\asu_custom_rdf\ParseBoolean::tostring'
+      arguments:
+        1: 'open access'
+  field_subjects_name:
+    properties:
+      - 'dcterms:subject'
+      - 'mods:subjectName'
+  field_temporal_subject:
+    properties:
+      - 'dcterms:subject'
+      - 'mods:subjectTemporal'
+  field_geographic_subject:
+    properties:
+      - 'dcterms:subject'
+      - 'mods:subjectGeograhpic'
+  field_subject:
+    properties:
+      - 'dcterms:subject'
+      - 'mods:subjectTopic'
+  field_title_subject:
+    properties:
+      - 'dcterms:subject'
+      - 'mods:subjectTitle'
+  status:
+    properties:
+      - 'asu:visibility'
+    datatype_callback:
+      callable: 'Drupal\asu_custom_rdf\ParseBoolean::tostring'
+      arguments:
+        - unpublished
+        - published
+  field_peer_reviewed:
+    properties:
+      - 'mods:genre'
+    datatype_callback:
+      callable: 'Drupal\asu_custom_rdf\ParseBoolean::touri'
+      arguments:
+        1: 'http://vocab.getty.edu/page/aat/300380321'
+  field_series:
+    properties:
+      - 'mods:relatedSeries'
+  field_embargo_release_date:
+    properties:
+      - 'dcterms:available'
+  field_title:
+    properties:
+      - 'dcterms:title'
+      - 'mods:title'
+    datatype_callback:
+      callable: 'Drupal\asu_custom_rdf\ParagraphMapping::titlepartmerge'
+      arguments:
+        nonsort: field_nonsort
+        main: field_main_title
+        subtitle: field_subtitle
+  field_typed_identifier:
+    properties:
+      - 'dcterms:identifier'
+      - 'mods:identifier'
+    datatype_callback:
+      callable: 'Drupal\asu_custom_rdf\ParagraphMapping::typedmap'
+      arguments:
+        type_field: field_identifier_type
+        type_taxonomy_field: field_identifier_predicate
+        value_field: field_identifier_value
+        predicate: identifiers
+    mapping_type: par

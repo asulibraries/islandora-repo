@@ -1,0 +1,22 @@
+uuid: d7c918f3-39ab-4e0c-b95f-2affbefff876
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_mime_type
+    - media.type.file
+  enforced:
+    module:
+      - islandora_core_feature
+id: media.file.field_mime_type
+field_name: field_mime_type
+entity_type: media
+bundle: file
+label: 'MIME type'
+description: 'MIME type of the underlying file'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: string

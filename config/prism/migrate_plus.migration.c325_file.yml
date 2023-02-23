@@ -1,0 +1,91 @@
+uuid: 2c3b07cf-a7f6-466f-8d7b-0321798959c6
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - asu_migrate
+id: c325_file
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: null
+migration_group: migrate_c325_csv
+label: 'Import Collection 325 Files'
+source:
+  plugin: csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/data/migration_data/att_file_325_v2.csv
+  delimiter: ','
+  header_row_count: 1
+  ids:
+    - 'file id'
+  constants:
+    destination_dir: 'fedora://c325'
+    uid: 1
+    baseurl: 'https://repository.asu.edu'
+    basepath: /mnt/libfile/Repository/old-repo-data/filestore/
+process:
+  uid: constants/uid
+  type: 'file type'
+  field_original_name/value: 'file original_filename'
+  filename:
+    -
+      plugin: transliteration
+      source: 'file original_filename'
+    -
+      plugin: str_replace
+      search: ' '
+      replace: _
+    -
+      plugin: str_replace
+      search: ''''
+      replace: ''
+    -
+      plugin: str_replace
+      search: ','
+      replace: ''
+    -
+      plugin: str_replace
+      search: )
+      replace: ''
+    -
+      plugin: str_replace
+      search: (
+      replace: ''
+    -
+      plugin: str_replace
+      search: '&'
+      replace: ''
+    -
+      plugin: str_replace
+      search: '['
+      replace: ''
+    -
+      plugin: str_replace
+      search: ']'
+      replace: ''
+  destination:
+    plugin: concat
+    delimiter: /
+    source:
+      - constants/destination_dir
+      - 'file id'
+      - '@filename'
+  filelocation:
+    plugin: concat
+    source:
+      - constants/baseurl
+      - 'file url'
+  localfilelocation:
+    plugin: concat
+    source:
+      - constants/basepath
+      - 'storage path'
+  uri:
+    plugin: file_copy
+    source:
+      - '@localfilelocation'
+      - '@destination'
+destination:
+  plugin: 'entity:file'
+migration_dependencies: null

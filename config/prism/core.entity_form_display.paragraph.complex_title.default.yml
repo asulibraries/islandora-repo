@@ -1,0 +1,49 @@
+uuid: 85ede76d-ce1b-4f4a-a6e9-a0fcfc7ca5cc
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.complex_title.field_main_title
+    - field.field.paragraph.complex_title.field_nonsort
+    - field.field.paragraph.complex_title.field_subtitle
+    - field.field.paragraph.complex_title.field_supplied
+    - paragraphs.paragraphs_type.complex_title
+id: paragraph.complex_title.default
+targetEntityType: paragraph
+bundle: complex_title
+mode: default
+content:
+  field_main_title:
+    type: string_textarea
+    weight: 1
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_nonsort:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_subtitle:
+    type: string_textarea
+    weight: 3
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_supplied:
+    type: boolean_checkbox
+    weight: 4
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

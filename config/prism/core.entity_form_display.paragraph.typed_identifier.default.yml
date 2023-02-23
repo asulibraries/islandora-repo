@@ -1,0 +1,30 @@
+uuid: db0e01f4-2fab-49cb-a4dc-ff92696200ce
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.typed_identifier.field_identifier_type
+    - field.field.paragraph.typed_identifier.field_identifier_value
+    - paragraphs.paragraphs_type.typed_identifier
+id: paragraph.typed_identifier.default
+targetEntityType: paragraph
+bundle: typed_identifier
+mode: default
+content:
+  field_identifier_type:
+    type: options_select
+    weight: 1
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_identifier_value:
+    type: string_textarea
+    weight: 0
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

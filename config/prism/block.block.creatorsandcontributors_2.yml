@@ -1,0 +1,35 @@
+uuid: f3200aa6-dc53-4f80-9eaf-8f0225ac2861
+langcode: en
+status: false
+dependencies:
+  config:
+    - facets.facet.creators_and_contributors
+  module:
+    - context
+    - facets
+    - system
+  theme:
+    - asulib_barrio
+id: creatorsandcontributors_2
+theme: asulib_barrio
+region: sidebar_first
+weight: 15
+provider: null
+plugin: 'facet_block:creators_and_contributors'
+settings:
+  id: 'facet_block:creators_and_contributors'
+  label: 'Creators and Contributors'
+  label_display: visible
+  provider: facets
+  block_id: creatorsandcontributors_2
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    context_mapping: {  }
+    pages: '/search*'
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: null
+    context_mapping: {  }
+    pages: ''

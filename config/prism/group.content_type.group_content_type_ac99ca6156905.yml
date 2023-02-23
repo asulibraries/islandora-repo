@@ -1,0 +1,19 @@
+uuid: 30a8a5a3-4ad7-4c87-9a83-adbaf92cb8d0
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.collection_group
+    - node.type.asu_repository_item
+  module:
+    - gnode
+    - node
+id: group_content_type_ac99ca6156905
+label: 'Collection Group: Group node (ASU Repository Item)'
+description: 'Adds <em class="placeholder">ASU Repository Item</em> content to groups both publicly and privately.'
+group_type: collection_group
+content_plugin: 'group_node:asu_repository_item'
+plugin_config:
+  group_cardinality: 0
+  entity_cardinality: 1
+  use_creation_wizard: false

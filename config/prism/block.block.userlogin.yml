@@ -1,0 +1,20 @@
+uuid: 24678474-31c1-4b71-8a95-0deb56f236ce
+langcode: en
+status: true
+dependencies:
+  module:
+    - user
+  theme:
+    - asulib_barrio
+id: userlogin
+theme: asulib_barrio
+region: content
+weight: -35
+provider: null
+plugin: user_login_block
+settings:
+  id: user_login_block
+  label: 'User login'
+  label_display: visible
+  provider: user
+visibility: {  }

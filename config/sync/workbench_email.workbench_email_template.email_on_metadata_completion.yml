@@ -1,3 +1,4 @@
+uuid: 18716f30-c36e-4d09-8516-443cdfb51569
 langcode: en
 status: true
 dependencies:
@@ -6,7 +7,12 @@ dependencies:
     - user.role.repositor_manager
 id: email_on_metadata_completion
 label: 'Email on Metadata Completion'
+format: plain_text
 subject: 'KEEP Self-Deposit Metadata Completed'
+body:
+  value: "Metadata team has enriched and approved: [node:title]\r\n[node:url]"
+  format: plain_text
+bundles: {  }
 recipient_types:
   author:
     id: author
@@ -50,7 +56,4 @@ recipient_types:
     status: false
     settings:
       roles: {  }
-bundles: {  }
-body:
-  value: "Metadata team has enriched and approved: [node:title]\r\n[node:url]"
-  format: plain_text
+replyTo: null

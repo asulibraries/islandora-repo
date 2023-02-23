@@ -9,6 +9,10 @@ repository_name: 'ASU Library | KEEP'
 repository_email: digitalrepository@asu.edu
 expiration: '3600'
 metadata_map_plugins:
-  oai_raw: default_metadata_map
-  oai_dc: dublin_core_rdf
+  -
+    label: oai_raw
+    value: default_metadata_map
+  -
+    label: oai_dc
+    value: dublin_core_rdf
 cache_technique: conservative_cache

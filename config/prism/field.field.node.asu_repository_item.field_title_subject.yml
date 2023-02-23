@@ -1,0 +1,29 @@
+uuid: 1b8e6a6a-748a-485d-8e21-05ef5c5ce29d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_title_subject
+    - node.type.asu_repository_item
+    - taxonomy.vocabulary.titles
+id: node.asu_repository_item.field_title_subject
+field_name: field_title_subject
+entity_type: node
+bundle: asu_repository_item
+label: 'Title Subject'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      titles: titles
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

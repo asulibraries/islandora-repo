@@ -1,0 +1,85 @@
+uuid: 7f313eaf-0738-4d40-b001-0ed80a7d187c
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - asu_migrate
+id: gutierrez_file
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: null
+migration_group: migrate_gutierrez_csv
+label: 'Import Collection Gutierrez Files'
+source:
+  plugin: csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/data/migration_data/c_gutierrez_merged_v2.csv
+  delimiter: ','
+  header_row_count: 1
+  ids:
+    - 'original filename'
+  constants:
+    destination_dir: 'fedora://gutierrez'
+    uid: 1
+    baseurl: 'https://repository.asu.edu'
+    basepath: /mnt/libfile/
+process:
+  uid: constants/uid
+  type: 'file type'
+  field_original_name/value: 'original filename'
+  filename:
+    -
+      plugin: transliteration
+      source: 'original filename'
+    -
+      plugin: str_replace
+      search: ' '
+      replace: _
+    -
+      plugin: str_replace
+      search: ''''
+      replace: ''
+    -
+      plugin: str_replace
+      search: ','
+      replace: ''
+    -
+      plugin: str_replace
+      search: )
+      replace: ''
+    -
+      plugin: str_replace
+      search: (
+      replace: ''
+    -
+      plugin: str_replace
+      search: '&'
+      replace: ''
+    -
+      plugin: str_replace
+      search: '['
+      replace: ''
+    -
+      plugin: str_replace
+      search: ']'
+      replace: ''
+  destination:
+    plugin: concat
+    delimiter: /
+    source:
+      - constants/destination_dir
+      - '@filename'
+  localfilelocation:
+    plugin: concat
+    source:
+      - constants/basepath
+      - 'File Location'
+  uri:
+    plugin: file_copy
+    source:
+      - '@localfilelocation'
+      - '@destination'
+destination:
+  plugin: 'entity:file'
+migration_dependencies: null

@@ -1,3 +1,4 @@
+uuid: 5cd43fe3-8e5f-4243-ad56-39e778da7b7a
 langcode: en
 status: true
 dependencies:
@@ -10,6 +11,8 @@ id: duplicate_of_resource_type
 name: 'Duplicate of Resource Type'
 weight: 0
 min_count: 1
+missing: false
+missing_label: others
 url_alias: resource_type
 facet_source_id: 'search_api:views_page__solr_search_content__page_4'
 field_identifier: resource_type_name
@@ -18,6 +21,9 @@ hard_limit: 100
 exclude: false
 use_hierarchy: false
 keep_hierarchy_parents_active: false
+hierarchy:
+  type: taxonomy
+  config: {  }
 expand_hierarchy: false
 enable_parent_when_child_gets_disabled: true
 widget:

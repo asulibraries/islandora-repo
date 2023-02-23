@@ -1,0 +1,113 @@
+uuid: 7248f5a4-44c9-4a78-992b-e0115e9b1eb8
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.collection_browse_teaser
+    - field.field.node.collection.field_collaborating_institutions
+    - field.field.node.collection.field_collection_thumbnail
+    - field.field.node.collection.field_default_derivative_file_pe
+    - field.field.node.collection.field_default_original_file_perm
+    - field.field.node.collection.field_enabled
+    - field.field.node.collection.field_external_links
+    - field.field.node.collection.field_fields_co_child
+    - field.field.node.collection.field_handle
+    - field.field.node.collection.field_member_of
+    - field.field.node.collection.field_model
+    - field.field.node.collection.field_oai_set
+    - field.field.node.collection.field_preferred_citation
+    - field.field.node.collection.field_primary_contact
+    - field.field.node.collection.field_rich_description
+    - field.field.node.collection.field_title
+    - image.style.square_thumb
+    - node.type.collection
+  module:
+    - asu_search
+    - media
+    - text
+    - user
+id: node.collection.collection_browse_teaser
+targetEntityType: node
+bundle: collection
+mode: collection_browse_teaser
+content:
+  field_collection_thumbnail:
+    type: media_thumbnail
+    label: visually_hidden
+    settings:
+      image_link: content
+      image_style: square_thumb
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_def:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 103
+    region: content
+  field_gemini_uri:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+  field_rich_description:
+    type: text_trimmed
+    label: visually_hidden
+    settings:
+      trim_length: 400
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_title:
+    type: complex_title_formatter
+    label: visually_hidden
+    settings:
+      link: '1'
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  flag_email_node:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  flag_subscribe_node:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+hidden:
+  display_media_child_thumbnail: true
+  display_media_entity_view_1: true
+  display_media_entity_view_2: true
+  display_media_entity_view_4: true
+  display_media_service_file: true
+  display_media_thumbnail: true
+  field_collaborating_institutions: true
+  field_default_derivative_file_pe: true
+  field_default_original_file_perm: true
+  field_enabled: true
+  field_external_links: true
+  field_fields_co_child: true
+  field_handle: true
+  field_member_of: true
+  field_model: true
+  field_oai_set: true
+  field_preferred_citation: true
+  field_primary_contact: true
+  islandora_fits_checksum: true
+  langcode: true
+  links: true
+  openseadragon_media_evas_entity_view_1: true
+  openseadragon_media_evas_entity_view_2: true
+  openseadragon_media_evas_service_file: true
+  pdfjs_media_evas_entity_view_1: true
+  pdfjs_media_evas_entity_view_2: true
+  pdfjs_media_evas_service_file: true
+  search_api_excerpt: true
+  video_media_evas_original_file: true
+  video_media_evas_preservation_master: true
+  video_media_evas_service_file: true

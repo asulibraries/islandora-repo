@@ -1,3 +1,4 @@
+uuid: 35d578d9-3664-42f7-9399-6b460eea5095
 langcode: en
 status: true
 dependencies:
@@ -10,6 +11,8 @@ id: date_created_year_col
 name: 'Date Created'
 weight: 0
 min_count: 1
+missing: false
+missing_label: others
 url_alias: date_created_year
 facet_source_id: 'search_api:views_page__solr_search_content__page_3'
 field_identifier: etdf_created_year_only
@@ -17,6 +20,10 @@ query_operator: or
 hard_limit: 0
 exclude: false
 use_hierarchy: false
+keep_hierarchy_parents_active: false
+hierarchy:
+  type: taxonomy
+  config: {  }
 expand_hierarchy: false
 enable_parent_when_child_gets_disabled: true
 widget:

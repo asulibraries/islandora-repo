@@ -1,0 +1,26 @@
+uuid: 8c7a773d-372b-471e-bfc3-ac517e7fcc11
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora_repository_reports
+    - system
+  theme:
+    - seven
+id: tipsonusingislandorarepositoryreports
+theme: seven
+region: content
+weight: 10
+provider: null
+plugin: islandora_repository_reports_tips
+settings:
+  id: islandora_repository_reports_tips
+  label: 'Tips on using Islandora Repository Reports'
+  label_display: visible
+  provider: islandora_repository_reports
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    context_mapping: {  }
+    pages: /admin/reports/islandora_repository_reports

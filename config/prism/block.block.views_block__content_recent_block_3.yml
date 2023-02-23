@@ -1,0 +1,41 @@
+uuid: a5886241-31d6-4e12-a193-a2f6e86cc470
+langcode: en
+status: false
+dependencies:
+  config:
+    - views.view.content_recent
+  module:
+    - context
+    - system
+    - views
+  theme:
+    - asulib_barrio
+id: views_block__content_recent_block_3
+theme: asulib_barrio
+region: content
+weight: -32
+provider: null
+plugin: 'views_block:content_recent-block_3'
+settings:
+  id: 'views_block:content_recent-block_3'
+  label: 'Recent Collections'
+  label_display: visible
+  provider: views
+  views_label: 'Recent Collections'
+  items_per_page: none
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: null
+    context_mapping: {  }
+    pages: ''
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    context_mapping: {  }
+    view_inclusion: {  }
+  request_path:
+    id: request_path
+    negate: false
+    context_mapping: {  }
+    pages: "<front>\r\n/home\r\n/"

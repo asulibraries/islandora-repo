@@ -1,0 +1,40 @@
+uuid: 308e3a37-773b-4671-9265-63ff8c5a2159
+langcode: en
+status: true
+dependencies:
+  module:
+    - asu_collection_extras
+    - islandora
+    - node
+    - system
+  theme:
+    - asulib_barrio
+id: aboutthiscollectionsidebar
+theme: asulib_barrio
+region: sidebar_first
+weight: -41
+provider: null
+plugin: about_this_collection_sidebar_block
+settings:
+  id: about_this_collection_sidebar_block
+  label: 'About this collection'
+  label_display: visible
+  provider: asu_collection_extras
+visibility:
+  request_path:
+    id: request_path
+    negate: true
+    context_mapping: {  }
+    pages: "/node/add/collection*\r\n/node/*/edit\r\n/collections/*/search*"
+  media_source_mimetype:
+    id: media_source_mimetype
+    mimetype: ''
+    negate: false
+    context_mapping: {  }
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      collection: collection

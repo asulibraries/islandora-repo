@@ -1,3 +1,4 @@
+uuid: 633d2f02-37e1-4424-bf0b-3543510d5d19
 langcode: en
 status: true
 dependencies:
@@ -10,6 +11,8 @@ id: all_subjects_cpx
 name: 'All Subjects (cpx)'
 weight: 0
 min_count: 1
+missing: false
+missing_label: others
 url_alias: all_subjects
 facet_source_id: 'search_api:views_page__solr_search_content__page_2'
 field_identifier: all_subjects
@@ -17,6 +20,10 @@ query_operator: or
 hard_limit: 0
 exclude: false
 use_hierarchy: false
+keep_hierarchy_parents_active: false
+hierarchy:
+  type: taxonomy
+  config: {  }
 expand_hierarchy: false
 enable_parent_when_child_gets_disabled: true
 widget:

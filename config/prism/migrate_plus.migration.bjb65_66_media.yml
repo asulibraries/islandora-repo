@@ -1,0 +1,75 @@
+uuid: a95c500b-3ecf-40c4-b020-6fff9f4d6665
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - asu_migrate
+id: bjb65_66_media
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: null
+migration_group: migrate_bjb65_66_csv
+label: 'Import Collection Bjb Media from CSV'
+source:
+  plugin: csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/c_bjbud_60-63_65-67_merged_v2.csv
+  header_row_count: 1
+  ids:
+    - ID
+  constants:
+    use: 'Original File'
+    uid: 2
+process:
+  name:
+    source: Title
+    plugin: substr
+    start: 0
+    length: 254
+  uid:
+    source: 'System User'
+    default_value: constants/uid
+    plugin: user_lookup
+  bundle: 'file type'
+  field_original_name:
+    source: 'file original_filename'
+    plugin: skip_on_value
+    method: row
+    value: null
+  field_media_use:
+    plugin: entity_lookup
+    source: constants/use
+    entity_type: taxonomy_term
+    value_key: name
+    bundle_key: vid
+    bundle: islandora_media_use
+  field_media_image:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: ID
+    -
+      plugin: migration_lookup
+      migration: bjb65_66_file
+      no_stub: true
+  field_media_of:
+    plugin: migration_lookup
+    source: ID
+    migration: bjb65_66_node
+    no_stub: true
+  field_access_terms:
+    source: 'Original File Permissions'
+    plugin: entity_lookup
+    bundle: islandora_access
+    bundle_key: vid
+    entity_type: taxonomy_term
+    value_key: name
+destination:
+  plugin: 'entity:media'
+  default_bundle: image
+migration_dependencies:
+  required:
+    - migrate_plus.migration.bjb65_66_file
+    - migrate_plus.migration.bjb65_66_node
+  optional: {  }

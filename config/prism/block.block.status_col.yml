@@ -1,0 +1,35 @@
+uuid: d2d199a0-4d0f-4427-9830-6793f9c26135
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.status_col
+  module:
+    - context
+    - facets
+    - system
+  theme:
+    - asulib_barrio
+id: status_col
+theme: asulib_barrio
+region: sidebar_first
+weight: -19
+provider: null
+plugin: 'facet_block:status_col'
+settings:
+  id: 'facet_block:status_col'
+  label: Status
+  label_display: visible
+  provider: facets
+  block_id: status_col
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: null
+    context_mapping: {  }
+    pages: ''
+  request_path:
+    id: request_path
+    negate: false
+    context_mapping: {  }
+    pages: '/collections/*/search*'

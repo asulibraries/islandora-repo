@@ -1,0 +1,42 @@
+uuid: c91ae267-aec7-4d09-93c0-8f0af0021436
+langcode: en
+status: false
+dependencies:
+  config:
+    - facets_summary.facets_summary.facet_summary_cpx
+  module:
+    - context
+    - facets_summary
+    - islandora
+    - system
+  theme:
+    - asulib_barrio
+id: facetsummary_3
+theme: asulib_barrio
+region: sidebar_first
+weight: 8
+provider: null
+plugin: 'facets_summary_block:facet_summary_cpx'
+settings:
+  id: 'facets_summary_block:facet_summary_cpx'
+  label: 'Facet Summary'
+  label_display: visible
+  provider: facets_summary
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: null
+    pages: ''
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    view_inclusion: {  }
+  media_source_mimetype:
+    id: media_source_mimetype
+    mimetype: ''
+    negate: false
+    context_mapping: {  }
+  request_path:
+    id: request_path
+    negate: false
+    pages: '/items/*/search*'

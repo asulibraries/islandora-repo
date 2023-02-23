@@ -1,11 +1,39 @@
 # ASU Digital Repository on Islandora8
-This repository is a drupal root for ASU Digital Repository built using [Islandora 8](https://islandora.ca/). ([Islandora Documentation](https://islandora-claw.github.io/CLAW/))
+This repository is a drupal root for ASU Digital Repository built using [Islandora](https://islandora.ca/). ([Islandora Documentation](https://islandora.github.io/documentation/))
 
 For development purposes, this repository should be integrated with the [islandora provided vagrant environment](https://github.com/Islandora-Devops/claw-playbook).
 
 It will also include ansible scripts for provisioning and deploying to additional environments.
 
-# Local Development Setup
+# Configuration Management
+
+The site uses the config_split module to separate out deployment-specific configurations and secrets. The base configurations for KEEP and PRISM are in `config/sync` and `config/prism`, respectively. Each also has site-specific configuration directories, `config/env_keep` and `config/env_prism` which *are not* included in the Git repository and need to be added manually. You can view the config_split configuration files for [KEEP](config/sync/config_split.config_split.env_keep.yml) and [PRISM](config/prism/config_split.config_split.env_prism.yml) to see what is currently included.
+
+Two other splits, "Development Config" and "AWS Deployment", need to be enabled using the sites' settings.php file. E.g. for AWS deployment, add `$config['config_split.config_split.aws_deployment']['status'] = TRUE;`. 
+Most of the configurations for both of these are included in the Git repository. The one exception, in AWS Deployment, is `smtp.settings.yml` needs to be added manually. E.g.
+
+```yml
+smtp_on: true
+smtp_host: FILL IN HOST
+smtp_hostbackup: ''
+smtp_port: 'FILL IN PORT'
+smtp_protocol: tls
+smtp_autotls: true
+smtp_timeout: 60
+smtp_username: FILL IN USERNAME
+smtp_password: FILL IN PASSWORD
+smtp_from: digitalrepository@asu.edu
+smtp_fromname: 'ASU Digital Repository'
+smtp_client_hostname: ''
+smtp_client_helo: ''
+smtp_allowhtml: '1'
+smtp_test_address: ''
+smtp_debugging: false
+prev_mail_system: php_mail
+smtp_keepalive: false
+```
+
+# Local Development Setup - *Not currently in use*
 1. Install dependencies
     a. VirtualBox version 5.whatever (not 6.0)
     b. Vagrant (tested up to version 2.1.2)
@@ -68,13 +96,13 @@ Understanding how drupal entities relate to fedora objects - https://drive.googl
 Get the json-ld for an object in Drupal like so : http://localhost:8000/node/1?_format=jsonld
 
 # Updating an existing install
-1. pull down updated claw-app (`cd /var/www/html/drupal && git pull`)
+1. pull down updated code and configs (`cd /var/www/html/drupal && git pull`)
 2. Make sure composer modules are up to date `composer install` from `/var/www/html/drupal`
 3. make sure submodules are ready `git submodule init` and `git submodule update` from `/var/www/html/drupal`
-4. drupal config:import like `drupal config:import --directory /var/www/html/drupal/config/sync`
+4. drupal config:import for each site like `drush --uri=https://site-url config:import`
 5. cd into web directory
-6. run database migrations - `drush updatedb`
-7. clear drupal cache - `drush cache-rebuild`
+6. run database migrations for each site - `drush --uri=https://site-url updatedb`
+7. clear drupal cache for each site - `drush --uri=https://site-url cache-rebuild`
 
 
 ## So you want to add a module
@@ -82,20 +110,10 @@ Get the json-ld for an object in Drupal like so : http://localhost:8000/node/1?_
 2. Add the module to the drush enabling in the ASU specific ansible role
 3. Run the ASU specific ansible role
 
-## So you want to update an existing Islandora/Drupal Site
-1. pull down the most recent claw-playbook code from github
-2. pull down the most recent isladora-repo code from github (in claw-sandbox folder)
-3. examine your config sync and see if you have things you either want to export and commit or don't care if you lose them - http://localhost:8000/admin/config/development/configuration (see Tips for Config Syncing below)
-4. vagrant ssh and cd to /var/www/html/drupal, run composer install
-5. cd /var/www/html/drupal/web, run drush config:import (note that if your step 3 showed that you have config changes in your DB that aren't in code, those would get wiped away by a config:import)
-6. drush udpatedb - to update the database
-7. drush cache-rebuild - to clear the cache
-
 ## Tips on Config Syncing
-* To export content, go to your drupal root such as `/var/www/html/drupal` and run `drupal config:export --directory config/sync --remove-uuid --remove-config-hash` ([see](https://hechoendrupal.gitbooks.io/drupal-console/content/en/commands/config-export.html))
-* To import content, go to your drupal root such as `/var/www/html/drupal` and run `drupal config:import --directory /var/www/html/drupal/config/sync` ([see](https://hechoendrupal.gitbooks.io/drupal-console/content/en/commands/config-import.html))
-* To export the configs split based on environments, use `drupal config_split:export --split config_split.config_split.environment_config`
-* To import the split config (or any one part of config), use `drush config:import --partial --source=/the/path/`
+* To export content, go to your drupal root such as `/var/www/html/drupal` and run `drush --uri=https://site-url cex`
+* To import content, go to your drupal root such as `/var/www/html/drupal` and run `drush --uri=https://site-url cim`
+* To import new configurations from a different directory (such as a new migraiton), use `drush --uri=https://site-url cim --partial --source=/the/path/`
 
 ## Tips on Using Drush
 [Drush full command list](https://drushcommands.com/drush-9x/)
@@ -110,7 +128,7 @@ Common Commands
 * To update a package `composer update packagename`
 
 
-# Deploying to AWS
+# Deploying to AWS - *Not currently in use*
 1. `pip install boto boto3`
 2. run `ansible-playbook aws_create_multiple_ec2.yml`
 3. locally run `ansible-galaxy install -r requirements.yml`

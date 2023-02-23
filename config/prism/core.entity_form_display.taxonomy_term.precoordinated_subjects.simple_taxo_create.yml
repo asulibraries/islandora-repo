@@ -1,0 +1,54 @@
+uuid: f1e25dec-b5bd-412c-abdb-f91682b440a2
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.taxonomy_term.simple_taxo_create
+    - field.field.taxonomy_term.precoordinated_subjects.field_authority_link
+    - field.field.taxonomy_term.precoordinated_subjects.field_subject_part
+    - field.field.taxonomy_term.precoordinated_subjects.field_subject_type
+    - taxonomy.vocabulary.precoordinated_subjects
+  module:
+    - asu_item_extras
+id: taxonomy_term.precoordinated_subjects.simple_taxo_create
+targetEntityType: taxonomy_term
+bundle: precoordinated_subjects
+mode: simple_taxo_create
+content:
+  field_authority_link:
+    type: authority_link_brief
+    weight: 1
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+  field_subject_part:
+    type: entity_reference_autocomplete
+    weight: 2
+    region: content
+    settings:
+      match_operator: STARTS_WITH
+      match_limit: 25
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_subject_type:
+    type: options_select
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  description: true
+  langcode: true
+  path: true
+  status: true

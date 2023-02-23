@@ -1,3 +1,4 @@
+uuid: 00d92e59-c5c3-46e1-be9f-03c67063cd40
 langcode: en
 status: true
 dependencies:
@@ -544,8 +545,6 @@ display:
         - 'config:field.storage.node.field_collection_thumbnail'
         - 'config:field.storage.node.field_title'
         - 'config:search_api.index.default_solr_index'
-        - 'config_split_state:field.storage.node.field_collection_thumbnail'
-        - 'config_split_state:field.storage.node.field_title'
       cacheable: false
   block_1:
     id: block_1
@@ -988,8 +987,6 @@ display:
         - 'config:field.storage.node.field_collection_thumbnail'
         - 'config:field.storage.node.field_title'
         - 'config:search_api.index.default_solr_index'
-        - 'config_split_state:field.storage.node.field_collection_thumbnail'
-        - 'config_split_state:field.storage.node.field_title'
       cacheable: false
   page_1:
     id: page_1
@@ -1301,7 +1298,7 @@ display:
       display_extenders: {  }
       path: search
     cache_metadata:
-      max-age: -1
+      max-age: 0
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
@@ -1310,11 +1307,22 @@ display:
         - 'url.query_args:sort_by'
         - 'user.node_grants:view'
       tags:
+        - 'config:facets.facet.all_subjects'
+        - 'config:facets.facet.date_created_year'
+        - 'config:facets.facet.genre'
+        - 'config:facets.facet.language'
+        - 'config:facets.facet.linked_agents'
+        - 'config:facets.facet.member_of'
+        - 'config:facets.facet.model'
+        - 'config:facets.facet.model_global'
+        - 'config:facets.facet.open_access'
+        - 'config:facets.facet.peer_reviewed'
+        - 'config:facets.facet.place_of_publication_code_'
+        - 'config:facets.facet.resource_type'
+        - 'config:facets.facet.status'
         - 'config:field.storage.node.field_collection_thumbnail'
         - 'config:field.storage.node.field_title'
         - 'config:search_api.index.default_solr_index'
-        - 'config_split_state:field.storage.node.field_collection_thumbnail'
-        - 'config_split_state:field.storage.node.field_title'
       cacheable: false
   page_2:
     id: page_2
@@ -1587,8 +1595,6 @@ display:
         - 'config:field.storage.node.field_collection_thumbnail'
         - 'config:field.storage.node.field_title'
         - 'config:search_api.index.default_solr_index'
-        - 'config_split_state:field.storage.node.field_collection_thumbnail'
-        - 'config_split_state:field.storage.node.field_title'
   page_3:
     id: page_3
     display_title: 'Search Within Collection - Page'
@@ -1849,7 +1855,7 @@ display:
       display_extenders: {  }
       path: collections/%/search
     cache_metadata:
-      max-age: -1
+      max-age: 0
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
@@ -1858,11 +1864,25 @@ display:
         - 'url.query_args:sort_by'
         - 'user.node_grants:view'
       tags:
+        - 'config:facets.facet.all_subjects_col'
+        - 'config:facets.facet.authors_agent_by_role_col'
+        - 'config:facets.facet.creators_and_contributors_col'
+        - 'config:facets.facet.date_created_year_col'
+        - 'config:facets.facet.degree_committee_member_agent_by_role_'
+        - 'config:facets.facet.genre_col'
+        - 'config:facets.facet.language_col'
+        - 'config:facets.facet.linked_agents_col'
+        - 'config:facets.facet.model_col'
+        - 'config:facets.facet.open_access_col'
+        - 'config:facets.facet.peer_reviewed_col'
+        - 'config:facets.facet.place_of_publication_code_col'
+        - 'config:facets.facet.resource_type_col'
+        - 'config:facets.facet.series'
+        - 'config:facets.facet.status_col'
+        - 'config:facets.facet.thesis_advisors_agent_by_role_col'
         - 'config:field.storage.node.field_collection_thumbnail'
         - 'config:field.storage.node.field_title'
         - 'config:search_api.index.default_solr_index'
-        - 'config_split_state:field.storage.node.field_collection_thumbnail'
-        - 'config_split_state:field.storage.node.field_title'
   page_4:
     id: page_4
     display_title: 'OVERRIDE PERMS - Search Within Collection - Page'
@@ -2141,7 +2161,7 @@ display:
       display_extenders: {  }
       path: collections/%/search-alt
     cache_metadata:
-      max-age: -1
+      max-age: 0
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
@@ -2151,8 +2171,12 @@ display:
         - 'user.node_grants:view'
         - user.roles
       tags:
+        - 'config:facets.facet.duplicate_of_all_subjects'
+        - 'config:facets.facet.duplicate_of_creators'
+        - 'config:facets.facet.duplicate_of_date_created'
+        - 'config:facets.facet.duplicate_of_genre'
+        - 'config:facets.facet.duplicate_of_resource_type'
+        - 'config:facets.facet.duplicate_of_status'
         - 'config:field.storage.node.field_collection_thumbnail'
         - 'config:field.storage.node.field_title'
         - 'config:search_api.index.default_solr_index'
-        - 'config_split_state:field.storage.node.field_collection_thumbnail'
-        - 'config_split_state:field.storage.node.field_title'
