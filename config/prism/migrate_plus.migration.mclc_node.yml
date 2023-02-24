@@ -202,7 +202,15 @@ process:
       value_key: name
       bundle_key: vid
       bundle: language
-  field_member_of:
+  parent_item:
+    -
+      plugin: skip_on_empty
+      source: 'Parent ID'
+      method: process
+    -
+      plugin: migration_lookup
+      migration: mclc_node
+  parent_collection:
     plugin: entity_lookup
     source: constants/collection
     entity_type: node
@@ -210,6 +218,11 @@ process:
     bundle_key: type
     bundle: collection
     value_key: title
+  field_member_of:
+    plugin: null_coalesce
+    source:
+      - '@parent_item'
+      - constants/collection
   field_embargo_release_date:
     -
       plugin: skip_on_empty

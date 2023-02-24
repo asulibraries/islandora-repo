@@ -1,16 +1,17 @@
-uuid: 11ac4cd3-6f7f-4720-8c4a-c9fa0a83b323
+uuid: 10defa0b-1b87-427b-9c72-28cd31cba878
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.node.complex_object_child_box
     - node.type.asu_repository_item
   module:
     - node
+    - rest
+    - rest_oai_pmh
+    - serialization
     - user
-    - views_bootstrap
-id: included_in_complex_object
-label: 'Included in complex object'
+id: collection_items
+label: 'Collection Items'
 module: views
 description: ''
 tag: ''
@@ -19,11 +20,10 @@ base_field: nid
 display:
   default:
     id: default
-    display_title: Master
+    display_title: Default
     display_plugin: default
     position: 0
     display_options:
-      title: 'Included in complex object'
       fields:
         title:
           id: title
@@ -76,7 +76,7 @@ display:
         type: mini
         options:
           offset: 0
-          items_per_page: 15
+          items_per_page: 10
           total_pages: null
           id: 0
           tags:
@@ -109,19 +109,6 @@ display:
         options: {  }
       empty: {  }
       sorts:
-        field_weight_value:
-          id: field_weight_value
-          table: node__field_weight
-          field: field_weight_value
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: standard
-          order: ASC
-          expose:
-            label: ''
-            field_identifier: field_weight_value
-          exposed: false
         created:
           id: created
           table: node_field_data
@@ -135,24 +122,9 @@ display:
           order: ASC
           expose:
             label: ''
-            field_identifier: created
+            field_identifier: ''
           exposed: false
           granularity: second
-        title:
-          id: title
-          table: node_field_data
-          field: title
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: node
-          entity_field: title
-          plugin_id: standard
-          order: ASC
-          expose:
-            label: ''
-            field_identifier: title
-          exposed: false
       arguments:
         field_member_of_target_id:
           id: field_member_of_target_id
@@ -189,64 +161,40 @@ display:
           break_phrase: false
           not: false
       filters:
+        status:
+          id: status
+          table: node_field_data
+          field: status
+          entity_type: node
+          entity_field: status
+          plugin_id: boolean
+          value: '1'
+          group: 1
+          expose:
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
         type:
           id: type
           table: node_field_data
           field: type
-          relationship: none
-          group_type: group
-          admin_label: ''
           entity_type: node
           entity_field: type
           plugin_id: bundle
-          operator: in
           value:
             asu_repository_item: asu_repository_item
-          group: 1
-          exposed: false
           expose:
-            operator_id: ''
-            label: ''
-            description: ''
-            use_operator: false
-            operator: ''
             operator_limit_selection: false
             operator_list: {  }
-            identifier: ''
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-            reduce: false
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
       style:
-        type: views_bootstrap_grid
-        options:
-          row_class: 'col col-md-4 complex-object-child-box'
-          default_row_class: false
-          uses_fields: false
-          col_xs: none
-          col_sm: none
-          col_md: none
-          col_lg: none
-          col_xl: none
+        type: serializer
       row:
-        type: 'entity:node'
+        type: fields
         options:
-          relationship: none
-          view_mode: complex_object_child_box
+          default_field_elements: true
+          inline: {  }
+          separator: ''
+          hide_empty: false
       query:
         type: views_query
         options:
@@ -256,7 +204,6 @@ display:
           replica: false
           query_tags: {  }
       relationships: {  }
-      group_by: true
       header: {  }
       footer: {  }
       display_extenders: {  }
@@ -265,99 +212,60 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - request_format
         - url
         - url.query_args
         - 'user.node_grants:view'
         - user.permissions
       tags: {  }
-  all_included_items:
-    id: all_included_items
-    display_title: 'All items included in this item'
-    display_plugin: block
+  rest_export_1:
+    id: rest_export_1
+    display_title: 'REST export'
+    display_plugin: rest_export
     position: 1
     display_options:
       pager:
-        type: none
+        type: full
         options:
           offset: 0
-      defaults:
-        pager: false
-      display_description: ''
-      display_extenders: {  }
-    cache_metadata:
-      max-age: -1
-      contexts:
-        - 'languages:language_content'
-        - 'languages:language_interface'
-        - url
-        - 'user.node_grants:view'
-        - user.permissions
-      tags: {  }
-  page_1:
-    id: page_1
-    display_title: Page
-    display_plugin: page
-    position: 1
-    display_options:
-      pager:
-        type: none
-        options:
-          offset: 0
-      defaults:
-        pager: false
-        group_by: false
-      group_by: false
-      display_description: ''
-      display_extenders: {  }
-      path: items/%/children
-    cache_metadata:
-      max-age: -1
-      contexts:
-        - 'languages:language_content'
-        - 'languages:language_interface'
-        - url
-        - 'user.node_grants:view'
-        - user.permissions
-      tags: {  }
-  three_included_items:
-    id: three_included_items
-    display_title: '3 items included in this item'
-    display_plugin: block
-    position: 2
-    display_options:
-      pager:
-        type: some
-        options:
-          offset: 0
-          items_per_page: 3
+          items_per_page: 10
+          total_pages: null
+          id: 0
+          tags:
+            next: 'Next ›'
+            previous: '‹ Previous'
+            first: '« First'
+            last: 'Last »'
+          expose:
+            items_per_page: false
+            items_per_page_label: 'Items per page'
+            items_per_page_options: '5, 10, 25, 50'
+            items_per_page_options_all: false
+            items_per_page_options_all_label: '- All -'
+            offset: false
+            offset_label: Offset
+          quantity: 9
       style:
-        type: views_bootstrap_grid
+        type: serializer
         options:
-          row_class: 'col col-md-4 complex-object-child-box'
-          default_row_class: false
           uses_fields: false
-          col_xs: none
-          col_sm: none
-          col_md: none
-          col_lg: none
-          col_xl: none
+          formats:
+            oai_dc: oai_dc
+            json: json
+            xml: xml
       row:
-        type: 'entity:node'
-        options:
-          relationship: none
-          view_mode: complex_object_child_box
-      defaults:
-        pager: false
-        style: false
-        row: false
-      display_description: ''
+        type: data_entity
+        options: {  }
       display_extenders: {  }
+      path: collection/%node/items
     cache_metadata:
       max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
+        - request_format
         - url
+        - url.query_args
         - 'user.node_grants:view'
         - user.permissions
       tags: {  }
