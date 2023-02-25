@@ -34,6 +34,7 @@ class AsuLibFooter extends BlockBase {
               <a class="nav-link" href="http://www.facebook.com/ASULibraries" title="ASU Library Facebook"><i class="fab fa-facebook-square"></i></a>
               <a class="nav-link" href="http://twitter.com/ASUlibraries" title="ASU Library Twitter"><i class="fab fa-twitter-square" title="ASU Library Twitter"></i></a>
               <a class="nav-link" href="http://instagram.com/ASULibraries/" title="ASU Library Instagram"><i class="fab fa-instagram-square"></i></a>
+              <a class="nav-link" href="https://www.linkedin.com/company/asulibraries" title="ASU Library LinkedIn"><i class="fab fa-linkedin"></i></a>
             </nav>
           </div>
 
