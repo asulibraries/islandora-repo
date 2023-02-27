@@ -155,8 +155,7 @@ class ModsEncoder extends XmlEncoder {
               $returned = self::getFieldValues($temp_val, $sub_cv, $sub_ck);
               if (!empty($returned)) {
                 // Keys prefixed with '@' turn into XML attributes which can
-                // only have a single value, so we'll give them the first one
-                // if multiple are returned.
+                // only have a single value, so we'll give them the first one.
                 if (str_starts_with($sub_ck, '@')) {
                   $field_arr[$ck][$sub_ck] = $returned[0];
                 }
@@ -305,7 +304,7 @@ class ModsEncoder extends XmlEncoder {
    *
    * In this example 'branch 1' still remains because it was a 'branch'
    * even if it's 'twig' had no leaves (was a key to an empty array)
-   * whereas 'key zero' was twig with no leaves and so removed.
+   * whereas 'twig 1' had no leaves and so was removed.
    * Note, if the example array was passed through the function twice,
    * branch 1 would be removed as it became a twig during the first pass.
    */
