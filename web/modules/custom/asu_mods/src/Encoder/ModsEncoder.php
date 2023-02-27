@@ -5,7 +5,7 @@ namespace Drupal\asu_mods\Encoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 
 /**
- *
+ * Encodes a node as a MODS (XML) record.
  */
 class ModsEncoder extends XmlEncoder {
 
@@ -56,7 +56,7 @@ class ModsEncoder extends XmlEncoder {
   /**
    * Plucks the data out of a field.
    */
-  private static function get_field_values($data, $field_name, $config, $sub_field = NULL) {
+  private static function getFieldValues($data, $field_name, $config, $sub_field = NULL) {
     if (!is_array($field_name) && str_contains($field_name, '/')) {
       $field_name_parts = explode('/', $field_name);
       $field_name = $field_name_parts[0];
@@ -122,21 +122,18 @@ class ModsEncoder extends XmlEncoder {
               $field_arr[$ck] = $val;
             }
             else {
-              if (is_array($cv)) {
-                $arr_cv = $cv;
-              }
               if (str_contains($cv, "/name")) {
                 $cv = str_replace('/name', '', $cv);
-                $field_arr[$ck] = self::get_field_values($val, $cv, $ck, 'name');
+                $field_arr[$ck] = self::getFieldValues($val, $cv, $ck, 'name');
               }
               else {
                 if ($ck == "@supplied") {
                   if ($cv == 'yes') {
-                    $field_arr[$ck] = self::get_field_values($val, $cv, $ck);
+                    $field_arr[$ck] = self::getFieldValues($val, $cv, $ck);
                   }
                 }
                 elseif (str_contains($cv, 'field_') || (in_array($cv, self::MACHINE_FIELDS))) {
-                  $field_arr[$ck] = self::get_field_values($val, $cv, $ck);
+                  $field_arr[$ck] = self::getFieldValues($val, $cv, $ck);
                 }
                 else {
                   $field_arr[$ck] = $cv;
@@ -155,12 +152,17 @@ class ModsEncoder extends XmlEncoder {
               else {
                 $temp_val = $val;
               }
-              if (is_array($sub_cv)) {
-                $arr_cv = $sub_cv;
-              }
-              $returned = self::get_field_values($temp_val, $sub_cv, $sub_ck);
+              $returned = self::getFieldValues($temp_val, $sub_cv, $sub_ck);
               if (!empty($returned)) {
-                $field_arr[$ck][$sub_ck] = $returned;
+                // Keys prefixed with '@' turn into XML attributes which can
+                // only have a single value, so we'll give them the first one
+                // if multiple are returned.
+                if (str_starts_with($sub_ck, '@')) {
+                  $field_arr[$ck][$sub_ck] = $returned[0];
+                }
+                else {
+                  $field_arr[$ck][$sub_ck] = $returned;
+                }
               }
             }
           }
@@ -225,14 +227,11 @@ class ModsEncoder extends XmlEncoder {
   /**
    * Processes the data of a single node.
    */
-  public function process_node($mods_config, $node) {
+  public function processNode($mods_config, $node) {
     $new_data = [];
     foreach ($mods_config->getRawData() as $field_name => $field_config) {
       if (!is_array($field_config)) {
-        if (is_array($field_name)) {
-          $arr_field = $field_name;
-        }
-        $simple_data = $this->get_field_values($node, $field_name, $field_config);
+        $simple_data = $this->getFieldValues($node, $field_name, $field_config);
         $new_data[$field_config][] = [
           '#' => $simple_data,
         ];
@@ -245,11 +244,8 @@ class ModsEncoder extends XmlEncoder {
           }
           unset($field_config['_top']);
         }
-        if (is_array($field_name)) {
-          $arr_field = $field_name;
-        }
 
-        $complex_data = $this->get_field_values($node, $field_name, $field_config);
+        $complex_data = $this->getFieldValues($node, $field_name, $field_config);
         if (is_array($complex_data)) {
           if (count($complex_data) == 0) {
             continue;
@@ -280,20 +276,47 @@ class ModsEncoder extends XmlEncoder {
       }
     }
 
-    return $this->fixData($new_data);
+    return $this->pruneEmptyArrays($new_data);
   }
 
   /**
+   * Removes 'twig' array keys with empty array value (no 'leaves').
    *
+   * Follows array key 'branches' to the last key 'twig' referencing an
+   * array of literal value 'leaves'.
+   *
+   * E.g.
+   * ```
+   * [
+   *   'twig 1' => [],
+   *   'twig 2' => ['leaf 1'],
+   *   'branch 1' => [
+   *     'twig 3' => [],
+   *    ],
+   * ]
+   * ```
+   * becomes
+   * ```
+   * [
+   *   'twig 2' => ['leaf 1'],
+   *   'branch 1' => []
+   * ]
+   * ```
+   *
+   * In this example 'branch 1' still remains because it was a 'branch'
+   * even if it's 'twig' had no leaves (was a key to an empty array)
+   * whereas 'key zero' was twig with no leaves and so removed.
+   * Note, if the example array was passed through the function twice,
+   * branch 1 would be removed as it became a twig during the first pass.
    */
-  private function fixData($data) {
+  private function pruneEmptyArrays($data) {
     foreach ($data as $k => $v) {
       if (is_array($v)) {
         if (count($v) < 1) {
           unset($data[$k]);
         }
         else {
-          $data[$k] = $this->fixData($v);
+          $data[$k] = $this->pruneEmptyArrays($v);
         }
       }
     }
@@ -310,7 +333,7 @@ class ModsEncoder extends XmlEncoder {
     if (is_array($data)) {
       $context[self::ROOT_NODE_NAME] = 'modsCollection';
       foreach ($data as $node) {
-        $new_data = $this->process_node($mods_config, $node);
+        $new_data = $this->processNode($mods_config, $node);
         $all_records['mods'][] =
         [
           '#' => $new_data,
@@ -319,7 +342,7 @@ class ModsEncoder extends XmlEncoder {
     }
     else {
       $context[self::ROOT_NODE_NAME] = 'mods';
-      $new_data = $this->process_node($mods_config, $data);
+      $new_data = $this->processNode($mods_config, $data);
       $all_records['#'] = $new_data;
     }
 
