@@ -2,6 +2,7 @@
 
 namespace Drupal\asu_mods\Encoder;
 
+use Drupal\Core\Config\ImmutableConfig;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 
 /**
@@ -54,7 +55,44 @@ class ModsEncoder extends XmlEncoder {
   }
 
   /**
-   * Plucks the data out of a field.
+   * Returns field values based on provided config.
+   *
+   * Called by processNode, this function determines what value OR subvalue
+   * should be returned based on the provided MODS element/attribute to
+   * entity field value/property.
+   *
+   * E.g. given the field_name 'field_title' and the configuration
+   * ```
+   * _top: titleInfo
+   * '@supplied': field_supplied
+   * title:
+   *   '#': field_main_title
+   * nonSort: field_nonsort
+   * subTitle: field_subtitle
+   * ```
+   * will result in a titleInfo element with field_supplied providing the
+   * value for the `@supplied' attribute whith a child elements 'title',
+   * 'nonSort', and 'subTitle' provided by field_main_title, field_nonsort,
+   * and field_subtitle, respectively.
+   *
+   * The configuration also supports using field properties, such as
+   * `'@authority': field_authority_link/source`, where the authority attribute
+   * will be provided by the field_authority_link's source property.
+   *
+   * Literal values can also be used in the configuration, e.g.
+   * `'@valueURI': 'http://vocab.getty.edu/page/aat/300380321'` where the
+   * valueURI attribute is populated with the provided literal URI value.
+   *
+   * @param mixed $data
+   *   Entity being processed.
+   * @param mixed $field_name
+   *   The entity's field being processed. Why the field name would be an array
+   *   instead of a string, I have no idea.
+   * @param array|string $config
+   *   Key-value pairs of MODS elements or attributes to entity field values or
+   *   properties.
+   * @param string|Null $sub_field
+   *   A field's property name for extraction.
    */
   private static function getFieldValues($data, $field_name, $config, $sub_field = NULL) {
     if (!is_array($field_name) && str_contains($field_name, '/')) {
@@ -224,9 +262,25 @@ class ModsEncoder extends XmlEncoder {
   }
 
   /**
-   * Processes the data of a single node.
+   * Builds an array from a node for XML serialization based on passed config.
+   *
+   * The provided config maps a content type's fields to their MODS structure.
+   * However, this function focuses on the first level of mapping.
+   *
+   * E.g. field_rich_description's value is the value of MODS' abstract and
+   * field_title is a 'titleInfo'.
+   *
+   * The more complex aspects of mapping is done by getFieldValues.
+   *
+   * @param \Drupal\Core\Config\ImmutableConfig $mods_config
+   *   Array of field mapping configurations.
+   * @param mixed $node
+   *   Node being processed.
+   *
+   * @return array
+   *   Array representing a MODS structure
    */
-  public function processNode($mods_config, $node) {
+  public function processNode(ImmutableConfig $mods_config, $node) {
     $new_data = [];
     foreach ($mods_config->getRawData() as $field_name => $field_config) {
       if (!is_array($field_config)) {
