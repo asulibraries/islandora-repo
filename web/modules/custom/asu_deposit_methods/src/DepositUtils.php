@@ -49,7 +49,7 @@ class DepositUtils {
       $media_type = 'audio';
       $field_name = 'field_media_audio_file';
     }
-    if (str_contains($mime, 'video')) {
+    if (str_contains($filename, ".mp4") || str_contains($filename, ".webm")) {
       $model = 'Video';
       $media_type = 'video';
       $field_name = 'field_media_video_file';
