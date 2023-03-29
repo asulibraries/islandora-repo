@@ -1,8 +1,16 @@
 <?php
 
 /**
- * @file Script to load content needed for basic functions.
+ * @file
+ * Script to load content needed for basic functions.
  */
+
+use Drupal\user\Entity\User;
+use Drupal\Core\File\FileSystemInterface;
+
+// Need to load as admin (with fcrepo role) so we can talk to fedora.
+$switcher = \Drupal::service('account_switcher');
+$switcher->switchTo(User::load(1));
 
 $tm = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
 $nm = \Drupal::entityTypeManager()->getStorage('node');
@@ -136,3 +144,10 @@ foreach ($deposit_terms as $t) {
 }
 
 $self_deposit_config->save();
+
+$file_system = \Drupal::service('file_system');
+$directory = 'fedora://c160';
+$file_system->prepareDirectory($directory, FileSystemInterface:: CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS);
+
+// All done, close out admin's session.
+$switcher->switchBack();
