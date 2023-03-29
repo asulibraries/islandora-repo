@@ -179,10 +179,16 @@ function asu_default_fields_node_insert(NodeInterface $node) {
         $config = \Drupal::configFactory()->getEditable('asu_default_fields.settings');
         if ($node->getEntityTypeId() == 'node' && in_array($content_type, $allowed_types, TRUE) &&
           !($config->get('disable_handle_generation')) ) {
-          if ($node->bundle() == "collection") {
-            _mint_handle($node, 'R.2.C');
-          } else {
-            _mint_handle($node);
+          try {
+            if ($node->bundle() == "collection") {
+              _mint_handle($node, 'R.2.C');
+            }
+            else {
+              _mint_handle($node);
+            }
+          }
+          catch (RequestException $e) {
+            \Drupal::logger('persistent_identifiers')->warning("Could not contact Handle server for node %nid", ['%nid' => $node->id()]);
           }
         }
       }
