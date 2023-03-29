@@ -5,6 +5,7 @@ use Drupal\media\MediaInterface;
 use Drupal\node\NodeInterface;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\paragraphs\Entity\Paragraph;
+use GuzzleHttp\Exception\RequestException;
 
 /**
  * Implements hook_media_presave().
@@ -14,7 +15,7 @@ function asu_default_fields_media_presave(MediaInterface $media) {
   if ($media->hasField('field_media_of') && count($media->get('field_media_of')) > 0) {
     if ($media->get('field_media_use') && $media->get('field_media_use')->entity) {
       $taxy = $media->get('field_media_use')->entity;
-      // TODO add a config for which "uses" to assign this value from, possible that multiple uses would assign multiple resource types here
+      // @todo add a config for which "uses" to assign this value from, possible that multiple uses would assign multiple resource types here.
       if ($taxy->getName() == "Original File") {
         $node = $utils->getParentNode($media);
         // Note this only applies up the free one - complex objects may require reworking here.
@@ -23,13 +24,13 @@ function asu_default_fields_media_presave(MediaInterface $media) {
           $mime = str_replace('/', '_', $mime);
           $mime = str_replace('.', '_', $mime);
           $res_type = \Drupal::config('asu_default_fields.mimesettings')->get($mime);
-          // TODO - add the ability to push the resource type to a complex object parent
+          // @todo add the ability to push the resource type to a complex object parent
           // would correlate with a view of objects that do not have resource types set
           // but that view would also filter out children of complex objects
-          // because as long as the parent complex object has at least 1 resource type, its ok
+          // because as long as the parent complex object has at least 1 resource type, its ok.
           $node->set('field_resource_type', ['target_id' => $res_type]);
-	  $node->save();
-          // if ($node->hasField('field_complex_object_child') && $node->get('field_complex_object_child') == 1 && $node->hasField('field_member_of') && !$node->get('field_member_of')->isEmpty()) {
+          $node->save();
+          // If ($node->hasField('field_complex_object_child') && $node->get('field_complex_object_child') == 1 && $node->hasField('field_member_of') && !$node->get('field_member_of')->isEmpty()) {
           //   $parent = $node->get('field_member_of')->entity;
           //   $current_types = $parent->get('field_resource_type');
           //   // have to check if its in the current types before appending it
@@ -61,7 +62,8 @@ function asu_default_fields_node_presave(NodeInterface $node) {
           ($sub != NULL ? ": " . trim($sub) : "");
         $nm = trim($nm);
         $node->setTitle($nm);
-      } else {
+      }
+      else {
         $node->setTitle('[untitled]');
       }
     }
@@ -81,14 +83,14 @@ function asu_default_fields_form_alter(&$form, FormStateInterface $form_state, $
       }
 
       $qps = explode('&', $query);
-      foreach($qps as $qp) {
+      foreach ($qps as $qp) {
         $parts = explode('=', $qp);
         if ($parts[0] == 'edit%5Bfield_member_of%5D%5Bwidget%5D%5B0%5D%5Btarget_id%5D') {
           $nid = $parts[1];
         }
       }
 
-      if (isset($nid)){
+      if (isset($nid)) {
         $parent = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
         if ($parent->hasField('field_default_original_file_perm') && $parent->get('field_default_original_file_perm')->entity != NULL && $node->get('field_default_original_file_perm')->isEmpty()) {
           $of_default_perms = $parent->get('field_default_original_file_perm')->entity;
@@ -101,7 +103,7 @@ function asu_default_fields_form_alter(&$form, FormStateInterface $form_state, $
       }
     }
   }
-  else if ($form_id == 'media_image_add_form' || $form_id == 'media_audio_add_form' || $form_id == 'media_document_add_form' || $form_id == 'media_file_add_form' || $form_id == 'media_video_add_form') {
+  elseif ($form_id == 'media_image_add_form' || $form_id == 'media_audio_add_form' || $form_id == 'media_document_add_form' || $form_id == 'media_file_add_form' || $form_id == 'media_video_add_form') {
     $media = $form_state->getFormObject()->getEntity();
     if ($media->isNew()) {
       $query = \Drupal::request()->getQueryString();
@@ -116,9 +118,9 @@ function asu_default_fields_form_alter(&$form, FormStateInterface $form_state, $
           $nid = $parts[1];
         }
       }
-      if (isset($nid)){
+      if (isset($nid)) {
         // In the media create form, we inherit the default for the original file only,
-        // because we assume that most manual additions of files are for original files
+        // because we assume that most manual additions of files are for original files.
         $parent = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
         if ($parent->hasField('field_default_original_file_perm') && !$parent->get('field_default_original_file_perm')->isEmpty() && $media->get('field_access_terms')->isEmpty()) {
           $of_default_perms = $parent->get('field_default_original_file_perm')->entity;
@@ -178,17 +180,12 @@ function asu_default_fields_node_insert(NodeInterface $node) {
         $allowed_types = $config->get('persistent_identifiers_bundles');
         $config = \Drupal::configFactory()->getEditable('asu_default_fields.settings');
         if ($node->getEntityTypeId() == 'node' && in_array($content_type, $allowed_types, TRUE) &&
-          !($config->get('disable_handle_generation')) ) {
-          try {
-            if ($node->bundle() == "collection") {
-              _mint_handle($node, 'R.2.C');
-            }
-            else {
-              _mint_handle($node);
-            }
+          !($config->get('disable_handle_generation'))) {
+          if ($node->bundle() == "collection") {
+            _mint_handle($node, 'R.2.C');
           }
-          catch (RequestException $e) {
-            \Drupal::logger('persistent_identifiers')->warning("Could not contact Handle server for node %nid", ['%nid' => $node->id()]);
+          else {
+            _mint_handle($node);
           }
         }
       }
@@ -211,10 +208,10 @@ function asu_default_fields_media_insert(MediaInterface $media) {
           $media->set('field_access_terms', $of_default_perms);
           $media->save();
         }
-        // Media don't h
+        // Media don't have handles.
         // _mint_handle($media, 'R.2.M');
       }
-      else if ($taxy->getName() == 'Service File') {
+      elseif ($taxy->getName() == 'Service File') {
         if ($parent->hasField('field_default_derivative_file_pe') && !$parent->get('field_default_derivative_file_pe')->isEmpty() && $media->get('field_access_terms')->isEmpty()) {
           $deriv_default_perms = $parent->get('field_default_derivative_file_pe')->entity->id();
           $media->set('field_access_terms', $deriv_default_perms);
@@ -231,20 +228,28 @@ function asu_default_fields_media_insert(MediaInterface $media) {
 function _mint_handle(EntityInterface $object, string $prefix = NULL) {
   $config = \Drupal::config('persistent_identifiers.settings');
   $minter = \Drupal::service($config->get('persistent_identifiers_minter'));
-  if ($prefix) {
-    $extras = ['hdl_qualifier' => $prefix];
-    $pid = $minter->mint($object, $extras);
-  } else {
-    $pid = $minter->mint($object, NULL);
+  try {
+    if ($prefix) {
+      $extras = ['hdl_qualifier' => $prefix];
+      $pid = $minter->mint($object, $extras);
+    }
+    else {
+      $pid = $minter->mint($object, NULL);
+    }
+  }
+  catch (RequestException $e) {
+    \Drupal::logger('persistent_identifiers')->warning("Handle server was inaccessible while minting handle for node %nid", ['%nid' => $object->id()]);
+    return;
   }
   if (is_null($pid)) {
-    \Drupal::logger('persistent_identifiers')->warning(t("Persistent identifier not created for node @nid.", ['@nid' => $object->id()]));
+    \Drupal::logger('persistent_identifiers')->warning("Persistent identifier not created for node @nid.", ['@nid' => $object->id()]);
     return;
   }
   $persister = \Drupal::service($config->get('persistent_identifiers_persister'));
   if ($persister->persist($object, $pid)) {
-    \Drupal::logger('persistent_identifiers')->info(t("Persistent identifier %pid created for node @nid.", ['%pid' => $pid, '@nid' => $object->id()]));
-  } else {
-    \Drupal::logger('persistent_identifiers')->warning(t("Persistent identifier not created for node @nid.", ['@nid' => $object->id()]));
+    \Drupal::logger('persistent_identifiers')->info("Persistent identifier %pid created for node @nid.", ['%pid' => $pid, '@nid' => $object->id()]);
+  }
+  else {
+    \Drupal::logger('persistent_identifiers')->warning("Persistent identifier not created for node @nid.", ['@nid' => $object->id()]);
   }
 }
