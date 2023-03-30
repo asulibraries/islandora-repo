@@ -64,8 +64,10 @@ function self_deposit_preprocess_node(&$variables) {
  * Implements hook_entity_type_build().
  */
 function self_deposit_entity_type_build(array &$entity_types) {
-  $entity_types['node']->setFormClass('perf_archive', 'Drupal\node\NodeForm');
-  $entity_types['node']->setFormClass('perf_archive_child', 'Drupal\node\NodeForm');
+  if (array_key_exists('node', $entity_types)) {
+    $entity_types['node']->setFormClass('perf_archive', 'Drupal\node\NodeForm');
+    $entity_types['node']->setFormClass('perf_archive_child', 'Drupal\node\NodeForm');
+  }
 }
 
 /**
@@ -129,9 +131,8 @@ function self_deposit_perf_archive_parent_submit(array &$form, FormStateInterfac
   }
 }
 
-
 /**
- * To add query params to the CSV view from the table view
+ * To add query params to the CSV view from the table view.
  */
 function self_deposit_preprocess_views_view(&$variables) {
   if ($variables['id'] == "barrett_submissions") {
@@ -141,7 +142,7 @@ function self_deposit_preprocess_views_view(&$variables) {
       if ($query_params) {
         $label = "Download CSV";
         $url = Url::fromRoute('view.barrett_submissions.data_export_1');
-        $url->setOptions(array('query' => $query_params));
+        $url->setOptions(['query' => $query_params]);
         $link = '<p><a href="' . $url->toString() . '" class="btn btn-md btn-maroon">' . $label . '</a></p>';
         if (array_key_exists('area', $variables['header'])) {
           $variables['header']['area']['#text'] = $link;
