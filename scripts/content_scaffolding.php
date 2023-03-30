@@ -182,8 +182,9 @@ foreach ($deposit_terms as $t) {
 $self_deposit_config->save();
 
 $file_system = \Drupal::service('file_system');
-$directory = 'fedora://c160';
-$file_system->prepareDirectory($directory, FileSystemInterface:: CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS);
+foreach (['fedora://c160', 'fedora://c130'] as $directory) {
+  $file_system->prepareDirectory($directory, FileSystemInterface:: CREATE_DIRECTORY | FileSystemInterface::MODIFY_PERMISSIONS);
+}
 
 // All done, close out admin's session.
 $switcher->switchBack();
