@@ -40,6 +40,42 @@ foreach ($access_terms as $t) {
   }
 }
 
+// Default Fields Settings.
+$default_fields_config = \Drupal::configFactory()->getEditable('asu_default_fields.settings');
+$default_fields_terms = [
+  [
+    'vid' => 'islandora_media_use',
+    'name' => 'Original File',
+    'setting' => 'original_file_taxonomy_term',
+  ],
+  [
+    'vid' => 'islandora_media_use',
+    'name' => 'Service File',
+    'setting' => 'service_file_taxonomy_term',
+  ],
+  [
+    'vid' => 'islandora_media_use',
+    'name' => 'Thumbnail Image',
+    'setting' => 'thumbnail_taxonomy_term',
+  ],
+  [
+    'vid' => 'islandora_media_use',
+    'name' => 'Preservation Master File',
+    'setting' => 'preservation_master_taxonomy_term',
+  ],
+];
+foreach ($default_fields_terms as $t) {
+  $term = reset($tm->loadByProperties(['vid' => $t['vid'], 'name' => $t['name']]));
+  if (!$term) {
+    $term = $tm->create($t);
+    $term->enforceIsNew();
+    $term->save();
+  }
+  $default_fields_config->set($t['setting'], $term->id());
+}
+
+$default_fields_config->save();
+
 // Self Deposit Content & Settings.
 $self_deposit_config = \Drupal::configFactory()->getEditable('self_deposit.selfdepositsettings');
 $collections = [
