@@ -7,6 +7,7 @@
 
 use Drupal\user\Entity\User;
 use Drupal\Core\File\FileSystemInterface;
+use Drupal\views\Views;
 
 // Need to load as admin (with fcrepo role) so we can talk to fedora.
 $switcher = \Drupal::service('account_switcher');
@@ -15,6 +16,8 @@ $switcher->switchTo(User::load(1));
 $tm = \Drupal::entityTypeManager()->getStorage('taxonomy_term');
 $nm = \Drupal::entityTypeManager()->getStorage('node');
 $pm = \Drupal::entityTypeManager()->getStorage('paragraph');
+
+$iu = \Drupal::service('islandora.utils');
 
 // Access Terms.
 $access_terms = [
@@ -46,16 +49,19 @@ $default_fields_terms = [
   [
     'vid' => 'islandora_media_use',
     'name' => 'Original File',
+    'field_external_uri' => 'http://pcdm.org/use#OriginalFile',
     'setting' => 'original_file_taxonomy_term',
   ],
   [
     'vid' => 'islandora_media_use',
     'name' => 'Service File',
+    'field_external_uri' => 'http://pcdm.org/use#ServiceFile',
     'setting' => 'service_file_taxonomy_term',
   ],
   [
     'vid' => 'islandora_media_use',
     'name' => 'Thumbnail Image',
+    'field_external_uri' => 'http://pcdm.org/use#ThumbnailImage',
     'setting' => 'thumbnail_taxonomy_term',
   ],
   [
@@ -75,6 +81,26 @@ foreach ($default_fields_terms as $t) {
 }
 
 $default_fields_config->save();
+
+// Media EVA.
+$view = Views::getView('display_media');
+
+$thumb_term = $iu->getTermForUri('http://pcdm.org/use#ThumbnailImage');
+foreach (['thumbnail', 'thumbnail_card', 'thumbnail_url', 'child_thumbnail'] as $view_display) {
+  $view->setDisplay($view_display);
+  $filters = $view->displayHandlers->get($view_display)->options['filters'];
+  $filters['field_media_use_target_id']['value'] = [$thumb_term->id()];
+  $view->displayHandlers->get($view_display)->overrideOption('filters', $filters);
+}
+
+$serv_term = $iu->getTermForUri('http://pcdm.org/use#ServiceFile');
+foreach (['service_file', 'entity_view_4'] as $view_display) {
+  $view->setDisplay($view_display);
+  $filters = $view->displayHandlers->get($view_display)->options['filters'];
+  $filters['field_media_use_target_id']['value'] = [$serv_term->id()];
+  $view->displayHandlers->get($view_display)->overrideOption('filters', $filters);
+}
+$view->save();
 
 // Self Deposit Content & Settings.
 $self_deposit_config = \Drupal::configFactory()->getEditable('self_deposit.selfdepositsettings');
