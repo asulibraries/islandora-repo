@@ -30,7 +30,7 @@
  */
 #}
 {{ attach_library('bootstrap_barrio/node') }}
-
+{{ attach_library('asulib_barrio/toggle-more') }}
 {%
   set classes = [
     'node',
@@ -41,6 +41,40 @@
     <header>
 {% for fid, field in fields -%}
   {{ field.separator }}
+  {# The show-more is more complex than a regular field template... #}
+  {% set word_list = field.content|trim|split(' ') %}
+  {% if field.wrapper_attributes.hasClass('text-show-more') and word_list|length > 30 %}
+      {% set id = random() %}
+      {%- if field.wrapper_element -%}
+        <{{ field.wrapper_element }}{{ field.wrapper_attributes }} id={{ id }}>
+      {% else %}
+        <div {{ field.wrapper_attributes }} id={{ id }}>
+      {%- endif %}
+      {%- if field.label and field.content|striptags|trim is not empty -%}
+        {%- if field.label_element -%}
+          <{{ field.label_element }}{{ field.label_attributes }}>{{ field.label }}{{ field.label_suffix }}</{{ field.label_element }}>
+        {%- else -%}
+          {{ field.label }}{{ field.label_suffix }}
+        {%- endif %}
+      {%- endif %}
+        {% set teaser = word_list|slice(0, 30)|join(' ')|trim('</p>', 'right') ~ '<span id="more-ellipse" class="collapse multi-collapse show">&hellip;</span></p>' %}
+    <div class="description-teaser collapse multi-collapse show">{{ teaser|raw }}</div>
+    <div class="description-full multi-collapse collapse" id="full-content">
+      {%- if field.element_type -%}
+        <{{ field.element_type }}{{ field.element_attributes }}>{{ field.content }}</{{ field.element_type }}>
+      {%- else -%}
+        {{ field.content }}
+      {%- endif %}
+    </div>
+    <button aria-expanded="false" aria-controls="full-content more-ellipse" type="button" data-toggle="collapse" data-target="#{{ id }} .multi-collapse" class="btn-link show-more">
+      {% trans %}(more){% endtrans %}
+    </button>
+    {%- if field.wrapper_element -%}
+      </{{ field.wrapper_element }}>
+    {% else %}
+      </div>
+    {%- endif %}
+  {% else %} {# Non-show-more fields #}
   {%- if field.wrapper_element -%}
     <{{ field.wrapper_element }}{{ field.wrapper_attributes }}>
   {%- endif %}
@@ -58,6 +92,7 @@
   {%- endif %}
   {%- if field.wrapper_element -%}
     </{{ field.wrapper_element }}>
+  {%- endif %}
   {%- endif %}
 {%- endfor %}
     </header>

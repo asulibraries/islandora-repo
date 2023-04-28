@@ -1,0 +1,126 @@
+{#
+/**
+ * @file
+ * Theme override to display all the fields in a row.
+ *
+ * Available variables:
+ * - view: The view in use.
+ * - fields: A list of fields, each one contains:
+ *   - content: The output of the field.
+ *   - raw: The raw data for the field, if it exists. This is NOT output safe.
+ *   - class: The safe class ID to use.
+ *   - handler: The Views field handler controlling this field.
+ *   - inline: Whether or not the field should be inline.
+ *   - wrapper_element: An HTML element for a wrapper.
+ *   - wrapper_attributes: List of attributes for wrapper element.
+ *   - separator: An optional separator that may appear before a field.
+ *   - label: The field's label text.
+ *   - label_element: An HTML element for a label wrapper.
+ *   - label_attributes: List of attributes for label wrapper.
+ *   - label_suffix: Colon after the label.
+ *   - element_type: An HTML element for the field content.
+ *   - element_attributes: List of attributes for HTML element for field content.
+ *   - has_label_colon: A boolean indicating whether to display a colon after
+ *     the label.
+ *   - element_type: An HTML element for the field content.
+ *   - element_attributes: List of attributes for HTML element for field content.
+ * - row: The raw result from the query, with all data it fetched.
+ *
+ * @see template_preprocess_views_view_fields()
+ */
+#}
+{{ attach_library('asulib_barrio/search') }}
+{{ attach_library('asulib_barrio/toggle-more') }}
+{%
+  set classes = [
+    'clearfix',
+    'row',
+    'item-result',
+  ]
+%}
+{%
+  set model_icons = {
+      "Image": "far fa-file-image",
+      "Audio": "far fa-file-audio",
+      "Video": "far fa-file-video",
+      "Digital Document": "far fa-file-alt",
+      "Binary": "far fa-file",
+      "Complex Object": "complex-object-icon",
+      "Paged Content": "complex-object-icon",
+  }
+%}
+<div{{ attributes.addClass(classes) }}>
+{# Show thumbnail or icon. #}
+  <div class="col-md-2 thumb-image-border">
+  {% if fields.field_model is defined %}
+    {% if drupal_view_result('display_media', 'thumbnail', row._entity.id) is empty %}
+    {% for k, v in model_icons|filter((v, k) => k == fields.field_model.content|striptags|trim) %}
+        <div class="icon-container">
+            <i class="{{ v }} fa-6x"></i>
+        </div>
+    {% endfor %}
+    {% else %}
+    {{ drupal_view('display_media', 'thumbnail', row._entity.id) }}
+    {% endif %}
+  {% endif %}
+  </div>
+{# Fields, sans model field used for thumbnail. #}
+  <div class="col-md-10">  
+{% for fid, field in fields | filter((v, k) => k != 'field_model' ) -%}
+  {{ field.separator }}
+  {# The show-more is more complex than a regular field template... #}
+  {% set word_list = field.content|trim|split(' ') %}
+  {% if field.wrapper_attributes.hasClass('text-show-more') and word_list|length > 50 %}
+      {% set id = random() %}
+      {%- if field.wrapper_element -%}
+        <{{ field.wrapper_element }}{{ field.wrapper_attributes }} id={{ id }}>
+      {% else %}
+        <div {{ field.wrapper_attributes }} id={{ id }}>
+      {%- endif %}
+      {%- if field.label and field.content|striptags|trim is not empty -%}
+        {%- if field.label_element -%}
+          <{{ field.label_element }}{{ field.label_attributes }}>{{ field.label }}{{ field.label_suffix }}</{{ field.label_element }}>
+        {%- else -%}
+          {{ field.label }}{{ field.label_suffix }}
+        {%- endif %}
+      {%- endif %}
+        {% set teaser = word_list|slice(0, 50)|join(' ')|trim('</p>', 'right') ~ '<span id="more-ellipse" class="collapse multi-collapse show">&hellip;</span></p>' %}
+    <div class="description-teaser collapse multi-collapse show">{{ teaser|raw }}</div>
+    <div class="description-full multi-collapse collapse" id="full-content">
+      {%- if field.element_type -%}
+        <{{ field.element_type }}{{ field.element_attributes }}>{{ field.content }}</{{ field.element_type }}>
+      {%- else -%}
+        {{ field.content }}
+      {%- endif %}
+    </div>
+    <button aria-expanded="false" aria-controls="full-content more-ellipse" type="button" data-toggle="collapse" data-target="#{{ id }} .multi-collapse" class="btn-link show-more">
+      {% trans %}(more){% endtrans %}
+    </button>
+    {%- if field.wrapper_element -%}
+      </{{ field.wrapper_element }}>
+    {% else %}
+      </div>
+    {%- endif %}
+  {% else %} {# Non-show-more fields #}
+    {%- if field.wrapper_element -%}
+      <{{ field.wrapper_element }}{{ field.wrapper_attributes }}>
+    {%- endif %}
+    {%- if field.label and field.content|striptags|trim is not empty -%}
+      {%- if field.label_element -%}
+        <{{ field.label_element }}{{ field.label_attributes }}>{{ field.label }}{{ field.label_suffix }}</{{ field.label_element }}>
+      {%- else -%}
+        {{ field.label }}{{ field.label_suffix }}
+      {%- endif %}
+    {%- endif %}
+    {%- if field.element_type -%}
+      <{{ field.element_type }}{{ field.element_attributes }}>{{ field.content }}</{{ field.element_type }}>
+    {%- else -%}
+      {{ field.content }}
+    {%- endif %}
+    {%- if field.wrapper_element -%}
+      </{{ field.wrapper_element }}>
+    {%- endif %}
+  {%- endif %}
+{%- endfor %}
+  </div>
+</div>
