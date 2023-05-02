@@ -274,10 +274,12 @@ content:
       allow_new: true
       allow_existing: true
       match_operator: STARTS_WITH
+      match_limit: 10
       allow_duplicate: false
       collapsible: true
       collapsed: false
       revision: false
+      removed_reference: keep
     third_party_settings: {  }
   field_coordinates:
     type: geolocation_latlng
@@ -396,10 +398,12 @@ content:
       allow_new: true
       allow_existing: true
       match_operator: CONTAINS
+      match_limit: 10
       allow_duplicate: false
       collapsible: false
       collapsed: false
       revision: false
+      removed_reference: keep
     third_party_settings: {  }
   field_handle:
     type: string_textfield
@@ -455,9 +459,9 @@ content:
     region: content
     settings:
       match_operator: CONTAINS
-      match_limit: 50
       size: 60
       placeholder: ''
+      match_limit: 50
     third_party_settings: {  }
   field_member_of:
     type: entity_reference_autocomplete
@@ -487,10 +491,12 @@ content:
       allow_new: true
       allow_existing: true
       match_operator: CONTAINS
+      match_limit: 10
       allow_duplicate: false
       collapsible: false
       collapsed: false
       revision: false
+      removed_reference: keep
     third_party_settings: {  }
   field_note_para:
     type: entity_reference_paragraphs
@@ -570,9 +576,9 @@ content:
     region: content
     settings:
       match_operator: CONTAINS
-      match_limit: 10
       size: 60
       placeholder: ''
+      match_limit: 10
     third_party_settings: {  }
   field_resource_type:
     type: entity_reference_autocomplete
@@ -636,10 +642,12 @@ content:
       allow_new: true
       allow_existing: true
       match_operator: STARTS_WITH
+      match_limit: 20
       allow_duplicate: false
       collapsible: false
       collapsed: false
       revision: false
+      removed_reference: keep
     third_party_settings: {  }
   field_subjects_name:
     type: inline_entity_form_complex
@@ -653,10 +661,12 @@ content:
       allow_new: true
       allow_existing: true
       match_operator: CONTAINS
+      match_limit: 10
       allow_duplicate: false
       collapsible: false
       collapsed: false
       revision: false
+      removed_reference: keep
     third_party_settings: {  }
   field_table_of_contents:
     type: text_textarea
@@ -678,10 +688,12 @@ content:
       allow_new: true
       allow_existing: true
       match_operator: CONTAINS
+      match_limit: 10
       allow_duplicate: false
       collapsible: false
       collapsed: false
       revision: false
+      removed_reference: keep
     third_party_settings: {  }
   field_title:
     type: entity_reference_paragraphs
@@ -707,10 +719,12 @@ content:
       allow_new: true
       allow_existing: true
       match_operator: CONTAINS
+      match_limit: 10
       allow_duplicate: false
       collapsible: false
       collapsed: false
       revision: false
+      removed_reference: keep
     third_party_settings: {  }
   field_typed_identifier:
     type: entity_reference_paragraphs

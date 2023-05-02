@@ -98,23 +98,23 @@ third_party_settings:
     group_system:
       children:
         - langcode
-        - field_description_source
-        - field_source
-        - field_preservation_state
-        - field_pid
-        - field_oai_set
-        - field_level_of_coding
-        - field_history
-        - field_handle
-        - field_complex_object_child
         - status
-        - field_cataloging_standards
-        - path
-        - moderation_state
-        - sticky
-        - promote
-        - created
         - uid
+        - created
+        - promote
+        - sticky
+        - moderation_state
+        - path
+        - field_cataloging_standards
+        - field_complex_object_child
+        - field_description_source
+        - field_handle
+        - field_history
+        - field_level_of_coding
+        - field_oai_set
+        - field_pid
+        - field_preservation_state
+        - field_source
         - field_weight
       label: 'System Use and Display'
       region: hidden
@@ -275,9 +275,9 @@ content:
     region: content
     settings:
       match_operator: CONTAINS
-      match_limit: 10
       size: 60
       placeholder: ''
+      match_limit: 10
     third_party_settings: {  }
   field_member_of:
     type: entity_reference_autocomplete
@@ -333,10 +333,12 @@ content:
       allow_new: true
       allow_existing: true
       match_operator: CONTAINS
+      match_limit: 20
       allow_duplicate: false
       collapsible: false
       collapsed: false
       revision: false
+      removed_reference: keep
     third_party_settings: {  }
   field_title:
     type: entity_reference_paragraphs
