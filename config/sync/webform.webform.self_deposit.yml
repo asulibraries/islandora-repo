@@ -375,10 +375,10 @@ handlers:
       bcc_options: {  }
       cc_mail: ''
       cc_options: {  }
-      from_mail: _default
+      from_mail: '[webform_submission:values:your_email:raw]'
       from_options: {  }
-      from_name: _default
-      reply_to: ''
+      from_name: '[webform_submission:values:your_name:raw]'
+      reply_to: '[webform_submission:values:your_email:raw]'
       return_path: ''
       sender_mail: ''
       sender_name: ''
@@ -397,11 +397,27 @@ handlers:
       debug: false
   create_a_repository_item:
     id: 'Create a repository item'
-    handler_id: create_a_repository_item
+    handler_id: null
     label: 'Create a repository item'
     notes: ''
     status: true
     conditions: {  }
-    weight: 0
-    settings: {  }
+    weight: null
+    settings:
+      id: 'Create a repository item'
+      label: 'Create a repository item'
+      notes: ''
+      handler_id: null
+      status: 1
+      conditions: {  }
+      weight: ''
+      settings:
+        id: 'Create a repository item'
+        handler_id: create_a_repository_item
+        label: 'Create a repository item'
+        notes: ''
+        status: true
+        conditions: {  }
+        weight: 0
+        settings: {  }
 variants: {  }
