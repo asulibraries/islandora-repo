@@ -2,20 +2,41 @@
 
 /**
  * @file
+ * Taxonomy hooks.
  */
 
+use Drupal\Core\Entity\EntityFormInterface;
+
 /**
- * Implementation of hook_form_FORM_ID_alter().
+ * Implements hook_form_FORM_ID_alter().
+ *
+ * Overriding the parent selector for taxonomy terms and replacing
+ * the default select list with an auto-complete for improved page
+ * loading performance.
  */
 function asu_taxonomies_form_taxonomy_term_form_alter(&$form, &$form_state, $form_id) {
-  // dsm('Vocab ID: ' . print_r($form['vid'], TRUE));
-  // dsm(print_r($form['relations']['parent'], TRUE));.
+
+  // Load the parent value, if any, to populate the parent form field.
+  $parent_default_value = [];
+  if ($form_state->getFormObject() instanceof EntityFormInterface) {
+    $term = $form_state->getformObject()->getEntity();
+    if ($term->hasField('parent')) {
+      // The form field needs an array of entities,
+      // not an EntityReferenceFieldItemList.
+      foreach ($term->parent as $parent) {
+        $parent_default_value[] = $parent->entity;
+      }
+    }
+  }
+
   $form['relations']['parent'] = [
     '#type' => 'entity_autocomplete',
     '#target_type' => 'taxonomy_term',
     '#tags' => TRUE,
-    // @todo: load current term: `'#default_value' => [],`.
-    '#selection_settings' => ['target_bundles' => [$form['vid']['#value']]],
+    '#default_value' => $parent_default_value,
+    '#selection_settings' => [
+      'target_bundles' => [$form['vid']['#value']],
+    ],
   ];
 
 }
