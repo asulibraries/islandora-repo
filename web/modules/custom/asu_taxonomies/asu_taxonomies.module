@@ -5,6 +5,7 @@
  * Taxonomy hooks.
  */
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Entity\EntityFormInterface;
 
 /**
@@ -15,28 +16,43 @@ use Drupal\Core\Entity\EntityFormInterface;
  * loading performance.
  */
 function asu_taxonomies_form_taxonomy_term_form_alter(&$form, &$form_state, $form_id) {
+  // Add a validator that runs *before* the TermForm one.
+  // See the validator below for details.
+  array_unshift($form['#validate'], 'asu_taxonomies_term_autocomplete_validate');
+
+  // Replace the multi-select with entity_autocomplete.
+  $form['relations']['parent'] = [
+    '#type' => 'entity_autocomplete',
+    '#target_type' => 'taxonomy_term',
+    '#tags' => TRUE,
+    '#selection_settings' => [
+      'target_bundles' => [$form['vid']['#value']],
+    ],
+  ];
 
   // Load the parent value, if any, to populate the parent form field.
-  $parent_default_value = [];
   if ($form_state->getFormObject() instanceof EntityFormInterface) {
     $term = $form_state->getformObject()->getEntity();
     if ($term->hasField('parent')) {
       // The form field needs an array of entities,
       // not an EntityReferenceFieldItemList.
       foreach ($term->parent as $parent) {
-        $parent_default_value[] = $parent->entity;
+        if ($parent->entity) {
+          $form['relations']['parent']['#default_value'][] = $parent->entity;
+        }
       }
     }
   }
+}
 
-  $form['relations']['parent'] = [
-    '#type' => 'entity_autocomplete',
-    '#target_type' => 'taxonomy_term',
-    '#tags' => TRUE,
-    '#default_value' => $parent_default_value,
-    '#selection_settings' => [
-      'target_bundles' => [$form['vid']['#value']],
-    ],
-  ];
-
+/**
+ * Fixes empty parent values so TermForm doesn't die.
+ *
+ * An empty entity_autocomplete is simply null. However, TermForm expects
+ * an array. So, we give it an empty array if the parent field is empty.
+ */
+function asu_taxonomies_term_autocomplete_validate(&$form, FormStateInterface $form_state) {
+  if (empty($form_state->getValue('parent'))) {
+    $form_state->setValue('parent', []);
+  }
 }
