@@ -86,8 +86,12 @@ class SelfDepositCreateForm extends FormBase {
    * {@inheritdoc}
    */
   public function submitForm(array &$form, FormStateInterface $form_state) {
-    $this->createItem($this->webformSubmission);
-    $this->messenger()->addStatus('Successfuly created repository item.');
+    $node = $this->createItem($this->webformSubmission);
+
+    $t_args = [
+      ':url' => $node->toUrl()->toString(),
+    ];
+    $this->messenger()->addStatus($this->t('Successfuly created repository item. <a href=":url">View item</a>', $t_args));
   }
 
   /* ************************************************************************ */
@@ -226,6 +230,7 @@ class SelfDepositCreateForm extends FormBase {
     }
 
     $webform_submission->setElementData('item_node', $node->id());
+    return $node;
   }
 
 }
