@@ -469,6 +469,24 @@ display:
     position: 1
     display_options:
       title: 'A/V - Service File'
+      pager:
+        type: none
+        options:
+          offset: 0
+      empty:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text
+          empty: true
+          content:
+            value: 'No files are accessible for playing. Please check if you are logged in or <a href="/contact">contact us</a> for more information on accessing this item.'
+            format: basic_html
+          tokenize: false
       sorts:
         field_file_size_value:
           id: field_file_size_value
@@ -546,7 +564,9 @@ display:
         groups:
           1: AND
       defaults:
+        empty: false
         title: false
+        pager: false
         sorts: false
         filters: false
         filter_groups: false

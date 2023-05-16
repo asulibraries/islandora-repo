@@ -10,33 +10,29 @@
     attach(context) {
       once('attach-player', '.av_ajax_player', context).forEach(
         element => {
-          attachPlayer(element);
+          // Pull node ID from div.
+          var nid = element.attributes['data-nid'].value;
+
+          // Everything we need to specify about the view.
+          var view_info = {
+            view_name: 'video_media_evas',
+            view_display_id: 'smallest',
+            view_args: nid,
+            view_dom_id: 'av-player-' + nid
+          };
+
+          // Details of the ajax action.
+          var ajax_settings = {
+            submit: view_info,
+            url: '/views/ajax',
+            element: element,
+            event: 'click'
+          };
+
+          // Have drupal/ajax attach the on-click event.
+          Drupal.ajax(ajax_settings);
         }
       );
     },
   };
-
-  function attachPlayer(element) {
-    // Pull node ID from div.
-    var nid = element.attributes['data-nid'].value;
-
-    // Everything we need to specify about the view.
-    var view_info = {
-      view_name: 'video_media_evas',
-      view_display_id: 'smallest',
-      view_args: nid,
-      view_dom_id: 'av-player-' + nid
-    };
-
-    // Details of the ajax action.
-    var ajax_settings = {
-      submit: view_info,
-      url: '/views/ajax',
-      element: element,
-      event: 'click'
-    };
-
-    // Have drupal/ajax attach the on-click event.
-    Drupal.ajax(ajax_settings);
-  }
 }(Drupal, once));
