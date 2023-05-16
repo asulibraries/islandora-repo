@@ -471,7 +471,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "{% if field_model == \"Audio\" or field_model == \"Video\" %}\r\nPLAYER!\r\n<div class='av_ajax_player' nid={{nid}}></div>\r\n{% endif %}"
+            text: "{% if field_model == \"Audio\" or field_model == \"Video\" %}\r\n<div class='av_ajax_player js-view-dom-id-av-player-{{nid}}' data-nid={{nid}}>PLAYER!</div>\r\n{% endif %}"
             make_link: false
             path: ''
             absolute: false
