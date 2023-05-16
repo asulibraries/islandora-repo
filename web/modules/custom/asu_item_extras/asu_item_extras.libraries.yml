@@ -19,3 +19,13 @@ altmetrics:
     gpl-compatible: false  
   js:
     https://d1bxh8uas1mnw7.cloudfront.net/assets/embed.js: { type: external, minified: false }
+
+av_ajax:
+  js:
+    js/av_ajax.js: {}
+  dependencies:
+    - core/drupal
+    - core/jquery
+    - core/jquery.once
+    - core/drupal.ajax
+    - core/views.ajax
