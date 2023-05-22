@@ -76,7 +76,7 @@ class CollectionParents extends ProcessorPluginBase {
               foreach ($entities as $par) {
                 if ($par->bundle() == 'collection') {
                   $collection_parents[] = $par->label();
-                  if ($par->status->getValue() != "1") {
+                  if ($par->status->getString() != "1") {
                     $parent_published = FALSE;
                   }
                 }
