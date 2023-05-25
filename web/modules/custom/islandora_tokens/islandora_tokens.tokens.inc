@@ -49,7 +49,7 @@ function islandora_tokens_token_info() {
     'name' => t("Copyright date"),
     'description' => t('Show the "Copyright Date" into YYYY/MM/DD format (handles EDTF format)'),
   ];
-  $node['pdf_url'] = [
+  $node['asu_pdf_url'] = [
     'name' => t("PDF Url"),
     'description' => t('URL to related media file if "Original file" is a PDF file'),
   ];
@@ -101,8 +101,8 @@ function islandora_tokens_tokens($type, $tokens, array $data, array $options, Bu
           $replacements[$original] = _normalize_date_format($data['node'], 'field_edtf_copyright_date', $original);
           break;
 
-        case 'pdf_url':
-          $replacements[$original] = ' ' . _url_to_service_file_media_by_mimetype($data['node'], 'application/pdf');
+        case 'asu_pdf_url':
+          $replacements[$original] = ' ' . _url_to_media_file_by_mimetype($data['node'], 'application/pdf');
           break;
       }
     }
@@ -220,7 +220,7 @@ function _normalize_date_format($node, $field_name, $original) {
 }
 
 /**
- * Gets Original File PDF file URL.
+ * Gets node's first accessible file URL by mime type.
  *
  * @param object $node
  *   A core drupal node object.
@@ -230,41 +230,26 @@ function _normalize_date_format($node, $field_name, $original) {
  * @return string
  *   The tokenized value for the given data.
  */
-function _url_to_service_file_media_by_mimetype($node, $mime_type) {
-  // making a huge assumption that since we're looking for a PDF that its a document model
-  if ($node->get('field_model')->entity == NULL || $node->get('field_model')->entity->getName() != "Digital Document") {
-    return;
-  }
-  $default_config = \Drupal::config('asu_default_fields.settings');
-  $origfile_term = $default_config->get('original_file_taxonomy_term');
-  $origfile_media = \Drupal::entityTypeManager()->getStorage('media')->loadByProperties([
-    'field_media_use' => ['target_id' => $origfile_term],
+function _url_to_media_file_by_mimetype($node, $mime_type) {
+  $media = \Drupal::entityTypeManager()->getStorage('media')->loadByProperties([
+    'field_mime_type' => $mime_type,
     'field_media_of' => ['target_id' => $node->id()]
   ]);
-  if (count($origfile_media) > 0) {
-    $origfile_media = reset($origfile_media);
-  } else {
-    $origfile_media = NULL;
-  }
-  // Get the media file's mime_type value.
-  if (is_object($origfile_media)) {
-    $origfile_mime_type = ($origfile_media->hasField('field_mime_type')) ?
-      $origfile_media->get('field_mime_type')->getValue() : NULL;
-    $origfile_mime_type = (is_array($origfile_mime_type) &&
-      array_key_exists(0, $origfile_mime_type) &&
-      is_array($origfile_mime_type[0]) &&
-      array_key_exists('value', $origfile_mime_type[0])) ?
-      $origfile_mime_type[0]['value'] : '';
-    // Compare the media file's mime_type to the given value.
-    if ($origfile_mime_type == $mime_type) {
-      $bundle = $origfile_media->bundle();
-      // Since this is Islandora and we assume the Original File is a
-      // Document type... but doing it dynamically.
-      $file = $origfile_media->get('field_media_' . $bundle)->entity;
-      if (!is_null($file)) {
-        $url = file_create_url($file->getFileUri());
-        return $url;
+
+  foreach ($media as $m) {
+    // Return the first one we can access.
+    if ($m->access('view')) {
+      // Short-cut for getting the source field.
+      $bundle = $m->bundle();
+      if (!$m->hasField('field_media_' . $bundle)) {
+        \Drupal::logger('islandora_tokens')->warning("Could not find source field_media_{$bundle} for media {$m->id()}");
+        continue;
       }
+      $file = $m->get('field_media_' . $bundle)->entity;
+      if (!is_null($file)) {
+        return file_create_url($file->getFileUri());
+      }
+      \Drupal::logger('islandora_tokens')->warning("Could not find file for media {$m->id()}");
     }
   }
 }
