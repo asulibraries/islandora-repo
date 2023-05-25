@@ -383,7 +383,7 @@ handlers:
       sender_mail: ''
       sender_name: ''
       subject: 'KEEP self deposit from [webform_submission:user]'
-      body: "A new self deposit has been submitted on KEEP<br />\r\n<br />\r\n&lt;p&gt;Submitted on [webform_submission:created]&lt;/p&gt;<br />\r\n&lt;p&gt;Submitted by: [webform_submission:user]&lt;/p&gt;<br />\r\n&lt;p&gt;Submitted values are:&lt;/p&gt;<br />\r\n[webform_submission:values]<br />\r\n&nbsp;"
+      body: "A new self deposit has been submitted on KEEP<br />\r\nThe submission can be accessed here:&nbsp;[webform_submission:url]<br />\r\n<br />\r\n<p>Submitted on [webform_submission:created]</p><br />\r\n<p>Submitted by: [webform_submission:user]</p><br />\r\n<p>Submitted values are:</p><br />\r\n[webform_submission:values]<br />\r\n&nbsp;"
       excluded_elements: {  }
       ignore_access: false
       exclude_empty: true

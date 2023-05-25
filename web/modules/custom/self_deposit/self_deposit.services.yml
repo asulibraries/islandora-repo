@@ -1,0 +1,5 @@
+services:
+  self_deposit.route_subscriber:
+    class: Drupal\self_deposit\Routing\RouteSubscriber
+    tags:
+      - { name: event_subscriber }
