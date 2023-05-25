@@ -4,6 +4,9 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.media.source
+    - media.type.audio
+    - media.type.remote_video
+    - media.type.video
   module:
     - eva
     - media
@@ -177,6 +180,7 @@ display:
           admin_label: 'field_media_use: Taxonomy term'
           plugin_id: standard
           required: false
+      use_ajax: true
       header: {  }
       footer: {  }
       display_extenders: {  }
@@ -450,6 +454,127 @@ display:
       display_extenders: {  }
       entity_type: node
       bundles: {  }
+    cache_metadata:
+      max-age: -1
+      contexts:
+        - 'languages:language_content'
+        - 'languages:language_interface'
+        - url
+        - user.permissions
+      tags: {  }
+  smallest:
+    id: smallest
+    display_title: 'Smallest Playable'
+    display_plugin: entity_view
+    position: 1
+    display_options:
+      title: 'A/V - Service File'
+      pager:
+        type: none
+        options:
+          offset: 0
+      empty:
+        area:
+          id: area
+          table: views
+          field: area
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: text
+          empty: true
+          content:
+            value: 'No files are accessible for playing. Please check if you are logged in or <a href="/contact">contact us</a> for more information on accessing this item.'
+            format: basic_html
+          tokenize: false
+      sorts:
+        field_file_size_value:
+          id: field_file_size_value
+          table: media__field_file_size
+          field: field_file_size_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: standard
+          order: ASC
+          expose:
+            label: ''
+            field_identifier: ''
+          exposed: false
+      filters:
+        status:
+          id: status
+          table: media_field_data
+          field: status
+          entity_type: media
+          entity_field: status
+          plugin_id: boolean
+          value: '1'
+          group: 1
+          expose:
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+        bundle:
+          id: bundle
+          table: media_field_data
+          field: bundle
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: media
+          entity_field: bundle
+          plugin_id: bundle
+          operator: in
+          value:
+            audio: audio
+            remote_video: remote_video
+            video: video
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+      filter_groups:
+        operator: AND
+        groups:
+          1: AND
+      defaults:
+        empty: false
+        title: false
+        pager: false
+        sorts: false
+        filters: false
+        filter_groups: false
+      display_description: ''
+      display_extenders: {  }
+      entity_type: node
+      bundles:
+        - asu_repository_item
     cache_metadata:
       max-age: -1
       contexts:

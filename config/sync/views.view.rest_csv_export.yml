@@ -2351,6 +2351,10 @@ display:
           click_sort_column: value
           type: edtf_default
           settings:
+            date_separator: dash
+            date_order: big_endian
+            month_format: mm
+            day_format: dd
             relationship: none
             field_rendering: 1
             fieldsets:
@@ -2414,10 +2418,6 @@ display:
             click_sort_column: value
             type: edtf_default
             field_api_classes: 0
-            date_separator: dash
-            date_order: big_endian
-            month_format: mm
-            day_format: dd
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -2713,6 +2713,10 @@ display:
           click_sort_column: value
           type: edtf_default
           settings:
+            date_separator: dash
+            date_order: big_endian
+            month_format: mm
+            day_format: dd
             relationship: none
             field_rendering: 1
             fieldsets:
@@ -2769,10 +2773,6 @@ display:
             click_sort_column: value
             type: edtf_default
             field_api_classes: 0
-            date_separator: dash
-            date_order: big_endian
-            month_format: mm
-            day_format: dd
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -2843,6 +2843,10 @@ display:
           click_sort_column: value
           type: edtf_default
           settings:
+            date_separator: dash
+            date_order: big_endian
+            month_format: mm
+            day_format: dd
             relationship: none
             field_rendering: 1
             fieldsets:
@@ -2899,10 +2903,6 @@ display:
             click_sort_column: value
             type: edtf_default
             field_api_classes: 0
-            date_separator: dash
-            date_order: big_endian
-            month_format: mm
-            day_format: dd
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -3184,7 +3184,7 @@ display:
           click_sort_column: target_id
           type: typed_relation_default
           settings:
-            link: 0
+            link: false
           group_column: ''
           group_columns: {  }
           group_rows: true
@@ -5156,9 +5156,9 @@ display:
       query:
         type: search_api_query
         options:
-          skip_access: 0
-          bypass_access: 0
-          preserve_facet_query_args: 1
+          bypass_access: false
+          skip_access: false
+          preserve_facet_query_args: true
       relationships: {  }
       header: {  }
       footer: {  }

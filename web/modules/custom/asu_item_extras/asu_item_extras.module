@@ -1,6 +1,13 @@
 <?php
 
 /**
+ * @file
+ * Item extra module.
+ */
+
+use Drupal\views\ViewExecutable;
+
+/**
  * Implements hook_theme().
  */
 function asu_item_extras_theme() {
@@ -11,17 +18,39 @@ function asu_item_extras_theme() {
         'caption' => NULL,
         'files' => [],
         'poster' => NULL,
-        'attributes' => NULL
-      ]
+        'attributes' => NULL,
       ],
-      'asu_item_extras_downloads_block' => [
-        'template' => 'asu-item-extras-downloads-block',
-        'variables' => [
-          'asu_download_links' => NULL,
-          'asu_download_restricted' => NULL,
-          'asu_download_info' => NULL,
-          'file_size' => NULL
-        ]
-      ]
+    ],
+    'asu_item_extras_downloads_block' => [
+      'template' => 'asu-item-extras-downloads-block',
+      'variables' => [
+        'asu_download_links' => NULL,
+        'asu_download_restricted' => NULL,
+        'asu_download_info' => NULL,
+        'file_size' => NULL,
+      ],
+    ],
   ];
+}
+
+/**
+ * Implements hook_views_pre_render().
+ *
+ * Views doesn't respect our permissions module. We need to check each media
+ * until we find one we can return.
+ */
+function asu_item_extras_views_pre_render(ViewExecutable $view) {
+  if ($view->id() == 'video_media_evas') {
+    // Unset everything we don't have permission for
+    // OR after we found an accessible item.
+    $found = FALSE;
+    foreach ($view->result as $key => $value) {
+      if (!$found && !empty($value->_entity) && $value->_entity->access('view')) {
+        $found = TRUE;
+      }
+      else {
+        unset($view->result[$key]);
+      }
+    }
+  }
 }
