@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @file
+ * Default fields hooks.
+ */
+
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\media\MediaInterface;
 use Drupal\node\NodeInterface;
@@ -60,7 +65,7 @@ function asu_default_fields_node_presave(NodeInterface $node) {
         $nm = ($nonsort != NULL || $nonsort != "" || $nonsort != " " ? trim($nonsort) . " " : "") .
           ($main != NULL ? trim($main) : "[untitled]") .
           ($sub != NULL ? ": " . trim($sub) : "");
-        $nm = trim($nm);
+        $nm = substr(trim($nm), 0, 254);
         $node->setTitle($nm);
       }
       else {
@@ -209,7 +214,6 @@ function asu_default_fields_media_insert(MediaInterface $media) {
           $media->save();
         }
         // Media don't have handles.
-        // _mint_handle($media, 'R.2.M');
       }
       elseif ($taxy->getName() == 'Service File') {
         if ($parent->hasField('field_default_derivative_file_pe') && !$parent->get('field_default_derivative_file_pe')->isEmpty() && $media->get('field_access_terms')->isEmpty()) {
@@ -238,18 +242,27 @@ function _mint_handle(EntityInterface $object, string $prefix = NULL) {
     }
   }
   catch (RequestException $e) {
-    \Drupal::logger('persistent_identifiers')->warning("Handle server was inaccessible while minting handle for node %nid", ['%nid' => $object->id()]);
+    \Drupal::logger('persistent_identifiers')->warning("Handle server was inaccessible while minting handle for node %nid", [
+      '%nid' => $object->id(),
+    ]);
     return;
   }
   if (is_null($pid)) {
-    \Drupal::logger('persistent_identifiers')->warning("Persistent identifier not created for node @nid.", ['@nid' => $object->id()]);
+    \Drupal::logger('persistent_identifiers')->warning("Persistent identifier not created for node @nid.", [
+      '@nid' => $object->id(),
+    ]);
     return;
   }
   $persister = \Drupal::service($config->get('persistent_identifiers_persister'));
   if ($persister->persist($object, $pid)) {
-    \Drupal::logger('persistent_identifiers')->info("Persistent identifier %pid created for node @nid.", ['%pid' => $pid, '@nid' => $object->id()]);
+    \Drupal::logger('persistent_identifiers')->info("Persistent identifier %pid created for node @nid.", [
+      '%pid' => $pid,
+      '@nid' => $object->id(),
+    ]);
   }
   else {
-    \Drupal::logger('persistent_identifiers')->warning("Persistent identifier not created for node @nid.", ['@nid' => $object->id()]);
+    \Drupal::logger('persistent_identifiers')->warning("Persistent identifier not created for node @nid.", [
+      '@nid' => $object->id(),
+    ]);
   }
 }
