@@ -114,10 +114,10 @@ content:
     weight: 10
     region: content
   display_media_thumbnail:
-    weight: 0
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
   field_additional_memberships:
     type: entity_reference_label
     label: hidden
@@ -158,6 +158,7 @@ content:
       date_order: big_endian
       month_format: mm
       day_format: dd
+      year_format: 'y'
     third_party_settings: {  }
     weight: 28
     region: content
@@ -177,6 +178,7 @@ content:
       date_order: big_endian
       month_format: mm
       day_format: dd
+      year_format: 'y'
     third_party_settings: {  }
     weight: 11
     region: content
@@ -205,10 +207,10 @@ content:
     weight: 25
     region: content
   field_gemini_uri:
-    weight: 40
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 40
+    region: content
   field_genre:
     type: searchable_entity_formatter
     label: hidden
@@ -381,10 +383,9 @@ content:
     weight: 21
     region: content
   field_rich_description:
-    type: text_trimmed
+    type: text_default
     label: visually_hidden
-    settings:
-      trim_length: 600
+    settings: {  }
     third_party_settings: {  }
     weight: 2
     region: content
@@ -491,10 +492,10 @@ content:
     weight: 41
     region: content
   links:
-    weight: 6
-    region: content
     settings: {  }
     third_party_settings: {  }
+    weight: 6
+    region: content
 hidden:
   display_media_child_thumbnail: true
   display_media_download_button: true

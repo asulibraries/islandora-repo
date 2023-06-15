@@ -158,6 +158,7 @@ content:
       date_order: big_endian
       month_format: mm
       day_format: dd
+      year_format: 'y'
     third_party_settings: {  }
     weight: 36
     region: content
@@ -177,6 +178,7 @@ content:
       date_order: big_endian
       month_format: mm
       day_format: dd
+      year_format: 'y'
     third_party_settings: {  }
     weight: 19
     region: content
@@ -381,10 +383,9 @@ content:
     weight: 29
     region: content
   field_rich_description:
-    type: text_trimmed
+    type: text_default
     label: visually_hidden
-    settings:
-      trim_length: 400
+    settings: {  }
     third_party_settings: {  }
     weight: 4
     region: content
