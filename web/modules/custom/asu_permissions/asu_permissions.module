@@ -17,7 +17,6 @@ use GuzzleHttp\Exception\ConnectException;
 use Drupal\asu_permissions\Exception\LibauthException;
 use Drupal\Core\Entity\EntityStorageException;
 
-
 /**
  * Implements hook_node_insert().
  *
@@ -27,7 +26,10 @@ function asu_permissions_node_insert(NodeInterface $node) {
   if ($node->bundle() == "collection") {
     // Create a new group for the collection.
     $pluginId = 'group_node:' . $node->bundle();
-    $col_group = Group::create(['type' => 'collection_group', 'label' => 'Collection ' . $node->id() . ' Group']);
+    $col_group = Group::create([
+      'type' => 'collection_group',
+      'label' => 'Collection ' . $node->id() . ' Group',
+    ]);
     $col_group->save();
     $col_group->addContent($node, $pluginId);
     $col_group->save();
@@ -172,14 +174,13 @@ function asu_permissions_node_update(NodeInterface $node) {
 
     // If the field items are not equal, we need to save.
     if (!$of_items->equals($of_original_items)) {
-      // change the media with type OF
+      // Change the media with type OF.
       $medias = $utils->getMedia($node);
-      foreach($medias as $media) {
+      foreach ($medias as $media) {
         $term = $media->get('field_media_use')->entity;
         $term_name = $term->getName();
         if ($term_name == "Original File") {
-          $media->set('field_access_terms', $node
-            ->get('field_default_original_file_perm')->entity->id());
+          $media->set('field_access_terms', $node->field_default_original_file_perm->getValue());
           $media->save();
         }
       }
@@ -194,7 +195,7 @@ function asu_permissions_node_update(NodeInterface $node) {
 
     // If the field items are not equal, we need to save.
     if (!$df_items->equals($df_original_items)) {
-      // change the media with service file
+      // Change the media with service file.
       if (!isset($medias)) {
         $medias = $utils->getMedia($node);
       }
@@ -202,8 +203,7 @@ function asu_permissions_node_update(NodeInterface $node) {
         $term = $media->get('field_media_use')->entity;
         $term_name = $term->getName();
         if ($term_name == "Service File") {
-          $media->set('field_access_terms', $node
-            ->get('field_default_derivative_file_pe')->entity->id());
+          $media->set('field_access_terms', $node->field_default_derivative_file_pe->getValue());
           $media->save();
         }
       }
@@ -215,35 +215,36 @@ function asu_permissions_node_update(NodeInterface $node) {
  * Implements hook_node_access().
  */
 function asu_permissions_node_access(NodeInterface $node, $op, AccountInterface $account) {
-// //   // \Drupal::logger('asu permissions')->info("access check for " . $node->id() . " which is a " . $node->bundle());
   if ($node->bundle() == "collection" || $node->bundle() == "asu_repository_item") {
     if ($account->isAuthenticated() && (in_array("administrator", $account->getRoles()) || in_array("metadata_manager", $account->getRoles()))) {
       // Allow if admin or metadata manager.
       return AccessResult::allowed();
     }
-    // if the node is published and there is parent access, don't bother checking the groups
+    // If the node is published and there is parent access,
+    // don't bother checking the groups.
     if ($node->isPublished()) {
       $access_result = AccessResult::allowed();
       $parents = _walk_membership($node, []);
       if (count($parents) > 0) {
         foreach ($parents as $par) {
           if ($par->uuid() != $node->uuid()) {
-            // This line enforces if you can't view a parent then you can't view child.
+            // This line enforces if you can't view a parent
+            // then you can't view child.
             $taccess = $par->access($op, $account);
             if ($taccess == FALSE) {
-             $access_result = AccessResult::forbidden();
-             break;
+              $access_result = AccessResult::forbidden();
+              break;
             }
             if ($par->hasField('field_enabled') && $par->get('field_enabled') && $par->get('field_enabled')->value == 0) {
-             $access_result = AccessResult::forbidden();
-             break;
+              $access_result = AccessResult::forbidden();
+              break;
             }
           }
         }
       }
     }
     else {
-      // if its not published then we should check the group membership
+      // If its not published then we should check the group membership.
       $access_result = AccessResult::forbidden();
     }
     if (isset($access_result) && $access_result == AccessResult::forbidden()) {
@@ -260,7 +261,8 @@ function asu_permissions_node_access(NodeInterface $node, $op, AccountInterface 
           if ($group->hasPermission("view unpublished $plugin_id entity", $account) && $group->getMember($account)) {
             // This is what gives metadata managers and admins their power.
             $access_result = AccessResult::allowed();
-          } else {
+          }
+          else {
             // Forbid if not explictly allowed by group. This is powerful.
             $access_result = AccessResult::forbidden();
           }
@@ -287,32 +289,27 @@ function asu_permissions_node_access(NodeInterface $node, $op, AccountInterface 
 function asu_permissions_media_access(EntityInterface $entity, $operation, AccountInterface $account) {
   $item = $entity->get('field_media_of')->entity;
   if (!$item) {
-    // Return neutral because it isn't an Islandora media - it isn't attached to an item.
+    // Return neutral because it isn't an Islandora media;
+    // it isn't attached to an item.
     return new AccessResultNeutral();
   }
   if ($account->isAuthenticated() && (in_array("administrator", $account->getRoles()) || in_array("metadata_manager", $account->getRoles()))) {
     // Allow if admin.
-    // TODO potentially do a lookup here for additional all-seeing roles.
+    // @todo potentially do a lookup here for additional all-seeing roles.
     $access_result = AccessResult::allowed();
   }
-  // \Drupal::logger('asu permissions')->info("checking access for " . $entity->get('field_media_use')->entity->getName());
   if ($entity->hasField('field_access_terms') && $entity->get('field_access_terms')->entity) {
-    // \Drupal::messenger()->addMessage("has islandora access set");
     $access_term = $entity->get('field_access_terms')->entity->getName();
   }
   else {
     // Assume its public if not access is set.
     $access_term = "Public";
   }
-  // \Drupal::logger('asu permissions')->info("access term: " . $access_term);
   if (!$account->isAuthenticated() && $access_term != "Public") {
     $access_result = AccessResult::forbidden();
-    // \Drupal::logger('asu permissions')->info('access results: forbidden');
   }
-  // \Drupal::logger('asu permissions')->info('access results' . $access_result);
   if (!isset($access_result)) {
-    // \Drupal::logger('asu permissions')->info('had to go deeper because it was public');
-    // Depend on the permission of the parent item
+    // Depend on the permission of the parent item.
     $taccess = $item->access($operation, $account);
     $all_parents = _walk_membership($item, [$item]);
     foreach ($all_parents as $par) {
@@ -323,7 +320,6 @@ function asu_permissions_media_access(EntityInterface $entity, $operation, Accou
         $taccess = 0;
       }
     }
-    // \Drupal::logger('asu permissions')->info("parent access: " . $taccess);
     if ($taccess == 1) {
 
       if ($account->isAuthenticated() && $access_term == "Private") {
@@ -337,7 +333,6 @@ function asu_permissions_media_access(EntityInterface $entity, $operation, Accou
         }
       }
       else {
-        // \Drupal::logger('asu permissions')->info("not authenticated or not Private");
         if ($access_term == "Public") {
           $access_result = AccessResult::forbiddenIf($taccess == 0);
         }
@@ -386,8 +381,14 @@ function _walk_membership(NodeInterface $entity, $parents) {
   }
 }
 
+/**
+ * Walks nested array (second param) to merge full tree into the first.
+ */
 function array_merge_recursive_unique($array1, $array2) {
-  if (empty($array1)) return $array2; //optimize the base case
+  // Optimize the base case.
+  if (empty($array1)) {
+    return $array2;
+  }
 
   foreach ($array2 as $key => $value) {
     if (is_array($value) && is_array(@$array1[$key])) {
@@ -399,10 +400,10 @@ function array_merge_recursive_unique($array1, $array2) {
 }
 
 /**
- * Implements hook_file_download.
+ * Implements hook_file_download().
  */
 function asu_permissions_file_download($uri) {
-  /* @var \Drupal\file\FileInterface[] $files */
+  /** @var \Drupal\file\FileInterface[] $files */
   $files = \Drupal::entityTypeManager()
     ->getStorage('file')
     ->loadByProperties(['uri' => $uri]);
@@ -418,24 +419,20 @@ function asu_permissions_file_download($uri) {
     if (count($medias) == 0) {
       return NULL;
     }
-    foreach ($medias as $mid => $media) {
+    foreach ($medias as $media) {
       $node = $utils->getParentNode($media);
       if (!$media->access('view', $user)) {
-        // if (!$node->access('view')) {
         // If the user isn't allowed to view the media, return -1 to tell
         // Drupal to block access to the file currently being requested.
-        // \Drupal::logger('asu permissions')->info("no media access");
         return -1;
       }
       if ($node) {
         $node = $media->get('field_media_of')->entity;
         $date = new \DateTime();
         $today = $date->format("c");
-        // \Drupal::logger('asu permissions')->info("checking the embargo release date for node " . $node->id());
         if (
           $node && $node->hasField('field_embargo_release_date') && $node->get('field_embargo_release_date') && $node->get('field_embargo_release_date')->value != "T23:59:59" && $node->get('field_embargo_release_date')->value >= $today
         ) {
-          // \Drupal::logger('asu permissions')->info("its embargoed");
           return -1;
         }
       }
@@ -464,21 +461,20 @@ function _get_groups_from_node(EntityInterface $node) {
 
 /**
  * Implements hook_entity_type_insert().
- * Implements hook_user_insert().
  */
 function asu_permissions_user_insert(UserInterface $entity) {
   $url = "http://authprod.lib.asu.edu/asurite/" . $entity->getDisplayName() . ".json";
   $client = \Drupal::httpClient();
-  $roles = $entity->getRoles();
-  // if they aren't going to be a casuser, then we can just proceed without this check
+  // If they aren't going to be a casuser,
+  // then we can just proceed without this check.
   if (!(in_array('casuser', $entity->getRoles()))) {
     return;
   }
   try {
-    // try checking if they are in the headcount in authprod/libauth
+    // Try checking if they are in the headcount in authprod/libauth.
     $request = $client->request('GET', $url);
     if ($request->getStatusCode() == 200) {
-      // if 200 and in headcount, proceed
+      // If 200 and in headcount, proceed.
       $json = json_decode($request->getBody(), TRUE);
       if (array_key_exists('in_headcount', $json) && $json['in_headcount'] == TRUE) {
         if (array_key_exists('preferred_first_name', $json['person'])) {
@@ -504,7 +500,7 @@ function asu_permissions_user_insert(UserInterface $entity) {
         if ($honors) {
           $entity->addRole('honors_student');
           foreach ($json['stuplan'] as $plan) {
-            if (!in_array($plan['acad_dept_org_descr'],$schools)) {
+            if (!in_array($plan['acad_dept_org_descr'], $schools)) {
               array_push($schools, $plan['acad_dept_org_descr']);
             }
             if ($plan['acad_career'] == 'UGRD') {
@@ -522,14 +518,15 @@ function asu_permissions_user_insert(UserInterface $entity) {
       else {
         throw new LibauthException('Libauth: User is not authorized for electronic resources at ASU. If you think this is an error, <a href="/contact">please contact us</a>.');
       }
-    } else if ($request->getStatusCode() == 404) {
-      // if 404 exit without creating user
+    }
+    elseif ($request->getStatusCode() == 404) {
+      // If 404 exit without creating user.
       throw new LibauthException('Libauth: Unable to find user ' . $entity->getDisplayName() . ' at ASU. If you think this is an error, <a href="/contact">please contact us</a>.');
 
-    } else {
+    }
+    else {
       throw new LibauthException('Libauth: There was an issue validating user ' . $entity->getDisplayName() . ' at ASU due to a non-standard status code (not 200 or 404. If you think this is an error, <a href="/contact">please contact us</a>.');
-      // if anything else exit without creating user
-
+      // If anything else exit without creating user.
     }
   }
   catch (EntityStorageException $e) {
@@ -539,8 +536,9 @@ function asu_permissions_user_insert(UserInterface $entity) {
     if ($request && $request->getStatusCode() == 404) {
       throw new LibauthException('Libauth: Unable to find user ' . $entity->getDisplayName() . ' at ASU. If you think this is an error, <a href="/contact">please contact us</a>.');
 
-    } else {
-        throw new LibauthException('Libauth: There was an issue validating user ' . $entity->getDisplayName() . ' at ASU due to a client exception. If you think this is an error, <a href="/contact">please contact us</a>.');
+    }
+    else {
+      throw new LibauthException('Libauth: There was an issue validating user ' . $entity->getDisplayName() . ' at ASU due to a client exception. If you think this is an error, <a href="/contact">please contact us</a>.');
     }
   }
   catch (ConnectException $e) {
@@ -557,7 +555,7 @@ function asu_permissions_theme() {
       'template' => 'custom-exception',
       'variables' => [
         'message' => NULL,
-      ]
+      ],
     ],
   ];
 }
