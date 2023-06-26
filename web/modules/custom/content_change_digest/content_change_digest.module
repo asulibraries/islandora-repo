@@ -155,7 +155,7 @@ function content_change_digest_get_view_html() {
     $view->execute();
     $args = $view->args;
     $el = $view->render();
-    $render_view = \Drupal::service('renderer')->render($el);
+    $render_view = \Drupal::service('renderer')->renderPlain($el);
     $output[] = "<h3>Changed content</h3>" . $render_view;
   }
 
@@ -165,7 +165,7 @@ function content_change_digest_get_view_html() {
     $view2->setArguments([$date]);
     $view2->execute();
     $el2 = $view2->render();
-    $render_view2 = \Drupal::service('renderer')->render($el2);
+    $render_view2 = \Drupal::service('renderer')->renderPlain($el2);
     $output[] = "<h3>New content</h3>" . $render_view2;
   }
   return $output;
