@@ -119,7 +119,6 @@ class ModsEncoder extends XmlEncoder {
     else {
       $vals = [$field_name];
     }
-
     if (is_array($config) && array_key_exists('#', $config) && $config['#'] == $field_name && count($config) == 1) {
       $vals = $vals;
     }
@@ -193,8 +192,9 @@ class ModsEncoder extends XmlEncoder {
               $returned = self::getFieldValues($temp_val, $sub_cv, $sub_ck);
               if (!empty($returned)) {
                 // Keys prefixed with '@' turn into XML attributes which can
-                // only have a single value, so we'll give them the first one.
-                if (str_starts_with($sub_ck, '@')) {
+                // only have a single value, so we'll give them the first one
+                // if we recieved an array.
+                if (str_starts_with($sub_ck, '@') && is_array($returned)) {
                   $field_arr[$ck][$sub_ck] = $returned[0];
                 }
                 else {
