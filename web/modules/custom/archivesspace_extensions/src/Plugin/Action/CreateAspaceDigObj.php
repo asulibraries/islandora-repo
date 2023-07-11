@@ -2,6 +2,7 @@
 
 namespace Drupal\archivesspace_extensions\Plugin\Action;
 
+use GuzzleHttp\Exception\ClientException;
 use Drupal\Core\Action\ActionBase;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
@@ -20,7 +21,7 @@ use Drupal\archivesspace\ArchivesSpaceSession;
  * )
  */
 class CreateAspaceDigObj extends ActionBase implements ContainerFactoryPluginInterface {
-
+  use \Drupal\Core\StringTranslation\StringTranslationTrait;
   /**
    * Logger.
    *
@@ -66,7 +67,7 @@ class CreateAspaceDigObj extends ActionBase implements ContainerFactoryPluginInt
           $configuration,
           $plugin_id,
           $plugin_definition,
-          $container->get('logger.channel.islandora')
+          $container->get('logger.channel.archivesspace_extensions')
       );
   }
 
@@ -83,64 +84,157 @@ class CreateAspaceDigObj extends ActionBase implements ContainerFactoryPluginInt
       return;
     }
 
-    $this->logger->info("In the Archivesspace DO Action!");
+    $extensions_settings = \Drupal::config('archivesspace_extensions.settings');
 
-    $archival_obj = $entity->get('field_source')->referencedEntities();
-    if ($archival_obj) {
-      // @todo get repository id from configuration?
-      $entity_uri = $entity->toUrl('canonical', ['https' => TRUE, 'absolute' => TRUE])->toString();
-      $archival_obj = $archival_obj[0];
-      $archival_obj_ref_id = $archival_obj->get('field_as_ref_id')->value;
-      $params = [
-        "ref_id" => [$archival_obj_ref_id],
+    // Sanity checking for required bits.
+    if (!$entity->hasField('field_typed_identifier') || $entity->field_typed_identifier->isEmpty() || empty($entity->field_typed_identifier->entity->field_identifier_value->value)) {
+      $message = $this->t('Node %nid does not have an identifier value which is necessary to create an ArchivesSpace digital object.', [
+        '%nid' => $entity->id(),
+      ]);
+      $this->logger->warning($message);
+      \Drupal::messenger()->addWarning($message);
+      return;
+    }
+    $item_id = $entity->get('field_typed_identifier')->entity->field_identifier_value->value;
+    $identifier = str_replace(' ', '_', $item_id);
+    if (!$entity->hasField($extensions_settings->get('reference_field'))) {
+      $this->logger->warning('Node %nid does not have an ArchivesSpace reference field %field.', [
+        '%nid' => $entity->id(),
+        '%field' => $extensions_settings->get('reference_field'),
+      ]);
+      return;
+    }
+    $reference_paragraph = $entity->get($extensions_settings->get('reference_field'))->entity;
+    if (!$reference_paragraph) {
+      $this->logger->warning('Node %nid does not have an ArchivesSpace reference field value.', [
+        '%nid' => $entity->id(),
+      ]);
+      return;
+    }
+    if (!$reference_paragraph->get($extensions_settings->get('repo_id_field')) || $reference_paragraph->get($extensions_settings->get('repo_id_field'))->isEmpty()) {
+      $this->logger->warning('Node %nid ArchivesSpace reference field value has no repository identifer.', [
+        '%nid' => $entity->id(),
+      ]);
+      return;
+    }
+    $repo_id = $reference_paragraph->get($extensions_settings->get('repo_id_field'))->value;
+    $archival_object = [];
+    if (!$reference_paragraph->hasField($extensions_settings->get('ao_ref_id_field')) || $reference_paragraph->get($extensions_settings->get('ao_ref_id_field'))->isEmpty()) {
+      $this->logger->warning('Node %nid ArchivesSpace reference field value has no archival object ref_id.', [
+        '%nid' => $entity->id(),
+      ]);
+      return;
+    }
+    $ao_results = $this->archivesspaceSession->request('GET', "/repositories/{$repo_id}/find_by_id/archival_objects", [
+      "ref_id" => [
+        $reference_paragraph->get($extensions_settings->get('ao_ref_id_field'))->value,
+      ],
+      'resolve' => ['archival_objects'],
+    ]);
+    if (!array_key_exists('archival_objects', $ao_results) || empty($ao_results['archival_objects'])) {
+      $this->logger->warning('Could not find archival object with ref_id %ref_id.', [
+        '%ref_id' => $reference_paragraph->get($extensions_settings->get('ao_ref_id_field'))->value,
+      ]);
+      return;
+    }
+    $archival_object = $ao_results['archival_objects'][0]['_resolved'];
+
+    // Get URL for digital object file version.
+    $link = ($entity->hasField($extensions_settings->get('link_field')) && !$entity->get($extensions_settings->get('link_field'))->isEmpty()) ? $entity->get($extensions_settings->get('link_field'))->value : $entity->toUrl('canonical', [
+      'https' => TRUE,
+      'absolute' => TRUE,
+    ])->toString();
+
+    // Create or Update ArchivesSpace digital object.
+    if ($reference_paragraph->get($extensions_settings->get('do_id_field'))->isEmpty()) {
+      // Create digital object.
+      $do_json = [
+        'jsonmodel_type' => 'digital_object',
+        'title' => $entity->getTitle(),
+        'file_versions' => [
+          [
+            'file_uri' => $link,
+          ],
+        ],
+        'linked_instances' => [
+          [
+            'ref' => $archival_object['uri'],
+          ],
+        ],
+        'digital_object_id' => $identifier,
       ];
-      $ao_results = $this->archivesspaceSession->request('GET', '/repositories/2/find_by_id/archival_objects', $params);
-      $ao_uri = $ao_results['archival_objects'][0]['ref'];
-      $ao_info = $this->archivesspaceSession->request('GET', $ao_uri);
-      // \Drupal::logger('aspace_digital_obj_action')->info(print_r($ao_info, TRUE));
-      if ($entity->get('field_digital_object_id')->value != NULL) {
-        $do_id = $entity->get('field_digital_object_id')->value;
-        $do_results = $this->getDigitalObject($do_id, FALSE);
-        $do_results['file_versions'][0]['file_uri'] = $entity_uri;
-        $do_post_request = $this->createUpdateDigitalObject($do_results, $do_id);
-        $do_uri = $do_post_request['uri'];
+      $do_json['publish'] = ($entity->status->value) ? TRUE : FALSE;
+      try {
+        $create_response = $this->createUpdateDigitalObject($do_json, $repo_id);
+      }
+      catch (ClientException $e) {
+        $this->logger->error("Could not create digital object '%did' for node '%nt' (%nid): %message", [
+          '%did' => $identifier,
+          '%nt' => $entity->label(),
+          '%nid' => $entity->id(),
+          '%message' => $e->getMessage(),
+        ]);
+        return;
+      }
+      $do_uri = $create_response['uri'];
+      $do_id = $this->getIdFromUri($do_uri);
+      $reference_paragraph->set($extensions_settings->get('do_id_field'), $do_id);
+      $reference_paragraph->save();
+
+      // Update archival object.
+      $archival_object['instances'][] = [
+        'lock_version' => 0,
+        'instance_type' => 'digital_object',
+        'jsonmodel_type' => 'instance',
+        'is_representative' => FALSE,
+        'digital_object' => [
+          'ref' => $do_uri,
+        ],
+      ];
+      $this->logger->debug("archival object: " . json_encode($archival_object));
+      $response = $this->archivesspaceSession->request('POST', $archival_object['uri'], $archival_object);
+      $this->logger->info("Updated archival object %ao_uri with digital object %do_uri (%body)", [
+        '%ao_uri' => $archival_object['uri'],
+        '%do_uri' => $do_uri,
+        '%body' => json_encode($response),
+      ]);
+    }
+    else {
+      // Update digital object.
+      $do_id = $reference_paragraph->get($extensions_settings->get('do_id_field'))->value;
+      try {
+        $do = $this->archivesspaceSession->request('GET', "/repositories/{$repo_id}/digital_objects/{$do_id}");
+      }
+      catch (ClientException $e) {
+        $this->logger->error("Could not update digital object '%did' for node '%nt' (%nid): %message", [
+          '%did' => $identifier,
+          '%nt' => $entity->label(),
+          '%nid' => $entity->id(),
+          '%message' => $e->getMessage(),
+        ]);
+        return;
+      }
+      $do['title'] = $entity->getTitle();
+      $do['digital_object_id'] = $identifier;
+      $do['publish'] = ($entity->status->value) ? TRUE : FALSE;
+      $do['file_versions'][0]['file_uri'] = $link;
+      $update_response = $this->createUpdateDigitalObject($do, $repo_id, $do_id);
+      if (!empty($update_reponse['warnings'])) {
+        $this->logger->info("Updated digital object %do_uri for node '%nt' (%nid) with warnings: '%warnings'", [
+          '%do_uri' => $do['uri'],
+          '%nt' => $entity->label(),
+          '%nid' => $entity->id(),
+          '%warnings' => json_encode($update_response['warnings']),
+        ]);
       }
       else {
-        $ao_instances = $ao_info['instances'];
-        \Drupal::logger('aspace_digital_obj_action')->info(print_r($ao_instances, TRUE));
-
-        // Create a digital object with a file version with the repository URI.
-        $identifiers = $entity->get('field_typed_identifier')->referencedEntities();
-        $item_id = $identifiers[0]->get('field_identifier_value')->value;
-        $do_id = str_replace(' ', '_', $item_id);
-        \Drupal::logger('aspace_digital_obj_action')->info("create new digital object");
-        $do_json = [
-          'jsonmodel_type' => 'digital_object',
-          'title' => $entity->getTitle(),
-          'file_versions' => [
-                  [
-                    'file_uri' => $entity_uri,
-                  ],
-          ],
-          'linked_instances' => [
-                  [
-                    'ref' => $ao_uri,
-                  ],
-          ],
-          'digital_object_id' => $do_id,
-        ];
-        $create_response = $this->createUpdateDigitalObject($do_json);
-        $do_uri = $create_response['uri'];
-
+        $this->logger->info("Updated digital object %do_uri for node '%nt' (%nid)", [
+          '%do_uri' => $do['uri'],
+          '%nt' => $entity->label(),
+          '%nid' => $entity->id(),
+        ]);
       }
-      $this->updateArchivalObject($ao_uri, $ao_info, $do_id, $do_uri);
-      // Store the digital object id on the entity.
-      $entity->set('field_digital_object_id', [
-        'value' => $do_uri,
-      ]);
-      $entity->save();
     }
-
   }
 
   /**
@@ -152,15 +246,14 @@ class CreateAspaceDigObj extends ActionBase implements ContainerFactoryPluginInt
   }
 
   /**
-   *
+   * Creates or updates an ArchivesSpace digital object.
    */
-  private function createUpdateDigitalObject($do_json, $do_id = NULL) {
-    $url = '/repositories/2/digital_objects';
+  private function createUpdateDigitalObject($do_json, $repo_id = NULL, $do_id = NULL) {
+    $url = "/repositories/{$repo_id}/digital_objects";
     if ($do_id) {
-      $url .= "/" . $do_id;
+      $url .= "/{$do_id}";
     }
     $response = $this->archivesspaceSession->request('POST', $url, $do_json);
-    \Drupal::logger('aspace_digital_obj_action')->info(print_r($response, TRUE));
     if ($response['status'] == 'Created') {
       $this->messenger()->addStatus('Archivesspace digital object created');
     }
@@ -171,58 +264,11 @@ class CreateAspaceDigObj extends ActionBase implements ContainerFactoryPluginInt
   }
 
   /**
-   *
+   * Returns the numeric ID from an ArchivesSpace URI.
    */
-  private function updateArchivalObject($ao_uri, $ao_json, $do_id, $do_uri) {
-    $set_uri = FALSE;
-    if (count($ao_json['instances']) > 0) {
-      foreach ($ao_json['instances'] as $key => $instance) {
-        if ($instance['instance_type'] == 'digital_object' && $instance['digital_object']['ref'] == $do_uri) {
-          $ao_json['instances'][$key]['digital_object']['ref'] = $do_uri;
-          $set_uri = TRUE;
-        }
-      }
-    }
-    if (!$set_uri) {
-      $ao_json['instances'][] = [
-        'lock_version' => 0,
-        'instance_type' => 'digital_object',
-        'jsonmodel_type' => 'instance',
-        'created_by' => 'admin',
-        'is_representative' => FALSE,
-        'digital_object' => [
-          'ref' => $do_uri,
-        ],
-      ];
-    }
-
-    $response = $this->archivesspaceSession->request('POST', $ao_uri, $ao_json);
-    \Drupal::logger('aspace_action_update_ao_object')->info(print_r($response, TRUE));
-    return $response;
-  }
-
-  /**
-   *
-   *
-   */
-  private function getDigitalObject($do_id, $full_uri = FALSE) {
-    if (!$full_uri) {
-      $full_uri = "/repositories/2/digital_objects/" . $do_id;
-    }
-    else {
-      $full_uri = $do_id;
-    }
-    $response = $this->archivesspaceSession->request('GET', $full_uri);
-    return $response;
-  }
-
-  /**
-   *
-   */
-  private function getIdFromJson($do_json) {
-    $uri = $do_json['uri'];
+  private function getIdFromUri($uri) {
     $parts = explode('/', $uri);
-    return $parts[count($parts) - 1];
+    return end($parts);
   }
 
 }
