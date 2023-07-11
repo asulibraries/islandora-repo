@@ -67,7 +67,7 @@ class CreateAspaceDigObj extends ActionBase implements ContainerFactoryPluginInt
           $configuration,
           $plugin_id,
           $plugin_definition,
-          $container->get('logger.channel.archivesspace_extensions')
+          $container->get('logger.channel.archivesspace')
       );
   }
 
