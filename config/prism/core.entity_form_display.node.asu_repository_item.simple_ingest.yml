@@ -25,6 +25,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_geographic_subject
     - field.field.node.asu_repository_item.field_handle
     - field.field.node.asu_repository_item.field_history
+    - field.field.node.asu_repository_item.field_internal_note
     - field.field.node.asu_repository_item.field_issuance
     - field.field.node.asu_repository_item.field_keyword
     - field.field.node.asu_repository_item.field_language
@@ -70,7 +71,7 @@ third_party_settings:
       label: Basic
       region: hidden
       parent_name: ''
-      weight: 47
+      weight: 53
       format_type: tab
       format_settings:
         classes: ''
@@ -93,7 +94,7 @@ third_party_settings:
       label: System
       region: hidden
       parent_name: ''
-      weight: 48
+      weight: 54
       format_type: details_sidebar
       format_settings:
         classes: ''
@@ -109,13 +110,13 @@ mode: simple_ingest
 content:
   field_copyright_statement:
     type: options_select
-    weight: 7
+    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }
   field_default_derivative_file_pe:
     type: entity_reference_autocomplete
-    weight: 10
+    weight: 8
     region: content
     settings:
       match_operator: CONTAINS
@@ -125,7 +126,7 @@ content:
     third_party_settings: {  }
   field_default_original_file_perm:
     type: entity_reference_autocomplete
-    weight: 9
+    weight: 7
     region: content
     settings:
       match_operator: CONTAINS
@@ -135,26 +136,34 @@ content:
     third_party_settings: {  }
   field_edtf_date_created:
     type: edtf_default
-    weight: 3
+    weight: 2
     region: content
     settings:
       strict_dates: false
       intervals: true
       sets: false
     third_party_settings: {  }
+  field_internal_note:
+    type: text_textarea
+    weight: 11
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
   field_linked_agent:
     type: typed_relation_default
-    weight: 6
+    weight: 4
     region: content
     settings:
       match_operator: CONTAINS
-      match_limit: 10
       size: 60
       placeholder: ''
+      match_limit: 10
     third_party_settings: {  }
   field_member_of:
     type: entity_reference_autocomplete
-    weight: 11
+    weight: 9
     region: content
     settings:
       match_operator: CONTAINS
@@ -164,13 +173,13 @@ content:
     third_party_settings: {  }
   field_model:
     type: options_select
-    weight: 12
+    weight: 10
     region: content
     settings: {  }
     third_party_settings: {  }
   field_reuse_permissions:
     type: options_select
-    weight: 8
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -196,13 +205,13 @@ content:
     third_party_settings: {  }
   langcode:
     type: language_select
-    weight: 4
+    weight: 3
     region: content
     settings:
       include_locked: true
     third_party_settings: {  }
   url_redirects:
-    weight: 50
+    weight: 12
     region: content
     settings: {  }
     third_party_settings: {  }

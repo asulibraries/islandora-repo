@@ -25,6 +25,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_geographic_subject
     - field.field.node.asu_repository_item.field_handle
     - field.field.node.asu_repository_item.field_history
+    - field.field.node.asu_repository_item.field_internal_note
     - field.field.node.asu_repository_item.field_issuance
     - field.field.node.asu_repository_item.field_keyword
     - field.field.node.asu_repository_item.field_language
@@ -58,9 +59,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_typed_identifier
     - field.field.node.asu_repository_item.field_weight
     - node.type.asu_repository_item
-    - workflows.workflow.ingest
   module:
-    - content_moderation
     - controlled_access_terms
     - datetime
     - field_group
@@ -105,7 +104,6 @@ third_party_settings:
         - sticky
         - path
         - status
-        - moderation_state
         - field_history
         - langcode
         - field_cataloging_standards
@@ -189,6 +187,7 @@ third_party_settings:
         - field_open_access
         - field_peer_reviewed
         - field_note_para
+        - field_internal_note
       label: 'Types and Notes'
       region: content
       parent_name: group_tab_container
@@ -235,7 +234,7 @@ mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 10
+    weight: 11
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -274,10 +273,12 @@ content:
       allow_new: true
       allow_existing: true
       match_operator: STARTS_WITH
+      match_limit: 10
       allow_duplicate: false
       collapsible: true
       collapsed: false
       revision: false
+      removed_reference: optional
     third_party_settings: {  }
   field_coordinates:
     type: geolocation_latlng
@@ -396,14 +397,16 @@ content:
       allow_new: true
       allow_existing: true
       match_operator: CONTAINS
+      match_limit: 10
       allow_duplicate: false
       collapsible: false
       collapsed: false
       revision: false
+      removed_reference: optional
     third_party_settings: {  }
   field_handle:
     type: string_textfield
-    weight: 5
+    weight: 6
     region: content
     settings:
       size: 60
@@ -412,6 +415,14 @@ content:
   field_history:
     type: jsonb_textarea
     weight: 15
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_internal_note:
+    type: text_textarea
+    weight: 25
     region: content
     settings:
       rows: 5
@@ -455,9 +466,9 @@ content:
     region: content
     settings:
       match_operator: CONTAINS
-      match_limit: 50
       size: 60
       placeholder: ''
+      match_limit: 50
     third_party_settings: {  }
   field_member_of:
     type: entity_reference_autocomplete
@@ -487,10 +498,12 @@ content:
       allow_new: true
       allow_existing: true
       match_operator: CONTAINS
+      match_limit: 10
       allow_duplicate: false
       collapsible: false
       collapsed: false
       revision: false
+      removed_reference: optional
     third_party_settings: {  }
   field_note_para:
     type: entity_reference_paragraphs
@@ -526,7 +539,7 @@ content:
     third_party_settings: {  }
   field_pid:
     type: string_textfield
-    weight: 4
+    weight: 5
     region: content
     settings:
       size: 60
@@ -560,7 +573,7 @@ content:
     third_party_settings: {  }
   field_preservation_state:
     type: options_select
-    weight: 7
+    weight: 8
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -570,9 +583,9 @@ content:
     region: content
     settings:
       match_operator: CONTAINS
-      match_limit: 10
       size: 60
       placeholder: ''
+      match_limit: 10
     third_party_settings: {  }
   field_resource_type:
     type: entity_reference_autocomplete
@@ -636,10 +649,12 @@ content:
       allow_new: true
       allow_existing: true
       match_operator: STARTS_WITH
+      match_limit: 10
       allow_duplicate: false
       collapsible: false
       collapsed: false
       revision: false
+      removed_reference: optional
     third_party_settings: {  }
   field_subjects_name:
     type: inline_entity_form_complex
@@ -653,10 +668,12 @@ content:
       allow_new: true
       allow_existing: true
       match_operator: CONTAINS
+      match_limit: 10
       allow_duplicate: false
       collapsible: false
       collapsed: false
       revision: false
+      removed_reference: optional
     third_party_settings: {  }
   field_table_of_contents:
     type: text_textarea
@@ -678,10 +695,12 @@ content:
       allow_new: true
       allow_existing: true
       match_operator: CONTAINS
+      match_limit: 10
       allow_duplicate: false
       collapsible: false
       collapsed: false
       revision: false
+      removed_reference: optional
     third_party_settings: {  }
   field_title:
     type: entity_reference_paragraphs
@@ -707,10 +726,12 @@ content:
       allow_new: true
       allow_existing: true
       match_operator: CONTAINS
+      match_limit: 10
       allow_duplicate: false
       collapsible: false
       collapsed: false
       revision: false
+      removed_reference: optional
     third_party_settings: {  }
   field_typed_identifier:
     type: entity_reference_paragraphs
@@ -726,7 +747,7 @@ content:
     third_party_settings: {  }
   field_weight:
     type: number
-    weight: 6
+    weight: 7
     region: content
     settings:
       placeholder: ''
@@ -746,34 +767,34 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 12
+    weight: 13
     region: content
     settings: {  }
     third_party_settings: {  }
   promote:
     type: boolean_checkbox
-    weight: 9
+    weight: 10
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 13
+    weight: 14
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
-    weight: 11
+    weight: 12
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 8
+    weight: 9
     region: content
     settings:
       match_operator: CONTAINS

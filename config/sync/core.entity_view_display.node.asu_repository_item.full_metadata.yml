@@ -25,6 +25,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_geographic_subject
     - field.field.node.asu_repository_item.field_handle
     - field.field.node.asu_repository_item.field_history
+    - field.field.node.asu_repository_item.field_internal_note
     - field.field.node.asu_repository_item.field_issuance
     - field.field.node.asu_repository_item.field_keyword
     - field.field.node.asu_repository_item.field_language
@@ -125,6 +126,7 @@ content:
       date_order: big_endian
       month_format: mm
       day_format: dd
+      year_format: 'y'
     third_party_settings: {  }
     weight: 4
     region: content
@@ -151,6 +153,7 @@ content:
       date_order: big_endian
       month_format: mm
       day_format: dd
+      year_format: 'y'
     third_party_settings: {  }
     weight: 38
     region: content
@@ -162,6 +165,7 @@ content:
       date_order: big_endian
       month_format: mm
       day_format: dd
+      year_format: 'y'
     third_party_settings: {  }
     weight: 3
     region: content
@@ -218,6 +222,13 @@ content:
       link_to_entity: false
     third_party_settings: {  }
     weight: 35
+    region: content
+  field_internal_note:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 45
     region: content
   field_issuance:
     type: list_default
@@ -428,6 +439,14 @@ content:
     third_party_settings: {  }
     weight: 11
     region: content
+  field_title:
+    type: complex_title_formatter
+    label: above
+    settings:
+      link: ''
+    third_party_settings: {  }
+    weight: 0
+    region: content
   field_title_subject:
     type: searchable_entity_formatter
     label: inline
@@ -447,13 +466,6 @@ content:
       link: ''
     third_party_settings: {  }
     weight: 24
-    region: content
-  field_weight:
-    type: number_unformatted
-    label: inline
-    settings: {  }
-    third_party_settings: {  }
-    weight: 0
     region: content
   links:
     settings: {  }
@@ -480,7 +492,7 @@ hidden:
   field_oai_set: true
   field_preservation_state: true
   field_source: true
-  field_title: true
+  field_weight: true
   islandora_fits_checksum: true
   langcode: true
   openseadragon_media_evas_entity_view_1: true
