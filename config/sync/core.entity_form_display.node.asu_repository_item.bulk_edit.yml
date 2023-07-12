@@ -25,6 +25,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_geographic_subject
     - field.field.node.asu_repository_item.field_handle
     - field.field.node.asu_repository_item.field_history
+    - field.field.node.asu_repository_item.field_internal_note
     - field.field.node.asu_repository_item.field_issuance
     - field.field.node.asu_repository_item.field_keyword
     - field.field.node.asu_repository_item.field_language
@@ -58,7 +59,6 @@ dependencies:
     - field.field.node.asu_repository_item.field_typed_identifier
     - field.field.node.asu_repository_item.field_weight
     - node.type.asu_repository_item
-    - workflows.workflow.ingest
   module:
     - content_moderation
     - controlled_access_terms
@@ -700,6 +700,7 @@ content:
 hidden:
   field_complex_subject: true
   field_display_hints: true
+  field_internal_note: true
   field_keyword: true
   field_source: true
   field_title: true

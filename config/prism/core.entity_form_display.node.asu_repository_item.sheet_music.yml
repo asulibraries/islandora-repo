@@ -26,6 +26,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_geographic_subject
     - field.field.node.asu_repository_item.field_handle
     - field.field.node.asu_repository_item.field_history
+    - field.field.node.asu_repository_item.field_internal_note
     - field.field.node.asu_repository_item.field_issuance
     - field.field.node.asu_repository_item.field_keyword
     - field.field.node.asu_repository_item.field_language
@@ -83,6 +84,7 @@ third_party_settings:
         - field_typed_identifier
         - field_edtf_date_created
         - field_model
+        - field_internal_note
       label: 'Sheet Music'
       region: content
       parent_name: group_tab_container
@@ -98,23 +100,22 @@ third_party_settings:
     group_system:
       children:
         - langcode
-        - field_description_source
-        - field_source
-        - field_preservation_state
-        - field_pid
-        - field_oai_set
-        - field_level_of_coding
-        - field_history
-        - field_handle
-        - field_complex_object_child
         - status
-        - field_cataloging_standards
-        - path
-        - moderation_state
-        - sticky
-        - promote
-        - created
         - uid
+        - created
+        - promote
+        - sticky
+        - path
+        - field_cataloging_standards
+        - field_complex_object_child
+        - field_description_source
+        - field_handle
+        - field_history
+        - field_level_of_coding
+        - field_oai_set
+        - field_pid
+        - field_preservation_state
+        - field_source
         - field_weight
       label: 'System Use and Display'
       region: hidden
@@ -259,6 +260,14 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_internal_note:
+    type: text_textarea
+    weight: 37
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
   field_language:
     type: entity_reference_autocomplete
     weight: 27
@@ -275,9 +284,9 @@ content:
     region: content
     settings:
       match_operator: CONTAINS
-      match_limit: 10
       size: 60
       placeholder: ''
+      match_limit: 10
     third_party_settings: {  }
   field_member_of:
     type: entity_reference_autocomplete
@@ -333,10 +342,12 @@ content:
       allow_new: true
       allow_existing: true
       match_operator: CONTAINS
+      match_limit: 10
       allow_duplicate: false
       collapsible: false
       collapsed: false
       revision: false
+      removed_reference: optional
     third_party_settings: {  }
   field_title:
     type: entity_reference_paragraphs

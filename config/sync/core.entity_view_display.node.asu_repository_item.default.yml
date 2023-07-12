@@ -24,6 +24,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_geographic_subject
     - field.field.node.asu_repository_item.field_handle
     - field.field.node.asu_repository_item.field_history
+    - field.field.node.asu_repository_item.field_internal_note
     - field.field.node.asu_repository_item.field_issuance
     - field.field.node.asu_repository_item.field_keyword
     - field.field.node.asu_repository_item.field_language
@@ -161,6 +162,7 @@ content:
       date_order: big_endian
       month_format: mm
       day_format: dd
+      year_format: 'y'
     third_party_settings: {  }
     weight: 26
     region: content
@@ -203,6 +205,7 @@ content:
       date_order: big_endian
       month_format: mm
       day_format: dd
+      year_format: 'y'
     third_party_settings: {  }
     weight: 46
     region: content
@@ -214,6 +217,7 @@ content:
       date_order: big_endian
       month_format: mm
       day_format: dd
+      year_format: 'y'
     third_party_settings: {  }
     weight: 9
     region: content
@@ -282,6 +286,13 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 42
+    region: content
+  field_internal_note:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 76
     region: content
   field_issuance:
     type: list_default
@@ -502,10 +513,9 @@ content:
     weight: 34
     region: content
   field_title:
-    type: entity_reference_revisions_entity_view
+    type: complex_title_formatter
     label: above
     settings:
-      view_mode: default
       link: ''
     third_party_settings: {  }
     weight: 0

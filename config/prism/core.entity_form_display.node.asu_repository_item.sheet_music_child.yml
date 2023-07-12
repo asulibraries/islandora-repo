@@ -25,6 +25,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_geographic_subject
     - field.field.node.asu_repository_item.field_handle
     - field.field.node.asu_repository_item.field_history
+    - field.field.node.asu_repository_item.field_internal_note
     - field.field.node.asu_repository_item.field_issuance
     - field.field.node.asu_repository_item.field_keyword
     - field.field.node.asu_repository_item.field_language
@@ -62,6 +63,7 @@ dependencies:
     - controlled_access_terms
     - field_group
     - paragraphs
+    - text
 third_party_settings:
   field_group:
     group_basic:
@@ -73,6 +75,7 @@ third_party_settings:
         - field_weight
         - field_model
         - field_complex_object_child
+        - field_internal_note
       label: 'Sheet Music Child Item'
       region: content
       parent_name: group_tab_container
@@ -88,21 +91,20 @@ third_party_settings:
     group_system:
       children:
         - langcode
-        - field_description_source
-        - field_preservation_state
-        - field_pid
-        - field_oai_set
-        - field_level_of_coding
-        - field_history
-        - field_handle
-        - field_cataloging_standards
         - status
-        - path
-        - moderation_state
-        - sticky
-        - promote
-        - created
         - uid
+        - created
+        - promote
+        - sticky
+        - path
+        - field_cataloging_standards
+        - field_description_source
+        - field_handle
+        - field_history
+        - field_level_of_coding
+        - field_oai_set
+        - field_pid
+        - field_preservation_state
         - field_source
       label: 'System Use and Display'
       region: hidden
@@ -225,15 +227,23 @@ content:
     settings:
       display_label: true
     third_party_settings: {  }
+  field_internal_note:
+    type: text_textarea
+    weight: 30
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
   field_linked_agent:
     type: typed_relation_default
     weight: 25
     region: content
     settings:
       match_operator: CONTAINS
-      match_limit: '30'
-      size: '60'
+      size: 60
       placeholder: ''
+      match_limit: 30
     third_party_settings: {  }
   field_member_of:
     type: entity_reference_autocomplete
