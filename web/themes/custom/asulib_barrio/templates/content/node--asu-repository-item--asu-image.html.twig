@@ -128,6 +128,7 @@
     </div>
     <div id="details" class="content-section details">
       <h2>{{ 'Details'|t }}</h2>
+        <div>{{ content.field_title }}</field>
       {% if node.field_peer_reviewed.value == 1 %}
         <div>{{ content.field_peer_reviewed }}</div>
       {% endif %}
