@@ -5,56 +5,56 @@ dependencies:
   config:
     - field.storage.node.field_additional_memberships
     - field.storage.node.field_member_of
-    - field.storage.node.field_copyright_statement
-    - field.storage.node.field_description
-    - field.storage.node.field_display_hints
-    - field.storage.node.field_edition
     - field.storage.node.field_edtf_copyright_date
+    - field.storage.node.field_copyright_statement
+    - field.storage.node.field_linked_agent
     - field.storage.node.field_edtf_date
     - field.storage.node.field_edtf_date_created
     - field.storage.node.field_edtf_date_issued
+    - field.storage.node.field_description
+    - field.storage.node.field_rich_description
+    - field.storage.node.field_display_hints
+    - field.storage.node.field_edition
     - field.storage.node.field_embargo_release_date
     - field.storage.node.field_extent
     - field.storage.node.field_frequency
+    - field.storage.node.field_genre
     - field.storage.node.field_geographic_subject
     - field.storage.node.field_handle
     - field.storage.node.field_typed_identifier
     - field.storage.paragraph.field_identifier_value
     - field.storage.node.field_issuance
     - field.storage.node.field_language
-    - field.storage.node.field_linked_agent
+    - field.storage.node.field_pid
     - field.storage.node.field_local_identifier
-    - field.storage.node.field_title
-    - field.storage.paragraph.field_main_title
     - field.storage.node.field_model
+    - field.storage.node.field_subjects_name
     - field.storage.node.field_note
     - field.storage.node.field_open_access
     - field.storage.node.field_peer_reviewed
-    - field.storage.node.field_pid
+    - field.storage.node.field_place_of_publication_code
     - field.storage.node.field_place_published
     - field.storage.node.field_preferred_citation
     - field.storage.node.field_related_item
+    - field.storage.node.field_resource_type
     - field.storage.node.field_reuse_permissions
-    - field.storage.node.field_rich_description
     - field.storage.node.field_series
     - field.storage.node.field_statement_responsibility
-    - field.storage.node.field_subjects_name
     - field.storage.node.field_table_of_contents
     - field.storage.node.field_tags
     - field.storage.node.field_temporal_subject
+    - field.storage.node.field_title
+    - field.storage.paragraph.field_main_title
     - field.storage.node.field_title_subject
     - field.storage.node.field_subject
-    - field.storage.node.field_genre
-    - field.storage.node.field_place_of_publication_code
-    - field.storage.node.field_resource_type
     - search_api.server.default_solr_server
     - core.entity_view_mode.node.full_metadata
   module:
     - search_api_solr
     - node
     - user
-    - paragraphs
     - taxonomy
+    - paragraphs
     - search_api
     - asu_search
 third_party_settings:
@@ -476,24 +476,6 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_preferred_citation
-  field_related_item:
-    label: 'Related Item'
-    datasource_id: 'entity:node'
-    property_path: field_related_item
-    type: integer
-    dependencies:
-      config:
-        - field.storage.node.field_related_item
-  field_related_item_name:
-    label: 'Related Item Name'
-    datasource_id: 'entity:node'
-    property_path: 'field_related_item:entity:name'
-    type: string
-    dependencies:
-      config:
-        - field.storage.node.field_related_item
-      module:
-        - taxonomy
   field_reuse_permissions:
     label: 'Reuse Permissions'
     datasource_id: 'entity:node'
@@ -632,13 +614,23 @@ field_settings:
         - field.storage.node.field_place_of_publication_code
       module:
         - taxonomy
+  related_item:
+    label: 'Related Item'
+    datasource_id: 'entity:node'
+    property_path: 'field_related_item:entity:title'
+    type: string
+    dependencies:
+      config:
+        - field.storage.node.field_related_item
+      module:
+        - node
   rendered_item:
     label: 'Rendered Item'
     property_path: rendered_item
     type: text
     configuration:
       roles:
-        anonymous: anonymous
+        - anonymous
       view_mode:
         'entity:node':
           article: ''
@@ -748,6 +740,7 @@ processor_settings:
     weights:
       preprocess_index: 5
   complex_title: {  }
+  entity_type: {  }
   etdf_created_year_only: {  }
   hierarchy:
     weights:
@@ -762,6 +755,7 @@ processor_settings:
     prefix: '<strong>'
     suffix: '</strong>'
     excerpt: true
+    excerpt_always: false
     excerpt_length: 256
     exclude_fields: {  }
     highlight: always
