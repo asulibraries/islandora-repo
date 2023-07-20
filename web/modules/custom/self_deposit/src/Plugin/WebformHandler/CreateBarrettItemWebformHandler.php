@@ -259,7 +259,7 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
         ['target_id' => $member_of],
       ],
     ];
-    if ($values['number_of_pages'] && $child == TRUE) {
+    if ($values['number_of_pages'] && $child == FALSE) {
       $node_args['field_extent'] = [
         ['value' => $values['number_of_pages'] . " pages"],
       ];
