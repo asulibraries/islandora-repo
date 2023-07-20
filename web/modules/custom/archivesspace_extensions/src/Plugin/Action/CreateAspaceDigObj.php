@@ -2,14 +2,14 @@
 
 namespace Drupal\archivesspace_extensions\Plugin\Action;
 
-use GuzzleHttp\Exception\ClientException;
+use Drupal\archivesspace\ArchivesSpaceSession;
 use Drupal\Core\Action\ActionBase;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountInterface;
+use GuzzleHttp\Exception\ClientException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\archivesspace\ArchivesSpaceSession;
 
 /**
  * Create a handle for an object.
@@ -88,15 +88,16 @@ class CreateAspaceDigObj extends ActionBase implements ContainerFactoryPluginInt
 
     // Sanity checking for required bits.
     if (!$entity->hasField('field_typed_identifier') || $entity->field_typed_identifier->isEmpty() || empty($entity->field_typed_identifier->entity->field_identifier_value->value)) {
-      $message = $this->t('Node %nid does not have an identifier value which is necessary to create an ArchivesSpace digital object.', [
+      $message = $this->t('Node %nid does not have an identifier value; using the UUID.', [
         '%nid' => $entity->id(),
       ]);
       $this->logger->warning($message);
       \Drupal::messenger()->addWarning($message);
-      return;
+      $identifier = $entity->uuid();
     }
-    $item_id = $entity->get('field_typed_identifier')->entity->field_identifier_value->value;
-    $identifier = str_replace(' ', '_', $item_id);
+    else {
+      $identifier = $entity->get('field_typed_identifier')->entity->field_identifier_value->value;
+    }
     if (!$entity->hasField($extensions_settings->get('reference_field'))) {
       $this->logger->warning('Node %nid does not have an ArchivesSpace reference field %field.', [
         '%nid' => $entity->id(),
