@@ -5,7 +5,9 @@
  * Contains archivesspace_extensions.module.
  */
 
+use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\node\NodeInterface;
 
 /**
  * Implements hook_help().
@@ -21,4 +23,60 @@ function archivesspace_extensions_help($route_name, RouteMatchInterface $route_m
 
     default:
   }
+}
+
+/**
+ *
+ */
+function archivesspace_extensions_node_insert(EntityInterface $entity) {
+  archivesspace_extensions_new_digital_object_queue_item($entity);
+}
+
+/**
+ *
+ */
+function archivesspace_extensions_node_update(EntityInterface $entity) {
+  archivesspace_extensions_new_digital_object_queue_item($entity);
+}
+
+/**
+ *
+ */
+function archivesspace_extensions_new_digital_object_queue_item(NodeInterface $node) {
+  // Sanity check. Duplicates action sanity checking,
+  // but this will allow earlier reporting of issues.
+  $config = \Drupal::config('archivesspace_extensions.settings');
+  $reference_field = $config->get('reference_field');
+  if (!$reference_field || !$node->hasField($reference_field) || !$node->get($reference_field)->entity) {
+    return;
+  }
+  // Now we know that we have an ArchivesSpace reference
+  // we can start reporting issues.
+  if (!$node->hasField('field_typed_identifier') || $node->field_typed_identifier->isEmpty() || empty($node->field_typed_identifier->entity->field_identifier_value->value)) {
+    $message = $this->t('Node %nid does not have an identifier value which is necessary to create an ArchivesSpace digital object.', [
+      '%nid' => $entity->id(),
+    ]);
+    \Drupal::logger('archivesspace')->warning($message);
+    \Drupal::messenger()->addWarning($message);
+    return;
+  }
+  $as_paragraph = $node->get($reference_field)->entity;
+  if (!$as_paragraph->get($config->get('repo_id_field')) || $as_paragraph->get($config->get('repo_id_field'))->isEmpty()) {
+    $message = $this->t('Node %nid ArchivesSpace reference field value has no repository identifer.', [
+      '%nid' => $node->id(),
+    ]);
+    \Drupal::logger('archivesspace')->warning($message);
+    \Drupal::messenger()->addWarning($message);
+    return;
+  }
+  if (!$as_paragraph->hasField($config->get('ao_ref_id_field')) || $as_paragraph->get($config->get('ao_ref_id_field'))->isEmpty()) {
+    $message = $this->t('Node %nid ArchivesSpace reference field value has no archival object ref_id.', [
+      '%nid' => $node->id(),
+    ]);
+    \Drupal::logger('archivesspace')->warning($message);
+    \Drupal::messenger()->addWarning($message);
+    return;
+  }
+  \Drupal::queue('as_digital_object_queue')->createQueue();
+  \Drupal::queue('as_digital_object_queue')->createItem(['nid' => $node->id()]);
 }
