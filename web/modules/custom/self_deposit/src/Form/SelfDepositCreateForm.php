@@ -77,6 +77,14 @@ class SelfDepositCreateForm extends FormBase {
     $form['actions']['submit'] = [
         '#type' => 'submit',
         '#value' => 'Create Repository Item',
+        '#attributes' => [
+          'onclick' => 'return false;'
+        ],
+        '#attached' => array(
+          'library' => array(
+            'self_deposit/debounce',
+          ),
+        ),
     ];
 
     return $form;
