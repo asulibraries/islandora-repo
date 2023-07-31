@@ -2,11 +2,9 @@
 
 namespace Drupal\self_deposit\Form;
 
-use Drupal\Component\Utility\NestedArray;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\webform\Element\WebformAjaxElementTrait;
-use Drupal\webform\Plugin\WebformHandlerMessageInterface;
 use Drupal\webform\WebformSubmissionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\node\Entity\Node;
@@ -75,16 +73,16 @@ class SelfDepositCreateForm extends FormBase {
     $webform->applyVariants($webform_submission);
 
     $form['actions']['submit'] = [
-        '#type' => 'submit',
-        '#value' => 'Create Repository Item',
-        '#attributes' => [
-          'onclick' => 'return false;'
+      '#type' => 'submit',
+      '#value' => 'Create Repository Item',
+      '#attributes' => [
+        'onclick' => 'return false;',
+      ],
+      '#attached' => [
+        'library' => [
+          'self_deposit/debounce',
         ],
-        '#attached' => array(
-          'library' => array(
-            'self_deposit/debounce',
-          ),
-        ),
+      ],
     ];
 
     return $form;
@@ -170,7 +168,7 @@ class SelfDepositCreateForm extends FormBase {
   }
 
   /**
-   * Creates a repository item from a given webform submission
+   * Creates a repository item from a given webform submission.
    */
   protected function createItem(WebformSubmissionInterface $webform_submission) {
     // Get an array of the values from the submission.
@@ -188,7 +186,7 @@ class SelfDepositCreateForm extends FormBase {
         $filename = $file->getFilename();
         $file = $file_repository->copy($file, $new_dest . $filename);
         $file_id = $file->id();
-        list($fmodel, $fmedia_type, $ffield_name) = $this->depositUtils->getModel($mime, $filename);
+        [$fmodel, $fmedia_type, $ffield_name] = $this->depositUtils->getModel($mime, $filename);
         $child_files[$file_id] = [
           'model' => $fmodel,
           'media_type' => $fmedia_type,
@@ -202,7 +200,7 @@ class SelfDepositCreateForm extends FormBase {
       $mime = $file->getMimeType();
       $filename = $file->getFilename();
       $files[0] = $file_repository->copy($file, $new_dest . $filename)->id();
-      list($model, $media_type, $field_name) = $this->depositUtils->getModel($mime, $filename);
+      [$model, $media_type, $field_name] = $this->depositUtils->getModel($mime, $filename);
     }
 
     $term = $model;
