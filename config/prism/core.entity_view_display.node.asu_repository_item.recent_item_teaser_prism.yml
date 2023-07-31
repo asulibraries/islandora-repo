@@ -5,6 +5,7 @@ dependencies:
   config:
     - core.entity_view_mode.node.recent_item_teaser_prism
     - field.field.node.asu_repository_item.field_additional_memberships
+    - field.field.node.asu_repository_item.field_as_reference
     - field.field.node.asu_repository_item.field_cataloging_standards
     - field.field.node.asu_repository_item.field_complex_object_child
     - field.field.node.asu_repository_item.field_complex_subject
@@ -25,6 +26,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_geographic_subject
     - field.field.node.asu_repository_item.field_handle
     - field.field.node.asu_repository_item.field_history
+    - field.field.node.asu_repository_item.field_internal_note
     - field.field.node.asu_repository_item.field_issuance
     - field.field.node.asu_repository_item.field_keyword
     - field.field.node.asu_repository_item.field_language
@@ -549,9 +551,11 @@ hidden:
   display_media_sm_teaser_thumbnail: true
   display_media_thumbnail: true
   display_media_thumbnail_card: true
+  field_as_reference: true
   field_complex_object_child: true
   field_complex_subject: true
   field_display_hints: true
+  field_internal_note: true
   field_keyword: true
   field_level_of_coding: true
   field_oai_set: true
