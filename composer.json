@@ -83,12 +83,12 @@
         "drupal/advagg": "^5.0",
         "drupal/archivesspace": "^1.1",
         "drupal/auto_entitylabel": "^3.0@beta",
-        "drupal/bootstrap_barrio": "5.1.5",
+        "drupal/bootstrap_barrio": "~5.1.10",
         "drupal/bootstrap_sass": "^5.0",
-        "drupal/captcha": "^1.2",
+        "drupal/captcha": "^2.0",
         "drupal/cas": "^2.0@beta",
         "drupal/cas_attributes": "^2.0@beta",
-        "drupal/cdn": "^3.5",
+        "drupal/cdn": "^3.6",
         "drupal/clamav": "^2.0",
         "drupal/config_filter": "^2.2",
         "drupal/config_split": "^2.0.0-beta2",
@@ -107,7 +107,6 @@
         "drupal/entity_reference_unpublished": "^2",
         "drupal/facets": "^2",
         "drupal/facets_range_widget": "^2.0",
-        "drupal/features": "^3.11",
         "drupal/file_replace": "^1.1",
         "drupal/filehash": "^2",
         "drupal/filelog": "^2.0",
@@ -116,32 +115,31 @@
         "drupal/format_bytes": "^2",
         "drupal/geolocation": "^3.4",
         "drupal/getjwtonlogin": "^2.0",
-        "drupal/google_analytics": "^3.1",
-        "drupal/group": "^1.3",
+        "drupal/google_analytics": "^4.0",
+        "drupal/group": "^2.1",
         "drupal/honeypot": "^2.0",
-        "drupal/inline_entity_form": "^1.0@RC",
+        "drupal/inline_entity_form": "^1.0",
         "drupal/jquery_ui_slider": "^2.0",
         "drupal/jquery_ui_touch_punch": "^1.1",
         "drupal/jsonb": "^1.0@beta",
         "drupal/jw_player": "^1.0@beta",
-        "drupal/jwt": "^1",
+        "drupal/jwt": "^2.0",
         "drupal/masquerade": "^2.0@beta",
         "drupal/matomo": "^1.7",
         "drupal/message": "^1.0",
         "drupal/message_subscribe_email": "^1.0",
-        "drupal/metatag": "1.16",
-        "drupal/metatag_google_scholar": "^1.0",
+        "drupal/metatag": "^2.0",
+        "drupal/metatag_google_scholar": "^1.1",
         "drupal/migrate_devel": "^2.0",
         "drupal/migrate_file": "^2.0",
         "drupal/migrate_plus": "^5.2",
         "drupal/migrate_process_s3": "2.0.x-dev@dev",
-        "drupal/migrate_source_ui": "^1.0.0-rc2",
         "drupal/migrate_tools": "^5.1",
         "drupal/paragraphs": "^1.11",
         "drupal/pathauto": "^1.8",
-        "drupal/pdf": "1.x-dev",
+        "drupal/pdf": "^1.2",
         "drupal/rdfui": "^1.0-beta1",
-        "drupal/recaptcha_v3": "^1.6",
+        "drupal/recaptcha_v3": "^2.0",
         "drupal/redirect": "^1.6",
         "drupal/redis": "^1.5",
         "drupal/rest_oai_pmh": "^2",
@@ -149,7 +147,7 @@
         "drupal/rrssb": "^2.3",
         "drupal/s3fs": "^3.0@beta",
         "drupal/s3fs_cors": "^1.0@beta",
-        "drupal/schema_metatag": "^2.2",
+        "drupal/schema_metatag": "^3.0",
         "drupal/search_api": "^1.23",
         "drupal/search_api_solr": "^4.2",
         "drupal/seckit": "^2.0",
@@ -158,29 +156,27 @@
         "drupal/superfish": "^1.4",
         "drupal/title_length": "^1.1",
         "drupal/token": "^1.6",
-        "drupal/transliterate_filenames": "^1.3",
+        "drupal/transliterate_filenames": "^2.0",
         "drupal/twig_tweak": "^3.1",
-        "drupal/upgrade_status": "^3.12",
         "drupal/variationcache": "^1.0",
-        "drupal/views_bootstrap": "^4.3",
+        "drupal/views_bootstrap": "^4.4",
         "drupal/views_bulk_edit": "^2.4",
         "drupal/views_bulk_operations": "^4.0",
         "drupal/views_contextual_filters_or": "^1.2",
         "drupal/views_data_export": "^1.0",
         "drupal/webform": "^6.2@beta",
-        "drupal/webprofiler": "^9.0",
         "drupal/weight": "^3.3",
         "drupal/workbench": "^1.3",
         "drupal/workbench_email": "^2.2",
-        "drush/drush": "^10.6.2",
+        "drush/drush": "^11",
         "easyrdf/easyrdf": "^1.1",
         "highlightjs/highlightjs": "^9.7",
         "islandora-rdm/islandora_fits": "dev-8.x-1.x",
-        "islandora/chullo": "1.x-dev",
-        "islandora/controlled_access_terms": "2.x-dev",
+        "islandora/controlled_access_terms": "^2.2",
         "islandora/islandora": "^2",
         "islandora/islandora_defaults": "2.x-dev",
-        "islandora/openseadragon": "2.x-dev",
+        "islandora/jsonld": "^2.2",
+        "islandora/openseadragon": "^2",
         "mjordan/islandora_bagger_integration": "^0",
         "mjordan/islandora_riprap": "^0.0.0",
         "mjordan/islandora_workbench_integration": "^1.0",
@@ -300,9 +296,6 @@
             }
         },
         "patches": {
-            "drupal/captcha": {
-                "fix for permissions": "https://www.drupal.org/files/issues/2021-06-18/captcha-white-image-captcha-3211385-12.patch"
-            },
             "drupal/context": {
                 "Views integration": "https://www.drupal.org/files/issues/context-views-condition-2938094-6.patch"
             },
@@ -311,26 +304,14 @@
                 "fix for blocks not showing up": "https://www.drupal.org/files/issues/2018-10-27/2997898-21.patch",
                 "fix for large taxonomies": "https://www.drupal.org/files/issues/2021-05-26/763380-73.patch"
             },
-            "drupal/google_analytics": {
-                "fix for GA version 4": "https://www.drupal.org/files/issues/2020-12-01/3178179-google-analytics-4.patch"
-            },
             "drupal/inline_entity_form": {
                 "increase max_limit": "https://www.drupal.org/files/issues/2020-12-22/match_limit_3189534.patch"
-            },
-            "drupal/metatag": {
-                "fix for metatag delimiter": "https://git.drupalcode.org/project/metatag/-/merge_requests/20.diff"
-            },
-            "drupal/migrate_source_ui": {
-                "allow url as a migrate source": "https://raw.githubusercontent.com/asulibraries/islandora-repo/develop/web/modules/custom/asu_migrate/source_ui_url.patch"
             },
             "drupal/rest_oai_pmh": {
                 "fix for empty values and incorrect namespaces": "https://raw.githubusercontent.com/asulibraries/islandora-repo/develop/web/modules/custom/asu_custom_rdf/ns_and_empty_fixes.patch"
             },
             "drupal/views_data_export": {
                 "fix for batch export": "https://www.drupal.org/files/issues/2021-02-12/3173296-9-batch-query-alter.patch"
-            },
-	    "islandora/jsonld": {
-	        "fix for broken target_id": "https://patch-diff.githubusercontent.com/raw/Islandora/jsonld/pull/68.patch"
 	    }
         },
         "installer-types": [
