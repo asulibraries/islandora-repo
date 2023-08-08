@@ -1193,6 +1193,7 @@ display:
         - 'config:field.storage.node.field_rich_description'
         - 'config:field.storage.node.field_title'
         - 'config:search_api.index.default_solr_index'
+        - 'search_api_list:default_solr_index'
       cacheable: false
   block_1:
     id: block_1
@@ -1635,6 +1636,7 @@ display:
         - 'config:field.storage.node.field_collection_thumbnail'
         - 'config:field.storage.node.field_title'
         - 'config:search_api.index.default_solr_index'
+        - 'search_api_list:default_solr_index'
       cacheable: false
   page_1:
     id: page_1
@@ -1866,17 +1868,6 @@ display:
         footer: false
       relationships: {  }
       header:
-        view:
-          id: view
-          table: views
-          field: view
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: view
-          empty: false
-          view_to_insert: 'solr_search_content:block_1'
-          inherit_arguments: true
         area:
           id: area
           table: views
@@ -1941,6 +1932,7 @@ display:
         - 'config:field.storage.node.field_rich_description'
         - 'config:field.storage.node.field_title'
         - 'config:search_api.index.default_solr_index'
+        - 'search_api_list:default_solr_index'
       cacheable: false
   page_2:
     id: page_2
@@ -2217,6 +2209,7 @@ display:
         - 'config:field.storage.node.field_rich_description'
         - 'config:field.storage.node.field_title'
         - 'config:search_api.index.default_solr_index'
+        - 'search_api_list:default_solr_index'
   page_3:
     id: page_3
     display_title: 'Search Within Collection - Page'
@@ -2492,6 +2485,7 @@ display:
         - 'config:field.storage.node.field_rich_description'
         - 'config:field.storage.node.field_title'
         - 'config:search_api.index.default_solr_index'
+        - 'search_api_list:default_solr_index'
   page_4:
     id: page_4
     display_title: 'OVERRIDE PERMS - Search Within Collection - Page'
@@ -2796,3 +2790,4 @@ display:
         - 'config:field.storage.node.field_rich_description'
         - 'config:field.storage.node.field_title'
         - 'config:search_api.index.default_solr_index'
+        - 'search_api_list:default_solr_index'
