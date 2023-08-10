@@ -177,10 +177,6 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
     $stat_box_row1[] = $this->makeBox("<strong>" . number_format($items) . "</strong><br>items", $items_url);
     // Skip number_format - should never be more than a 1,000 models.
     $stat_box_row1[] = $this->makeBox("<strong>" . $islandora_models . "</strong><br>resource types");
-    $stat_box_row1[] = $this->makeBox("<strong>" . number_format($collection_views_and_downloads['views']) .
-      "</strong><br>views");
-    $stat_box_row2[] = $this->makeBox("<strong>" . number_format($collection_views_and_downloads['downloads']) .
-      "</strong><br>downloads");
     $stat_box_row2[] = $this->makeBox("<strong>" . (($collection_created) ? date('Y', $collection_created) : 'unknown') .
       "</strong><br>collection created");
     $stat_box_row2[] = $this->makeBox("<strong>" . (($max_timestamp) ? date('M d, Y', $max_timestamp) : 'unknown') .

@@ -120,10 +120,6 @@
         </div>
         {% if drupal_view_result('media_of', 'page_1' ,node.id) is not empty%}
           <div class="download-options">{{ drupal_block('downloads_block', {'origfile': original_file, 'servicefile': service_file}) }}</div>
-          <div class="download-info">
-            <p>Download count:
-              {{ drupal_block('asu_item_downloads', wrapper=false) }}</p>
-          </div>
         {% endif %}
         <div class="altmetrics-info">
           {{ drupal_block('asu_altmetrics', wrapper=false) }}
