@@ -228,10 +228,6 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
           'target_revision_id' => $paragraph->getRevisionId(),
         ],
       ],
-      'field_rich_description' => [
-        'value' => $values['item_description'],
-        'format' => 'description_restricted_items',
-      ],
       'field_reuse_permissions' => [
         ['target_id' => $values['reuse_permissions']],
       ],
@@ -262,6 +258,12 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
     if ($values['number_of_pages'] && $child == FALSE) {
       $node_args['field_extent'] = [
         ['value' => $values['number_of_pages'] . " pages"],
+      ];
+    }
+    if ($values['item_description'] && $child == FALSE) {
+      $node_args['field_rich_description'] = [
+        'value' => $values['item_description'],
+        'format' => 'description_restricted_items',
       ];
     }
     if ($user) {
