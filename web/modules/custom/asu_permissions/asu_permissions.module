@@ -31,7 +31,7 @@ function asu_permissions_node_insert(NodeInterface $node) {
       'label' => 'Collection ' . $node->id() . ' Group',
     ]);
     $col_group->save();
-    $col_group->addContent($node, $pluginId);
+    $col_group->addRelationship($node, $pluginId);
     $col_group->save();
   }
   elseif ($node->bundle() == 'asu_repository_item') {
@@ -45,7 +45,7 @@ function asu_permissions_node_insert(NodeInterface $node) {
         foreach ($group_contents as $group_content) {
           /** @var \Drupal\group\Entity\GroupContentInterface $group_content */
           $group = $group_content->getGroup();
-          $group->addContent($node, $pluginId);
+          $group->addRelationship($node, $pluginId);
         }
       }
     }
@@ -138,7 +138,7 @@ function _add_object_to_parent_group($node) {
     foreach ($group_contents as $group_content) {
       /** @var \Drupal\group\Entity\GroupContentInterface $group_content */
       $group = $group_content->getGroup();
-      $group->addContent($node, $pluginId);
+      $group->addRelationship($node, $pluginId);
     }
   }
 }
