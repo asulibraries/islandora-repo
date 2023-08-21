@@ -13,7 +13,7 @@ archive: false
 id: barrett_honors_college_submissio
 title: 'Barrett Honors College Submission'
 description: 'Form for Barrett Honors College students to submit'
-category: ''
+categories: {  }
 elements: |-
   into_text:
     '#type': processed_text
@@ -148,7 +148,7 @@ elements: |-
     '#title': File
     '#multiple': true
     '#required': true
-    '#uri_scheme': fedora
+    '#uri_scheme': private
     '#file_extensions': 'pdf avi mp3 mp4 wav mwv tiff tif aac m4a jpg jpeg gif png bmp mov'
     '#sanitize': true
   end_text:
@@ -267,6 +267,8 @@ settings:
   wizard_toggle: true
   wizard_toggle_show_label: ''
   wizard_toggle_hide_label: ''
+  wizard_page_type: container
+  wizard_page_title_tag: h2
   preview: 0
   preview_label: ''
   preview_title: ''
