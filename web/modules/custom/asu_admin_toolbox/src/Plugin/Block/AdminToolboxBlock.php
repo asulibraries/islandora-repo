@@ -324,19 +324,6 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
       $link = $link->toRenderable();
       $output_links[] = render($link);
     }
-    if (in_array('administrator', $this->currentUser->getRoles())) {
-      $mapper = \Drupal::service('islandora.entity_mapper');
-      $flysystem_config = Settings::get('flysystem');
-      $fedora_root = $flysystem_config['fedora']['config']['root'];
-      $fedora_root = rtrim($fedora_root, '/');
-      $path = $mapper->getFedoraPath($node->uuid());
-      $path = trim($path, '/');
-      $fedora_uri = "$fedora_root/$path";
-      $url = Url::fromUri($fedora_uri, ['attributes' => ['target' => '_blank', 'rel' => 'noopener', 'class' => 'nav-link']]);
-      $link = Link::fromTextAndUrl($this->t('Fedora URI<span class="visually-hidden">, opens in a new window</span> &nbsp; <i class="fas fa-external-link-alt"></i>'), $url);
-      $link = $link->toRenderable();
-      $output_links[] = render($link);
-    }
     return [
       '#markup' => (count($output_links) > 0) ?
       "<div class='pseudo_block'><h2>Admin toolbox</h2><nav class='sidebar'>" . implode('', $output_links) . "</nav></div>" :
