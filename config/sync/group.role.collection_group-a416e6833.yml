@@ -4,18 +4,34 @@ status: true
 dependencies:
   config:
     - group.type.collection_group
+    - user.role.administrator
   enforced:
     config:
       - user.role.administrator
 id: collection_group-a416e6833
 label: Administrator
 weight: 2
-internal: true
-audience: outsider
+admin: false
+scope: outsider
+global_role: administrator
 group_type: collection_group
-permissions_ui: false
 permissions:
+  - 'access content overview'
+  - 'access group_node overview'
+  - 'administer members'
+  - 'delete group'
+  - 'delete group revisions'
+  - 'edit group'
+  - 'join group'
+  - 'revert group revisions'
+  - 'view all group revisions'
+  - 'view any unpublished group'
+  - 'view group'
+  - 'view group revisions'
+  - 'view group_membership relationship'
   - 'view group_node:asu_repository_item entity'
   - 'view group_node:collection entity'
+  - 'view latest group version'
+  - 'view own unpublished group'
   - 'view unpublished group_node:asu_repository_item entity'
   - 'view unpublished group_node:collection entity'
