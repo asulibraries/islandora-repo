@@ -257,7 +257,7 @@ class CreateMorrisonItemWebformHandler extends WebformHandlerBase {
     $values = $webform_submission->getData();
     $files = $values['file'];
     $file_repository = \Drupal::service('file.repository');
-    $new_dest = "fedora://c6/";
+    $new_dest = "private://c6/";
 
     if (count($files) > 1) {
       $model = 'Complex Object';

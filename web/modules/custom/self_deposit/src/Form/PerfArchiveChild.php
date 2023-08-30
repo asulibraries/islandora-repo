@@ -55,7 +55,7 @@ class PerfArchiveChild {
     $form['file'] = [
       '#type' => 'managed_file',
       '#title' => t('File'),
-      '#upload_location' => "fedora://perf_archive",
+      '#upload_location' => "private://perf_archive",
       '#upload_validators' => [
         'file_validate_extensions' => ["txt rtf doc docx ppt pptx xls xlsx pdf odf odg odp ods odt fodt fods fodp fodg key numbers pages tiff tif jp2 xml jpf mp3 wav aac aif aiff mid flac m4a mp4"],
       ],

@@ -169,7 +169,7 @@ class SelfDepositCreateForm extends FormBase {
     $values = $webform_submission->getData();
     $files = $values['file'];
     $file_repository = \Drupal::service('file.repository');
-    $new_dest = "fedora://c160/";
+    $new_dest = "private://c160/";
 
     if (count($files) > 1) {
       $model = 'Complex Object';
