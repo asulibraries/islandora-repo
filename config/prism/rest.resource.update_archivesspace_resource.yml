@@ -1,0 +1,20 @@
+uuid: dfc94deb-e623-4a12-a1c2-9543c411532f
+langcode: en
+status: true
+dependencies:
+  module:
+    - archivesspace
+    - serialization
+    - user
+_core:
+  default_config_hash: jOnT7wE1RjHrUDrSHxINotHmDRebdciuNPU9IHvQRYI
+id: update_archivesspace_resource
+plugin_id: update_archivesspace_resource
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - cookie

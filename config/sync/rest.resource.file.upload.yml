@@ -1,0 +1,20 @@
+uuid: cecd2b97-864a-4722-a39f-139d173d7c32
+langcode: en
+status: true
+dependencies:
+  module:
+    - basic_auth
+    - file
+    - serialization
+_core:
+  default_config_hash: 1XJH1i9ehP19MNp-8H4Br0slZS0D_J3uC2XIoOg7Oc8
+id: file.upload
+plugin_id: 'file:upload'
+granularity: resource
+configuration:
+  methods:
+    - POST
+  formats:
+    - json
+  authentication:
+    - basic_auth
