@@ -1,9 +1,12 @@
 uuid: 22666fc6-3df2-4e10-b947-0eda5cc73540
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - paragraphs_type_permissions
 id: honors_student
 label: 'Honors student'
 weight: 10
 is_admin: null
-permissions: {  }
+permissions:
+  - 'bypass paragraphs type content access'

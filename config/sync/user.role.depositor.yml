@@ -16,11 +16,13 @@ dependencies:
   module:
     - media
     - node
+    - paragraphs_type_permissions
 id: depositor
 label: Depositor
 weight: 4
 is_admin: null
 permissions:
+  - 'bypass paragraphs type content access'
   - 'create asu_repository_item content'
   - 'create collection content'
   - 'edit own asu_repository_item content'

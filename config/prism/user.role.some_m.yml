@@ -27,6 +27,7 @@ dependencies:
   module:
     - islandora
     - media
+    - paragraphs_type_permissions
     - taxonomy
 id: some_m
 label: 'Some Metadata'
@@ -34,6 +35,7 @@ weight: 10
 is_admin: null
 permissions:
   - 'access taxonomy overview'
+  - 'bypass paragraphs type content access'
   - 'create terms in collaborating_institutions'
   - 'create terms in conference'
   - 'create terms in corporate_body'
