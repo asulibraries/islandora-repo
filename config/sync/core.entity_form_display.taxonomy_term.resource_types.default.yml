@@ -1,11 +1,10 @@
-uuid: 24f3cb88-30e8-449f-98d5-aa8d21224dfc
+uuid: 362daadd-186f-4851-85a6-4d641c57ac6f
 langcode: en
 status: true
 dependencies:
   config:
-    - field.field.taxonomy_term.language.field_authority_link
-    - field.field.taxonomy_term.language.field_langcode_2digits
-    - taxonomy.vocabulary.language
+    - field.field.taxonomy_term.resource_types.field_external_authority_link
+    - taxonomy.vocabulary.resource_types
   module:
     - controlled_access_terms
     - field_group
@@ -13,7 +12,7 @@ dependencies:
     - text
 third_party_settings:
   field_group:
-    group_advanced_fields:
+    group_a:
       children:
         - description
         - langcode
@@ -23,7 +22,7 @@ third_party_settings:
       label: 'Advanced fields'
       region: content
       parent_name: ''
-      weight: 3
+      weight: 2
       format_type: details
       format_settings:
         classes: ''
@@ -32,38 +31,30 @@ third_party_settings:
         open: false
         description: ''
         required_fields: true
-id: taxonomy_term.language.default
+id: taxonomy_term.resource_types.default
 targetEntityType: taxonomy_term
-bundle: language
+bundle: resource_types
 mode: default
 content:
   description:
     type: text_textarea
-    weight: 4
+    weight: 3
     region: content
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-  field_authority_link:
+  field_external_authority_link:
     type: authority_link_default
-    weight: 2
+    weight: 1
     region: content
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
-  field_langcode_2digits:
-    type: string_textfield
-    weight: 1
-    region: content
-    settings:
-      size: 2
-      placeholder: ''
-    third_party_settings: {  }
   langcode:
     type: language_select
-    weight: 5
+    weight: 4
     region: content
     settings:
       include_locked: true
@@ -78,19 +69,19 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 7
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 8
+    weight: 7
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   translation:
-    weight: 6
+    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }
