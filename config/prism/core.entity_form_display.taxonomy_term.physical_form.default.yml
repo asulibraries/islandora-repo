@@ -1,4 +1,4 @@
-uuid: 82a15835-a931-4e29-9477-f4c26319ca36
+uuid: 1767f80f-7fdc-40c9-b096-f1d2f57915dd
 langcode: en
 status: true
 dependencies:
@@ -7,24 +7,46 @@ dependencies:
     - taxonomy.vocabulary.physical_form
   module:
     - controlled_access_terms
+    - field_group
     - path
     - text
+third_party_settings:
+  field_group:
+    group_advanced_fields:
+      children:
+        - description
+        - langcode
+        - translation
+        - path
+        - status
+      label: 'Advanced fields'
+      region: content
+      parent_name: ''
+      weight: 2
+      format_type: details
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        open: false
+        description: ''
+        required_fields: true
 id: taxonomy_term.physical_form.default
 targetEntityType: taxonomy_term
 bundle: physical_form
 mode: default
 content:
   description:
-    type: text_textfield
-    weight: 0
+    type: text_textarea
+    weight: 3
     region: content
     settings:
-      size: 60
+      rows: 5
       placeholder: ''
     third_party_settings: {  }
   field_authority_link:
     type: authority_link_default
-    weight: 31
+    weight: 1
     region: content
     settings:
       placeholder_url: ''
@@ -32,14 +54,14 @@ content:
     third_party_settings: {  }
   langcode:
     type: language_select
-    weight: 2
+    weight: 4
     region: content
     settings:
       include_locked: true
     third_party_settings: {  }
   name:
     type: string_textfield
-    weight: -5
+    weight: 0
     region: content
     settings:
       size: 60
@@ -47,19 +69,19 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 30
+    weight: 6
     region: content
     settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 100
+    weight: 7
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   translation:
-    weight: 10
+    weight: 5
     region: content
     settings: {  }
     third_party_settings: {  }
