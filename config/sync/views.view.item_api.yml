@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.storage.node.field_complex_object_child
     - field.storage.node.field_edtf_date_created
+    - field.storage.node.field_embargo_release_date
     - field.storage.node.field_handle
     - field.storage.node.field_linked_agent
     - field.storage.node.field_member_of
@@ -15,6 +16,7 @@ dependencies:
   module:
     - asu_search
     - controlled_access_terms
+    - datetime
     - node
     - rest
     - serialization
@@ -1534,6 +1536,70 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
+        field_embargo_release_date:
+          id: field_embargo_release_date
+          table: node__field_embargo_release_date
+          field: field_embargo_release_date
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: field
+          label: ''
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: datetime_default
+          settings:
+            timezone_override: ''
+            format_type: html_date
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
         field_rich_description:
           id: field_rich_description
           table: node__field_rich_description
@@ -1666,10 +1732,10 @@ display:
               alias: id
               raw_output: false
             view_node:
-              alias: item_url
+              alias: url
               raw_output: false
             field_handle:
-              alias: handle
+              alias: persistent_url
               raw_output: false
             field_title:
               alias: title
@@ -1682,6 +1748,9 @@ display:
               raw_output: false
             field_rich_description:
               alias: description
+              raw_output: false
+            field_embargo_release_date:
+              alias: embargo_date
               raw_output: false
       defaults:
         style: false
@@ -1703,6 +1772,7 @@ display:
         - user.permissions
       tags:
         - 'config:field.storage.node.field_edtf_date_created'
+        - 'config:field.storage.node.field_embargo_release_date'
         - 'config:field.storage.node.field_handle'
         - 'config:field.storage.node.field_linked_agent'
         - 'config:field.storage.node.field_rich_description'
