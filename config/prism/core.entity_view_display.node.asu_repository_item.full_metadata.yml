@@ -5,7 +5,6 @@ dependencies:
   config:
     - core.entity_view_mode.node.full_metadata
     - field.field.node.asu_repository_item.field_additional_memberships
-    - field.field.node.asu_repository_item.field_as_reference
     - field.field.node.asu_repository_item.field_cataloging_standards
     - field.field.node.asu_repository_item.field_complex_object_child
     - field.field.node.asu_repository_item.field_complex_subject
@@ -242,7 +241,7 @@ content:
     type: entity_reference_label
     label: above
     settings:
-      link: true
+      link: false
     third_party_settings: {  }
     weight: 12
     region: content

@@ -191,11 +191,6 @@ content:
     third_party_settings: {  }
     weight: 8
     region: content
-  field_gemini_uri:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 22
-    region: content
   field_geographic_subject:
     type: searchable_entity_formatter
     label: hidden
@@ -227,6 +222,14 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 7
+    region: content
+  field_keyword:
+    type: entity_reference_label
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+    weight: 22
     region: content
   field_language:
     type: searchable_entity_formatter
@@ -464,9 +467,9 @@ hidden:
   field_edition: true
   field_edtf_copyright_date: true
   field_extent: true
+  field_gemini_uri: true
   field_genre: true
   field_handle: true
-  field_keyword: true
   field_level_of_coding: true
   field_oai_set: true
   field_place_published: true

@@ -151,6 +151,12 @@
           {{ content.field_temporal_subject }}
         </div>
       {% endif %}
+      {% if node.field_keyword is not empty %}
+        <div class="keywords">
+          <div class="field__label">{{ 'Keywords'|t }}</div>
+          {{ content.field_keyword }}
+        </div>
+      {% endif %}
       <div>{{ content.field_resource_type }}</div>
       {{ drupal_block('asu_item_is_part_of', {'node': node}) }}
       {% if drupal_view('collaborating_institutions', 'block_1', node.id)|render|striptags|trim|length > 0 %}

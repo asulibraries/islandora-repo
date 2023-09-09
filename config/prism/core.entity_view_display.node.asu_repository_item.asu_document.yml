@@ -78,7 +78,7 @@ third_party_settings:
       label: Sidebar
       parent_name: ''
       region: hidden
-      weight: 80
+      weight: 81
       format_type: details_sidebar
       format_settings:
         classes: ''
@@ -92,7 +92,7 @@ third_party_settings:
       label: Details
       parent_name: ''
       region: hidden
-      weight: 81
+      weight: 82
       format_type: details
       format_settings:
         classes: ''
@@ -208,11 +208,6 @@ content:
     third_party_settings: {  }
     weight: 25
     region: content
-  field_gemini_uri:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 40
-    region: content
   field_genre:
     type: searchable_entity_formatter
     label: hidden
@@ -256,6 +251,14 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 24
+    region: content
+  field_keyword:
+    type: entity_reference_label
+    label: hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+    weight: 40
     region: content
   field_language:
     type: searchable_entity_formatter
@@ -520,8 +523,8 @@ hidden:
   field_description_source: true
   field_display_hints: true
   field_edtf_copyright_date: true
+  field_gemini_uri: true
   field_history: true
-  field_keyword: true
   field_level_of_coding: true
   field_oai_set: true
   field_place_of_publication_code: true

@@ -21,10 +21,10 @@ third_party_settings:
         - langcode
         - field_cat_date_begin
         - field_cat_date_end
+        - field_relationships
         - translation
         - path
         - status
-        - field_relationships
       label: 'Advanced fields'
       region: content
       parent_name: ''
@@ -77,11 +77,11 @@ content:
     third_party_settings: {  }
   field_relationships:
     type: typed_relation_default
-    weight: 10
+    weight: 7
     region: content
     settings:
       match_operator: CONTAINS
-      size: '60'
+      size: 60
       placeholder: ''
       match_limit: 10
     third_party_settings: {  }
@@ -102,19 +102,19 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 8
+    weight: 9
     region: content
     settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 9
+    weight: 10
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   translation:
-    weight: 7
+    weight: 8
     region: content
     settings: {  }
     third_party_settings: {  }
