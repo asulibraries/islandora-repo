@@ -54,3 +54,23 @@ function asu_item_extras_views_pre_render(ViewExecutable $view) {
     }
   }
 }
+
+/**
+ * Implements hook_views_data().
+ */
+function asu_item_extras_views_data() {
+  $data['views']['table']['group'] = t('Content');
+  $data['views']['table']['join'] = [
+    // #global is a special flag which allows a table to appear all the time.
+    '#global' => [],
+  ];
+
+  $data['views']['mime_url_field'] = [
+    'title' => t('Mime URL'),
+    'help' => t('Provides a related media file URL for a configured mime-type.'),
+    'field' => [
+      'id' => 'mime_url_field',
+    ],
+  ];
+  return $data;
+}
