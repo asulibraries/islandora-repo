@@ -78,7 +78,7 @@ third_party_settings:
       label: Sidebar
       parent_name: ''
       region: hidden
-      weight: 80
+      weight: 81
       format_type: details_sidebar
       format_settings:
         classes: ''
@@ -92,7 +92,7 @@ third_party_settings:
       label: Details
       parent_name: ''
       region: hidden
-      weight: 81
+      weight: 82
       format_type: details
       format_settings:
         classes: ''
@@ -246,11 +246,6 @@ content:
     third_party_settings: {  }
     weight: 23
     region: content
-  field_gemini_uri:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 37
-    region: content
   field_genre:
     type: searchable_entity_formatter
     label: hidden
@@ -301,6 +296,14 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 22
+    region: content
+  field_keyword:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 39
     region: content
   field_language:
     type: searchable_entity_formatter
@@ -530,7 +533,7 @@ content:
       search_term: false
       link: true
     third_party_settings: {  }
-    weight: 39
+    weight: 38
     region: content
   field_typed_identifier:
     type: entity_reference_revisions_entity_view
@@ -557,7 +560,7 @@ content:
       link_to_entity: false
       native_language: false
     third_party_settings: {  }
-    weight: 38
+    weight: 37
     region: content
   links:
     settings: {  }
@@ -577,7 +580,7 @@ hidden:
   field_as_reference: true
   field_complex_object_child: true
   field_display_hints: true
-  field_keyword: true
+  field_gemini_uri: true
   field_oai_set: true
   field_source: true
   islandora_fits_checksum: true
