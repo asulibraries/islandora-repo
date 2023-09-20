@@ -47,20 +47,25 @@ class AsuLibFooter extends BlockBase {
         <div class="container" id="footer-columns">
           <div class="row">
 
-            <div class="col-xl-3" id="info-column">
-              <h5>' . \Drupal::config('system.site')->get('name') . '</h5>
-              <p class="contact-link"><a href="/contact">Contact Us</a></p>
-              <!--<p class="contribute-button"><a href="#" class="btn btn-small btn-gold">Contribute</a></p>-->
+            <div class="col-xl flex-footer">
+              <div class="card card-foldable desktop-disable-xl">
+                <div class="card-header">
+                  <strong>' . \Drupal::config('system.site')->get('name') . '</strong>
+                </div>
+                <div id="footlink-two" class="collapse card-body show" aria-labelledby="footlink-header-two">
+                  <a class="contact-link nav-link" href="/contact">Contact Us</a>
+                </div>
+              </div>
             </div>
 
             <div class="col-xl flex-footer">
               <div class="card card-foldable desktop-disable-xl">
                 <div class="card-header">
-                  <h5>
+                  <strong>
                     <a id="footlink-header-two" data-toggle="collapse" href="#footlink-two" role="button" aria-expanded="false" aria-controls="footlink-two">Repository Services
                       <i class="fas fa-chevron-up"></i>
                     </a>
-                  </h5>
+                  </strong>
                 </div>
                 <div id="footlink-two" class="collapse card-body show" aria-labelledby="footlink-header-two">
                   <a class="nav-link" href="https://repository.lib.asu.edu" title="Repository Services Home">Home</a>
@@ -74,11 +79,11 @@ class AsuLibFooter extends BlockBase {
             <div class="col-xl flex-footer">
               <div class="card card-foldable desktop-disable-xl">
                 <div class="card-header">
-                  <h5>
+                  <strong>
                     <a id="footlink-header-two" data-toggle="collapse" href="#footlink-two" role="button" aria-expanded="false" aria-controls="footlink-two">Resources
                       <i class="fas fa-chevron-up"></i>
                     </a>
-                  </h5>
+                  </strong>
                 </div>
                 <div id="footlink-two" class="collapse card-body show" aria-labelledby="footlink-header-two">
                   <a class="nav-link" href="https://keep.lib.asu.edu/about/termsofdeposit" title="Terms of Deposit">Terms of Deposit</a>
