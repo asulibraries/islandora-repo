@@ -128,6 +128,7 @@ class ASUItemIIIF extends BlockBase implements ContainerFactoryPluginInterface {
           '#attributes' => ['class' => ['col-md-9', 'offset-md-1']],
           'iiif-link-field' => [
             '#type' => 'textfield',
+            '#title' => $this->t('Item IIIF Manifest URL'),
             '#id' => 'iiif_editbox' . $id_suffix,
             '#value' => str_replace('/items', '/node', $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . $url->toString()) . '/manifest',
           ],
