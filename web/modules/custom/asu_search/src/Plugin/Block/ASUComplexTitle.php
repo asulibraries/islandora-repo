@@ -72,7 +72,7 @@ class ASUComplexTitle extends BlockBase {
       }
       return [
         'complex_title' => [
-          '#type' => 'item',
+          '#type' => 'container',
           '#markup' => implode("<br/>", $rendered_titles),
         ],
       ];
