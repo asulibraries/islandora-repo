@@ -49,7 +49,7 @@ class SolrReindexController extends ControllerBase {
       $routeParameters = ['node' => $node->id()];
       $url = Url::fromRoute($routeName, $routeParameters);
       search_api_entity_update($node);
-      $this->messenger->addMessage(t('The Solr reindex process has been called for @url.', ['@url' => render($node->toLink()->toRenderable())]));
+      $this->messenger->addMessage(t('The Solr reindex process has been called for @url.', ['@url' => \Drupal::service('renderer')->render($node->toLink()->toRenderable())]));
       return new RedirectResponse($url->toString());
     }
     else {
