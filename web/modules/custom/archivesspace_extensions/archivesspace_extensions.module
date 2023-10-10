@@ -54,7 +54,7 @@ function archivesspace_extensions_new_digital_object_queue_item(NodeInterface $n
   // we can start reporting issues.
   if (!$node->hasField('field_typed_identifier') || $node->field_typed_identifier->isEmpty() || empty($node->field_typed_identifier->entity->field_identifier_value->value)) {
     $message = t('Node %nid does not have an identifier value which is necessary to create an ArchivesSpace digital object.', [
-      '%nid' => $entity->id(),
+      '%nid' => $node->id(),
     ]);
     \Drupal::logger('archivesspace')->warning($message);
     \Drupal::messenger()->addWarning($message);

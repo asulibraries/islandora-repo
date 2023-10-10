@@ -128,7 +128,7 @@ class CreateAspaceDigObj extends ActionBase implements ContainerFactoryPluginInt
     }
     $ao_results = $this->archivesspaceSession->request('GET', "/repositories/{$repo_id}/find_by_id/archival_objects", [
       "ref_id" => [
-        $reference_paragraph->get($extensions_settings->get('ao_ref_id_field'))->value,
+        trim($reference_paragraph->get($extensions_settings->get('ao_ref_id_field'))->value),
       ],
       'resolve' => ['archival_objects'],
     ]);
