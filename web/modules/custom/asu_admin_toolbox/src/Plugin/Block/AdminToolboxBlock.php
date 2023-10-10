@@ -219,7 +219,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
         }
       }
       $link = $link->toRenderable();
-      $output_links[] = render($link);
+      $output_links[] = \Drupal::service('renderer')->render($link);
     }
 
     if ($canUpdate) {
@@ -231,7 +231,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
         );
       $link = Link::fromTextAndUrl($this->t('Edit &nbsp; <i class="fas fa-pencil-alt"></i>'), $url);
       $link = $link->toRenderable();
-      $output_links[] = render($link);
+      $output_links[] = \Drupal::service('renderer')->render($link);
       if ($canUpdate && $is_complex_object) {
         // Reorder items.
         $url = Url::fromUri(
@@ -240,14 +240,14 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
           );
         $link = Link::fromTextAndUrl($this->t('Reorder items &nbsp; <i class="fas fa-sort"></i>'), $url);
         $link = $link->toRenderable();
-        $output_links[] = render($link);
+        $output_links[] = \Drupal::service('renderer')->render($link);
       }
       if ($is_collection) {
         // Statistics link.
         $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/collections/' . $node->id() . '/statistics', ['attributes' => ['class' => 'nav-link']]);
         $link = Link::fromTextAndUrl($this->t('Statistics &nbsp; <i class="fas fa-chart-bar"></i>'), $url);
         $link = $link->toRenderable();
-        $output_links[] = render($link);
+        $output_links[] = \Drupal::service('renderer')->render($link);
 
         $group_contents = \Drupal::entityTypeManager()
           ->getStorage('group_content')
@@ -260,7 +260,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
           $group_url = Url::fromRoute('view.group_members.page_1', ['group' => $group->id()], ['attributes' => ['class' => 'nav-link']]);
           $group_link = Link::fromTextAndUrl($this->t('Manage Users &nbsp; <i class="fas fa-users"></i>'), $group_url);
           $group_link = $group_link->toRenderable();
-          $output_links[] = render($group_link);
+          $output_links[] = \Drupal::service('renderer')->render($group_link);
         }
       }
       if ($node->hasField('field_model') && $node->get('field_model')->entity != NULL
@@ -274,7 +274,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
           );
         $link = Link::fromTextAndUrl($this->t('Add media &nbsp; <i class="fas fa-plus-circle"></i>'), $url);
         $link = $link->toRenderable();
-        $output_links[] = render($link);
+        $output_links[] = \Drupal::service('renderer')->render($link);
       }
     }
 
@@ -286,7 +286,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
         );
       $link = Link::fromTextAndUrl($this->t('Download CSV &nbsp; <i class="fas fa-file-export"></i>'), $url);
       $link = $link->toRenderable();
-      $output_links[] = render($link);
+      $output_links[] = \Drupal::service('renderer')->render($link);
     }
     if ($user_is_admin_or_metadata_manager && $is_asu_repository_item) {
       // Legacy item link... look up the node's field_pid value and if the
@@ -299,7 +299,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
         $url = Url::fromUri($legacy_uri, ['attributes' => ['target' => '_blank', 'rel' => 'noopener', 'class' => 'nav-link']]);
         $link = Link::fromTextAndUrl($this->t('Legacy URI<span class="visually-hidden">, opens in a new window</span> &nbsp; <i class="fas fa-external-link-alt"></i>'), $url);
         $link = $link->toRenderable();
-        $output_links[] = render($link);
+        $output_links[] = \Drupal::service('renderer')->render($link);
       }
     }
     // Solr reindex / Bulk edit collection items link.
@@ -322,7 +322,7 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
       }
       $link = Link::fromTextAndUrl($link_text, $url);
       $link = $link->toRenderable();
-      $output_links[] = render($link);
+      $output_links[] = \Drupal::service('renderer')->render($link);
     }
     return [
       '#markup' => (count($output_links) > 0) ?
