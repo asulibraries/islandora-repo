@@ -86,7 +86,9 @@
           {{ content }}
         {% endblock %}
 
+      {% if '/search' not in path('<current>')|render|render %}
       {{ drupal_block('search_form_block')}}
+      {% endif %}
 
       </div>
       <div class="navbar-mobile-footer">
