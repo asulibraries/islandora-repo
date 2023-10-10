@@ -31,7 +31,7 @@
 #}
 {% if items %}
   <nav aria-label="{{ heading_id }}">
-    <h4 id="{{ heading_id }}" class="sr-only">{{ 'Pagination'|t }}</h4>
+    <h2 id="{{ heading_id }}" class="h4 sr-only">{{ 'Pagination'|t }}</h2>
     <ul class="pagination js-pager__items">
       {# Print first item if we are not on the first page. #}
       {% if items.first %}

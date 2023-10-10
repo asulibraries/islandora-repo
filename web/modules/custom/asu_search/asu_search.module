@@ -129,13 +129,13 @@ function asu_search_preprocess_views_view(&$variables) {
           unset($variables['header']['view']);
         }
       }
-      // Replace the numeric part with the formatted numeric part in h2.
+      // Replace the numeric part with the formatted numeric part in h1.
       if (array_key_exists('area', $variables['header'])) {
         preg_match_all("/\([^\]]*\)/", strip_tags($variables['header']['area']['#text']), $matches);
         if (is_array($matches) && array_key_exists(0, $matches) && array_key_exists(0, $matches[0])) {
           $item_count = number_format(str_replace(['(', ')'], '', ($matches[0][0])));
-          $variables['header']['area']['#text'] = '<h2 class="search-header">Matching Items (' .
-            $item_count . ')</h2>';
+          $variables['header']['area']['#text'] = '<h1 class="h1 search-header">Matching Items (' .
+            $item_count . ')</h1>';
         }
       }
       // Also do this in the results summary if it is displayed.

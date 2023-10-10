@@ -3,11 +3,11 @@
 namespace Drupal\asu_item_extras\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Drupal\Core\Routing\CurrentRouteMatch;
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Routing\CurrentRouteMatch;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides an 'Altmetrics' Block.
@@ -125,7 +125,7 @@ class ASUAltmetrics extends BlockBase implements ContainerFactoryPluginInterface
     }
     $handle = $node->field_handle->value;
     if ($doi_val) {
-      $altmetrics_embed = ' data-doi="' . $doi_val . '"';
+      $altmetrics_embed['data-doi'] = $doi_val;
     }
     elseif ($handle) {
       if (strstr($handle, "://")) {
@@ -135,33 +135,30 @@ class ASUAltmetrics extends BlockBase implements ContainerFactoryPluginInterface
           $urlparts['path'] : "");
         $handle = ltrim($handle, "/");
       }
-      $altmetrics_embed = ' data-handle="' . $handle . '"';
+      $altmetrics_embed['data-handle'] = $handle;
     }
     else {
-      $altmetrics_embed = '';
+      $altmetrics_embed = [];
     }
-    return (($altmetrics_embed) ?
+    return (!empty($altmetrics_embed) ?
       [
         '#type' => 'container',
         'altmetrics-container' => [
-          '#type' => 'item',
+          '#type' => 'container',
           '#id' => 'altmetrics_box',
-          'container' => [
+          '#attached' => [
+            'library' => [
+              'asu_item_extras/altmetrics',
+            ],
+          ],
+          'data-badge' => [
             '#type' => 'container',
-            'left-block' => [
-              '#type' => 'item',
-              '#markup' => '<div data-badge-popover="right" data-badge-type="2"' .
-              $altmetrics_embed . ' data-hide-no-mentions="true" class="altmetric-embed"></div>',
-            ],
-              // Need the javascript to be attached to the render elements.
-            'right-block' => [
-              '#type' => 'item',
-              '#attached' => [
-                'library' => [
-                  'asu_item_extras/altmetrics',
-                ],
-              ],
-            ],
+            '#attributes' => array_merge($altmetrics_embed, [
+              'data-badge-popover' => 'right',
+              'data-badge-type' => '2',
+              'data-hide-no-mentions' => 'true',
+              'class' => ['altmetric-embed'],
+            ]),
           ],
         ],
       ] : []);

@@ -3,10 +3,10 @@
 namespace Drupal\asu_item_extras\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
-use Drupal\Core\Url;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
+use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Provides a 'International Image Interoperability Framework' Block.
@@ -111,42 +111,30 @@ class ASUItemIIIF extends BlockBase implements ContainerFactoryPluginInterface {
     $id_suffix = !($id_suffix) ? '' : $id_suffix + 1;
     return [
       'iiif-container' => [
-        '#type' => 'item',
+        '#type' => 'container',
         '#id' => 'iiif_box',
-        'container' => [
+        '#attributes' => ['class' => ['row']],
+        'left-block' => [
           '#type' => 'container',
-          'left-block' => [
-            '#type' => 'item',
-            '#prefix' => '<div class="row"><div class="col-md-2">',
-            '#suffix' => '</div>',
-            '#markup' => '            <a class="icon-link" href="https://iiif.io/technical-details/" target="_blank">
+          '#attributes' => ['class' => ['col-md-2']],
+          '#markup' => '            <a class="icon-link" href="https://iiif.io/technical-details/" target="_blank">
                 <img class="img" src="' .
-            $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . "/" .
-            drupal_get_path("module", "asu_item_extras") . '/images/IIIF-logo-colored-text.svg">
-              </a>',
-          ],
+          $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . "/" .
+          drupal_get_path("module", "asu_item_extras") . '/images/IIIF-logo-colored-text.svg" alt="IIIF logo"></a>',
+        ],
           // Drupal requires javascript to be attached to the render elements.
-          'right-block' => [
-            '#type' => 'item',
-            '#attached' => [
-              'library' => [
-                'asu_item_extras/interact',
-              ],
-            ],
-            'input-box' => [
-              '#type' => 'textfield',
-              '#id' => 'iiif_editbox' . $id_suffix,
-              '#value' => str_replace('/items', '/node', $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . $url->toString()) . '/manifest',
-            ],
-            '#prefix' => '<div class="col-md-6 offset-md-1"><p>We support the <a href="https://iiif.io/technical-details/" target="_blank">IIIF</a> Presentation API</p><div class="row no-gutters"><div class="col-9">',
-            '#suffix' => '<!-- Unnamed (Rectangle) -->
-            </div>
-            <div class="col">
-              <a id="copy_manifest_link" class="btn btn-maroon btn-md">Copy link</a>
-            </div>
-            </div>
-            </div>
-          </div>',
+        'right-block' => [
+          '#type' => 'container',
+          '#attributes' => ['class' => ['col-md-9', 'offset-md-1']],
+          'iiif-link-field' => [
+            '#type' => 'textfield',
+            '#title' => $this->t('Item IIIF Manifest URL'),
+            '#id' => 'iiif_editbox' . $id_suffix,
+            '#value' => str_replace('/items', '/node', $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . $url->toString()) . '/manifest',
+          ],
+          // We attempted a link type but it wouldn't render, so markup instead.
+          'copy-button' => [
+            '#markup' => '<a id="copy_manifest_link" class="btn btn-maroon btn-md">Copy link</a>',
           ],
         ],
       ],

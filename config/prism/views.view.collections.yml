@@ -334,7 +334,6 @@ display:
         - 'user.node_grants:view'
       tags:
         - 'config:field.storage.paragraph.field_nonsort'
-        - 'config_split_state:field.storage.paragraph.field_nonsort'
   block_1:
     id: block_1
     display_title: Block
@@ -420,7 +419,6 @@ display:
         - 'user.node_grants:view'
       tags:
         - 'config:field.storage.paragraph.field_nonsort'
-        - 'config_split_state:field.storage.paragraph.field_nonsort'
   collection_top_content:
     id: collection_top_content
     display_title: 'Collection Top Content'
@@ -799,9 +797,6 @@ display:
         - 'config:field.storage.node.field_collaborating_institutions'
         - 'config:field.storage.node.field_collection_thumbnail'
         - 'config:field.storage.node.field_rich_description'
-        - 'config_split_state:field.storage.node.field_collaborating_institutions'
-        - 'config_split_state:field.storage.node.field_collection_thumbnail'
-        - 'config_split_state:field.storage.node.field_rich_description'
   complex_object_top_content:
     id: complex_object_top_content
     display_title: 'Complex Object Top Content'
@@ -1115,8 +1110,6 @@ display:
       tags:
         - 'config:field.storage.node.field_collaborating_institutions'
         - 'config:field.storage.node.field_rich_description'
-        - 'config_split_state:field.storage.node.field_collaborating_institutions'
-        - 'config_split_state:field.storage.node.field_rich_description'
   page_1:
     id: page_1
     display_title: Page
@@ -1586,7 +1579,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "{% set published_class = [\r\nstatus != \"1\" ? 'node--unpublished',\r\n 'col']\r\n%}\r\n<div class=\"card card-horizontal\">\r\n  {% if field_collection_thumbnail %}\r\n   {{ field_collection_thumbnail }} \r\n  {% endif %}\r\n <div class=\"card-content-wrapper\">\r\n    <div class=\"card-header\">\r\n     <h3 class=\"card-title\">{% if status != \"1\" %}<i class=\"fa fa-lock\"></i> {% endif %}{{ field_title }}</h3>\r\n    </div>\r\n    <div class=\"card-body\">\r\n     <div class=\"card-text\">{{ field_rich_description }}</div>\r\n    </div>\r\n    <div class=\"card-tags\">\r\n     <a role=\"button\" href=\"/collections/{{nid}}\" class=\"btn btn-md btn-gray\">About</a>\r\n     <a role=\"button\" href=\"/collections/{{nid}}/search?search_api_fulltext=\" class=\"btn btn-md btn-gray\">Browse</a>\r\n    </div>\r\n  </div>\r\n</div>"
+            text: "{% set published_class = [\r\nstatus != \"1\" ? 'node--unpublished',\r\n 'col']\r\n%}\r\n<div class=\"card card-horizontal\">\r\n  {% if field_collection_thumbnail %}\r\n   {{ field_collection_thumbnail }} \r\n  {% endif %}\r\n <div class=\"card-content-wrapper\">\r\n    <div class=\"card-header\">\r\n     <h3 class=\"card-title\">{% if status != \"1\" %}<i class=\"fa fa-lock\"></i> {% endif %}{{ field_title }}</h3>\r\n    </div>\r\n    <div class=\"card-body\">\r\n     <div class=\"card-text\">{{ field_rich_description }}</div>\r\n    </div>\r\n    <div class=\"card-tags\">\r\n     <a role=\"button\" href=\"/collections/{{nid}}/search?search_api_fulltext=\" class=\"btn btn-md btn-gray\">Browse</a>\r\n    </div>\r\n  </div>\r\n</div>"
             make_link: false
             path: ''
             absolute: false
@@ -1829,10 +1822,6 @@ display:
         - 'config:field.storage.node.field_rich_description'
         - 'config:field.storage.node.field_title'
         - 'config:field.storage.paragraph.field_nonsort'
-        - 'config_split_state:field.storage.node.field_collection_thumbnail'
-        - 'config_split_state:field.storage.node.field_rich_description'
-        - 'config_split_state:field.storage.node.field_title'
-        - 'config_split_state:field.storage.paragraph.field_nonsort'
   page_2:
     id: page_2
     display_title: Page
@@ -2549,10 +2538,6 @@ display:
         - 'config:field.storage.node.field_rich_description'
         - 'config:field.storage.node.field_title'
         - 'config:field.storage.paragraph.field_nonsort'
-        - 'config_split_state:field.storage.node.field_collection_thumbnail'
-        - 'config_split_state:field.storage.node.field_rich_description'
-        - 'config_split_state:field.storage.node.field_title'
-        - 'config_split_state:field.storage.paragraph.field_nonsort'
   rest_export_1:
     id: rest_export_1
     display_title: 'REST export'
@@ -2829,7 +2814,6 @@ display:
         - 'user.node_grants:view'
       tags:
         - 'config:field.storage.node.field_title'
-        - 'config_split_state:field.storage.node.field_title'
   sub_collections:
     id: sub_collections
     display_title: Sub-Collections
@@ -3301,7 +3285,3 @@ display:
         - 'config:field.storage.node.field_rich_description'
         - 'config:field.storage.node.field_title'
         - 'config:field.storage.paragraph.field_nonsort'
-        - 'config_split_state:field.storage.node.field_collection_thumbnail'
-        - 'config_split_state:field.storage.node.field_rich_description'
-        - 'config_split_state:field.storage.node.field_title'
-        - 'config_split_state:field.storage.paragraph.field_nonsort'
