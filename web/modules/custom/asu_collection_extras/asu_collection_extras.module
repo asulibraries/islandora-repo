@@ -1,5 +1,7 @@
 <?php
 
+use Drupal\node\Entity\Node;
+use Drupal\Core\Entity\Entity\EntityViewDisplay;
 use Drupal\search_api\Entity\Index;
 
 /**
@@ -127,7 +129,7 @@ function asu_collection_extras_solr_get_node_membership($item_node) {
 /**
  * Add some javascript to perform an AJAX call that will sync matomo stats.
  */
-function asu_collection_extras_node_view(array &$build, Drupal\node\Entity\Node $node, Drupal\Core\Entity\Entity\EntityViewDisplay $display, $view_mode) {
+function asu_collection_extras_node_view(array &$build, Node $node, EntityViewDisplay $display, $view_mode) {
   $node_bundle = $node->bundle();
   $first_4 = substr($build['#view_mode'], 0, 4);
   // If the view mode is one of our ASU item types or it is a collection, add

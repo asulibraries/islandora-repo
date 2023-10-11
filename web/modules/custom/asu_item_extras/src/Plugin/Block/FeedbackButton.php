@@ -110,7 +110,7 @@ class FeedbackButton extends BlockBase implements ContainerFactoryPluginInterfac
     $link = Link::fromTextAndUrl($this->t('<i class="fas fa-comments"></i> Feedback'), $feedback_url)->toRenderable();
     $link['#attributes'] = ['class' => $class, 'title' => $this->t('Feedback')];
     $markup = [
-      '#markup' => render($link),
+      '#markup' => \Drupal::service('renderer')->render($link),
     ];
     return $markup;
   }

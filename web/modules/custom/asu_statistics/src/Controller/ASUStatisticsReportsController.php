@@ -539,7 +539,7 @@ class ASUStatisticsReportsController extends ControllerBase {
       $link = $link->toRenderable();
       $collection_download_rows[$nid] = [
         'raw_title' => $node_title,
-        'title' => render($link),
+        'title' => \Drupal::service('renderer')->render($link),
         'downloads' => $c_obj->downloads,
         'url' => $url->toString(),
       ];
