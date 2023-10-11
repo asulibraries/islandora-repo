@@ -233,7 +233,7 @@ function asu_collection_extras_syncNodeMatomoStats($nid) {
   if ($of || $sf || $pmf) {
     $query->condition($group);
   }
-  $mids = $query->execute();
+  $mids = $query->accessCheck(FALSE)->execute();
   $item_downloads = 0;
   foreach ($mids as $mid) {
     $fid = \Drupal::service('islandora_matomo.default')->getFileFromMedia($mid);
