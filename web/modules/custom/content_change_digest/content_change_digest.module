@@ -116,6 +116,7 @@ function content_change_digest_get_recipients() {
     $ids = \Drupal::entityQuery('user')
     ->condition('status', 1)
     ->condition('roles', $config_role)
+    ->accessCheck(FALSE)
     ->execute();
     $users = User::loadMultiple($ids);
     foreach($users as $user){
