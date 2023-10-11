@@ -90,6 +90,7 @@ class ContentDigestConfigForm extends ConfigFormBase {
   public function get_users() {
     $ids = \Drupal::entityQuery('user')
       ->condition('status', 1)
+      ->accessCheck(FALSE)
       ->execute();
     $users = User::loadMultiple($ids);
     $userlist = [];
