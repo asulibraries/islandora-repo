@@ -120,7 +120,7 @@ class ASUItemIIIF extends BlockBase implements ContainerFactoryPluginInterface {
           '#markup' => '            <a class="icon-link" href="https://iiif.io/technical-details/" target="_blank">
                 <img class="img" src="' .
           $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . "/" .
-          drupal_get_path("module", "asu_item_extras") . '/images/IIIF-logo-colored-text.svg" alt="IIIF logo"></a>',
+          \Drupal::service('extension.list.module')->getPath("asu_item_extras") . '/images/IIIF-logo-colored-text.svg" alt="IIIF logo"></a>',
         ],
           // Drupal requires javascript to be attached to the render elements.
         'right-block' => [

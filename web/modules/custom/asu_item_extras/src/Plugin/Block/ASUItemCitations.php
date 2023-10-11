@@ -83,19 +83,19 @@ class ASUItemCitations extends BlockBase implements ContainerFactoryPluginInterf
     $output_links = [];
     $url = Url::fromUri($url_string . '/citation/#citing');
     $link = Link::fromTextAndUrl($this->t('Citing this image'), $url)->toRenderable();
-    $output_links[] = render($link);
+    $output_links[] = \Drupal::service('renderer')->render($link);
     $url = Url::fromUri($url_string . '/citation/#responsibilities');
     $link = Link::fromTextAndUrl($this->t('Responsibilities of use'), $url)->toRenderable();
-    $output_links[] = render($link);
+    $output_links[] = \Drupal::service('renderer')->render($link);
     $url = Url::fromUri($url_string . '/citation/#licensing');
     $link = Link::fromTextAndUrl($this->t('Licensing and Permissions'), $url)->toRenderable();
-    $output_links[] = render($link);
+    $output_links[] = \Drupal::service('renderer')->render($link);
     $url = Url::fromUri($url_string . '/citation/#linking');
     $link = Link::fromTextAndUrl($this->t('Linking and Embedding'), $url)->toRenderable();
-    $output_links[] = render($link);
+    $output_links[] = \Drupal::service('renderer')->render($link);
     $url = Url::fromUri($url_string . '/citation/#copies');
     $link = Link::fromTextAndUrl($this->t('Copies and Reproductions'), $url)->toRenderable();
-    $output_links[] = render($link);
+    $output_links[] = \Drupal::service('renderer')->render($link);
     $render_this = [
       '#markup' =>
       ((count($output_links) > 0) ?

@@ -108,7 +108,7 @@ class AboutThisCollectionSidebarBlock extends BlockBase implements ContainerFact
     $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/collections/' . $nid, ['attributes' => ['class' => 'nav-link']]);
     $link = Link::fromTextAndUrl($this->t('Overview'), $url);
     $link = $link->toRenderable();
-    $output_links[] = render($link);
+    $output_links[] = \Drupal::service('renderer')->render($link);
     // Add a link to get the Permalink for this node. Could this be a javascript
     // event that will send the current node's URL to the copy buffer?
     if ($node->hasField('field_handle') && $node->get('field_handle')->value != NULL) {
