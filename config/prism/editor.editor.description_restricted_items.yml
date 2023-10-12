@@ -1,27 +1,53 @@
-uuid: bbae0697-e8a2-4512-ad32-f5ac00dbb0c3
+uuid: e69a6733-d0c6-4e2e-b2c8-c1a9a3424951
 langcode: en
 status: true
 dependencies:
   config:
     - filter.format.description_restricted_items
   module:
-    - ckeditor
+    - ckeditor5
 format: description_restricted_items
-editor: ckeditor
+editor: ckeditor5
 settings:
   toolbar:
-    rows:
-      -
-        -
-          name: Formatting
-          items:
-            - Bold
-            - Italic
-        -
-          name: Tools
-          items:
-            - Source
-  plugins: {  }
+    items:
+      - bold
+      - italic
+      - '|'
+      - sourceEditing
+      - '|'
+      - link
+      - blockQuote
+      - code
+      - bulletedList
+      - numberedList
+      - heading
+  plugins:
+    ckeditor5_heading:
+      enabled_headings:
+        - heading2
+        - heading3
+        - heading4
+        - heading5
+        - heading6
+    ckeditor5_sourceEditing:
+      allowed_tags:
+        - '<cite>'
+        - '<dl>'
+        - '<dt>'
+        - '<dd>'
+        - '<a hreflang>'
+        - '<blockquote cite>'
+        - '<ul type>'
+        - '<ol type>'
+        - '<h2 id>'
+        - '<h3 id>'
+        - '<h4 id>'
+        - '<h5 id>'
+        - '<h6 id>'
+    ckeditor5_list:
+      reversed: false
+      startIndex: true
 image_upload:
   status: false
   scheme: public

@@ -1,9 +1,7 @@
 uuid: db259db1-116d-43ab-a080-38d1f85a1a3e
 langcode: en
 status: true
-dependencies:
-  module:
-    - media
+dependencies: {  }
 name: 'Description Restricted'
 format: description_restricted_items
 weight: 0
@@ -21,7 +19,7 @@ filters:
     status: true
     weight: -10
     settings:
-      allowed_html: '<a href hreflang> <em> <strong> <cite> <blockquote cite> <code> <ul type> <ol start type> <li> <dl> <dt> <dd> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <br>'
+      allowed_html: '<br> <p> <h2 id> <h3 id> <h4 id> <h5 id> <h6 id> <cite> <dl> <dt> <dd> <a hreflang href> <blockquote cite> <ul type> <ol type start> <strong> <em> <code> <li>'
       filter_html_help: true
       filter_html_nofollow: false
   filter_htmlcorrector:
