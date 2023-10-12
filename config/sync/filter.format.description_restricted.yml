@@ -1,9 +1,7 @@
 uuid: 5c570ab5-5b24-41dd-9c40-4b0092e0b5f2
 langcode: en
 status: true
-dependencies:
-  module:
-    - media
+dependencies: {  }
 name: 'Description Restricted with Links'
 format: description_restricted
 weight: 0
@@ -14,15 +12,6 @@ filters:
     status: true
     weight: -10
     settings:
-      allowed_html: '<a href hreflang> <sub> <sup>'
+      allowed_html: '<br> <p> <a hreflang href> <sub> <sup>'
       filter_html_help: true
       filter_html_nofollow: false
-  media_embed:
-    id: media_embed
-    provider: media
-    status: false
-    weight: 100
-    settings:
-      default_view_mode: default
-      allowed_view_modes: {  }
-      allowed_media_types: {  }
