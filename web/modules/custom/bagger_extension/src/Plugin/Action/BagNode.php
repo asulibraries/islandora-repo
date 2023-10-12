@@ -110,7 +110,7 @@ class BagNode extends ActionBase implements ContainerFactoryPluginInterface {
 
       $path_to_bag = preg_replace('/^.*\s+at\s+/', '', trim($process->getOutput()));
       $bag_filename = pathinfo($path_to_bag, PATHINFO_BASENAME);
-      $path_to_bag = file_create_url('public://' . $bag_filename);
+      $path_to_bag = \Drupal::service('file_url_generator')->generateAbsoluteString('public://' . $bag_filename);
       $url = Url::fromUri($path_to_bag);
       $link = \Drupal::service('link_generator')->generate($this->t('here'), $url);
 
