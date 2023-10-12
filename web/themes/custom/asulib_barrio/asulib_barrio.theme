@@ -284,7 +284,7 @@ function asulib_barrio_preprocess_user(&$variables) {
     $url = Url::fromUri('https://orcid.org/' . $orcid_id);
     $link = Link::fromTextAndUrl($orcid_id, $url);
     $link = $link->toRenderable();
-    $orcid_link = render($link);
+    $orcid_link = \Drupal::service('renderer')->render($link);
     $variables['content']['orchid'] = [
       '#type' => 'item',
       '#markup' => '<h4 class="label">ORCID ID</h4>' . $orcid_link,
