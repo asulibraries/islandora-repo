@@ -121,8 +121,8 @@ class PerfArchiveChild {
       $file->setPermanent();
       $file->save();
       $file_id = $file->id();
-      $of_terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties(['name' => 'Original File']);
-      $original_file = reset($of_terms);
+      $sf_terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties(['name' => 'Service File']);
+      $service_file = reset($sf_terms);
       $mime = $file->get('filemime')->getValue()[0]['value'];
       $filename = strtolower($file->getFilename());
       if (str_contains($mime, 'image') || str_contains($filename, ".jpg") || str_contains($filename, ".jpeg") || str_contains($filename, ".png")) {
@@ -157,7 +157,7 @@ class PerfArchiveChild {
           ['target_id' => $nid],
         ],
         'field_media_use' => [
-          ['target_id' => $original_file->id()],
+          ['target_id' => $service_file->id()],
         ],
       ];
       $media_args[$field_name] = [
