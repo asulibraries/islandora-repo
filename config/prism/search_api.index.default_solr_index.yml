@@ -8,10 +8,7 @@ dependencies:
     - field.storage.node.field_edtf_copyright_date
     - field.storage.node.field_copyright_statement
     - field.storage.node.field_linked_agent
-    - field.storage.node.field_edtf_date
     - field.storage.node.field_edtf_date_created
-    - field.storage.node.field_edtf_date_issued
-    - field.storage.node.field_description
     - field.storage.node.field_rich_description
     - field.storage.node.field_display_hints
     - field.storage.node.field_edition
@@ -26,10 +23,8 @@ dependencies:
     - field.storage.node.field_issuance
     - field.storage.node.field_language
     - field.storage.node.field_pid
-    - field.storage.node.field_local_identifier
     - field.storage.node.field_model
     - field.storage.node.field_subjects_name
-    - field.storage.node.field_note
     - field.storage.node.field_open_access
     - field.storage.node.field_peer_reviewed
     - field.storage.node.field_place_of_publication_code
@@ -225,14 +220,6 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_copyright_statement
-  field_description:
-    label: Description
-    datasource_id: 'entity:node'
-    property_path: field_description
-    type: string
-    dependencies:
-      config:
-        - field.storage.node.field_description
   field_display_hints:
     label: 'Display hints'
     datasource_id: 'entity:node'
@@ -262,14 +249,6 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_edtf_copyright_date
-  field_edtf_date:
-    label: Date
-    datasource_id: 'entity:node'
-    property_path: field_edtf_date
-    type: string
-    dependencies:
-      config:
-        - field.storage.node.field_edtf_date
   field_edtf_date_created:
     label: 'Date Created'
     datasource_id: 'entity:node'
@@ -278,14 +257,6 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_edtf_date_created
-  field_edtf_date_issued:
-    label: 'Date Issued'
-    datasource_id: 'entity:node'
-    property_path: field_edtf_date_issued
-    type: string
-    dependencies:
-      config:
-        - field.storage.node.field_edtf_date_issued
   field_embargo_release_date:
     label: 'Embargo Release Date'
     datasource_id: 'entity:node'
@@ -378,14 +349,6 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_linked_agent
-  field_local_identifier:
-    label: 'Local Identifier'
-    datasource_id: 'entity:node'
-    property_path: field_local_identifier
-    type: string
-    dependencies:
-      config:
-        - field.storage.node.field_local_identifier
   field_main_title:
     label: 'Title for Sorting'
     datasource_id: 'entity:node'
@@ -423,14 +386,6 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_model
-  field_note:
-    label: Note
-    datasource_id: 'entity:node'
-    property_path: field_note
-    type: string
-    dependencies:
-      config:
-        - field.storage.node.field_note
   field_open_access:
     label: 'Open Access'
     datasource_id: 'entity:node'
@@ -636,7 +591,6 @@ field_settings:
           article: ''
           asu_repository_item: full_metadata
           collection: ''
-          islandora_object: ''
           page: ''
         'entity:taxonomy_term':
           cataloging_standards: ''
