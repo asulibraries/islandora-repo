@@ -74,3 +74,28 @@ function asu_item_extras_views_data() {
   ];
   return $data;
 }
+
+/**
+ * Implements hook_preprocess_rest_oai_pmh_record().
+ *
+ * Taken from the deprecated islandora_rest_oaipmh module.
+ * See https://github.com/Islandora/islandora_defaults/blob/3.x/modules/islandora_oaipmh/islandora_oaipmh.module
+ */
+function asu_item_extras_preprocess_rest_oai_pmh_record(&$variables) {
+  $entity = $variables['entity'];
+  if ($entity->hasField('field_linked_agent')) {
+    foreach ($entity->get('field_linked_agent') as $linked_agent) {
+      $creator_rels = [
+        'relators:cre',
+        'relators:art',
+        'relators:aut',
+        'relators:edc',
+        'relators:pht',
+        'relators:trl',
+      ];
+      $dc_field = in_array($linked_agent->rel_type, $creator_rels) ? 'dc:creator' : 'dc:contributor';
+      $variables['elements'][$dc_field][] = $linked_agent->entity->label();
+    }
+  }
+}
+
