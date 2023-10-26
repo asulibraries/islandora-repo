@@ -66,7 +66,7 @@ dependencies:
     - entity_reference_revisions
     - field_group
     - geolocation
-    - jsonb
+    - json_field
     - options
     - text
     - user
@@ -281,9 +281,10 @@ content:
     weight: 8
     region: content
   field_history:
-    type: jsonb_default
+    type: json
     label: above
-    settings: {  }
+    settings:
+      attach_library: true
     third_party_settings: {  }
     weight: 42
     region: content

@@ -59,13 +59,14 @@ dependencies:
     - field.field.node.asu_repository_item.field_typed_identifier
     - field.field.node.asu_repository_item.field_weight
     - node.type.asu_repository_item
+    - workflows.workflow.ingest
   module:
     - content_moderation
     - controlled_access_terms
     - datetime
     - field_group
     - geolocation
-    - jsonb
+    - json_field
     - paragraphs
     - path
     - text
@@ -384,7 +385,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_history:
-    type: jsonb_textarea
+    type: json_textarea
     weight: 52
     region: content
     settings:
@@ -667,6 +668,11 @@ content:
     region: content
     settings:
       display_label: true
+    third_party_settings: {  }
+  simple_sitemap:
+    weight: 10
+    region: content
+    settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox

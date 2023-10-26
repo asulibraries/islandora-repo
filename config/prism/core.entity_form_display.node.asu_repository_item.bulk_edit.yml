@@ -65,7 +65,7 @@ dependencies:
     - datetime
     - field_group
     - geolocation
-    - jsonb
+    - json_field
     - paragraphs
     - path
     - text
@@ -384,7 +384,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_history:
-    type: jsonb_textarea
+    type: json_textarea
     weight: 49
     region: content
     settings:
@@ -675,6 +675,11 @@ content:
     region: content
     settings:
       display_label: true
+    third_party_settings: {  }
+  simple_sitemap:
+    weight: 10
+    region: content
+    settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox
