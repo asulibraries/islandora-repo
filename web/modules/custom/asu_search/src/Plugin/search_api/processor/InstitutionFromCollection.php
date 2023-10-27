@@ -35,6 +35,7 @@ class InstitutionFromCollection extends ProcessorPluginBase {
         'label' => $this->t('Institution From Collection'),
         'description' => $this->t('Gets the institution from the parent collection (field_member_of)'),
         'type' => 'string',
+        'is_list' => TRUE,
         'processor_id' => $this->getPluginId(),
       ];
       $properties['institution_from_collection'] = new ProcessorProperty($definition);
