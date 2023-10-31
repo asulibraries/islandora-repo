@@ -32,7 +32,7 @@ Drupal.behaviors.asu_item_extras = {
       return;
     }});
     // on click code to handle clipboard copy of Citation
-    once('asu_item_extras', '#copy_citation', context).forEach(function(element) { console.log(element); element.onclick = function () {
+    once('asu_item_extras', '#copy_citation', context).forEach(function(element) { element.onclick = function () {
       try {
 	let citation = document.getElementById("citation-text").textContent;
         copyToClipboard(citation);
