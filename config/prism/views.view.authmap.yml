@@ -1,19 +1,17 @@
-uuid: f81dd866-550f-4c00-ae91-a2ec16883f8f
+uuid: cafbf017-aadd-4905-a292-04a967578471
 langcode: en
 status: true
 dependencies:
-  config:
-    - field.storage.group_content.group_roles
   module:
-    - group
+    - externalauth
     - user
-id: group_members
-label: 'Group members'
-module: group
+id: authmap
+label: 'External authentication links'
+module: views
 description: ''
 tag: ''
-base_table: group_relationship_field_data
-base_field: id
+base_table: authmap
+base_field: ''
 display:
   default:
     id: default
@@ -21,19 +19,174 @@ display:
     display_plugin: default
     position: 0
     display_options:
-      title: Members
+      title: 'External authentication links'
       fields:
+        provider_field:
+          id: provider_field
+          table: authmap
+          field: provider_field
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: standard
+          label: ''
+          exclude: true
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: false
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+        authname:
+          id: authname
+          table: authmap
+          field: authname
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: standard
+          label: 'Authentication Name'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+        uid:
+          id: uid
+          table: authmap
+          field: uid
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: numeric
+          label: 'Drupal User ID'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          set_precision: false
+          precision: 0
+          decimal: .
+          separator: ''
+          format_plural: false
+          format_plural_string: !!binary MQNAY291bnQ=
+          prefix: ''
+          suffix: ''
         name:
           id: name
           table: users_field_data
           field: name
-          relationship: gc__user
+          relationship: uid
           group_type: group
           admin_label: ''
           entity_type: user
           entity_field: name
           plugin_id: field
-          label: User
+          label: 'Drupal User Name'
           exclude: false
           alter:
             alter_text: false
@@ -88,80 +241,15 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        group_roles:
-          id: group_roles
-          table: group_content__group_roles
-          field: group_roles
+        delete_link:
+          id: delete_link
+          table: authmap
+          field: delete_link
           relationship: none
           group_type: group
           admin_label: ''
-          plugin_id: field
-          label: Roles
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: '<div class="item-list"><ul><li>&lt;none&gt;</li></ul></div>'
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: target_id
-          type: entity_reference_label
-          settings:
-            link: false
-          group_column: target_id
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: ul
-          separator: ', '
-          field_api_classes: false
-        changed:
-          id: changed
-          table: group_relationship_field_data
-          field: changed
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: group_content
-          entity_field: changed
-          plugin_id: field
-          label: Updated
+          plugin_id: authmap_link_delete
+          label: delete
           exclude: false
           alter:
             alter_text: false
@@ -202,304 +290,11 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          click_sort_column: value
-          type: timestamp
-          settings:
-            date_format: short
-            custom_date_format: ''
-            timezone: ''
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-        created:
-          id: created
-          table: group_relationship_field_data
-          field: created
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: group_content
-          entity_field: created
-          plugin_id: field
-          label: Joined
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: timestamp
-          settings:
-            date_format: short
-            custom_date_format: ''
-            timezone: ''
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-        view_group_content:
-          id: view_group_content
-          table: group_relationship
-          field: view_group_content
-          relationship: none
-          group_type: group
-          admin_label: 'View member link'
-          entity_type: group_content
-          plugin_id: entity_link
-          label: ''
-          exclude: true
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          text: 'View member'
+          text: delete
           output_url_as_text: false
           absolute: false
-        edit_group_content:
-          id: edit_group_content
-          table: group_relationship
-          field: edit_group_content
-          relationship: none
-          group_type: group
-          admin_label: 'Edit member link'
-          entity_type: group_content
-          plugin_id: entity_link_edit
-          label: ''
-          exclude: true
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          text: 'Edit member'
-        delete_group_content:
-          id: delete_group_content
-          table: group_relationship
-          field: delete_group_content
-          relationship: none
-          group_type: group
-          admin_label: 'Remove member link'
-          entity_type: group_content
-          plugin_id: entity_link_delete
-          label: ''
-          exclude: true
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          text: 'Remove member'
-        dropbutton:
-          id: dropbutton
-          table: views
-          field: dropbutton
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: dropbutton
-          label: Operations
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          destination: true
-          fields:
-            view_group_content: view_group_content
-            edit_group_content: edit_group_content
-            delete_group_content: delete_group_content
-            name: '0'
-            group_roles: '0'
-            changed: '0'
-            created: '0'
       pager:
-        type: full
+        type: mini
         options:
           offset: 0
           items_per_page: 50
@@ -508,8 +303,6 @@ display:
           tags:
             next: ››
             previous: ‹‹
-            first: '« First'
-            last: 'Last »'
           expose:
             items_per_page: false
             items_per_page_label: 'Items per page'
@@ -518,7 +311,6 @@ display:
             items_per_page_options_all_label: '- All -'
             offset: false
             offset_label: Offset
-          quantity: 9
       exposed_form:
         type: basic
         options:
@@ -530,11 +322,11 @@ display:
           sort_asc_label: Asc
           sort_desc_label: Desc
       access:
-        type: group_permission
+        type: perm
         options:
-          group_permission: 'administer members'
+          perm: 'view authmap'
       cache:
-        type: tag
+        type: none
         options: {  }
       empty:
         area_text_custom:
@@ -546,34 +338,32 @@ display:
           admin_label: ''
           plugin_id: text_custom
           empty: true
-          content: 'No members available.'
+          content: 'No links (from Authentication name to Drupal user) found.'
           tokenize: false
       sorts: {  }
       arguments:
-        gid:
-          id: gid
-          table: group_relationship_field_data
-          field: gid
+        provider_field:
+          id: provider_field
+          table: authmap
+          field: provider_field
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: group_content
-          entity_field: gid
-          plugin_id: numeric
-          default_action: 'access denied'
+          plugin_id: string
+          default_action: ignore
           exception:
             value: all
             title_enable: false
             title: All
           title_enable: true
-          title: '{{ arguments.gid|placeholder }} members'
+          title: 'Links for {{ arguments.provider_field }}'
           default_argument_type: fixed
           default_argument_options:
             argument: ''
           default_argument_skip_url: false
           summary_options:
             base_path: ''
-            count: true
+            count: false
             override: false
             items_per_page: 25
           summary:
@@ -585,9 +375,101 @@ display:
             type: none
             fail: 'not found'
           validate_options: {  }
+          glossary: false
+          limit: 0
+          case: none
+          path_case: none
+          transform_dash: false
           break_phrase: false
-          not: false
-      filters: {  }
+      filters:
+        authname:
+          id: authname
+          table: authmap
+          field: authname
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: string
+          operator: starts
+          value: ''
+          group: 1
+          exposed: true
+          expose:
+            operator_id: authname_op
+            label: 'Authentication name'
+            description: ''
+            use_operator: false
+            operator: authname_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: authname
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              role3: '0'
+              role4: '0'
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+        uid:
+          id: uid
+          table: users_field_data
+          field: uid
+          relationship: uid
+          group_type: group
+          admin_label: ''
+          entity_type: user
+          entity_field: uid
+          plugin_id: user_name
+          operator: in
+          value: {  }
+          group: 1
+          exposed: true
+          expose:
+            operator_id: uid_op
+            label: 'Drupal user'
+            description: ''
+            use_operator: false
+            operator: uid_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: uid
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              role3: '0'
+              role4: '0'
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
       style:
         type: table
         options:
@@ -595,16 +477,26 @@ display:
           row_class: ''
           default_row_class: true
           columns:
+            authname: authname
+            uid: uid
             name: name
-            group_roles: group_roles
-            changed: changed
-            created: created
-            view_group_content: view_group_content
-            edit_group_content: edit_group_content
-            delete_group_content: delete_group_content
-            dropbutton: dropbutton
-          default: '-1'
+            delete: delete
+          default: authname
           info:
+            authname:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
+            uid:
+              sortable: true
+              default_sort_order: asc
+              align: ''
+              separator: ''
+              empty_column: false
+              responsive: ''
             name:
               sortable: true
               default_sort_order: asc
@@ -612,47 +504,7 @@ display:
               separator: ''
               empty_column: false
               responsive: ''
-            group_roles:
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            changed:
-              sortable: true
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            created:
-              sortable: true
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            view_group_content:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            edit_group_content:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            delete_group_content:
-              sortable: false
-              default_sort_order: asc
-              align: ''
-              separator: ''
-              empty_column: false
-              responsive: ''
-            dropbutton:
+            delete:
               sortable: false
               default_sort_order: asc
               align: ''
@@ -660,18 +512,13 @@ display:
               empty_column: false
               responsive: ''
           override: true
-          sticky: true
+          sticky: false
           summary: ''
-          empty_table: true
+          empty_table: false
           caption: ''
           description: ''
       row:
         type: fields
-        options:
-          default_field_elements: true
-          inline: {  }
-          separator: ''
-          hide_empty: false
       query:
         type: views_query
         options:
@@ -681,18 +528,16 @@ display:
           replica: false
           query_tags: {  }
       relationships:
-        gc__user:
-          id: gc__user
-          table: group_relationship_field_data
-          field: gc__user
+        uid:
+          id: uid
+          table: authmap
+          field: uid
           relationship: none
           group_type: group
-          admin_label: 'Member account'
-          entity_type: group_content
-          plugin_id: group_content_to_entity
-          required: true
-          group_content_plugins:
-            group_membership: group_membership
+          admin_label: 'Linked Drupal user'
+          plugin_id: standard
+          required: false
+      show_admin_links: false
       header: {  }
       footer: {  }
       display_extenders: {  }
@@ -701,38 +546,33 @@ display:
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
-        - route.group
         - url
         - url.query_args
-        - user.group_permissions
-      tags:
-        - 'config:field.storage.group_content.group_roles'
-  page_1:
-    id: page_1
+        - user.permissions
+      tags: {  }
+  page:
+    id: page
     display_title: Page
     display_plugin: page
     position: 1
     display_options:
       display_extenders: {  }
-      path: group/%group/members
+      path: admin/people/authmap
       menu:
         type: tab
-        title: Members
+        title: External
         description: ''
         weight: 20
-        enabled: true
         expanded: false
-        menu_name: main
-        parent: ''
+        menu_name: admin
+        parent: entity.user.collection
         context: '0'
     cache_metadata:
       max-age: -1
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
-        - route.group
         - url
         - url.query_args
-        - user.group_permissions
-      tags:
-        - 'config:field.storage.group_content.group_roles'
+        - user.permissions
+      tags: {  }

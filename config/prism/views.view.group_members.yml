@@ -2,6 +2,8 @@ uuid: 341fa87f-e1d4-4746-9f5e-517b5c44122e
 langcode: en
 status: true
 dependencies:
+  config:
+    - field.storage.group_content.group_roles
   module:
     - group
     - user
@@ -10,7 +12,7 @@ label: 'Group members'
 module: group
 description: ''
 tag: ''
-base_table: group_content_field_data
+base_table: group_relationship_field_data
 base_field: id
 display:
   default:
@@ -151,7 +153,7 @@ display:
           field_api_classes: false
         changed:
           id: changed
-          table: group_content_field_data
+          table: group_relationship_field_data
           field: changed
           relationship: none
           group_type: group
@@ -218,7 +220,7 @@ display:
           field_api_classes: false
         created:
           id: created
-          table: group_content_field_data
+          table: group_relationship_field_data
           field: created
           relationship: none
           group_type: group
@@ -285,7 +287,7 @@ display:
           field_api_classes: false
         view_group_content:
           id: view_group_content
-          table: group_content
+          table: group_relationship
           field: view_group_content
           relationship: none
           group_type: group
@@ -338,7 +340,7 @@ display:
           absolute: false
         edit_group_content:
           id: edit_group_content
-          table: group_content
+          table: group_relationship
           field: edit_group_content
           relationship: none
           group_type: group
@@ -389,7 +391,7 @@ display:
           text: 'Edit member'
         delete_group_content:
           id: delete_group_content
-          table: group_content
+          table: group_relationship
           field: delete_group_content
           relationship: none
           group_type: group
@@ -550,7 +552,7 @@ display:
       arguments:
         gid:
           id: gid
-          table: group_content_field_data
+          table: group_relationship_field_data
           field: gid
           relationship: none
           group_type: group
@@ -681,7 +683,7 @@ display:
       relationships:
         gc__user:
           id: gc__user
-          table: group_content_field_data
+          table: group_relationship_field_data
           field: gc__user
           relationship: none
           group_type: group
