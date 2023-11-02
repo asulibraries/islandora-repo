@@ -119,7 +119,7 @@ class UnpaywallBlock extends BlockBase implements ContainerFactoryPluginInterfac
       if ($doi_val) {
         $unpaywall_url = $this->callUnpayApi($doi_val);
         if ($unpaywall_url) {
-          $return_val = render(Link::fromTextAndUrl($this->t('Open access version <i class="fas fa-external-link-alt"></i>'), Url::fromUri($unpaywall_url))->toRenderable());
+          $return_val = \Drupal::service('renderer')->render(Link::fromTextAndUrl($this->t('Open access version <i class="fas fa-external-link-alt"></i>'), Url::fromUri($unpaywall_url))->toRenderable());
         }
       }
 

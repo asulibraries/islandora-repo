@@ -35,6 +35,7 @@ class ComplexTitle extends ProcessorPluginBase {
         'label' => $this->t('Complex Title'),
         'description' => $this->t('A string that combines parts of a title'),
         'type' => 'string',
+        'is_list' => TRUE,
         'processor_id' => $this->getPluginId(),
       ];
       $properties['complex_title'] = new ProcessorProperty($definition);
@@ -42,6 +43,7 @@ class ComplexTitle extends ProcessorPluginBase {
         'label' => $this->t('Main + Subtitle'),
         'description' => $this->t('A string that combines parts of a title'),
         'type' => 'string',
+        'is_list' => TRUE,
         'processor_id' => $this->getPluginId(),
       ];
       $properties['main_sub_title'] = new ProcessorProperty($definition);

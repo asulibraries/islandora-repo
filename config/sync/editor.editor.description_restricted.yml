@@ -1,23 +1,25 @@
-uuid: 796304a1-0055-4b82-b46e-f8f6070c1dab
+uuid: 74f3ae40-20b6-401c-9aaf-4d80656b3b8f
 langcode: en
 status: true
 dependencies:
   config:
     - filter.format.description_restricted
   module:
-    - ckeditor
+    - ckeditor5
 format: description_restricted
-editor: ckeditor
+editor: ckeditor5
 settings:
   toolbar:
-    rows:
-      -
-        -
-          name: Links
-          items:
-            - DrupalLink
-            - DrupalUnlink
-  plugins: {  }
+    items:
+      - link
+      - '|'
+      - subscript
+      - superscript
+      - sourceEditing
+  plugins:
+    ckeditor5_sourceEditing:
+      allowed_tags:
+        - '<a hreflang>'
 image_upload:
   status: false
   scheme: public

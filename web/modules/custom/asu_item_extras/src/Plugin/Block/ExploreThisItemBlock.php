@@ -145,7 +145,7 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
         // Get the node's service file information from the node - just use the
         // openseadragon view.
         $link = $link->toRenderable();
-        $output_links[] = render($link);
+        $output_links[] = \Drupal::service('renderer')->render($link);
       }
     }
     elseif ($field_model == 'Complex Object') {
@@ -161,7 +161,7 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
         $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/items/' . $nid . '/view', ['attributes' => ['class' => 'nav-link']]);
         $link = Link::fromTextAndUrl($this->t('Explore Document'), $url);
         $link = $link->toRenderable();
-        $output_links[] = render($link);
+        $output_links[] = \Drupal::service('renderer')->render($link);
       }
     }
     // If there has been nothing added to $output_links, return empty array.

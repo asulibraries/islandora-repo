@@ -5,11 +5,9 @@ dependencies:
   config:
     - field.storage.node.field_additional_memberships
     - field.storage.node.field_copyright_statement
-    - field.storage.node.field_description
     - field.storage.node.field_edition
     - field.storage.node.field_edtf_copyright_date
     - field.storage.node.field_edtf_date_created
-    - field.storage.node.field_edtf_date_issued
     - field.storage.node.field_embargo_release_date
     - field.storage.node.field_extent
     - field.storage.node.field_frequency
@@ -188,9 +186,6 @@ display:
               collection:
                 display_method: label
                 view_mode: default
-              islandora_object:
-                display_method: label
-                view_mode: default
               page:
                 display_method: label
                 view_mode: default
@@ -272,9 +267,6 @@ display:
                 display_method: label
                 view_mode: default
               collection:
-                display_method: label
-                view_mode: default
-              islandora_object:
                 display_method: label
                 view_mode: default
               page:
@@ -555,6 +547,10 @@ display:
           click_sort_column: value
           type: edtf_default
           settings:
+            date_separator: dash
+            date_order: big_endian
+            month_format: mm
+            day_format: dd
             relationship: none
             field_rendering: 1
             fieldsets:
@@ -611,10 +607,6 @@ display:
             click_sort_column: value
             type: edtf_default
             field_api_classes: 0
-            date_separator: dash
-            date_order: big_endian
-            month_format: mm
-            day_format: dd
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -833,211 +825,6 @@ display:
           type: string
           settings:
             link_to_entity: false
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          field_rendering: true
-          fallback_handler: search_api
-          fallback_options:
-            link_to_item: false
-            use_highlighting: false
-            multi_type: separator
-            multi_separator: ', '
-        field_edtf_date_issued:
-          id: field_edtf_date_issued
-          table: search_api_index_default_solr_index
-          field: field_edtf_date_issued
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: search_api_field
-          label: ''
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: edtf_default
-          settings:
-            relationship: none
-            field_rendering: 1
-            fieldsets:
-              - more
-              - admin_label
-            custom_label: 0
-            label: ''
-            element_label_colon: 1
-            exclude: 0
-            element_type_enable: 0
-            element_type: ''
-            element_class_enable: 0
-            element_class: ''
-            element_label_type_enable: 0
-            element_label_type: ''
-            element_label_class_enable: 0
-            element_label_class: ''
-            element_wrapper_type_enable: 0
-            element_wrapper_type: ''
-            element_wrapper_class_enable: 0
-            element_wrapper_class: ''
-            element_default_classes: 1
-            alter:
-              alter_text: 0
-              text: ''
-              make_link: 0
-              path: ''
-              absolute: 0
-              replace_spaces: 0
-              external: 0
-              path_case: none
-              link_class: ''
-              alt: ''
-              rel: ''
-              prefix: ''
-              suffix: ''
-              target: ''
-              trim: 0
-              max_length: '0'
-              word_boundary: 1
-              ellipsis: 1
-              more_link: 0
-              more_link_text: ''
-              more_link_path: ''
-              html: 0
-              strip_tags: 0
-              preserve_tags: ''
-              trim_whitespace: 0
-              nl2br: 0
-            empty: ''
-            empty_zero: 0
-            hide_empty: 0
-            hide_alter_empty: 1
-            group_rows: 1
-            multi_type: separator
-            separator: ', '
-            delta_limit: '0'
-            delta_offset: '0'
-            delta_reversed: 0
-            delta_first_last: 0
-            click_sort_column: value
-            type: edtf_default
-            field_api_classes: 0
-            date_separator: dash
-            date_order: big_endian
-            month_format: mm
-            day_format: dd
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          field_rendering: true
-          fallback_handler: search_api
-          fallback_options:
-            link_to_item: false
-            use_highlighting: false
-            multi_type: separator
-            multi_separator: ', '
-        field_description:
-          id: field_description
-          table: search_api_index_default_solr_index
-          field: field_description
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: search_api_field
-          label: ''
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: basic_string
-          settings: {  }
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -3427,6 +3214,10 @@ display:
           click_sort_column: value
           type: edtf_default
           settings:
+            date_separator: dash
+            date_order: big_endian
+            month_format: mm
+            day_format: dd
             relationship: none
             field_rendering: 1
             fieldsets:
@@ -3490,10 +3281,6 @@ display:
             click_sort_column: value
             type: edtf_default
             field_api_classes: 0
-            date_separator: dash
-            date_order: big_endian
-            month_format: mm
-            day_format: dd
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -3709,11 +3496,9 @@ display:
       tags:
         - 'config:field.storage.node.field_additional_memberships'
         - 'config:field.storage.node.field_copyright_statement'
-        - 'config:field.storage.node.field_description'
         - 'config:field.storage.node.field_edition'
         - 'config:field.storage.node.field_edtf_copyright_date'
         - 'config:field.storage.node.field_edtf_date_created'
-        - 'config:field.storage.node.field_edtf_date_issued'
         - 'config:field.storage.node.field_embargo_release_date'
         - 'config:field.storage.node.field_extent'
         - 'config:field.storage.node.field_frequency'
@@ -3751,11 +3536,9 @@ display:
       tags:
         - 'config:field.storage.node.field_additional_memberships'
         - 'config:field.storage.node.field_copyright_statement'
-        - 'config:field.storage.node.field_description'
         - 'config:field.storage.node.field_edition'
         - 'config:field.storage.node.field_edtf_copyright_date'
         - 'config:field.storage.node.field_edtf_date_created'
-        - 'config:field.storage.node.field_edtf_date_issued'
         - 'config:field.storage.node.field_embargo_release_date'
         - 'config:field.storage.node.field_extent'
         - 'config:field.storage.node.field_frequency'
@@ -3831,11 +3614,9 @@ display:
       tags:
         - 'config:field.storage.node.field_additional_memberships'
         - 'config:field.storage.node.field_copyright_statement'
-        - 'config:field.storage.node.field_description'
         - 'config:field.storage.node.field_edition'
         - 'config:field.storage.node.field_edtf_copyright_date'
         - 'config:field.storage.node.field_edtf_date_created'
-        - 'config:field.storage.node.field_edtf_date_issued'
         - 'config:field.storage.node.field_embargo_release_date'
         - 'config:field.storage.node.field_extent'
         - 'config:field.storage.node.field_frequency'

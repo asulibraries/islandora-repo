@@ -247,7 +247,7 @@ function _url_to_media_file_by_mimetype($node, $mime_type) {
       }
       $file = $m->get('field_media_' . $bundle)->entity;
       if (!is_null($file)) {
-        return file_create_url($file->getFileUri());
+        return \Drupal::service('file_url_generator')->generateAbsoluteString($file->getFileUri());
       }
       \Drupal::logger('islandora_tokens')->warning("Could not find file for media {$m->id()}");
     }

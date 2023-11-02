@@ -71,6 +71,7 @@ class OriginalFileCount extends ProcessorPluginBase {
     $mids = $this->entityTypeManager->getStorage('media')->getQuery()
       ->condition('field_media_of', $node->id())
       ->condition('field_media_use', $original_file_tid)
+      ->accessCheck(TRUE)
       ->execute();
     foreach ($mids as $mid) {
       $media = $this->entityTypeManager->getStorage('media')->load($mid);

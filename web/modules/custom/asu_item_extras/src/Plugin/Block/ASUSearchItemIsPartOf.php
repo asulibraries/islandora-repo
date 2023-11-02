@@ -93,7 +93,7 @@ class ASUSearchItemIsPartOf extends BlockBase implements ContainerFactoryPluginI
       $parent_title = $this->renderer->render($first_title_view);
       $parent_url = Url::fromRoute('entity.node.canonical', ['node' => $parent_node_id], ['absolute' => TRUE]);
       $link = Link::fromTextAndUrl($parent_title, $parent_url)->toRenderable();
-      $rendered_link = render($link);
+      $rendered_link = \Drupal::service('renderer')->render($link);
       $output = 'Part of ' . $rendered_link;
     }
     return [

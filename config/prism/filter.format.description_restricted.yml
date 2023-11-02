@@ -1,9 +1,7 @@
 uuid: f9045631-671e-4abd-8516-cb2d537c3b23
 langcode: en
 status: true
-dependencies:
-  module:
-    - media
+dependencies: {  }
 name: 'Description Restricted with Links'
 format: description_restricted
 weight: 0
@@ -14,6 +12,6 @@ filters:
     status: true
     weight: -10
     settings:
-      allowed_html: '<a href hreflang>'
+      allowed_html: '<br> <p> <a hreflang href>'
       filter_html_help: true
       filter_html_nofollow: false

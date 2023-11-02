@@ -106,7 +106,7 @@ class AsuUtils {
       $childrenQuery
         ->range(0, $limit);
     }
-    return $childrenQuery->execute();
+    return $childrenQuery->accessCheck(TRUE)->execute();
   }
 
 }

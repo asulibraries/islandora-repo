@@ -95,7 +95,7 @@ class MimeUrlField extends FieldPluginBase {
         }
         $file = $m->get('field_media_' . $bundle)->entity;
         if (!is_null($file)) {
-          return file_create_url($file->getFileUri());
+          return \Drupal::service('file_url_generator')->generateAbsoluteString($file->getFileUri());
         }
       }
     }

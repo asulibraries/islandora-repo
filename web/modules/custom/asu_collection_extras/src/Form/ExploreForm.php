@@ -64,7 +64,7 @@ class ExploreForm extends FormBase {
     $form['explore_link'] = [
       '#markup' =>
       (($link) ?
-        render($link) :
+        \Drupal::service('renderer')->render($link) :
         ""),
     ];
     $form['search_api_fulltext'] = [

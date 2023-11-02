@@ -103,6 +103,7 @@ class ASUItemDownloads extends BlockBase implements ContainerFactoryPluginInterf
     if ($node_id) {
       $mids = $this->entityTypeManager->getStorage('media')->getQuery()
         ->condition('field_media_of', $node_id)
+        ->accessCheck(FALSE)
         ->execute();
       $download_count = 0;
       foreach ($mids as $mid) {

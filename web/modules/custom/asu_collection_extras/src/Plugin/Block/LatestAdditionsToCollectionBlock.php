@@ -141,7 +141,7 @@ class LatestAdditionsToCollectionBlock extends BlockBase implements ContainerFac
     foreach ($nids as $nid) {
       $node = $storage->load($nid);
       $build = $view_builder->view($node, 'collection_browse_teaser');
-      $output[] = render($build);
+      $output[] = \Drupal::service('renderer')->render($build);
     }
     return '<div class="row">' . implode('', $output) . "</div>";
   }

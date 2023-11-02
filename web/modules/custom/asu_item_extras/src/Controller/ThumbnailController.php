@@ -64,7 +64,7 @@ class ThumbnailController extends ControllerBase {
           // $file_uri = $file->createFileUrl();
           // return (new TrustedRedirectResponse($file_uri))
           // ->addCacheableDependency((new CacheableMetadata())->setCacheMaxAge(0));        }
-          $url = file_create_url($file->getFileUri());
+          $url = \Drupal::service('file_url_generator')->generateAbsoluteString($file->getFileUri());
           if (str_contains($url, "keep.lib") || str_contains($url, "prism.lib")) {
             $response = new RedirectResponse($url);
           }
@@ -85,7 +85,7 @@ class ThumbnailController extends ControllerBase {
                 // $file_uri = $file->createFileUrl();
                 // return (new TrustedRedirectResponse($file_uri))
                 // ->addCacheableDependency((new CacheableMetadata())->setCacheMaxAge(0));
-                $url = file_create_url($file->getFileUri());
+                $url = \Drupal::service('file_url_generator')->generateAbsoluteString($file->getFileUri());
                 if (str_contains($url, "keep.lib") || str_contains($url, "prism.lib")) {
                   $response = new RedirectResponse($url);
                 }

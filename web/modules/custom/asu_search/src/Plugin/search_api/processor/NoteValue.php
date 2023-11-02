@@ -35,6 +35,7 @@ class NoteValue extends ProcessorPluginBase {
         'label' => $this->t('Note value'),
         'description' => $this->t('A string that contains the note value'),
         'type' => 'string',
+        'is_list' => TRUE,
         'processor_id' => $this->getPluginId(),
       ];
       $properties['note_value'] = new ProcessorProperty($definition);

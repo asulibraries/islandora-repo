@@ -31,21 +31,21 @@ class ModsEncoder extends XmlEncoder {
   /**
    * {@inheritdoc}
    */
-  public function supportsEncoding($format) {
+  public function supportsEncoding(string $format): bool {
     return $format == $this->format;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function supportsDecoding($format) {
+  public function supportsDecoding(string $format): bool {
     return in_array($format, [$this->format, 'form']);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function decode($data, $format, array $context = []) {
+  public function decode(string $data, string $format, array $context = []): mixed {
     if ($format === 'xml') {
       return parent::decode($data, $format, $context);
     }
@@ -379,7 +379,7 @@ class ModsEncoder extends XmlEncoder {
   /**
    * {@inheritdoc}
    */
-  public function encode($data, $format, array $context = []) {
+  public function encode(mixed $data, string $format, array $context = []): string {
     // @todo set mods namespaces.
     $mods_config = \Drupal::config('asu_mods.asu_repository_item');
     $all_records = [];

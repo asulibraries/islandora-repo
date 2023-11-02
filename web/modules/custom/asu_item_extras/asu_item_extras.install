@@ -26,7 +26,7 @@ function asu_item_extras_update_8001() {
  */
 function _get_or_create_co_tag() {
   $term_name = 'Complex Object';
-  $test_terms = taxonomy_term_load_multiple_by_name($term_name);
+  $test_terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadByProperties(['name' => $term_name]);
   if (!$test_terms) {
     $term = Term::create([
       'parent' => [],

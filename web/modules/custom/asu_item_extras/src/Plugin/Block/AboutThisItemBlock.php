@@ -115,7 +115,7 @@ class AboutThisItemBlock extends BlockBase implements ContainerFactoryPluginInte
     $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/items/' . $nid, ['attributes' => ['class' => 'nav-link']]);
     $link = Link::fromTextAndUrl($this->t('Overview'), $url);
     $link = $link->toRenderable();
-    $output_links[] = render($link);
+    $output_links[] = \Drupal::service('renderer')->render($link);
     // The link to "Full metadata" has been taken out of this block and moved
     // to the bottom of the page - and as long as there are tabs for nodes to
     // "View" and "Full metadata", the link in this block is extra.
