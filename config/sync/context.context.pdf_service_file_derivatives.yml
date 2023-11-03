@@ -1,11 +1,11 @@
-uuid: bf921e50-5904-4d82-8b08-63d02f6683db
+uuid: 0a41aaad-0d18-473e-a34b-66832f4aa64d
 langcode: en
 status: true
 dependencies:
   module:
     - islandora
-label: 'PDF Derivatives'
-name: pdf_original_file
+label: 'PDF Service File Derivatives'
+name: pdf_service_file_derivatives
 group: Derivatives
 description: 'Derivatives for PDF documents'
 requireAllConditions: true
@@ -16,7 +16,7 @@ conditions:
     negate: false
     context_mapping:
       media: '@islandora.media_route_context_provider:media'
-    uri: 'http://pcdm.org/use#OriginalFile'
+    uri: 'http://pcdm.org/use#ServiceFile'
     logic: or
   parent_node_has_term:
     id: parent_node_has_term
@@ -30,6 +30,6 @@ reactions:
     id: derivative
     saved: false
     actions:
-      digital_document_generate_a_thumbnail_from_an_original_file: digital_document_generate_a_thumbnail_from_an_original_file
+      digital_document_generate_a_thumbnail_from_a_service_file: digital_document_generate_a_thumbnail_from_a_service_file
       get_ocr_from_image: get_ocr_from_image
 weight: -6
