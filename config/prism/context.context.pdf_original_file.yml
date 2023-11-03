@@ -16,8 +16,8 @@ conditions:
     negate: false
     context_mapping:
       media: '@islandora.media_route_context_provider:media'
-    uri: 'http://pcdm.org/use#OriginalFile'
-    logic: and
+    uri: 'http://pcdm.org/use#OriginalFile,http://pcdm.org/use#ServiceFile'
+    logic: or
   parent_node_has_term:
     id: parent_node_has_term
     negate: false
@@ -28,8 +28,8 @@ conditions:
 reactions:
   derivative:
     id: derivative
-    actions:
-      get_ocr_from_image: get_ocr_from_image
-      image_generate_a_thumbnail_from_an_original_file: digital_document_generate_a_thumbnail_from_an_original_file
     saved: false
+    actions:
+      digital_document_generate_a_thumbnail_from_an_original_file: digital_document_generate_a_thumbnail_from_an_original_file
+      get_ocr_from_image: get_ocr_from_image
 weight: -6
