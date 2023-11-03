@@ -3,7 +3,6 @@ langcode: en
 status: true
 dependencies:
   module:
-    - context
     - islandora
     - node
     - rrssb
@@ -23,26 +22,16 @@ settings:
   provider: rrssb
   button_set: default
 visibility:
-  request_path_exclusion:
-    id: request_path_exclusion
-    negate: true
-    context_mapping: {  }
-    pages: ''
   request_path:
     id: request_path
     negate: true
     context_mapping: {  }
     pages: "/node/add/*\r\n/node/*/edit\r\n/node/*/revisions/*"
-  view_inclusion:
-    id: view_inclusion
-    negate: false
-    context_mapping: {  }
-    view_inclusion: {  }
   media_source_mimetype:
     id: media_source_mimetype
-    mimetype: ''
     negate: false
     context_mapping: {  }
+    mimetype: ''
   'entity_bundle:node':
     id: 'entity_bundle:node'
     negate: false

@@ -5,7 +5,6 @@ dependencies:
   config:
     - facets_summary.facets_summary.facet_summary
   module:
-    - context
     - facets_summary
     - system
   theme:
@@ -22,16 +21,6 @@ settings:
   label_display: '0'
   provider: facets_summary
 visibility:
-  request_path_exclusion:
-    id: request_path_exclusion
-    negate: null
-    context_mapping: {  }
-    pages: ''
-  view_inclusion:
-    id: view_inclusion
-    negate: null
-    context_mapping: {  }
-    view_inclusion: {  }
   request_path:
     id: request_path
     negate: false

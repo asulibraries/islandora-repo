@@ -43,7 +43,7 @@ dependencies:
     - field.storage.node.field_title_subject
     - field.storage.node.field_subject
     - search_api.server.default_solr_server
-    - core.entity_view_mode.node.full_text_index
+    - core.entity_view_mode.node.full_metadata
   module:
     - search_api_solr
     - node
@@ -589,9 +589,36 @@ field_settings:
       view_mode:
         'entity:node':
           article: ''
-          asu_repository_item: full_text_index
+          asu_repository_item: full_metadata
           collection: ''
+          islandora_object: ''
           page: ''
+        'entity:taxonomy_term':
+          cataloging_standards: ''
+          collaborating_institutions: ''
+          conference: ''
+          copyright_statements: ''
+          corporate_body: ''
+          country_codes: ''
+          family: ''
+          genre: ''
+          geo_location: ''
+          identifier_types: ''
+          keywords: ''
+          language: ''
+          name_titles: ''
+          note_types: ''
+          oai_sets: ''
+          person: ''
+          physical_form: ''
+          preservation_states: ''
+          related_items: ''
+          resource_types: ''
+          reuse_permissions: ''
+          subject: ''
+          tags: ''
+          temporal: ''
+          titles: ''
   resource_type_name:
     label: 'Resource Type'
     datasource_id: 'entity:node'
@@ -669,7 +696,6 @@ processor_settings:
     weights:
       preprocess_index: 5
   complex_title: {  }
-  custom_value: {  }
   entity_type: {  }
   etdf_created_year_only: {  }
   hierarchy:

@@ -24,6 +24,11 @@ settings:
   views_label: 'Recent Collections'
   items_per_page: none
 visibility:
+  request_path:
+    id: request_path
+    negate: false
+    context_mapping: {  }
+    pages: "<front>\r\n/home\r\n/"
   request_path_exclusion:
     id: request_path_exclusion
     negate: null
@@ -34,8 +39,3 @@ visibility:
     negate: null
     context_mapping: {  }
     view_inclusion: {  }
-  request_path:
-    id: request_path
-    negate: false
-    context_mapping: {  }
-    pages: "<front>\r\n/home\r\n/"

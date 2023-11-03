@@ -24,6 +24,18 @@ settings:
   provider: views
   views_label: 'Explore this item'
 visibility:
+  media_source_mimetype:
+    id: media_source_mimetype
+    negate: false
+    context_mapping: {  }
+    mimetype: ''
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      asu_repository_item: asu_repository_item
   request_path_exclusion:
     id: request_path_exclusion
     negate: null
@@ -32,15 +44,3 @@ visibility:
     id: view_inclusion
     negate: null
     view_inclusion: {  }
-  media_source_mimetype:
-    id: media_source_mimetype
-    mimetype: ''
-    negate: false
-    context_mapping: {  }
-  'entity_bundle:node':
-    id: 'entity_bundle:node'
-    negate: false
-    context_mapping:
-      node: '@node.node_route_context:node'
-    bundles:
-      asu_repository_item: asu_repository_item

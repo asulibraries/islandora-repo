@@ -5,7 +5,6 @@ dependencies:
   config:
     - views.view.content_recent
   module:
-    - context
     - system
     - views
   theme:
@@ -24,16 +23,6 @@ settings:
   views_label: 'Recent Items'
   items_per_page: none
 visibility:
-  request_path_exclusion:
-    id: request_path_exclusion
-    negate: null
-    context_mapping: {  }
-    pages: ''
-  view_inclusion:
-    id: view_inclusion
-    negate: null
-    context_mapping: {  }
-    view_inclusion: {  }
   request_path:
     id: request_path
     negate: false

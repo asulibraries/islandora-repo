@@ -21,6 +21,11 @@ settings:
   primary: true
   secondary: true
 visibility:
+  request_path:
+    id: request_path
+    negate: true
+    context_mapping: {  }
+    pages: '<front>'
   request_path_exclusion:
     id: request_path_exclusion
     negate: null
@@ -31,8 +36,3 @@ visibility:
     negate: null
     context_mapping: {  }
     view_inclusion: {  }
-  request_path:
-    id: request_path
-    negate: true
-    context_mapping: {  }
-    pages: '<front>'

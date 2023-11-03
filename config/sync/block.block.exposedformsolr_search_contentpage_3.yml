@@ -5,7 +5,6 @@ dependencies:
   config:
     - views.view.solr_search_content
   module:
-    - context
     - node
     - system
     - views
@@ -24,21 +23,11 @@ settings:
   provider: views
   views_label: 'Explore this collection'
 visibility:
-  request_path_exclusion:
-    id: request_path_exclusion
-    negate: null
-    context_mapping: {  }
-    pages: ''
   request_path:
     id: request_path
     negate: true
     context_mapping: {  }
     pages: /node/add/collection
-  view_inclusion:
-    id: view_inclusion
-    negate: null
-    context_mapping: {  }
-    view_inclusion: {  }
   'entity_bundle:node':
     id: 'entity_bundle:node'
     negate: false

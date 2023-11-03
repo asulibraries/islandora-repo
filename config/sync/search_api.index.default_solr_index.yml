@@ -43,7 +43,7 @@ dependencies:
     - field.storage.node.field_title_subject
     - field.storage.node.field_subject
     - search_api.server.default_solr_server
-    - core.entity_view_mode.node.full_text_index
+    - core.entity_view_mode.node.full_metadata
   module:
     - search_api_solr
     - node
@@ -438,7 +438,7 @@ field_settings:
       config:
         - field.storage.node.field_reuse_permissions
   field_rich_description:
-    label: Description
+    label: 'Description (Collection)'
     datasource_id: 'entity:node'
     property_path: field_rich_description
     type: text
@@ -567,8 +567,9 @@ field_settings:
       view_mode:
         'entity:node':
           article: ''
-          asu_repository_item: full_text_index
+          asu_repository_item: full_metadata
           collection: ''
+          islandora_object: ''
           page: ''
   resource_type_name:
     label: 'Resource Type'
@@ -642,7 +643,6 @@ processor_settings:
     weights:
       preprocess_index: 5
   complex_title: {  }
-  custom_value: {  }
   entity_type: {  }
   etdf_created_year_only: {  }
   hierarchy:

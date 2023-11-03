@@ -13,6 +13,7 @@ dependencies:
     - node.type.collection
   module:
     - asu_search
+    - contextual_range_filter
     - media
     - node
     - tracker
@@ -1974,7 +1975,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "<div class=\"card card-hover\">\r\n  <div class=\"card-header card-header-icon\">\r\n    <i class=\"far fa-folder-open fa-2x\"></i>\r\n    <h3 class=\"card-title\">{{ field_title }}</h3>\r\n  </div>\r\n  <div class=\"card-body\">\r\n   <p class=\"card-text\">\r\n     {{ changed }}\r\n   <a role=\"button\" href=\"/collections/{{nid}}\" class=\"sr-only stretched-link\">View Collection</a>\r\n   </p>\r\n  </div>\r\n </div>"
+            text: "<div class=\"card card-hover\">\r\n  <div class=\"card-header card-header-icon\">\r\n    <i class=\"far fa-folder-open fa-2x\"></i>\r\n    <h3 class=\"card-title\">{{ field_title }}</h3>\r\n  </div>\r\n  <div class=\"card-body\">\r\n   <p class=\"card-text\">\r\n     {{ changed }}\r\n   <a role=\"button\" href=\"/collections/{{nid}}\" class=\"sr-only-focusable stretched-link\">View Collection</a>\r\n   </p>\r\n  </div>\r\n </div>"
             make_link: false
             path: ''
             absolute: false

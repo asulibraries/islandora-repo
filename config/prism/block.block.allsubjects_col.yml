@@ -23,16 +23,16 @@ settings:
   provider: facets
   block_id: allsubjects_col
 visibility:
-  request_path_exclusion:
-    id: request_path_exclusion
-    negate: null
-    context_mapping: {  }
-    pages: ''
   request_path:
     id: request_path
     negate: false
     context_mapping: {  }
     pages: '/collections/*/search*'
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: null
+    context_mapping: {  }
+    pages: ''
   view_inclusion:
     id: view_inclusion
     negate: null

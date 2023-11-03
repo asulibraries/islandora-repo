@@ -5,7 +5,6 @@ dependencies:
   config:
     - views.view.solr_search_content
   module:
-    - context
     - islandora
     - node
     - views
@@ -24,19 +23,11 @@ settings:
   provider: views
   views_label: 'Explore this item'
 visibility:
-  request_path_exclusion:
-    id: request_path_exclusion
-    negate: null
-    pages: ''
-  view_inclusion:
-    id: view_inclusion
-    negate: null
-    view_inclusion: {  }
   media_source_mimetype:
     id: media_source_mimetype
-    mimetype: ''
     negate: false
     context_mapping: {  }
+    mimetype: ''
   'entity_bundle:node':
     id: 'entity_bundle:node'
     negate: false

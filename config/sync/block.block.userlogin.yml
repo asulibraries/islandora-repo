@@ -3,7 +3,6 @@ langcode: en
 status: true
 dependencies:
   module:
-    - context
     - islandora
     - system
     - user
@@ -21,30 +20,11 @@ settings:
   label_display: visible
   provider: user
 visibility:
-  context_all:
-    id: context_all
-    negate: null
-    values: ''
-  user_status:
-    id: user_status
-    negate: false
-    context_mapping:
-      user: '@user.current_user_context:current_user'
-    user_status:
-      viewing_profile: '0'
-      logged_viewing_profile: '0'
-      own_page_true: '0'
-      field_value: '0'
-    user_fields: uid
-  context:
-    id: context
-    negate: null
-    values: ''
   media_source_mimetype:
     id: media_source_mimetype
-    mimetype: ''
     negate: false
     context_mapping: {  }
+    mimetype: ''
   request_path:
     id: request_path
     negate: false

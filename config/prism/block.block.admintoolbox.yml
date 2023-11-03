@@ -22,19 +22,11 @@ settings:
   label_display: '0'
   provider: asu_admin_toolbox
 visibility:
-  request_path_exclusion:
-    id: request_path_exclusion
-    negate: null
-    pages: ''
-  view_inclusion:
-    id: view_inclusion
-    negate: null
-    view_inclusion: {  }
   media_source_mimetype:
     id: media_source_mimetype
-    mimetype: ''
     negate: false
     context_mapping: {  }
+    mimetype: ''
   request_path:
     id: request_path
     negate: true
@@ -47,3 +39,11 @@ visibility:
     bundles:
       asu_repository_item: asu_repository_item
       collection: collection
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: null
+    pages: ''
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    view_inclusion: {  }

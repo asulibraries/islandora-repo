@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   module:
+    - file
     - paragraphs_type_permissions
 id: morrison_staff
 label: 'Morrison Staff'
@@ -10,3 +11,4 @@ weight: 13
 is_admin: null
 permissions:
   - 'bypass paragraphs type content access'
+  - 'delete own files'

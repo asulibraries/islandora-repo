@@ -21,21 +21,11 @@ settings:
   label_display: visible
   provider: asu_item_extras
 visibility:
-  request_path_exclusion:
-    id: request_path_exclusion
-    negate: null
-    context_mapping: {  }
-    pages: ''
   request_path:
     id: request_path
     negate: true
     context_mapping: {  }
     pages: "/node/add/asu_repository_item\r\n/node/*/edit"
-  view_inclusion:
-    id: view_inclusion
-    negate: null
-    context_mapping: {  }
-    view_inclusion: {  }
   'entity_bundle:node':
     id: 'entity_bundle:node'
     negate: false
@@ -43,3 +33,13 @@ visibility:
       node: '@node.node_route_context:node'
     bundles:
       asu_repository_item: asu_repository_item
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: null
+    context_mapping: {  }
+    pages: ''
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    context_mapping: {  }
+    view_inclusion: {  }

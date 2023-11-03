@@ -7,6 +7,7 @@ dependencies:
     - workflows.workflow.ingest
   module:
     - content_moderation
+    - file
     - islandora_repository_reports
     - node
     - paragraphs_type_permissions
@@ -26,6 +27,7 @@ permissions:
   - 'access workbench'
   - 'bypass paragraphs type content access'
   - 'create collection content'
+  - 'delete own files'
   - 'use ingest transition create_new_draft'
   - 'use ingest transition decline_submission'
   - 'use ingest transition to_approved_by_content_lead'

@@ -4,17 +4,13 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.media.source
-    - field.storage.media.field_file_size
-    - field.storage.media.field_height
     - field.storage.media.field_media_audio_file
     - field.storage.media.field_media_document
     - field.storage.media.field_media_file
     - field.storage.media.field_media_image
     - field.storage.media.field_media_video_file
     - field.storage.media.field_mime_type
-    - field.storage.media.field_width
     - image.style.card_image
-    - image.style.square_thumb
     - responsive_image.styles.item_displays
     - taxonomy.vocabulary.islandora_access
     - taxonomy.vocabulary.islandora_media_use
@@ -28,6 +24,7 @@ dependencies:
     - eva
     - file
     - image
+    - islandora
     - media
     - responsive_image
     - taxonomy
@@ -38,7 +35,7 @@ dependencies:
 id: display_media
 label: 'Media EVAs'
 module: views
-description: 'Displays media for content as EVA''s per model.'
+description: "Displays media for content as EVA's per model."
 tag: ''
 base_table: media_field_data
 base_field: mid
@@ -989,7 +986,7 @@ display:
           exclude: true
           alter:
             alter_text: true
-            text: '{{ drupal_view(''display_media'', ''entity_view_4'', raw_arguments.field_media_of_target_id) }}'
+            text: "{{ drupal_view('display_media', 'entity_view_4', raw_arguments.field_media_of_target_id) }}"
             make_link: false
             path: ''
             absolute: false
@@ -1856,6 +1853,8 @@ display:
           settings:
             responsive_image_style: item_displays
             image_link: ''
+            image_loading:
+              attribute: eager
           group_column: ''
           group_columns: {  }
           group_rows: true

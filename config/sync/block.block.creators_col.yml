@@ -5,7 +5,6 @@ dependencies:
   config:
     - facets.facet.linked_agents_col
   module:
-    - context
     - facets
     - islandora
     - system
@@ -24,22 +23,13 @@ settings:
   provider: facets
   block_id: creators_col
 visibility:
-  request_path_exclusion:
-    id: request_path_exclusion
-    negate: true
-    context_mapping: {  }
-    pages: ''
   request_path:
     id: request_path
     negate: false
     context_mapping: {  }
     pages: '/collections/*/search*'
-  view_inclusion:
-    id: view_inclusion
-    negate: false
-    view_inclusion: {  }
   media_source_mimetype:
     id: media_source_mimetype
-    mimetype: ''
     negate: false
     context_mapping: {  }
+    mimetype: ''

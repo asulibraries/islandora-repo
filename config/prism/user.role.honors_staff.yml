@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   module:
+    - file
     - paragraphs_type_permissions
 id: honors_staff
 label: 'Honors staff'
@@ -10,3 +11,4 @@ weight: 11
 is_admin: null
 permissions:
   - 'bypass paragraphs type content access'
+  - 'delete own files'

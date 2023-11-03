@@ -1,0 +1,13 @@
+_core:
+  default_config_hash: uVSFqX1MwFixVjXjlh72ukQ8LKPgMKNi2raycY9vt3w
+enabled: true
+location: /var/log/islandora/drupal
+rotation:
+  schedule: daily
+  delete: false
+  destination: 'archive/[date:custom:Y/m/d].log'
+  gzip: true
+format: '[site:url-brief] [[log:created]] [[log:level]] [[log:channel]] [client: [log:ip], [log:user]] [log:message]'
+level: 7
+channels_type: exclude
+channels: {  }

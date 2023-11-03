@@ -24,22 +24,22 @@ settings:
   provider: facets
   block_id: creators_col
 visibility:
-  request_path_exclusion:
-    id: request_path_exclusion
-    negate: null
-    context_mapping: {  }
-    pages: ''
   request_path:
     id: request_path
     negate: false
     context_mapping: {  }
     pages: '/collections/*/search*'
+  media_source_mimetype:
+    id: media_source_mimetype
+    negate: false
+    context_mapping: {  }
+    mimetype: ''
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: null
+    context_mapping: {  }
+    pages: ''
   view_inclusion:
     id: view_inclusion
     negate: null
     view_inclusion: {  }
-  media_source_mimetype:
-    id: media_source_mimetype
-    mimetype: ''
-    negate: false
-    context_mapping: {  }

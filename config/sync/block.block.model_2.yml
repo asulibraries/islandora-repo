@@ -5,7 +5,6 @@ dependencies:
   config:
     - facets.facet.model_col
   module:
-    - context
     - facets
     - islandora
     - system
@@ -25,19 +24,11 @@ settings:
   provider: facets
   block_id: model_2
 visibility:
-  request_path_exclusion:
-    id: request_path_exclusion
-    negate: true
-    pages: ''
-  view_inclusion:
-    id: view_inclusion
-    negate: false
-    view_inclusion: {  }
   media_source_mimetype:
     id: media_source_mimetype
-    mimetype: ''
     negate: false
     context_mapping: {  }
+    mimetype: ''
   request_path:
     id: request_path
     negate: false
@@ -50,22 +41,3 @@ visibility:
     roles:
       administrator: administrator
       repositor_manager: repositor_manager
-  context_all:
-    id: context_all
-    negate: null
-    values: ''
-  user_status:
-    id: user_status
-    negate: false
-    context_mapping:
-      user: '@user.current_user_context:current_user'
-    user_status:
-      viewing_profile: '0'
-      logged_viewing_profile: '0'
-      own_page_true: '0'
-      field_value: '0'
-    user_fields: uid
-  context:
-    id: context
-    negate: null
-    values: ''

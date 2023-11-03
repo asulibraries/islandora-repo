@@ -24,6 +24,15 @@ settings:
   provider: facets
   block_id: institutionfromcollection
 visibility:
+  media_source_mimetype:
+    id: media_source_mimetype
+    negate: false
+    context_mapping: {  }
+    mimetype: ''
+  request_path:
+    id: request_path
+    negate: false
+    pages: '/search*'
   request_path_exclusion:
     id: request_path_exclusion
     negate: null
@@ -32,12 +41,3 @@ visibility:
     id: view_inclusion
     negate: null
     view_inclusion: {  }
-  media_source_mimetype:
-    id: media_source_mimetype
-    mimetype: ''
-    negate: false
-    context_mapping: {  }
-  request_path:
-    id: request_path
-    negate: false
-    pages: '/search*'

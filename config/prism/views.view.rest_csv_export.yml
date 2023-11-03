@@ -2269,6 +2269,15 @@ display:
             date_format: html_datetime
             custom_date_format: 'Y-m-d G:i:s.uP'
             timezone: America/Phoenix
+            tooltip:
+              date_format: ''
+              custom_date_format: ''
+            time_diff:
+              enabled: false
+              future_format: '@interval hence'
+              past_format: '@interval ago'
+              granularity: 2
+              refresh: 60
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -2345,6 +2354,15 @@ display:
             date_format: html_datetime
             custom_date_format: ''
             timezone: America/Phoenix
+            tooltip:
+              date_format: ''
+              custom_date_format: ''
+            time_diff:
+              enabled: false
+              future_format: '@interval hence'
+              past_format: '@interval ago'
+              granularity: 2
+              refresh: 60
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -3700,6 +3718,9 @@ display:
               collection:
                 display_method: label
                 view_mode: default
+              islandora_object:
+                display_method: label
+                view_mode: default
               page:
                 display_method: label
                 view_mode: default
@@ -3784,6 +3805,9 @@ display:
               collection:
                 display_method: label
                 view_mode: default
+              islandora_object:
+                display_method: label
+                view_mode: default
               page:
                 display_method: label
                 view_mode: default
@@ -3866,6 +3890,9 @@ display:
                 display_method: label
                 view_mode: default
               collection:
+                display_method: label
+                view_mode: default
+              islandora_object:
                 display_method: label
                 view_mode: default
               page:

@@ -1,4 +1,4 @@
-uuid: 22c2111a-4d9d-4b8e-acb3-669ac59233a8
+uuid: b4efdc3e-fe4a-43ca-b13a-6d7fe1b426f9
 langcode: en
 status: true
 dependencies:
@@ -18,7 +18,10 @@ settings:
       - superscript
       - subscript
       - removeFormat
-      - alignment
+      - 'alignment:left'
+      - 'alignment:right'
+      - 'alignment:center'
+      - 'alignment:justify'
       - outdent
       - indent
       - '|'
@@ -33,7 +36,6 @@ settings:
       - horizontalLine
       - '|'
       - heading
-      - codeBlock
       - '|'
       - undo
       - redo
@@ -47,21 +49,10 @@ settings:
         - heading4
         - heading5
         - heading6
-    ckeditor5_sourceEditing:
-      allowed_tags: {  }
-    ckeditor5_list:
-      reversed: true
-      startIndex: true
-    ckeditor5_alignment:
-      enabled_alignments:
-        - left
-        - center
-        - right
-        - justify
-    ckeditor5_imageResize:
-      allow_resize: true
     ckeditor5_language:
       language_list: un
+    ckeditor5_sourceEditing:
+      allowed_tags: {  }
 image_upload:
   status: true
   scheme: public

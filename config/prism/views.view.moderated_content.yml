@@ -2,10 +2,7 @@ uuid: 7fb50fdc-2374-47d9-a19a-e0be558f6a4e
 langcode: en
 status: true
 dependencies:
-  config:
-    - workflows.workflow.ingest
   module:
-    - content_moderation
     - node
     - user
     - views_bulk_operations
@@ -403,6 +400,15 @@ display:
             date_format: short
             custom_date_format: ''
             timezone: ''
+            tooltip:
+              date_format: ''
+              custom_date_format: ''
+            time_diff:
+              enabled: false
+              future_format: '@interval hence'
+              past_format: '@interval ago'
+              granularity: 2
+              refresh: 60
           group_column: value
           group_columns: {  }
           group_rows: true

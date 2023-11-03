@@ -20,6 +20,11 @@ settings:
   label_display: '0'
   provider: asu_search
 visibility:
+  request_path:
+    id: request_path
+    negate: false
+    context_mapping: {  }
+    pages: "/collections/*/search*\r\n/node/*/edit\r\n/items/*\r\n/collections/*"
   request_path_exclusion:
     id: request_path_exclusion
     negate: null
@@ -30,8 +35,3 @@ visibility:
     negate: null
     context_mapping: {  }
     view_inclusion: {  }
-  request_path:
-    id: request_path
-    negate: false
-    context_mapping: {  }
-    pages: "/collections/*/search*\r\n/node/*/edit\r\n/items/*\r\n/collections/*"

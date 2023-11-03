@@ -5,7 +5,6 @@ dependencies:
   config:
     - facets.facet.language_cpx
   module:
-    - context
     - facets
     - islandora
     - system
@@ -24,19 +23,11 @@ settings:
   provider: facets
   block_id: languagecpx
 visibility:
-  request_path_exclusion:
-    id: request_path_exclusion
-    negate: null
-    pages: ''
-  view_inclusion:
-    id: view_inclusion
-    negate: null
-    view_inclusion: {  }
   media_source_mimetype:
     id: media_source_mimetype
-    mimetype: ''
     negate: false
     context_mapping: {  }
+    mimetype: ''
   request_path:
     id: request_path
     negate: false

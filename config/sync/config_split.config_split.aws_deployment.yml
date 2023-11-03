@@ -7,6 +7,7 @@ label: 'AWS Deployment'
 description: 'Modules we enable when deploying to staging and production.'
 weight: 0
 stackable: false
+no_patching: false
 storage: folder
 folder: ../config/deployed
 module:
@@ -15,8 +16,6 @@ module:
   cas_attributes: 0
   cdn: 0
   clamav: 0
-  islandora_bagger_integration: 0
-  islandora_riprap: 0
 theme: {  }
 complete_list:
   - smtp.settings

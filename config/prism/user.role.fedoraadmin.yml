@@ -1,9 +1,12 @@
 uuid: 5aa2f02c-fa37-405f-b163-68c420970c54
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - file
 id: fedoraadmin
 label: fedoraAdmin
 weight: 3
 is_admin: null
-permissions: {  }
+permissions:
+  - 'delete own files'

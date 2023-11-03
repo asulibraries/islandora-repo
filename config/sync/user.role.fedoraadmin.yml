@@ -10,6 +10,7 @@ dependencies:
     - media.type.remote_video
     - media.type.video
   module:
+    - file
     - file_replace
     - media
 id: fedoraadmin
@@ -23,4 +24,5 @@ permissions:
   - 'create image media'
   - 'create remote_video media'
   - 'create video media'
+  - 'delete own files'
   - 'replace files'

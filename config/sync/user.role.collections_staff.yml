@@ -7,6 +7,7 @@ dependencies:
     - workflows.workflow.ingest
   module:
     - content_moderation
+    - file
     - group
     - node
     - paragraphs_type_permissions
@@ -22,6 +23,7 @@ permissions:
   - 'bypass paragraphs type content access'
   - 'create collection content'
   - 'create collection_group group'
+  - 'delete own files'
   - 'edit any collection content'
   - 'edit own collection content'
   - 'use ingest transition create_new_draft'

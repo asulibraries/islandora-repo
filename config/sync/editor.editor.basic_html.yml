@@ -1,4 +1,4 @@
-uuid: 2736b639-9f9c-4dfc-ac49-ec0960c5ceb2
+uuid: 4d4f68c4-c963-4285-ad2b-f52f5e1dc45c
 langcode: en
 status: true
 dependencies:
@@ -27,6 +27,7 @@ settings:
       - sourceEditing
       - '|'
       - code
+      - textPartLanguage
   plugins:
     ckeditor5_heading:
       enabled_headings:
@@ -35,27 +36,23 @@ settings:
         - heading4
         - heading5
         - heading6
+    ckeditor5_language:
+      language_list: un
     ckeditor5_sourceEditing:
       allowed_tags:
         - '<cite>'
         - '<dl>'
         - '<dt>'
         - '<dd>'
-        - '<span>'
         - '<a hreflang>'
         - '<blockquote cite>'
         - '<ul type>'
-        - '<ol type>'
+        - '<ol type start>'
         - '<h2 id>'
         - '<h3 id>'
         - '<h4 id>'
         - '<h5 id>'
         - '<h6 id>'
-    ckeditor5_list:
-      reversed: false
-      startIndex: true
-    ckeditor5_imageResize:
-      allow_resize: true
 image_upload:
   status: true
   scheme: public

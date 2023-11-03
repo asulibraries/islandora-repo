@@ -25,11 +25,6 @@ visibility:
     negate: true
     context_mapping: {  }
     pages: "/user/*\r\n<front>\r\n/search*"
-  request_path_exclusion:
-    id: request_path_exclusion
-    negate: null
-    context_mapping: {  }
-    pages: ''
   'entity_bundle:node':
     id: 'entity_bundle:node'
     negate: true
@@ -38,3 +33,8 @@ visibility:
     bundles:
       asu_repository_item: asu_repository_item
       collection: collection
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: null
+    context_mapping: {  }
+    pages: ''
