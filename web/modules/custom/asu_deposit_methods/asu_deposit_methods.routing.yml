@@ -29,9 +29,10 @@ asu_deposit_methods.sheet_music.add:
     _entity_form: 'node.sheet_music'
     _title: 'Add Sheet Music Item'
   requirements:
-    _node_add_access: 'node:asu_repository_item'
+    _entity_create_access: 'node:asu_repository_item'
   options:
     _node_operation_route: TRUE
+    no_cache: TRUE
     parameters:
       node_type:
         type: entity:node_type
@@ -42,7 +43,7 @@ asu_deposit_methods.sheet_music.add_child:
     _entity_form: 'node.sheet_music_child'
     _title: 'Add Sheet Music Child Item'
   requirements:
-    _node_add_access: 'node:asu_repository_item'
+    _entity_create_access: 'node:asu_repository_item'
   options:
     _node_operation_route: TRUE
     parameters:

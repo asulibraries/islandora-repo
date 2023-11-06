@@ -29,7 +29,7 @@ self_deposit.perf_archive.add:
     _entity_form: 'node.perf_archive'
     _title: 'Add Performance Archive Item'
   requirements:
-    _node_add_access: 'node:asu_repository_item'
+    _entity_create_access: 'node:{node_type}'
   options:
     _node_operation_route: TRUE
     parameters:
@@ -42,7 +42,7 @@ self_deposit.perf_archive.add_child:
     _entity_form: 'node.perf_archive_child'
     _title: 'Add Performance Archive Child Item'
   requirements:
-    _node_add_access: 'node:asu_repository_item'
+    _entity_create_access: 'node:{node_type}'
   options:
     _node_operation_route: TRUE
     parameters:
