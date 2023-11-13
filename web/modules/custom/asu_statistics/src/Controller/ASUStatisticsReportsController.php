@@ -2,12 +2,12 @@
 
 namespace Drupal\asu_statistics\Controller;
 
-use Drupal\Core\Url;
 use Drupal\Core\Controller\ControllerBase;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\search_api\Entity\Index;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Drupal\Core\Link;
+use Drupal\Core\Url;
+use Drupal\search_api\Entity\Index;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 /**
  * Controller.
@@ -390,7 +390,8 @@ class ASUStatisticsReportsController extends ControllerBase {
     if ($status) {
       $query->condition('node_field_data.status', 1);
     }
-    $query->groupBy('YEAR(FROM_UNIXTIME(node_field_data.created)), MONTH(FROM_UNIXTIME(node_field_data.created))');
+    $query->groupBy('item_year');
+    $query->groupBy('item_month');
     $result = $query->execute()->fetchAll();
 
     return $this->makeTableRowsFromResult($result);
