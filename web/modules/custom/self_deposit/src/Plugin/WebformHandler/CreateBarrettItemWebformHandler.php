@@ -295,7 +295,7 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
     $values = $webform_submission->getData();
     $files = $values['file'];
     $file_repository = \Drupal::service('file.repository');
-    $new_dest = "fedora://c130/";
+    $new_dest = "private://c130/";
 
     if (count($files) > 1) {
       $model = 'Complex Object';
