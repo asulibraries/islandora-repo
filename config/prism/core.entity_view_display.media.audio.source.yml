@@ -22,19 +22,14 @@ targetEntityType: media
 bundle: audio
 mode: source
 content:
-  field_gemini_uri:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 100
-    region: content
   field_media_audio_file:
     type: islandora_file_audio
     label: visually_hidden
     settings:
       controls: true
-      multiple_file_display_type: tags
       autoplay: false
       loop: false
+      multiple_file_display_type: tags
     third_party_settings: {  }
     weight: 0
     region: content
