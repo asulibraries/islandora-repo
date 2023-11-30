@@ -1,4 +1,4 @@
-uuid: 7ef24a2c-9108-4735-bf7a-6915f7418e8d
+uuid: c2edb168-d57b-4f82-a1a8-fa06fb9089e2
 langcode: en
 status: true
 dependencies:
@@ -45,11 +45,19 @@ dependencies:
     - field.storage.node.field_temporal_subject
     - field.storage.node.field_title
     - field.storage.node.field_typed_identifier
-    - filter.format.restricted_html
+    - filter.format.basic_html
     - node.type.asu_repository_item
     - node.type.collection
     - search_api.index.default_solr_index
+    - user.role.administrator
+    - user.role.collections_staff
+    - user.role.content_approver
+    - user.role.depositor
+    - user.role.honors_staff
+    - user.role.metadata_manager
+    - user.role.repositor_manager
   module:
+    - asu_item_extras
     - asu_migrate
     - controlled_access_terms
     - csv_serialization
@@ -60,6 +68,7 @@ dependencies:
     - search_api
     - serialization
     - text
+    - user
     - views_data_export
 id: rest_csv_export
 label: 'CSV Export'
@@ -85,7 +94,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: ID
+          label: nid
           exclude: false
           alter:
             alter_text: false
@@ -168,7 +177,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: Title
+          label: field_title
           exclude: false
           alter:
             alter_text: false
@@ -193,7 +202,7 @@ display:
             more_link: false
             more_link_text: ''
             more_link_path: ''
-            strip_tags: true
+            strip_tags: false
             trim: false
             preserve_tags: ''
             html: false
@@ -239,7 +248,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: Description
+          label: field_rich_description
           exclude: false
           alter:
             alter_text: false
@@ -275,7 +284,7 @@ display:
           element_label_colon: false
           element_wrapper_type: ''
           element_wrapper_class: ''
-          element_default_classes: true
+          element_default_classes: false
           empty: ''
           hide_empty: false
           empty_zero: false
@@ -299,7 +308,7 @@ display:
             link_to_item: false
             use_highlighting: false
             multi_type: separator
-            multi_separator: ', '
+            multi_separator: '|| '
         field_linked_agent:
           id: field_linked_agent
           table: search_api_datasource_default_solr_index_entity_node
@@ -309,7 +318,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: 'Personal Contributor'
+          label: field_linked_agent
           exclude: false
           alter:
             alter_text: false
@@ -351,9 +360,10 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: typed_relation_csv
+          type: workbench_typed_relation
           settings:
-            agent_type: person
+            subfield_delimiter: ':'
+            term_identifier: label
           group_column: ''
           group_columns: {  }
           group_rows: true
@@ -362,149 +372,7 @@ display:
           delta_reversed: false
           delta_first_last: false
           multi_type: separator
-          separator: ' || '
-          field_api_classes: false
-          field_rendering: true
-          fallback_handler: search_api
-          fallback_options:
-            link_to_item: false
-            use_highlighting: false
-            multi_type: separator
-            multi_separator: ', '
-        field_linked_agent_1:
-          id: field_linked_agent_1
-          table: search_api_datasource_default_solr_index_entity_node
-          field: field_linked_agent
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: node
-          plugin_id: search_api_field
-          label: 'Corporate Contributor'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: target_id
-          type: typed_relation_csv
-          settings:
-            agent_type: corporate_body
-          group_column: ''
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ' || '
-          field_api_classes: false
-          field_rendering: true
-          fallback_handler: search_api
-          fallback_options:
-            link_to_item: false
-            use_highlighting: false
-            multi_type: separator
-            multi_separator: ', '
-        field_linked_agent_2:
-          id: field_linked_agent_2
-          table: search_api_datasource_default_solr_index_entity_node
-          field: field_linked_agent
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: node
-          plugin_id: search_api_field
-          label: 'Event Contributor'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: target_id
-          type: typed_relation_csv
-          settings:
-            agent_type: conference
-          group_column: ''
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ' || '
+          separator: '|'
           field_api_classes: false
           field_rendering: true
           fallback_handler: search_api
@@ -522,7 +390,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: 'Topical Subject'
+          label: field_subject
           exclude: false
           alter:
             alter_text: false
@@ -564,9 +432,9 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: taxonomy_with_uri_formatter
+          type: entity_reference_label
           settings:
-            link: 0
+            link: false
           group_column: target_id
           group_columns: {  }
           group_rows: true
@@ -575,7 +443,7 @@ display:
           delta_reversed: false
           delta_first_last: false
           multi_type: separator
-          separator: ' || '
+          separator: ' | '
           field_api_classes: false
           field_rendering: true
           fallback_handler: search_api_entity
@@ -642,6 +510,9 @@ display:
               physical_form:
                 display_method: label
                 view_mode: default
+              precoordinated_subjects:
+                display_method: label
+                view_mode: default
               preservation_states:
                 display_method: label
               related_items:
@@ -662,7 +533,6 @@ display:
                 view_mode: default
               titles:
                 display_method: label
-                view_mode: default
         field_geographic_subject:
           id: field_geographic_subject
           table: search_api_datasource_default_solr_index_entity_node
@@ -672,7 +542,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: 'Geographic Subject'
+          label: field_geographic_subject
           exclude: false
           alter:
             alter_text: false
@@ -714,9 +584,10 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: taxonomy_with_uri_formatter
+          type: workbench_entity_reference_formatter
           settings:
-            link: 0
+            subfield_delimiter: ':'
+            term_identifier: label
           group_column: target_id
           group_columns: {  }
           group_rows: true
@@ -725,7 +596,7 @@ display:
           delta_reversed: false
           delta_first_last: false
           multi_type: separator
-          separator: ' || '
+          separator: ' | '
           field_api_classes: false
           field_rendering: true
           fallback_handler: search_api_entity
@@ -792,6 +663,9 @@ display:
               physical_form:
                 display_method: label
                 view_mode: default
+              precoordinated_subjects:
+                display_method: label
+                view_mode: default
               preservation_states:
                 display_method: label
               related_items:
@@ -812,7 +686,6 @@ display:
                 view_mode: default
               titles:
                 display_method: label
-                view_mode: default
         field_subjects_name:
           id: field_subjects_name
           table: search_api_datasource_default_solr_index_entity_node
@@ -822,7 +695,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: 'Personal Name Subject'
+          label: field_subjects_name
           exclude: false
           alter:
             alter_text: false
@@ -864,9 +737,10 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: taxonomy_with_uri_formatter
+          type: workbench_entity_reference_formatter
           settings:
-            link: 0
+            subfield_delimiter: ':'
+            term_identifier: label
           group_column: target_id
           group_columns: {  }
           group_rows: true
@@ -875,7 +749,7 @@ display:
           delta_reversed: false
           delta_first_last: false
           multi_type: separator
-          separator: ' || '
+          separator: '|'
           field_api_classes: false
           field_rendering: true
           fallback_handler: search_api_entity
@@ -942,6 +816,9 @@ display:
               physical_form:
                 display_method: label
                 view_mode: default
+              precoordinated_subjects:
+                display_method: label
+                view_mode: default
               preservation_states:
                 display_method: label
               related_items:
@@ -962,7 +839,6 @@ display:
                 view_mode: default
               titles:
                 display_method: label
-                view_mode: default
         field_name_title_subject:
           id: field_name_title_subject
           table: search_api_datasource_default_solr_index_entity_node
@@ -972,7 +848,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: 'Title Subject'
+          label: field_name_title_subject
           exclude: false
           alter:
             alter_text: false
@@ -1014,9 +890,9 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: taxonomy_with_uri_formatter
+          type: entity_reference_label
           settings:
-            link: 0
+            link: false
           group_column: target_id
           group_columns: {  }
           group_rows: true
@@ -1025,7 +901,7 @@ display:
           delta_reversed: false
           delta_first_last: false
           multi_type: separator
-          separator: ' || '
+          separator: ' | '
           field_api_classes: false
           field_rendering: true
           fallback_handler: search_api_entity
@@ -1092,6 +968,9 @@ display:
               physical_form:
                 display_method: label
                 view_mode: default
+              precoordinated_subjects:
+                display_method: label
+                view_mode: default
               preservation_states:
                 display_method: label
               related_items:
@@ -1112,7 +991,6 @@ display:
                 view_mode: default
               titles:
                 display_method: label
-                view_mode: default
         field_temporal_subject:
           id: field_temporal_subject
           table: search_api_datasource_default_solr_index_entity_node
@@ -1122,7 +1000,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: 'Temporal Subject'
+          label: field_subject
           exclude: false
           alter:
             alter_text: false
@@ -1242,6 +1120,9 @@ display:
               physical_form:
                 display_method: label
                 view_mode: default
+              precoordinated_subjects:
+                display_method: label
+                view_mode: default
               preservation_states:
                 display_method: label
               related_items:
@@ -1262,7 +1143,6 @@ display:
                 view_mode: default
               titles:
                 display_method: label
-                view_mode: default
         field_genre:
           id: field_genre
           table: search_api_datasource_default_solr_index_entity_node
@@ -1272,7 +1152,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: Genre
+          label: field_genre
           exclude: false
           alter:
             alter_text: false
@@ -1314,9 +1194,9 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: taxonomy_with_uri_formatter
+          type: entity_reference_label
           settings:
-            link: 1
+            link: false
           group_column: target_id
           group_columns: {  }
           group_rows: true
@@ -1325,7 +1205,7 @@ display:
           delta_reversed: false
           delta_first_last: false
           multi_type: separator
-          separator: ' || '
+          separator: ' | '
           field_api_classes: false
           field_rendering: true
           fallback_handler: search_api_entity
@@ -1392,11 +1272,11 @@ display:
               physical_form:
                 display_method: label
                 view_mode: default
-              preservation_states:
-                display_method: label
-              related_items:
+              precoordinated_subjects:
                 display_method: label
                 view_mode: default
+              preservation_states:
+                display_method: label
               resource_types:
                 display_method: label
               reuse_permissions:
@@ -1412,7 +1292,6 @@ display:
                 view_mode: default
               titles:
                 display_method: label
-                view_mode: default
         field_table_of_contents:
           id: field_table_of_contents
           table: search_api_datasource_default_solr_index_entity_node
@@ -1422,7 +1301,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: 'Table Of Contents'
+          label: field_table_of_contents
           exclude: false
           alter:
             alter_text: false
@@ -1492,7 +1371,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: Language
+          label: field_language
           exclude: false
           alter:
             alter_text: false
@@ -1564,7 +1443,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: Extent
+          label: field_extent
           exclude: false
           alter:
             alter_text: false
@@ -1617,7 +1496,7 @@ display:
           delta_reversed: false
           delta_first_last: false
           multi_type: separator
-          separator: ' || '
+          separator: '|'
           field_api_classes: false
           field_rendering: true
           fallback_handler: search_api
@@ -1635,7 +1514,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: 'Preferred Citation'
+          label: field_preferred_citation
           exclude: false
           alter:
             alter_text: false
@@ -1705,7 +1584,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: 'Copyright Statement'
+          label: field_copyright_statement
           exclude: false
           alter:
             alter_text: false
@@ -1825,6 +1704,9 @@ display:
               physical_form:
                 display_method: label
                 view_mode: default
+              precoordinated_subjects:
+                display_method: label
+                view_mode: default
               preservation_states:
                 display_method: label
               related_items:
@@ -1845,7 +1727,6 @@ display:
                 view_mode: default
               titles:
                 display_method: label
-                view_mode: default
         field_reuse_permissions:
           id: field_reuse_permissions
           table: search_api_datasource_default_solr_index_entity_node
@@ -1855,7 +1736,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: 'Reuse Permissions'
+          label: field_reuse_permissions
           exclude: false
           alter:
             alter_text: false
@@ -1975,6 +1856,9 @@ display:
               physical_form:
                 display_method: label
                 view_mode: default
+              precoordinated_subjects:
+                display_method: label
+                view_mode: default
               preservation_states:
                 display_method: label
               related_items:
@@ -1995,7 +1879,6 @@ display:
                 view_mode: default
               titles:
                 display_method: label
-                view_mode: default
         field_handle:
           id: field_handle
           table: search_api_datasource_default_solr_index_entity_node
@@ -2005,7 +1888,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: Handle
+          label: field_handle
           exclude: false
           alter:
             alter_text: false
@@ -2076,7 +1959,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: 'Legacy Identifier'
+          label: field_pid
           exclude: false
           alter:
             alter_text: false
@@ -2147,7 +2030,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: 'System Creator'
+          label: uid
           exclude: false
           alter:
             alter_text: false
@@ -2202,7 +2085,7 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api_entity
           fallback_options:
             link_to_item: false
@@ -2211,178 +2094,8 @@ display:
             multi_separator: ', '
             display_methods:
               user:
-                display_method: label
+                display_method: id
                 view_mode: default
-        created:
-          id: created
-          table: search_api_datasource_default_solr_index_entity_node
-          field: created
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: node
-          plugin_id: search_api_field
-          label: 'System Created'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: timestamp
-          settings:
-            date_format: html_datetime
-            custom_date_format: 'Y-m-d G:i:s.uP'
-            timezone: America/Phoenix
-            tooltip:
-              date_format: ''
-              custom_date_format: ''
-            time_diff:
-              enabled: false
-              future_format: '@interval hence'
-              past_format: '@interval ago'
-              granularity: 2
-              refresh: 60
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          field_rendering: true
-          fallback_handler: search_api_date
-          fallback_options:
-            date_format: fallback
-            custom_date_format: ''
-            timezone: ''
-            link_to_item: false
-            use_highlighting: false
-            multi_type: separator
-            multi_separator: ', '
-        changed:
-          id: changed
-          table: search_api_datasource_default_solr_index_entity_node
-          field: changed
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: node
-          plugin_id: search_api_field
-          label: 'System Modified'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: true
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: value
-          type: timestamp
-          settings:
-            date_format: html_datetime
-            custom_date_format: ''
-            timezone: America/Phoenix
-            tooltip:
-              date_format: ''
-              custom_date_format: ''
-            time_diff:
-              enabled: false
-              future_format: '@interval hence'
-              past_format: '@interval ago'
-              granularity: 2
-              refresh: 60
-          group_column: value
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          field_rendering: true
-          fallback_handler: search_api_date
-          fallback_options:
-            date_format: fallback
-            custom_date_format: ''
-            timezone: ''
-            link_to_item: false
-            use_highlighting: false
-            multi_type: separator
-            multi_separator: ', '
         field_edtf_date_created:
           id: field_edtf_date_created
           table: search_api_datasource_default_solr_index_entity_node
@@ -2392,7 +2105,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: 'Date Created'
+          label: field_edtf_date_created
           exclude: false
           alter:
             alter_text: false
@@ -2440,14 +2153,15 @@ display:
             date_order: big_endian
             month_format: mm
             day_format: dd
+            year_format: 'y'
             relationship: none
             field_rendering: 1
             fieldsets:
               - more
               - admin_label
-            custom_label: 1
+            custom_label: 0
             label: 'Date Created'
-            element_label_colon: 1
+            element_label_colon: 0
             exclude: 0
             element_type_enable: 0
             element_type: ''
@@ -2529,7 +2243,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: Peer-reviewed
+          label: field_peer_reviewed
           exclude: false
           alter:
             alter_text: false
@@ -2606,7 +2320,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: 'Open Access'
+          label: field_open_access
           exclude: false
           alter:
             alter_text: false
@@ -2683,7 +2397,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: Series
+          label: field_series
           exclude: false
           alter:
             alter_text: false
@@ -2736,7 +2450,7 @@ display:
           delta_reversed: false
           delta_first_last: false
           multi_type: separator
-          separator: ' || '
+          separator: ' | '
           field_api_classes: false
           field_rendering: true
           fallback_handler: search_api
@@ -2754,7 +2468,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: 'Copyright Date'
+          label: field_edtf_copyright_date
           exclude: false
           alter:
             alter_text: false
@@ -2802,14 +2516,15 @@ display:
             date_order: big_endian
             month_format: mm
             day_format: dd
+            year_format: 'y'
             relationship: none
             field_rendering: 1
             fieldsets:
               - more
               - admin_label
-            custom_label: 1
+            custom_label: 0
             label: 'Copyright Date'
-            element_label_colon: 1
+            element_label_colon: 0
             exclude: 0
             element_type_enable: 0
             element_type: ''
@@ -2884,7 +2599,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: 'Date Digitized'
+          label: field_date_digitized
           exclude: false
           alter:
             alter_text: false
@@ -2932,14 +2647,15 @@ display:
             date_order: big_endian
             month_format: mm
             day_format: dd
+            year_format: 'y'
             relationship: none
             field_rendering: 1
             fieldsets:
               - more
               - admin_label
-            custom_label: 1
+            custom_label: 0
             label: 'Date Digitized'
-            element_label_colon: 1
+            element_label_colon: 0
             exclude: 0
             element_type_enable: 0
             element_type: ''
@@ -3014,7 +2730,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: Edition
+          label: field_edition
           exclude: false
           alter:
             alter_text: false
@@ -3067,7 +2783,7 @@ display:
           delta_reversed: false
           delta_first_last: false
           multi_type: separator
-          separator: ' || '
+          separator: ' | '
           field_api_classes: false
           field_rendering: true
           fallback_handler: search_api
@@ -3085,7 +2801,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: Frequency
+          label: field_frequency
           exclude: false
           alter:
             alter_text: false
@@ -3139,13 +2855,13 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
             link_to_item: false
             use_highlighting: false
             multi_type: separator
-            multi_separator: ', '
+            multi_separator: '|'
         field_issuance:
           id: field_issuance
           table: search_api_datasource_default_solr_index_entity_node
@@ -3155,7 +2871,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: Issuance
+          label: field_issuance
           exclude: false
           alter:
             alter_text: false
@@ -3209,13 +2925,13 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
             link_to_item: false
             use_highlighting: false
             multi_type: separator
-            multi_separator: ', '
+            multi_separator: '| '
         field_related_item:
           id: field_related_item
           table: search_api_datasource_default_solr_index_entity_node
@@ -3225,7 +2941,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: 'Related Item'
+          label: field_related_item
           exclude: false
           alter:
             alter_text: false
@@ -3267,9 +2983,10 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: typed_relation_default
+          type: typed_relation_csv
           settings:
-            link: false
+            subfield_delimiter: ':'
+            term_identifier: tid
           group_column: ''
           group_columns: {  }
           group_rows: true
@@ -3278,68 +2995,15 @@ display:
           delta_reversed: false
           delta_first_last: false
           multi_type: separator
-          separator: ' || '
+          separator: ' | '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api
           fallback_options:
             link_to_item: false
             use_highlighting: false
             multi_type: separator
-            multi_separator: ', '
-        institution_from_collection:
-          id: institution_from_collection
-          table: search_api_index_default_solr_index
-          field: institution_from_collection
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: search_api
-          label: 'Collaborating Institution'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          link_to_item: false
-          use_highlighting: false
-          multi_type: separator
-          multi_separator: ' || '
+            multi_separator: '| '
         field_complex_object_child:
           id: field_complex_object_child
           table: search_api_datasource_default_solr_index_entity_node
@@ -3349,7 +3013,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: 'Complex Object Child'
+          label: field_complex_object_child
           exclude: false
           alter:
             alter_text: false
@@ -3426,7 +3090,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: Model
+          label: field_model
           exclude: false
           alter:
             alter_text: false
@@ -3546,6 +3210,9 @@ display:
               physical_form:
                 display_method: label
                 view_mode: default
+              precoordinated_subjects:
+                display_method: label
+                view_mode: default
               preservation_states:
                 display_method: label
               related_items:
@@ -3566,7 +3233,6 @@ display:
                 view_mode: default
               titles:
                 display_method: label
-                view_mode: default
         field_statement_responsibility:
           id: field_statement_responsibility
           table: search_api_datasource_default_solr_index_entity_node
@@ -3576,7 +3242,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: 'Statement of Responsibility'
+          label: field_statement_responsibility
           exclude: false
           alter:
             alter_text: false
@@ -3646,7 +3312,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: 'Parent Item'
+          label: field_member_of
           exclude: false
           alter:
             alter_text: false
@@ -3701,115 +3367,28 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api_entity
           fallback_options:
             link_to_item: false
             use_highlighting: false
             multi_type: separator
-            multi_separator: ', '
+            multi_separator: '|'
             display_methods:
               article:
-                display_method: label
+                display_method: id
                 view_mode: default
               asu_repository_item:
-                display_method: label
+                display_method: id
                 view_mode: default
               collection:
-                display_method: label
+                display_method: id
                 view_mode: default
               islandora_object:
-                display_method: label
+                display_method: id
                 view_mode: default
               page:
-                display_method: label
-                view_mode: default
-        field_member_of_3:
-          id: field_member_of_3
-          table: search_api_datasource_default_solr_index_entity_node
-          field: field_member_of
-          relationship: none
-          group_type: group
-          admin_label: ''
-          entity_type: node
-          plugin_id: search_api_field
-          label: 'Parent Collection'
-          exclude: false
-          alter:
-            alter_text: false
-            text: ''
-            make_link: false
-            path: ''
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: ''
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: target_id
-          type: parent_type_csv
-          settings:
-            parent_type: collection
-          group_column: target_id
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-          field_rendering: true
-          fallback_handler: search_api_entity
-          fallback_options:
-            link_to_item: false
-            use_highlighting: false
-            multi_type: separator
-            multi_separator: ', '
-            display_methods:
-              article:
-                display_method: label
-                view_mode: default
-              asu_repository_item:
-                display_method: label
-                view_mode: default
-              collection:
-                display_method: label
-                view_mode: default
-              islandora_object:
-                display_method: label
-                view_mode: default
-              page:
-                display_method: label
+                display_method: id
                 view_mode: default
         field_additional_memberships_1:
           id: field_additional_memberships_1
@@ -3820,7 +3399,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: 'Additional Memberships'
+          label: field_additional_memberships
           exclude: false
           alter:
             alter_text: false
@@ -3873,30 +3452,30 @@ display:
           delta_reversed: false
           delta_first_last: false
           multi_type: separator
-          separator: ' || '
+          separator: ' |'
           field_api_classes: false
-          field_rendering: true
+          field_rendering: false
           fallback_handler: search_api_entity
           fallback_options:
             link_to_item: false
             use_highlighting: false
             multi_type: separator
-            multi_separator: ', '
+            multi_separator: '|| '
             display_methods:
               article:
-                display_method: label
+                display_method: id
                 view_mode: default
               asu_repository_item:
-                display_method: label
+                display_method: id
                 view_mode: default
               collection:
-                display_method: label
+                display_method: id
                 view_mode: default
               islandora_object:
-                display_method: label
+                display_method: id
                 view_mode: default
               page:
-                display_method: label
+                display_method: id
                 view_mode: default
         field_coordinates:
           id: field_coordinates
@@ -3907,7 +3486,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: Coordinates
+          label: field_coordinates
           exclude: false
           alter:
             alter_text: false
@@ -3953,7 +3532,7 @@ display:
           settings:
             tokenized_text:
               value: '[geolocation_current_item:lat], [geolocation_current_item:lng]'
-              format: restricted_html
+              format: basic_html
             token_help:
               token_items: ''
           group_column: ''
@@ -3982,7 +3561,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: Note
+          label: field_note_para
           exclude: false
           alter:
             alter_text: false
@@ -4035,7 +3614,7 @@ display:
           delta_reversed: false
           delta_first_last: false
           multi_type: separator
-          separator: ' || '
+          separator: ' | '
           field_api_classes: false
           field_rendering: true
           fallback_handler: search_api
@@ -4053,7 +3632,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: 'Place of Publication Code'
+          label: field_place_of_publication_code
           exclude: false
           alter:
             alter_text: false
@@ -4106,7 +3685,7 @@ display:
           delta_reversed: false
           delta_first_last: false
           multi_type: separator
-          separator: ' || '
+          separator: ' | '
           field_api_classes: false
           field_rendering: true
           fallback_handler: search_api_entity
@@ -4173,6 +3752,9 @@ display:
               physical_form:
                 display_method: label
                 view_mode: default
+              precoordinated_subjects:
+                display_method: label
+                view_mode: default
               preservation_states:
                 display_method: label
               related_items:
@@ -4193,7 +3775,6 @@ display:
                 view_mode: default
               titles:
                 display_method: label
-                view_mode: default
         field_place_published:
           id: field_place_published
           table: search_api_datasource_default_solr_index_entity_node
@@ -4203,7 +3784,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: 'Place of Publication Text'
+          label: field_place_published
           exclude: false
           alter:
             alter_text: false
@@ -4256,7 +3837,7 @@ display:
           delta_reversed: false
           delta_first_last: false
           multi_type: separator
-          separator: ' || '
+          separator: ' | '
           field_api_classes: false
           field_rendering: true
           fallback_handler: search_api
@@ -4274,7 +3855,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: Identifier
+          label: field_typed_identifier
           exclude: false
           alter:
             alter_text: false
@@ -4327,7 +3908,7 @@ display:
           delta_reversed: false
           delta_first_last: false
           multi_type: separator
-          separator: ' || '
+          separator: ' | '
           field_api_classes: false
           field_rendering: true
           fallback_handler: search_api
@@ -4345,7 +3926,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: 'Cataloging Standards'
+          label: field_cataloging_standards
           exclude: false
           alter:
             alter_text: false
@@ -4465,6 +4046,9 @@ display:
               physical_form:
                 display_method: label
                 view_mode: default
+              precoordinated_subjects:
+                display_method: label
+                view_mode: default
               preservation_states:
                 display_method: label
               related_items:
@@ -4485,7 +4069,6 @@ display:
                 view_mode: default
               titles:
                 display_method: label
-                view_mode: default
         field_default_derivative_file_pe:
           id: field_default_derivative_file_pe
           table: search_api_datasource_default_solr_index_entity_node
@@ -4495,7 +4078,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: 'Derivative File Permissions'
+          label: field_default_derivative_file_pe
           exclude: false
           alter:
             alter_text: false
@@ -4615,6 +4198,9 @@ display:
               physical_form:
                 display_method: label
                 view_mode: default
+              precoordinated_subjects:
+                display_method: label
+                view_mode: default
               preservation_states:
                 display_method: label
               related_items:
@@ -4635,7 +4221,6 @@ display:
                 view_mode: default
               titles:
                 display_method: label
-                view_mode: default
         field_default_original_file_perm:
           id: field_default_original_file_perm
           table: search_api_datasource_default_solr_index_entity_node
@@ -4645,7 +4230,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: 'Original File Permissions'
+          label: field_default_original_file_perm
           exclude: false
           alter:
             alter_text: false
@@ -4765,6 +4350,9 @@ display:
               physical_form:
                 display_method: label
                 view_mode: default
+              precoordinated_subjects:
+                display_method: label
+                view_mode: default
               preservation_states:
                 display_method: label
               related_items:
@@ -4785,7 +4373,6 @@ display:
                 view_mode: default
               titles:
                 display_method: label
-                view_mode: default
         field_description_source:
           id: field_description_source
           table: search_api_datasource_default_solr_index_entity_node
@@ -4795,7 +4382,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: 'Description Source'
+          label: field_description_source
           exclude: false
           alter:
             alter_text: false
@@ -4865,7 +4452,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: 'Embargo Release Date'
+          label: field_embargo_release_date
           exclude: false
           alter:
             alter_text: false
@@ -4937,7 +4524,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api_field
-          label: 'Level of Coding'
+          label: field_level_of_coding
           exclude: false
           alter:
             alter_text: false
@@ -5007,7 +4594,7 @@ display:
           admin_label: ''
           entity_type: node
           plugin_id: search_api
-          label: Visibility
+          label: moderation_state
           exclude: false
           alter:
             alter_text: false
@@ -5081,8 +4668,16 @@ display:
           sort_asc_label: Asc
           sort_desc_label: Desc
       access:
-        type: none
-        options: {  }
+        type: role
+        options:
+          role:
+            administrator: administrator
+            content_approver: content_approver
+            depositor: depositor
+            metadata_manager: metadata_manager
+            repositor_manager: repositor_manager
+            collections_staff: collections_staff
+            honors_staff: honors_staff
       cache:
         type: none
         options: {  }
@@ -5234,8 +4829,7 @@ display:
         options:
           bypass_access: false
           skip_access: false
-          preserve_facet_query_args: false
-          contextual_filters_or: false
+          preserve_facet_query_args: true
       relationships: {  }
       header: {  }
       footer: {  }
@@ -5249,6 +4843,7 @@ display:
         - url
         - url.query_args
         - 'user.node_grants:view'
+        - user.roles
       tags:
         - 'config:field.storage.node.field_additional_memberships'
         - 'config:field.storage.node.field_cataloging_standards'
@@ -5293,6 +4888,7 @@ display:
         - 'config:field.storage.node.field_title'
         - 'config:field.storage.node.field_typed_identifier'
         - 'config:search_api.index.default_solr_index'
+        - 'search_api_list:default_solr_index'
   data_export_1:
     id: data_export_1
     display_title: 'Data export : Collection'
@@ -5317,7 +4913,7 @@ display:
             trim: true
             encoding: utf8
             utf8_bom: '0'
-            use_serializer_encode_only: false
+            use_serializer_encode_only: true
       row:
         type: data_field
         options:
@@ -5328,10 +4924,14 @@ display:
       display_description: ''
       display_extenders: {  }
       path: collections/%/csv
+      auth:
+        - basic_auth
+        - cookie
       filename: 'collection_[date:html_date].csv'
       automatic_download: false
       export_method: batch
-      export_batch_size: 500
+      export_batch_size: 200
+      facet_settings: 'search_api:views_page__solr_search_content__page_3'
       store_in_public_file_directory: false
       custom_redirect_path: false
       redirect_to_display: none
@@ -5344,6 +4944,7 @@ display:
         - request_format
         - url
         - 'user.node_grants:view'
+        - user.roles
       tags:
         - 'config:field.storage.node.field_additional_memberships'
         - 'config:field.storage.node.field_cataloging_standards'
@@ -5388,6 +4989,7 @@ display:
         - 'config:field.storage.node.field_title'
         - 'config:field.storage.node.field_typed_identifier'
         - 'config:search_api.index.default_solr_index'
+        - 'search_api_list:default_solr_index'
   data_export_2:
     id: data_export_2
     display_title: 'Data export : Item'
@@ -5611,6 +5213,7 @@ display:
       path: items/%/csv
       filename: 'item_[date:html_date].csv'
       automatic_download: false
+      facet_settings: 'search_api:views_page__solr_search_content__page_2'
       store_in_public_file_directory: false
       custom_redirect_path: false
       redirect_to_display: none
@@ -5623,6 +5226,7 @@ display:
         - request_format
         - url
         - 'user.node_grants:view'
+        - user.roles
       tags:
         - 'config:field.storage.node.field_additional_memberships'
         - 'config:field.storage.node.field_cataloging_standards'
@@ -5667,6 +5271,7 @@ display:
         - 'config:field.storage.node.field_title'
         - 'config:field.storage.node.field_typed_identifier'
         - 'config:search_api.index.default_solr_index'
+        - 'search_api_list:default_solr_index'
   data_export_3:
     id: data_export_3
     display_title: 'Data export : Search'
@@ -5707,6 +5312,9 @@ display:
       path: search/csv
       filename: 'search_[date:html_date].csv'
       automatic_download: false
+      export_method: batch
+      export_batch_size: 200
+      facet_settings: 'search_api:views_page__solr_search_content__page_1'
       store_in_public_file_directory: false
       custom_redirect_path: false
       redirect_to_display: none
@@ -5719,6 +5327,7 @@ display:
         - request_format
         - url
         - 'user.node_grants:view'
+        - user.roles
       tags:
         - 'config:field.storage.node.field_additional_memberships'
         - 'config:field.storage.node.field_cataloging_standards'
@@ -5763,6 +5372,7 @@ display:
         - 'config:field.storage.node.field_title'
         - 'config:field.storage.node.field_typed_identifier'
         - 'config:search_api.index.default_solr_index'
+        - 'search_api_list:default_solr_index'
   rest_export_3:
     id: rest_export_3
     display_title: 'Search CSV Export'
@@ -5809,6 +5419,7 @@ display:
         - request_format
         - url
         - 'user.node_grants:view'
+        - user.roles
       tags:
         - 'config:field.storage.node.field_additional_memberships'
         - 'config:field.storage.node.field_cataloging_standards'
@@ -5853,3 +5464,4 @@ display:
         - 'config:field.storage.node.field_title'
         - 'config:field.storage.node.field_typed_identifier'
         - 'config:search_api.index.default_solr_index'
+        - 'search_api_list:default_solr_index'
