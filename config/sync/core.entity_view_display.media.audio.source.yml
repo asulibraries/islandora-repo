@@ -4,7 +4,10 @@ status: true
 dependencies:
   config:
     - core.entity_view_mode.media.source
+    - field.field.media.audio.field_access_terms
+    - field.field.media.audio.field_captions
     - field.field.media.audio.field_file_size
+    - field.field.media.audio.field_legacy_checksum
     - field.field.media.audio.field_media_audio_file
     - field.field.media.audio.field_media_of
     - field.field.media.audio.field_media_use
@@ -22,19 +25,14 @@ targetEntityType: media
 bundle: audio
 mode: source
 content:
-  field_gemini_uri:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 100
-    region: content
   field_media_audio_file:
     type: islandora_file_audio
     label: visually_hidden
     settings:
       controls: true
-      multiple_file_display_type: tags
       autoplay: false
       loop: false
+      multiple_file_display_type: tags
     third_party_settings: {  }
     weight: 0
     region: content

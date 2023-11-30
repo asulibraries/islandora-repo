@@ -422,8 +422,9 @@ function asu_permissions_file_download($uri) {
     foreach ($medias as $media) {
       $node = $utils->getParentNode($media);
       if (!$media->access('view', $user)) {
-        // If the user isn't allowed to view the media, return -1 to tell
-        // Drupal to block access to the file currently being requested.
+        // If the user isn't allowed to view the media, disable cache and
+        // return -1 to tell Drupal to block access to the requested file.
+        \Drupal::service('page_cache_kill_switch')->trigger();
         return -1;
       }
       if ($node) {
@@ -433,6 +434,7 @@ function asu_permissions_file_download($uri) {
         if (
           $node && $node->hasField('field_embargo_release_date') && $node->get('field_embargo_release_date') && $node->get('field_embargo_release_date')->value != "T23:59:59" && $node->get('field_embargo_release_date')->value >= $today
         ) {
+          \Drupal::service('page_cache_kill_switch')->trigger();
           return -1;
         }
       }
