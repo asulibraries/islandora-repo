@@ -5,12 +5,92 @@
  * Default fields hooks.
  */
 
+use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\file\Plugin\Field\FieldType\FileFieldItemList;
 use Drupal\media\MediaInterface;
 use Drupal\node\NodeInterface;
-use Drupal\Core\Entity\EntityInterface;
 use Drupal\paragraphs\Entity\Paragraph;
 use GuzzleHttp\Exception\RequestException;
+
+/**
+ * Make a media's files private/public if necessary.
+ */
+function asu_default_fields_update_file_schema(EntityInterface $entity) {
+  // Check for access by Anonymous User (uid 0).
+  $accessible = $entity->access('view', \Drupal::entityTypeManager()->getStorage('user')->load(0));
+
+  // Load the necessary services.
+  $fileSystemService = \Drupal::service('file_system');
+  $stream_wrapper_manager = \Drupal::service('stream_wrapper_manager');
+  $file_repository_service = \Drupal::service('file.repository');
+
+  foreach ($entity->getFields(FALSE) as $field) {
+    if ($field instanceof FileFieldItemList) {
+      foreach ($field->referencedEntities() as $file) {
+
+        // Skip files outside public and private.
+        // Probably no longer necessary since we dropped fedora's flysystem,
+        // but we'll keep it for safety's sake.
+        $uriScheme = $stream_wrapper_manager->getScheme($file->getFileUri());
+        if (!in_array($uriScheme, ['public', 'private'])) {
+          continue;
+        }
+
+        // Skip files larger than 5 GB.
+        // @see https://www.drupal.org/project/s3fs/issues/3204634
+        if ($file->getSize() >= 5368709120) {
+          \Drupal::logger('asu_default_fields')->warning("Cannot move large file '@uri' to s3 for Media '@label'", [
+            '@uri' => $file->getFileUri(),
+            '@label' => $entity->label(),
+          ]);
+          continue;
+        }
+
+        // Skip PDFs. They need to stay in private
+        // due to CORS issues with pdf.js.
+        if ($file->getMimeType() == 'application/pdf') {
+          \Drupal::logger('asu_default_fields')->warning("PDF '@uri' for Media '@label' must stay in the private filesystem.", [
+            '@uri' => $file->getFileUri(),
+            '@label' => $entity->label(),
+          ]);
+          continue;
+        }
+
+        // It should not be both public AND restricted.
+        $fileIsPublic = $uriScheme === 'public';
+        if ($fileIsPublic !== $accessible) {
+          // Move it.
+          $newUriPath = $stream_wrapper_manager->getTarget($file->getFileUri());
+          $newUriScheme = $accessible ? 'public' : 'private';
+          $fileTargetUri = "$newUriScheme://$newUriPath";
+          $target_dir = dirname($fileTargetUri);
+          try {
+            $fileSystemService->prepareDirectory($target_dir, FileSystemInterface::CREATE_DIRECTORY);
+            $movedFile = $file_repository_service->move($file, $fileTargetUri, FileSystemInterface::EXISTS_RENAME);
+            if (!$movedFile) {
+              \Drupal::logger('asu_default_fields')->warning("Failed to move file: '@uri'", ['@uri' => $file->getFileUri()]);
+            }
+            else {
+              \Drupal::logger('asu_default_fields')->notice("Moved file '@uri' to '@new_uri' for Media '@label'", [
+                '@uri' => $file->getFileUri(),
+                '@new_uri' => $fileTargetUri,
+                '@label' => $entity->label(),
+              ]);
+            }
+          }
+          catch (FileException $e) {
+            // Only write out the first line of the exception,
+            // which is usually good enough, so we don't have
+            // to deal with commenting out each line.
+            $this->output->writeln("# Failed to copy file {$file->getFileUri()}: " . rtrim(strtok($e->getMessage(), PHP_EOL)));
+          }
+        }
+      }
+    }
+  }
+}
 
 /**
  * Implements hook_media_presave().
@@ -20,29 +100,25 @@ function asu_default_fields_media_presave(MediaInterface $media) {
   if ($media->hasField('field_media_of') && count($media->get('field_media_of')) > 0) {
     if ($media->get('field_media_use') && $media->get('field_media_use')->entity) {
       $taxy = $media->get('field_media_use')->entity;
-      // @todo add a config for which "uses" to assign this value from, possible that multiple uses would assign multiple resource types here.
+      // @todo add a config for which "uses" to assign this value from,
+      // possible that multiple uses would assign multiple resource types here.
       if ($taxy->getName() == "Original File") {
         $node = $utils->getParentNode($media);
-        // Note this only applies up the free one - complex objects may require reworking here.
+        // Note this only applies up the free one -
+        // complex objects may require reworking here.
         $mime = $media->get('field_mime_type')->value;
         if ($node && !empty($mime)) {
           $mime = str_replace('/', '_', $mime);
           $mime = str_replace('.', '_', $mime);
           $res_type = \Drupal::config('asu_default_fields.mimesettings')->get($mime);
-          // @todo add the ability to push the resource type to a complex object parent
-          // would correlate with a view of objects that do not have resource types set
-          // but that view would also filter out children of complex objects
-          // because as long as the parent complex object has at least 1 resource type, its ok.
+          // @todo add the ability to push the resource type to a
+          // complex object parent would correlate with a view of
+          // objects that do not have resource types set but that
+          // view would also filter out children of complex objects
+          // because as long as the parent complex object has
+          // at least 1 resource type, its ok.
           $node->set('field_resource_type', ['target_id' => $res_type]);
           $node->save();
-          // If ($node->hasField('field_complex_object_child') && $node->get('field_complex_object_child') == 1 && $node->hasField('field_member_of') && !$node->get('field_member_of')->isEmpty()) {
-          //   $parent = $node->get('field_member_of')->entity;
-          //   $current_types = $parent->get('field_resource_type');
-          //   // have to check if its in the current types before appending it
-          //   // if (in_array())
-          //   // $parent->set('field_resource_type', ['target_id' => $res_type]);
-          //   $parent->save();
-          // }
         }
       }
     }
@@ -124,8 +200,9 @@ function asu_default_fields_form_alter(&$form, FormStateInterface $form_state, $
         }
       }
       if (isset($nid)) {
-        // In the media create form, we inherit the default for the original file only,
-        // because we assume that most manual additions of files are for original files.
+        // In the media create form, we inherit the default for the
+        // original file only, because we assume that most manual
+        // additions of files are for original files.
         $parent = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
         if ($parent->hasField('field_default_original_file_perm') && !$parent->get('field_default_original_file_perm')->isEmpty() && $media->get('field_access_terms')->isEmpty()) {
           $of_default_perms = $parent->get('field_default_original_file_perm')->entity;
@@ -187,10 +264,10 @@ function asu_default_fields_node_insert(NodeInterface $node) {
         if ($node->getEntityTypeId() == 'node' && in_array($content_type, $allowed_types, TRUE) &&
           !($config->get('disable_handle_generation'))) {
           if ($node->bundle() == "collection") {
-            _mint_handle($node, 'R.2.C');
+            asu_default_fields_mint_handle($node, 'R.2.C');
           }
           else {
-            _mint_handle($node);
+            asu_default_fields_mint_handle($node);
           }
         }
       }
@@ -224,12 +301,20 @@ function asu_default_fields_media_insert(MediaInterface $media) {
       }
     }
   }
+  asu_default_fields_update_file_schema($media);
+}
+
+/**
+ * Implements hook_media_update().
+ */
+function asu_default_fields_media_update(EntityInterface $media) {
+  asu_default_fields_update_file_schema($media);
 }
 
 /**
  * A helper function to call the handle minting service.
  */
-function _mint_handle(EntityInterface $object, string $prefix = NULL) {
+function asu_default_fields_mint_handle(EntityInterface $object, string $prefix = NULL) {
   $config = \Drupal::config('persistent_identifiers.settings');
   $minter = \Drupal::service($config->get('persistent_identifiers_minter'));
   try {
