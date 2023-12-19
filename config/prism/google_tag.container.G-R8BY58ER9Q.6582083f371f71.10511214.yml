@@ -1,0 +1,47 @@
+uuid: 462f6db6-bb7d-4ca1-b491-55fd421c89e6
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora
+    - system
+    - user
+id: G-R8BY58ER9Q.6582083f371f71.10511214
+label: G-R8BY58ER9Q
+weight: 0
+tag_container_ids:
+  - G-R8BY58ER9Q
+advanced_settings: {  }
+dimensions_metrics:
+  -
+    type: dimension
+    name: permalink
+    value: '[node:field_handle:value]'
+conditions:
+  request_path:
+    id: request_path
+    negate: true
+    pages: "/admin\r\n/admin/*\r\n/batch\r\n/node/add*\r\n/node/*/*\r\n/user/*/*"
+  media_source_mimetype:
+    id: media_source_mimetype
+    negate: false
+    context_mapping: {  }
+    mimetype: ''
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      administrator: administrator
+events:
+  custom: {  }
+  generate_lead:
+    value: ''
+    currency: ''
+  sign_up:
+    method: CMS
+  search: {  }
+  webform_purchase: {  }
+  login:
+    method: CMS

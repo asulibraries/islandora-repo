@@ -5,7 +5,6 @@ dependencies:
   config:
     - field.storage.node.field_handle
     - field.storage.node.field_linked_agent
-    - field.storage.node.field_local_identifier
     - field.storage.node.field_subject
     - field.storage.node.field_title
     - node.type.asu_repository_item
@@ -741,7 +740,6 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:
@@ -765,7 +763,6 @@ display:
         - 'languages:language_interface'
         - url
         - url.query_args
-        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:
@@ -1096,7 +1093,6 @@ display:
         - 'languages:language_interface'
         - request_format
         - url
-        - user
         - 'user.node_grants:view'
         - user.permissions
       tags:

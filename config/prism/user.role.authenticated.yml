@@ -5,6 +5,7 @@ dependencies:
   config:
     - filter.format.basic_html
     - filter.format.description_restricted_items
+    - filter.format.webform_default
     - media.type.audio
     - media.type.document
     - media.type.extracted_text
@@ -23,7 +24,6 @@ dependencies:
     - field_permissions
     - file
     - filter
-    - google_analytics
     - group
     - matomo
     - media
@@ -67,7 +67,6 @@ permissions:
   - 'edit own image media'
   - 'edit own remote_video media'
   - 'edit own video media'
-  - 'opt-in or out of google analytics tracking'
   - 'opt-in or out of matomo tracking'
   - 'post comments'
   - 'restful get oai_pmh'
@@ -75,6 +74,7 @@ permissions:
   - 'update media'
   - 'use text format basic_html'
   - 'use text format description_restricted_items'
+  - 'use text format webform_default'
   - 'view any unpublished content'
   - 'view media'
   - 'view own unpublished content'
