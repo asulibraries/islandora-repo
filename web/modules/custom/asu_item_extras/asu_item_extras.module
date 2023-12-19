@@ -5,6 +5,7 @@
  * Item extra module.
  */
 
+use Drupal\Core\Form\FormStateInterface;
 use Drupal\views\ViewExecutable;
 
 /**
@@ -79,7 +80,7 @@ function asu_item_extras_views_data() {
  * Implements hook_preprocess_rest_oai_pmh_record().
  *
  * Taken from the deprecated islandora_rest_oaipmh module.
- * See https://github.com/Islandora/islandora_defaults/blob/3.x/modules/islandora_oaipmh/islandora_oaipmh.module
+ * See https://github.com/Islandora/islandora_defaults/blob/3.x/modules/islandora_oaipmh/islandora_oaipmh.module.
  */
 function asu_item_extras_preprocess_rest_oai_pmh_record(&$variables) {
   $entity = $variables['entity'];
@@ -99,3 +100,25 @@ function asu_item_extras_preprocess_rest_oai_pmh_record(&$variables) {
   }
 }
 
+/**
+ * Implements hook_form_form_id_alter().
+ */
+function asu_item_extras_form_google_tag_container_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Unset our custom conditions.  There's too many to use well within
+  // the core block placement UI, and no other reasonable way to filter
+  // them out.  See https://www.drupal.org/node/2284687.  Use
+  // /admin/structure/context instead if you want to use these conditions
+  // to alter block layout.
+  unset($form['conditions']['content_entity_type']);
+  unset($form['conditions']['file_uses_filesystem']);
+  unset($form['conditions']['media_has_mimetype']);
+  unset($form['conditions']['media_has_term']);
+  unset($form['conditions']['media_is_islandora_media']);
+  unset($form['conditions']['media_uses_filesystem']);
+  unset($form['conditions']['node_had_namespace']);
+  unset($form['conditions']['node_has_parent']);
+  unset($form['conditions']['node_has_term']);
+  unset($form['conditions']['node_is_islandora_object']);
+  unset($form['conditions']['node_referenced_by_node']);
+  unset($form['conditions']['parent_node_has_term']);
+}
