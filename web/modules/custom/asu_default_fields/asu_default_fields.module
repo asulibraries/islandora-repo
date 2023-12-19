@@ -30,6 +30,11 @@ function asu_default_fields_update_file_schema(EntityInterface $entity) {
     if ($field instanceof FileFieldItemList) {
       foreach ($field->referencedEntities() as $file) {
 
+        // Skip media-icons as it seems to do weird things.
+        if (str_contains($file->getFileUri(), '/media-icons/')) {
+          continue;
+        }
+
         // Skip files outside public and private.
         // Probably no longer necessary since we dropped fedora's flysystem,
         // but we'll keep it for safety's sake.
@@ -135,9 +140,9 @@ function asu_default_fields_node_presave(NodeInterface $node) {
       if ($pgs) {
         $pg1 = $pgs[0];
         $item = Paragraph::load($pg1['target_id']);
-        $nonsort = $item->field_nonsort->value;
-        $main = $item->field_main_title->value;
-        $sub = $item->field_subtitle->value;
+        $nonsort = $item->field_nonsort->value ?? '';
+        $main = $item->field_main_title->value ?? '';
+        $sub = $item->field_subtitle->value ?? '';
         $nm = ($nonsort != NULL || $nonsort != "" || $nonsort != " " ? trim($nonsort) . " " : "") .
           ($main != NULL ? trim($main) : "[untitled]") .
           ($sub != NULL ? ": " . trim($sub) : "");

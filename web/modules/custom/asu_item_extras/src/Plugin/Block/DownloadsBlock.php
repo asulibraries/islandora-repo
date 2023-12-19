@@ -236,7 +236,7 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     $links = array_map(function ($v) use ($link_hreflang, $asuUtils) {
       return Link::fromTextAndUrl($v['ext'] . " (" . $asuUtils->formatBytes($v['file_size'], 1) . ")", Url::fromUri($v['link'], [
         'attributes' => array_merge($link_hreflang, [
-          'class' => ['btn btn-md btn-gray'],
+          'class' => ['btn btn-md btn-gray resource_engagement_link'],
           'title' => $this->t('Download %type file %ext', [
             '%type' => $v['type'],
             '%ext' => $v['ext'],
