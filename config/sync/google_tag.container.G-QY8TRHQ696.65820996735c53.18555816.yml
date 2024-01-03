@@ -4,39 +4,17 @@ status: true
 dependencies:
   module:
     - islandora
-    - user
 id: G-QY8TRHQ696.65820996735c53.18555816
 label: G-QY8TRHQ696
 weight: 0
 tag_container_ids:
   - G-QY8TRHQ696
+  - GTM-WX998MZ6
 advanced_settings: {  }
 dimensions_metrics:
   -
     type: dimension
     name: permalink
     value: '[node:field_handle:value]'
-conditions:
-  media_source_mimetype:
-    id: media_source_mimetype
-    negate: false
-    context_mapping: {  }
-    mimetype: ''
-  user_role:
-    id: user_role
-    negate: false
-    context_mapping:
-      user: '@user.current_user_context:current_user'
-    roles:
-      administrator: administrator
-events:
-  custom: {  }
-  generate_lead:
-    value: ''
-    currency: ''
-  sign_up:
-    method: CMS
-  search: {  }
-  webform_purchase: {  }
-  login:
-    method: CMS
+conditions: {  }
+events: {  }
