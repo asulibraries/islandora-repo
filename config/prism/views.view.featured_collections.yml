@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.node.collection_browse_teaser
     - field.storage.node.field_collection_thumbnail
     - field.storage.node.field_rich_description
     - field.storage.node.field_title
@@ -10,11 +11,11 @@ dependencies:
     - node.type.collection
   module:
     - asu_search
-    - flexslider_views
     - media
     - node
     - text
     - user
+    - views_bootstrap
 id: featured_collections
 label: 'Featured Collections'
 module: views
@@ -68,7 +69,7 @@ display:
             trim: false
             preserve_tags: ''
             html: false
-          element_type: ''
+          element_type: h3
           element_class: ''
           element_label_type: ''
           element_label_class: ''
@@ -352,7 +353,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "<div class=\"row\">\r\n  <div class=\"carousel-item active\">\r\n    <div class=\"item__third card card-horizontal\">\r\n      {{ field_collection_thumbnail }}\r\n      <div class=\"card-content-wrapper\">\r\n        <div class=\"card-header\">\r\n          <h3 class=\"card-title\">{{ field_title }}</h3>\r\n        </div>\r\n        <div class=\"card-body\">\r\n          <p class=\"card-text\">\r\n            {{ field_rich_description }}<br />\r\n            {{ changed }}\r\n            {{ view_node }}\r\n          </p>\r\n        </div>\r\n      </div>\r\n   </div>\r\n</div>"
+            text: "<button>\r\n  <a href=\"/collections/chicano\">\r\n    <span class=\"uds-img\">\r\n      <picture class=\"card-img-top\" \"=\"\">\r\n        {{ field_collection_thumbnail }}\r\n      </picture>\r\n    </span>\r\n    <div class=\"card-header\">\r\n      <h3 class=\"card-title\">{{ field_title }}</h3>\r\n    </div>\r\n    <div class=\"card-body\">\r\n      <p class=\"card-text\">\r\n        {{ field_rich_description }}<br />\r\n        {{ changed }}\r\n        {{ view_node }}\r\n      </p>\r\n    </div>\r\n  </a>\r\n</button>"
             make_link: false
             path: ''
             absolute: false
@@ -393,7 +394,7 @@ display:
         type: some
         options:
           offset: 0
-          items_per_page: 5
+          items_per_page: 6
       exposed_form:
         type: basic
         options:
@@ -497,20 +498,21 @@ display:
             default_group_multiple: {  }
             group_items: {  }
       style:
-        type: flexslider
+        type: views_bootstrap_grid
         options:
-          grouping: {  }
-          flexslider: null
-          optionset: default
-          captionfield: title
-          id: flex-featured-content
+          row_class: mb-3
+          default_row_class: true
+          uses_fields: false
+          col_xs: col-12
+          col_sm: col-sm-12
+          col_md: col-md-6
+          col_lg: col-lg-4
+          col_xl: col-xl-4
       row:
-        type: fields
+        type: 'entity:node'
         options:
-          default_field_elements: false
-          inline: {  }
-          separator: ''
-          hide_empty: false
+          relationship: none
+          view_mode: collection_browse_teaser
       query:
         type: views_query
         options:
