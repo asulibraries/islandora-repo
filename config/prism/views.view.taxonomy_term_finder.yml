@@ -29,6 +29,7 @@ dependencies:
     - taxonomy.vocabulary.physical_form
     - taxonomy.vocabulary.precoordinated_subjects
     - taxonomy.vocabulary.preservation_states
+    - taxonomy.vocabulary.related_items
     - taxonomy.vocabulary.resource_types
     - taxonomy.vocabulary.reuse_permissions
     - taxonomy.vocabulary.subject
@@ -677,6 +678,7 @@ display:
             physical_form: physical_form
             precoordinated_subjects: precoordinated_subjects
             preservation_states: preservation_states
+            related_items: related_items
             resource_types: resource_types
             reuse_permissions: reuse_permissions
             subject: subject
@@ -923,6 +925,57 @@ display:
               honors_staff: '0'
               some_metadata: '0'
             placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+        field_local_value:
+          id: field_local_value
+          table: taxonomy_term__field_local
+          field: field_local_value
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: boolean
+          operator: '='
+          value: All
+          group: 1
+          exposed: true
+          expose:
+            operator_id: ''
+            label: 'Local Name Only'
+            description: ''
+            use_operator: false
+            operator: field_local_value_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: field_local_value
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              fedoraadmin: '0'
+              content_approver: '0'
+              depositor: '0'
+              metadata_manager: '0'
+              preservationist: '0'
+              casuser: '0'
+              repositor_manager: '0'
+              collections_staff: '0'
+              honors_student: '0'
+              honors_staff: '0'
+              some_metadata: '0'
           is_grouped: false
           group_info:
             label: ''

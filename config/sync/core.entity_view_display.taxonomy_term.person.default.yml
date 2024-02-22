@@ -6,6 +6,8 @@ dependencies:
     - field.field.taxonomy_term.person.field_authority_link
     - field.field.taxonomy_term.person.field_cat_date_begin
     - field.field.taxonomy_term.person.field_cat_date_end
+    - field.field.taxonomy_term.person.field_internal_note
+    - field.field.taxonomy_term.person.field_local
     - field.field.taxonomy_term.person.field_relationships
     - taxonomy.vocabulary.person
   module:
@@ -21,7 +23,7 @@ content:
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 4
+    weight: 1
     region: content
   field_authority_link:
     type: authority_formatter_default
@@ -33,7 +35,7 @@ content:
       rel: ''
       target: _blank
     third_party_settings: {  }
-    weight: 2
+    weight: 0
     region: content
   field_cat_date_begin:
     type: edtf_default
@@ -43,8 +45,9 @@ content:
       date_order: little_endian
       month_format: mmm
       day_format: dd
+      year_format: 'y'
     third_party_settings: {  }
-    weight: 6
+    weight: 2
     region: content
   field_cat_date_end:
     type: edtf_default
@@ -54,8 +57,16 @@ content:
       date_order: little_endian
       month_format: mmm
       day_format: dd
+      year_format: 'y'
     third_party_settings: {  }
-    weight: 7
+    weight: 3
+    region: content
+  field_internal_note:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 4
     region: content
   field_relationships:
     type: typed_relation_default
@@ -63,8 +74,9 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-    weight: 9
+    weight: 5
     region: content
 hidden:
+  field_local: true
   langcode: true
   search_api_excerpt: true

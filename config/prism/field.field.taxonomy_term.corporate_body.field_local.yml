@@ -1,0 +1,21 @@
+uuid: 73b34081-2b74-4c6a-98e2-2852abd6d6ab
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_local
+    - taxonomy.vocabulary.corporate_body
+id: taxonomy_term.corporate_body.field_local
+field_name: field_local
+entity_type: taxonomy_term
+bundle: corporate_body
+label: 'Local Name Only'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  on_label: 'Yes'
+  off_label: 'No'
+field_type: boolean

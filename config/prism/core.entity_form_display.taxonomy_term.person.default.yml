@@ -6,6 +6,8 @@ dependencies:
     - field.field.taxonomy_term.person.field_authority_link
     - field.field.taxonomy_term.person.field_cat_date_begin
     - field.field.taxonomy_term.person.field_cat_date_end
+    - field.field.taxonomy_term.person.field_internal_note
+    - field.field.taxonomy_term.person.field_local
     - field.field.taxonomy_term.person.field_relationships
     - taxonomy.vocabulary.person
   module:
@@ -28,7 +30,7 @@ third_party_settings:
       label: 'Advanced fields'
       region: content
       parent_name: ''
-      weight: 2
+      weight: 4
       format_type: details
       format_settings:
         classes: ''
@@ -74,6 +76,21 @@ content:
       strict_dates: false
       intervals: true
       sets: false
+    third_party_settings: {  }
+  field_internal_note:
+    type: text_textarea
+    weight: 3
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_local:
+    type: boolean_checkbox
+    weight: 2
+    region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   field_relationships:
     type: typed_relation_default

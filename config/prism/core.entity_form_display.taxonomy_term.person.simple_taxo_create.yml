@@ -7,6 +7,8 @@ dependencies:
     - field.field.taxonomy_term.person.field_authority_link
     - field.field.taxonomy_term.person.field_cat_date_begin
     - field.field.taxonomy_term.person.field_cat_date_end
+    - field.field.taxonomy_term.person.field_internal_note
+    - field.field.taxonomy_term.person.field_local
     - field.field.taxonomy_term.person.field_relationships
     - taxonomy.vocabulary.person
   module:
@@ -24,6 +26,13 @@ content:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
+  field_local:
+    type: boolean_checkbox
+    weight: 2
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
   name:
     type: string_textfield
     weight: 0
@@ -36,6 +45,7 @@ hidden:
   description: true
   field_cat_date_begin: true
   field_cat_date_end: true
+  field_internal_note: true
   field_relationships: true
   langcode: true
   path: true

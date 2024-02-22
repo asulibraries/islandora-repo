@@ -8,6 +8,8 @@ dependencies:
     - field.field.taxonomy_term.corporate_body.field_cat_date_begin
     - field.field.taxonomy_term.corporate_body.field_cat_date_end
     - field.field.taxonomy_term.corporate_body.field_corp_alt_name
+    - field.field.taxonomy_term.corporate_body.field_internal_note
+    - field.field.taxonomy_term.corporate_body.field_local
     - field.field.taxonomy_term.corporate_body.field_relationships
     - field.field.taxonomy_term.corporate_body.field_type
     - taxonomy.vocabulary.corporate_body
@@ -26,6 +28,13 @@ content:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
+  field_local:
+    type: boolean_checkbox
+    weight: 2
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
   name:
     type: string_textfield
     weight: 0
@@ -39,6 +48,7 @@ hidden:
   field_cat_date_begin: true
   field_cat_date_end: true
   field_corp_alt_name: true
+  field_internal_note: true
   field_relationships: true
   field_type: true
   langcode: true

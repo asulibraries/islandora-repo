@@ -6,6 +6,7 @@ dependencies:
     - workflows.workflow.ingest
   module:
     - content_moderation
+    - field_permissions
     - file
     - help
     - islandora
@@ -26,7 +27,13 @@ permissions:
   - 'access webform overview'
   - 'access webform submission user'
   - 'bypass paragraphs type content access'
+  - 'create field_internal_note'
+  - 'create field_local'
   - 'delete own files'
+  - 'edit field_internal_note'
+  - 'edit field_local'
+  - 'edit own field_internal_note'
+  - 'edit own field_local'
   - 'manage media'
   - 'manage members'
   - 'use ingest transition create_new_draft'
@@ -34,4 +41,8 @@ permissions:
   - 'use ingest transition draft_to_triaged'
   - 'view any unpublished content'
   - 'view checksums'
+  - 'view field_internal_note'
+  - 'view field_local'
   - 'view latest version'
+  - 'view own field_internal_note'
+  - 'view own field_local'

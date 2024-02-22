@@ -7,6 +7,8 @@ dependencies:
     - field.field.taxonomy_term.corporate_body.field_cat_date_begin
     - field.field.taxonomy_term.corporate_body.field_cat_date_end
     - field.field.taxonomy_term.corporate_body.field_corp_alt_name
+    - field.field.taxonomy_term.corporate_body.field_internal_note
+    - field.field.taxonomy_term.corporate_body.field_local
     - field.field.taxonomy_term.corporate_body.field_relationships
     - field.field.taxonomy_term.corporate_body.field_type
     - taxonomy.vocabulary.corporate_body
@@ -46,6 +48,7 @@ content:
       date_order: big_endian
       month_format: mm
       day_format: dd
+      year_format: 'y'
     third_party_settings: {  }
     weight: 2
     region: content
@@ -57,6 +60,7 @@ content:
       date_order: big_endian
       month_format: mm
       day_format: dd
+      year_format: 'y'
     third_party_settings: {  }
     weight: 3
     region: content
@@ -67,13 +71,20 @@ content:
     third_party_settings: {  }
     weight: 4
     region: content
+  field_internal_note:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 7
+    region: content
   field_relationships:
     type: typed_relation_default
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    weight: 7
+    weight: 6
     region: content
   field_type:
     type: list_default
@@ -83,5 +94,6 @@ content:
     weight: 0
     region: content
 hidden:
+  field_local: true
   langcode: true
   search_api_excerpt: true

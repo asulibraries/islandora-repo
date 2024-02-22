@@ -1,0 +1,24 @@
+uuid: d5a9d786-2afb-42bf-9272-4ea28d9833a8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_internal_note
+    - filter.format.basic_html
+    - taxonomy.vocabulary.person
+  module:
+    - text
+id: taxonomy_term.person.field_internal_note
+field_name: field_internal_note
+entity_type: taxonomy_term
+bundle: person
+label: 'Internal Note'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - basic_html
+field_type: text_long

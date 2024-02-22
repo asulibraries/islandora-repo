@@ -1,0 +1,24 @@
+uuid: 51bae5fe-4e05-4bd5-b01a-7b9ca1e8fb20
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_internal_note
+    - filter.format.basic_html
+    - taxonomy.vocabulary.corporate_body
+  module:
+    - text
+id: taxonomy_term.corporate_body.field_internal_note
+field_name: field_internal_note
+entity_type: taxonomy_term
+bundle: corporate_body
+label: 'Internal Note'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - basic_html
+field_type: text_long
