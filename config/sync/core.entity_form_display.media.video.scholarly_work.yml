@@ -1,0 +1,81 @@
+uuid: 6c69c629-fddf-4189-862a-44cdd329c0d8
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.media.scholarly_work
+    - field.field.media.video.field_access_terms
+    - field.field.media.video.field_captions
+    - field.field.media.video.field_file_size
+    - field.field.media.video.field_legacy_checksum
+    - field.field.media.video.field_media_of
+    - field.field.media.video.field_media_use
+    - field.field.media.video.field_media_video_file
+    - field.field.media.video.field_mime_type
+    - field.field.media.video.field_original_name
+    - field.field.media.video.field_track
+    - media.type.video
+  module:
+    - file
+    - islandora
+id: media.video.scholarly_work
+targetEntityType: media
+bundle: video
+mode: scholarly_work
+content:
+  field_access_terms:
+    type: options_buttons
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_legacy_checksum:
+    type: string_textfield
+    weight: 4
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_media_video_file:
+    type: file_generic
+    weight: 1
+    region: content
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+  field_mime_type:
+    type: string_textfield
+    weight: 5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_track:
+    type: media_track
+    weight: 2
+    region: content
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  field_captions: true
+  field_file_size: true
+  field_media_of: true
+  field_media_use: true
+  field_original_name: true
+  langcode: true
+  path: true
+  status: true
+  translation: true
+  uid: true

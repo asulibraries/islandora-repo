@@ -1,0 +1,24 @@
+uuid: 4c2fd9f0-38d0-4e4e-ba29-ccf0de5eb6d6
+langcode: en
+status: true
+dependencies:
+  module:
+    - field_permissions
+    - media
+    - node
+third_party_settings:
+  field_permissions:
+    permission_type: public
+id: node.field_primary_content
+field_name: field_primary_content
+entity_type: node
+type: entity_reference
+settings:
+  target_type: media
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

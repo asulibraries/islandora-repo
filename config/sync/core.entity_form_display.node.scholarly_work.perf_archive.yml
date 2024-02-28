@@ -1,0 +1,170 @@
+uuid: 058ad851-f322-4f7f-984f-5127ae4b6613
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.node.perf_archive
+    - core.entity_form_mode.taxonomy_term.simple_taxo_create
+    - field.field.node.scholarly_work.body
+    - field.field.node.scholarly_work.field_access_terms
+    - field.field.node.scholarly_work.field_edtf_date_created
+    - field.field.node.scholarly_work.field_embargo_release_date
+    - field.field.node.scholarly_work.field_linked_agent
+    - field.field.node.scholarly_work.field_member_of
+    - field.field.node.scholarly_work.field_open_access
+    - field.field.node.scholarly_work.field_peer_reviewed
+    - field.field.node.scholarly_work.field_primary_content
+    - field.field.node.scholarly_work.field_rich_description
+    - field.field.node.scholarly_work.field_subject
+    - field.field.node.scholarly_work.field_supplemental_materials
+    - node.type.scholarly_work
+  module:
+    - content_moderation
+    - controlled_access_terms
+    - inline_entity_form
+    - path
+    - self_deposit
+    - text
+id: node.scholarly_work.perf_archive
+targetEntityType: node
+bundle: scholarly_work
+mode: perf_archive
+content:
+  created:
+    type: datetime_timestamp
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_edtf_date_created:
+    type: edtf_default
+    weight: 12
+    region: content
+    settings:
+      strict_dates: false
+      intervals: true
+      sets: false
+    third_party_settings: {  }
+  field_linked_agent:
+    type: typed_relation_auto
+    weight: 3
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: '30'
+      size: '60'
+      placeholder: ''
+    third_party_settings: {  }
+  field_member_of:
+    type: entity_reference_autocomplete
+    weight: 1
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_rich_description:
+    type: text_textarea
+    weight: 2
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_subject:
+    type: inline_entity_form_complex
+    weight: 4
+    region: content
+    settings:
+      form_mode: simple_taxo_create
+      override_labels: true
+      label_singular: 'topical subject'
+      label_plural: 'topical subjects'
+      allow_new: true
+      allow_existing: true
+      match_operator: STARTS_WITH
+      match_limit: 0
+      allow_duplicate: false
+      collapsible: false
+      collapsed: false
+      revision: false
+      removed_reference: keep
+    third_party_settings: {  }
+  langcode:
+    type: language_select
+    weight: 2
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  moderation_state:
+    type: moderation_state_default
+    weight: 100
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 30
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  promote:
+    type: boolean_checkbox
+    weight: 15
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  simple_sitemap:
+    weight: 10
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 120
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  sticky:
+    type: boolean_checkbox
+    weight: 16
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  uid:
+    type: entity_reference_autocomplete
+    weight: 5
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  url_redirects:
+    weight: 50
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  body: true
+  field_access_terms: true
+  field_embargo_release_date: true
+  field_open_access: true
+  field_peer_reviewed: true
+  field_primary_content: true
+  field_supplemental_materials: true

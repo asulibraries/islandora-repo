@@ -1,0 +1,29 @@
+uuid: 733c1c58-2588-448f-988e-95e1fe5e8fab
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_subject
+    - node.type.scholarly_work
+    - taxonomy.vocabulary.subject
+id: node.scholarly_work.field_subject
+field_name: field_subject
+entity_type: node
+bundle: scholarly_work
+label: 'Topical Subject'
+description: 'If your topical subject, is not found, add it <a href="/admin/structure/taxonomy/manage/subject/add" target="_blank">here</a>'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      subject: subject
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

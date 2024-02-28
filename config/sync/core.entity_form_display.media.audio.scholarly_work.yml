@@ -1,0 +1,81 @@
+uuid: 2e4e9345-a7f7-4acf-bd70-1c45ebd53ab0
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.media.scholarly_work
+    - field.field.media.audio.field_access_terms
+    - field.field.media.audio.field_captions
+    - field.field.media.audio.field_file_size
+    - field.field.media.audio.field_legacy_checksum
+    - field.field.media.audio.field_media_audio_file
+    - field.field.media.audio.field_media_of
+    - field.field.media.audio.field_media_use
+    - field.field.media.audio.field_mime_type
+    - field.field.media.audio.field_original_name
+    - field.field.media.audio.field_track
+    - media.type.audio
+  module:
+    - file
+    - islandora
+id: media.audio.scholarly_work
+targetEntityType: media
+bundle: audio
+mode: scholarly_work
+content:
+  field_access_terms:
+    type: options_buttons
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_legacy_checksum:
+    type: string_textfield
+    weight: 5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_media_audio_file:
+    type: file_generic
+    weight: 1
+    region: content
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+  field_mime_type:
+    type: string_textfield
+    weight: 4
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_track:
+    type: media_track
+    weight: 2
+    region: content
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  field_captions: true
+  field_file_size: true
+  field_media_of: true
+  field_media_use: true
+  field_original_name: true
+  langcode: true
+  path: true
+  status: true
+  translation: true
+  uid: true

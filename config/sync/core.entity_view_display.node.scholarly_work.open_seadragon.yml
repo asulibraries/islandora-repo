@@ -1,0 +1,133 @@
+uuid: 2c6f781f-cf3d-4db2-affc-09afd07b4a92
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.open_seadragon
+    - field.field.node.scholarly_work.body
+    - field.field.node.scholarly_work.field_access_terms
+    - field.field.node.scholarly_work.field_edtf_date_created
+    - field.field.node.scholarly_work.field_embargo_release_date
+    - field.field.node.scholarly_work.field_linked_agent
+    - field.field.node.scholarly_work.field_member_of
+    - field.field.node.scholarly_work.field_open_access
+    - field.field.node.scholarly_work.field_peer_reviewed
+    - field.field.node.scholarly_work.field_primary_content
+    - field.field.node.scholarly_work.field_rich_description
+    - field.field.node.scholarly_work.field_subject
+    - field.field.node.scholarly_work.field_supplemental_materials
+    - node.type.scholarly_work
+  module:
+    - text
+    - user
+id: node.scholarly_work.open_seadragon
+targetEntityType: node
+bundle: scholarly_work
+mode: open_seadragon
+content:
+  display_media_child_thumbnail:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  display_media_entity_view_1:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  display_media_entity_view_2:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  display_media_entity_view_4:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  display_media_service_file:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  display_media_thumbnail:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  display_media_thumbnail_card:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  field_rich_description:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+  openseadragon_media_evas_entity_view_1:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  openseadragon_media_evas_entity_view_2:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  openseadragon_media_evas_service_file:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  pdfjs_media_evas_entity_view_1:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  pdfjs_media_evas_entity_view_2:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  pdfjs_media_evas_service_file:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  video_media_evas_original_file:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  video_media_evas_preservation_master:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  video_media_evas_service_file:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+hidden:
+  body: true
+  field_access_terms: true
+  field_edtf_date_created: true
+  field_embargo_release_date: true
+  field_linked_agent: true
+  field_member_of: true
+  field_open_access: true
+  field_peer_reviewed: true
+  field_primary_content: true
+  field_subject: true
+  field_supplemental_materials: true
+  langcode: true
+  search_api_excerpt: true

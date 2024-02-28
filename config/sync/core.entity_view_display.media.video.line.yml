@@ -1,0 +1,75 @@
+uuid: 0440369f-facc-4f54-b341-ccf2b8812987
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.media.line
+    - field.field.media.video.field_access_terms
+    - field.field.media.video.field_captions
+    - field.field.media.video.field_file_size
+    - field.field.media.video.field_legacy_checksum
+    - field.field.media.video.field_media_of
+    - field.field.media.video.field_media_use
+    - field.field.media.video.field_media_video_file
+    - field.field.media.video.field_mime_type
+    - field.field.media.video.field_original_name
+    - field.field.media.video.field_track
+    - media.type.video
+  module:
+    - file
+    - layout_builder
+third_party_settings:
+  layout_builder:
+    enabled: false
+    allow_custom: false
+id: media.video.line
+targetEntityType: media
+bundle: video
+mode: line
+content:
+  field_file_size:
+    type: number_integer
+    label: hidden
+    settings:
+      thousand_separator: ''
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_media_video_file:
+    type: file_default
+    label: visually_hidden
+    settings:
+      use_description_as_link_text: true
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_mime_type:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  name:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  created: true
+  field_access_terms: true
+  field_captions: true
+  field_legacy_checksum: true
+  field_media_of: true
+  field_media_use: true
+  field_original_name: true
+  field_track: true
+  langcode: true
+  search_api_excerpt: true
+  thumbnail: true
+  uid: true

@@ -1,0 +1,159 @@
+uuid: 28ef5c3f-57e1-434b-b8b5-22ab07b19251
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.scholarly_work.body
+    - field.field.node.scholarly_work.field_access_terms
+    - field.field.node.scholarly_work.field_edtf_date_created
+    - field.field.node.scholarly_work.field_embargo_release_date
+    - field.field.node.scholarly_work.field_linked_agent
+    - field.field.node.scholarly_work.field_member_of
+    - field.field.node.scholarly_work.field_open_access
+    - field.field.node.scholarly_work.field_peer_reviewed
+    - field.field.node.scholarly_work.field_primary_content
+    - field.field.node.scholarly_work.field_rich_description
+    - field.field.node.scholarly_work.field_subject
+    - field.field.node.scholarly_work.field_supplemental_materials
+    - node.type.scholarly_work
+  module:
+    - controlled_access_terms
+    - text
+    - user
+id: node.scholarly_work.teaser
+targetEntityType: node
+bundle: scholarly_work
+mode: teaser
+content:
+  body:
+    type: text_summary_or_trimmed
+    label: hidden
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    weight: 101
+    region: content
+  display_media_child_thumbnail:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  display_media_entity_view_1:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  display_media_entity_view_2:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  display_media_entity_view_4:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  display_media_service_file:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  display_media_thumbnail:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  display_media_thumbnail_card:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  field_edtf_date_created:
+    type: edtf_default
+    label: above
+    settings:
+      date_separator: dash
+      date_order: big_endian
+      month_format: mm
+      day_format: dd
+      year_format: 'y'
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_linked_agent:
+    type: typed_relation_default
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_rich_description:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+  openseadragon_media_evas_entity_view_1:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  openseadragon_media_evas_entity_view_2:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  openseadragon_media_evas_service_file:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  pdfjs_media_evas_entity_view_1:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  pdfjs_media_evas_entity_view_2:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  pdfjs_media_evas_service_file:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  video_media_evas_original_file:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  video_media_evas_preservation_master:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  video_media_evas_service_file:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+hidden:
+  field_access_terms: true
+  field_embargo_release_date: true
+  field_member_of: true
+  field_open_access: true
+  field_peer_reviewed: true
+  field_primary_content: true
+  field_subject: true
+  field_supplemental_materials: true
+  langcode: true
+  search_api_excerpt: true

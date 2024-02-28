@@ -1,0 +1,37 @@
+uuid: bd013d3e-6d48-4d4e-bb31-97d4a2faa849
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_supplemental_materials
+    - media.type.audio
+    - media.type.document
+    - media.type.file
+    - media.type.image
+    - media.type.video
+    - node.type.scholarly_work
+id: node.scholarly_work.field_supplemental_materials
+field_name: field_supplemental_materials
+entity_type: node
+bundle: scholarly_work
+label: 'Supplemental Materials'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      audio: audio
+      document: document
+      file: file
+      image: image
+      video: video
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: audio
+field_type: entity_reference
