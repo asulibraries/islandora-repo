@@ -2,16 +2,16 @@
 
 namespace Drupal\asu_item_extras\Plugin\Block;
 
+use Drupal\asu_islandora_utils\AsuUtils;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
-use Drupal\Core\Session\AccountProxy;
-use Drupal\Core\Url;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Link;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
-use Drupal\asu_islandora_utils\AsuUtils;
+use Drupal\Core\Session\AccountProxy;
+use Drupal\Core\Url;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a 'Downloads' Block.
@@ -198,6 +198,7 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
       return $v["access"];
     });
 
+    // Downloads are restrictd. Display the appropriate messages.
     if ($links == [] && in_array('anonymous', $user_roles)) {
       $asu_only_links = array_filter($all_files, function ($v) {
         return $v["perms"] == "ASU Only";
@@ -215,6 +216,17 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
       }
       else {
         $markup = "<i class='fas fa-lock'></i> Download restricted.";
+      }
+      // Add the collection-level statement if it exists.
+      $collections = array_filter($this->entityTypeManager->getStorage('node')->loadMultiple($this->islandoraUtils->findAncestors($node)), function ($a) {
+        return ($a->bundle() == 'collection' && $a->hasField('field_restrictions_statement') && !$a->get('field_restrictions_statement')->isEmpty());
+      });
+      // Allows both collection and sub-collection statements.
+      foreach ($collections as $c) {
+        if (!$c->get('field_restrictions_statement')->isEmpty()) {
+          $statement = $c->field_restrictions_statement->view();
+          $markup .= \Drupal::service('renderer')->renderRoot($statement);
+        }
       }
     }
 
@@ -246,10 +258,10 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     }, $links);
 
     $return = [
-      '#asu_download_info' => $download_info,
+      '#asu_download_info' => $download_info ?? '',
       '#asu_download_restricted' => ['#markup' => $markup],
       '#asu_download_links' => $links,
-      '#file_size' => $file_size,
+      '#file_size' => $file_size ?? 0,
       '#theme' => 'asu_item_extras_downloads_block',
       '#cache' => [
         'tags' => ["node:$nid"],

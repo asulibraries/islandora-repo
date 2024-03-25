@@ -16,6 +16,7 @@ dependencies:
     - field.field.node.collection.field_oai_set
     - field.field.node.collection.field_preferred_citation
     - field.field.node.collection.field_primary_contact
+    - field.field.node.collection.field_restrictions_statement
     - field.field.node.collection.field_rich_description
     - field.field.node.collection.field_title
     - image.style.large
@@ -33,7 +34,7 @@ content:
   display_media_child_thumbnail:
     settings: {  }
     third_party_settings: {  }
-    weight: 10
+    weight: 9
     region: content
   display_media_entity_view_4:
     settings: {  }
@@ -43,7 +44,7 @@ content:
   display_media_thumbnail_card:
     settings: {  }
     third_party_settings: {  }
-    weight: 10
+    weight: 11
     region: content
   field_collaborating_institutions:
     type: entity_reference_label
@@ -59,8 +60,10 @@ content:
     settings:
       image_link: ''
       image_style: large
+      image_loading:
+        attribute: lazy
     third_party_settings: {  }
-    weight: -2
+    weight: 0
     region: content
   field_def:
     type: entity_reference_label
@@ -76,7 +79,7 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-    weight: 109
+    weight: 18
     region: content
   field_default_original_file_perm:
     type: entity_reference_label
@@ -84,7 +87,7 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-    weight: 108
+    weight: 17
     region: content
   field_enabled:
     type: boolean
@@ -94,7 +97,7 @@ content:
       format_custom_false: ''
       format_custom_true: ''
     third_party_settings: {  }
-    weight: 104
+    weight: 15
     region: content
   field_external_links:
     type: link
@@ -114,7 +117,7 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-    weight: 110
+    weight: 19
     region: content
   field_handle:
     type: string
@@ -145,7 +148,7 @@ content:
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 106
+    weight: 16
     region: content
   field_primary_contact:
     type: basic_string
@@ -159,7 +162,7 @@ content:
     label: visually_hidden
     settings: {  }
     third_party_settings: {  }
-    weight: -1
+    weight: 1
     region: content
   flag_email_node:
     settings: {  }
@@ -179,17 +182,17 @@ content:
   video_media_evas_original_file:
     settings: {  }
     third_party_settings: {  }
-    weight: 10
+    weight: 12
     region: content
   video_media_evas_preservation_master:
     settings: {  }
     third_party_settings: {  }
-    weight: 10
+    weight: 13
     region: content
   video_media_evas_service_file:
     settings: {  }
     third_party_settings: {  }
-    weight: 10
+    weight: 14
     region: content
 hidden:
   display_media_entity_view_1: true
@@ -197,6 +200,7 @@ hidden:
   display_media_service_file: true
   display_media_thumbnail: true
   field_model: true
+  field_restrictions_statement: true
   field_title: true
   islandora_fits_checksum: true
   langcode: true

@@ -1,0 +1,24 @@
+uuid: c23d2abb-30f5-471d-bc97-73d68e9bfa97
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_restrictions_statement
+    - filter.format.basic_html
+    - node.type.collection
+  module:
+    - text
+id: node.collection.field_restrictions_statement
+field_name: field_restrictions_statement
+entity_type: node
+bundle: collection
+label: 'Restrictions Statement'
+description: 'Statement displayed on items in this collection when the viewer is not permitted to access it.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - basic_html
+field_type: text_long

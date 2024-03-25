@@ -16,6 +16,7 @@ dependencies:
     - field.field.node.collection.field_oai_set
     - field.field.node.collection.field_preferred_citation
     - field.field.node.collection.field_primary_contact
+    - field.field.node.collection.field_restrictions_statement
     - field.field.node.collection.field_rich_description
     - field.field.node.collection.field_title
     - node.type.collection
@@ -165,6 +166,14 @@ content:
       placeholder: ''
       size: 60
     third_party_settings: {  }
+  field_restrictions_statement:
+    type: text_textarea
+    weight: 127
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
   field_rich_description:
     type: text_textarea
     weight: 17
@@ -210,6 +219,11 @@ content:
     region: content
     settings:
       display_label: true
+    third_party_settings: {  }
+  simple_sitemap:
+    weight: 10
+    region: content
+    settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox
