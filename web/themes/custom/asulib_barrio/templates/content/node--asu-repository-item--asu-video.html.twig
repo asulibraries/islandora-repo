@@ -123,6 +123,7 @@
         {% if drupal_view_result('media_of', 'page_1' ,node.id) is not empty %}
           <div class="download-options">{{ drupal_block('downloads_block', {'origfile': original_file, 'servicefile': service_file}) }}</div>
         {% endif %}
+        {{ drupal_block('asu_item_analytics_item_block') }}
         <div class="altmetrics-info">
           {{ drupal_block('asu_altmetrics', wrapper=false) }}
         </div>
