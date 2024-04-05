@@ -11,7 +11,6 @@ dependencies:
     - field.storage.media.field_media_video_file
     - field.storage.media.field_mime_type
     - image.style.card_image
-    - responsive_image.styles.item_displays
     - taxonomy.vocabulary.islandora_access
     - taxonomy.vocabulary.islandora_media_use
   content:
@@ -26,7 +25,6 @@ dependencies:
     - image
     - islandora
     - media
-    - responsive_image
     - taxonomy
     - user
   enforced:
@@ -1177,15 +1175,12 @@ display:
         - url
         - user.permissions
       tags:
-        - 'config:field.storage.media.field_file_size'
-        - 'config:field.storage.media.field_height'
         - 'config:field.storage.media.field_media_audio_file'
         - 'config:field.storage.media.field_media_document'
         - 'config:field.storage.media.field_media_file'
         - 'config:field.storage.media.field_media_image'
         - 'config:field.storage.media.field_media_video_file'
         - 'config:field.storage.media.field_mime_type'
-        - 'config:field.storage.media.field_width'
   entity_view_1:
     id: entity_view_1
     display_title: 'Preservation Master - Download'
@@ -1692,7 +1687,6 @@ display:
         - user.permissions
       tags:
         - 'config:field.storage.media.field_media_image'
-        - 'config:field.storage.media.field_width'
   service_file:
     id: service_file
     display_title: 'Service File'
@@ -1841,10 +1835,10 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: target_id
-          type: responsive_image
+          type: islandora_image
           settings:
-            responsive_image_style: item_displays
             image_link: ''
+            image_style: ''
             image_loading:
               attribute: eager
           group_column: ''
