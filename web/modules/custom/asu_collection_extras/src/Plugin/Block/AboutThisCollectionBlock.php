@@ -10,7 +10,6 @@ use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Url;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Drupal\islandora_matomo\IslandoraMatomoService;
 use Drupal\Core\Database\Connection;
 
 /**
@@ -46,13 +45,6 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
   protected $currentRouteMatch;
 
   /**
-   * The islandoraMatomo definition.
-   *
-   * @var \Drupal\islandora_matomo\IslandoraMatomoService
-   */
-  protected $islandoraMatomo;
-
-  /**
    * The database connection definition.
    *
    * @var Drupal\Core\Database\Connection
@@ -74,8 +66,6 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
    *   The entityTypeManager definition.
    * @param \Drupal\Core\Routing\CurrentRouteMatch $currentRouteMatch
    *   The currentRouteMatch definition.
-   * @param \Drupal\islandora_matomo\IslandoraMatomoService $islandoraMatomo
-   *   The islandoraMatomo service.
    * @param \Drupal\Core\Database\Connection $connection
    *   The database service.
    */
@@ -86,14 +76,12 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
     RequestStack $request_stack,
     EntityTypeManagerInterface $entityTypeManager,
     CurrentRouteMatch $currentRouteMatch,
-    IslandoraMatomoService $islandoraMatomo,
     Connection $connection
     ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->requestStack = $request_stack;
     $this->entityTypeManager = $entityTypeManager;
     $this->currentRouteMatch = $currentRouteMatch;
-    $this->islandoraMatomo = $islandoraMatomo;
     $this->connection = $connection;
   }
 
@@ -119,7 +107,6 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
       $container->get('request_stack'),
       $container->get('entity_type.manager'),
       $container->get('current_route_match'),
-      $container->get('islandora_matomo.default'),
       $container->get('database')
     );
   }
@@ -170,7 +157,6 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
       $max_timestamp = strtotime($children['recent_change']);
     }
 
-    $collection_views_and_downloads = $this->getCollectionViewsAndDownloads($collection_node);
     // Calculate the "Items" box link.
     $items_url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/collections/' .
        (($collection_node) ? $collection_node->id() : 0) . '/search/?search_api_fulltext=');
@@ -200,49 +186,6 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
           ],
         ],
       ],
-    ];
-  }
-
-  /**
-   * Loads the collection views and downloads from the summary table.
-   *
-   * @param mixed $collection_node
-   *   This could be a node object or the integer id() value of a node.
-   *
-   * @return array
-   *   'views': the number of views for the collection.
-   *   'downloads': total downloads for all items related to the collection.
-   */
-  private function getCollectionViewsAndDownloads($collection_node) {
-    $collection_node_id = (is_object($collection_node) ? $collection_node->id() : $collection_node);
-    if (!$this->connection->schema()->tableExists('ace_items')) {
-      \Drupal::logger('asu_collection_extras')->warning('ace_items table does not exist. Please run update.php.');
-      return 0;
-    }
-    // Get the views for the collection page itself.
-    $collection_views = $this->connection
-      ->query('SELECT views FROM ace_collections WHERE c_nid = ' . $collection_node_id)
-      ->fetchAll();
-    $v = $d = 0;
-    foreach ($collection_views as $c_obj) {
-      $v += $c_obj->views;
-    }
-
-    // Now get the sum of views for the items that are related to this
-    // collection.
-    $collection_views = $this->connection
-      ->query("SELECT SUM(views) as views_total, SUM(downloads) as download_total" .
-        " FROM ace_items WHERE i_nid IN (" .
-        "SELECT child_nid FROM ace_relations WHERE parent_nid = " .
-        $collection_node_id . " AND parent_type = 'collec')")
-      ->fetchAll();
-    foreach ($collection_views as $c_obj) {
-      $v += $c_obj->views_total;
-      $d += $c_obj->download_total;
-    }
-    return [
-      'views' => $v,
-      'downloads' => $d,
     ];
   }
 

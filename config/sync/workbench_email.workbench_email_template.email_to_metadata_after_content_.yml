@@ -4,15 +4,10 @@ status: true
 dependencies:
   config:
     - user.role.administrator
-    - user.role.metadata_manager
 id: email_to_metadata_after_content_
 label: 'Email to Metadata After Content Approval'
 format: plain_text
 subject: 'New KEEP Self-Deposit Submission ready for metadata review'
-body:
-  value: "A new KEEP self-deposit is ready for metadata review: [node:title]\r\n[node:url]"
-  format: plain_text
-bundles: {  }
 recipient_types:
   author:
     id: author
@@ -49,11 +44,14 @@ recipient_types:
     settings:
       roles:
         administrator: administrator
-        metadata_manager: metadata_manager
   roles_with_access:
     id: roles_with_access
     provider: workbench_email
     status: false
     settings:
       roles: {  }
+bundles: {  }
+body:
+  value: "A new KEEP self-deposit is ready for metadata review: [node:title]\r\n[node:url]"
+  format: plain_text
 replyTo: null

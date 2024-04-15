@@ -9,6 +9,15 @@ dependencies:
     - search_api
 id: facet_summary
 name: 'Facet Summary'
+facet_source_id: 'search_api:views_page__solr_search_content__page_1'
+processor_configs:
+  reset_facets:
+    processor_id: reset_facets
+    weights:
+      build: '30'
+    settings:
+      link_text: Reset
+      position: before
 facets:
   all_subjects:
     checked: true
@@ -82,12 +91,3 @@ facets:
     separator: ', '
     show_count: false
     weight: 0
-facet_source_id: 'search_api:views_page__solr_search_content__page_1'
-processor_configs:
-  reset_facets:
-    processor_id: reset_facets
-    weights:
-      build: '30'
-    settings:
-      link_text: Reset
-      position: before

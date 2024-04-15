@@ -1,54 +1,31 @@
-uuid: f2545d85-8835-4b08-b336-55db9f0f4d6c
+uuid: d816c7f2-f744-4e0f-9f9b-75e4f4280b3d
 langcode: en
 status: true
 dependencies:
   config:
-    - field.storage.taxonomy_term.field_authority_link
-    - field.storage.taxonomy_term.field_external_authority_link
-    - field.storage.taxonomy_term.field_source
-    - taxonomy.vocabulary.cataloging_standards
-    - taxonomy.vocabulary.collaborating_institutions
-    - taxonomy.vocabulary.conference
-    - taxonomy.vocabulary.copyright_statements
-    - taxonomy.vocabulary.corporate_body
-    - taxonomy.vocabulary.country_codes
-    - taxonomy.vocabulary.family
-    - taxonomy.vocabulary.genre
-    - taxonomy.vocabulary.geo_location
-    - taxonomy.vocabulary.identifier_types
+    - field.storage.media.field_access_terms
+    - field.storage.media.field_media_of
+    - field.storage.media.field_media_use
+    - media.type.audio
+    - media.type.video
+    - system.menu.admin
     - taxonomy.vocabulary.islandora_access
-    - taxonomy.vocabulary.islandora_display
     - taxonomy.vocabulary.islandora_media_use
-    - taxonomy.vocabulary.islandora_models
-    - taxonomy.vocabulary.keywords
-    - taxonomy.vocabulary.language
-    - taxonomy.vocabulary.name_titles
-    - taxonomy.vocabulary.note_types
-    - taxonomy.vocabulary.oai_sets
-    - taxonomy.vocabulary.person
-    - taxonomy.vocabulary.physical_form
-    - taxonomy.vocabulary.precoordinated_subjects
-    - taxonomy.vocabulary.preservation_states
-    - taxonomy.vocabulary.resource_types
-    - taxonomy.vocabulary.reuse_permissions
-    - taxonomy.vocabulary.subject
-    - taxonomy.vocabulary.tags
-    - taxonomy.vocabulary.temporal
-    - taxonomy.vocabulary.titles
-    - user.role.metadata_manager
-    - user.role.some_m
+  content:
+    - 'taxonomy_term:islandora_access:4e4d4829-931b-4aa8-97ab-2fb09a6b8fdb'
+    - 'taxonomy_term:islandora_media_use:0275f595-4de7-4719-ab28-f4547934dd2b'
+    - 'taxonomy_term:islandora_media_use:1516b6b7-591f-4023-aa8c-90eb4ad14312'
   module:
-    - controlled_access_terms
-    - link
+    - media
     - taxonomy
     - user
-id: taxonomy_term_finder
-label: 'Taxonomy Term Finder'
+id: missing_captions
+label: 'Missing Captions'
 module: views
 description: ''
 tag: ''
-base_table: taxonomy_term_field_data
-base_field: tid
+base_table: media_field_data
+base_field: mid
 display:
   default:
     id: default
@@ -56,18 +33,18 @@ display:
     display_plugin: default
     position: 0
     display_options:
-      title: 'Taxonomy Term Manager'
+      title: 'Missing Captions'
       fields:
-        edit_taxonomy_term:
-          id: edit_taxonomy_term
-          table: taxonomy_term_data
-          field: edit_taxonomy_term
+        media_bulk_form:
+          id: media_bulk_form
+          table: media
+          field: media_bulk_form
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: taxonomy_term
-          plugin_id: entity_link_edit
-          label: Edit
+          entity_type: media
+          plugin_id: bulk_form
+          label: 'Bulk update'
           exclude: false
           alter:
             alter_text: false
@@ -108,20 +85,131 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          text: edit
-          output_url_as_text: false
-          absolute: false
-        vid:
-          id: vid
-          table: taxonomy_term_field_data
-          field: vid
+          action_title: Action
+          include_exclude: include
+          selected_actions:
+            - caption_generate_captions_via_aws_transcribe_for_audio_video_onl
+        name:
+          id: name
+          table: media_field_data
+          field: name
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: taxonomy_term
-          entity_field: vid
+          entity_type: media
+          entity_field: media
           plugin_id: field
-          label: Vocabulary
+          label: Name
+          exclude: false
+          alter:
+            alter_text: false
+            make_link: false
+            absolute: false
+            word_boundary: false
+            ellipsis: false
+            strip_tags: false
+            trim: false
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: value
+          type: string
+          settings:
+            link_to_entity: true
+          group_column: value
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+        field_media_of:
+          id: field_media_of
+          table: media__field_media_of
+          field: field_media_of
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: field
+          label: 'Item Title'
+          exclude: false
+          alter:
+            alter_text: false
+            text: ''
+            make_link: false
+            path: ''
+            absolute: false
+            external: false
+            replace_spaces: false
+            path_case: none
+            trim_whitespace: false
+            alt: ''
+            rel: ''
+            link_class: ''
+            prefix: ''
+            suffix: ''
+            target: ''
+            nl2br: false
+            max_length: 0
+            word_boundary: true
+            ellipsis: true
+            more_link: false
+            more_link_text: ''
+            more_link_path: ''
+            strip_tags: false
+            trim: false
+            preserve_tags: ''
+            html: false
+          element_type: ''
+          element_class: ''
+          element_label_type: ''
+          element_label_class: ''
+          element_label_colon: true
+          element_wrapper_type: ''
+          element_wrapper_class: ''
+          element_default_classes: true
+          empty: ''
+          hide_empty: false
+          empty_zero: false
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: true
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+        bundle:
+          id: bundle
+          table: media_field_data
+          field: bundle
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: media
+          entity_field: bundle
+          plugin_id: field
+          label: Type
           exclude: false
           alter:
             alter_text: false
@@ -176,17 +264,15 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-        name:
-          id: name
-          table: taxonomy_term_field_data
-          field: name
+        field_media_use:
+          id: field_media_use
+          table: media__field_media_use
+          field: field_media_use
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: taxonomy_term
-          entity_field: name
-          plugin_id: term_name
-          label: Name
+          plugin_id: field
+          label: 'Media Use'
           exclude: false
           alter:
             alter_text: false
@@ -206,8 +292,8 @@ display:
             target: ''
             nl2br: false
             max_length: 0
-            word_boundary: false
-            ellipsis: false
+            word_boundary: true
+            ellipsis: true
             more_link: false
             more_link_text: ''
             more_link_path: ''
@@ -227,11 +313,11 @@ display:
           hide_empty: false
           empty_zero: false
           hide_alter_empty: true
-          click_sort_column: value
-          type: string
+          click_sort_column: target_id
+          type: entity_reference_label
           settings:
-            link_to_entity: false
-          group_column: value
+            link: false
+          group_column: target_id
           group_columns: {  }
           group_rows: true
           delta_limit: 0
@@ -241,221 +327,19 @@ display:
           multi_type: separator
           separator: ', '
           field_api_classes: false
-          convert_spaces: false
-        field_authority_link:
-          id: field_authority_link
-          table: taxonomy_term__field_authority_link
-          field: field_authority_link
+        field_access_terms:
+          id: field_access_terms
+          table: media__field_access_terms
+          field: field_access_terms
           relationship: none
           group_type: group
           admin_label: ''
           plugin_id: field
-          label: ''
-          exclude: true
-          alter:
-            alter_text: true
-            text: '{{ field_authority_link__uri }}'
-            make_link: true
-            path: '{{ field_authority_link__uri }}'
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: '{{ field_authority_link__title }}'
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: uri
-          type: authority_formatter_default
-          settings:
-            trim_length: 80
-            url_only: false
-            url_plain: false
-            rel: '0'
-            target: _blank
-          group_column: ''
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-        field_external_authority_link:
-          id: field_external_authority_link
-          table: taxonomy_term__field_external_authority_link
-          field: field_external_authority_link
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: field
-          label: ''
-          exclude: true
-          alter:
-            alter_text: true
-            text: '{{ field_external_authority_link__uri }}'
-            make_link: true
-            path: '{{ field_external_authority_link__uri }}'
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: '{{ field_external_authority_link__title }}'
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: uri
-          type: authority_formatter_default
-          settings:
-            trim_length: 80
-            url_only: false
-            url_plain: false
-            rel: '0'
-            target: _blank
-          group_column: ''
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-        field_source:
-          id: field_source
-          table: taxonomy_term__field_source
-          field: field_source
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: field
-          label: ''
-          exclude: true
-          alter:
-            alter_text: true
-            text: '{{ field_source__uri }}'
-            make_link: true
-            path: '{{ field_source__uri }}'
-            absolute: false
-            external: false
-            replace_spaces: false
-            path_case: none
-            trim_whitespace: false
-            alt: '{{ field_source__title }}'
-            rel: ''
-            link_class: ''
-            prefix: ''
-            suffix: ''
-            target: ''
-            nl2br: false
-            max_length: 0
-            word_boundary: true
-            ellipsis: true
-            more_link: false
-            more_link_text: ''
-            more_link_path: ''
-            strip_tags: false
-            trim: false
-            preserve_tags: ''
-            html: false
-          element_type: ''
-          element_class: ''
-          element_label_type: ''
-          element_label_class: ''
-          element_label_colon: false
-          element_wrapper_type: ''
-          element_wrapper_class: ''
-          element_default_classes: true
-          empty: ''
-          hide_empty: false
-          empty_zero: false
-          hide_alter_empty: true
-          click_sort_column: uri
-          type: link
-          settings:
-            trim_length: 80
-            url_only: false
-            url_plain: false
-            rel: '0'
-            target: '0'
-          group_column: ''
-          group_columns: {  }
-          group_rows: true
-          delta_limit: 0
-          delta_offset: 0
-          delta_reversed: false
-          delta_first_last: false
-          multi_type: separator
-          separator: ', '
-          field_api_classes: false
-        nothing:
-          id: nothing
-          table: views
-          field: nothing
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: custom
-          label: URI
+          label: Access
           exclude: false
           alter:
-            alter_text: true
-            text: '{{ field_authority_link }}{{ field_external_authority_link }}{{ field_source }}'
+            alter_text: false
+            text: ''
             make_link: false
             path: ''
             absolute: false
@@ -491,18 +375,32 @@ display:
           empty: ''
           hide_empty: false
           empty_zero: false
-          hide_alter_empty: false
-        status:
-          id: status
-          table: taxonomy_term_field_data
-          field: status
+          hide_alter_empty: true
+          click_sort_column: target_id
+          type: entity_reference_label
+          settings:
+            link: false
+          group_column: target_id
+          group_columns: {  }
+          group_rows: true
+          delta_limit: 0
+          delta_offset: 0
+          delta_reversed: false
+          delta_first_last: false
+          multi_type: separator
+          separator: ', '
+          field_api_classes: false
+        changed:
+          id: changed
+          table: media_field_data
+          field: changed
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: taxonomy_term
-          entity_field: status
+          entity_type: media
+          entity_field: changed
           plugin_id: field
-          label: Published
+          label: Changed
           exclude: false
           alter:
             alter_text: false
@@ -544,11 +442,21 @@ display:
           empty_zero: false
           hide_alter_empty: true
           click_sort_column: value
-          type: boolean
+          type: timestamp
           settings:
-            format: custom
-            format_custom_false: Hidden
-            format_custom_true: Published
+            date_format: custom
+            custom_date_format: 'Y-m-d H:i:s'
+            timezone: ''
+            tooltip:
+              date_format: long
+              custom_date_format: ''
+            time_diff:
+              enabled: false
+              future_format: '@interval hence'
+              past_format: '@interval ago'
+              granularity: 2
+              refresh: 60
+              description: ''
           group_column: value
           group_columns: {  }
           group_rows: true
@@ -563,7 +471,7 @@ display:
         type: full
         options:
           offset: 0
-          items_per_page: 25
+          items_per_page: 10
           total_pages: null
           id: 0
           tags:
@@ -574,7 +482,7 @@ display:
           expose:
             items_per_page: true
             items_per_page_label: 'Items per page'
-            items_per_page_options: '25, 50, 100'
+            items_per_page_options: '10, 25, 50, 100'
             items_per_page_options_all: false
             items_per_page_options_all_label: '- All -'
             offset: false
@@ -591,46 +499,168 @@ display:
           sort_asc_label: Asc
           sort_desc_label: Desc
       access:
-        type: role
+        type: perm
         options:
-          role:
-            metadata_manager: metadata_manager
-            some_m: some_m
+          perm: 'view media'
       cache:
         type: tag
         options: {  }
       empty: {  }
-      sorts: {  }
-      arguments: {  }
-      filters:
-        vid:
-          id: vid
-          table: taxonomy_term_field_data
-          field: vid
+      sorts:
+        changed:
+          id: changed
+          table: media_field_data
+          field: changed
           relationship: none
           group_type: group
-          admin_label: 'Hidden System Vocabularies'
-          entity_type: taxonomy_term
-          entity_field: vid
-          plugin_id: bundle
-          operator: 'not in'
+          admin_label: ''
+          entity_type: media
+          entity_field: changed
+          plugin_id: date
+          order: DESC
+          expose:
+            label: Changed
+            field_identifier: changed
+          exposed: true
+          granularity: second
+        name:
+          id: name
+          table: media_field_data
+          field: name
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: media
+          entity_field: name
+          plugin_id: standard
+          order: ASC
+          expose:
+            label: Name
+            field_identifier: name
+          exposed: true
+      arguments: {  }
+      filters:
+        status:
+          id: status
+          table: media_field_data
+          field: status
+          entity_type: media
+          entity_field: status
+          plugin_id: boolean
+          value: '1'
+          group: 1
+          expose:
+            operator: ''
+        field_media_audio_file_target_id:
+          id: field_media_audio_file_target_id
+          table: media__field_media_audio_file
+          field: field_media_audio_file_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: numeric
+          operator: 'not empty'
           value:
-            islandora_access: islandora_access
-            islandora_display: islandora_display
-            islandora_media_use: islandora_media_use
-            islandora_models: islandora_models
-            oai_sets: oai_sets
+            min: ''
+            max: ''
+            value: ''
+          group: 2
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            min_placeholder: ''
+            max_placeholder: ''
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+        field_media_video_file_target_id:
+          id: field_media_video_file_target_id
+          table: media__field_media_video_file
+          field: field_media_video_file_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: numeric
+          operator: 'not empty'
+          value:
+            min: ''
+            max: ''
+            value: ''
+          group: 2
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            min_placeholder: ''
+            max_placeholder: ''
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+        field_access_terms_target_id:
+          id: field_access_terms_target_id
+          table: media__field_access_terms
+          field: field_access_terms_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: taxonomy_index_tid
+          operator: not
+          value:
+            - 561
           group: 1
           exposed: false
           expose:
-            operator_id: vid_op
-            label: Vocabulary
+            operator_id: field_access_terms_target_id_op
+            label: 'Access terms (field_access_terms)'
             description: null
             use_operator: false
-            operator: vid_op
+            operator: field_access_terms_target_id_op
             operator_limit_selection: false
             operator_list: {  }
-            identifier: vid
+            identifier: field_access_terms_target_id
             required: false
             remember: false
             multiple: false
@@ -649,55 +679,37 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-        vid_1:
-          id: vid_1
-          table: taxonomy_term_field_data
-          field: vid
+          reduce_duplicates: false
+          vid: islandora_access
+          type: textfield
+          hierarchy: false
+          limit: true
+          error_message: true
+        field_media_use_target_id:
+          id: field_media_use_target_id
+          table: media__field_media_use
+          field: field_media_use_target_id
           relationship: none
           group_type: group
-          admin_label: Vocabulary
-          entity_type: taxonomy_term
-          entity_field: vid
-          plugin_id: bundle
-          operator: in
+          admin_label: ''
+          plugin_id: taxonomy_index_tid
+          operator: or
           value:
-            cataloging_standards: cataloging_standards
-            collaborating_institutions: collaborating_institutions
-            conference: conference
-            copyright_statements: copyright_statements
-            corporate_body: corporate_body
-            country_codes: country_codes
-            family: family
-            genre: genre
-            geo_location: geo_location
-            identifier_types: identifier_types
-            keywords: keywords
-            language: language
-            name_titles: name_titles
-            note_types: note_types
-            person: person
-            physical_form: physical_form
-            precoordinated_subjects: precoordinated_subjects
-            preservation_states: preservation_states
-            resource_types: resource_types
-            reuse_permissions: reuse_permissions
-            subject: subject
-            tags: tags
-            temporal: temporal
-            titles: titles
+            19: 19
+            21: 21
           group: 1
           exposed: true
           expose:
-            operator_id: vid_1_op
-            label: Vocabulary
+            operator_id: field_media_use_target_id_op
+            label: 'Media Use'
             description: ''
             use_operator: false
-            operator: vid_1_op
+            operator: field_media_use_target_id_op
             operator_limit_selection: false
             operator_list: {  }
-            identifier: vocabulary
+            identifier: field_media_use_target_id
             required: false
-            remember: true
+            remember: false
             multiple: true
             remember_roles:
               authenticated: authenticated
@@ -727,14 +739,121 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
+          reduce_duplicates: false
+          vid: islandora_media_use
+          type: select
+          hierarchy: false
+          limit: true
+          error_message: true
+        field_track_target_id:
+          id: field_track_target_id
+          table: media__field_track
+          field: field_track_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: numeric
+          operator: empty
+          value:
+            min: ''
+            max: ''
+            value: ''
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            min_placeholder: ''
+            max_placeholder: ''
+            placeholder: ''
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+        bundle:
+          id: bundle
+          table: media_field_data
+          field: bundle
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: media
+          entity_field: bundle
+          plugin_id: bundle
+          operator: in
+          value:
+            audio: audio
+            video: video
+          group: 1
+          exposed: true
+          expose:
+            operator_id: bundle_op
+            label: 'Media type'
+            description: ''
+            use_operator: false
+            operator: bundle_op
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: type
+            required: false
+            remember: false
+            multiple: true
+            remember_roles:
+              authenticated: authenticated
+              anonymous: '0'
+              administrator: '0'
+              fedoraadmin: '0'
+              content_approver: '0'
+              depositor: '0'
+              metadata_manager: '0'
+              preservationist: '0'
+              casuser: '0'
+              repositor_manager: '0'
+              collections_staff: '0'
+              honors_student: '0'
+              some_m: '0'
+              honors_staff: '0'
+              morrison_staff: '0'
+            reduce: true
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
         name:
           id: name
-          table: taxonomy_term_field_data
+          table: media_field_data
           field: name
           relationship: none
           group_type: group
           admin_label: ''
-          entity_type: taxonomy_term
+          entity_type: media
           entity_field: name
           plugin_id: string
           operator: contains
@@ -742,13 +861,21 @@ display:
           group: 1
           exposed: true
           expose:
-            operator_id: name_operator
+            operator_id: name_op
             label: Name
             description: ''
             use_operator: true
             operator: name_op
-            operator_limit_selection: false
-            operator_list: {  }
+            operator_limit_selection: true
+            operator_list:
+              '=': '='
+              contains: contains
+              word: word
+              allwords: allwords
+              starts: starts
+              not: not
+              regular_expression: regular_expression
+              not_regular_expression: not_regular_expression
             identifier: name
             required: false
             remember: false
@@ -781,217 +908,11 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-        field_authority_link_uri:
-          id: field_authority_link_uri
-          table: taxonomy_term__field_authority_link
-          field: field_authority_link_uri
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: string
-          operator: contains
-          value: ''
-          group: 1
-          exposed: true
-          expose:
-            operator_id: uri_operator
-            label: 'Authority Source URI'
-            description: ''
-            use_operator: true
-            operator: field_authority_link_uri_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: uri
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-              fedoraadmin: '0'
-              content_approver: '0'
-              depositor: '0'
-              metadata_manager: '0'
-              preservationist: '0'
-              casuser: '0'
-              repositor_manager: '0'
-              collections_staff: '0'
-              honors_student: '0'
-              honors_staff: '0'
-              some_metadata: '0'
-            placeholder: ''
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-        field_external_authority_link_uri:
-          id: field_external_authority_link_uri
-          table: taxonomy_term__field_external_authority_link
-          field: field_external_authority_link_uri
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: string
-          operator: contains
-          value: ''
-          group: 1
-          exposed: true
-          expose:
-            operator_id: external_authority_uri_operator
-            label: 'External Authority Link URI'
-            description: 'For country codes and resource types.'
-            use_operator: true
-            operator: field_external_authority_link_uri_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: external_authority_uri
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-              fedoraadmin: '0'
-              content_approver: '0'
-              depositor: '0'
-              metadata_manager: '0'
-              preservationist: '0'
-              casuser: '0'
-              repositor_manager: '0'
-              collections_staff: '0'
-              honors_student: '0'
-              honors_staff: '0'
-              some_metadata: '0'
-            placeholder: ''
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-        field_source_uri:
-          id: field_source_uri
-          table: taxonomy_term__field_source
-          field: field_source_uri
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: string
-          operator: '='
-          value: ''
-          group: 1
-          exposed: true
-          expose:
-            operator_id: source_uri_operator
-            label: Source
-            description: 'For copyright statements and reuse permissions.'
-            use_operator: true
-            operator: field_source_uri_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: source_uri
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-              fedoraadmin: '0'
-              content_approver: '0'
-              depositor: '0'
-              metadata_manager: '0'
-              preservationist: '0'
-              casuser: '0'
-              repositor_manager: '0'
-              collections_staff: '0'
-              honors_student: '0'
-              honors_staff: '0'
-              some_metadata: '0'
-            placeholder: ''
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
-        field_local_value:
-          id: field_local_value
-          table: taxonomy_term__field_local
-          field: field_local_value
-          relationship: none
-          group_type: group
-          admin_label: ''
-          plugin_id: boolean
-          operator: '='
-          value: All
-          group: 1
-          exposed: true
-          expose:
-            operator_id: ''
-            label: 'Local Name Only'
-            description: ''
-            use_operator: false
-            operator: field_local_value_op
-            operator_limit_selection: false
-            operator_list: {  }
-            identifier: field_local_value
-            required: false
-            remember: false
-            multiple: false
-            remember_roles:
-              authenticated: authenticated
-              anonymous: '0'
-              administrator: '0'
-              fedoraadmin: '0'
-              content_approver: '0'
-              depositor: '0'
-              metadata_manager: '0'
-              preservationist: '0'
-              casuser: '0'
-              repositor_manager: '0'
-              collections_staff: '0'
-              honors_student: '0'
-              honors_staff: '0'
-              some_metadata: '0'
-          is_grouped: false
-          group_info:
-            label: ''
-            description: ''
-            identifier: ''
-            optional: true
-            widget: select
-            multiple: false
-            remember: false
-            default_group: All
-            default_group_multiple: {  }
-            group_items: {  }
       filter_groups:
         operator: AND
         groups:
           1: AND
+          2: OR
       style:
         type: table
       row:
@@ -1005,38 +926,62 @@ display:
           replica: false
           query_tags: {  }
       relationships: {  }
-      header: {  }
+      header:
+        result:
+          id: result
+          table: views
+          field: result
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: result
+          empty: false
+          content: 'Displaying @start - @end of @total'
       footer: {  }
       display_extenders: {  }
     cache_metadata:
-      max-age: -1
+      max-age: 0
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url
         - url.query_args
-        - user.roles
+        - 'url.query_args:sort_by'
+        - 'url.query_args:sort_order'
+        - user.permissions
       tags:
-        - 'config:field.storage.taxonomy_term.field_authority_link'
-        - 'config:field.storage.taxonomy_term.field_external_authority_link'
-        - 'config:field.storage.taxonomy_term.field_source'
+        - 'config:field.storage.media.field_access_terms'
+        - 'config:field.storage.media.field_media_of'
+        - 'config:field.storage.media.field_media_use'
   page_1:
     id: page_1
-    display_title: Page
+    display_title: 'Missing Captions'
     display_plugin: page
     position: 1
     display_options:
+      display_description: ''
       display_extenders: {  }
-      path: admin/taxonomy-term-finder
+      path: admin/content/missing-captions
+      menu:
+        type: normal
+        title: 'Missing Captions'
+        description: ''
+        weight: 0
+        expanded: false
+        menu_name: admin
+        parent: 'admin_toolbar_tools.extra_links:media_page'
+        context: '0'
     cache_metadata:
-      max-age: -1
+      max-age: 0
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
         - url
         - url.query_args
-        - user.roles
+        - 'url.query_args:sort_by'
+        - 'url.query_args:sort_order'
+        - user.permissions
       tags:
-        - 'config:field.storage.taxonomy_term.field_authority_link'
-        - 'config:field.storage.taxonomy_term.field_external_authority_link'
-        - 'config:field.storage.taxonomy_term.field_source'
+        - 'config:field.storage.media.field_access_terms'
+        - 'config:field.storage.media.field_media_of'
+        - 'config:field.storage.media.field_media_use'

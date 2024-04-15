@@ -1,126 +1,15 @@
 <?php
 
-use Drupal\Core\Database\Database;
-
 /**
  * @file
  * Update hooks for the ASU Collection Extras module.
  */
 
 /**
- * Implements hook_schema().
- *
- * Creates the tables using the schema API.
- */
-function asu_collection_extras_schema() {
-  $schema = [
-    'ace_collections' => [
-      'description' => 'Stores the collections for summary reports.',
-      'fields' => [
-        'c_nid' => [
-          'description' => 'The collection {node}.nid this record affects.',
-          'type' => 'int',
-          'unsigned' => TRUE,
-          'not null' => TRUE,
-          'default' => 0,
-        ],
-        'views' => [
-          'description' => 'View total for all objects in the collection.',
-          'type' => 'int',
-          'not null' => TRUE,
-          'default' => 0,
-        ],
-        'modified' => [
-          'description' => 'Timestamp for when the record is updated',
-          'type' => 'int',
-          'not null' => TRUE,
-          'default' => 0,
-        ],
-      ],
-      'primary key' => ['c_nid'],
-    ],
-    'ace_items' => [
-      'description' => 'Stores the items for summary reports.',
-      'fields' => [
-        'i_nid' => [
-          'description' => 'The items {node}.nid this record affects.',
-          'type' => 'int',
-          'unsigned' => TRUE,
-          'not null' => TRUE,
-          'default' => 0,
-        ],
-        'views' => [
-          'description' => 'View total for all objects in the collection.',
-          'type' => 'int',
-          'not null' => TRUE,
-          'default' => 0,
-        ],
-        'downloads' => [
-          'description' => 'Download total for all objects in the collection.',
-          'type' => 'int',
-          'not null' => TRUE,
-          'default' => 0,
-        ],
-        'views_modified' => [
-          'description' => 'Timestamp for when the record is updated',
-          'type' => 'int',
-          'not null' => TRUE,
-          'default' => 0,
-        ],
-        'downloads_modified' => [
-          'description' => 'Timestamp for when the record is updated',
-          'type' => 'int',
-          'not null' => TRUE,
-          'default' => 0,
-        ],
-      ],
-      'primary key' => ['i_nid'],
-    ],
-    'ace_relations' => [
-      'description' => 'Stores the collections for summary reports.',
-      'fields' => [
-        'uid' => [
-          'type' => 'serial',
-          'not null' => TRUE,
-        ],
-        'parent_nid' => [
-          'description' => 'The parent object {node}.nid this record affects.',
-          'type' => 'int',
-          'unsigned' => TRUE,
-          'not null' => TRUE,
-          'default' => 0,
-        ],
-        'child_nid' => [
-          'description' => 'The child object {node}.nid this record affects.',
-          'type' => 'int',
-          'unsigned' => TRUE,
-          'not null' => TRUE,
-          'default' => 0,
-        ],
-        'parent_type' => [
-          'description' => 'Timestamp for when the record is updated',
-          'type' => 'varchar',
-          'length' => 6,
-          'not null' => TRUE,
-        ],
-      ],
-      'primary key' => ['uid'],
-      'indexes' => [
-        'parent_nid' => [
-          'parent_nid',
-        ],
-      ],
-    ],
-
-  ];
-  return $schema;
-}
-
-/**
  * Create new tables needed for this version and drops the old tables.
  */
 function asu_collection_extras_update_8003() {
-  $schema = Database::getConnection()->schema();
+  $schema = \Drupal::service('database')->schema();
 
   $ace_collections_spec = [
     'description' => 'Stores the collections for summary reports.',
@@ -228,4 +117,14 @@ function asu_collection_extras_update_8003() {
   if ($schema->tableExists('asu_collection_extras_collection_usage')) {
     $schema->dropTable('asu_collection_extras_collection_usage');
   }
+}
+
+/**
+ * Remove the tables; we now use asu_item_analytics.
+ */
+function asu_collection_extras_update_8004() {
+  $schema = \Drupal::service('database')->schema();
+  $schema->dropTable('ace_items');
+  $schema->dropTable('ace_collections');
+  $schema->dropTable('ace_relations');
 }

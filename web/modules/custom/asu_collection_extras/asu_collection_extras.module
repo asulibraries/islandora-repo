@@ -1,34 +1,27 @@
 <?php
 
-use Drupal\node\Entity\Node;
-use Drupal\Core\Entity\Entity\EntityViewDisplay;
-use Drupal\search_api\Entity\Index;
-
 /**
  * @file
  * Contains asu_collection_extras.module.
  */
 
+use Drupal\search_api\Entity\Index;
+
 /**
  * This is also used by the blocks in this module to get collection items.
  *
- * The main difference between this and asu_collection_extras_get_collection_children
+ * The main difference between this and corresponding `_get_node_membership`
  * is that this will get all children in one go without having to recursively
  * call thanks to the ancestors field.
  *
  * @param mixed $collection_node
  *   Can take a node object or the node ID value.
- * @param bool $sort_by_date
- *   (OPTIONAL) whether or not to sort by date, default is FALSE.
- * @param int $limit
- *   The number of results to return (to provide the recent additions for the
- *   block that only displays only 4 items)
  *
  * @return array
  *   Multidimensional array that contains the nid, changed, and
- * original_file_count for each child of the collection. The key of the top
- * array is the nid. This array should be sorted by the changed timestamps
- * so that the first element's changed value would be the most recent.
+ *   original_file_count for each child of the collection. The key of the top
+ *   array is the nid. This array should be sorted by the changed timestamps
+ *   so that the first element's changed value would be the most recent.
  */
 function asu_collection_extras_solr_get_collection_children($collection_node) {
   $collection_node_id = (is_object($collection_node) ? $collection_node->id() : $collection_node);
@@ -76,22 +69,16 @@ function asu_collection_extras_solr_get_collection_children($collection_node) {
 }
 
 /**
- * This will query Solr to get the item's values for the
- * itm_field_combined_member_of field.
+ * Query Solr for item's field_combined_member_of field.
  *
  * @param mixed $item_node
  *   Can take a node object or the node ID value.
- * @param bool $sort_by_date
- *   (OPTIONAL) whether or not to sort by date, default is FALSE.
- * @param int $limit
- *   The number of results to return (to provide the recent additions for the
- *   block that only displays only 4 items)
  *
  * @return array
  *   Multidimensional array that contains the nid, changed, and
- * original_file_count for each child of the collection. The key of the top
- * array is the nid. This array should be sorted by the changed timestamps
- * so that the first element's changed value would be the most recent.
+ *   original_file_count for each child of the collection. The key of the top
+ *   array is the nid. This array should be sorted by the changed timestamps
+ *   so that the first element's changed value would be the most recent.
  */
 function asu_collection_extras_solr_get_node_membership($item_node) {
   $item_node_id = (is_object($item_node) ? $item_node->id() : $item_node);
@@ -103,18 +90,13 @@ function asu_collection_extras_solr_get_node_membership($item_node) {
     $solrConnector = $backend->getSolrConnector();
     $solariumQuery = $solrConnector->getSelectQuery();
     $count = 0;
-    while(TRUE) {
+    while (TRUE) {
       $solariumQuery->setStart($count)->setRows(50000);
       $solariumQuery->addParam('q', '(its_nid:' . $item_node_id . ')');
       $solariumQuery->setFields(['its_nid', 'itm_field_combined_member_of', 'itm_field_ancestors', 'its_field_model']);
       $nids = $solrConnector->execute($solariumQuery);
       foreach ($nids as $nid_doc) {
-        $nids_arr[$nid_doc->its_nid] = (array)$nid_doc;
-// [
-//          'itm_field_combined_member_of' => $nid_doc->itm_field_combined_member_of,
-//          'itm_field_ancestors' => $nid_doc->itm_field_ancestors,
-//          'its_field_model' => $nid_doc->its_field_model, // -- is this a collection or asu_repository_item?
-//        ];
+        $nids_arr[$nid_doc->its_nid] = (array) $nid_doc;
       }
       $count = $count + $nids->count();
       if ($nids->getNumFound() <= $count) {
@@ -124,133 +106,4 @@ function asu_collection_extras_solr_get_node_membership($item_node) {
 
   }
   return $nids_arr;
-}
-
-/**
- * Add some javascript to perform an AJAX call that will sync matomo stats.
- */
-function asu_collection_extras_node_view(array &$build, Node $node, EntityViewDisplay $display, $view_mode) {
-  $node_bundle = $node->bundle();
-  $first_4 = substr($build['#view_mode'], 0, 4);
-  // If the view mode is one of our ASU item types or it is a collection, add
-  // the javascript.
-  if (($first_4 == "asu_" || $build['#view_mode'] == 'full') &&
-    ($node_bundle == 'collection' || $node_bundle == 'asu_repository_item')) {
-    // After the node render is executed,
-    $build['#attached'] = [
-      'library' => [
-        'asu_collection_extras/matomosync',
-      ],
-    ];
-  }
-}
-
-function asu_collection_extras_syncNodeRelations($node)
-{
-  // Query the node to determine all of the objects related via Member Of
-  // and Additional Memberships.
-  $child_nid = $node->id();
-  $member_of = $node->get('field_member_of')->entity;
-  $member_of_id = (is_object($member_of)) ? $member_of->id() : 0;
-  $member_of_model = (is_object($member_of)) ? $member_of->bundle() : '';
-  // \Drupal::logger('asu_collection_extras')->info('member_of ' . $member_of_id . ' which is ' . $member_of_model);
-  $connection = \Drupal::service('database');
-  if ($member_of_id) {
-    // Insert a record for this item and the parent collection.
-    // Object parent is a collection.
-    // i_nid = $node->id();
-    // c_nid = $member_of_id
-    // parent_type = "collec"
-    $connection->delete('ace_relations')
-    ->condition('parent_nid', $member_of_id)
-      ->condition('child_nid', $child_nid)
-      ->execute();
-    $connection->insert('ace_relations')
-    ->fields([
-      'parent_nid' => $member_of_id,
-      'child_nid' => $child_nid,
-      'parent_type' => 'collec',
-    ])
-      ->execute();
-  }
-  if ($node->bundle() == 'asu_repository_item') {
-    $additional_memberships = $node->get('field_additional_memberships')->referencedEntities();
-    if (count($additional_memberships) > 0) {
-      foreach ($additional_memberships as $additional_membership_entity) {
-        $member_of_id = (is_object($additional_membership_entity)) ? $additional_membership_entity->id() : 0;
-        $member_of_model = (is_object($additional_membership_entity)) ? $additional_membership_entity->bundle() : '';
-        //\Drupal::logger('asu_collection_extras')->info('member_of ' . $member_of_id . ' which is ' . $member_of_model);
-        $parent_type = ($member_of_model == 'collection') ? 'collec' : 'item';
-        $connection->delete('ace_relations')
-        ->condition('parent_nid', $member_of_id)
-          ->condition('child_nid', $child_nid)
-          ->execute();
-        $connection->insert('ace_relations')
-        ->fields([
-          'parent_nid' => $member_of_id,
-          'child_nid' => $child_nid,
-          'parent_type' => $parent_type,
-        ])
-          ->execute();
-      }
-    }
-  }
-}
-
-function asu_collection_extras_syncNodeMatomoStats($nid) {
-  // for the given node, call Matomo API to get the views AND downloads.
-  // \Drupal::logger('asu_collection_extras')->info('asu_collection_extras_syncNodeMatomoStats for ' . $nid);
-  $item_views = 0;
-  $item_views += \Drupal::service('islandora_matomo.default')->getViewsForNode(['nid' => $nid]);
-  // \Drupal::logger('asu_collection_extras')->info('views = for ' . $item_views);
-  $query = \Drupal::entityQuery('media');
-  $query->condition('field_media_of', $nid);
-  // We only want to add the stats for the media that is "Original File",
-  // "Service File", or "Preservation Master File".
-  $group = $query
-    ->orConditionGroup();
-  $of = \Drupal::entityTypeManager()
-    ->getStorage('taxonomy_term')
-    ->loadByProperties(['name' => "Original File"]);
-  if ($of) {
-    $tid_of = reset($of);
-    $group->condition('field_media_use', $tid_of->id());
-  }
-  $sf = \Drupal::entityTypeManager()
-    ->getStorage('taxonomy_term')
-    ->loadByProperties(['name' => "Service File"]);
-  if ($sf) {
-    $tid_sf = reset($sf);
-    $group->condition('field_media_use', $tid_sf->id());
-  }
-  $pmf = \Drupal::entityTypeManager()
-    ->getStorage('taxonomy_term')
-    ->loadByProperties(['name' => "Preservation Master File"]);
-  if ($pmf) {
-    $tid_pmf = reset($pmf);
-    $group->condition('field_media_use', $tid_pmf->id());
-  }
-  if ($of || $sf || $pmf) {
-    $query->condition($group);
-  }
-  $mids = $query->accessCheck(FALSE)->execute();
-  $item_downloads = 0;
-  foreach ($mids as $mid) {
-    $fid = \Drupal::service('islandora_matomo.default')->getFileFromMedia($mid);
-    $item_fid_downloads = \Drupal::service('islandora_matomo.default')->getDownloadsForFile(['fid' => $fid]);
-    $item_downloads += $item_fid_downloads;
-    // \Drupal::logger('asu_collection_extras')->info("downloads (fid:" . $fid . ") = " . $item_fid_downloads);
-  }
-  // \Drupal::logger('asu_collection_extras')->info("total downloads = " . $item_downloads);
-  // Save this to the ace_items table.
-  $connection = \Drupal::service('database');
-  $connection->merge('ace_items')
-    ->key(['i_nid' => $nid])
-    ->fields([
-      'views' => $item_views,
-      'views_modified' => time(),
-      'downloads' => $item_downloads,
-      'downloads_modified' => time(),
-    ])
-    ->execute();
 }
