@@ -19,7 +19,7 @@ class AsuLibFooter extends BlockBase {
    */
   public function build() {
     $build = [];
-    $logo_url = 'https://repository.lib.asu.edu/themes/custom/asulib_barrio/images/library_footer_logo_white.png';
+    $logo_url = '/themes/custom/asulib_barrio/images/library_footer_logo_white.png';
 
     $a1 = '<div class="wrapper" id="wrapper-endorsed-footer">
       <div class="container" id="endorsed-footer">
