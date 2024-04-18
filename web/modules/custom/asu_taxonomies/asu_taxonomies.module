@@ -5,8 +5,10 @@
  * Taxonomy hooks.
  */
 
-use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Entity\EntityFormInterface;
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\Core\Url;
+use Drupal\views\ViewExecutable;
 
 /**
  * Implements hook_form_FORM_ID_alter().
@@ -54,5 +56,62 @@ function asu_taxonomies_form_taxonomy_term_form_alter(&$form, &$form_state, $for
 function asu_taxonomies_term_autocomplete_validate(&$form, FormStateInterface $form_state) {
   if (empty($form_state->getValue('parent'))) {
     $form_state->setValue('parent', []);
+  }
+}
+
+/**
+ * Implements hook_views_pre_render().
+ *
+ * Adds a link to create a new term to the taxonomy term finder view based
+ * on the exposed filter values used.
+ */
+function asu_taxonomies_views_pre_render(ViewExecutable $view) {
+  if ($view->id() == 'taxonomy_term_finder') {
+    // Get list of filter options, that are exposed then grab their exposed id.
+    $inputs = $view->getExposedInput();
+    $vid = '';
+    $fields = [];
+    foreach ($view->display_handler->getOption('filters') as $filter) {
+      // Find the value, if it exists in exposed input.
+      if (!$filter['exposed']) {
+        continue;
+      }
+      $filter_id = $filter['expose']['identifier'];
+      if (!array_key_exists($filter_id, $inputs) || empty($inputs[$filter_id])) {
+        continue;
+      }
+      // Vocabulary.
+      if ($filter['field'] == 'vid') {
+        $vid = reset($inputs[$filter_id]);
+      }
+      // Term name.
+      elseif ($filter['field'] == 'name') {
+        $fields['edit[name][widget][0][value]'] = urlencode($inputs[$filter_id]);
+      }
+      // Name and vid were easy enough, the challenge is the URI fields
+      // where it is using database table and field names instead of
+      // entity field names.
+      else {
+        $field = end(explode('__', $filter['table']));
+        // +1 for the underscore separator.
+        $property = substr($filter['field'], strlen($field) + 1);
+        $fields["edit[{$field}][widget][0][{$property}]"] = $inputs[$filter_id];
+      }
+    }
+    // Can't create a term without a vocabulary.
+    if ($vid) {
+      // Build URL.
+      $view->attachment_before[] = [
+        'link' => [
+          '#type' => 'link',
+          '#title' => t('Create Taxonomy Term in the %vid vocabulary.', ['%vid' => $vid]),
+          '#url' => Url::fromRoute('entity.taxonomy_term.add_form', ['taxonomy_vocabulary' => $vid], [
+            'query' => $fields,
+            'attributes' => ['target' => '_blank'],
+          ]),
+        ],
+      ];
+    }
+    $view->attachment_before[] = ['#markup' => $to_render];
   }
 }
