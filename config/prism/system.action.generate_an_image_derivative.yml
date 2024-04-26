@@ -15,6 +15,6 @@ configuration:
   source_term_uri: 'http://pcdm.org/use#OriginalFile'
   derivative_term_uri: 'http://pcdm.org/use#ServiceFile'
   mimetype: image/jpeg
-  args: '-resize 1024'
+  args: '-auto-orient -resize 1024'
   scheme: public
   path: '[date:custom:Y]-[date:custom:m]/[node:nid]-large.jpg'
