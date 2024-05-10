@@ -1465,6 +1465,44 @@ display:
             default_group_multiple: {  }
             group_items: {  }
           reduce_duplicates: false
+        complex_object_child:
+          id: complex_object_child
+          table: search_api_index_default_solr_index
+          field: complex_object_child
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: search_api_boolean
+          operator: '='
+          value: '0'
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
       filter_groups:
         operator: AND
         groups: {  }
@@ -1750,15 +1788,15 @@ display:
           parse_mode: terms
           min_length: null
           fields: {  }
-        status:
-          id: status
+        complex_object_child:
+          id: complex_object_child
           table: search_api_index_default_solr_index
-          field: status
+          field: complex_object_child
           relationship: none
           group_type: group
           admin_label: ''
           plugin_id: search_api_boolean
-          operator: '='
+          operator: '!='
           value: '1'
           group: 1
           exposed: false
@@ -1895,7 +1933,8 @@ display:
             offset_label: Offset
           quantity: 7
       cache:
-        type: none
+        type: search_api_tag
+        options: {  }
       sorts:
         search_api_relevance:
           id: search_api_relevance
@@ -2125,7 +2164,7 @@ display:
       display_extenders: {  }
       path: items/%node/search
     cache_metadata:
-      max-age: -1
+      max-age: 0
       contexts:
         - 'languages:language_content'
         - 'languages:language_interface'
@@ -2134,6 +2173,19 @@ display:
         - 'url.query_args:sort_by'
         - 'user.node_grants:view'
       tags:
+        - 'config:facets.facet.all_subjects_cpx'
+        - 'config:facets.facet.authors_agent_by_role_cpx_'
+        - 'config:facets.facet.creators_and_contributors_cpx'
+        - 'config:facets.facet.creators_cpx'
+        - 'config:facets.facet.date_created_cpx'
+        - 'config:facets.facet.genre_cpx'
+        - 'config:facets.facet.language_cpx'
+        - 'config:facets.facet.open_access_cpx'
+        - 'config:facets.facet.peer_reviewed_cpx'
+        - 'config:facets.facet.place_of_publication_cpx'
+        - 'config:facets.facet.resource_type_cpx'
+        - 'config:facets.facet.status_cpx'
+        - 'config:facets.facet.thesis_advisors_agent_by_role_cpx'
         - 'config:field.storage.node.field_edtf_date_created'
         - 'config:field.storage.node.field_linked_agent'
         - 'config:field.storage.node.field_model'
