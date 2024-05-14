@@ -4,7 +4,6 @@ namespace Drupal\asu_search\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FieldItemListInterface;
 use Drupal\Core\Field\Plugin\Field\FieldFormatter\EntityReferenceLabelFormatter;
-use Drupal\Core\Form\FormStateInterface;
 
 /**
  * Plugin implementation of the 'TypedRelationBriefFormatter'.
@@ -18,30 +17,6 @@ use Drupal\Core\Form\FormStateInterface;
  * )
  */
 class TypedRelationBriefFormatter extends EntityReferenceLabelFormatter {
-
-  /**
-   * {@inheritdoc}
-   */
-  public static function defaultSettings() {
-    return [
-      'unlink_without_uri' => FALSE,
-    ] + parent::defaultSettings();
-  }
-
-  /**
-   * {@inheritdoc}
-   */
-  public function settingsForm(array $form, FormStateInterface $form_state) {
-    $form = parent::settingsForm($form, $form_state);
-
-    $form['unlink_without_uri'] = [
-      '#title' => $this->t('Unlink Relations without URIs'),
-      '#type' => 'checkbox',
-      '#default_value' => $this->getSetting('unlink_without_uri'),
-    ];
-
-    return $form;
-  }
 
   /**
    * {@inheritdoc}
@@ -68,15 +43,7 @@ class TypedRelationBriefFormatter extends EntityReferenceLabelFormatter {
           unset($elements[$delta]);
         }
       }
-      $target_term = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->load($this_tid);
-      if ($this->getSetting('unlink_without_uri') && $target_term && $target_term->hasField('field_authority_link') && $target_term->get('field_authority_link')->isEmpty()) {
-        $label = '';
-        foreach (['#title', '#suffix'] as $label_part) {
-          $label .= ($elements[$delta][$label_part]) ? $elements[$delta][$label_part] : '';
-        }
-        $elements[$delta] = ['#plain_text' => $label];
-      }
-      elseif (array_key_exists($delta, $elements) && array_key_exists('#title', $elements[$delta])) {
+      if (array_key_exists($delta, $elements) && array_key_exists('#title', $elements[$delta])) {
         $url = \Drupal::service('facets.utility.url_generator')->getUrl(['linked_agents' => [$elements[$delta]['#title']]]);
         $elements[$delta]['#url'] = $url;
       }
