@@ -2,8 +2,8 @@
 
 namespace Drupal\asu_search\Plugin\Field\FieldFormatter;
 
-use Drupal\Core\Field\Plugin\Field\FieldFormatter\EntityReferenceLabelFormatter;
 use Drupal\Core\Field\FieldItemListInterface;
+use Drupal\Core\Field\Plugin\Field\FieldFormatter\EntityReferenceLabelFormatter;
 
 /**
  * Plugin implementation of the 'TypedRelationBriefFormatter'.
@@ -29,7 +29,7 @@ class TypedRelationBriefFormatter extends EntityReferenceLabelFormatter {
       $this_tid = $item->target_id;
       $delta_to_update = in_array($this_tid, $unique_tids);
       $rel_types = $item->getRelTypes();
-      $rel_type = isset($rel_types[$item->rel_type]) ? $rel_types[$item->rel_type] : $item->rel_type;
+      $rel_type = $rel_types[$item->rel_type] ?? $item->rel_type;
       if (isset($elements[$delta])) {
         if (!$delta_to_update) {
           $unique_tids[$delta] = $this_tid;
@@ -52,7 +52,7 @@ class TypedRelationBriefFormatter extends EntityReferenceLabelFormatter {
   }
 
   /**
-   *
+   * Clean up Relator utility.
    */
   private function cleanUpRelator($rel_type) {
     $re = '/(.*) \(\S*/m';

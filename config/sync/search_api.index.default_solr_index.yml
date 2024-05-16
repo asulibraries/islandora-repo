@@ -5,6 +5,7 @@ dependencies:
   config:
     - field.storage.node.field_additional_memberships
     - field.storage.node.field_member_of
+    - field.storage.node.field_complex_object_child
     - field.storage.node.field_edtf_copyright_date
     - field.storage.node.field_copyright_statement
     - field.storage.node.field_linked_agent
@@ -43,7 +44,6 @@ dependencies:
     - field.storage.node.field_title_subject
     - field.storage.node.field_subject
     - search_api.server.default_solr_server
-    - core.entity_view_mode.node.full_metadata
   module:
     - search_api_solr
     - node
@@ -155,11 +155,54 @@ field_settings:
     dependencies:
       module:
         - node
+  complex_object_child:
+    label: 'Complex Object Child'
+    datasource_id: 'entity:node'
+    property_path: field_complex_object_child
+    type: boolean
+    dependencies:
+      config:
+        - field.storage.node.field_complex_object_child
   complex_title:
     label: 'Complex Title'
     property_path: complex_title
     type: text
     boost: 5.0
+  component_agent_name:
+    label: 'Component Agent Name'
+    datasource_id: 'entity:node'
+    property_path: 'search_api_reverse_entity_references_node__field_member_of:field_linked_agent:entity:name'
+    type: text
+  component_geographic_subject:
+    label: 'Component Geographic Subject'
+    datasource_id: 'entity:node'
+    property_path: 'search_api_reverse_entity_references_node__field_member_of:field_geographic_subject:entity:name'
+    type: text
+  component_statement_responsibility:
+    label: 'Component Statement of Responsibility'
+    datasource_id: 'entity:node'
+    property_path: 'search_api_reverse_entity_references_node__field_member_of:field_statement_responsibility'
+    type: text
+  component_temporal_subject:
+    label: 'Component Temporal Subject'
+    datasource_id: 'entity:node'
+    property_path: 'search_api_reverse_entity_references_node__field_member_of:field_temporal_subject:entity:name'
+    type: text
+  component_title:
+    label: 'Component Title'
+    datasource_id: 'entity:node'
+    property_path: 'search_api_reverse_entity_references_node__field_member_of:title'
+    type: text
+  component_title_subject:
+    label: 'Component Title Subject'
+    datasource_id: 'entity:node'
+    property_path: 'search_api_reverse_entity_references_node__field_member_of:field_title_subject:entity:name'
+    type: text
+  component_topical_subject:
+    label: 'Component Topical Subject'
+    datasource_id: 'entity:node'
+    property_path: 'search_api_reverse_entity_references_node__field_member_of:field_subject:entity:name'
+    type: text
   created:
     label: 'Authored on'
     datasource_id: 'entity:node'
@@ -168,6 +211,17 @@ field_settings:
     dependencies:
       module:
         - node
+  descendant_extracted_text:
+    label: 'Descendant Extracted Text'
+    property_path: descendant_extracted_text
+    type: text
+    configuration:
+      bundles:
+        asu_repository_item: asu_repository_item
+        article: 0
+        collection: 0
+        page: 0
+        scholarly_work: 0
   etdf_created_year_only:
     label: 'Date Created'
     property_path: etdf_created_year_only
@@ -493,6 +547,11 @@ field_settings:
     dependencies:
       config:
         - field.storage.node.field_temporal_subject
+  field_title:
+    label: 'Component All Titles'
+    datasource_id: 'entity:node'
+    property_path: 'search_api_reverse_entity_references_node__field_member_of:field_title'
+    type: text
   field_title_subject:
     label: 'Title Subject'
     datasource_id: 'entity:node'
@@ -567,10 +626,10 @@ field_settings:
       view_mode:
         'entity:node':
           article: ''
-          asu_repository_item: full_metadata
+          asu_repository_item: ''
           collection: ''
-          islandora_object: ''
           page: ''
+          scholarly_work: ''
   resource_type_name:
     label: 'Resource Type'
     datasource_id: 'entity:node'
@@ -643,6 +702,8 @@ processor_settings:
     weights:
       preprocess_index: 5
   complex_title: {  }
+  custom_value: {  }
+  descendant_extracted_text: {  }
   entity_type: {  }
   etdf_created_year_only: {  }
   hierarchy:
