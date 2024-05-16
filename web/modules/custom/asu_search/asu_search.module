@@ -197,7 +197,7 @@ function asu_search_views_pre_render(ViewExecutable $view) {
  * when the extracted text field updates.
  */
 function asu_search_media_presave($media) {
-  if ($media->bundle() == 'extracted_text' & $media->hasField('field_edited_text') & !$media->get('field_edited_text')->isEmpty()) {
+  if ($media->bundle() == 'extracted_text' && $media->hasField('field_edited_text') && !$media->get('field_edited_text')->isEmpty()) {
     if (!$media->get('field_edited_text')->equals($media->original->get('field_edited_text'))) {
       $iu = \Drupal::service('islandora.utils');
       $n = $iu->getParentNode($media);
