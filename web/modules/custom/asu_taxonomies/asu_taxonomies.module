@@ -86,13 +86,14 @@ function asu_taxonomies_views_pre_render(ViewExecutable $view) {
       }
       // Term name.
       elseif ($filter['field'] == 'name') {
-        $fields['edit[name][widget][0][value]'] = urlencode($inputs[$filter_id]);
+        $fields['edit[name][widget][0][value]'] = $inputs[$filter_id];
       }
       // Name and vid were easy enough, the challenge is the URI fields
       // where it is using database table and field names instead of
       // entity field names.
       else {
-        $field = end(explode('__', $filter['table']));
+        $filter_parts = explode('__', $filter['table']);
+        $field = end($filter_parts);
         // +1 for the underscore separator.
         $property = substr($filter['field'], strlen($field) + 1);
         $fields["edit[{$field}][widget][0][{$property}]"] = $inputs[$filter_id];
@@ -112,6 +113,5 @@ function asu_taxonomies_views_pre_render(ViewExecutable $view) {
         ],
       ];
     }
-    $view->attachment_before[] = ['#markup' => $to_render];
   }
 }
