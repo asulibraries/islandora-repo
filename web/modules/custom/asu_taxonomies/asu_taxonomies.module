@@ -86,7 +86,7 @@ function asu_taxonomies_views_pre_render(ViewExecutable $view) {
       }
       // Term name.
       elseif ($filter['field'] == 'name') {
-        $fields['edit[name][widget][0][value]'] = urlencode($inputs[$filter_id]);
+        $fields['edit[name][widget][0][value]'] = $inputs[$filter_id];
       }
       // Name and vid were easy enough, the challenge is the URI fields
       // where it is using database table and field names instead of
