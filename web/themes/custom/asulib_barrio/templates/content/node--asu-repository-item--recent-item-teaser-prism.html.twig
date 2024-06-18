@@ -69,7 +69,7 @@
     not node.isPublished() ? 'node--unpublished',
     view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
     'views-align-center',
-    'card', 'card-hover'
+    'card'
 ]
 %}
 {%
@@ -112,7 +112,9 @@
 			{% endif %}
 		</h3>
 	</div>
-	<div class="card-body">
-		<a role="button" href="/items/{{ node.id }}" class="stretched-link"></a>
+	<div class="card-buttons">
+          <div class='card-button'>
+            <a role="button" href="/items/{{ node.id }}" class="btn btn-md btn-primary">View Item</a>
+          </div>
 	</div>
 </div>
