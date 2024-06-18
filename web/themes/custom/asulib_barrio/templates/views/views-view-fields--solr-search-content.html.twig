@@ -96,7 +96,7 @@
         {{ field.content }}
       {%- endif %}
     </div>
-    <button aria-expanded="false" aria-controls="full-content more-ellipse" type="button" data-toggle="collapse" data-target="#{{ id }} .multi-collapse" class="btn-link show-more">
+    <button aria-expanded="false" aria-controls="full-content more-ellipse" type="button" data-bs-toggle="collapse" data-bs-target="#{{ id }} .multi-collapse" class="btn-link show-more">
       {% trans %}(more){% endtrans %}
     </button>
     {%- if field.wrapper_element -%}

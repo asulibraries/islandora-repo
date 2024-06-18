@@ -258,6 +258,10 @@ ul.pagination {
   padding-top: $small-padding;
 }
 
+$uds-component-pager-icon-height: 1rem;
+$uds-component-pager-icon-width: 1rem;
+$uds-component-pager-icon-margin: 1rem;
+
 .pager__item--next .page-link-icon:after {
   display: inline-block;
   font-size: inherit;
@@ -289,6 +293,13 @@ ul.pagination {
   .page-number:not(.active) {
     display: none;
   }
+}
+
+// Override image-based-card-and-hover
+
+.node__content .content-section {
+  width: inherit;
+  height: inherit;
 }
 
 // fix for captcha
