@@ -247,13 +247,10 @@ content:
     weight: 12
     region: content
   field_language:
-    type: searchable_entity_formatter
+    type: entity_reference_label
     label: inline
     settings:
-      search_link: 'search?f[0]'
-      search_var: language
-      search_term: true
-      link: true
+      link: false
     third_party_settings: {  }
     weight: 16
     region: content
