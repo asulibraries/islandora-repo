@@ -21,5 +21,4 @@ ASU Repositories Bootstrap 5 - Barrio SASS Sub-Theme
 
 ## Styling Mysteries
 
-- The file format, e.g. 'pdf', on the downloads buttons on item pages is being capitalized despite the dev tools indicating they *aren't* applying a `text-transform`. The only way I've found to remove the capitalization is by unselecting the `display: inline-block` instances in dev tools. I have *no* idea why that would cause it to no longer capitalize "Pdf". It also isn't viable because it messes with the layout of other items. 😕
-- The header's "Search" button isn't as rounded as other buttons with the same classes.
+- (*Note:* ASU requires file extensions as labels to be upper-case, which we fixed in Twig, making this moot.) The file format, e.g. 'pdf', on the downloads buttons on item pages is being capitalized despite the dev tools indicating they *aren't* applying a `text-transform`. The only way I've found to remove the capitalization is by unselecting the `display: inline-block` instances in dev tools. I have *no* idea why that would cause it to no longer capitalize "Pdf".
