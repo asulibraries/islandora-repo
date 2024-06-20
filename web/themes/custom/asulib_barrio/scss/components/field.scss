@@ -3,17 +3,15 @@
  * Visual styles for Bootstrap Barrio's field components.
  */
 
+.field {
+    margin: 0 0 ($spacer * 0.5);
+}
 .field__label {
     margin-bottom: ($spacer * .25);
 }
 .node--type-asu-repository-item .field__label {
     margin-bottom: 0;
 }
-
-.field--type-entity-reference {
-    margin: 0 0 ($spacer * 1.2);
-}
-
 .field--type-entity-reference .field__label {
     font-weight: normal;
     /*margin: 0;*/
@@ -246,6 +244,10 @@ button.show-more {
 
 .field--name-field-typed-identifier .paragraph {
     display: inline-block;
+    margin-bottom: 0;
+    .field {
+      margin-bottom: ($spacer * 0.25);
+    }
 }
 
 .node--type-archival-resource > .field__label, .node--type-archival-object > .field__label, .node--type-repository > .field__label, .node--type-archival-top-container > .field__label {

@@ -14,6 +14,7 @@ ASU Repositories Bootstrap 5 - Barrio SASS Sub-Theme
 ## Bootstrap 4→5 & ASU Design Changes
 
 - The `data-toggle` and `data-target` became `data-bs-toggle` and `data-bs-target`, respectively.
+- Replaced `badge-pill badge-light` with `rounded-pill bg-light`.
 - Removed JQuery.
 - Font Awesome moved from the ASU kit to a library kit included via library.
 - Stretch links are discouraged in favor of call-to-action buttons.
