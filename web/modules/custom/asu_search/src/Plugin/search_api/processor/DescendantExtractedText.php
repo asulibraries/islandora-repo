@@ -2,15 +2,15 @@
 
 namespace Drupal\asu_search\Plugin\search_api\processor;
 
+use Drupal\asu_search\Plugin\search_api\processor\Property\DescendantExtractedTextProperty;
 use Drupal\islandora\IslandoraUtils;
 use Drupal\node\NodeInterface;
 use Drupal\search_api\Datasource\DatasourceInterface;
 use Drupal\search_api\Item\ItemInterface;
 use Drupal\search_api\LoggerTrait;
 use Drupal\search_api\Processor\ProcessorPluginBase;
-use Drupal\search_api\Processor\ProcessorProperty;
+use Drupal\taxonomy\TermInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\asu_search\Plugin\search_api\processor\Property\NodeTypeProperty;
 
 /**
  * Adds an additional field containing the child extracted text.
@@ -38,11 +38,11 @@ class DescendantExtractedText extends ProcessorPluginBase {
   protected $islandoraUtils;
 
   /**
-   * The node storage.
+   * Entity Type Manager.
    *
-   * @var \Drupal\node\NodeStorageInterface
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
-  protected $nodeStorage;
+  protected $typeManager;
 
   /**
    * The term for extracted text media use.
@@ -62,8 +62,7 @@ class DescendantExtractedText extends ProcessorPluginBase {
 
     $plugin->setLogger($container->get('logger.channel.search_api'));
     $plugin->islandoraUtils = $container->get('islandora.utils');
-    $plugin->nodeStorage = $container->get('entity_type.manager')->getStorage('node');
-    $plugin->extractedTextTerm = $plugin->islandoraUtils->getTermForUri('http://pcdm.org/use#ExtractedText');
+    $plugin->typeManager = $container->get('entity_type.manager');
 
     return $plugin;
   }
@@ -81,7 +80,7 @@ class DescendantExtractedText extends ProcessorPluginBase {
         'type' => 'search_api_text',
         'processor_id' => $this->getPluginId(),
       ];
-      $properties['descendant_extracted_text'] = new NodeTypeProperty($definition);
+      $properties['descendant_extracted_text'] = new DescendantExtractedTextProperty($definition);
     }
 
     return $properties;
@@ -100,7 +99,11 @@ class DescendantExtractedText extends ProcessorPluginBase {
       ->filterForPropertyPath($item->getFields(), NULL, 'descendant_extracted_text');
     foreach ($fields as $field) {
       $config = $field->getConfiguration();
-      $results = array_filter($this->gatherDescendantExtractedText($node, $config['bundles']));
+      $results = array_filter($this->gatherDescendantExtractedText(
+          $node,
+          $config['bundles'],
+          $this->typeManager->getStorage('taxonomy_term')->load($config['media_use_term']))
+      );
       foreach ($results as $result) {
         $field->addValue($result);
       }
@@ -112,11 +115,15 @@ class DescendantExtractedText extends ProcessorPluginBase {
    *
    * @param \Drupal\node\NodeInterface $node
    *   Node to check for descendants with extracted text.
+   * @param array $bundles
+   *   Machine names of node bundles to descend through.
+   * @param \Drupal\taxonomy\TermInterface $use_term
+   *   Term used to identify media with extracted text.
    *
    * @return array
    *   Array of extracted text values.
    */
-  protected function gatherDescendantExtractedText(NodeInterface $node, array $bundles) {
+  protected function gatherDescendantExtractedText(NodeInterface $node, array $bundles, TermInterface $use_term) {
     $results = [];
 
     // Skip bundles not in config, if set.
@@ -125,7 +132,7 @@ class DescendantExtractedText extends ProcessorPluginBase {
     }
 
     // Get text from the current item.
-    $extractedTextMedia = $this->islandoraUtils->getMediaWithTerm($node, $this->extractedTextTerm);
+    $extractedTextMedia = $this->islandoraUtils->getMediaWithTerm($node, $use_term);
     if ($extractedTextMedia) {
       $extracted = '';
       foreach ($extractedTextMedia->get(self::EDITED_TEXT_PROPERTY) as $value) {
@@ -134,8 +141,8 @@ class DescendantExtractedText extends ProcessorPluginBase {
       $results[] = $extracted;
     }
     // Grab text from children.
-    foreach ($this->nodeStorage->loadByProperties([IslandoraUtils::MEMBER_OF_FIELD => $node->id()]) as $child) {
-      $results += $this->gatherDescendantExtractedText($child, $bundles);
+    foreach ($this->typeManager->getStorage('node')->loadByProperties([IslandoraUtils::MEMBER_OF_FIELD => $node->id()]) as $child) {
+      $results += $this->gatherDescendantExtractedText($child, $bundles, $use_term);
     }
     return $results;
   }
