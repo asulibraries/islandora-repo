@@ -260,13 +260,10 @@ content:
     weight: 41
     region: content
   field_language:
-    type: searchable_entity_formatter
+    type: entity_reference_label 
     label: above
     settings:
-      search_link: 'search?f[0]'
-      search_var: language
-      search_term: true
-      link: true
+      link: false 
     third_party_settings: {  }
     weight: 9
     region: content

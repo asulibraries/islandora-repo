@@ -69,7 +69,7 @@
     not node.isPublished() ? 'node--unpublished',
     view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
     'views-align-center',
-    'card', 'card-hover'
+    'card'
 ]
 %}
 {%
@@ -85,25 +85,21 @@
 
 %}
 <div {{ attributes.addClass(classes) }}>
+	<div class="card-header">
 	{% if complex_obj_thumb is not empty %}
-		<div class="css-pick">
-			<div class="views-field views-field-media-image">
-				<div class="field-content">
-					<img class="card-img-top thumb-image-border image-style-thumbnail" src=" {{ complex_obj_thumb }}"/>
-				</div>
-			</div>
-		</div>
+          <picture class="card-img-top">
+            <img class="card-img-top thumb-image-border image-style-thumbnail" src=" {{ complex_obj_thumb }}"/>
+          </picture>
 	{% elseif drupal_view_result('display_media', 'thumbnail', node.id) is empty %}
 		{% set mod = content.field_model[0]|render|trim %}
 		{% for k, v in model_icons|filter((v, k) => k == mod) -%}
-			<div class="icon-container">
+			<div class="card-img-top icon-container">
 				<i class="{{ v }} fa-6x"></i>
 			</div>
 		{% endfor %}
 	{% else %}
 		{{ drupal_view('display_media', 'thumbnail_card', node.id) }}
 	{% endif %}
-	<div class="card-header">
 		<h3 class="card-title">
 			{% set title = content.field_title[0]|render|trim|slice(0, 60) %}
 			{{ title|raw }}
@@ -112,7 +108,9 @@
 			{% endif %}
 		</h3>
 	</div>
-	<div class="card-body">
-		<a role="button" href="/items/{{ node.id }}" class="stretched-link"></a>
+	<div class="card-buttons">
+          <div class='card-button'>
+            <a role="button" href="/items/{{ node.id }}" class="btn btn-md btn-primary">View Item</a>
+          </div>
 	</div>
 </div>

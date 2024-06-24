@@ -3,17 +3,15 @@
  * Visual styles for Bootstrap Barrio's field components.
  */
 
+.field {
+    margin: 0 0 ($spacer * 0.5);
+}
 .field__label {
     margin-bottom: ($spacer * .25);
 }
 .node--type-asu-repository-item .field__label {
     margin-bottom: 0;
 }
-
-.field--type-entity-reference {
-    margin: 0 0 ($spacer * 1.2);
-}
-
 .field--type-entity-reference .field__label {
     font-weight: normal;
     /*margin: 0;*/
@@ -175,6 +173,7 @@ button.show-more {
 
 .field--name-field-identifier-type {
     display: inline-block;
+    font-style: italic;
     .field__item {
         display: inline-block;
     }
@@ -185,6 +184,27 @@ button.show-more {
 .field--name-field-identifier-value {
     display: inline-block;
 }
+
+/* Complex Note Paragraph */
+
+.paragraph--type--complex-note {
+    display: flex;
+    margin-bottom: 0.5rem;
+    .field--name-field-note-type {
+        text-transform: capitalize;
+        font-style: italic;
+        width: fit-content;
+        margin: 0;
+        &:after {
+            content: ': ';
+            margin-right: .25em;
+        }
+    }
+    .field--name-field-note-text {
+        width: fit-content;
+    }
+}
+
 
 .node--view-mode-full-metadata .node__content > .field {
     border-bottom: 1px solid $border-color;
@@ -224,21 +244,13 @@ button.show-more {
 
 .field--name-field-typed-identifier .paragraph {
     display: inline-block;
+    margin-bottom: 0;
+    .field {
+      margin-bottom: ($spacer * 0.25);
+    }
 }
 
-.node--view-mode-full-metadata .field--name-field-typed-identifier > .field__items > .field__item > .paragraph > .field--type-entity-reference > .field__item, .node--type-archival-resource > .field__label, .node--type-archival-object > .field__label, .node--type-repository > .field__label, .node--type-archival-top-container > .field__label {
+.node--type-archival-resource > .field__label, .node--type-archival-object > .field__label, .node--type-repository > .field__label, .node--type-archival-top-container > .field__label {
     font-weight: bold;
 }
 
-.views-field-riprap-results {
-    .success {
-        background-color: greenyellow;
-    }
-    .fail {
-        background-color: orange;
-    }
-    .riprapnotfound {
-        background-color: red;
-        color: white;
-    }
-}

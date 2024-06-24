@@ -96,10 +96,6 @@ body {
 /* remove padding from inside some views on repo item displays */
 .file-container .views-row { padding: 0; }
 
-// .main-content a {
-//   border-bottom: 1px dotted $maroon;
-// }
-
 .social-icons a {
   border-bottom: none;
 }
@@ -220,19 +216,6 @@ a.image-link:focus {
   }
 }
 
-
-// start of trying to fix overflowing width on mobile
-// @media (min-width: 768px) {
-//   .row {
-//     margin-left: 0;
-//     margin-right: 0;
-//   }
-//   .container {
-//     padding-left: 0;
-//     padding-right: 0;
-//   }
-// }
-
 blockquote {
     border-left: none;
     padding-left: 4rem;
@@ -257,6 +240,10 @@ article ul:not(.field__items):not(.contextual-links):not(.pagination) {
 ul.pagination {
   padding-top: $small-padding;
 }
+
+$uds-component-pager-icon-height: 1rem;
+$uds-component-pager-icon-width: 1rem;
+$uds-component-pager-icon-margin: 1rem;
 
 .pager__item--next .page-link-icon:after {
   display: inline-block;
@@ -289,6 +276,13 @@ ul.pagination {
   .page-number:not(.active) {
     display: none;
   }
+}
+
+// Override image-based-card-and-hover
+
+.node__content .content-section {
+  width: inherit;
+  height: inherit;
 }
 
 // fix for captcha

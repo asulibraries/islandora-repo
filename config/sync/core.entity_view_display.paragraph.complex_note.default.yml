@@ -6,27 +6,25 @@ dependencies:
     - field.field.paragraph.complex_note.field_note_text
     - field.field.paragraph.complex_note.field_note_type
     - paragraphs.paragraphs_type.complex_note
-  module:
-    - asu_item_extras
 id: paragraph.complex_note.default
 targetEntityType: paragraph
 bundle: complex_note
 mode: default
 content:
   field_note_text:
-    type: auto_link_text
+    type: basic_string
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    weight: 0
+    weight: 1
     region: content
   field_note_type:
     type: entity_reference_label
-    label: above
+    label: hidden
     settings:
       link: false
     third_party_settings: {  }
-    weight: 1
+    weight: 0
     region: content
 hidden:
   search_api_excerpt: true

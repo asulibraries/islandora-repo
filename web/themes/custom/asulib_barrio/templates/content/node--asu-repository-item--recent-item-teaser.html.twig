@@ -70,8 +70,7 @@
     node.isSticky() ? 'node--sticky',
     not node.isPublished() ? 'node--unpublished',
     view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
-    'card',
-    'card-hover'
+    'card'
 ]
 %}
 
@@ -110,8 +109,10 @@
             {%  if changed_ago %}
               {{ changed_ago }} ago
             {% endif %}
-            <a role="button" href="/items/{{ node.id }}" class="sr-only-focusable stretched-link">View Item</a>
           </p>
         </div>
+        <div class="card-buttons"><div class="card-button">
+          <a role="button" href="/items/{{ node.id }}" class="btn btn-md btn-primary">View Item</a>
+        </div></div>
 </div>
 

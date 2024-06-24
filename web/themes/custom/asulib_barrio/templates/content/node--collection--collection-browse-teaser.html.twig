@@ -69,7 +69,7 @@
     node.isSticky() ? 'node--sticky',
     not node.isPublished() ? 'node--unpublished',
     view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
-    'card', 'card-hover', 'h-100'
+    'card', 'h-100'
 ]
 %}
 <div{{ attributes.addClass(classes) }}>
@@ -79,14 +79,14 @@
         </picture>
         {{ title_prefix }}
         {% if label and not page %}
-        <h3{{ title_attributes.addClass('card-title') }}>
-            <a href="{{ url }}" rel="bookmark">{{ label }}</a>
-        </h3>
+        <h3{{ title_attributes.addClass('card-title') }}>{{ label }}</h3>
         {% endif %}
         {{ title_suffix }}
     </div>
     <div{{ content_attributes.addClass('card-body') }}>
       {{ content.field_rich_description }}
-      <a role="button" href="/node/{{ node.id }}" class="stretched-link"></a>
     </div>
+    <div class="card-buttons"><div class='card-button'>
+      <a href="{{ url }}" rel="bookmark" class='btn btn-md btn-primary'>View Collection</a>
+    </div></div>
 </div>

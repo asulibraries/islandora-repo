@@ -103,14 +103,13 @@
         </div>
         <div class="card-header">
           <h3{{ title_attributes.addClass('node__title', 'card-title') }}>
+            <a href="{{ url }}" rel="bookmark">
             {% set title = node.label|trim|slice(0, 40) %}
             {{ title }}
             {% if node.label|length > 40 %}
                 ...
             {% endif %}
+            </a>
           </h3>
-        </div>
-        <div class="card-body">
-          <a href="{{ url }}" class="stretched-link" rel="bookmark">View Item</a>
         </div>
     </div>

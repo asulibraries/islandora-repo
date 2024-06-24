@@ -7,21 +7,15 @@ global-styling:
     component:
       css/style.css: {}
   dependencies:
-    - core/jquery
     - core/drupal
 toggle-more:
   version: 1.x
   js:
     js/toggle-more-less.js: {}
-global-js:
-  version: VERSION
-  js:
-    js/global.js: {}
-  dependencies:
-    - core/jquery
-    - core/drupal
-    - asulib_barrio/global-styling
 search:
   css:
     component:
       css/search.css: {}
+fontawesome-kit:
+  js:
+    https://kit.fontawesome.com/93e98468c5.js: { type: external }
