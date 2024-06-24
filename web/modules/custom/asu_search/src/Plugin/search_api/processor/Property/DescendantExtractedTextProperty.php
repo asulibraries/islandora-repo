@@ -8,11 +8,11 @@ use Drupal\search_api\Item\FieldInterface;
 use Drupal\search_api\Processor\ConfigurablePropertyBase;
 
 /**
- * Defines a "node type" property.
+ * Defines a "descendant extracted text" property.
  *
  * @see \Drupal\as_search_\Plugin\search_api\processor\DescendantExtractedText
  */
-class NodeTypeProperty extends ConfigurablePropertyBase {
+class DescendantExtractedTextProperty extends ConfigurablePropertyBase {
 
   use StringTranslationTrait;
 
@@ -21,7 +21,8 @@ class NodeTypeProperty extends ConfigurablePropertyBase {
    */
   public function defaultConfiguration() {
     return [
-      'bundles' => [],
+	    'bundles' => [],
+	    'media_use_term' => 0,
     ];
   }
 
@@ -43,6 +44,15 @@ class NodeTypeProperty extends ConfigurablePropertyBase {
       '#options' => $options,
       '#default_value' => $configuration['bundles'] ?? [],
     ];
+
+    $form['media_use_term'] = [
+      '#title' => $this->t('Extracted Text Term'),
+      '#description' => $this->t('Select the Media Use term of the media for the extracted text. (Usually "Extracted Text".)'),
+      '#type' => 'entity_autocomplete',
+      '#target_type' => 'taxonomy_term',
+      '#selection_settings' => ['target_bundles' => ['islandora_media_use']],
+     ];
+
     return $form;
   }
 
