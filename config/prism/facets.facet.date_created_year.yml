@@ -27,7 +27,7 @@ hierarchy:
 expand_hierarchy: false
 enable_parent_when_child_gets_disabled: true
 widget:
-  type: range_slider
+  type: range_nouislider
   config:
     show_numbers: false
     prefix: ''
@@ -37,6 +37,15 @@ widget:
     max_type: search_result
     max_value: 10.0
     step: 1.0
+    from: ''
+    to: ''
+    add_inputs: false
+    is_below: true
+    tooltips: true
+    pips: true
+    pips_mode: range
+    pips_values: null
+    pips_density: null
 empty_behavior:
   behavior: none
 only_visible_when_facet_source_is_visible: false
@@ -46,25 +55,30 @@ processor_configs:
   count_limit:
     processor_id: count_limit
     weights:
-      build: 50
+      build: 4
     settings:
       minimum_items: 2
       maximum_items: null
+  hierarchy_processor:
+    processor_id: hierarchy_processor
+    weights:
+      build: 5
+    settings: {  }
   range_slider:
     processor_id: range_slider
     weights:
-      pre_query: 60
-      post_query: 60
-      build: 20
+      pre_query: -9
+      post_query: -9
+      build: -9
     settings: {  }
   slider:
     processor_id: slider
     weights:
-      post_query: 60
+      post_query: -10
     settings: {  }
   url_processor_handler:
     processor_id: url_processor_handler
     weights:
-      pre_query: 50
-      build: 15
+      pre_query: -10
+      build: -10
     settings: {  }
