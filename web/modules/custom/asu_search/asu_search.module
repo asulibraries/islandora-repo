@@ -104,7 +104,7 @@ function asu_search_preprocess_views_view(&$variables) {
       // this view's header.
       $view->get_total_rows = TRUE;
       $view->execute($view->current_display);
-      $variables['total_rows_formatted'] = number_format($view->total_rows);
+      $variables['total_rows_formatted'] = number_format($view->total_rows ?? 0);
 
       // Inspect the query from the URL and if there are any facets, suppress
       // the inclusion of the collections block at the top of the /search page.
