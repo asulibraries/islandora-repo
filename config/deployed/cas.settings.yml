@@ -2,7 +2,7 @@ _core:
   default_config_hash: W42TeamUFaYIcLMbvbx1hngcurDgrV8-Rh_iNsgeFJc
 login_link_enabled: true
 login_link_label: 'CAS Login'
-login_success_message: 'You''re CAS authenticated'
+login_success_message: "You're CAS authenticated"
 server:
   version: '2.0'
   protocol: https
@@ -28,6 +28,7 @@ forced_login:
 user_accounts:
   prevent_normal_login: true
   auto_register: true
+  auto_register_follow_registration_policy: false
   email_assignment_strategy: 0
   email_hostname: asu.edu
   email_attribute: ''
