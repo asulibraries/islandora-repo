@@ -1,0 +1,52 @@
+uuid: 30e2f870-4359-409b-98d3-522ac2c860ce
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.media.scholarly_work_sidebar
+    - field.field.media.image.field_file_size
+    - field.field.media.image.field_media_image
+    - field.field.media.image.field_mime_type
+    - media.type.image
+  module:
+    - file
+    - file_download_link
+_core:
+  default_config_hash: 8xeMahD1Tieb-DYaQ85i-lrdue-Fil5KT0V4fX2Lo8c
+id: media.image.scholarly_work_sidebar
+targetEntityType: media
+bundle: image
+mode: scholarly_work_sidebar
+content:
+  field_file_size:
+    type: file_size
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_media_image:
+    type: file_download_link
+    label: visually_hidden
+    settings:
+      link_text: '[media:name]'
+      link_title: '[file:name]'
+      new_tab: true
+      force_download: false
+      custom_classes: ''
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_mime_type:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  created: true
+  name: true
+  thumbnail: true
+  uid: true

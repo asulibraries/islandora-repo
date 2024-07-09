@@ -1,0 +1,151 @@
+uuid: 7462afe2-978a-4b67-8ca6-bd8783a2fc9a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.scholarly_work.field_additional_memberships
+    - field.field.node.scholarly_work.field_copyright_statement
+    - field.field.node.scholarly_work.field_edition
+    - field.field.node.scholarly_work.field_edtf_copyright_date
+    - field.field.node.scholarly_work.field_edtf_date_created
+    - field.field.node.scholarly_work.field_embargo_release_date
+    - field.field.node.scholarly_work.field_extent
+    - field.field.node.scholarly_work.field_genre
+    - field.field.node.scholarly_work.field_geographic_subject
+    - field.field.node.scholarly_work.field_handle
+    - field.field.node.scholarly_work.field_keyword
+    - field.field.node.scholarly_work.field_linked_agent
+    - field.field.node.scholarly_work.field_member_of
+    - field.field.node.scholarly_work.field_note_para
+    - field.field.node.scholarly_work.field_open_access
+    - field.field.node.scholarly_work.field_peer_reviewed
+    - field.field.node.scholarly_work.field_pid
+    - field.field.node.scholarly_work.field_place_of_publication_code
+    - field.field.node.scholarly_work.field_place_published
+    - field.field.node.scholarly_work.field_preferred_citation
+    - field.field.node.scholarly_work.field_resource_type
+    - field.field.node.scholarly_work.field_reuse_permissions
+    - field.field.node.scholarly_work.field_rich_description
+    - field.field.node.scholarly_work.field_series
+    - field.field.node.scholarly_work.field_statement_responsibility
+    - field.field.node.scholarly_work.field_subject
+    - field.field.node.scholarly_work.field_table_of_contents
+    - field.field.node.scholarly_work.field_title
+    - field.field.node.scholarly_work.field_typed_identifier
+    - field.field.node.scholarly_work.field_work_products
+    - node.type.scholarly_work
+  module:
+    - controlled_access_terms
+    - entity_reference_revisions
+    - text
+    - user
+id: node.scholarly_work.default
+targetEntityType: node
+bundle: scholarly_work
+mode: default
+content:
+  field_copyright_statement:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 7
+    region: content
+  field_edtf_date_created:
+    type: edtf_default
+    label: above
+    settings:
+      date_separator: dash
+      date_order: big_endian
+      month_format: mm
+      day_format: dd
+      year_format: 'y'
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_linked_agent:
+    type: typed_relation_dedup
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_member_of:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_note_para:
+    type: entity_reference_revisions_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_reuse_permissions:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 8
+    region: content
+  field_rich_description:
+    type: text_trimmed
+    label: above
+    settings:
+      trim_length: 600
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_subject:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_work_products:
+    type: entity_reference_entity_view
+    label: above
+    settings:
+      view_mode: full
+      link: false
+    third_party_settings: {  }
+    weight: 9
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  field_additional_memberships: true
+  field_edition: true
+  field_edtf_copyright_date: true
+  field_embargo_release_date: true
+  field_extent: true
+  field_genre: true
+  field_geographic_subject: true
+  field_handle: true
+  field_keyword: true
+  field_open_access: true
+  field_peer_reviewed: true
+  field_pid: true
+  field_place_of_publication_code: true
+  field_place_published: true
+  field_preferred_citation: true
+  field_resource_type: true
+  field_series: true
+  field_statement_responsibility: true
+  field_table_of_contents: true
+  field_title: true
+  field_typed_identifier: true

@@ -1,0 +1,80 @@
+uuid: d2df0f06-7acd-46f7-a35f-be38b507a881
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.teaser
+    - field.field.node.scholarly_work.field_additional_memberships
+    - field.field.node.scholarly_work.field_copyright_statement
+    - field.field.node.scholarly_work.field_edition
+    - field.field.node.scholarly_work.field_edtf_copyright_date
+    - field.field.node.scholarly_work.field_edtf_date_created
+    - field.field.node.scholarly_work.field_embargo_release_date
+    - field.field.node.scholarly_work.field_extent
+    - field.field.node.scholarly_work.field_genre
+    - field.field.node.scholarly_work.field_geographic_subject
+    - field.field.node.scholarly_work.field_handle
+    - field.field.node.scholarly_work.field_keyword
+    - field.field.node.scholarly_work.field_linked_agent
+    - field.field.node.scholarly_work.field_member_of
+    - field.field.node.scholarly_work.field_note_para
+    - field.field.node.scholarly_work.field_open_access
+    - field.field.node.scholarly_work.field_peer_reviewed
+    - field.field.node.scholarly_work.field_pid
+    - field.field.node.scholarly_work.field_place_of_publication_code
+    - field.field.node.scholarly_work.field_place_published
+    - field.field.node.scholarly_work.field_preferred_citation
+    - field.field.node.scholarly_work.field_resource_type
+    - field.field.node.scholarly_work.field_reuse_permissions
+    - field.field.node.scholarly_work.field_rich_description
+    - field.field.node.scholarly_work.field_series
+    - field.field.node.scholarly_work.field_statement_responsibility
+    - field.field.node.scholarly_work.field_subject
+    - field.field.node.scholarly_work.field_table_of_contents
+    - field.field.node.scholarly_work.field_title
+    - field.field.node.scholarly_work.field_typed_identifier
+    - field.field.node.scholarly_work.field_work_products
+    - node.type.scholarly_work
+  module:
+    - user
+id: node.scholarly_work.teaser
+targetEntityType: node
+bundle: scholarly_work
+mode: teaser
+content:
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 100
+    region: content
+hidden:
+  field_additional_memberships: true
+  field_copyright_statement: true
+  field_edition: true
+  field_edtf_copyright_date: true
+  field_edtf_date_created: true
+  field_embargo_release_date: true
+  field_extent: true
+  field_genre: true
+  field_geographic_subject: true
+  field_handle: true
+  field_keyword: true
+  field_linked_agent: true
+  field_member_of: true
+  field_note_para: true
+  field_open_access: true
+  field_peer_reviewed: true
+  field_pid: true
+  field_place_of_publication_code: true
+  field_place_published: true
+  field_preferred_citation: true
+  field_resource_type: true
+  field_reuse_permissions: true
+  field_rich_description: true
+  field_series: true
+  field_statement_responsibility: true
+  field_subject: true
+  field_table_of_contents: true
+  field_title: true
+  field_typed_identifier: true
+  field_work_products: true

@@ -1,0 +1,21 @@
+uuid: e6754498-ef35-441c-8f15-de5b30823c0c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_edtf_copyright_date
+    - node.type.scholarly_work
+  module:
+    - controlled_access_terms
+id: node.scholarly_work.field_edtf_copyright_date
+field_name: field_edtf_copyright_date
+entity_type: node
+bundle: scholarly_work
+label: 'Copyright Date'
+description: 'This field is an EDTF field. Simplest format is YYYY-MM-DD.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: edtf

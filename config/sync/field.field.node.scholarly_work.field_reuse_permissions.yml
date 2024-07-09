@@ -1,0 +1,29 @@
+uuid: 4f1cd28d-58ec-4a4a-bca3-e70cddf666f0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_reuse_permissions
+    - node.type.scholarly_work
+    - taxonomy.vocabulary.reuse_permissions
+id: node.scholarly_work.field_reuse_permissions
+field_name: field_reuse_permissions
+entity_type: node
+bundle: scholarly_work
+label: 'Reuse Permissions'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      reuse_permissions: reuse_permissions
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

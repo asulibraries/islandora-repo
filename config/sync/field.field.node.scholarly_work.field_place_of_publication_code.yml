@@ -1,0 +1,29 @@
+uuid: 20cdc0dd-78c7-4480-9c28-a9b8199a9396
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_place_of_publication_code
+    - node.type.scholarly_work
+    - taxonomy.vocabulary.country_codes
+id: node.scholarly_work.field_place_of_publication_code
+field_name: field_place_of_publication_code
+entity_type: node
+bundle: scholarly_work
+label: 'Place of Publication (Code)'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      country_codes: country_codes
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -1,0 +1,52 @@
+uuid: d3c36284-fddf-487a-a523-373b8d64c668
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.media.scholarly_work_sidebar
+    - field.field.media.audio.field_file_size
+    - field.field.media.audio.field_media_audio_file
+    - field.field.media.audio.field_mime_type
+    - media.type.audio
+  module:
+    - file
+    - file_download_link
+_core:
+  default_config_hash: kQYoK66a3IdVqfNcg3zeNtRmKD_K0W974sfH9-84x1U
+id: media.audio.scholarly_work_sidebar
+targetEntityType: media
+bundle: audio
+mode: scholarly_work_sidebar
+content:
+  field_file_size:
+    type: file_size
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_media_audio_file:
+    type: file_download_link
+    label: visually_hidden
+    settings:
+      link_text: '[media:name]'
+      link_title: '[file:name]'
+      new_tab: true
+      force_download: false
+      custom_classes: ''
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_mime_type:
+    type: string
+    label: hidden
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  created: true
+  name: true
+  thumbnail: true
+  uid: true

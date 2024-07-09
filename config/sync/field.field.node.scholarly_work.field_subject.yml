@@ -1,0 +1,29 @@
+uuid: 0fe50c52-cb6f-4d02-a55a-3fd53441859d
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_subject
+    - node.type.scholarly_work
+    - taxonomy.vocabulary.subject
+id: node.scholarly_work.field_subject
+field_name: field_subject
+entity_type: node
+bundle: scholarly_work
+label: 'Topical Subject'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      subject: subject
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

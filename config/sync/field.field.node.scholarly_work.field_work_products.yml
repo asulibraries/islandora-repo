@@ -1,0 +1,39 @@
+uuid: 4341fe51-1b50-4df1-b76e-a7d20f6572a0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_work_products
+    - media.type.audio
+    - media.type.document
+    - media.type.file
+    - media.type.image
+    - media.type.remote_video
+    - media.type.video
+    - node.type.scholarly_work
+id: node.scholarly_work.field_work_products
+field_name: field_work_products
+entity_type: node
+bundle: scholarly_work
+label: 'Work Products'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      audio: audio
+      document: document
+      file: file
+      image: image
+      remote_video: remote_video
+      video: video
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: remote_video
+field_type: entity_reference
