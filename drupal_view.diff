@@ -1,0 +1,13 @@
+diff --git a/core/modules/views/src/Plugin/views/argument/EntityReferenceArgument.php b/core/modules/views/src/Plugin/views/argument/EntityReferenceArgument.php
+index d23b9c12b0..7a407c78d2 100644
+--- a/core/modules/views/src/Plugin/views/argument/EntityReferenceArgument.php
++++ b/core/modules/views/src/Plugin/views/argument/EntityReferenceArgument.php
+@@ -54,7 +54,7 @@ public static function create(ContainerInterface $container, array $configuratio
+   public function titleQuery() {
+     $titles = [];
+ 
+-    $entities = $this->entityTypeManager->getStorage($this->definition['target_entity_type_id'])->loadMultiple($this->value);
++    $entities = $this->entityTypeManager->getStorage($this->definition['target_entity_type_id'])->loadMultiple(array_map(fn($id) => (int)$id, $this->value));
+     foreach ($entities as $entity) {
+       $titles[$entity->id()] = $this->entityRepository->getTranslationFromContext($entity)->label();
+     }
