@@ -5,17 +5,16 @@
  * Contains asu_permissions.module.
  */
 
-use Drupal\Core\Access\AccessResultNeutral;
+use Drupal\asu_permissions\Exception\LibauthException;
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityStorageException;
+use Drupal\Core\Session\AccountInterface;
 use Drupal\group\Entity\Group;
 use Drupal\node\NodeInterface;
-use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\Access\AccessResult;
 use Drupal\user\UserInterface;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ConnectException;
-use Drupal\asu_permissions\Exception\LibauthException;
-use Drupal\Core\Entity\EntityStorageException;
 
 /**
  * Implements hook_node_insert().
@@ -287,69 +286,73 @@ function asu_permissions_node_access(NodeInterface $node, $op, AccountInterface 
  * Which is also hook_entity_type_access().
  */
 function asu_permissions_media_access(EntityInterface $entity, $operation, AccountInterface $account) {
-  $item = $entity->get('field_media_of')->entity;
-  if (!$item) {
-    // Return neutral because it isn't an Islandora media;
-    // it isn't attached to an item.
-    return new AccessResultNeutral();
-  }
+  // Allow if admin.
+  // @todo potentially do a lookup here for additional all-seeing roles.
   if ($account->isAuthenticated() && (in_array("administrator", $account->getRoles()) || in_array("metadata_manager", $account->getRoles()))) {
-    // Allow if admin.
-    // @todo potentially do a lookup here for additional all-seeing roles.
     $access_result = AccessResult::allowed();
+    $access_result->addCacheableDependency($entity);
+    $access_result->addCacheableDependency($account);
+    return $access_result;
   }
+
+  // Check Media Access Terms.
   if ($entity->hasField('field_access_terms') && $entity->get('field_access_terms')->entity) {
     $access_term = $entity->get('field_access_terms')->entity->getName();
+    if ($access_term == 'Public') {
+      return AccessResult::allowed();
+    }
+
+    // Anon are only allowed 'Public' when the terms field is populated.
+    if (!$account->isAuthenticated() && $access_term != "Public") {
+      $access_result = AccessResult::forbidden();
+      $access_result->addCacheableDependency($entity);
+      $access_result->addCacheableDependency($account);
+      return $access_result;
+    }
   }
-  else {
-    // Assume its public if not access is set.
-    $access_term = "Public";
-  }
-  if (!$account->isAuthenticated() && $access_term != "Public") {
-    $access_result = AccessResult::forbidden();
-  }
-  if (!isset($access_result)) {
-    // Depend on the permission of the parent item.
+
+  // Since the Media doesn't appear to care, we check related nodes.
+  // Get a node from the Islandora Media→Node or Standard Drupal Node→Media models.
+  if (($item = $entity->get('field_media_of')->entity) or ($item = current(\Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['field_work_products' => $entity->id()])))) {
+    // Default to what the parent access is.
     $taccess = $item->access($operation, $account);
+    // Check embargos set by parent objects.
+    // We have to walk parents to support complex objects.
+    $date = new \DateTime();
+    $today = $date->format("c");
     $all_parents = _walk_membership($item, [$item]);
     foreach ($all_parents as $par) {
-      $date = new \DateTime();
-      $today = $date->format("c");
       if ($par->hasField('field_embargo_release_date') && $par->get('field_embargo_release_date') && $par->get('field_embargo_release_date')->value != "T23:59:59" && $par->get('field_embargo_release_date')->value >= $today) {
-        $access_term = "Private";
-        $taccess = 0;
+        $taccess = FALSE;
+        break;
       }
     }
-    if ($taccess == 1) {
-
-      if ($account->isAuthenticated() && $access_term == "Private") {
-        $access_result = AccessResult::forbidden();
-        $groups = _get_groups_from_node($item);
-        foreach ($groups as $g) {
-          if ($g->getMember($account)) {
-            $access_result = AccessResult::allowed();
-            break;
-          }
-        }
-      }
-      else {
-        if ($access_term == "Public") {
-          $access_result = AccessResult::forbiddenIf($taccess == 0);
+    // If no parent or embargo blocks; check Groups permissions for Private.
+    if ($taccess && $access_term == "Private") {
+      // No access to Private by default, but allow if Group permits.
+      $access_result = AccessResult::forbidden();
+      $groups = _get_groups_from_node($item);
+      foreach ($groups as $g) {
+        if ($g->getMember($account)) {
+          $access_result = AccessResult::allowed();
+          break;
         }
       }
     }
     else {
-      // \Drupal::logger('asu permissions')->info("access is not 1");
-      $access_result = AccessResult::forbiddenIf($taccess == 0);
+      $access_result = AccessResult::forbidden();
     }
-
+    // Since parent permissions can change, add it as a cache dependency.
+    $access_result->addCacheableDependency($item);
   }
+
   if (isset($access_result)) {
     $access_result->addCacheableDependency($entity);
     $access_result->addCacheableDependency($account);
     $access_result->addCacheContexts(['theme']);
     return $access_result;
   }
+  // Media doesn't care and there are no parent items to govern access:
   else {
     return AccessResult::neutral();
   }
