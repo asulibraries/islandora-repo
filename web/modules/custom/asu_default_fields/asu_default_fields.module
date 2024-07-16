@@ -134,7 +134,8 @@ function asu_default_fields_media_presave(MediaInterface $media) {
  * Implements hook_node_presave().
  */
 function asu_default_fields_node_presave(NodeInterface $node) {
-  if ($node->bundle() == "collection" || $node->bundle() == "asu_repository_item") {
+  // todo: make the supported bundles part of a configuration.
+  if (in_array($node->bundle(), ["collection", "asu_repository_item", 'scholarly_work'])) {
     if ($node->hasField('field_title')) {
       $pgs = $node->field_title->getValue();
       if ($pgs) {

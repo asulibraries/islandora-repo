@@ -6,6 +6,7 @@ dependencies:
     - islandora
     - keep
     - node
+    - system
   theme:
     - asulib_barrio
 id: asulib_barrio_scholarlyworksidebar
@@ -34,3 +35,7 @@ visibility:
       node: '@node.node_route_context:node'
     bundles:
       scholarly_work: scholarly_work
+  request_path:
+    id: request_path
+    negate: true
+    pages: "/node/add*\r\n/node/*/edit*"
