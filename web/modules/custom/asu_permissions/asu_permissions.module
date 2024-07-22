@@ -214,7 +214,7 @@ function asu_permissions_node_update(NodeInterface $node) {
  * Implements hook_node_access().
  */
 function asu_permissions_node_access(NodeInterface $node, $op, AccountInterface $account) {
-  if ($node->bundle() == "collection" || $node->bundle() == "asu_repository_item") {
+  if (in_array($node->bundle(), ["collection", "asu_repository_item", "scholarly_work"])) {
     if ($account->isAuthenticated() && (in_array("administrator", $account->getRoles()) || in_array("metadata_manager", $account->getRoles()))) {
       // Allow if admin or metadata manager.
       return AccessResult::allowed();
@@ -309,53 +309,57 @@ function asu_permissions_media_access(EntityInterface $entity, $operation, Accou
       $access_result->addCacheableDependency($account);
       return $access_result;
     }
+
+    // Anyone authenticated is "ASU".
+    if ($account->isAuthenticated() && $access_term == "ASU Only") {
+      $access_result = AccessResult::allowed();
+      $access_result->addCacheableDependency($entity);
+      $access_result->addCacheableDependency($account);
+      return $access_result;
+    }
   }
 
   // Since the Media doesn't appear to care, we check related nodes.
-  // Get a node from the Islandora Media→Node or Standard Drupal Node→Media models.
-  if (($item = $entity->get('field_media_of')->entity) or ($item = current(\Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['field_work_products' => $entity->id()])))) {
-    // Default to what the parent access is.
-    $taccess = $item->access($operation, $account);
-    // Check embargos set by parent objects.
-    // We have to walk parents to support complex objects.
-    $date = new \DateTime();
-    $today = $date->format("c");
-    $all_parents = _walk_membership($item, [$item]);
-    foreach ($all_parents as $par) {
-      if ($par->hasField('field_embargo_release_date') && $par->get('field_embargo_release_date') && $par->get('field_embargo_release_date')->value != "T23:59:59" && $par->get('field_embargo_release_date')->value >= $today) {
-        $taccess = FALSE;
+  // Get a node from the Islandora Media→Node or Standard Drupal Node→Media
+  // models.
+  // First, Islandora...
+  $item = $entity->field_media_of?->entity;
+  // Second, grab the first node field that references this media.
+  if (!$item) {
+    foreach (array_map(fn($f): string => substr($f, strpos($f, '.') + 1), \Drupal::service('islandora.utils')->getReferencingFields('node', 'media')) as $field) {
+      if ($item = current(\Drupal::entityTypeManager()->getStorage('node')->loadByProperties([$field => $entity->id()]))) {
         break;
       }
     }
-    // If no parent or embargo blocks; check Groups permissions for Private.
-    if ($taccess && $access_term == "Private") {
-      // No access to Private by default, but allow if Group permits.
-      $access_result = AccessResult::forbidden();
-      $groups = _get_groups_from_node($item);
-      foreach ($groups as $g) {
-        if ($g->getMember($account)) {
-          $access_result = AccessResult::allowed();
+  }
+  $access_result = AccessResult::neutral();
+  if ($item) {
+    $access_result->addCacheableDependency($item);
+    // Default to what the parent access is.
+    if (!$item->access($operation, $account)) {
+      $access_result = $access_result->orIf(AccessResult::forbidden());
+    }
+    else {
+      // Check embargos set by parent objects.
+      // We have to walk parents to support complex objects.
+      $date = new \DateTime();
+      $today = $date->format("c");
+      $all_parents = _walk_membership($item, [$item]);
+      foreach ($all_parents as $par) {
+        if ($par->hasField('field_embargo_release_date') && $par->get('field_embargo_release_date') && $par->get('field_embargo_release_date')->value != "T23:59:59" && $par->get('field_embargo_release_date')->value >= $today) {
+          $access_result = $access_result->orIf(AccessResult::forbidden());
+          // Since parent permissions can change, add it as a cache dependency.
+          $access_result->addCacheableDependency($par);
           break;
         }
       }
     }
-    else {
-      $access_result = AccessResult::forbidden();
-    }
-    // Since parent permissions can change, add it as a cache dependency.
-    $access_result->addCacheableDependency($item);
   }
 
-  if (isset($access_result)) {
-    $access_result->addCacheableDependency($entity);
-    $access_result->addCacheableDependency($account);
-    $access_result->addCacheContexts(['theme']);
-    return $access_result;
-  }
-  // Media doesn't care and there are no parent items to govern access:
-  else {
-    return AccessResult::neutral();
-  }
+  $access_result->addCacheableDependency($entity);
+  $access_result->addCacheableDependency($account);
+  $access_result->addCacheContexts(['theme']);
+  return $access_result;
 
 }
 
