@@ -35,20 +35,45 @@ dependencies:
     - field.field.node.scholarly_work.field_work_products
     - node.type.scholarly_work
   module:
+    - asu_search
     - controlled_access_terms
     - entity_reference_revisions
+    - field_group
     - text
     - user
+third_party_settings:
+  field_group:
+    group_rights_reuse:
+      children:
+        - field_copyright_statement
+        - field_reuse_permissions
+      label: 'Rights & Reuse'
+      parent_name: ''
+      region: content
+      weight: 9
+      format_type: html_element
+      format_settings:
+        classes: 'container row'
+        show_empty_fields: false
+        id: rights-reuse
+        element: div
+        show_label: false
+        label_element: h3
+        label_element_classes: ''
+        attributes: ''
+        effect: none
+        speed: fast
 id: node.scholarly_work.default
 targetEntityType: node
 bundle: scholarly_work
 mode: default
 content:
   field_copyright_statement:
-    type: entity_reference_label
+    type: entity_reference_entity_view
     label: above
     settings:
-      link: true
+      view_mode: image_as_link
+      link: false
     third_party_settings: {  }
     weight: 7
     region: content
@@ -65,7 +90,7 @@ content:
     weight: 3
     region: content
   field_linked_agent:
-    type: typed_relation_dedup
+    type: typed_relation_brief
     label: above
     settings:
       link: true
@@ -90,10 +115,11 @@ content:
     weight: 6
     region: content
   field_reuse_permissions:
-    type: entity_reference_label
+    type: entity_reference_entity_view
     label: above
     settings:
-      link: true
+      view_mode: image_as_link
+      link: false
     third_party_settings: {  }
     weight: 8
     region: content
