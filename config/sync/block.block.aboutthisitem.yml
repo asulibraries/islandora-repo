@@ -4,6 +4,7 @@ status: true
 dependencies:
   module:
     - asu_item_extras
+    - islandora
     - node
     - system
   theme:
@@ -19,6 +20,8 @@ settings:
   label: 'About this item'
   label_display: visible
   provider: asu_item_extras
+  context_mapping:
+    node: '@node.node_route_context:node'
 visibility:
   request_path:
     id: request_path
@@ -32,3 +35,9 @@ visibility:
       node: '@node.node_route_context:node'
     bundles:
       asu_repository_item: asu_repository_item
+      scholarly_work: scholarly_work
+  media_source_mimetype:
+    id: media_source_mimetype
+    negate: false
+    context_mapping: {  }
+    mimetype: ''

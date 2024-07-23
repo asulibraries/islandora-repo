@@ -3,14 +3,12 @@
 namespace Drupal\asu_item_extras\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
-use Drupal\Core\Url;
-use Drupal\Core\Link;
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\Core\Routing\RouteMatchInterface;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Cache\Cache;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Routing\RouteMatchInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Provides a 'About this item' Block.
@@ -19,6 +17,9 @@ use Drupal\Core\Cache\Cache;
  *   id = "about_this_item_block",
  *   admin_label = @Translation("About this item"),
  *   category = @Translation("Views"),
+ *   context_definitions = {
+ *     "node" = @ContextDefinition("entity:node", label = @Translation("Node"))
+ *   }
  * )
  */
 class AboutThisItemBlock extends BlockBase implements ContainerFactoryPluginInterface {
@@ -84,7 +85,7 @@ class AboutThisItemBlock extends BlockBase implements ContainerFactoryPluginInte
   /**
    * {@inheritdoc}
    */
-  public function build() {
+  public function build(): array {
     /*
      * The title of the block could be dependant on the underlying Islandora
      * Model used. In liey of that, the title should just be "About this item".
@@ -98,57 +99,86 @@ class AboutThisItemBlock extends BlockBase implements ContainerFactoryPluginInte
     // either "Repository Item", "ASU Repository Item", or "Collection",
     // the underlying node can be accessed via the path.
     // @todo use dependency injection.
-    $node = $this->routeMatch->getParameter('node');
-    $node = is_string($node) ? $this->entityTypeManager->getStorage('node')->load($node) : $node;
-    if ($node) {
-      $nid = $node->id();
-    }
-    else {
-      $nid = 0;
-    }
+    $node = $this->getContextValue('node');
     if (!isset($node)) {
       return [];
     }
+    $build = [];
+    if ($node->hasField('field_work_products')) {
+      $work_products = $node->get('field_work_products');
+      // Grabbing a thumbnail from the first item.
+      $first = $work_products->first();
+      // Checking media access because checking thumbail access can return
+      // a false positive result but still fail to work when the user attempts
+      // to access it via the browser; although I don't know why.
+      if ($first->entity?->access('view') && $thumbnail = $first->entity->get('thumbnail')) {
+        $build['content'][] = $thumbnail->view(['label' => 'hidden']);
+      }
+
+      // Build a list of the other items.
+      $media_source_service = \Drupal::service('islandora.media_source_service');
+      $work_product_render_array = [];
+      $cache_tags = ["node:{$node->id()}"];
+      foreach ($work_products as $work_product_reference) {
+        $wp = $work_product_reference->entity;
+        if (!$wp) {
+          continue;
+        }
+        $cache_tags[] = "media:{$wp->id()}";
+        $item_render[] = ($wp->access('view')) ?
+        $wp->get($media_source_service->getSourceFieldName($wp->bundle()))->view([
+          'type' => 'file_download_link',
+          'label' => 'hidden',
+          'settings' => [
+            'link_text' => $wp->name->value,
+            'new_tab' => TRUE,
+            'force_download' => FALSE,
+          ],
+        ]) :
+              $wp->name->view(['label' => 'hidden']);
+        $item_render[] = $wp->field_mime_type->view(['label' => 'hidden']);
+        $item_render[] = $wp->field_file_size->view([
+          'type' => 'file_size',
+          'label' => 'hidden',
+        ]);
+        $work_product_render_array[] = $item_render;
+      }
+      if ($work_product_render_array) {
+        $build[] = [
+          '#theme' => 'item_list',
+          '#attached' => ['library' => ['keep/scholarly-work-sidebar']],
+          '#list_type' => 'ol',
+          '#items' => $work_product_render_array,
+          '#cache' => ['contexts' => ['user.roles', 'route'], 'tags' => $cache_tags],
+        ];
+      }
+    }
     $output_links = [];
-    // Add a link for the "Overview" of this node.
-    $variables['nodeid'] = $nid;
-    $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/items/' . $nid, ['attributes' => ['class' => 'nav-link']]);
-    $link = Link::fromTextAndUrl($this->t('Overview'), $url);
-    $link = $link->toRenderable();
-    $output_links[] = \Drupal::service('renderer')->render($link);
-    // The link to "Full metadata" has been taken out of this block and moved
-    // to the bottom of the page - and as long as there are tabs for nodes to
-    // "View" and "Full metadata", the link in this block is extra.
-    // Add a link to get the Permalink for this node. Could this be a javascript
-    // event that will send the current node's URL to the copy buffer?
+    // Add a link to get the Permalink for this node.
     if ($node->hasField('field_handle') && $node->get('field_handle')->value != NULL) {
       $hdl = $node->get('field_handle')->value;
       $output_links[] = '<div class="permalink_button"><a class="btn btn-maroon btn-md copy_permalink_link" title="' . $hdl . '"><i class="far fa-copy fa-lg copy_permalink_link" title="' . $hdl . '"></i>&nbsp;Copy permalink</a></div>';
+      $build[] = [
+        '#markup' =>
+        (count($output_links) > 0) ?
+        "<nav class='sidebar'>" . implode("", $output_links) . "</nav>" :
+        "",
+        '#attached' => [
+          'library' => [
+            'asu_item_extras/interact',
+          ],
+        ],
+      ];
     }
 
-    return [
-      '#markup' =>
-      (count($output_links) > 0) ?
-      "<nav class='sidebar'>" . implode("", $output_links) . "</nav>" :
-      "",
-      '#attached' => [
-        'library' => [
-          'asu_item_extras/interact',
-        ],
-      ],
-    ];
+    return $build;
   }
 
   /**
    * {@inheritdoc}
    */
   public function getCacheTags() {
-    if ($this->routeMatch->getParameter('node')) {
-      $node = $this->routeMatch->getParameter('node');
-    }
-    if (!is_object($node)) {
-      $node = $this->entityTypeManager->getStorage('node')->load($node);
-    }
+    $node = $this->getContextValue('node');
     if (!isset($node)) {
       return parent::getCacheTags();
     }

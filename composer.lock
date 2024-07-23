@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5cab0bd18a0259ac54947da8fba9583f",
+    "content-hash": "8c6abe91f5d13473c58e7adf5bce3006",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -85,16 +85,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/asulibraries/keep.git",
-                "reference": "1869c687811ce9687f82d7a54209c9a509df7455"
+                "reference": "62fcc95f7804ecfa085f40666fb7f52be871ba19"
             },
             "require": {
                 "drupal/file_download_link": "^2",
+                "drupal/media_thumbnails_pdf": "^2.0@beta",
                 "drupal/token": "^1"
             },
             "default-branch": true,
             "type": "drupal-module",
             "description": "Code specifically for KEEP.",
-            "time": "2024-07-09T21:16:29+00:00"
+            "time": "2024-07-17T16:34:43+00:00"
         },
         {
             "name": "aws/aws-crt-php",
@@ -7037,6 +7038,98 @@
             }
         },
         {
+            "name": "drupal/media_thumbnails",
+            "version": "1.0.0-beta2",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/media_thumbnails.git",
+                "reference": "8.x-1.0-beta2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/media_thumbnails-8.x-1.0-beta2.zip",
+                "reference": "8.x-1.0-beta2",
+                "shasum": "127cdea8280fa1f96eac4bf6096825db16c489ac"
+            },
+            "require": {
+                "drupal/core": "^8 || ^9 || ^10"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "8.x-1.0-beta2",
+                    "datestamp": "1694697406",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "drubb",
+                    "homepage": "https://www.drupal.org/user/69706"
+                }
+            ],
+            "description": "Plugin manager for media entity thumbnail generation",
+            "homepage": "https://www.drupal.org/project/media_thumbnails",
+            "support": {
+                "source": "https://git.drupalcode.org/project/media_thumbnails"
+            }
+        },
+        {
+            "name": "drupal/media_thumbnails_pdf",
+            "version": "2.0.0-beta2",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/media_thumbnails_pdf.git",
+                "reference": "2.0.0-beta2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/media_thumbnails_pdf-2.0.0-beta2.zip",
+                "reference": "2.0.0-beta2",
+                "shasum": "1103cc4070d419dab72ae2effad2968f57552767"
+            },
+            "require": {
+                "drupal/core": "^9.3 || ^10",
+                "drupal/media_thumbnails": "^1.0 || ^2.0",
+                "ext-imagick": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "2.0.0-beta2",
+                    "datestamp": "1664110837",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Project has not opted into security advisory coverage!"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Boris Böhne (drubb)",
+                    "homepage": "https://www.drupal.org/u/drubb",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Generate custom thumbnails for pdf media entities.",
+            "homepage": "https://drupal.org/project/media_thumbnails_pdf",
+            "support": {
+                "source": "https://cgit.drupalcode.org/media_thumbnails_pdf",
+                "issues": "https://drupal.org/project/issues/media_thumbnails_pdf"
+            }
+        },
+        {
             "name": "drupal/message",
             "version": "1.4.0",
             "source": {
@@ -8793,6 +8886,51 @@
                 "source": "https://git.drupalcode.org/project/search_api",
                 "issues": "https://www.drupal.org/project/issues/search_api",
                 "irc": "irc://irc.freenode.org/drupal-search-api"
+            }
+        },
+        {
+            "name": "drupal/search_api_attachments",
+            "version": "9.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/search_api_attachments.git",
+                "reference": "9.0.3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/search_api_attachments-9.0.3.zip",
+                "reference": "9.0.3",
+                "shasum": "9c71c80d6d2471117ac8273a525715ba0c74081d"
+            },
+            "require": {
+                "drupal/core": "^9 || ^10",
+                "drupal/search_api": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "9.0.3",
+                    "datestamp": "1719559249",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "izus",
+                    "homepage": "https://www.drupal.org/user/514568"
+                }
+            ],
+            "description": "Extract and index file fields content.",
+            "homepage": "https://www.drupal.org/project/search_api_attachments",
+            "support": {
+                "source": "https://git.drupalcode.org/project/search_api_attachments"
             }
         },
         {
@@ -22864,6 +23002,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "asulibraries/keep": 20,
         "drupal/auto_entitylabel": 10,
         "drupal/bootstrap_barrio": 20,
         "drupal/cas": 10,
