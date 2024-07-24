@@ -222,7 +222,7 @@ function asu_permissions_node_access(NodeInterface $node, $op, AccountInterface 
     // If the node is published and there is parent access,
     // don't bother checking the groups.
     if ($node->isPublished()) {
-      $access_result = AccessResult::allowed();
+      $access_result = AccessResult::neutral();
       $parents = _walk_membership($node, []);
       if (count($parents) > 0) {
         foreach ($parents as $par) {
