@@ -1,9 +1,7 @@
 uuid: 6624662b-1f6e-4083-934e-33ada1740251
 langcode: en
 status: open
-dependencies:
-  module:
-    - self_deposit
+dependencies: {  }
 weight: 0
 open: null
 close: null
@@ -380,12 +378,12 @@ handlers:
       from_mail: '[webform_submission:values:your_email:raw]'
       from_options: {  }
       from_name: '[webform_submission:values:your_name:raw]'
-      reply_to: '[webform_submission:values:your_email:raw]'
+      reply_to: '[webform_submission:values:name] <[webform_submission:values:email:raw]>'
       return_path: ''
       sender_mail: ''
       sender_name: ''
       subject: 'KEEP self deposit from [webform_submission:user]'
-      body: "A new self deposit has been submitted on KEEP<br />\r\nThe submission can be accessed here:&nbsp;[webform_submission:url]<br />\r\n<br />\r\n<p>Submitted on [webform_submission:created]</p><br />\r\n<p>Submitted by: [webform_submission:user]</p><br />\r\n<p>Submitted values are:</p><br />\r\n[webform_submission:values]<br />\r\n&nbsp;"
+      body: '<p>A new self deposit has been submitted on KEEP<br>The submission can be accessed here:&nbsp;[webform_submission:url]<br><br>&nbsp;</p><p>Submitted on [webform_submission:created]</p><p><br>&nbsp;</p><p>Submitted by: [webform_submission:user]</p><p><br>&nbsp;</p><p>Submitted values are:</p><p><br>[webform_submission:values]<br>&nbsp;</p>'
       excluded_elements: {  }
       ignore_access: false
       exclude_empty: true
