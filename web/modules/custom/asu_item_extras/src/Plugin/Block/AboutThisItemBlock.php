@@ -120,12 +120,15 @@ class AboutThisItemBlock extends BlockBase implements ContainerFactoryPluginInte
       $work_product_render_array = [];
       $cache_tags = ["node:{$node->id()}"];
       foreach ($work_products as $work_product_reference) {
+        $item_render = ['#attributes' => ['class' => ['row']]];
         $wp = $work_product_reference->entity;
         if (!$wp) {
           continue;
         }
         $cache_tags[] = "media:{$wp->id()}";
-        $item_render[] = ($wp->access('view')) ?
+        $icon = $this->mimeToFAIcon($wp->field_mime_type->value);
+        $item_render[] = ['#type' => 'markup', '#markup' => "<i class='col far {$icon}'></i>"];
+        $title = ($wp->access('view')) ?
         $wp->get($media_source_service->getSourceFieldName($wp->bundle()))->view([
           'type' => 'file_download_link',
           'label' => 'hidden',
@@ -136,11 +139,15 @@ class AboutThisItemBlock extends BlockBase implements ContainerFactoryPluginInte
           ],
         ]) :
               $wp->name->view(['label' => 'hidden']);
-        $item_render[] = $wp->field_mime_type->view(['label' => 'hidden']);
-        $item_render[] = $wp->field_file_size->view([
+        $title['#attributes']['class'][] = 'col';
+        $item_render[] = $title;
+        $type_size = ['#type' => 'container', '#attributes' => ['class' => ['type-size', 'col']]];
+        $type_size[] = $wp->field_file_size->view([
           'type' => 'file_size',
           'label' => 'hidden',
         ]);
+        $type_size[] = $wp->field_mime_type->view(['label' => 'hidden']);
+        $item_render[] = $type_size;
         $work_product_render_array[] = $item_render;
       }
       if ($work_product_render_array) {
@@ -148,6 +155,7 @@ class AboutThisItemBlock extends BlockBase implements ContainerFactoryPluginInte
           '#theme' => 'item_list',
           '#attached' => ['library' => ['keep/scholarly-work-sidebar']],
           '#list_type' => 'ol',
+          '#attributes' => ['class' => ['container']],
           '#items' => $work_product_render_array,
           '#cache' => ['contexts' => ['user.roles', 'route'], 'tags' => $cache_tags],
         ];
@@ -195,6 +203,62 @@ class AboutThisItemBlock extends BlockBase implements ContainerFactoryPluginInte
     // You must set context of this block with 'route' context tag.
     // Every new route this block will rebuild.
     return Cache::mergeContexts(parent::getCacheContexts(), ['route']);
+  }
+
+  /**
+   *
+   */
+  private function mimeToFAIcon($mime_type) {
+    // List of official MIME Types: http://www.iana.org/assignments/media-types/media-types.xhtml
+    // Font Awesome 5 icons.
+    // Generic cases.
+    if (str_starts_with($mime_type, 'image')) {
+      return 'fa-file-image';
+    }
+    elseif (str_starts_with($mime_type, 'audio')) {
+      return 'fa-file-audio';
+    }
+    elseif (str_starts_with($mime_type, 'video')) {
+      return 'fa-file-video';
+    }
+
+    // Application cases:
+    switch ($mime_type) {
+      // Documents.
+      case 'application/pdf':
+        return 'fa-file-pdf';
+
+      case 'application/msword':
+      case 'application/vnd.ms-word':
+      case 'application/vnd.oasis.opendocument.text':
+      case 'application/vnd.openxmlformats-officedocument.wordprocessingml':
+        return 'fa-file-word';
+
+      case 'application/vnd.ms-excel':
+      case 'application/vnd.openxmlformats-officedocument.spreadsheetml':
+      case 'application/vnd.oasis.opendocument.spreadsheet':
+        return 'fa-file-excel';
+
+      case 'application/vnd.ms-powerpoint':
+      case 'application/vnd.openxmlformats-officedocument.presentationml':
+      case 'application/vnd.oasis.opendocument.presentation':
+        return 'fa-file-powerpoint';
+
+      case 'text/plain':
+        return 'fa-file-alt';
+
+      case 'text/html':
+      case 'application/json':
+        return 'fa-file-code';
+
+      // Archives.
+      case 'application/gzip':
+      case 'application/zip':
+        return 'fa-file-archive';
+
+      default:
+        return 'fa-file';
+    }
   }
 
 }
