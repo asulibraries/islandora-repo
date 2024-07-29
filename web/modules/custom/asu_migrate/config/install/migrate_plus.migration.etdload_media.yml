@@ -1,13 +1,17 @@
-# Uninstall this config when the feature is uninstalled
+uuid: 60ca5700-8470-4675-8a6a-e5a127dad463
+langcode: en
+status: true
 dependencies:
   enforced:
     module:
       - asu_migrate
-
 id: etdload_media
-label: Import ETD Media from CSV
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: null
 migration_group: migrate_etdload_csv
-
+label: 'Import ETD Media from CSV'
 source:
   plugin: csv
   path: /var/www/html/etdload/events.csv
@@ -15,9 +19,8 @@ source:
   ids:
     - item_id
   constants:
-    use: Original File
+    use: 'Original File'
     uid: 1
-
 process:
   name:
     source: title
@@ -29,16 +32,16 @@ process:
     -
       plugin: skip_on_value
       source: model
-      value: "Complex Object"
+      value: 'Complex Object'
       method: row
     -
       plugin: static_map
       map:
-        "Audio": "audio"
-        "Video": "video"
-        "Image": "image"
-        "Binary": "file"
-        "Digital Document": "document"
+        Audio: audio
+        Video: video
+        Image: image
+        Binary: file
+        'Digital Document': document
   fname:
     -
       plugin: skip_on_empty
@@ -46,11 +49,10 @@ process:
       source: file_path
     -
       plugin: explode
-      delimiter: "/"
+      delimiter: /
     -
       plugin: array_pop
   field_original_name: '@fname'
-
   field_media_use:
     plugin: entity_lookup
     source: constants/use
@@ -58,97 +60,88 @@ process:
     value_key: name
     bundle_key: vid
     bundle: islandora_media_use
-
   field_media_document:
     -
       plugin: skip_on_value
       method: process
       source: model
       not_equals: true
-      value: "Digital Document"
+      value: 'Digital Document'
     -
       plugin: migration_lookup
       migration: etdload_file
       no_stub: true
       source: item_id
-
   field_media_image:
     -
       plugin: skip_on_value
       method: process
       source: model
       not_equals: true
-      value: "Image"
+      value: Image
     -
       plugin: migration_lookup
       migration: etdload_file
       no_stub: true
       source: item_id
-
   field_media_video_file:
     -
       plugin: skip_on_value
       method: process
       source: model
       not_equals: true
-      value: "Video"
+      value: Video
     -
       plugin: migration_lookup
       source: item_id
       migration: etdload_file
       no_stub: true
-
   field_media_audio_file:
     -
       plugin: skip_on_value
       method: process
       source: model
       not_equals: true
-      value: "Audio"
+      value: Audio
     -
       plugin: migration_lookup
       migration: etdload_file
       no_stub: true
       source: item_id
-
   field_media_file:
     -
       plugin: skip_on_value
       method: process
       source: model
       not_equals: true
-      value: "Binary"
+      value: Binary
     -
       plugin: migration_lookup
       migration: etdload_file
       no_stub: true
       source: item_id
-
   field_media_of:
     plugin: migration_lookup
     source: item_id
     migration: etdload_node
     no_stub: true
-
   field_access_terms:
     -
       plugin: static_map
-      source: attachment file access
+      source: 'attachment file access'
       map:
-        1: "Public" #OpenAccess
-        2: "ASU Only" #ASU
-        3: "Private" #Closed
-      default_value: "Public"
+        1: Public
+        2: 'ASU Only'
+        3: Private
+      default_value: Public
     -
       plugin: entity_lookup
       bundle: islandora_access
       bundle_key: vid
       entity_type: taxonomy_term
       value_key: name
-
 destination:
   plugin: 'entity:media'
-
 migration_dependencies:
   required:
     - migrate_plus.migration.etdload_file
