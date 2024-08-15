@@ -227,12 +227,12 @@ function asu_default_fields_node_insert(NodeInterface $node) {
     $parent = $node->get('field_member_of')->entity;
     if ($parent) {
       $save = FALSE;
-      if ($parent->hasField('field_default_original_file_perm') && $parent->get('field_default_original_file_perm')->entity != NULL && $node->get('field_default_original_file_perm')->isEmpty()) {
+      if ($parent->hasField('field_default_original_file_perm') && $parent->get('field_default_original_file_perm')->entity != NULL && $node->hasField('field_default_original_file_perm') && $node->get('field_default_original_file_perm')->isEmpty()) {
         $of_default_perms = $parent->get('field_default_original_file_perm')->entity->id();
         $node->set('field_default_original_file_perm', $of_default_perms);
         $save = TRUE;
       }
-      if ($parent->hasField('field_default_derivative_file_pe') && !$parent->get('field_default_derivative_file_pe')->isEmpty() && $node->get('field_default_derivative_file_pe')->isEmpty()) {
+      if ($parent->hasField('field_default_derivative_file_pe') && !$parent->get('field_default_derivative_file_pe')->isEmpty() && $node->hasField('field_default_derivative_file_pe') && $node->get('field_default_derivative_file_pe')->isEmpty()) {
         $deriv_default_perms = $parent->get('field_default_derivative_file_pe')->entity->id();
         $node->set('field_default_derivative_file_pe', $deriv_default_perms);
         $save = TRUE;
