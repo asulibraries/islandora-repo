@@ -25,7 +25,7 @@ function load_or_create_term(array $properties) {
   if (!empty($terms)) {
     return reset($terms)->id();
   }
-  print('Creating term: ' . print_r($properties, TRUE) . "\n");
+  \Drupal::logger('etdload')->info('Creating term: ' . json_encode($properties));
   $term = $ts->create($properties);
   $term->save();
   return $term->id();
@@ -104,7 +104,6 @@ $degree_map = [
   "masters" => load_or_create_term(['name' => "Masters Thesis", 'vid' => 'genre']),
   "doctoral" => load_or_create_term(['name' => "Doctoral Dissertation", 'vid' => 'genre']),
 ];
-print(print_r($degree_map, TRUE));
 $language_map = [
 // English.
   "en" => load_or_create_term(['name' => "en", 'vid' => 'language']),
@@ -149,8 +148,7 @@ foreach (array_filter(scandir($path), function ($value) {
   $zip = new ZipArchive();
   $zip_path = $path . DIRECTORY_SEPARATOR . $zip_name;
   if ($zip->open($zip_path) !== TRUE) {
-    // $this->io()->error("Could not open {$zip_path}!");
-    print("Could not open {$zip_path}!\n");
+    $this->io()->error("Could not open {$zip_path}!");
     continue;
   }
 
@@ -161,7 +159,7 @@ foreach (array_filter(scandir($path), function ($value) {
 
   $xml = simplexml_load_file(current(glob($extract_destination . DIRECTORY_SEPARATOR . '*_DATA.xml')));
   if (!$xml) {
-    print("Could not find _DATA.xml in $extract_destination!\n");
+    $this->io()->error("Could not find _DATA.xml in $extract_destination!\n");
     continue;
   }
   // Load all the elements for each field.
@@ -314,7 +312,7 @@ foreach (array_filter(scandir($path), function ($value) {
   // Create node. (Move after media later.)
   $node = $ns->create($node_metadata);
   $node->save();
-  $this->io()->writeln("Created '{$node->label()} ({$node->id()})");
+  $this->io()->writeln("Created '{$node->label()} ({$node->id()}) from ETD $etd_id");
 
   // Move Zip file to completed location.
   rename($zip_path, $processed_zip_dir . DIRECTORY_SEPARATOR . $zip_name);
