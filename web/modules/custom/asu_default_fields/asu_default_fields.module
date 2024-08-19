@@ -18,6 +18,20 @@ use GuzzleHttp\Exception\RequestException;
  * Make a media's files private/public if necessary.
  */
 function asu_default_fields_update_file_schema(EntityInterface $entity) {
+  // Leave it alone if we don't have a parent and no explicit access data.
+  // Media->Node (Islandora mode).
+  $parent = $entity->field_media_of?->entity;
+  // Node->media.
+  if (!$parent) {
+    foreach (array_map(fn($f): string => substr($f, strpos($f, '.') + 1), \Drupal::service('islandora.utils')->getReferencingFields('node', 'media')) as $field) {
+      if ($parent = current(\Drupal::entityTypeManager()->getStorage('node')->loadByProperties([$field => $entity->id()]))) {
+        break;
+      }
+    }
+  }
+  if (!$parent && $entity->field_access_terms?->isEmpty()) {
+    return;
+  }
   // Check for access by Anonymous User (uid 0).
   $accessible = $entity->access('view', \Drupal::entityTypeManager()->getStorage('user')->load(0));
 
@@ -134,7 +148,7 @@ function asu_default_fields_media_presave(MediaInterface $media) {
  * Implements hook_node_presave().
  */
 function asu_default_fields_node_presave(NodeInterface $node) {
-  // todo: make the supported bundles part of a configuration.
+  // @todo make the supported bundles part of a configuration.
   if (in_array($node->bundle(), ["collection", "asu_repository_item", 'scholarly_work'])) {
     if ($node->hasField('field_title')) {
       $pgs = $node->field_title->getValue();
