@@ -136,6 +136,7 @@ class AboutThisItemBlock extends BlockBase implements ContainerFactoryPluginInte
             'link_text' => $wp->name->value,
             'new_tab' => TRUE,
             'force_download' => FALSE,
+            'custom_classes' => 'resource_engagement_link',
           ],
         ]) :
               $wp->name->view(['label' => 'hidden']);
