@@ -2,18 +2,18 @@
 
 namespace Drupal\self_deposit\Plugin\WebformHandler;
 
-use Drupal\node\Entity\Node;
-use Drupal\media\Entity\Media;
-use Drupal\user\Entity\User;
-use Drupal\paragraphs\Entity\Paragraph;
-use Drupal\webform\Plugin\WebformHandlerBase;
-use Drupal\webform\WebformSubmissionInterface;
+use Drupal\asu_deposit_methods\DepositUtils;
 use Drupal\Core\Config\ConfigFactoryInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
+use Drupal\media\Entity\Media;
+use Drupal\node\Entity\Node;
+use Drupal\paragraphs\Entity\Paragraph;
+use Drupal\user\Entity\User;
+use Drupal\webform\Plugin\WebformHandlerBase;
 use Drupal\webform\WebformSubmissionConditionsValidatorInterface;
+use Drupal\webform\WebformSubmissionInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Drupal\asu_deposit_methods\DepositUtils;
 
 /**
  * Create a new repository item entity from a webform submission.
@@ -69,7 +69,7 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
     ConfigFactoryInterface $config_factory,
     EntityTypeManagerInterface $entity_type_manager,
     WebformSubmissionConditionsValidatorInterface $conditions_validator,
-    DepositUtils $deposit_utils
+    DepositUtils $deposit_utils,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->loggerFactory = $logger_factory->get('custom_webform_handler');
@@ -89,14 +89,14 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
    */
   public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
     return new static(
-      $configuration,
-      $plugin_id,
-      $plugin_definition,
-      $container->get('logger.factory'),
-      $container->get('config.factory'),
-      $container->get('entity_type.manager'),
-      $container->get('webform_submission.conditions_validator'),
-      $container->get('asu_deposit_methods.deposit_utils')
+    $configuration,
+    $plugin_id,
+    $plugin_definition,
+    $container->get('logger.factory'),
+    $container->get('config.factory'),
+    $container->get('entity_type.manager'),
+    $container->get('webform_submission.conditions_validator'),
+    $container->get('asu_deposit_methods.deposit_utils')
     );
   }
 
@@ -110,24 +110,24 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
   /**
    * Actually creates the node.
    */
-  private function createNode($webform_submission, $values, $title, $model, $copyright_term, $perm_term, $member_of, $user = NULL, $child = FALSE) {
-    $paragraph = Paragraph::create(
-      ['type' => 'complex_title', 'field_main_title' => $title]
-    );
+  private function createNode($webform_submission, $values, $title, $copyright_term, $perm_term, $member_of, $user = NULL) {
+    $paragraph = Paragraph::create([
+      'type' => 'complex_title',
+      'field_main_title' => $title,
+    ]);
 
     $paragraph->save();
 
     $keywords = [];
     foreach ($values['keywords'] as $key) {
-      $kterm = $this->depositUtils->getOrCreateTerm($key, 'subject');
-      array_push($keywords, $kterm);
+      $keywords[] = $this->depositUtils->getOrCreateTerm($key, 'subject');
     }
 
     $contribs = [];
     if (array_key_exists('full_name', $values)) {
       array_push($contribs, $this->depositUtils->getOrCreateTerm($values['full_name']['last'] . ", " . $values['full_name']['first'], 'person', 'relators:aut'));
     }
-    else if (array_key_exists('your_name', $values)) {
+    elseif (array_key_exists('your_name', $values)) {
       array_push($contribs, $this->depositUtils->getOrCreateTerm($values['your_name'], 'person', 'relators:aut'));
     }
     else {
@@ -217,7 +217,7 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
     }
 
     $node_args = [
-      'type' => 'asu_repository_item',
+      'type' => 'scholarly_work',
       'langcode' => 'en',
       'created' => time(),
       'changed' => time(),
@@ -229,7 +229,9 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
         ],
       ],
       'field_reuse_permissions' => [
-        ['target_id' => $values['reuse_permissions']],
+        [
+          'target_id' => $values['reuse_permissions'],
+        ],
       ],
       'field_subject' => $keywords,
       'field_linked_agent' => $contribs,
@@ -240,27 +242,24 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
         'value' => $series_val,
       ],
       'field_copyright_statement' => [
-        ['target_id' => $copyright_term->id()],
-      ],
-      'field_default_derivative_file_pe' => [
-        ['target_id' => $perm_term->id()],
-      ],
-      'field_default_original_file_perm' => [
-        ['target_id' => $perm_term->id()],
-      ],
-      'field_model' => [
-        ['target_id' => $model->id()],
+        [
+          'target_id' => $copyright_term->id(),
+        ],
       ],
       'field_member_of' => [
-        ['target_id' => $member_of],
+          [
+            'target_id' => $member_of,
+          ],
       ],
     ];
-    if ($values['number_of_pages'] && $child == FALSE) {
+    if ($values['number_of_pages']) {
       $node_args['field_extent'] = [
-        ['value' => $values['number_of_pages'] . " pages"],
+        [
+          'value' => $values['number_of_pages'] . " pages",
+        ],
       ];
     }
-    if ($values['item_description'] && $child == FALSE) {
+    if ($values['item_description']) {
       $node_args['field_rich_description'] = [
         'value' => $values['item_description'],
         'format' => 'description_restricted_items',
@@ -293,41 +292,8 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
   public function preSave(WebformSubmissionInterface $webform_submission) {
     // Get an array of the values from the submission.
     $values = $webform_submission->getData();
-    $files = $values['file'];
-    $file_repository = \Drupal::service('file.repository');
-    $new_dest = "private://c130/";
 
-    if (count($files) > 1) {
-      $model = 'Complex Object';
-      $child_files = [];
-      foreach ($files as $file_id) {
-        $file = $this->entityTypeManager->getStorage('file')->load(intval($file_id));
-        $mime = $file->getMimeType();
-        $filename = $file->getFilename();
-        $file = $file_repository->copy($file, $new_dest . $filename);
-        $file_id = $file->id();
-        list($fmodel, $fmedia_type, $ffield_name) = $this->depositUtils->getModel($mime, $filename);
-        $child_files[$file_id] = [
-          'model' => $fmodel,
-          'media_type' => $fmedia_type,
-          'field_name' => $ffield_name,
-          'file_name' => $filename,
-        ];
-      }
-    }
-    else {
-      $file = $this->entityTypeManager->getStorage('file')->load(intval($files[0]));
-      $mime = $file->getMimeType();
-      $filename = $file->getFilename();
-      $files[0] = $file_repository->copy($file, $new_dest . $filename)->id();
-      list($model, $media_type, $field_name) = $this->depositUtils->getModel($mime, $filename);
-    }
-
-    $term = $model;
     $taxo_manager = $this->entityTypeManager->getStorage('taxonomy_term');
-    $taxo_terms = $taxo_manager->loadByProperties(['name' => $term]);
-    $taxo_term = reset($taxo_terms);
-
     $copyright_term_arr = $taxo_manager->loadByProperties(['name' => 'In Copyright']);
     $copyright_term = reset($copyright_term_arr);
 
@@ -352,26 +318,29 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
       $user->save();
       \Drupal::moduleHandler()->invoke('asu_permissions', 'user_insert', [$user]);
     }
-
-    if ($model == 'Complex Object') {
-      $node = $this->createNode($webform_submission, $values, $values['item_title'], $taxo_term, $copyright_term, $perm_term, $member_of, $user, FALSE);
-      foreach ($child_files as $cfkey => $cfvalues) {
-        $fmember_of = $node->id();
-        $ftaxo_terms = $taxo_manager->loadByProperties(['name' => $cfvalues['model']]);
-        $ftaxo_term = reset($ftaxo_terms);
-        $child_node = $this->createNode($webform_submission, $values, $cfvalues['file_name'], $ftaxo_term, $copyright_term, $perm_term, $fmember_of, $user, TRUE);
-        $media = $this->depositUtils->createMedia($cfvalues['media_type'], $cfvalues['field_name'], $cfkey, $child_node->id());
-      }
+    $node = $this->createNode($webform_submission, $values, $values['item_title'], $copyright_term, $perm_term, $member_of, $user);
+    $files = $values['file'];
+    $file_repository = \Drupal::service('file.repository');
+    $new_dest = "private://c130/";
+    $work_products = [];
+    foreach ($files as $file_id) {
+      $file = $this->entityTypeManager->getStorage('file')->load(intval($file_id));
+      $file_copy = $file_repository->copy($file, $new_dest . $filename);
+      $file_model_properties = $this->depositUtils->getModel($file_copy->getMimeType(), $file_copy->getFilename());
+      $media = Media::create([
+        'bundle' => $file_model_properties[1],
+        'uid' => \Drupal::currentUser()->id(),
+        $file_model_properties[2] => ['target_id' => $file_copy->id()],
+        'field_access_terms' => ['target_id' => $perm_term->id()],
+      ]);
+      $media->save();
+      $work_products[] = ['target_id' => $media->id()];
     }
-    else {
-      $node = $this->createNode($webform_submission, $values, $values['item_title'], $taxo_term, $copyright_term, $perm_term, $member_of, $user, FALSE);
-      $media = $this->depositUtils->createMedia($media_type, $field_name, $files[0], $node->id());
-    }
-
+    $node->set('field_work_products', $work_products);
+    $node->save();
     $webform_submission->setOwnerId($user->id());
 
     $webform_submission->setElementData('item_node', $node->id());
-    \Drupal::moduleHandler()->invoke('islandora', 'media_insert', [$media]);
   }
 
 }
