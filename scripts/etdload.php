@@ -181,7 +181,7 @@ foreach (array_filter(scandir($path), function ($value) {
   $node_metadata['field_extent'] = (string) current($xml->xpath('DISS_description/@page_count')) . ' pages';
   $node_metadata['field_rich_description'] = '';
   foreach ($xml->xpath('DISS_content/DISS_abstract/DISS_para') as $para) {
-    $node_metadata['field_rich_description'] .= "<p>$para</p>";
+    $node_metadata['field_rich_description'] .= "$para\n\n";
   }
 
   // Term reference fields.
