@@ -10,17 +10,27 @@ use Drupal\Core\Database\Database;
 
 /**
  * Utility function for purging all but the original file.
+ *
+ * KEEP-dev is having issues with generating new thumbnails, so
+ * we'll just grab the existing one.
  */
 function return_original_purge_others($node, $io) {
   $iu = \Drupal::service('islandora.utils');
   $keeper = NULL;
+  $thumbnail = NULL;
   foreach ($iu->getMedia($node) as $m) {
     if ($m->field_media_use->entity->label() !== 'Original File') {
       $io->writeln("\tDelete media {$m->label()} ({$m->id()})");
       foreach (array_map(fn($field) => substr($field, stripos($field, '.') + 1), $iu->getReferencingFields('media', 'file')) as $field_name) {
         if ($m->hasField($field_name) && !$m->{$field_name}->isEmpty() && $file = $m->{$field_name}->entity) {
-          $io->writeln("\tDelete File {$file->label()} ({$file->getFileUri()})");
-          $file->delete();
+          if ($m->field_media_use->entity->label() == 'Thumbnail Image') {
+            $io->writeln("\tGrabbing Thumbnail File {$file->label()} ({$file->getFileUri()})");
+            $thumbnail = [['target_id' => $file->id()]];
+          }
+          else {
+            $io->writeln("\tDelete File {$file->label()} ({$file->getFileUri()})");
+            $file->delete();
+          }
         }
       }
       $m->delete();
@@ -30,6 +40,8 @@ function return_original_purge_others($node, $io) {
       $keeper = $m;
     }
   }
+  $keeper->set('thumbnail', $thumbnail);
+  $keeper->save();
   return $keeper;
 }
 
