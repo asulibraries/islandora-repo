@@ -53,16 +53,6 @@ function asu_default_fields_update_file_schema(EntityInterface $entity) {
           continue;
         }
 
-        // Skip PDFs. They need to stay in private
-        // due to CORS issues with pdf.js.
-        if ($file->getMimeType() == 'application/pdf') {
-          \Drupal::logger('asu_default_fields')->warning("PDF '@uri' for Media '@label' must stay in the private filesystem.", [
-            '@uri' => $file->getFileUri(),
-            '@label' => $entity->label(),
-          ]);
-          continue;
-        }
-
         // It should not be both public AND restricted.
         $fileIsPublic = $uriScheme === 'public';
         if ($fileIsPublic !== $accessible) {
