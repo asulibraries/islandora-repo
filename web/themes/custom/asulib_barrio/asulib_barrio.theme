@@ -327,3 +327,12 @@ function asulib_barrio_preprocess_views_exposed_form(&$variables) {
     $variables['form']['actions']['submit']['#attributes']['title'] = 'Search';
   }
 }
+
+/**
+ * Implements hoot_preprocess_media()
+ */
+function asulib_barrio_preprocess_media(&$variables) {
+  if($variables['view_mode'] == 'scholarly_work_sidebar') {
+    $variables['attributes']['class'][] = 'row d-flex align-items-center';
+  }
+}
