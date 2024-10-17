@@ -64,20 +64,23 @@
         },
         {
             "name": "asulibraries/asu_item_analytics",
-            "version": "v1.0.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/asulibraries/asu_item_analytics.git",
-                "reference": "fadd9d0c83411cd1a693b0b175f26a6e5ed990c3"
+                "reference": "3db609b76a3808b42f0bdf925bf395d3088b6ac8"
             },
             "require": {
                 "ext-bcmath": "*",
                 "google/analytics-data": "^0.16.0",
                 "google/apiclient": "^2.15"
             },
+            "conflict": {
+                "drupal/bootstrap_barrio": "<5.5"
+            },
             "type": "drupal-module",
             "description": "Provides analytics for items.",
-            "time": "2024-03-26T15:46:46+00:00"
+            "time": "2024-10-17T20:25:09+00:00"
         },
         {
             "name": "aws/aws-crt-php",
