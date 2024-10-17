@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8c6abe91f5d13473c58e7adf5bce3006",
+    "content-hash": "1ba1d2a3ec974cb99fc5100587e72fd5",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -64,20 +64,23 @@
         },
         {
             "name": "asulibraries/asu_item_analytics",
-            "version": "v1.0.0",
+            "version": "dev-bootstrap-5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/asulibraries/asu_item_analytics.git",
-                "reference": "fadd9d0c83411cd1a693b0b175f26a6e5ed990c3"
+                "reference": "7afd2ad6c473ce03540b6af9ff1bfe7c40aeb65a"
             },
             "require": {
                 "ext-bcmath": "*",
                 "google/analytics-data": "^0.16.0",
                 "google/apiclient": "^2.15"
             },
+            "conflict": {
+                "drupal/bootstrap_barrio": "<5.5"
+            },
             "type": "drupal-module",
             "description": "Provides analytics for items.",
-            "time": "2024-03-26T15:46:46+00:00"
+            "time": "2024-10-16T22:30:10+00:00"
         },
         {
             "name": "asulibraries/keep",
@@ -23002,6 +23005,7 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
+        "asulibraries/asu_item_analytics": 20,
         "asulibraries/keep": 20,
         "drupal/auto_entitylabel": 10,
         "drupal/bootstrap_barrio": 20,

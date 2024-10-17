@@ -1,9 +1,9 @@
-uuid: d2df0f06-7acd-46f7-a35f-be38b507a881
+uuid: d27e14c7-73b8-40a9-b638-52ec094b7ead
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.node.teaser
+    - core.entity_view_mode.node.complex_object_child_box
     - field.field.node.scholarly_work.field_additional_memberships
     - field.field.node.scholarly_work.field_copyright_statement
     - field.field.node.scholarly_work.field_edition
@@ -38,10 +38,10 @@ dependencies:
     - node.type.scholarly_work
   module:
     - user
-id: node.scholarly_work.teaser
+id: node.scholarly_work.complex_object_child_box
 targetEntityType: node
 bundle: scholarly_work
-mode: teaser
+mode: complex_object_child_box
 content:
   display_media_child_thumbnail:
     settings: {  }
@@ -77,6 +77,14 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 10
+    region: content
+  field_language:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: false
+    third_party_settings: {  }
+    weight: 8
     region: content
   links:
     settings: {  }
@@ -140,7 +148,6 @@ hidden:
   field_geographic_subject: true
   field_handle: true
   field_keyword: true
-  field_language: true
   field_linked_agent: true
   field_member_of: true
   field_note_para: true

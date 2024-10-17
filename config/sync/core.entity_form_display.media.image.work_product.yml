@@ -1,0 +1,62 @@
+uuid: c0aeb58b-aaa1-4300-a033-ac1a6fb9cd55
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.media.work_product
+    - field.field.media.image.field_access_terms
+    - field.field.media.image.field_file_size
+    - field.field.media.image.field_height
+    - field.field.media.image.field_legacy_checksum
+    - field.field.media.image.field_media_image
+    - field.field.media.image.field_media_of
+    - field.field.media.image.field_media_use
+    - field.field.media.image.field_mime_type
+    - field.field.media.image.field_original_name
+    - field.field.media.image.field_width
+    - image.style.thumbnail
+    - media.type.image
+  module:
+    - image
+id: media.image.work_product
+targetEntityType: media
+bundle: image
+mode: work_product
+content:
+  field_access_terms:
+    type: options_select
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_media_image:
+    type: image_image
+    weight: 1
+    region: content
+    settings:
+      progress_indicator: throbber
+      preview_image_style: thumbnail
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  field_file_size: true
+  field_height: true
+  field_legacy_checksum: true
+  field_media_of: true
+  field_media_use: true
+  field_mime_type: true
+  field_original_name: true
+  field_width: true
+  langcode: true
+  path: true
+  status: true
+  translation: true
+  uid: true

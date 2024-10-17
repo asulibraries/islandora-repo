@@ -1,0 +1,39 @@
+uuid: 6fcd75e9-67be-4c86-8920-a2081c4b929a
+langcode: en
+status: false
+dependencies:
+  module:
+    - asu_item_analytics
+    - islandora
+    - node
+    - system
+  theme:
+    - asulib_barrio
+id: asulib_barrio_asuitemanalyticsblock
+theme: asulib_barrio
+region: sidebar_first
+weight: -38
+provider: null
+plugin: asu_item_analytics_item_block
+settings:
+  id: asu_item_analytics_item_block
+  label: 'Item Analytics'
+  label_display: '0'
+  provider: asu_item_analytics
+visibility:
+  media_source_mimetype:
+    id: media_source_mimetype
+    negate: false
+    context_mapping: {  }
+    mimetype: ''
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      scholarly_work: scholarly_work
+  request_path:
+    id: request_path
+    negate: true
+    pages: '/node/*/edit'

@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_form_mode.media.work_product
     - field.field.node.scholarly_work.field_additional_memberships
     - field.field.node.scholarly_work.field_copyright_statement
     - field.field.node.scholarly_work.field_edition
@@ -14,6 +15,7 @@ dependencies:
     - field.field.node.scholarly_work.field_geographic_subject
     - field.field.node.scholarly_work.field_handle
     - field.field.node.scholarly_work.field_keyword
+    - field.field.node.scholarly_work.field_language
     - field.field.node.scholarly_work.field_linked_agent
     - field.field.node.scholarly_work.field_member_of
     - field.field.node.scholarly_work.field_note_para
@@ -302,6 +304,16 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_language:
+    type: entity_reference_autocomplete
+    weight: 29
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_linked_agent:
     type: typed_relation_default
     weight: 9
@@ -479,7 +491,7 @@ content:
     weight: 5
     region: content
     settings:
-      form_mode: default
+      form_mode: work_product
       override_labels: false
       label_singular: ''
       label_plural: ''

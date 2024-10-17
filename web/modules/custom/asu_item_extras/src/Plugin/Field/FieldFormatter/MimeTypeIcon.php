@@ -116,7 +116,7 @@ class MimeTypeIcon extends StringFormatter {
       }
     }
 
-    $elements['#attached']['library'][] = 'lp_fontawesome/fontawesome';
+    $elements['#attached']['library'][] = 'fontawesome/fontawesome';
     return $elements;
   }
 

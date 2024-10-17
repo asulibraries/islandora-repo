@@ -1,0 +1,41 @@
+uuid: 731e28b8-659a-4f32-b783-8fa299917c67
+langcode: en
+status: true
+dependencies:
+  module:
+    - asu_item_extras
+    - islandora
+    - node
+    - system
+  theme:
+    - asulib_barrio
+id: asulib_barrio_downloadssidebarblock
+theme: asulib_barrio
+region: sidebar_first
+weight: -41
+provider: null
+plugin: downloads_side_bar_block
+settings:
+  id: downloads_side_bar_block
+  label: Downloads
+  label_display: visible
+  provider: asu_item_extras
+  context_mapping:
+    node: '@node.node_route_context:node'
+visibility:
+  media_source_mimetype:
+    id: media_source_mimetype
+    negate: false
+    context_mapping: {  }
+    mimetype: ''
+  request_path:
+    id: request_path
+    negate: true
+    pages: "/node/*/edit\r\n/node/add/*"
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      scholarly_work: scholarly_work

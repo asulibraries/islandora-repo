@@ -1,9 +1,9 @@
-uuid: d2df0f06-7acd-46f7-a35f-be38b507a881
+uuid: 3c8bafa0-b10b-4c6f-9339-7375936634f3
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.node.teaser
+    - core.entity_form_mode.node.bulk_edit
     - field.field.node.scholarly_work.field_additional_memberships
     - field.field.node.scholarly_work.field_copyright_statement
     - field.field.node.scholarly_work.field_edition
@@ -37,97 +37,97 @@ dependencies:
     - field.field.node.scholarly_work.field_work_products
     - node.type.scholarly_work
   module:
-    - user
-id: node.scholarly_work.teaser
+    - content_moderation
+    - path
+id: node.scholarly_work.bulk_edit
 targetEntityType: node
 bundle: scholarly_work
-mode: teaser
+mode: bulk_edit
 content:
-  display_media_child_thumbnail:
-    settings: {  }
-    third_party_settings: {  }
+  created:
+    type: datetime_timestamp
     weight: 10
     region: content
-  display_media_entity_view_1:
     settings: {  }
     third_party_settings: {  }
-    weight: 10
+  field_language:
+    type: entity_reference_autocomplete
+    weight: 4
     region: content
-  display_media_entity_view_2:
-    settings: {  }
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
     third_party_settings: {  }
-    weight: 10
+  langcode:
+    type: language_select
+    weight: 2
     region: content
-  display_media_entity_view_4:
-    settings: {  }
+    settings:
+      include_locked: true
     third_party_settings: {  }
-    weight: 10
-    region: content
-  display_media_service_file:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 10
-    region: content
-  display_media_thumbnail:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 10
-    region: content
-  display_media_thumbnail_card:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 10
-    region: content
-  links:
-    settings: {  }
-    third_party_settings: {  }
+  moderation_state:
+    type: moderation_state_default
     weight: 100
     region: content
-  openseadragon_media_evas_entity_view_1:
     settings: {  }
     third_party_settings: {  }
-    weight: 10
+  path:
+    type: path
+    weight: 30
     region: content
-  openseadragon_media_evas_entity_view_2:
     settings: {  }
     third_party_settings: {  }
+  promote:
+    type: boolean_checkbox
+    weight: 15
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  simple_sitemap:
     weight: 10
     region: content
-  openseadragon_media_evas_service_file:
     settings: {  }
     third_party_settings: {  }
-    weight: 10
+  status:
+    type: boolean_checkbox
+    weight: 120
     region: content
-  pdfjs_media_evas_entity_view_1:
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  sticky:
+    type: boolean_checkbox
+    weight: 16
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  title:
+    type: string_textfield
+    weight: -5
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  uid:
+    type: entity_reference_autocomplete
+    weight: 5
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  url_redirects:
+    weight: 50
+    region: content
     settings: {  }
     third_party_settings: {  }
-    weight: 10
-    region: content
-  pdfjs_media_evas_entity_view_2:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 10
-    region: content
-  pdfjs_media_evas_service_file:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 10
-    region: content
-  video_media_evas_original_file:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 10
-    region: content
-  video_media_evas_preservation_master:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 10
-    region: content
-  video_media_evas_service_file:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 10
-    region: content
 hidden:
   field_additional_memberships: true
   field_copyright_statement: true
@@ -140,7 +140,6 @@ hidden:
   field_geographic_subject: true
   field_handle: true
   field_keyword: true
-  field_language: true
   field_linked_agent: true
   field_member_of: true
   field_note_para: true
@@ -160,5 +159,3 @@ hidden:
   field_title: true
   field_typed_identifier: true
   field_work_products: true
-  langcode: true
-  search_api_excerpt: true

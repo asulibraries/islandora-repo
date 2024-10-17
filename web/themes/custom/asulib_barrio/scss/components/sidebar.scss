@@ -200,11 +200,19 @@
   cursor: pointer;
 }
 
-.permalink_button {
-  padding-left: 1rem;
+.backtosearch-link {
   padding-bottom: 1rem;
 }
 
-.backtosearch-link {
-  padding-bottom: 1rem;
+#block-asulib-barrio-downloadssidebarblock .content > div,
+.block-machine-readable-links .list-group-item,
+.view-about-this-item .views-row > div,
+.node--type-scholarly-work .field--name-field-work-product.field__items > .field__item {
+    border: solid 1px $uds-color-base-gray-3;
+    padding: 1.5rem 1rem;
+    margin-top: -1px;
+
+    .views-field-nothing {
+      display: none;
+    }
 }
