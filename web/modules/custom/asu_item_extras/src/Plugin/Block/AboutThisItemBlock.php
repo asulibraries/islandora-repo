@@ -5,8 +5,10 @@ namespace Drupal\asu_item_extras\Plugin\Block;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Link;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\Core\Url;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -92,95 +94,64 @@ class AboutThisItemBlock extends BlockBase implements ContainerFactoryPluginInte
      *
      * The links within this block should be:
      *  - Overview
-     *  - View full metadata
      *  - Permalink
      */
+
     // Since this block should be set to display on node/[nid] pages that are
-    // either "Repository Item", "ASU Repository Item", or "Collection",
+    // either "ASU Repository Item" or "Collection",
     // the underlying node can be accessed via the path.
-    // @todo use dependency injection.
     $node = $this->getContextValue('node');
     if (!isset($node)) {
       return [];
     }
-    $build = [];
-    if ($node->hasField('field_work_products')) {
-      $work_products = $node->get('field_work_products');
-      // Grabbing a thumbnail from the first item.
-      $first = $work_products->first();
-      // Checking media access because checking thumbail access can return
-      // a false positive result but still fail to work when the user attempts
-      // to access it via the browser; although I don't know why.
-      if ($first->entity?->access('view') && $thumbnail = $first->entity->get('thumbnail')) {
-        $build['content'][] = $thumbnail->view(['label' => 'hidden']);
-      }
 
-      // Build a list of the other items.
-      $media_source_service = \Drupal::service('islandora.media_source_service');
-      $work_product_render_array = [];
-      $cache_tags = ["node:{$node->id()}"];
-      foreach ($work_products as $work_product_reference) {
-        $item_render = ['#attributes' => ['class' => ['row']]];
-        $wp = $work_product_reference->entity;
-        if (!$wp) {
-          continue;
-        }
-        $cache_tags[] = "media:{$wp->id()}";
-        $icon = $this->mimeToFAIcon($wp->field_mime_type->value);
-        $item_render[] = ['#type' => 'markup', '#markup' => "<i class='col far {$icon}'></i>"];
-        $title = ($wp->access('view')) ?
-        $wp->get($media_source_service->getSourceFieldName($wp->bundle()))->view([
-          'type' => 'file_download_link',
-          'label' => 'hidden',
-          'settings' => [
-            'link_text' => $wp->name->value,
-            'new_tab' => TRUE,
-            'force_download' => FALSE,
-            'custom_classes' => 'resource_engagement_link',
-          ],
-        ]) :
-              $wp->name->view(['label' => 'hidden']);
-        $title['#attributes']['class'][] = 'col';
-        $item_render[] = $title;
-        $type_size = ['#type' => 'container', '#attributes' => ['class' => ['type-size', 'col']]];
-        $type_size[] = $wp->field_file_size->view([
-          'type' => 'file_size',
-          'label' => 'hidden',
-        ]);
-        $type_size[] = $wp->field_mime_type->view(['label' => 'hidden']);
-        $item_render[] = $type_size;
-        $work_product_render_array[] = $item_render;
-      }
-      if ($work_product_render_array) {
-        $build[] = [
-          '#theme' => 'item_list',
-          '#attached' => ['library' => ['keep/scholarly-work-sidebar']],
-          '#list_type' => 'ol',
-          '#attributes' => ['class' => ['container']],
-          '#items' => $work_product_render_array,
-          '#cache' => ['contexts' => ['user.roles', 'route'], 'tags' => $cache_tags],
-        ];
-      }
-    }
     $output_links = [];
+
+    // Add a link for the "Overview" of this node.
+    $variables['nodeid'] = $nid;
+    $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/items/' . $nid, ['attributes' => ['class' => 'nav-link']]);
+    if ($link = Link::fromTextAndUrl($this->t('Overview'), $url)) {
+      $output_links[] = $link->toRenderable();
+    }
+
     // Add a link to get the Permalink for this node.
     if ($node->hasField('field_handle') && $node->get('field_handle')->value != NULL) {
       $hdl = $node->get('field_handle')->value;
-      $output_links[] = '<div class="permalink_button"><a class="btn btn-maroon btn-md copy_permalink_link" title="' . $hdl . '"><i class="far fa-copy fa-lg copy_permalink_link" title="' . $hdl . '"></i>&nbsp;Copy permalink</a></div>';
-      $build[] = [
-        '#markup' =>
-        (count($output_links) > 0) ?
-        "<nav class='sidebar'>" . implode("", $output_links) . "</nav>" :
-        "",
-        '#attached' => [
-          'library' => [
-            'asu_item_extras/interact',
+      $output_links[] = [
+        '#type' => 'container',
+        '#attributes' => ['class' => 'permalink_button'],
+        'link' => [
+          '#type' => 'html_tag',
+          '#tag' => 'a',
+          '#attributes' => [
+            'class' => [
+              'btn', 'btn-maroon', 'btn-md', 'copy_permalink_link',
+            ],
+            'title' => $hdl,
+          ],
+          'icon' => [
+            '#type' => 'html_tag',
+            '#tag' => 'i',
+            '#attributes' => [
+              'class' => ['far', 'fa-copy', 'fa-lg', 'copy_permalink_link'],
+              'title' => $hdl,
+            ],
+          ],
+          'text' => [
+            '#plain_text' => 'Copy permalink',
           ],
         ],
       ];
     }
 
-    return $build;
+    if (!empty($output_links)) {
+      $output_links['#attached'] = [
+        'library' => [
+          'asu_item_extras/interact',
+        ],
+      ];
+    }
+    return $output_links;
   }
 
   /**
@@ -204,62 +175,6 @@ class AboutThisItemBlock extends BlockBase implements ContainerFactoryPluginInte
     // You must set context of this block with 'route' context tag.
     // Every new route this block will rebuild.
     return Cache::mergeContexts(parent::getCacheContexts(), ['route']);
-  }
-
-  /**
-   *
-   */
-  private function mimeToFAIcon($mime_type) {
-    // List of official MIME Types: http://www.iana.org/assignments/media-types/media-types.xhtml
-    // Font Awesome 5 icons.
-    // Generic cases.
-    if (str_starts_with($mime_type, 'image')) {
-      return 'fa-file-image';
-    }
-    elseif (str_starts_with($mime_type, 'audio')) {
-      return 'fa-file-audio';
-    }
-    elseif (str_starts_with($mime_type, 'video')) {
-      return 'fa-file-video';
-    }
-
-    // Application cases:
-    switch ($mime_type) {
-      // Documents.
-      case 'application/pdf':
-        return 'fa-file-pdf';
-
-      case 'application/msword':
-      case 'application/vnd.ms-word':
-      case 'application/vnd.oasis.opendocument.text':
-      case 'application/vnd.openxmlformats-officedocument.wordprocessingml':
-        return 'fa-file-word';
-
-      case 'application/vnd.ms-excel':
-      case 'application/vnd.openxmlformats-officedocument.spreadsheetml':
-      case 'application/vnd.oasis.opendocument.spreadsheet':
-        return 'fa-file-excel';
-
-      case 'application/vnd.ms-powerpoint':
-      case 'application/vnd.openxmlformats-officedocument.presentationml':
-      case 'application/vnd.oasis.opendocument.presentation':
-        return 'fa-file-powerpoint';
-
-      case 'text/plain':
-        return 'fa-file-alt';
-
-      case 'text/html':
-      case 'application/json':
-        return 'fa-file-code';
-
-      // Archives.
-      case 'application/gzip':
-      case 'application/zip':
-        return 'fa-file-archive';
-
-      default:
-        return 'fa-file';
-    }
   }
 
 }
