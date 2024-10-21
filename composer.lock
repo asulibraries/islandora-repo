@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1ba1d2a3ec974cb99fc5100587e72fd5",
+    "content-hash": "5ec690883874f408bc2d689ee5d70cb1",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -64,11 +64,11 @@
         },
         {
             "name": "asulibraries/asu_item_analytics",
-            "version": "dev-bootstrap-5",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/asulibraries/asu_item_analytics.git",
-                "reference": "7afd2ad6c473ce03540b6af9ff1bfe7c40aeb65a"
+                "reference": "3db609b76a3808b42f0bdf925bf395d3088b6ac8"
             },
             "require": {
                 "ext-bcmath": "*",
@@ -80,25 +80,7 @@
             },
             "type": "drupal-module",
             "description": "Provides analytics for items.",
-            "time": "2024-10-16T22:30:10+00:00"
-        },
-        {
-            "name": "asulibraries/keep",
-            "version": "dev-main",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/asulibraries/keep.git",
-                "reference": "62fcc95f7804ecfa085f40666fb7f52be871ba19"
-            },
-            "require": {
-                "drupal/file_download_link": "^2",
-                "drupal/media_thumbnails_pdf": "^2.0@beta",
-                "drupal/token": "^1"
-            },
-            "default-branch": true,
-            "type": "drupal-module",
-            "description": "Code specifically for KEEP.",
-            "time": "2024-07-17T16:34:43+00:00"
+            "time": "2024-10-17T20:25:09+00:00"
         },
         {
             "name": "aws/aws-crt-php",
@@ -7042,75 +7024,29 @@
         },
         {
             "name": "drupal/media_thumbnails",
-            "version": "1.0.0-beta2",
+            "version": "2.0.0",
             "source": {
                 "type": "git",
                 "url": "https://git.drupalcode.org/project/media_thumbnails.git",
-                "reference": "8.x-1.0-beta2"
+                "reference": "2.0.0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/media_thumbnails-8.x-1.0-beta2.zip",
-                "reference": "8.x-1.0-beta2",
-                "shasum": "127cdea8280fa1f96eac4bf6096825db16c489ac"
+                "url": "https://ftp.drupal.org/files/projects/media_thumbnails-2.0.0.zip",
+                "reference": "2.0.0",
+                "shasum": "bf8fed213de635be2b90c8a355a22aa7d8fb8b91"
             },
             "require": {
-                "drupal/core": "^8 || ^9 || ^10"
+                "drupal/core": "^8 || ^9 || ^10 || ^11"
             },
             "type": "drupal-module",
             "extra": {
                 "drupal": {
-                    "version": "8.x-1.0-beta2",
-                    "datestamp": "1694697406",
+                    "version": "2.0.0",
+                    "datestamp": "1727345523",
                     "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Project has not opted into security advisory coverage!"
-                    }
-                }
-            },
-            "notification-url": "https://packages.drupal.org/8/downloads",
-            "license": [
-                "GPL-2.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "drubb",
-                    "homepage": "https://www.drupal.org/user/69706"
-                }
-            ],
-            "description": "Plugin manager for media entity thumbnail generation",
-            "homepage": "https://www.drupal.org/project/media_thumbnails",
-            "support": {
-                "source": "https://git.drupalcode.org/project/media_thumbnails"
-            }
-        },
-        {
-            "name": "drupal/media_thumbnails_pdf",
-            "version": "2.0.0-beta2",
-            "source": {
-                "type": "git",
-                "url": "https://git.drupalcode.org/project/media_thumbnails_pdf.git",
-                "reference": "2.0.0-beta2"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://ftp.drupal.org/files/projects/media_thumbnails_pdf-2.0.0-beta2.zip",
-                "reference": "2.0.0-beta2",
-                "shasum": "1103cc4070d419dab72ae2effad2968f57552767"
-            },
-            "require": {
-                "drupal/core": "^9.3 || ^10",
-                "drupal/media_thumbnails": "^1.0 || ^2.0",
-                "ext-imagick": "*"
-            },
-            "type": "drupal-module",
-            "extra": {
-                "drupal": {
-                    "version": "2.0.0-beta2",
-                    "datestamp": "1664110837",
-                    "security-coverage": {
-                        "status": "not-covered",
-                        "message": "Project has not opted into security advisory coverage!"
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
                     }
                 }
             },
@@ -7123,6 +7059,70 @@
                     "name": "Boris Böhne (drubb)",
                     "homepage": "https://www.drupal.org/u/drubb",
                     "role": "Maintainer"
+                },
+                {
+                    "name": "Quentin Fahrner (renrhaf)",
+                    "homepage": "https://www.drupal.org/u/renrhaf",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "renrhaf",
+                    "homepage": "https://www.drupal.org/user/2478454"
+                }
+            ],
+            "description": "Plugin manager for media entity thumbnail generation",
+            "homepage": "https://www.drupal.org/project/media_thumbnails",
+            "keywords": [
+                "Drupal"
+            ],
+            "support": {
+                "source": "https://git.drupalcode.org/project/media_thumbnails",
+                "issues": "https://www.drupal.org/project/issues/media_thumbnails"
+            }
+        },
+        {
+            "name": "drupal/media_thumbnails_pdf",
+            "version": "2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupalcode.org/project/media_thumbnails_pdf.git",
+                "reference": "2.0.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/media_thumbnails_pdf-2.0.1.zip",
+                "reference": "2.0.1",
+                "shasum": "e5543fd50f049f638b4b4673f2304fbfd5ac5992"
+            },
+            "require": {
+                "drupal/core": "^9.3 || ^10 || ^11",
+                "drupal/media_thumbnails": "^1.0 || ^2.0",
+                "ext-imagick": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "drupal": {
+                    "version": "2.0.1",
+                    "datestamp": "1727954226",
+                    "security-coverage": {
+                        "status": "covered",
+                        "message": "Covered by Drupal's security advisory policy"
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Boris Böhne (drubb)",
+                    "homepage": "https://www.drupal.org/u/drubb",
+                    "role": "Maintainer"
+                },
+                {
+                    "name": "renrhaf",
+                    "homepage": "https://www.drupal.org/user/2478454"
                 }
             ],
             "description": "Generate custom thumbnails for pdf media entities.",
@@ -23005,8 +23005,6 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "asulibraries/asu_item_analytics": 20,
-        "asulibraries/keep": 20,
         "drupal/auto_entitylabel": 10,
         "drupal/bootstrap_barrio": 20,
         "drupal/cas": 10,

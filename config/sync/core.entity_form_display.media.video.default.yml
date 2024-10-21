@@ -17,44 +17,12 @@ dependencies:
   module:
     - file
     - islandora
-    - path
 id: media.video.default
 targetEntityType: media
 bundle: video
 mode: default
 content:
-  created:
-    type: datetime_timestamp
-    weight: 13
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   field_access_terms:
-    type: entity_reference_autocomplete
-    weight: 6
-    region: content
-    settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_file_size:
-    type: number
-    weight: 7
-    region: content
-    settings:
-      placeholder: ''
-    third_party_settings: {  }
-  field_legacy_checksum:
-    type: string_textfield
-    weight: 8
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_media_of:
     type: entity_reference_autocomplete
     weight: 3
     region: content
@@ -64,12 +32,6 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-  field_media_use:
-    type: options_buttons
-    weight: 2
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   field_media_video_file:
     type: file_generic
     weight: 1
@@ -77,35 +39,12 @@ content:
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
-  field_mime_type:
-    type: string_textfield
-    weight: 9
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_original_name:
-    type: string_textarea
-    weight: 4
-    region: content
-    settings:
-      rows: 5
-      placeholder: ''
-    third_party_settings: {  }
   field_track:
     type: media_track
-    weight: 5
+    weight: 2
     region: content
     settings:
       progress_indicator: throbber
-    third_party_settings: {  }
-  langcode:
-    type: language_select
-    weight: 10
-    region: content
-    settings:
-      include_locked: true
     third_party_settings: {  }
   name:
     type: string_textfield
@@ -115,33 +54,17 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-  path:
-    type: path
-    weight: 14
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  status:
-    type: boolean_checkbox
-    weight: 11
-    region: content
-    settings:
-      display_label: true
-    third_party_settings: {  }
-  translation:
-    weight: 15
-    region: content
-    settings: {  }
-    third_party_settings: {  }
-  uid:
-    type: entity_reference_autocomplete
-    weight: 12
-    region: content
-    settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
 hidden:
+  created: true
   field_captions: true
+  field_file_size: true
+  field_legacy_checksum: true
+  field_media_of: true
+  field_media_use: true
+  field_mime_type: true
+  field_original_name: true
+  langcode: true
+  path: true
+  status: true
+  translation: true
+  uid: true
