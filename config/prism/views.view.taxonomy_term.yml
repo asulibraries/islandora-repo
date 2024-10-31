@@ -3,7 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.node.teaser
+    - core.entity_view_mode.node.recent_item_teaser_prism
   module:
     - node
     - taxonomy
@@ -27,6 +27,7 @@ display:
         type: mini
         options:
           offset: 0
+          pagination_heading_level: h4
           items_per_page: 10
           total_pages: 0
           id: 0
@@ -41,7 +42,6 @@ display:
             items_per_page_options_all_label: '- All -'
             offset: false
             offset_label: Offset
-          pagination_heading_level: h4
       exposed_form:
         type: basic
         options:
@@ -213,14 +213,14 @@ display:
       style:
         type: default
         options:
-          grouping: {  }
-          row_class: ''
-          default_row_class: true
+          row_class: col-md-3
+          default_row_class: false
           uses_fields: false
       row:
         type: 'entity:node'
         options:
-          view_mode: teaser
+          relationship: none
+          view_mode: recent_item_teaser_prism
       query:
         type: views_query
         options:
@@ -301,9 +301,33 @@ display:
     display_plugin: page
     position: 1
     display_options:
+      pager:
+        type: full
+        options:
+          offset: 0
+          pagination_heading_level: h4
+          items_per_page: 10
+          total_pages: 0
+          id: 0
+          tags:
+            next: ››
+            previous: ‹‹
+            first: '« First'
+            last: 'Last »'
+          expose:
+            items_per_page: true
+            items_per_page_label: 'Items per page'
+            items_per_page_options: '10, 25, 50, 100'
+            items_per_page_options_all: false
+            items_per_page_options_all_label: '- All -'
+            offset: false
+            offset_label: Offset
+          quantity: 9
       query:
         type: views_query
         options: {  }
+      defaults:
+        pager: false
       display_extenders: {  }
       path: taxonomy/term/%
     cache_metadata:
