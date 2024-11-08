@@ -1,8 +1,9 @@
-uuid: 7462afe2-978a-4b67-8ca6-bd8783a2fc9a
+uuid: f0347fc7-4cab-41dd-b4f0-acdb685902e7
 langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.node.full
     - field.field.node.scholarly_work.field_additional_memberships
     - field.field.node.scholarly_work.field_copyright_statement
     - field.field.node.scholarly_work.field_edition
@@ -124,10 +125,10 @@ third_party_settings:
         attributes: ''
         effect: none
         speed: fast
-id: node.scholarly_work.default
+id: node.scholarly_work.full
 targetEntityType: node
 bundle: scholarly_work
-mode: default
+mode: full
 content:
   field_additional_memberships:
     type: entity_reference_label
@@ -197,7 +198,7 @@ content:
     settings:
       search_link: 'search?f[0]'
       search_var: genre
-      search_term: false
+      search_term: true
       link: true
     third_party_settings: {  }
     weight: 15
@@ -233,7 +234,7 @@ content:
     type: typed_relation_brief
     label: above
     settings:
-      link: true
+      link: '1'
     third_party_settings: {  }
     weight: 4
     region: content
@@ -248,7 +249,7 @@ content:
     region: content
   field_open_access:
     type: boolean
-    label: above
+    label: inline
     settings:
       format: custom
       format_custom_false: ''
@@ -258,7 +259,7 @@ content:
     region: content
   field_peer_reviewed:
     type: boolean
-    label: above
+    label: inline
     settings:
       format: custom
       format_custom_false: ''
@@ -284,7 +285,7 @@ content:
     region: content
   field_preferred_citation:
     type: text_default
-    label: hidden
+    label: above
     settings: {  }
     third_party_settings: {  }
     weight: 24
@@ -317,10 +318,10 @@ content:
     region: content
   field_statement_responsibility:
     type: basic_string
-    label: hidden
+    label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 25
+    weight: 26
     region: content
   field_subject:
     type: searchable_entity_formatter

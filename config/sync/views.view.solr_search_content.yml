@@ -2397,6 +2397,19 @@ display:
             label: 'Date Created: Newest to Oldest'
             field_identifier: field_edtf_date_created_1
           exposed: true
+        complex_object_child:
+          id: complex_object_child
+          table: search_api_index_default_solr_index
+          field: complex_object_child
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: search_api
+          order: ASC
+          expose:
+            label: ''
+            field_identifier: ''
+          exposed: false
       arguments:
         field_ancestors:
           id: field_ancestors
