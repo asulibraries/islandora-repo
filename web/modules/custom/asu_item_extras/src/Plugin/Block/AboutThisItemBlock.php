@@ -108,8 +108,8 @@ class AboutThisItemBlock extends BlockBase implements ContainerFactoryPluginInte
     $output_links = [];
 
     // Add a link for the "Overview" of this node.
-    $variables['nodeid'] = $nid;
-    $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/items/' . $nid, ['attributes' => ['class' => 'nav-link']]);
+    $variables['nodeid'] = $node->id();
+    $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/items/' . $node->id(), ['attributes' => ['class' => 'nav-link']]);
     if ($link = Link::fromTextAndUrl($this->t('Overview'), $url)) {
       $output_links[] = $link->toRenderable();
     }
