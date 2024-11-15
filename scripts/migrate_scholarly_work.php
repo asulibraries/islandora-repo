@@ -166,11 +166,13 @@ foreach ($nodes as $n) {
   $work_products = [];
   $work_products[] = return_original_purge_others($n, $this->io());
   // @todo move analytics counts for child(ren) to the parent.
-  // although it may need to be a separate script we run at the end of the month
-  // when we implement this change so Google doesn't override counts in the
-  // :last month" update..
+  // We need to do it during migration before we lose track of child items.
   foreach ($ns->loadByProperties(['field_member_of' => $n->id()]) as $child) {
-    $work_products[] = return_original_purge_others($child, $this->io());
+    // The media name is usually the name of the item whereas
+    // the child component is the filename, which is what we want.
+    $keeper = return_original_purge_others($child, $this->io());
+    $keeper->set('name', $child->label())->save();
+    $work_products[] = $keeper;
     $this->io()->writeln("\tDeleting component \"{$child->label()}\" ({$child->id()})");
     $child->delete();
   }
