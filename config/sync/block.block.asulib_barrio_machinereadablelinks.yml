@@ -1,0 +1,34 @@
+uuid: 2aae79f4-a0fb-4d61-b266-34a71e3afe1b
+langcode: en
+status: true
+dependencies:
+  module:
+    - asu_item_extras
+    - islandora
+    - node
+  theme:
+    - asulib_barrio
+id: asulib_barrio_machinereadablelinks
+theme: asulib_barrio
+region: content
+weight: -35
+provider: null
+plugin: machine_readable_links
+settings:
+  id: machine_readable_links
+  label: 'Machine-readable links'
+  label_display: visible
+  provider: asu_item_extras
+visibility:
+  media_source_mimetype:
+    id: media_source_mimetype
+    negate: false
+    context_mapping: {  }
+    mimetype: ''
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      scholarly_work: scholarly_work

@@ -24,10 +24,6 @@
             "url": "https://github.com/asulibraries/asu_item_analytics.git"
         },
         {
-            "type": "git",
-            "url": "https://github.com/asulibraries/keep.git"
-        },
-        {
             "type": "package",
             "package": {
                 "name": "d3/d3",
@@ -137,6 +133,7 @@
         "drupal/jquery_ui_touch_punch": "^1.1",
         "drupal/json_field": "^1.3",
         "drupal/jwt": "^2.0",
+        "drupal/media_thumbnails_pdf": "^2.0",
         "drupal/message": "^1.0",
         "drupal/message_subscribe_email": "^1.0",
         "drupal/metatag": "^2.0",
@@ -159,6 +156,7 @@
         "drupal/s3fs_cors": "^1.0@beta",
         "drupal/schema_metatag": "^3.0",
         "drupal/search_api": "^1.23",
+        "drupal/search_api_attachments": "^9.0",
         "drupal/search_api_solr": "^4.2",
         "drupal/seckit": "^2.0",
         "drupal/simple_sitemap": "^4.0",
@@ -312,8 +310,10 @@
             },
             "drupal/core": {
                 "fix for taxo term save": "https://www.drupal.org/files/issues/2020-10-29/2893747-33.patch",
-                "fix for blocks not showing up": "https://www.drupal.org/files/issues/2018-10-27/2997898-21.patch"
+                "fix for blocks not showing up": "https://www.drupal.org/files/issues/2018-10-27/2997898-21.patch",
+                "temp patch for drupal_view": "https://www.drupal.org/files/issues/2024-07-12/issuee-2876229.patch"
             },
+	    "drupal/facets_range_nouislider": {"fix missing config wsod": "scripts/facets_range_nouislider.patch"},
             "drupal/inline_entity_form": {
                 "increase max_limit": "https://www.drupal.org/files/issues/2020-12-22/match_limit_3189534.patch"
             },
