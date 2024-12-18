@@ -12,6 +12,5 @@ use Drupal\islandora\PresetReaction\PresetReaction;
  *   label = @Translation("Publish")
  * )
  */
-class PublishReaction extends PresetReaction
-{
+class PublishReaction extends PresetReaction {
 }

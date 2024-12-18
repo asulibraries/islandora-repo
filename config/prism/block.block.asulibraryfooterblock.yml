@@ -1,0 +1,31 @@
+uuid: afcadf50-8d7e-4982-98dc-e7c66e2346f1
+langcode: en
+status: true
+dependencies:
+  module:
+    - asu_brand
+    - context
+  theme:
+    - asulib_barrio
+id: asulibraryfooterblock
+theme: asulib_barrio
+region: footer_fifth
+weight: -30
+provider: null
+plugin: asu_lib_footer_block
+settings:
+  id: asu_lib_footer_block
+  label: 'ASU Library Footer Block'
+  label_display: '0'
+  provider: asu_brand
+visibility:
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: null
+    context_mapping: {  }
+    pages: ''
+  view_inclusion:
+    id: view_inclusion
+    negate: null
+    context_mapping: {  }
+    view_inclusion: {  }

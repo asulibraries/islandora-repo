@@ -2,10 +2,11 @@
 
 namespace Drupal\asu_mods\Encoder;
 
+use Drupal\Core\Config\ImmutableConfig;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 
 /**
- *
+ * Encodes a node as a MODS (XML) record.
  */
 class ModsEncoder extends XmlEncoder {
 
@@ -30,21 +31,21 @@ class ModsEncoder extends XmlEncoder {
   /**
    * {@inheritdoc}
    */
-  public function supportsEncoding($format) {
+  public function supportsEncoding(string $format): bool {
     return $format == $this->format;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function supportsDecoding($format) {
+  public function supportsDecoding(string $format): bool {
     return in_array($format, [$this->format, 'form']);
   }
 
   /**
    * {@inheritdoc}
    */
-  public function decode($data, $format, array $context = []) {
+  public function decode(string $data, string $format, array $context = []): mixed {
     if ($format === 'xml') {
       return parent::decode($data, $format, $context);
     }
@@ -54,29 +55,70 @@ class ModsEncoder extends XmlEncoder {
   }
 
   /**
-   * Plucks the data out of a field.
+   * Returns field values based on provided config.
+   *
+   * Called by processNode, this function determines what value OR subvalue
+   * should be returned based on the provided MODS element/attribute to
+   * entity field value/property.
+   *
+   * E.g. given the field_name 'field_title' and the configuration
+   * ```
+   * _top: titleInfo
+   * '@supplied': field_supplied
+   * title:
+   *   '#': field_main_title
+   * nonSort: field_nonsort
+   * subTitle: field_subtitle
+   * ```
+   * will result in a titleInfo element with field_supplied providing the
+   * value for the `@supplied' attribute whith a child elements 'title',
+   * 'nonSort', and 'subTitle' provided by field_main_title, field_nonsort,
+   * and field_subtitle, respectively.
+   *
+   * The configuration also supports using field properties, such as
+   * `'@authority': field_authority_link/source`, where the authority attribute
+   * will be provided by the field_authority_link's source property.
+   *
+   * Literal values can also be used in the configuration, e.g.
+   * `'@valueURI': 'http://vocab.getty.edu/page/aat/300380321'` where the
+   * valueURI attribute is populated with the provided literal URI value.
+   *
+   * @param mixed $data
+   *   Entity being processed.
+   * @param mixed $field_name
+   *   The entity's field being processed. Why the field name would be an array
+   *   instead of a string, I have no idea.
+   * @param array|string $config
+   *   Key-value pairs of MODS elements or attributes to entity field values or
+   *   properties.
+   * @param string|Null $sub_field
+   *   A field's property name for extraction.
    */
-  private static function get_field_values($data, $field_name, $config, $sub_field = NULL) {
-    if (str_contains($field_name, '/')) {
+  private static function getFieldValues($data, $field_name, $config, $sub_field = NULL) {
+    if (!is_array($field_name) && str_contains($field_name, '/')) {
       $field_name_parts = explode('/', $field_name);
       $field_name = $field_name_parts[0];
       $sub_part = $field_name_parts[1];
     }
-    $return_vals = [];
+    $return_vals = $vals = [];
 
-    if (str_contains($field_name, 'field_') || (in_array($field_name, self::MACHINE_FIELDS))) {
+    if ((!is_array($field_name) && str_contains($field_name, 'field_')) || (in_array($field_name, self::MACHINE_FIELDS))) {
       if ($data->hasField($field_name)) {
         $field = $data->get($field_name);
         $vals = $field->getValue();
         if (is_array($vals) && count($vals) > 0 && array_key_exists('target_id', $vals[0])) {
           $vals = $field->referencedEntities();
         }
+        if ($field_name == "uid") {
+          if (get_class($data) == 'Drupal\user\Entity\User') {
+            $vals = [$data->getAccountName()];
+          }
+        }
       }
     }
     else {
       $vals = [$field_name];
     }
-
     if (is_array($config) && array_key_exists('#', $config) && $config['#'] == $field_name && count($config) == 1) {
       $vals = $vals;
     }
@@ -87,10 +129,26 @@ class ModsEncoder extends XmlEncoder {
         foreach ($config as $ck => $cv) {
           if ($field_name == "field_linked_agent") {
             $rel_type = $field->getValue()[$i]['rel_type'];
+            $rel_type = str_replace("barrettrelators:", "", $rel_type);
             $rel_type = str_replace("relators:", "", $rel_type);
           }
           if ($cv == "bundle") {
             $cv = $val->bundle();
+            switch ($cv) {
+              // MODS schema requires "personal".
+              case 'person':
+                $cv = 'personal';
+                break;
+
+              // MODS schema requires "Corporate".
+              case 'corporate_body':
+                $cv = 'corporate';
+                break;
+            }
+          }
+          elseif ($ck == "@supplied") {
+            $cv = $field->value;
+            $cv = ($cv) ? "yes" : "no";
           }
           if (!is_array($cv)) {
             // Like nonSort: "field_nonsort".
@@ -101,16 +159,29 @@ class ModsEncoder extends XmlEncoder {
               $field_arr[$ck] = $val;
             }
             else {
-              if (is_array($cv)) {
-                $arr_cv = $cv;
+              if (str_contains($cv, "/name")) {
+                $cv = str_replace('/name', '', $cv);
+                $field_arr[$ck] = self::getFieldValues($val, $cv, $ck, 'name');
               }
-              $field_arr[$ck] = self::get_field_values($val, $cv, $ck);
+              else {
+                if ($ck == "@supplied") {
+                  if ($cv == 'yes') {
+                    $field_arr[$ck] = self::getFieldValues($val, $cv, $ck);
+                  }
+                }
+                elseif (str_contains($cv, 'field_') || (in_array($cv, self::MACHINE_FIELDS))) {
+                  $field_arr[$ck] = self::getFieldValues($val, $cv, $ck);
+                }
+                else {
+                  $field_arr[$ck] = $cv;
+                }
+              }
             }
           }
           else {
             foreach ($cv as $sub_ck => $sub_cv) {
-              if ($sub_cv == "rel_type") {
-                $sub_cv = $rel_type;
+              if ($sub_ck == "roleTerm") {
+                $sub_cv['#'] = $rel_type;
               }
               if (is_array($val)) {
                 $temp_val = $data;
@@ -118,10 +189,18 @@ class ModsEncoder extends XmlEncoder {
               else {
                 $temp_val = $val;
               }
-              if (is_array($sub_cv)) {
-                $arr_cv = $sub_cv;
+              $returned = self::getFieldValues($temp_val, $sub_cv, $sub_ck);
+              if (!empty($returned)) {
+                // Keys prefixed with '@' turn into XML attributes which can
+                // only have a single value, so we'll give them the first one
+                // if we recieved an array.
+                if (str_starts_with($sub_ck, '@') && is_array($returned)) {
+                  $field_arr[$ck][$sub_ck] = $returned[0];
+                }
+                else {
+                  $field_arr[$ck][$sub_ck] = $returned;
+                }
               }
-              $field_arr[$ck][$sub_ck] = self::get_field_values($temp_val, $sub_cv, $sub_ck);
             }
           }
           $other_arr[] = $field_arr;
@@ -158,7 +237,7 @@ class ModsEncoder extends XmlEncoder {
       if (is_array($val) && array_key_exists('value', $val)) {
         $val = $val['value'];
       }
-      elseif (is_array($val) && is_array($val[0])) {
+      elseif (is_array($val) && array_key_exists(0, $val) && is_array($val[0])) {
         if (array_key_exists('value', $val[0])) {
           $val = $val[0]['value'];
         }
@@ -169,7 +248,7 @@ class ModsEncoder extends XmlEncoder {
       elseif (is_array($val) && count($val) == 1) {
         $val = $val[0];
       }
-      if (isset($sub_part)) {
+      if (!empty($sub_part)) {
         $return_vals[] = $val[$sub_part];
       }
       else {
@@ -183,16 +262,29 @@ class ModsEncoder extends XmlEncoder {
   }
 
   /**
-   * Processes the data of a single node.
+   * Builds an array from a node for XML serialization based on passed config.
+   *
+   * The provided config maps a content type's fields to their MODS structure.
+   * However, this function focuses on the first level of mapping.
+   *
+   * E.g. field_rich_description's value is the value of MODS' abstract and
+   * field_title is a 'titleInfo'.
+   *
+   * The more complex aspects of mapping is done by getFieldValues.
+   *
+   * @param \Drupal\Core\Config\ImmutableConfig $mods_config
+   *   Array of field mapping configurations.
+   * @param mixed $node
+   *   Node being processed.
+   *
+   * @return array
+   *   Array representing a MODS structure
    */
-  public function process_node($mods_config, $node) {
+  public function processNode(ImmutableConfig $mods_config, $node) {
     $new_data = [];
     foreach ($mods_config->getRawData() as $field_name => $field_config) {
       if (!is_array($field_config)) {
-        if (is_array($field_name)) {
-          $arr_field = $field_name;
-        }
-        $simple_data = $this->get_field_values($node, $field_name, $field_config);
+        $simple_data = $this->getFieldValues($node, $field_name, $field_config);
         $new_data[$field_config][] = [
           '#' => $simple_data,
         ];
@@ -205,11 +297,8 @@ class ModsEncoder extends XmlEncoder {
           }
           unset($field_config['_top']);
         }
-        if (is_array($field_name)) {
-          $arr_field = $field_name;
-        }
 
-        $complex_data = $this->get_field_values($node, $field_name, $field_config);
+        $complex_data = $this->getFieldValues($node, $field_name, $field_config);
         if (is_array($complex_data)) {
           if (count($complex_data) == 0) {
             continue;
@@ -239,20 +328,65 @@ class ModsEncoder extends XmlEncoder {
         }
       }
     }
-    return $new_data;
+
+    return $this->pruneEmptyArrays($new_data);
+  }
+
+  /**
+   * Removes 'twig' array keys with empty array value (no 'leaves').
+   *
+   * Follows array key 'branches' to the last key 'twig' referencing an
+   * array of literal value 'leaves'.
+   *
+   * E.g.
+   * ```
+   * [
+   *   'twig 1' => [],
+   *   'twig 2' => ['leaf 1'],
+   *   'branch 1' => [
+   *     'twig 3' => [],
+   *    ],
+   * ]
+   * ```
+   * becomes
+   * ```
+   * [
+   *   'twig 2' => ['leaf 1'],
+   *   'branch 1' => []
+   * ]
+   * ```
+   *
+   * In this example 'branch 1' still remains because it was a 'branch'
+   * even if it's 'twig' had no leaves (was a key to an empty array)
+   * whereas 'twig 1' had no leaves and so was removed.
+   * Note, if the example array was passed through the function twice,
+   * branch 1 would be removed as it became a twig during the first pass.
+   */
+  private function pruneEmptyArrays($data) {
+    foreach ($data as $k => $v) {
+      if (is_array($v)) {
+        if (count($v) < 1) {
+          unset($data[$k]);
+        }
+        else {
+          $data[$k] = $this->pruneEmptyArrays($v);
+        }
+      }
+    }
+    return $data;
   }
 
   /**
    * {@inheritdoc}
    */
-  public function encode($data, $format, array $context = []) {
-    // TODO set mods namespaces.
+  public function encode(mixed $data, string $format, array $context = []): string {
+    // @todo set mods namespaces.
     $mods_config = \Drupal::config('asu_mods.asu_repository_item');
     $all_records = [];
     if (is_array($data)) {
       $context[self::ROOT_NODE_NAME] = 'modsCollection';
       foreach ($data as $node) {
-        $new_data = $this->process_node($mods_config, $node);
+        $new_data = $this->processNode($mods_config, $node);
         $all_records['mods'][] =
         [
           '#' => $new_data,
@@ -261,16 +395,16 @@ class ModsEncoder extends XmlEncoder {
     }
     else {
       $context[self::ROOT_NODE_NAME] = 'mods';
-      $new_data = $this->process_node($mods_config, $data);
-      $all_records[] = $new_data;
+      $new_data = $this->processNode($mods_config, $data);
+      $all_records['#'] = $new_data;
     }
 
     $xml = parent::encode($all_records, $format, $context);
     if (is_array($data)) {
-      $xml = str_replace("<modsCollection>", '<modsCollection xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/mods/v3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd">', $xml);
+      $xml = str_replace("<modsCollection>", '<modsCollection xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/mods/v3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">', $xml);
     }
     else {
-      $xml = str_replace("<mods>", '<mods xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/mods/v3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-3.xsd">', $xml);
+      $xml = str_replace("<mods>", '<mods xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.loc.gov/mods/v3" xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/v3/mods-3-7.xsd">', $xml);
     }
     $search = [
       '<metadata-xml><![CDATA[',

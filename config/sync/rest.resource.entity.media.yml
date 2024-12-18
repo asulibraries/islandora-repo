@@ -1,9 +1,7 @@
+uuid: 31b23dc5-cff1-479b-8b5b-3653102a2674
 langcode: en
 status: true
 dependencies:
-  enforced:
-    module:
-      - islandora_core_feature
   module:
     - basic_auth
     - jsonld
@@ -11,6 +9,9 @@ dependencies:
     - media
     - serialization
     - user
+  enforced:
+    module:
+      - islandora_core_feature
 id: entity.media
 plugin_id: 'entity:media'
 granularity: method

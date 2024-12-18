@@ -2,11 +2,8 @@
 
 namespace Drupal\asu_migrate\Plugin\migrate\process;
 
-use Drupal\migrate\ProcessPluginBase;
 use Drupal\migrate\MigrateExecutableInterface;
-use Drupal\migrate\MigrateSkipProcessException;
 use Drupal\migrate\Row;
-use Drupal\taxonomy\Entity\Term;
 
 /**
  * Check if term exists and create new if doesn't.
@@ -16,7 +13,12 @@ use Drupal\taxonomy\Entity\Term;
  * )
  */
 class TypedRelationGenerate extends NameURIGenerate {
-  protected $relator_map = [
+  /**
+   * This is the mapping between relators and their names.
+   *
+   * @var array
+   */
+  protected $relatorMap = [
     "relators:abr" => "Abridger",
     "relators:act" => "Actor",
     "relators:adp" => "Adapter",
@@ -62,6 +64,7 @@ class TypedRelationGenerate extends NameURIGenerate {
     "relators:clb" => "Collaborator",
     "relators:cng" => "Cinematographer",
     "relators:cli" => "Client",
+    "barrettrelators:cau" => "Co-author",
     "relators:cor" => "Collection registrar",
     "relators:col" => "Collector",
     "relators:clt" => "Collotyper",
@@ -105,6 +108,8 @@ class TypedRelationGenerate extends NameURIGenerate {
     "relators:dfd" => "Defendant",
     "relators:dft" => "Defendant-appellant",
     "relators:dfe" => "Defendant-appellee",
+    "relators:dgc" => "Degree Committee Member",
+    "barrettrelators:dgc" => "Committee Member",
     "relators:dgg" => "Degree granting institution",
     "relators:dgs" => "Degree supervisor",
     "relators:dln" => "Delineator",
@@ -269,6 +274,7 @@ class TypedRelationGenerate extends NameURIGenerate {
     "relators:tcd" => "Technical director",
     "relators:tld" => "Television director",
     "relators:tlp" => "Television producer",
+    "barrettrelators:ths" => "Thesis director",
     "relators:ths" => "Thesis advisor",
     "relators:trc" => "Transcriber",
     "relators:trl" => "Translator",
@@ -287,32 +293,84 @@ class TypedRelationGenerate extends NameURIGenerate {
     "relators:wat" => "Writer of added text",
     "relators:win" => "Writer of introduction",
     "relators:wpr" => "Writer of preface",
-    "relators:wst" => "Writer of supplementary textual content"
+    "relators:wst" => "Writer of supplementary textual content",
   ];
 
   /**
    * {@inheritdoc}
    */
-  public function transform($name_uri_pair, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
-    if (array_key_exists('relator', $this->configuration)) {
-      $relator = $this->configuration['relator'];
+  public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
+    if (is_array($value)) {
+      $relator = (array_key_exists('rel', $value) ?
+        (strstr($value['rel'], 'relators:') ? $value['rel'] : 'relators:' . $value['rel']) : '');
+      unset($value['rel']);
     }
     else {
-      $parts = explode($this->configuration['delimiter'], $name_uri_pair);
-      $relator_string = array_pop($parts);
-      $relator = $this->look_up_relator($relator_string);
-      $name_uri_pair = implode($this->configuration['delimiter'], $parts);
+      if (array_key_exists('relator', $this->configuration)) {
+        $relator = $this->configuration['relator'];
+      }
+      else {
+        $parts = explode($this->configuration['delimiter'], $value);
+        if (count($parts) > 1) {
+          // Allows the configuration to specify which order the relator is in.
+          if (array_key_exists('relator_position', $this->configuration)) {
+            $relator_position = $this->configuration['relator_position'];
+            $relator_string = $parts[$relator_position];
+            unset($parts[$relator_position]);
+          }
+          else {
+            // Assumes an order of name|uri|relator.
+            $relator_string = array_pop($parts);
+          }
+          $relator = $this->lookUpRelator($relator_string);
+          $value = implode($this->configuration['delimiter'], $parts);
+        }
+        else {
+          $relator = 'relators:ctb';
+        }
+      }
     }
-    $term = parent::transform($name_uri_pair, $migrate_executable, $row, $destination_property);
+    $term = parent::transform($value, $migrate_executable, $row, $destination_property);
     $typed_relation = [
       'rel_type' => $relator,
-      'target_id' => $term
+      'target_id' => $term,
     ];
     return $typed_relation;
   }
 
-  public function look_up_relator(string $relator) {
-    return array_search($relator, $this->relator_map);
+  /**
+   * This looks up a relator code based on the name.
+   *
+   * Note: this can take either a relator value OR a relator key such as
+   * "relators:msd" or even "relator:aut".
+   *
+   * @param string $relator
+   *   The relator part of the working string.
+   *
+   * @return string
+   *   The array key that matches the relator that was provided.
+   */
+  public function lookUpRelator(string $relator) {
+    // Allow lookup to function when passing the relators:xyz key instead of
+    // a value.
+    $relator_found = 'relators:ctb';
+    if (strstr($relator, "relators:") || strstr($relator, "relator:")) {
+      $key = 'relators:' . str_replace([
+        'relators:',
+        'relator:',
+      ], "", $relator);
+      $relator_by_code_found = array_key_exists($key, $this->relatorMap);
+      if (!($relator_by_code_found === FALSE)) {
+        $relator_found = $key;
+      }
+    }
+    else {
+      if ($relator == "Advisor") {
+        $relator = "Thesis advisor";
+      }
+      $relator_found = array_search(strtolower(trim($relator)), array_map('strtolower', $this->relatorMap));
+    }
+    return $relator_found;
   }
 
 }

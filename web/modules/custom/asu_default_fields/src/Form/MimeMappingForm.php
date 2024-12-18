@@ -1,8 +1,4 @@
 <?php
-/**
- * @file
- * Contains Drupal\asu_default_fields\MimeMappingForm.
- */
 
 namespace Drupal\asu_default_fields\Form;
 
@@ -12,7 +8,6 @@ use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\taxonomy\Entity\Vocabulary;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-
 
 /**
  * Mime Type Mapping Configuration Form.

@@ -1,0 +1,27 @@
+uuid: 9d054a29-da23-4e8c-a9a0-0785d230687e
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora
+label: 'Repository Complex Object'
+name: repository_complex_object
+group: Display
+description: 'Complex Object view mode and related'
+requireAllConditions: false
+disabled: true
+conditions:
+  node_has_term:
+    id: node_has_term
+    negate: false
+    uuid: 792a0004-5337-4696-b6c2-7b52e6461066
+    context_mapping:
+      node: '@node.node_route_context:node'
+    uri: 'https://schema.org/MediaObject'
+    logic: and
+reactions:
+  view_mode_alter:
+    id: view_mode_alter
+    mode: node.asu_complex_object
+    saved: false
+weight: 0

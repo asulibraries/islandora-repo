@@ -71,7 +71,7 @@ class ParagraphMapping extends CommonDataConverter {
         }
       }
     }
-    return $string;
+    return trim($string);
   }
 
   /**

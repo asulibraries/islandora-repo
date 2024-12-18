@@ -1,0 +1,30 @@
+uuid: c35c6e55-4ae3-40a8-af5d-b39e0c33e2b4
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora
+    - media
+label: 'Audio and Video Captions'
+name: audio_and_video_captions
+group: Derivatives
+description: 'Generate captions for A/V using AWS.'
+requireAllConditions: true
+disabled: false
+conditions:
+  'entity_bundle:media':
+    id: 'entity_bundle:media'
+    negate: false
+    uuid: 9981bd82-924a-428d-ac16-fb1d98bd18d9
+    context_mapping:
+      media: '@islandora.media_route_context_provider:media'
+    bundles:
+      audio: audio
+      video: video
+reactions:
+  file_derivative:
+    id: file_derivative
+    actions:
+      caption_generate_captions_via_aws_transcribe_for_audio_video_onl: caption_generate_captions_via_aws_transcribe_for_audio_video_onl
+    saved: false
+weight: 0

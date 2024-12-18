@@ -1,3 +1,4 @@
+uuid: 0724fbfc-2604-4b45-bab2-30d656dc02d2
 langcode: en
 status: true
 dependencies:
@@ -13,14 +14,14 @@ bundle: name_titles
 mode: default
 content:
   description:
-    label: hidden
     type: text_default
-    weight: 0
-    region: content
+    label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
   field_authority_link:
-    weight: 1
+    type: authority_formatter_default
     label: above
     settings:
       trim_length: 80
@@ -29,7 +30,7 @@ content:
       rel: ''
       target: _blank
     third_party_settings: {  }
-    type: authority_formatter_default
+    weight: 1
     region: content
 hidden:
   langcode: true

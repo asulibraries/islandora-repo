@@ -1,3 +1,4 @@
+uuid: a44b8a3a-de8b-41ee-bc6d-7179266d4960
 langcode: en
 status: true
 dependencies:
@@ -12,35 +13,31 @@ dependencies:
     - field.field.media.video.field_media_video_file
     - field.field.media.video.field_mime_type
     - field.field.media.video.field_original_name
+    - field.field.media.video.field_track
     - media.type.video
+  module:
+    - islandora_video
   enforced:
     module:
       - islandora_core_feature
-  module:
-    - asu_item_extras
 id: media.video.source
 targetEntityType: media
 bundle: video
 mode: source
 content:
-  field_gemini_uri:
-    weight: 100
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   field_media_video_file:
-    type: file_video_caption
-    weight: 0
+    type: islandora_file_video
     label: visually_hidden
     settings:
-      muted: false
-      width: 640
-      height: 480
       controls: true
       autoplay: false
       loop: false
       multiple_file_display_type: tags
+      muted: false
+      width: 640
+      height: 480
     third_party_settings: {  }
+    weight: 0
     region: content
 hidden:
   created: true
@@ -52,6 +49,7 @@ hidden:
   field_media_use: true
   field_mime_type: true
   field_original_name: true
+  field_track: true
   langcode: true
   name: true
   search_api_excerpt: true

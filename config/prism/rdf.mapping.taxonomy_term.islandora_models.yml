@@ -1,0 +1,31 @@
+uuid: d09a82ab-5828-4b65-a27b-cfc09853360d
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.islandora_models
+  module:
+    - taxonomy
+  enforced:
+    module:
+      - islandora_core_feature
+id: taxonomy_term.islandora_models
+targetEntityType: taxonomy_term
+bundle: islandora_models
+types:
+  - 'schema:Thing'
+fieldMappings:
+  name:
+    properties:
+      - 'dcterms:title'
+  description:
+    properties:
+      - 'dcterms:description'
+  field_external_uri:
+    properties:
+      - 'owl:sameAs'
+  changed:
+    properties:
+      - 'schema:dateModified'
+    datatype_callback:
+      callable: 'Drupal\rdf\CommonDataConverter::dateIso8601Value'

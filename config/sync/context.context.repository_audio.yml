@@ -1,10 +1,11 @@
+uuid: b89dcc5d-1b23-4d48-bd06-50971c32ce47
 langcode: en
 status: true
 dependencies:
   module:
     - islandora
-name: repository_audio
 label: 'Repository Audio'
+name: repository_audio
 group: Display
 description: 'Audio view mode and related'
 requireAllConditions: false
@@ -12,11 +13,11 @@ disabled: true
 conditions:
   node_has_term:
     id: node_has_term
-    logic: and
     negate: false
-    uri: 'http://purl.org/coar/resource_type/c_18cc'
     context_mapping:
       node: '@node.node_route_context:node'
+    uri: 'http://purl.org/coar/resource_type/c_18cc'
+    logic: and
 reactions:
   view_mode_alter:
     id: view_mode_alter

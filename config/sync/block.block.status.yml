@@ -1,10 +1,10 @@
+uuid: e4dc98e8-c1c5-45b1-96da-cb28a842326e
 langcode: en
 status: true
 dependencies:
   config:
     - facets.facet.status
   module:
-    - context
     - facets
     - system
   theme:
@@ -12,23 +12,18 @@ dependencies:
 id: status
 theme: asulib_barrio
 region: sidebar_first
-weight: -11
+weight: -15
 provider: null
 plugin: 'facet_block:status'
 settings:
   id: 'facet_block:status'
   label: Status
-  provider: facets
   label_display: visible
+  provider: facets
   block_id: status
 visibility:
-  request_path_exclusion:
-    id: request_path_exclusion
-    pages: ''
-    negate: null
-    context_mapping: {  }
   request_path:
     id: request_path
-    pages: '/search*'
     negate: false
     context_mapping: {  }
+    pages: '/search*'

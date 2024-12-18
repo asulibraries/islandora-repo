@@ -1,0 +1,14 @@
+uuid: 992ec6d3-1a76-4f28-9fc3-071a65c484bb
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.honors_student
+  module:
+    - user
+id: user_remove_role_action.honors_student
+label: 'Remove the Honors student role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: honors_student

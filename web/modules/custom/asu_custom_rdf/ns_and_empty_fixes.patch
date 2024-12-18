@@ -1,0 +1,30 @@
+diff --git a/src/Plugin/OaiMetadataMap/DublinCoreRdf.php b/src/Plugin/OaiMetadataMap/DublinCoreRdf.php
+index 1335dc7..8a2db1e 100644
+--- a/src/Plugin/OaiMetadataMap/DublinCoreRdf.php
++++ b/src/Plugin/OaiMetadataMap/DublinCoreRdf.php
+@@ -121,7 +121,9 @@ class DublinCoreRdf extends OaiMetadataMapBase {
+           else {
+             $value = $item->getValue()[$index];
+           }
+-          $render_array['elements'][$element][] = $value;
++          if ($value) {
++            $render_array['elements'][$element][] = $value;
++          }
+         }
+       }
+ 
+diff --git a/src/Plugin/rest/resource/OaiPmh.php b/src/Plugin/rest/resource/OaiPmh.php
+index 8e13b81..30064b9 100644
+--- a/src/Plugin/rest/resource/OaiPmh.php
++++ b/src/Plugin/rest/resource/OaiPmh.php
+@@ -583,6 +583,10 @@ class OaiPmh extends ResourceBase {
+               $metadata = $mapping_plugin->getMetadataWrapper();
+               $wrapper_key = array_keys($metadata)[0];
+               $metadata[$wrapper_key]['metadata-xml'] = trim($record);
++              if ($wrapper_key == 'oai_dc') {
++                  $metadata['oai_dc:dc'] = $metadata['oai_dc'];
++                  unset($metadata['oai_dc']);
++              }
+               return $metadata;
+           }
+       );

@@ -11,6 +11,7 @@ use Drupal\Core\Routing\RouteMatchInterface;
 use Drupal\node\NodeInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 
 /**
  * Provides a 'Feedback' Block.
@@ -37,6 +38,13 @@ class FeedbackButton extends BlockBase implements ContainerFactoryPluginInterfac
   protected $routeMatch;
 
   /**
+   * The entity type manager.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
    * Constructor for Feedback Button Block.
    *
    * @param array $configuration
@@ -49,11 +57,14 @@ class FeedbackButton extends BlockBase implements ContainerFactoryPluginInterfac
    *   The current request.
    * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
    *   The route match.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   The entity type manager.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, Request $currentRequest, RouteMatchInterface $route_match) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, Request $currentRequest, RouteMatchInterface $route_match, EntityTypeManagerInterface $entity_type_manager) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->currentRequest = $currentRequest;
     $this->routeMatch = $route_match;
+    $this->entityTypeManager = $entity_type_manager;
   }
 
   /**
@@ -65,7 +76,8 @@ class FeedbackButton extends BlockBase implements ContainerFactoryPluginInterfac
       $plugin_id,
       $plugin_definition,
       $container->get('request_stack')->getCurrentRequest(),
-      $container->get('current_route_match')
+      $container->get('current_route_match'),
+      $container->get('entity_type.manager')
     );
   }
 
@@ -75,24 +87,30 @@ class FeedbackButton extends BlockBase implements ContainerFactoryPluginInterfac
   public function build() {
     $node = $this->routeMatch->getParameter('node');
     if ($node) {
-      $nid = $node->id();
+      $nid = (is_string($node) ? $node : $node->id());
+      $node = is_string($node) ? $this->entityTypeManager->getStorage('node')->load($node) : $node;
     }
     else {
       $nid = 0;
     }
-    $cid = $this->getCollectionParent($node);
+    if (isset($node)) {
+      $cid = $this->getCollectionParent($node);
+    }
+    else {
+      $cid = 0;
+    }
     $url_base = $this->currentRequest->getSchemeAndHttpHost();
-    $class = 'btn btn-primary';
+    $class = 'btn btn-md btn-gray';
     if ($cid == $nid) {
       $feedback_url = Url::fromUri($url_base . '/form/feedback?source_entity_type=node&source_entity_id=' . $nid . '&collection=' . $cid . '&primary_element=collection');
     }
     else {
       $feedback_url = Url::fromUri($url_base . '/form/feedback?source_entity_type=node&source_entity_id=' . $nid . '&item=' . $nid . '&collection=' . $cid . '&primary_element=item');
     }
-    $link = Link::fromTextAndUrl(t('<i class="fas fa-comments"></i> Feedback'), $feedback_url)->toRenderable();
-    $link['#attributes'] = ['class' => $class];
+    $link = Link::fromTextAndUrl($this->t('<i class="fas fa-comments"></i> Feedback'), $feedback_url)->toRenderable();
+    $link['#attributes'] = ['class' => $class, 'title' => $this->t('Feedback')];
     $markup = [
-      '#markup' => render($link),
+      '#markup' => \Drupal::service('renderer')->render($link),
     ];
     return $markup;
   }
@@ -103,8 +121,8 @@ class FeedbackButton extends BlockBase implements ContainerFactoryPluginInterfac
   public function getCacheTags() {
     // With this when your node change your block will rebuild.
     if ($node = $this->routeMatch->getParameter('node')) {
-      // If there is node add its cachetag.
-      return Cache::mergeTags(parent::getCacheTags(), ['node:' . $node->id()]);
+      $nid = is_string($node) ? $node : $node->id();
+      return Cache::mergeTags(parent::getCacheTags(), ['node:' . $nid]);
     }
     else {
       // Return default tags instead.
@@ -136,15 +154,15 @@ class FeedbackButton extends BlockBase implements ContainerFactoryPluginInterfac
     }
     if (!$node->get('field_member_of')->isEmpty()) {
       $parent = $node->get('field_member_of')->entity;
-      if ($parent->bundle() == 'collection') {
-        return $parent->id();
+      if (isset($parent)) {
+        if ($parent->bundle() == 'collection') {
+          return $parent->id();
+        }
+        elseif ($parent->bundle() == 'asu_repository_item') {
+          return $this->getCollectionParent($parent);
+        }
       }
-      elseif ($parent->bundle() == 'asu_repository_item') {
-        return $this->getCollectionParent($parent);
-      }
-      else {
-        return NULL;
-      }
+      return NULL;
     }
   }
 

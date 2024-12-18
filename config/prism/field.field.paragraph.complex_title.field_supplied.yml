@@ -1,0 +1,23 @@
+uuid: 62d7349b-4200-4550-bc50-fede84c50a98
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_supplied
+    - paragraphs.paragraphs_type.complex_title
+id: paragraph.complex_title.field_supplied
+field_name: field_supplied
+entity_type: paragraph
+bundle: complex_title
+label: Supplied
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'Yes'
+  off_label: 'No'
+field_type: boolean

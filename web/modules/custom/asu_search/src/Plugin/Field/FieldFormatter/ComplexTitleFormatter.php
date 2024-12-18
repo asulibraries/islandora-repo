@@ -4,7 +4,6 @@ namespace Drupal\asu_search\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\Plugin\Field\FieldFormatter\EntityReferenceLabelFormatter;
 use Drupal\Core\Field\FieldItemListInterface;
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 
 /**
  * Plugin implementation of the 'ComplexTitleFormatter'.

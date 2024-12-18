@@ -1,19 +1,20 @@
+uuid: cf5fc526-28b1-4bfc-ac8b-14395dbb9d2a
 langcode: en
 status: true
 dependencies:
+  module:
+    - media
   enforced:
     module:
       - islandora_core_feature
-  module:
-    - media
 id: media.field_mime_type
 field_name: field_mime_type
 entity_type: media
 type: string
 settings:
   max_length: 255
-  is_ascii: false
   case_sensitive: false
+  is_ascii: false
 module: core
 locked: false
 cardinality: 1

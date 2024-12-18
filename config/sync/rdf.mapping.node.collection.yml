@@ -1,11 +1,9 @@
+uuid: 4a2ee0a9-f091-4e22-9ebf-5dee917a4a2f
 langcode: en
 status: true
 dependencies:
   config:
     - node.type.collection
-  enforced:
-    module:
-      - islandora_defaults
   module:
     - node
 id: node.collection
@@ -47,9 +45,9 @@ fieldMappings:
   uid:
     properties:
       - 'relators:dtc'
-    mapping_type: property
     datatype_callback:
       callable: 'Drupal\asu_custom_rdf\UidLookup::username'
+    mapping_type: property
   status:
     properties:
       - 'asu:visibility'

@@ -1,0 +1,14 @@
+uuid: f83a8406-7b6b-43b7-83ba-42e00f1ffa09
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.honors_staff
+  module:
+    - user
+id: user_remove_role_action.honors_staff
+label: 'Remove the Honors staff role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: honors_staff

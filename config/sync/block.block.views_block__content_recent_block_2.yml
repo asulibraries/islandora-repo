@@ -1,10 +1,10 @@
+uuid: deb285e0-9373-4aba-b3e6-b106940a713c
 langcode: en
 status: false
 dependencies:
   config:
     - views.view.content_recent
   module:
-    - context
     - system
     - views
   theme:
@@ -12,29 +12,19 @@ dependencies:
 id: views_block__content_recent_block_2
 theme: asulib_barrio
 region: content
-weight: -22
+weight: -32
 provider: null
 plugin: 'views_block:content_recent-block_2'
 settings:
   id: 'views_block:content_recent-block_2'
   label: 'Recent Items'
-  provider: views
   label_display: visible
+  provider: views
   views_label: 'Recent Items'
   items_per_page: none
 visibility:
-  request_path_exclusion:
-    id: request_path_exclusion
-    pages: ''
-    negate: null
-    context_mapping: {  }
-  view_inclusion:
-    id: view_inclusion
-    negate: null
-    view_inclusion: {  }
-    context_mapping: {  }
   request_path:
     id: request_path
-    pages: "<front>\r\n/home\r\n/"
     negate: false
     context_mapping: {  }
+    pages: "<front>\r\n/home\r\n/"

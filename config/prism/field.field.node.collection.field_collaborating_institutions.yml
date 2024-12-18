@@ -1,0 +1,29 @@
+uuid: cbab340a-d641-44e7-89d1-993700c6669b
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_collaborating_institutions
+    - node.type.collection
+    - taxonomy.vocabulary.collaborating_institutions
+id: node.collection.field_collaborating_institutions
+field_name: field_collaborating_institutions
+entity_type: node
+bundle: collection
+label: 'Collaborating Institutions'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      collaborating_institutions: collaborating_institutions
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

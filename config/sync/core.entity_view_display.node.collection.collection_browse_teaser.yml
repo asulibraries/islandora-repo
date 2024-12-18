@@ -1,3 +1,4 @@
+uuid: cdf791be-5b94-49ff-9c59-cb88ba2f8ca4
 langcode: en
 status: true
 dependencies:
@@ -9,12 +10,14 @@ dependencies:
     - field.field.node.collection.field_default_original_file_perm
     - field.field.node.collection.field_enabled
     - field.field.node.collection.field_external_links
+    - field.field.node.collection.field_fields_co_child
     - field.field.node.collection.field_handle
     - field.field.node.collection.field_member_of
     - field.field.node.collection.field_model
     - field.field.node.collection.field_oai_set
     - field.field.node.collection.field_preferred_citation
     - field.field.node.collection.field_primary_contact
+    - field.field.node.collection.field_restrictions_statement
     - field.field.node.collection.field_rich_description
     - field.field.node.collection.field_title
     - image.style.square_thumb
@@ -29,53 +32,53 @@ targetEntityType: node
 bundle: collection
 mode: collection_browse_teaser
 content:
+  display_media_thumbnail_card:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
   field_collection_thumbnail:
     type: media_thumbnail
-    weight: 0
-    region: content
     label: visually_hidden
     settings:
-      image_style: square_thumb
       image_link: content
+      image_style: square_thumb
     third_party_settings: {  }
+    weight: 0
+    region: content
   field_def:
-    weight: 103
+    type: entity_reference_label
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    type: entity_reference_label
-    region: content
-  field_gemini_uri:
-    weight: 100
-    settings: {  }
-    third_party_settings: {  }
+    weight: 103
     region: content
   field_rich_description:
     type: text_trimmed
-    weight: 2
-    region: content
     label: visually_hidden
     settings:
       trim_length: 400
     third_party_settings: {  }
+    weight: 2
+    region: content
   field_title:
     type: complex_title_formatter
-    weight: 1
-    region: content
     label: visually_hidden
     settings:
       link: '1'
     third_party_settings: {  }
+    weight: 1
+    region: content
   flag_email_node:
-    weight: 10
     settings: {  }
     third_party_settings: {  }
+    weight: 10
     region: content
   flag_subscribe_node:
-    weight: 10
     settings: {  }
     third_party_settings: {  }
+    weight: 10
     region: content
 hidden:
   display_media_child_thumbnail: true
@@ -89,12 +92,14 @@ hidden:
   field_default_original_file_perm: true
   field_enabled: true
   field_external_links: true
+  field_fields_co_child: true
   field_handle: true
   field_member_of: true
   field_model: true
   field_oai_set: true
   field_preferred_citation: true
   field_primary_contact: true
+  field_restrictions_statement: true
   islandora_fits_checksum: true
   langcode: true
   links: true

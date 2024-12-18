@@ -1,0 +1,34 @@
+uuid: 564dfa3e-62f6-4b66-9d97-42c07dd57f88
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.status_cpx
+  module:
+    - facets
+    - islandora
+    - system
+  theme:
+    - asulib_barrio
+id: statuscpx
+theme: asulib_barrio
+region: sidebar_first
+weight: -13
+provider: null
+plugin: 'facet_block:status_cpx'
+settings:
+  id: 'facet_block:status_cpx'
+  label: Status
+  label_display: visible
+  provider: facets
+  block_id: statuscpx
+visibility:
+  media_source_mimetype:
+    id: media_source_mimetype
+    negate: false
+    context_mapping: {  }
+    mimetype: ''
+  request_path:
+    id: request_path
+    negate: false
+    pages: '/items/*/search*'

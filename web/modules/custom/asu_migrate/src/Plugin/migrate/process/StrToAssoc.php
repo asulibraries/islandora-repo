@@ -7,7 +7,6 @@ use Drupal\migrate\MigrateException;
 use Drupal\migrate\MigrateExecutableInterface;
 use Drupal\migrate\Row;
 
-
 /**
  * Convert a string and a key into an associative array.
  *
@@ -30,7 +29,7 @@ use Drupal\migrate\Row;
  *   -
  *     plugin: str_to_assoc
  *     key: 'name'
- * 
+ *
  * placeholder2:
  *   plugin: sub_process
  *   source: '@placeholder1'
@@ -43,7 +42,7 @@ use Drupal\migrate\Row;
  * field_linked_agent:
  *   plugin: sub_process
  *   source: @placeholder2
- *   process: 
+ *   process:
  *     target_id:
  *       process: entity_generate
  *       source: entity
@@ -53,22 +52,22 @@ use Drupal\migrate\Row;
  *       bundle: person
  *     rel_type: relation
  * @endcode
- *
  */
 class StrToAssoc extends ProcessPluginBase {
+
   /**
    * {@inheritdoc}
    */
   public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
     if (!is_string($value)) {
-	    throw new MigrateException('Plugin str_to_assoc requires a string input.');
+      throw new MigrateException('Plugin str_to_assoc requires a string input.');
     }
     if (!isset($this->configuration['key'])) {
-	    throw new MigrateException('Plugin str_to_assoc requires a key.');
+      throw new MigrateException('Plugin str_to_assoc requires a key.');
     }
     $key = $this->configuration['key'];
 
-    return array($key => $value);
+    return [$key => $value];
   }
-}
 
+}

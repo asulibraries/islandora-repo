@@ -1,0 +1,19 @@
+uuid: eec00697-14cc-4219-ad86-8b883692a1ac
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.collection_group
+    - user.role.authenticated
+id: collection_group-member
+label: Member
+weight: -100
+admin: false
+scope: insider
+global_role: authenticated
+group_type: collection_group
+permissions:
+  - 'view group_node:asu_repository_item entity'
+  - 'view group_node:collection entity'
+  - 'view unpublished group_node:asu_repository_item entity'
+  - 'view unpublished group_node:collection entity'

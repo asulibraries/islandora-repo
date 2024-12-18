@@ -2,12 +2,13 @@
 
 namespace Drupal\asu_migrate\Plugin\migrate\process;
 
-use Drupal\migrate\ProcessPluginBase;
 use Drupal\migrate\MigrateExecutableInterface;
-use Drupal\migrate\MigrateSkipProcessException;
 use Drupal\migrate\Row;
+use Drupal\migrate\Plugin\MigrationInterface;
 use Drupal\migrate_plus\Plugin\migrate\process\EntityLookup;
-use Drupal\taxonomy\Entity\Term;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 
 /**
  * Check if term exists and create new if doesn't.
@@ -24,26 +25,68 @@ use Drupal\taxonomy\Entity\Term;
  *        - Collection Title
  *      entity_type: node
  */
-class MultiEntityLookup extends EntityLookup {
-  /** @inheritdoc */
-  public function transform($arr, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
-    $item_parent = $arr[0];
-    $collection_parent = $arr[1];
-    if ($item_parent) {
-      if (array_key_exists('lookup_field', $this->configuration)) {
-        $par = \Drupal::entityTypeManager()->getStorage('node')->loadByProperties([$this->configuration['lookup_field'] => $item_parent]);
+class MultiEntityLookup extends EntityLookup implements ContainerFactoryPluginInterface {
+
+  /**
+   * The entityTypeManager definition.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * Constructs a MultiEntityLookup object.
+   *
+   * @param Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   A drupal entity type manager object.
+   * @param Drupal\migrate\Plugin\MigrationInterface      $migration
+   *   The migration object.
+   */
+  public function __construct(
+      array $configuration,
+      $plugin_id,
+      $plugin_definition,
+      EntityTypeManagerInterface $entityTypeManager,
+      MigrationInterface $migration
+    ) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition, $migration);
+    $this->entityTypeManager = $entityTypeManager;
+  }
+
+  /**
+   * @todo write the comment correctly.
+   */
+  public static function create(ContainerInterface $container, array $configuration, $pluginId, $pluginDefinition, MigrationInterface $migration = NULL) {
+    return new static(
+      $configuration,
+      $pluginId,
+      $pluginDefinition,
+      $container->get('entity_type.manager'),
+      $migration
+    );
+  }
+
+  /**
+   * @inheritdoc
+   */
+  public function transform($parent_columns, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
+    // We assume the first in the list of configured sources is the primary parent column.
+    if (!empty($parent_columns[0])) {
+      // Pull the lookup field from configuration, defaulting to 'pid'.
+      $lookup_field = (array_key_exists('lookup_field', $this->configuration)) ? $this->configuration['lookup_field'] : 'field_pid';
+      $found = $this->entityTypeManager->getStorage('node')->loadByProperties([$lookup_field => $parent_columns[0]]);
+ 
+      // loadByProperties returns an array of objects keyed by their node id, we just want the node id of the first result.
+      if ($parent_nid = reset(array_keys($found))) {
+        return $parent_nid;
       }
-      else {
-        // default is the pid field
-        $par = \Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['field_pid' => $item_parent]);
-      }
-      $par = array_keys($par)[0];
+
     }
-    else {
+    // Check for a second 'collection' column if the parent column was blank.
+    elseif (count($parent_columns) > 1 && !empty($parent_columns[1]) ) {
       $this->configuration['bundle'] = 'collection';
       $this->configuration['value_key'] = 'title';
-      $par = parent::transform($collection_parent, $migrate_executable, $row, $destination_property);
-    }
-    return $par;
+      return parent::transform($parent_columns[1], $migrate_executable, $row, $destination_property);
+   }
   }
 }

@@ -1,0 +1,23 @@
+uuid: f35b85bd-d2ed-49bc-a082-75486a2e8055
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_fields_co_child
+    - node.type.collection
+id: node.collection.field_fields_co_child
+field_name: field_fields_co_child
+entity_type: node
+bundle: collection
+label: 'Fields CO Child'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:field_config'
+  handler_settings:
+    target_bundles: null
+    auto_create: false
+field_type: entity_reference

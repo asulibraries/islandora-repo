@@ -1,8 +1,28 @@
+uuid: 01f9c2c8-7900-48d1-9d47-005b21aeda6b
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - media.type.audio
+    - media.type.document
+    - media.type.file
+    - media.type.image
+    - media.type.remote_video
+    - media.type.video
+  module:
+    - file
+    - file_replace
+    - media
 id: fedoraadmin
 label: fedoraAdmin
 weight: 3
 is_admin: null
-permissions: {  }
+permissions:
+  - 'create audio media'
+  - 'create document media'
+  - 'create file media'
+  - 'create image media'
+  - 'create remote_video media'
+  - 'create video media'
+  - 'delete own files'
+  - 'replace files'

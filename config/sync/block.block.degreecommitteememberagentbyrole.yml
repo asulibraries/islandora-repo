@@ -1,0 +1,34 @@
+uuid: d4dee6e2-7477-4764-9465-69d1599bfc3d
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.degree_committee_member_agent_by_role_
+  module:
+    - facets
+    - islandora
+    - system
+  theme:
+    - asulib_barrio
+id: degreecommitteememberagentbyrole
+theme: asulib_barrio
+region: sidebar_first
+weight: 0
+provider: null
+plugin: 'facet_block:degree_committee_member_agent_by_role_'
+settings:
+  id: 'facet_block:degree_committee_member_agent_by_role_'
+  label: 'Committee Members'
+  label_display: visible
+  provider: facets
+  block_id: degreecommitteememberagentbyrole
+visibility:
+  media_source_mimetype:
+    id: media_source_mimetype
+    negate: false
+    context_mapping: {  }
+    mimetype: ''
+  request_path:
+    id: request_path
+    negate: false
+    pages: '/collections/*/search*'

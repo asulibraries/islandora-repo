@@ -1,0 +1,23 @@
+uuid: b7b8c8ba-0c36-479e-b225-fd90fe7bf7cd
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_open_access
+    - node.type.asu_repository_item
+id: node.asu_repository_item.field_open_access
+field_name: field_open_access
+entity_type: node
+bundle: asu_repository_item
+label: 'Open Access'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'Yes'
+  off_label: 'No'
+field_type: boolean

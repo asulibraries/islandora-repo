@@ -1,0 +1,31 @@
+uuid: d4116823-ccef-4fe0-abad-4e124d1361f9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_media_of
+    - media.type.video
+    - node.type.asu_repository_item
+  enforced:
+    module:
+      - islandora_core_feature
+id: media.video.field_media_of
+field_name: field_media_of
+entity_type: media
+bundle: video
+label: 'Media of'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: unpublished
+  handler_settings:
+    target_bundles:
+      asu_repository_item: asu_repository_item
+    sort:
+      field: _none
+    auto_create: 0
+    auto_create_bundle: ''
+field_type: entity_reference

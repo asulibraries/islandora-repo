@@ -1,0 +1,29 @@
+uuid: 7b286665-1485-47a4-bcf0-59ee8528c6eb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_keyword
+    - node.type.scholarly_work
+    - taxonomy.vocabulary.keywords
+id: node.scholarly_work.field_keyword
+field_name: field_keyword
+entity_type: node
+bundle: scholarly_work
+label: Keywords
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      keywords: keywords
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

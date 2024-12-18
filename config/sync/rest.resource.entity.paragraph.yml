@@ -1,0 +1,26 @@
+uuid: aa640852-26b3-46f3-919e-1267903f681b
+langcode: en
+status: true
+dependencies:
+  module:
+    - basic_auth
+    - jsonld
+    - jwt
+    - paragraphs
+    - serialization
+    - user
+id: entity.paragraph
+plugin_id: 'entity:paragraph'
+granularity: resource
+configuration:
+  methods:
+    - GET
+    - POST
+    - PATCH
+  formats:
+    - jsonld
+    - json
+  authentication:
+    - jwt_auth
+    - basic_auth
+    - cookie

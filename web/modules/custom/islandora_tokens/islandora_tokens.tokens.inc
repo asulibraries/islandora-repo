@@ -49,7 +49,7 @@ function islandora_tokens_token_info() {
     'name' => t("Copyright date"),
     'description' => t('Show the "Copyright Date" into YYYY/MM/DD format (handles EDTF format)'),
   ];
-  $node['pdf_url'] = [
+  $node['asu_pdf_url'] = [
     'name' => t("PDF Url"),
     'description' => t('URL to related media file if "Original file" is a PDF file'),
   ];
@@ -74,7 +74,7 @@ function islandora_tokens_tokens($type, $tokens, array $data, array $options, Bu
         case 'agent_author':
           // For the Linked agent field, the Author/s are specified
           // by the relationship "aut" for Author.
-          $replacements[$original] = _get_term_with_rel_type($data['node'], 'field_linked_agent', 'relators:aut');
+          $replacements[$original] = _get_term_with_rel_type($data['node'], 'field_linked_agent', 'relators:aut', TRUE);
           break;
 
         case 'agent_contributor':
@@ -101,8 +101,8 @@ function islandora_tokens_tokens($type, $tokens, array $data, array $options, Bu
           $replacements[$original] = _normalize_date_format($data['node'], 'field_edtf_copyright_date', $original);
           break;
 
-        case 'pdf_url':
-          $replacements[$original] = ' ' . _url_to_service_file_media_by_mimetype($data['node'], 'application/pdf');
+        case 'asu_pdf_url':
+          $replacements[$original] = ' ' . _url_to_media_file_by_mimetype($data['node'], 'application/pdf');
           break;
       }
     }
@@ -141,20 +141,20 @@ function _get_term_with_rel_type($node, $field_name, $relation_type = '', $remov
           if ($tid['rel_type'] == $relation_type) {
             $term = Term::load($tid['target_id']);
             if ($term) {
-              $matches[] = islandora_tokens_remove_comma($term->getName(), $remove_comma);
+              $matches[] = $term->getName();
             }
           }
         }
         else {
           $term = Term::load($tid['target_id']);
           if ($term) {
-            $matches[] = islandora_tokens_remove_comma($term->getName(), $remove_comma);
+            $matches[] = $term->getName();
           }
         }
       }
     }
   }
-  return implode(", ", $matches);
+  return implode("|", $matches);
 }
 
 /**
@@ -220,7 +220,7 @@ function _normalize_date_format($node, $field_name, $original) {
 }
 
 /**
- * Gets Original File PDF file URL.
+ * Gets node's first accessible file URL by mime type.
  *
  * @param object $node
  *   A core drupal node object.
@@ -230,59 +230,26 @@ function _normalize_date_format($node, $field_name, $original) {
  * @return string
  *   The tokenized value for the given data.
  */
-function _url_to_service_file_media_by_mimetype($node, $mime_type) {
-  $islandora_utils = \Drupal::service('islandora.utils');
-  $origfile_term = $islandora_utils->getTermForUri('http://pcdm.org/use#OriginalFile');
-  $origfile_media = $islandora_utils->getMediaWithTerm($node, $origfile_term);
-  // Get the media file's mime_type value.
-  if (is_object($origfile_media)) {
-    $origfile_mime_type = ($origfile_media->hasField('field_mime_type')) ?
-      $origfile_media->get('field_mime_type')->getValue() : NULL;
-    $origfile_mime_type = (is_array($origfile_mime_type) &&
-      array_key_exists(0, $origfile_mime_type) &&
-      is_array($origfile_mime_type[0]) &&
-      array_key_exists('value', $origfile_mime_type[0])) ?
-      $origfile_mime_type[0]['value'] : '';
-    // Compare the media file's mime_type to the given value.
-    if ($origfile_mime_type == $mime_type) {
-      $vid = $origfile_media->id();
-      if (!is_null($vid)) {
-        $media = Media::load($vid);
-        $bundle = $media->bundle();
-        // Since this is Islandora and we assume the Original File is a
-        // Document type... but doing it dynamically.
-        $fid = $media->get('field_media_' . $bundle)->getValue();
-        $fid_value = (is_array($fid) && array_key_exists(0, $fid) &&
-          array_key_exists('target_id', $fid[0])) ?
-          $fid[0]['target_id'] : NULL;
-        if (!is_null($fid_value)) {
-          $file = File::load($fid_value);
-          $url = $file->getFileUri();
-          return $url;
-        }
-      }
-    }
-  }
-}
+function _url_to_media_file_by_mimetype($node, $mime_type) {
+  $media = \Drupal::entityTypeManager()->getStorage('media')->loadByProperties([
+    'field_mime_type' => $mime_type,
+    'field_media_of' => ['target_id' => $node->id()]
+  ]);
 
-/**
- * Conditionally removes any commas and reverse the order of the string values.
- *
- * @param string $input
- *   The string value to potentially remove and flip parts.
- * @param bool $remove_comma
- *   Whether or not to remove the comma and flip the parts.
- *
- * @return string
- *   The value of the label.
- */
-function islandora_tokens_remove_comma($input, $remove_comma = FALSE) {
-  if ($remove_comma) {
-    $parts = explode(",", $input);
-    $parts = array_reverse($parts);
-    return implode(" ", $parts);
-  }
-  else {
-    return $input;
+  foreach ($media as $m) {
+    // Return the first one we can access.
+    if ($m->access('view')) {
+      // Short-cut for getting the source field.
+      $bundle = $m->bundle();
+      if (!$m->hasField('field_media_' . $bundle)) {
+        \Drupal::logger('islandora_tokens')->warning("Could not find source field_media_{$bundle} for media {$m->id()}");
+        continue;
+      }
+      $file = $m->get('field_media_' . $bundle)->entity;
+      if (!is_null($file)) {
+        return \Drupal::service('file_url_generator')->generateAbsoluteString($file->getFileUri());
+      }
+      \Drupal::logger('islandora_tokens')->warning("Could not find file for media {$m->id()}");
+    }
   }
 }

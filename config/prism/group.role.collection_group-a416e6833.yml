@@ -1,0 +1,29 @@
+uuid: a1d08d24-9fd3-4288-82ce-9d8e1ba7b70d
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.collection_group
+    - user.role.administrator
+  enforced:
+    config:
+      - user.role.administrator
+id: collection_group-a416e6833
+label: Administrator
+weight: 2
+admin: false
+scope: outsider
+global_role: administrator
+group_type: collection_group
+permissions:
+  - 'access content overview'
+  - 'access group_node overview'
+  - 'administer members'
+  - 'edit group'
+  - 'view any unpublished group'
+  - 'view group'
+  - 'view group_membership relationship'
+  - 'view group_node:asu_repository_item entity'
+  - 'view group_node:collection entity'
+  - 'view unpublished group_node:asu_repository_item entity'
+  - 'view unpublished group_node:collection entity'

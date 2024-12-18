@@ -1,0 +1,21 @@
+uuid: bd8cbd0f-04b6-4f5d-a7a9-96e086cfe3a4
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.media.field_media_of
+    - media.type.remote_video
+id: media.remote_video.field_media_of
+field_name: field_media_of
+entity_type: media
+bundle: remote_video
+label: 'Media of'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings: {  }
+field_type: entity_reference

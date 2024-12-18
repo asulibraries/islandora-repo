@@ -1,0 +1,37 @@
+uuid: 656ca8be-23e1-4c33-aec8-c2993e6c306b
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.taxonomy_term.simple_taxo_create
+    - field.field.taxonomy_term.conference.field_authority_link
+    - taxonomy.vocabulary.conference
+  module:
+    - asu_item_extras
+id: taxonomy_term.conference.simple_taxo_create
+targetEntityType: taxonomy_term
+bundle: conference
+mode: simple_taxo_create
+content:
+  field_authority_link:
+    type: authority_link_brief
+    weight: 1
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  description: true
+  langcode: true
+  path: true
+  status: true
+  translation: true

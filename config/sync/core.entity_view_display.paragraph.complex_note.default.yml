@@ -1,3 +1,4 @@
+uuid: 42f44f80-9769-4bf0-91ab-8d0caa8651f4
 langcode: en
 status: true
 dependencies:
@@ -11,19 +12,19 @@ bundle: complex_note
 mode: default
 content:
   field_note_text:
-    weight: 0
+    type: basic_string
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    type: basic_string
+    weight: 1
     region: content
   field_note_type:
-    weight: 1
-    label: above
+    type: entity_reference_label
+    label: hidden
     settings:
       link: false
     third_party_settings: {  }
-    type: entity_reference_label
+    weight: 0
     region: content
 hidden:
   search_api_excerpt: true

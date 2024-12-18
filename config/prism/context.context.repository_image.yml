@@ -1,0 +1,27 @@
+uuid: ac1f3138-5f6c-4fc0-93f7-71c5652e11e8
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora
+label: 'Repository image'
+name: repository_image
+group: Display
+description: 'Image view mode and related'
+requireAllConditions: false
+disabled: true
+conditions:
+  node_has_term:
+    id: node_has_term
+    negate: false
+    uuid: 6fef5952-20e0-4f9c-b9ea-78dbddd7f6b8
+    context_mapping:
+      node: '@node.node_route_context:node'
+    uri: 'http://purl.org/coar/resource_type/c_c513'
+    logic: and
+reactions:
+  view_mode_alter:
+    id: view_mode_alter
+    mode: node.asu_image
+    saved: false
+weight: 0

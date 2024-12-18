@@ -1,0 +1,18 @@
+rest_oai_pmh:
+  entity_type: node
+view_displays:
+  'oai_pmh:all': 'oai_pmh:all'
+  'oai_pmh:repo_items': 'oai_pmh:repo_items'
+support_sets: 1
+mapping_source: rdf
+repository_name: 'ASU Library | PRISM'
+repository_email: digitalrepository@asu.edu
+expiration: '3600'
+metadata_map_plugins:
+  -
+    label: oai_raw
+    value: default_metadata_map
+  -
+    label: oai_dc
+    value: dublin_core_rdf
+cache_technique: conservative_cache

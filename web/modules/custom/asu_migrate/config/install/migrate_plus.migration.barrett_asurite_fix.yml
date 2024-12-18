@@ -1,0 +1,38 @@
+# Uninstall this config when the feature is uninstalled
+dependencies:
+  enforced:
+    module:
+      - asu_migrate
+
+id: barrett_asurite_fix
+label: Add asurites to Barrett nodes
+migration_group: migrate_c130_csv
+
+source:
+  plugin: csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/barrett_asurites_to_update.csv
+  header_row_count: 1
+  ids:
+    - nid
+
+  constants:
+    uid: 1
+
+process:
+  nid: nid
+  uid:
+    -
+      plugin: skip_on_empty
+      source: asurite
+      method: process
+    -
+      plugin: user_lookup
+      default_value: constants/uid
+
+
+# We're making nodes
+destination:
+  plugin: 'entity:node'
+  default_bundle: asu_repository_item
+  overwrite_properties:
+    - uid

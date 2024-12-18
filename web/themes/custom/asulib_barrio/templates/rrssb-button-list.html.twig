@@ -1,15 +1,19 @@
 {% set class_2_fa = {
   'email': {
     'fa-class': 'fa fa-envelope',
+    'link-title': 'Email this',
   },
   'facebook': {
     'fa-class': 'fab fa-facebook-square',
+    'link-title': 'Share on Facebook',
   },
   'twitter': {
     'fa-class': 'fab fa-twitter-square',
+    'link-title': 'Share on Twitter',
   },
   'print': {
     'fa-class': 'fa fa-print',
+    'link-title': 'Print this',
   }
 }
 %}
@@ -21,7 +25,7 @@
   <ul class="rrssb-buttons">
     {% for button in buttons %}
       <li class="rrssb-{{ button.name }}">
-        <a href="{{ button.link }}" {{ button.class | raw }} aria-label="{{ button.text }}">
+        <a href="{{ button.link }}" {{ button.class | raw }} aria-label="{{ button.text }}" title="{{ class_2_fa[button.name]['link-title'] }}">
           <i aria-hidden="true" class="{{ class_2_fa[button.name]['fa-class'] }} fa-3x"></i>
         </a>
       </li>

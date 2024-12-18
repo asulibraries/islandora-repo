@@ -1,16 +1,21 @@
 global-styling:
   version: VERSION
-  js: 
+  js:
     js/popper.min.js: {}
     js/bootstrap.min.js: {}
-    js/global.js: {}
   css:
     component:
       css/style.css: {}
   dependencies:
-    - core/jquery
     - core/drupal
 toggle-more:
   version: 1.x
   js:
     js/toggle-more-less.js: {}
+search:
+  css:
+    component:
+      css/search.css: {}
+fontawesome-kit:
+  js:
+    https://kit.fontawesome.com/93e98468c5.js: { type: external }

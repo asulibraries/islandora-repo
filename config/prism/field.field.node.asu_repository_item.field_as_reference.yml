@@ -1,0 +1,42 @@
+uuid: 0889ead1-d86b-49fc-b3a8-4afef7934a47
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_as_reference
+    - node.type.asu_repository_item
+    - paragraphs.paragraphs_type.as_reference
+  module:
+    - entity_reference_revisions
+_core:
+  default_config_hash: XJ1wP11-ShqmQt9QW1KOryoH1xsq4a8e2Uc95aNTclY
+id: node.asu_repository_item.field_as_reference
+field_name: field_as_reference
+entity_type: node
+bundle: asu_repository_item
+label: 'ArchivesSpace Reference'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      as_reference: as_reference
+    negate: 0
+    target_bundles_drag_drop:
+      as_reference:
+        weight: 8
+        enabled: true
+      complex_note:
+        weight: 5
+        enabled: false
+      complex_title:
+        weight: 6
+        enabled: false
+      typed_identifier:
+        weight: 7
+        enabled: false
+field_type: entity_reference_revisions

@@ -1,0 +1,20 @@
+uuid: 150077ac-80f2-4892-8b76-64bc2f1d27fc
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora_image
+id: digital_document_generate_a_thumbnail_from_a_service_file
+label: 'Digital Document - Generate a thumbnail from a service file'
+type: node
+plugin: generate_image_derivative
+configuration:
+  queue: islandora-connector-houdini
+  event: 'Generate Derivative'
+  destination_media_type: image
+  source_term_uri: 'http://pcdm.org/use#ServiceFile'
+  derivative_term_uri: 'http://pcdm.org/use#ThumbnailImage'
+  mimetype: image/png
+  args: '-scale 800'
+  scheme: public
+  path: '[date:custom:Y]-[date:custom:m]/[node:nid]-[term:name].png'

@@ -1,0 +1,23 @@
+uuid: 836324fd-130b-4881-81c9-815a5380e5e6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_peer_reviewed
+    - node.type.asu_repository_item
+id: node.asu_repository_item.field_peer_reviewed
+field_name: field_peer_reviewed
+entity_type: node
+bundle: asu_repository_item
+label: Peer-reviewed
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'Yes'
+  off_label: 'No'
+field_type: boolean

@@ -1,0 +1,56 @@
+uuid: 2f201025-ba2e-4d2a-bf05-fbfee2fbd483
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.reuse_permissions.field_copyright_logo
+    - field.field.taxonomy_term.reuse_permissions.field_source
+    - taxonomy.vocabulary.reuse_permissions
+  module:
+    - file
+    - link
+    - path
+id: taxonomy_term.reuse_permissions.default
+targetEntityType: taxonomy_term
+bundle: reuse_permissions
+mode: default
+content:
+  field_copyright_logo:
+    type: file_generic
+    weight: 2
+    region: content
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+  field_source:
+    type: link_default
+    weight: 1
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 4
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+hidden:
+  description: true
+  langcode: true

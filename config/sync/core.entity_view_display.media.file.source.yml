@@ -1,3 +1,4 @@
+uuid: c412a640-cb37-4bfe-b83c-d1f503dff790
 langcode: en
 status: true
 dependencies:
@@ -12,29 +13,28 @@ dependencies:
     - field.field.media.file.field_mime_type
     - field.field.media.file.field_original_name
     - media.type.file
+  module:
+    - file
   enforced:
     module:
       - islandora_core_feature
-  module:
-    - file
 id: media.file.source
 targetEntityType: media
 bundle: file
 mode: source
 content:
   field_media_file:
+    type: file_default
     label: hidden
     settings:
       use_description_as_link_text: true
     third_party_settings: {  }
-    type: file_default
     weight: 0
     region: content
 hidden:
   created: true
   field_access_terms: true
   field_file_size: true
-  field_gemini_uri: true
   field_legacy_checksum: true
   field_media_of: true
   field_media_use: true

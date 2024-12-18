@@ -1,0 +1,40 @@
+uuid: 4bcd1b9b-71bb-4993-8ba8-be395ca30cf9
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.taxonomy_term.image_as_link
+    - field.field.taxonomy_term.copyright_statements.field_copyright_logo
+    - field.field.taxonomy_term.copyright_statements.field_source
+    - taxonomy.vocabulary.copyright_statements
+  module:
+    - file
+    - link
+id: taxonomy_term.copyright_statements.image_as_link
+targetEntityType: taxonomy_term
+bundle: copyright_statements
+mode: image_as_link
+content:
+  field_copyright_logo:
+    type: file_url_plain
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_source:
+    type: link
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: true
+      url_plain: true
+      rel: '0'
+      target: '0'
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  description: true
+  langcode: true
+  search_api_excerpt: true

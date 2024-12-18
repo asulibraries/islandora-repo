@@ -1,8 +1,9 @@
+uuid: c98c9767-d9e0-4101-9a9d-d2bfb70dad1d
 langcode: en
 status: true
 dependencies:
   module:
-    - context
+    - islandora
     - node
     - rrssb
     - system
@@ -11,36 +12,32 @@ dependencies:
 id: ridiculouslyresponsivesocialsharebuttons
 theme: asulib_barrio
 region: sidebar_first
-weight: -25
+weight: -34
 provider: null
 plugin: rrssb_block
 settings:
   id: rrssb_block
   label: 'Share this content'
-  provider: rrssb
   label_display: visible
+  provider: rrssb
   button_set: default
 visibility:
-  node_type:
-    id: node_type
-    bundles:
-      asu_repository_item: asu_repository_item
-      collection: collection
+  request_path:
+    id: request_path
+    negate: true
+    context_mapping: {  }
+    pages: "/node/add/*\r\n/node/*/edit\r\n/node/*/revisions/*"
+  media_source_mimetype:
+    id: media_source_mimetype
+    negate: false
+    context_mapping: {  }
+    mimetype: ''
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
     negate: false
     context_mapping:
       node: '@node.node_route_context:node'
-  request_path_exclusion:
-    id: request_path_exclusion
-    pages: ''
-    negate: null
-    context_mapping: {  }
-  request_path:
-    id: request_path
-    pages: "/node/add/*\r\n/node/*/edit"
-    negate: true
-    context_mapping: {  }
-  view_inclusion:
-    id: view_inclusion
-    negate: null
-    view_inclusion: {  }
-    context_mapping: {  }
+    bundles:
+      asu_repository_item: asu_repository_item
+      collection: collection
+      scholarly_work: scholarly_work

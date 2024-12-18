@@ -1,0 +1,29 @@
+uuid: 73deb689-2cf2-46ee-9fc6-b1d91c7e04df
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_complex_subject
+    - node.type.asu_repository_item
+    - taxonomy.vocabulary.precoordinated_subjects
+id: node.asu_repository_item.field_complex_subject
+field_name: field_complex_subject
+entity_type: node
+bundle: asu_repository_item
+label: 'Complex Subjects'
+description: 'If your complex subject, is not found, add it <a href="/admin/structure/taxonomy/manage/precoordinated_subjects/add" target="_blank">here</a>'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      precoordinated_subjects: precoordinated_subjects
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

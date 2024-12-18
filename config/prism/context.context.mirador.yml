@@ -1,0 +1,28 @@
+uuid: 12945c74-0a3f-4fe7-acbf-8641d12338a2
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora
+_core:
+  default_config_hash: DgWVy36pOeUPJEGewH7MvBSIxl3zWgJIa3V98x2il5U
+label: Mirador
+name: mirador
+group: Display
+description: 'Context for enabling mirador viewer on select nodes'
+requireAllConditions: false
+disabled: false
+conditions:
+  node_has_term:
+    id: node_has_term
+    negate: false
+    context_mapping:
+      node: '@node.node_route_context:node'
+    uri: 'https://projectmirador.org'
+    logic: and
+reactions:
+  view_mode_alter:
+    id: view_mode_alter
+    mode: node.mirador
+    saved: false
+weight: 0

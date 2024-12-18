@@ -1,35 +1,36 @@
+uuid: f00470dc-0b1a-4e82-9b2b-0d16a68205d9
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  module:
+    - content_moderation
+    - field_permissions
+    - file
+    - file_replace
+    - help
+    - islandora
+    - paragraphs_type_permissions
+    - persistent_identifiers
+    - system
+    - toolbar
 id: preservationist
 label: Preservationist
 weight: 6
 is_admin: null
 permissions:
   - 'access administration pages'
+  - 'access help pages'
   - 'access toolbar'
+  - 'bypass paragraphs type content access'
   - 'create field_legacy_checksum'
-  - 'create field_preservation_state'
-  - 'edit field_keyword'
+  - 'delete own files'
   - 'edit field_legacy_checksum'
-  - 'edit field_preservation_state'
   - 'edit own field_legacy_checksum'
-  - 'edit own field_preservation_state'
   - 'manage media'
   - 'manage members'
   - 'mint persistent identifiers'
   - 'replace files'
+  - 'view any unpublished content'
   - 'view checksums'
-  - 'view field_cataloging_standards'
-  - 'view field_description_source'
-  - 'view field_keyword'
   - 'view field_legacy_checksum'
-  - 'view field_level_of_coding'
-  - 'view field_preservation_state'
-  - 'view islandora repository reports'
-  - 'view own field_cataloging_standards'
-  - 'view own field_description_source'
-  - 'view own field_keyword'
   - 'view own field_legacy_checksum'
-  - 'view own field_level_of_coding'
-  - 'view own field_preservation_state'

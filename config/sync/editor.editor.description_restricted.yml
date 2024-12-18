@@ -1,31 +1,24 @@
+uuid: f7c59344-661e-4f88-937e-505e34fd6f46
 langcode: en
 status: true
 dependencies:
   config:
     - filter.format.description_restricted
   module:
-    - ckeditor
+    - ckeditor5
 format: description_restricted
-editor: ckeditor
+editor: ckeditor5
 settings:
   toolbar:
-    rows:
-      -
-        -
-          name: Links
-          items:
-            - DrupalLink
-            - DrupalUnlink
+    items:
+      - link
+      - '|'
+      - subscript
+      - superscript
+      - sourceEditing
   plugins:
-    language:
-      language_list: un
-    stylescombo:
-      styles: ''
+    ckeditor5_sourceEditing:
+      allowed_tags:
+        - '<a hreflang>'
 image_upload:
   status: false
-  scheme: public
-  directory: inline-images
-  max_size: ''
-  max_dimensions:
-    width: null
-    height: null

@@ -12,6 +12,5 @@ use Drupal\islandora\PresetReaction\PresetReaction;
  *   label = @Translation("Unpublish")
  * )
  */
-class UnpublishReaction extends PresetReaction
-{
+class UnpublishReaction extends PresetReaction {
 }

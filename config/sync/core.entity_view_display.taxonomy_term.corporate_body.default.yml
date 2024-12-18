@@ -1,3 +1,4 @@
+uuid: fe3ef1e5-9aa3-435c-b4a9-cb31d9ceb85e
 langcode: en
 status: true
 dependencies:
@@ -6,6 +7,8 @@ dependencies:
     - field.field.taxonomy_term.corporate_body.field_cat_date_begin
     - field.field.taxonomy_term.corporate_body.field_cat_date_end
     - field.field.taxonomy_term.corporate_body.field_corp_alt_name
+    - field.field.taxonomy_term.corporate_body.field_internal_note
+    - field.field.taxonomy_term.corporate_body.field_local
     - field.field.taxonomy_term.corporate_body.field_relationships
     - field.field.taxonomy_term.corporate_body.field_type
     - taxonomy.vocabulary.corporate_body
@@ -19,14 +22,14 @@ bundle: corporate_body
 mode: default
 content:
   description:
-    label: hidden
     type: text_default
-    weight: 5
+    label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 5
     region: content
   field_authority_link:
-    weight: 1
+    type: authority_formatter_default
     label: above
     settings:
       trim_length: 80
@@ -35,52 +38,62 @@ content:
       rel: ''
       target: _blank
     third_party_settings: {  }
-    type: authority_formatter_default
+    weight: 1
     region: content
   field_cat_date_begin:
-    weight: 2
+    type: edtf_default
     label: above
     settings:
       date_separator: dash
       date_order: big_endian
       month_format: mm
       day_format: dd
+      year_format: 'y'
     third_party_settings: {  }
-    type: edtf_default
+    weight: 2
     region: content
   field_cat_date_end:
-    weight: 3
+    type: edtf_default
     label: above
     settings:
       date_separator: dash
       date_order: big_endian
       month_format: mm
       day_format: dd
+      year_format: 'y'
     third_party_settings: {  }
-    type: edtf_default
+    weight: 3
     region: content
   field_corp_alt_name:
-    weight: 4
+    type: basic_string
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: basic_string
+    weight: 4
+    region: content
+  field_internal_note:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 7
     region: content
   field_relationships:
-    weight: 7
+    type: typed_relation_default
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    type: typed_relation_default
+    weight: 6
     region: content
   field_type:
-    weight: 0
+    type: list_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: list_default
+    weight: 0
     region: content
 hidden:
+  field_local: true
   langcode: true
   search_api_excerpt: true

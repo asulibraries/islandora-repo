@@ -1,27 +1,21 @@
+uuid: 254505ba-5d4b-493c-aa2c-c0b9fdc876c4
 langcode: en
-status: false
+status: true
 dependencies: {  }
 id: environment_config
 label: 'Environment Config'
 description: 'Settings that are specific per environment'
-folder: ../config/env
-module:
-  jwt: 0
-theme: {  }
-blacklist:
-  - context.context.openseadragon_block
-  - context.context.open_seadragon
-  - islandora.settings
-  - islandora_bagger_integration.settings
-  - islandora_iiif.settings
-  - islandora_riprap.settings
-  - matomo.settings
-  - clamav.settings
-graylist:
-  - islandora.settings
-  - jwt.config
-  - key.key.islandora_rsa_key
-  - search_api.server.default_solr_server
-graylist_dependents: true
-graylist_skip_equal: true
 weight: 0
+stackable: false
+no_patching: false
+storage: folder
+folder: ../config/env
+module: {  }
+theme: {  }
+complete_list:
+  - hdl.settings
+  - islandora.settings
+  - islandora_iiif.settings
+  - key.key.islandora_rsa_key
+  - recaptcha_v3.settings
+partial_list: {  }

@@ -1,8 +1,11 @@
+uuid: cb82fad6-9997-4214-84f2-b18e6b81e345
 langcode: en
 status: true
 dependencies:
   config:
     - field.field.media.remote_video.field_media_oembed_video
+    - field.field.media.remote_video.field_media_of
+    - field.field.media.remote_video.field_media_use
     - media.type.remote_video
   module:
     - media
@@ -21,11 +24,27 @@ content:
   field_media_oembed_video:
     type: oembed_textfield
     weight: 0
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_media_of:
+    type: entity_reference_autocomplete
+    weight: 101
     region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_media_use:
+    type: options_buttons
+    weight: 102
+    region: content
+    settings: {  }
+    third_party_settings: {  }
   langcode:
     type: language_select
     weight: 2
@@ -41,20 +60,20 @@ content:
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    settings:
-      display_label: true
     weight: 100
     region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
     weight: 5
+    region: content
     settings:
       match_operator: CONTAINS
       match_limit: 10
       size: 60
       placeholder: ''
-    region: content
     third_party_settings: {  }
 hidden:
   name: true

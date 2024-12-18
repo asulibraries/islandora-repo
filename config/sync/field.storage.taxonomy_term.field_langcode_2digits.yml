@@ -1,0 +1,25 @@
+uuid: 740ba019-75f7-4116-9da1-4b21f5ac5e92
+langcode: en
+status: true
+dependencies:
+  module:
+    - field_permissions
+    - taxonomy
+third_party_settings:
+  field_permissions:
+    permission_type: public
+id: taxonomy_term.field_langcode_2digits
+field_name: field_langcode_2digits
+entity_type: taxonomy_term
+type: string
+settings:
+  max_length: 2
+  case_sensitive: false
+  is_ascii: false
+module: core
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

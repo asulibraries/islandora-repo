@@ -1,3 +1,4 @@
+uuid: e18c7820-19f9-4299-ba62-52d7e23f1581
 langcode: en
 status: true
 dependencies:
@@ -15,29 +16,29 @@ bundle: country_codes
 mode: default
 content:
   description:
-    type: text_textfield
+    type: text_textarea
     weight: 0
     region: content
     settings:
-      size: 60
+      rows: 5
       placeholder: ''
     third_party_settings: {  }
   field_country_code:
+    type: string_textfield
     weight: 102
+    region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
-    type: string_textfield
-    region: content
   field_external_authority_link:
+    type: authority_link_default
     weight: 101
+    region: content
     settings:
       placeholder_url: ''
       placeholder_title: ''
     third_party_settings: {  }
-    type: authority_link_default
-    region: content
   langcode:
     type: language_select
     weight: 2
@@ -61,9 +62,9 @@ content:
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    settings:
-      display_label: true
     weight: 100
     region: content
+    settings:
+      display_label: true
     third_party_settings: {  }
 hidden: {  }

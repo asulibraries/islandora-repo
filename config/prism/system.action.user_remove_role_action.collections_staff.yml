@@ -1,0 +1,14 @@
+uuid: 851c08d4-9958-4437-bd94-1146112648fb
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.collections_staff
+  module:
+    - user
+id: user_remove_role_action.collections_staff
+label: 'Remove the Collections Staff role from the selected user(s)'
+type: user
+plugin: user_remove_role_action
+configuration:
+  rid: collections_staff

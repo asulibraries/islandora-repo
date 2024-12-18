@@ -1,0 +1,14 @@
+uuid: b4f5d3a1-a396-4258-b9a3-9244a05377da
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.honors_student
+  module:
+    - user
+id: user_add_role_action.honors_student
+label: 'Add the Honors student role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: honors_student

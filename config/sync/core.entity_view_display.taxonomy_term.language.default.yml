@@ -1,8 +1,10 @@
+uuid: db89653f-6138-416f-b049-9d30dae7b679
 langcode: en
 status: true
 dependencies:
   config:
     - field.field.taxonomy_term.language.field_authority_link
+    - field.field.taxonomy_term.language.field_langcode_2digits
     - taxonomy.vocabulary.language
   module:
     - text
@@ -12,14 +14,14 @@ bundle: language
 mode: default
 content:
   description:
-    label: hidden
     type: text_default
-    weight: 0
-    region: content
+    label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
   field_authority_sources:
-    weight: 1
+    type: authority_formatter_default
     label: above
     settings:
       trim_length: 80
@@ -28,9 +30,10 @@ content:
       rel: ''
       target: _blank
     third_party_settings: {  }
-    type: authority_formatter_default
+    weight: 1
     region: content
 hidden:
   field_authority_link: true
+  field_langcode_2digits: true
   langcode: true
   search_api_excerpt: true

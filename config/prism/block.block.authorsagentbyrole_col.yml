@@ -1,0 +1,35 @@
+uuid: c7f6cef8-5f70-45eb-9e0b-72ef3d4875f0
+langcode: en
+status: false
+dependencies:
+  config:
+    - facets.facet.authors_agent_by_role_col
+  module:
+    - context
+    - facets
+    - system
+  theme:
+    - asulib_barrio
+id: authorsagentbyrole_col
+theme: asulib_barrio
+region: sidebar_first
+weight: 13
+provider: null
+plugin: 'facet_block:authors_agent_by_role_col'
+settings:
+  id: 'facet_block:authors_agent_by_role_col'
+  label: 'Authors (Agent By Role)'
+  label_display: visible
+  provider: facets
+  block_id: authorsagentbyrole_col
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    context_mapping: {  }
+    pages: '/collections/*/search*'
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: null
+    context_mapping: {  }
+    pages: ''

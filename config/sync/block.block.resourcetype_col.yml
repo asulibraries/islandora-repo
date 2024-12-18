@@ -1,10 +1,10 @@
+uuid: 2006eccc-51e1-46b5-bfff-5140c712c3e7
 langcode: en
 status: true
 dependencies:
   config:
     - facets.facet.resource_type_col
   module:
-    - context
     - facets
     - system
   theme:
@@ -12,28 +12,18 @@ dependencies:
 id: resourcetype_col
 theme: asulib_barrio
 region: sidebar_first
-weight: -4
+weight: -5
 provider: null
 plugin: 'facet_block:resource_type_col'
 settings:
   id: 'facet_block:resource_type_col'
   label: 'Resource Type'
-  provider: facets
   label_display: visible
+  provider: facets
   block_id: resourcetype_col
 visibility:
-  request_path_exclusion:
-    id: request_path_exclusion
-    pages: ''
-    negate: null
-    context_mapping: {  }
-  view_inclusion:
-    id: view_inclusion
-    negate: null
-    view_inclusion: {  }
-    context_mapping: {  }
   request_path:
     id: request_path
-    pages: '/collections/*/search*'
     negate: false
     context_mapping: {  }
+    pages: '/collections/*/search*'

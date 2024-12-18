@@ -1,0 +1,33 @@
+uuid: 2e3561ab-b44c-454d-bb5a-7b704c27d3ca
+langcode: en
+status: false
+dependencies:
+  config:
+    - facets_summary.facets_summary.facet_summary_cpx
+  module:
+    - facets_summary
+    - islandora
+    - system
+  theme:
+    - asulib_barrio
+id: facetsummary_3
+theme: asulib_barrio
+region: sidebar_first
+weight: 15
+provider: null
+plugin: 'facets_summary_block:facet_summary_cpx'
+settings:
+  id: 'facets_summary_block:facet_summary_cpx'
+  label: 'Facet Summary'
+  label_display: visible
+  provider: facets_summary
+visibility:
+  media_source_mimetype:
+    id: media_source_mimetype
+    negate: false
+    context_mapping: {  }
+    mimetype: ''
+  request_path:
+    id: request_path
+    negate: false
+    pages: '/items/*/search*'

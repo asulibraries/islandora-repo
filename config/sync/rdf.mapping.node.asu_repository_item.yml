@@ -1,11 +1,9 @@
+uuid: f8adfe5e-cff3-4681-a764-05599dab7312
 langcode: en
 status: true
 dependencies:
   config:
     - node.type.asu_repository_item
-  enforced:
-    module:
-      - islandora_defaults
   module:
     - node
 id: node.asu_repository_item
@@ -14,6 +12,14 @@ bundle: asu_repository_item
 types:
   - 'pcdm:Object'
 fieldMappings:
+  field_linked_agent:
+    properties:
+      - 'dcterms:contributor'
+  field_handle:
+    properties:
+      - 'dcterms:identifier'
+      - 'mods:identifier'
+      - 'identifiers:hdl'
   nid:
     properties:
       - 'dcterms:identifier'
@@ -55,22 +61,14 @@ fieldMappings:
     properties:
       - 'mods:frequency'
       - 'rdau:P60538'
-  field_resource_type:
-    properties:
-      - 'dcterms:type'
-      - 'mods:genre'
-    datatype_callback:
-      callable: 'Drupal\jsonld\EntityReferenceConverter::linkFieldPassthrough'
-      arguments:
-        link_field: field_external_authority_link
   field_genre:
     properties:
       - 'dcterms:type'
       - 'mods:genre'
-    datatype_callback:
-      callable: 'Drupal\jsonld\EntityReferenceConverter::linkFieldPassthrough'
-      arguments:
-        link_field: field_authority_link
+  field_resource_type:
+    properties:
+      - 'dcterms:type'
+      - 'mods:genre'
   field_statement_responsibility:
     properties:
       - 'mods:statementOfResponsibility'
@@ -133,10 +131,6 @@ fieldMappings:
   field_weight:
     properties:
       - 'co:index'
-  title:
-    properties:
-      - 'dcterms:title'
-      - 'mods:title'
   created:
     properties:
       - 'bf:creationDate'
@@ -152,14 +146,9 @@ fieldMappings:
   uid:
     properties:
       - 'relators:dtc'
-    mapping_type: property
     datatype_callback:
       callable: 'Drupal\asu_custom_rdf\UidLookup::username'
-  field_handle:
-    properties:
-      - 'dcterms:identifier'
-      - 'mods:identifier'
-      - 'identifiers:hdl'
+    mapping_type: property
   field_open_access:
     properties:
       - 'dcterms:accessRights'
@@ -197,7 +186,6 @@ fieldMappings:
         - published
   field_peer_reviewed:
     properties:
-      - 'dcterms:type'
       - 'mods:genre'
     datatype_callback:
       callable: 'Drupal\asu_custom_rdf\ParseBoolean::touri'
@@ -223,7 +211,6 @@ fieldMappings:
     properties:
       - 'dcterms:identifier'
       - 'mods:identifier'
-    mapping_type: par
     datatype_callback:
       callable: 'Drupal\asu_custom_rdf\ParagraphMapping::typedmap'
       arguments:
@@ -231,3 +218,4 @@ fieldMappings:
         type_taxonomy_field: field_identifier_predicate
         value_field: field_identifier_value
         predicate: identifiers
+    mapping_type: par

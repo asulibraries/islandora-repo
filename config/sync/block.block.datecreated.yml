@@ -1,10 +1,10 @@
+uuid: 75b09e16-24ca-4af5-9de4-00db3882cbd3
 langcode: en
 status: true
 dependencies:
   config:
     - facets.facet.date_created_year
   module:
-    - context
     - facets
     - system
   theme:
@@ -18,22 +18,12 @@ plugin: 'facet_block:date_created_year'
 settings:
   id: 'facet_block:date_created_year'
   label: 'Date Created'
-  provider: facets
   label_display: visible
+  provider: facets
   block_id: datecreated
 visibility:
-  request_path_exclusion:
-    id: request_path_exclusion
-    pages: ''
-    negate: null
-    context_mapping: {  }
-  view_inclusion:
-    id: view_inclusion
-    negate: null
-    view_inclusion: {  }
-    context_mapping: {  }
   request_path:
     id: request_path
-    pages: '/search*'
     negate: false
     context_mapping: {  }
+    pages: '/search*'

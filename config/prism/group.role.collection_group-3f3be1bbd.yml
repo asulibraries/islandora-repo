@@ -1,0 +1,22 @@
+uuid: 0248fc35-8ae4-4e09-b931-839ed50370e8
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.collection_group
+    - user.role.content_approver
+  enforced:
+    config:
+      - user.role.content_approver
+id: collection_group-3f3be1bbd
+label: 'Content Approver'
+weight: 4
+admin: false
+scope: outsider
+global_role: content_approver
+group_type: collection_group
+permissions:
+  - 'view group_node:asu_repository_item entity'
+  - 'view group_node:collection entity'
+  - 'view unpublished group_node:asu_repository_item entity'
+  - 'view unpublished group_node:collection entity'

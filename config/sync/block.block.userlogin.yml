@@ -1,19 +1,31 @@
+uuid: 6e6ba3eb-ed62-4047-94fc-c1a76f6ef076
 langcode: en
-status: false
+status: true
 dependencies:
   module:
+    - islandora
+    - system
     - user
   theme:
     - asulib_barrio
 id: userlogin
 theme: asulib_barrio
-region: highlighted
-weight: -14
+region: content
+weight: -34
 provider: null
 plugin: user_login_block
 settings:
   id: user_login_block
   label: 'User login'
-  provider: user
   label_display: visible
-visibility: {  }
+  provider: user
+visibility:
+  media_source_mimetype:
+    id: media_source_mimetype
+    negate: false
+    context_mapping: {  }
+    mimetype: ''
+  request_path:
+    id: request_path
+    negate: false
+    pages: /user/local/login

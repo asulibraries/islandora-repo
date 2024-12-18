@@ -1,0 +1,31 @@
+uuid: 02f6708e-5659-4731-bc8e-d9b02bf42b66
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.asu_global
+  module:
+    - islandora
+    - system
+  theme:
+    - asulib_barrio
+id: asuglobalmenu
+theme: asulib_barrio
+region: top_header
+weight: 0
+provider: null
+plugin: 'system_menu_block:asu_global'
+settings:
+  id: 'system_menu_block:asu_global'
+  label: 'ASU Global menu'
+  label_display: '0'
+  provider: system
+  level: 1
+  depth: 0
+  expand_all_items: false
+visibility:
+  media_source_mimetype:
+    id: media_source_mimetype
+    negate: false
+    context_mapping: {  }
+    mimetype: ''

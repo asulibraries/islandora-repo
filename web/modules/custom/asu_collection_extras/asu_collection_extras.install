@@ -6,16 +6,41 @@
  */
 
 /**
- * Implements hook_schema().
- *
- * Creates the tables using the schema API.
+ * Create new tables needed for this version and drops the old tables.
  */
-function asu_collection_extras_schema() {
-  $schema['asu_collection_extras_collection_usage'] = [
-    'description' => 'TODO: please describe this table!',
+function asu_collection_extras_update_8003() {
+  $schema = \Drupal::service('database')->schema();
+
+  $ace_collections_spec = [
+    'description' => 'Stores the collections for summary reports.',
     'fields' => [
-      'nid' => [
+      'c_nid' => [
         'description' => 'The collection {node}.nid this record affects.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'views' => [
+        'description' => 'View total for all objects in the collection.',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'modified' => [
+        'description' => 'Timestamp for when the record is updated',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+    ],
+    'primary key' => ['c_nid'],
+  ];
+  $ace_items_spec = [
+    'description' => 'Stores the items for summary reports.',
+    'fields' => [
+      'i_nid' => [
+        'description' => 'The items {node}.nid this record affects.',
         'type' => 'int',
         'unsigned' => TRUE,
         'not null' => TRUE,
@@ -33,8 +58,73 @@ function asu_collection_extras_schema() {
         'not null' => TRUE,
         'default' => 0,
       ],
+      'views_modified' => [
+        'description' => 'Timestamp for when the record is updated',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'downloads_modified' => [
+        'description' => 'Timestamp for when the record is updated',
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+      ],
     ],
-    'primary key' => ['nid'],
+    'primary key' => ['i_nid'],
   ];
-  return $schema;
+  $ace_relations_spec = [
+    'description' => 'Stores the collections for summary reports.',
+    'fields' => [
+      'uid' => [
+        'type' => 'serial',
+        'not null' => TRUE,
+      ],
+      'parent_nid' => [
+        'description' => 'The parent object {node}.nid this record affects.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'child_nid' => [
+        'description' => 'The child object {node}.nid this record affects.',
+        'type' => 'int',
+        'unsigned' => TRUE,
+        'not null' => TRUE,
+        'default' => 0,
+      ],
+      'parent_type' => [
+        'description' => 'Timestamp for when the record is updated',
+        'type' => 'varchar',
+        'length' => 6,
+        'not null' => TRUE,
+      ],
+    ],
+    'primary key' => ['uid'],
+    'indexes' => [
+      'parent_nid' => [
+        'parent_nid',
+      ],
+    ],
+  ];
+  $schema->createTable('ace_items', $ace_items_spec);
+  $schema->createTable('ace_collections', $ace_collections_spec);
+  $schema->createTable('ace_relations', $ace_relations_spec);
+  if ($schema->tableExists('asu_collection_extras_item_downloads')) {
+    $schema->dropTable('asu_collection_extras_item_downloads');
+  }
+  if ($schema->tableExists('asu_collection_extras_collection_usage')) {
+    $schema->dropTable('asu_collection_extras_collection_usage');
+  }
+}
+
+/**
+ * Remove the tables; we now use asu_item_analytics.
+ */
+function asu_collection_extras_update_8004() {
+  $schema = \Drupal::service('database')->schema();
+  $schema->dropTable('ace_items');
+  $schema->dropTable('ace_collections');
+  $schema->dropTable('ace_relations');
 }

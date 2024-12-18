@@ -1,0 +1,109 @@
+uuid: 42920b39-06d0-4f8a-bf6b-1458aa9a35af
+langcode: en
+status: true
+dependencies:
+  module:
+    - content_moderation
+    - workbench_email
+  enforced:
+    config:
+      - workbench_email.workbench_email_template.new_triaged_item_ready_for_revie
+third_party_settings:
+  workbench_email:
+    workbench_email_templates:
+      draft_to_triaged:
+        new_triaged_item_ready_for_revie: new_triaged_item_ready_for_revie
+id: ingest
+label: Ingest
+type: content_moderation
+type_settings:
+  states:
+    approved_by_content_lead:
+      label: 'Approved by content lead'
+      weight: -1
+      published: false
+      default_revision: false
+    approved_by_metadata_team:
+      label: 'Approved by metadata team'
+      weight: 0
+      published: true
+      default_revision: true
+    declined:
+      label: Declined
+      weight: 2
+      published: false
+      default_revision: true
+    draft:
+      label: Draft
+      weight: -3
+      published: false
+      default_revision: false
+    initial_triage:
+      label: 'Initial Triage Completed'
+      weight: -2
+      published: false
+      default_revision: false
+    published:
+      label: Published
+      weight: 1
+      published: true
+      default_revision: true
+    soft_delet:
+      label: 'Soft Deleted'
+      weight: 3
+      published: false
+      default_revision: true
+  transitions:
+    create_new_draft:
+      label: 'Create New Draft'
+      from:
+        - approved_by_content_lead
+        - approved_by_metadata_team
+        - draft
+        - initial_triage
+        - published
+      to: draft
+      weight: 0
+    decline_submission:
+      label: 'Decline Submission'
+      from:
+        - approved_by_content_lead
+        - approved_by_metadata_team
+        - draft
+        - initial_triage
+        - published
+      to: declined
+      weight: 2
+    draft_to_triaged:
+      label: 'Draft to Triaged'
+      from:
+        - draft
+      to: initial_triage
+      weight: 3
+    publish:
+      label: Publish
+      from:
+        - approved_by_content_lead
+        - approved_by_metadata_team
+        - draft
+        - initial_triage
+        - published
+      to: published
+      weight: 1
+    to_approved_by_content_lead:
+      label: 'To Approved by Content Lead'
+      from:
+        - draft
+        - initial_triage
+      to: approved_by_content_lead
+      weight: 4
+    to_approved_by_metadata_team:
+      label: 'To Approved by metadata team'
+      from:
+        - approved_by_content_lead
+        - draft
+        - initial_triage
+      to: approved_by_metadata_team
+      weight: 5
+  entity_types: {  }
+  default_moderation_state: draft

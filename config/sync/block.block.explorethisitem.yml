@@ -1,9 +1,9 @@
+uuid: b3ffb004-32a2-4c86-929f-81c74ffd0d4a
 langcode: en
 status: true
 dependencies:
   module:
     - asu_item_extras
-    - context
     - node
     - system
   theme:
@@ -11,34 +11,24 @@ dependencies:
 id: explorethisitem
 theme: asulib_barrio
 region: sidebar_first
-weight: -27
+weight: -36
 provider: null
 plugin: explore_this_item_block
 settings:
   id: explore_this_item_block
   label: 'Explore this item'
-  provider: asu_item_extras
   label_display: visible
+  provider: asu_item_extras
 visibility:
-  node_type:
-    id: node_type
-    bundles:
-      asu_repository_item: asu_repository_item
+  request_path:
+    id: request_path
+    negate: true
+    context_mapping: {  }
+    pages: "/node/add/asu_repository_item\r\n/node/*/edit"
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
     negate: false
     context_mapping:
       node: '@node.node_route_context:node'
-  request_path_exclusion:
-    id: request_path_exclusion
-    pages: ''
-    negate: null
-    context_mapping: {  }
-  request_path:
-    id: request_path
-    pages: "/node/add/asu_repository_item\r\n/node/*/edit"
-    negate: true
-    context_mapping: {  }
-  view_inclusion:
-    id: view_inclusion
-    negate: null
-    view_inclusion: {  }
-    context_mapping: {  }
+    bundles:
+      asu_repository_item: asu_repository_item

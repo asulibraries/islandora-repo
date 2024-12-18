@@ -1,0 +1,29 @@
+uuid: ce3210c9-d71a-47a3-a62b-a1b23736d30e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_subject
+    - node.type.asu_repository_item
+    - taxonomy.vocabulary.subject
+id: node.asu_repository_item.field_subject
+field_name: field_subject
+entity_type: node
+bundle: asu_repository_item
+label: 'Topical Subject'
+description: 'If your topical subject, is not found, add it <a href="/admin/structure/taxonomy/manage/subject/add" target="_blank">here</a>'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      subject: subject
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

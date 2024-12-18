@@ -1,0 +1,29 @@
+uuid: 71e160a6-35cb-48c8-8463-159c1450d9fb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_default_derivative_file_pe
+    - node.type.asu_repository_item
+    - taxonomy.vocabulary.islandora_access
+id: node.asu_repository_item.field_default_derivative_file_pe
+field_name: field_default_derivative_file_pe
+entity_type: node
+bundle: asu_repository_item
+label: 'Default Derivative File Permissions'
+description: 'Set the default permissions on the downloadable derivatives attached to this item.'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      islandora_access: islandora_access
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

@@ -1,21 +1,20 @@
+uuid: ac61c708-093b-47d6-90a6-1cdec23ff9b4
 langcode: en
-status: true
+status: false
 dependencies: {  }
 id: dev_config
 label: 'Development Config'
 description: 'Settings that are specific for the dev environment'
+weight: 0
+stackable: false
+no_patching: false
+storage: folder
 folder: ../config/dev
 module:
   devel: 0
   devel_generate: 0
-  migrate_devel: 0
   upgrade_status: 0
 theme: {  }
-blacklist:
-  - devel.settings
+complete_list:
   - devel.toolbar.settings
-  - upgrade_status.settings
-graylist: {  }
-graylist_dependents: true
-graylist_skip_equal: true
-weight: 0
+partial_list: {  }

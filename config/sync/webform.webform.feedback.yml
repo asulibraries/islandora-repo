@@ -1,17 +1,70 @@
+uuid: c31f10ae-a446-44fc-a917-b14b5efddbec
 langcode: en
 status: open
-dependencies: {  }
+dependencies:
+  module:
+    - honeypot
+third_party_settings:
+  honeypot:
+    honeypot: true
+weight: 0
 open: null
 close: null
-weight: 0
 uid: 1
 template: false
 archive: false
 id: feedback
 title: Feedback
 description: 'Feedback form related to a particular item'
-category: ''
-elements: "primary_element:\n  '#type': select\n  '#title': 'Primary element'\n  '#disabled': true\n  '#options':\n    item: item\n    collection: collection\n  '#required': true\n  '#access': false\ncollection:\n  '#type': webform_entity_select\n  '#title': Collection\n  '#disabled': true\n  '#target_type': node\n  '#selection_handler': 'default:node'\n  '#selection_settings':\n    target_bundles:\n      collection: collection\n  '#required': true\nitem:\n  '#type': webform_entity_select\n  '#title': Item\n  '#disabled': true\n  '#states':\n    required:\n      ':input[name=\"primary_element\"]':\n        value: item\n    invisible:\n      ':input[name=\"primary_element\"]':\n        value: collection\n  '#target_type': node\n  '#selection_handler': 'default:node'\n  '#selection_settings':\n    target_bundles:\n      asu_repository_item: asu_repository_item\n      collection: collection\nemail:\n  '#type': email\n  '#title': 'Your Email'\n  '#required': true\n  '#default_value': '[current-user:mail]'\nyour_name:\n  '#type': textfield\n  '#title': 'Your name'\n  '#required': true\n  '#default_value': '[current-user:display-name]'\nfeedback_category:\n  '#type': select\n  '#title': 'Feedback Category'\n  '#options':\n    'Contributing Content': 'Contributing Content'\n    'Intellectual Property and Rights': 'Intellectual Property and Rights'\n    Corrections: Corrections\n    'Problem Report': 'Problem Report'\n    General: General\n    'Caption Request': 'Caption Request'\nmessage:\n  '#type': textarea\n  '#title': Message"
+categories: {  }
+elements: |-
+  feedbackon:
+    '#type': webform_markup
+    '#display_on': both
+  primary_element:
+    '#type': select
+    '#title': 'Primary element'
+    '#disabled': true
+    '#options':
+      item: item
+      collection: collection
+    '#required': true
+    '#access': false
+  email:
+    '#type': email
+    '#title': 'Your Email'
+    '#required': true
+    '#default_value': '[current-user:mail]'
+  your_name:
+    '#type': textfield
+    '#title': 'Your name'
+    '#required': true
+    '#default_value': '[current-user:display-name]'
+  feedback_category:
+    '#type': select
+    '#title': 'Feedback Category'
+    '#options':
+      'Contributing Content': 'Contributing Content'
+      'Intellectual Property and Rights': 'Intellectual Property and Rights'
+      Corrections: Corrections
+      'Problem Report': 'Problem Report'
+      General: General
+      'Caption Request': 'Caption Request'
+  message:
+    '#type': textarea
+    '#title': Message
+  collection:
+    '#type': textfield
+    '#title': Collection
+    '#readonly': true
+    '#access': false
+  item:
+    '#type': textfield
+    '#title': item
+    '#readonly': true
+    '#access': false
+  captcha:
+    '#type': captcha
 css: ''
 javascript: ''
 settings:
@@ -26,9 +79,9 @@ settings:
   page_theme_name: ''
   form_title: source_entity_webform
   form_submit_once: false
-  form_exception_message: ''
   form_open_message: ''
   form_close_message: ''
+  form_exception_message: ''
   form_previous_submissions: true
   form_confidential: false
   form_confidential_message: ''
@@ -38,28 +91,36 @@ settings:
   form_prepopulate_source_entity: true
   form_prepopulate_source_entity_required: false
   form_prepopulate_source_entity_type: node
-  form_reset: false
+  form_unsaved: false
+  form_disable_back: false
+  form_submit_back: false
   form_disable_autocomplete: false
   form_novalidate: false
   form_disable_inline_errors: false
   form_required: false
-  form_unsaved: false
-  form_disable_back: false
-  form_submit_back: false
   form_autofocus: false
   form_details_toggle: false
+  form_reset: false
   form_access_denied: default
   form_access_denied_title: ''
   form_access_denied_message: ''
   form_access_denied_attributes: {  }
   form_file_limit: ''
+  form_attributes: {  }
+  form_method: ''
+  form_action: ''
   share: false
   share_node: false
   share_theme_name: ''
   share_title: true
   share_page_body_attributes: {  }
   submission_label: ''
+  submission_exception_message: ''
+  submission_locked_message: ''
   submission_log: false
+  submission_excluded_elements: {  }
+  submission_exclude_empty: false
+  submission_exclude_empty_checkbox: false
   submission_views: {  }
   submission_views_replace: {  }
   submission_user_columns: {  }
@@ -68,11 +129,6 @@ settings:
   submission_access_denied_title: ''
   submission_access_denied_message: ''
   submission_access_denied_attributes: {  }
-  submission_exception_message: ''
-  submission_locked_message: ''
-  submission_excluded_elements: {  }
-  submission_exclude_empty: false
-  submission_exclude_empty_checkbox: false
   previous_submission_message: ''
   previous_submissions_message: ''
   autofill: false
@@ -83,19 +139,21 @@ settings:
   wizard_progress_percentage: false
   wizard_progress_link: false
   wizard_progress_states: false
-  wizard_auto_forward: true
-  wizard_auto_forward_hide_next_button: false
-  wizard_keyboard: true
   wizard_start_label: ''
   wizard_preview_link: false
   wizard_confirmation: true
   wizard_confirmation_label: ''
+  wizard_auto_forward: true
+  wizard_auto_forward_hide_next_button: false
+  wizard_keyboard: true
   wizard_track: ''
   wizard_prev_button_label: ''
   wizard_next_button_label: ''
   wizard_toggle: false
   wizard_toggle_show_label: ''
   wizard_toggle_hide_label: ''
+  wizard_page_type: container
+  wizard_page_title_tag: h2
   preview: 0
   preview_label: ''
   preview_title: ''
@@ -112,9 +170,9 @@ settings:
   draft_pending_single_message: ''
   draft_pending_multiple_message: ''
   confirmation_type: message
+  confirmation_url: ''
   confirmation_title: ''
   confirmation_message: 'Your feedback has been submitted.'
-  confirmation_url: ''
   confirmation_attributes: {  }
   confirmation_back: true
   confirmation_back_label: ''
@@ -193,9 +251,9 @@ access:
 handlers:
   email:
     id: email
-    label: Email
-    notes: ''
     handler_id: email
+    label: '[webform_submission:values:?]Email'
+    notes: ''
     status: true
     conditions: {  }
     weight: 0
@@ -204,15 +262,19 @@ handlers:
         - completed
       to_mail: repository@asu.libanswers.com
       to_options: {  }
-      cc_mail: ''
-      cc_options: {  }
       bcc_mail: ''
       bcc_options: {  }
-      from_mail: _default
+      cc_mail: ''
+      cc_options: {  }
+      from_mail: '[webform_submission:values:email:raw]'
       from_options: {  }
       from_name: '[webform_submission:values:your_name:raw]'
+      reply_to: '[webform_submission:values:email:raw]'
+      return_path: ''
+      sender_mail: ''
+      sender_name: ''
       subject: _default
-      body: _default
+      body: "<p>Submitted on {{ webform_token('[webform_submission:created]', webform_submission, [], options) }}</p>\r\n<p>Submitted by: {{ webform_token('[webform_submission:user]', webform_submission, [], options) }}</p>\r\n{% if webform_token('[webform_submission:values:item]', webform_submission, [], options) is not empty %}\r\n<p>Item: <a href=\"{{ webform_token('[site:url]', webform_submission, [], options) }}node/{{ webform_token('[webform_submission:values:item]', webform_submission, [], options) }}\">{{ webform_token('[webform_submission:source-title]', webform_submission, [], options) }}</a></p>\r\n{% endif %}\r\n<hr>\r\n<p>Submitted values are:</p>\r\n{{ webform_token('[webform_submission:values]', webform_submission, [], options) }}"
       excluded_elements: {  }
       ignore_access: false
       exclude_empty: true
@@ -220,12 +282,8 @@ handlers:
       exclude_attachments: false
       html: true
       attachments: false
-      twig: false
-      debug: false
-      reply_to: ''
-      return_path: ''
-      sender_mail: ''
-      sender_name: ''
+      twig: true
       theme_name: ''
       parameters: {  }
+      debug: false
 variants: {  }

@@ -1,14 +1,15 @@
+uuid: ee4ca4fa-4e19-43a1-ad38-fd6ee6974c61
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.media.field_media_video_file
     - media.type.video
+  module:
+    - file
   enforced:
     module:
       - islandora_core_feature
-  module:
-    - file
 id: media.video.field_media_video_file
 field_name: field_media_video_file
 entity_type: media
@@ -20,10 +21,10 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
+  handler: 'default:file'
+  handler_settings: {  }
   file_directory: '[date:custom:Y]-[date:custom:m]'
   file_extensions: 'mp4 mkv avi mov dpx'
   max_filesize: ''
   description_field: false
-  handler: 'default:file'
-  handler_settings: {  }
 field_type: file

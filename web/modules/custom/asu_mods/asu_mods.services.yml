@@ -3,4 +3,8 @@ services:
     class: Drupal\asu_mods\Encoder\ModsEncoder
     tags:
       - { name: 'encoder', format: 'mods' }
+  encoder.barrett:
+    class: Drupal\asu_mods\Encoder\BarrettEncoder
+    tags:
+      - { name: 'encoder', format: 'barrett' }
 

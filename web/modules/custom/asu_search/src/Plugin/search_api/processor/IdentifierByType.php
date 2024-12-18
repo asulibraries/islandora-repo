@@ -35,6 +35,7 @@ class IdentifierByType extends ProcessorPluginBase {
         'label' => $this->t('Identifier'),
         'description' => $this->t('A typed identifier'),
         'type' => 'string',
+        'is_list' => TRUE,
         'processor_id' => $this->getPluginId(),
       ];
       $properties['asu_isbn'] = new ProcessorProperty($definition);
@@ -74,4 +75,5 @@ class IdentifierByType extends ProcessorPluginBase {
       }
     }
   }
+
 }

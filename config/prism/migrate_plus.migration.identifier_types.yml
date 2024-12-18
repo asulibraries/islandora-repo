@@ -1,0 +1,29 @@
+uuid: bcc48718-792d-40ab-bad7-b76c6e9b08ed
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - asu_taxonomies
+id: identifier_types
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: null
+migration_group: asu_taxonomies
+label: 'Identifier Types for ASU Taxonomies'
+source:
+  plugin: csv
+  path: modules/custom/asu_taxonomies/migrate/identifier_types.csv
+  header_row_count: 1
+  ids:
+    - name
+process:
+  name: name
+  vid: vid
+  field_identifier_predicate: code
+  field_link: url
+destination:
+  plugin: 'entity:taxonomy_term'
+  default_bundle: identifier_types
+migration_dependencies: null

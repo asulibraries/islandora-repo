@@ -1,9 +1,7 @@
+uuid: fae8b373-79e6-4e93-ba59-cec5509658e7
 langcode: en
 status: true
 dependencies:
-  enforced:
-    module:
-      - islandora_core_feature
   module:
     - basic_auth
     - file
@@ -11,6 +9,9 @@ dependencies:
     - jwt
     - serialization
     - user
+  enforced:
+    module:
+      - islandora_core_feature
 id: entity.file
 plugin_id: 'entity:file'
 granularity: method

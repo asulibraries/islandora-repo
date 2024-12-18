@@ -1,0 +1,37 @@
+uuid: 71b638d6-de62-47ec-bacf-b6904eeadf6a
+langcode: en
+status: true
+dependencies:
+  module:
+    - field_permissions
+    - node
+    - options
+third_party_settings:
+  field_permissions:
+    permission_type: public
+id: node.field_issuance
+field_name: field_issuance
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: 'http://id.loc.gov/vocabulary/issuance/intg'
+      label: Integrating
+    -
+      value: 'http://id.loc.gov/vocabulary/issuance/mono'
+      label: Monograph
+    -
+      value: 'http://id.loc.gov/vocabulary/issuance/mulm'
+      label: 'Multivolume monograph'
+    -
+      value: 'http://id.loc.gov/vocabulary/issuance/serl'
+      label: Serial
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

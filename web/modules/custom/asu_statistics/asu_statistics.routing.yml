@@ -1,3 +1,5 @@
+# route to show a statisics report which will populate all variables used by
+# the template/asu-statistics-chart.html.twig.
 asu_statistics.settings:
   path: '/admin/reports/asu_statistics'
   defaults:
@@ -7,7 +9,7 @@ asu_statistics.settings:
     _permission: 'administer site configuration'
   options:
     _admin_route: TRUE
-
+# Route for handling the site Item Accessions report "Download CSV" link.
 asu_statistics.statistics_download_accessions:
   path: '/admin/reports/asu_statistics/download'
   defaults:
@@ -17,7 +19,8 @@ asu_statistics.statistics_download_accessions:
     _permission: 'administer site configuration'
   options:
     _admin_route: TRUE
-
+# Route for handling Collection size section of the site report section's
+# "Download CSV" link.
 asu_statistics.statistics_download_stat_summary:
   path: '/admin/reports/asu_statistics/downloadStatSummary'
   defaults:
@@ -27,40 +30,52 @@ asu_statistics.statistics_download_stat_summary:
     _permission: 'administer site configuration'
   options:
     _admin_route: TRUE
-
+# similar to asu_statistics.settings above but for a given collection which
+# will populate all variables used by the template/asu-statistics-chart.html.twig.
 asu_statistics.collection_statistics_view:
   path: '/collections/{node}/statistics'
   defaults:
     _title_callback: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::getTitle'
     _controller: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::main'
   requirements:
-    # _custom_access: '\Drupal\asu_statistics\Access\GroupAccessController::access'
     _group_access_checker: 'TRUE'
     node: \d+
   options:
     parameters:
       node:
         type: entity:node
-
+# Route for handling  given collection's Item Accessions report "Download CSV" link.
 asu_statistics.collection_statistics_download_accessions:
   path: '/collections/{node}/statistics/download'
   defaults:
     _controller: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::downloadAccessions'
   requirements:
-    # _custom_access: '\Drupal\asu_statistics\Access\GroupAccessController::access'
     _group_access_checker: 'TRUE'
     node: \d+
   options:
     parameters:
       node:
         type: entity:node
-
+# Route for handling Collection size section of the site report section's
+# "Download CSV" link.
 asu_statistics.collection_statistics_download_stat_summary:
   path: '/collections/{node}/statistics/downloadStatSummary'
   defaults:
     _controller: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::downloadStatSummary'
   requirements:
-    # _custom_access: '\Drupal\asu_statistics\Access\GroupAccessController::access'
+    _group_access_checker: 'TRUE'
+    node: \d+
+  options:
+    parameters:
+      node:
+        type: entity:node
+# Route for handling a given collection's "Content Counts" report report
+# section's "Download CSV" link.
+asu_statistics.collection_statistics_download_downloads_stats:
+  path: '/collections/{node}/statistics/downloadDownloadStats'
+  defaults:
+    _controller: '\Drupal\asu_statistics\Controller\ASUStatisticsReportsController::downloadDownloadStats'
+  requirements:
     _group_access_checker: 'TRUE'
     node: \d+
   options:

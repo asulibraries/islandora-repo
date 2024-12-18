@@ -20,7 +20,7 @@
 #}
 <h2>{{ label }}
 <small>
-<span title="{{ tooltip_text }}" class="fas fa-question-circle" data-toggle="tooltip"></span>
+<span title="{{ tooltip_text }}" class="far fa-question-circle" data-toggle="tooltip"></span>
 </small>
 </h2>
 <i>{{ total_results_found | number_format }}
@@ -48,5 +48,5 @@
             {% endif %}
         </div>
     {% endfor %}
-    <a href="{{ service_url }}/dataverse/asulibrary/?q={{ search_term }}" target="_blank" title="See all Dataverse results &gt;">See all Dataverse results &gt;</a>
+    <a href="{{ service_url }}/dataverse/asulibrary/?q={{ search_term }}" target="_blank" title="See all ASU Research Data Repository results &gt;">See all ASU Research Data Repository results &gt;</a>
 </div>

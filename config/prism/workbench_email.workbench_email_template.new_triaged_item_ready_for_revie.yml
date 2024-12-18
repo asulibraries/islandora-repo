@@ -1,0 +1,59 @@
+uuid: 159e656b-6913-4030-b6a6-65dc6c45c4c1
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.administrator
+    - user.role.content_approver
+id: new_triaged_item_ready_for_revie
+label: 'New Triaged Item Ready for Review'
+format: plain_text
+subject: 'New KEEP Self-Deposit Submission ready for review'
+body:
+  value: "<p>[node:title] is ready for review.&nbsp;</p>\r\n\r\n<p>Please proceed to&nbsp;<a href=\"[node:url]\" title=\"Insert this token into your form\">[node:url]</a></p>\r\n"
+  format: full_html
+bundles: {  }
+recipient_types:
+  author:
+    id: author
+    provider: workbench_email
+    status: false
+    settings: {  }
+  email:
+    id: email
+    provider: workbench_email
+    status: false
+    settings:
+      fields: {  }
+  entity_reference_user:
+    id: entity_reference_user
+    provider: workbench_email
+    status: false
+    settings:
+      fields: {  }
+  fixed_email:
+    id: fixed_email
+    provider: workbench_email
+    status: false
+    settings:
+      recipients: ''
+  last_revision_author:
+    id: last_revision_author
+    provider: workbench_email
+    status: false
+    settings: {  }
+  role:
+    id: role
+    provider: workbench_email
+    status: true
+    settings:
+      roles:
+        administrator: administrator
+        content_approver: content_approver
+  roles_with_access:
+    id: roles_with_access
+    provider: workbench_email
+    status: false
+    settings:
+      roles: {  }
+replyTo: null

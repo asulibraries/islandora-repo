@@ -1,0 +1,22 @@
+uuid: fef97215-4c25-4fd1-a119-bc4bec2aeec1
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.collection_group
+    - user.role.depositor
+  enforced:
+    config:
+      - user.role.depositor
+id: collection_group-ace478434
+label: Depositor
+weight: 4
+admin: false
+scope: outsider
+global_role: depositor
+group_type: collection_group
+permissions:
+  - 'view group_node:asu_repository_item entity'
+  - 'view group_node:collection entity'
+  - 'view unpublished group_node:asu_repository_item entity'
+  - 'view unpublished group_node:collection entity'

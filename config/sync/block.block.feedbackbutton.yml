@@ -1,9 +1,9 @@
+uuid: 483f5daf-c03e-415c-8254-ec50f32864e1
 langcode: en
 status: true
 dependencies:
   module:
     - asu_item_extras
-    - context
     - node
     - system
   theme:
@@ -11,35 +11,25 @@ dependencies:
 id: feedbackbutton
 theme: asulib_barrio
 region: sidebar_first
-weight: -1
+weight: 5
 provider: null
 plugin: asu_feedback_button
 settings:
   id: asu_feedback_button
   label: 'Feedback Button'
-  provider: asu_item_extras
   label_display: '0'
+  provider: asu_item_extras
 visibility:
-  node_type:
-    id: node_type
-    bundles:
-      asu_repository_item: asu_repository_item
-      collection: collection
+  request_path:
+    id: request_path
+    negate: true
+    context_mapping: {  }
+    pages: "/node/add/*\r\n/node/*/edit"
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
     negate: false
     context_mapping:
       node: '@node.node_route_context:node'
-  request_path_exclusion:
-    id: request_path_exclusion
-    pages: ''
-    negate: null
-    context_mapping: {  }
-  request_path:
-    id: request_path
-    pages: "/node/add/*\r\n/node/*/edit"
-    negate: true
-    context_mapping: {  }
-  view_inclusion:
-    id: view_inclusion
-    negate: null
-    view_inclusion: {  }
-    context_mapping: {  }
+    bundles:
+      asu_repository_item: asu_repository_item
+      collection: collection

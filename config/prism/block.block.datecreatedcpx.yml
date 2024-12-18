@@ -1,0 +1,39 @@
+uuid: 47ca92ad-e2a9-4829-83da-41021183c0c6
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.date_created_cpx
+  module:
+    - context
+    - facets
+    - islandora
+    - system
+  theme:
+    - asulib_barrio
+id: datecreatedcpx
+theme: asulib_barrio
+region: sidebar_first
+weight: -6
+provider: null
+plugin: 'facet_block:date_created_cpx'
+settings:
+  id: 'facet_block:date_created_cpx'
+  label: 'Date Created'
+  label_display: visible
+  provider: facets
+  block_id: datecreatedcpx
+visibility:
+  media_source_mimetype:
+    id: media_source_mimetype
+    negate: false
+    context_mapping: {  }
+    mimetype: ''
+  request_path:
+    id: request_path
+    negate: false
+    pages: '/items/*/search*'
+  request_path_exclusion:
+    id: request_path_exclusion
+    negate: null
+    pages: ''

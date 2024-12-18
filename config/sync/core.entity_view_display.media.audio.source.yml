@@ -1,3 +1,4 @@
+uuid: 42d8381d-a953-4907-bf8f-17bfe304543f
 langcode: en
 status: true
 dependencies:
@@ -12,32 +13,28 @@ dependencies:
     - field.field.media.audio.field_media_use
     - field.field.media.audio.field_mime_type
     - field.field.media.audio.field_original_name
+    - field.field.media.audio.field_track
     - media.type.audio
+  module:
+    - islandora_audio
   enforced:
     module:
       - islandora_core_feature
-  module:
-    - asu_item_extras
 id: media.audio.source
 targetEntityType: media
 bundle: audio
 mode: source
 content:
-  field_gemini_uri:
-    weight: 100
-    region: content
-    settings: {  }
-    third_party_settings: {  }
   field_media_audio_file:
-    type: file_audio_caption
-    weight: 0
+    type: islandora_file_audio
     label: visually_hidden
     settings:
       controls: true
-      multiple_file_display_type: tags
       autoplay: false
       loop: false
+      multiple_file_display_type: tags
     third_party_settings: {  }
+    weight: 0
     region: content
 hidden:
   created: true
@@ -49,6 +46,7 @@ hidden:
   field_media_use: true
   field_mime_type: true
   field_original_name: true
+  field_track: true
   langcode: true
   name: true
   search_api_excerpt: true

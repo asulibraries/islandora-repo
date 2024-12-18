@@ -1,0 +1,21 @@
+uuid: 98f4e612-5cbc-4886-8d08-f506370d8b32
+langcode: en
+status: true
+dependencies:
+  config:
+    - filter.format.description_restricted
+  module:
+    - ckeditor5
+format: description_restricted
+editor: ckeditor5
+settings:
+  toolbar:
+    items:
+      - link
+      - sourceEditing
+  plugins:
+    ckeditor5_sourceEditing:
+      allowed_tags:
+        - '<a hreflang>'
+image_upload:
+  status: false

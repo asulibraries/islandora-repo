@@ -1,3 +1,4 @@
+uuid: d0f8806b-6bdc-4895-84ac-9f68a416d309
 langcode: en
 status: true
 dependencies:
@@ -17,10 +18,10 @@ translatable: true
 default_value: {  }
 default_value_callback: ''
 settings:
+  handler: 'default:file'
+  handler_settings: {  }
   file_directory: '[date:custom:Y]-[date:custom:m]'
   file_extensions: 'srt vtt'
   max_filesize: ''
   description_field: false
-  handler: 'default:file'
-  handler_settings: {  }
 field_type: file

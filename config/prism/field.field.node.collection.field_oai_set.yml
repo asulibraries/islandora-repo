@@ -1,0 +1,29 @@
+uuid: 13b8e808-d31b-40d4-b18d-d33ab215374e
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_oai_set
+    - node.type.collection
+    - taxonomy.vocabulary.oai_sets
+id: node.collection.field_oai_set
+field_name: field_oai_set
+entity_type: node
+bundle: collection
+label: 'OAI Set'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      oai_sets: oai_sets
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

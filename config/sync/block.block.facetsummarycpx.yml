@@ -1,0 +1,28 @@
+uuid: 868a1722-ddad-44c8-9ff9-cb1d56c5bfa1
+langcode: en
+status: false
+dependencies:
+  config:
+    - facets_summary.facets_summary.facet_summary_cpx
+  module:
+    - asu_search
+    - islandora
+  theme:
+    - asulib_barrio
+id: facetsummarycpx
+theme: asulib_barrio
+region: sidebar_first
+weight: 17
+provider: null
+plugin: 'asu_facets_summary_block:facet_summary_cpx'
+settings:
+  id: 'asu_facets_summary_block:facet_summary_cpx'
+  label: 'Facet Summary'
+  label_display: '0'
+  provider: asu_search
+visibility:
+  media_source_mimetype:
+    id: media_source_mimetype
+    negate: false
+    context_mapping: {  }
+    mimetype: ''

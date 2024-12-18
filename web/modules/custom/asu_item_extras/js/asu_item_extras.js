@@ -1,16 +1,15 @@
- /**
+/**
  * @file - asu_item_extras.js
  */
 
-(function ($) {
+(function (Drupal, once) {
 
 Drupal.behaviors.asu_item_extras = {
-  attach: function (context, settings) {
+  attach(context) {
     // on click code to handle "Copy link" for iiif section.
-    $('#copy_manifest_link', context).once('asu_item_extras').click(function () {
+    once('asu_item_extras', '#copy_manifest_link', context).forEach(function(element) { element.onclick = function () {
       try {
-        var copy_from_box = $('#iiif_editbox');
-        var url = copy_from_box.val();
+        let url = document.getElementById('iiif_editbox').value;
         copyToClipboard(url);
         alert("Manifest URL \"" + url + "\" copied to clipboard.");
       } catch (err) {
@@ -18,15 +17,12 @@ Drupal.behaviors.asu_item_extras = {
         console.error("Unable to copy manifest URL", err);
       }
       return;
-    });
+    }});
     // on click code to handle clipboard copy of "Permalink".
-    $('.copy_permalink_link', context).once('asu_item_extras').click(function () {
-      // If called from the "About this item" block, the component to copy from
-      // will be "copy_permalink_link" class.
-      var copy_from_box = $('.copy_permalink_link');
+    once('asu_item_extras','.copy_permalink_link', context).forEach(function(element) { element.onclick = function (element) {
       try {
         // this value is stored on the span's title attribute.
-        var url = copy_from_box.attr("title");
+        let url = element.target.getAttribute("title");
         copyToClipboard(url);
         alert("Permalink URL \"" + url + "\" copied to clipboard.");
       } catch (err) {
@@ -34,23 +30,35 @@ Drupal.behaviors.asu_item_extras = {
         console.error("Unable to copy permalink URL", err);
       }
       return;
-    });
+    }});
     // on click code to handle clipboard copy of Citation
-    $('#copy_citation', context).once('asu_item_extras').click(function () {
+    once('asu_item_extras', '#copy_citation', context).forEach(function(element) { element.onclick = function () {
       try {
-        var citation = $('#citation-text').text();
+	let citation = document.getElementById("citation-text").textContent;
         copyToClipboard(citation);
-        alert("Citation copied to clipboard.");
+        alert("Citation copied to clipboard: " + citation);
       } catch (err) {
         alert("Unable to copy the text with your browser.");
         console.error("Unable to copy citation", err);
       }
       return;
-    });
+    }});
+
+    var video = document.getElementsByTagName('video')[0];
+    if (video) {
+      var tracks = video.textTracks; // returns a TextTrackList
+      if (tracks) {
+        var track = tracks[0]; // returns TextTrack
+        if (track) {
+          track.activeCues[0].line = 1;
+          track.activeCues[0].align = "start";
+        }
+      }
+    }
   }
 };
 
-})(jQuery, Drupal);
+}(Drupal, once));
 
 function copyToClipboard(text) {
     var dummy = document.createElement("textarea");

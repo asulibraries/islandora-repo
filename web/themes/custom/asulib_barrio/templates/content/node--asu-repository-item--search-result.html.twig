@@ -55,6 +55,7 @@
  *   current user is a logged-in member.
  * - is_admin: Flag for admin user status. Will be true when the current user
  *   is an administrator.
+ * - complex_obj_thumb: complex object thumbnail path
  *
  * @see template_preprocess_node()
  */
@@ -87,12 +88,14 @@
 
 <article{{ attributes.addClass(classes) }}>
   <div{{ content_attributes.addClass('node__content', 'clearfix', 'row', 'item-result') }}>
-    <div class="col-md-2">
-      {% if drupal_view_result('display_media', 'thumbnail', node.id) is empty %}
+    <div class="col-md-2 thumb-image-border">
+      {% if complex_obj_thumb is not empty %}
+        <a href="/items/{{ node.id }}"><img src=" {{ complex_obj_thumb }}"/></a>
+      {% elseif drupal_view_result('display_media', 'thumbnail', node.id) is empty %}
         {% set mod = content.field_model[0]|render|trim %}
         {% for k, v in model_icons|filter((v, k) => k == mod) -%}
           <div class="icon-container">
-            <i class="{{ v }} fa-6x"></i>
+            <a href="/items/{{ node.id }}"><i class="{{ v }} fa-6x"></i></a>
           </div>
         {% endfor %}
       {% else %}
@@ -102,7 +105,11 @@
     <div class="col-md-10">
       <h4>{% if not is_published %}<i class="fa fa-lock"></i>&nbsp;
           {% endif %}<a href="{{ url }}" rel="bookmark">{{ content.field_title[0] }}</a></h4>
-      {{ drupal_block('asu_search_item_is_part_of', {'parent_node_id': content.field_member_of }) }}
+      {% if node.field_complex_object_child.value == 1 %}
+        {% set parent = node.field_member_of.entity %}
+        {% set par_title = parent.field_title[0] %}
+        {{ drupal_block('asu_search_item_is_part_of', {'paragraph': par_title, 'parent_node_id': parent.id }) }}
+      {% endif %}
       {% if content.field_rich_description is not empty %}
         <p>{{content.field_rich_description}}</p>
       {% endif %}
@@ -110,9 +117,9 @@
         <strong>Contributors</strong>
         <p>{{content.field_linked_agent}}</p>
       {% endif %}
-      {% if content.field_date_created is not empty %}
+      {% if content.field_edtf_date_created[0] is not empty %}
         <strong>Created</strong>
-        <p>{{content.field_date_created}}</p>
+        <p>{{content.field_edtf_date_created}}</p>
       {% endif %}
       {% if content.search_api_excerpt is not empty %}
         {{content.search_api_excerpt}}

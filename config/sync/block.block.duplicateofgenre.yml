@@ -1,0 +1,34 @@
+uuid: e602415f-cf81-401b-bad8-251938189db2
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.duplicate_of_genre
+  module:
+    - facets
+    - islandora
+    - system
+  theme:
+    - asulib_barrio
+id: duplicateofgenre
+theme: asulib_barrio
+region: sidebar_first
+weight: 8
+provider: null
+plugin: 'facet_block:duplicate_of_genre'
+settings:
+  id: 'facet_block:duplicate_of_genre'
+  label: Genre
+  label_display: visible
+  provider: facets
+  block_id: duplicateofgenre
+visibility:
+  media_source_mimetype:
+    id: media_source_mimetype
+    negate: false
+    context_mapping: {  }
+    mimetype: ''
+  request_path:
+    id: request_path
+    negate: false
+    pages: '/collections/*/search-alt*'

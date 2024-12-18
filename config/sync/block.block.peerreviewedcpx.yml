@@ -1,0 +1,34 @@
+uuid: 97f3f871-7ca9-4599-b42e-04397a63e0fe
+langcode: en
+status: true
+dependencies:
+  config:
+    - facets.facet.peer_reviewed_cpx
+  module:
+    - facets
+    - islandora
+    - system
+  theme:
+    - asulib_barrio
+id: peerreviewedcpx
+theme: asulib_barrio
+region: sidebar_first
+weight: -16
+provider: null
+plugin: 'facet_block:peer_reviewed_cpx'
+settings:
+  id: 'facet_block:peer_reviewed_cpx'
+  label: Peer-reviewed
+  label_display: visible
+  provider: facets
+  block_id: peerreviewedcpx
+visibility:
+  media_source_mimetype:
+    id: media_source_mimetype
+    negate: false
+    context_mapping: {  }
+    mimetype: ''
+  request_path:
+    id: request_path
+    negate: false
+    pages: '/items/*/search*'

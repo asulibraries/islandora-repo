@@ -1,18 +1,19 @@
+uuid: ceac5d83-d5db-42fb-8bbd-f4c8ff12c267
 langcode: en
 status: true
 dependencies:
+  module:
+    - media
   enforced:
     module:
       - islandora_core_feature
-  module:
-    - media
 id: media.field_file_size
 field_name: field_file_size
 entity_type: media
 type: integer
 settings:
-  unsigned: false
-  size: normal
+  unsigned: true
+  size: big
 module: core
 locked: false
 cardinality: 1

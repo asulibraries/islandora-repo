@@ -1,0 +1,25 @@
+uuid: 7be68f14-ed67-48bd-a8a7-aa2b8f6a9f8c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_language
+    - node.type.asu_repository_item
+id: node.asu_repository_item.field_language
+field_name: field_language
+entity_type: node
+bundle: asu_repository_item
+label: Language
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: views
+  handler_settings:
+    view:
+      view_name: autocomplete_taxonomy_terms
+      display_name: entity_reference_1
+      arguments: {  }
+field_type: entity_reference

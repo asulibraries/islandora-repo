@@ -1,7 +1,9 @@
 /**
  * CSS to control individual classes that are used in block code for containers
- ============================================================================ */
-.float_l_18, .float_l_80, .float_l_49  {
+≈ ============================================================================ */
+.float_l_18,
+.float_l_80,
+.float_l_49 {
   float: left;
 }
 
@@ -65,19 +67,24 @@
   padding: 0.75rem;
 }
 
-#iiif_box .block__title, #print_and_share_box .block__title, #citations_box .block__title {
+#iiif_box .block__title,
+#print_and_share_box .block__title,
+#citations_box .block__title {
   font-size: 20px;
   font-weight: bold;
   background-color: #fff !important;
   padding: 0.25rem !important;
 }
-.iiif input,
-.iiif .btn {
-  border-radius: 0;
+
+#copy_manifest_link {
+  line-height: 12px;
+  margin-left: 5px;
 }
 
-li.rrssb-email a, li.rrssb-facebook a,
-li.rrssb-twitter a, li.rrssb-print a  {
+li.rrssb-email a,
+li.rrssb-facebook a,
+li.rrssb-twitter a,
+li.rrssb-print a {
   background-color: white !important;
 }
 
@@ -97,7 +104,7 @@ li.rrssb-twitter a, li.rrssb-print a  {
 /* space out the icons and wrap on mobile */
 .rrssb .rrssb-buttons {
   display: flex;
-  flex-wrap:wrap;
+  flex-wrap: wrap;
   justify-content: space-between;
 }
 .rrssb {
@@ -106,4 +113,26 @@ li.rrssb-twitter a, li.rrssb-print a  {
 }
 .interact .rrssb-buttons {
   max-width: 255px;
+}
+
+/* adjustments around the altmetric badge */
+.altmetrics-info div fieldset {
+  margin: 0;
+}
+#altmetrics_box a {
+  border-bottom: none;
+}
+#altmetrics_box img {
+  width: auto;
+}
+
+/* About This Item Block for Scholarly Content. */
+.block-about-this-item-block .field--type-image {
+  display: flex;
+}
+.block-about-this-item-block .field--type-image img{
+  margin: auto;
+  max-height: 300px;
+  max-width: 100%;
+  width: auto;
 }

@@ -1,3 +1,4 @@
+uuid: 6e102508-e8f0-4be5-bd95-b4f99a2b9e82
 langcode: en
 status: true
 dependencies:
@@ -15,30 +16,29 @@ dependencies:
     - field.field.media.image.field_width
     - image.style.max_650x650
     - media.type.image
+  module:
+    - islandora
   enforced:
     module:
       - islandora_core_feature
-  module:
-    - islandora
 id: media.image.source
 targetEntityType: media
 bundle: image
 mode: source
 content:
   field_media_image:
+    type: islandora_image
     label: visually_hidden
     settings:
-      image_style: max_650x650
       image_link: ''
+      image_style: max_650x650
     third_party_settings: {  }
-    type: islandora_image
     weight: 0
     region: content
 hidden:
   created: true
   field_access_terms: true
   field_file_size: true
-  field_gemini_uri: true
   field_height: true
   field_legacy_checksum: true
   field_media_of: true

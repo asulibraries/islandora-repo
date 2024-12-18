@@ -1,0 +1,27 @@
+uuid: e917be45-6a4e-4ffc-b867-dfb6a0c559b9
+langcode: en
+status: true
+dependencies:
+  module:
+    - field_permissions
+    - file
+    - taxonomy
+third_party_settings:
+  field_permissions:
+    permission_type: public
+id: taxonomy_term.field_copyright_logo
+field_name: field_copyright_logo
+entity_type: taxonomy_term
+type: file
+settings:
+  target_type: file
+  display_field: false
+  display_default: false
+  uri_scheme: public
+module: file
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

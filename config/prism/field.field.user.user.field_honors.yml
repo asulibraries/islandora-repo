@@ -1,0 +1,24 @@
+uuid: ccea3951-c49f-4061-9fa0-6a471e034b2f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.user.field_honors
+  module:
+    - user
+id: user.user.field_honors
+field_name: field_honors
+entity_type: user
+bundle: user
+label: Honors
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'Yes'
+  off_label: 'No'
+field_type: boolean

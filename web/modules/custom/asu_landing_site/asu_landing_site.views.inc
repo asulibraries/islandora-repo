@@ -1,6 +1,10 @@
 <?php
 
 /**
+ * @file
+ */
+
+/**
  * Implements hook_views_data.
  */
 function asu_landing_site_views_data() {

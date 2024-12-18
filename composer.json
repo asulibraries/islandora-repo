@@ -15,97 +15,185 @@
             "type": "composer",
             "url": "https://packages.drupal.org/8"
         },
-	{
-	    "type": "composer",
-	    "url": "https://asset-packagist.org"
-	}
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/asulibraries/asu_item_analytics.git"
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "d3/d3",
+                "version": "v3.5.17",
+                "type": "drupal-library",
+                "source": {
+                    "url": "https://github.com/d3/d3.git",
+                    "type": "git",
+                    "reference": "tags/v3.5.17"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "highlightjs/highlightjs",
+                "version": "9.7.0",
+                "type": "drupal-library",
+                "source": {
+                    "url": "https://github.com/highlightjs/highlight.js.git",
+                    "type": "git",
+                    "reference": "tags/9.7.0"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "mjordan/islandora_bagger_integration",
+                "version": "0.0.0",
+                "type": "drupal-module",
+                "source": {
+                    "url": "https://github.com/mjordan/islandora_bagger_integration.git",
+                    "type": "git",
+                    "reference": "main"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "mjordan/islandora_riprap",
+                "version": "0.0.0",
+                "type": "drupal-module",
+                "source": {
+                    "url": "https://github.com/mjordan/islandora_riprap.git",
+                    "type": "git",
+                    "reference": "main"
+                }
+            }
+        }
     ],
     "require": {
-        "php": "^7.4",
+        "php": "^7.4||^8.0",
+        "asulibraries/asu_item_analytics": "^1",
         "bower-asset/jquery-ui-slider-pips": "^1.11",
+        "composer/composer": "^2.7.7",
         "composer/installers": "^1.2",
         "cweagans/composer-patches": "^1.6.5",
-        "drupal/address": "^1.8",
-        "drupal/admin_toolbar": "^2.0",
-        "drupal/archivesspace": "^1.0",
-        "drupal/bootstrap_barrio": "^5.0",
+        "d3/d3": "^3.5",
+        "discoverygarden/dgi_fixity": "^1.2",
+        "drupal/address": "^1.9",
+        "drupal/admin_toolbar": "^3.1",
+        "drupal/archivesspace": "^2",
+        "drupal/auto_entitylabel": "^3.0@beta",
+        "drupal/bootstrap_barrio": "^5.5.x-dev",
         "drupal/bootstrap_sass": "^5.0",
-        "drupal/cas": "^1.7",
-        "drupal/cas_attributes": "1.x-dev@dev",
-        "drupal/cdn": "^3.5",
+        "drupal/captcha": "^2.0",
+        "drupal/cas": "^2.0@beta",
+        "drupal/cas_attributes": "^2.0@beta",
+        "drupal/cdn": "^3.6 || ^4",
         "drupal/clamav": "^2.0",
-        "drupal/config_split": "^1.5",
-        "drupal/console": "~1.0",
+        "drupal/config_filter": "^2.2",
+        "drupal/config_split": "^2.0.0-beta2",
         "drupal/content_browser": "^1.0@alpha",
-        "drupal/context": "4.x-dev",
-        "drupal/core-composer-scaffold": "^9.1",
-        "drupal/core-project-message": "^9.1",
-        "drupal/core-recommended": "^9.1",
-        "drupal/devel": "^4.0",
+        "drupal/context": "^5@RC",
+        "drupal/contextual_range_filter": "^2.0",
+        "drupal/core-composer-scaffold": "^10",
+        "drupal/core-project-message": "^10",
+        "drupal/core-recommended": "^10",
+        "drupal/devel": "^5",
         "drupal/diff": "^1.0",
         "drupal/embed": "^1.3",
         "drupal/entity_embed": "^1.0@RC",
-        "drupal/entity_reference_unpublished": "^1.2",
-        "drupal/facets": "1.x-dev@dev",
-        "drupal/features": "^3.11",
+        "drupal/entity_reference_unpublished": "^2",
+        "drupal/facets": "^2",
+        "drupal/facets_range_nouislider": "^1.0",
+        "drupal/facets_range_widget": "^2.0",
+        "drupal/features": "^3.14",
+        "drupal/field_group": "^3.4",
+        "drupal/field_permissions": "^1.2",
+        "drupal/file_download_link": "^2.0",
         "drupal/file_replace": "^1.1",
-        "drupal/flexslider": "^2.0",
-        "drupal/flysystem": "^2.0@alpha",
-        "drupal/format_bytes": "^1.0",
-        "drupal/google_analytics": "^3.1",
-        "drupal/group": "^1.2",
-        "drupal/inline_entity_form": "^1.0@RC",
-        "drupal/jquery_ui_slider": "^1.1",
-        "drupal/jquery_ui_touch_punch": "^1.0",
-        "drupal/jsonb": "^1.0@beta",
-        "drupal/jw_player": "^1.0@beta",
-        "drupal/matomo": "^1.7",
+        "drupal/filehash": "^2",
+        "drupal/filelog": "^2.0",
+        "drupal/flexslider": "^3",
+        "drupal/flysystem": "^2.2",
+        "drupal/format_bytes": "^2",
+        "drupal/geolocation": "^3.4",
+        "drupal/getjwtonlogin": "^2.0",
+        "drupal/google_analytics": "^4.0",
+        "drupal/google_tag": "^2.0",
+        "drupal/group": "^2.1",
+        "drupal/honeypot": "^2.0",
+        "drupal/inline_entity_form": "^1.0",
+        "drupal/jquery_ui_slider": "^2.0",
+        "drupal/jquery_ui_touch_punch": "^1.1",
+        "drupal/json_field": "^1.3",
+        "drupal/jwt": "^2.0",
+        "drupal/media_thumbnails_pdf": "^2.0",
         "drupal/message": "^1.0",
         "drupal/message_subscribe_email": "^1.0",
-        "drupal/metatag": "^1.14",
-        "drupal/metatag_google_scholar": "^1.0",
+        "drupal/metatag": "^2.0",
+        "drupal/metatag_google_scholar": "^1.1",
         "drupal/migrate_devel": "^2.0",
         "drupal/migrate_file": "^2.0",
-        "drupal/migrate_run": "^2.0@beta",
-        "drupal/name": "^1.x-dev",
+        "drupal/migrate_plus": "^5.2 || ^6",
+        "drupal/migrate_process_s3": "2.0.x-dev@dev",
+        "drupal/migrate_tools": "^5.1 || ^6",
         "drupal/paragraphs": "^1.11",
         "drupal/pathauto": "^1.8",
-        "drupal/pdf": "1.x-dev",
-        "drupal/rdfui": "^1.0-beta1",
+        "drupal/pdf": "^1.2",
+        "drupal/recaptcha_v3": "^2.0",
         "drupal/redirect": "^1.6",
-        "drupal/rest_oai_pmh": "^1.0",
+        "drupal/redis": "^1.5",
+        "drupal/rest_oai_pmh": "^2.0.0-beta15",
         "drupal/restui": "^1.16",
-        "drupal/rrssb": "^2.2",
-        "drupal/s3fs": "^3.0@alpha",
+        "drupal/rrssb": "^2.3",
+        "drupal/s3fs": "^3.0@beta",
         "drupal/s3fs_cors": "^1.0@beta",
-        "drupal/schema_metatag": "^1.7",
-        "drupal/search_api_solr": "^4.1",
-        "drupal/simple_sitemap": "^3.7",
-        "drupal/smtp": "^1.0@RC",
+        "drupal/schema_metatag": "^3.0",
+        "drupal/search_api": "^1.23",
+        "drupal/search_api_attachments": "^9.0",
+        "drupal/search_api_solr": "^4.2",
+        "drupal/seckit": "^2.0",
+        "drupal/simple_sitemap": "^4.0",
+        "drupal/smtp": "^1.0",
         "drupal/superfish": "^1.4",
-        "drupal/title_length": "^1.1",
+        "drupal/title_length": "^1.1 || ^2",
         "drupal/token": "^1.6",
-        "drupal/transliterate_filenames": "^1.3",
-        "drupal/twig_tweak": "^2.6",
-        "drupal/upgrade_status": "^3.0",
+        "drupal/transliterate_filenames": "^2.0",
+        "drupal/twig_tweak": "^3.1",
         "drupal/variationcache": "^1.0",
-        "drupal/views_bootstrap": "^4.3",
+        "drupal/views_bootstrap": "^4.4",
         "drupal/views_bulk_edit": "^2.4",
-        "drupal/views_bulk_operations": "^3.9",
-        "drupal/webform": "^6.0@beta",
-        "drupal/weight": "^3.2",
+        "drupal/views_bulk_operations": "^4.0",
+        "drupal/views_contextual_filters_or": "^1.2",
+        "drupal/views_data_export": "^1.0",
+        "drupal/webform": "^6.2@beta",
+        "drupal/weight": "^3.3",
         "drupal/workbench": "^1.3",
-        "drupal/workbench_email": "^1.7",
-        "drush/drush": "^10.3",
-        "islandora-rdm/islandora_fits": "dev-master",
-        "islandora/chullo": "dev-dev",
-        "islandora/controlled_access_terms": "dev-8.x-1.x",
-        "islandora/islandora": "dev-8.x-1.x",
-        "islandora/islandora_defaults": "dev-8.x-1.x",
-        "islandora/openseadragon": "dev-8.x-1.x",
+        "drupal/workbench_email": "^2.2",
+        "drush/drush": "^12",
+        "easyrdf/easyrdf": "^1.1",
+        "highlightjs/highlightjs": "^9.7",
+        "islandora-rdm/islandora_fits": "dev-8.x-1.x",
+        "islandora/controlled_access_terms": "^2.4",
+        "islandora/islandora": "^2.12",
+        "islandora/islandora_mirador": "^2.3",
+        "islandora/jsonld": "^2.2 || ^3",
+        "islandora/openseadragon": "^2",
+        "mjordan/islandora_bagger_integration": "^0",
+        "mjordan/islandora_workbench_integration": "dev-main#D10",
+        "npm-asset/nouislider": "^15",
+        "oomphinc/composer-installers-extender": "^2.0",
+        "professional-wiki/edtf": "^2.0",
         "vlucas/phpdotenv": "^2.4",
         "webflo/drupal-finder": "^1.0.0",
-        "webmozart/path-util": "^2.3"
+        "webmozart/path-util": "^2.3",
+        "zaporylie/composer-drupal-optimizations": "^1.1"
     },
     "conflict": {
         "drupal/drupal": "*"
@@ -113,13 +201,27 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "cweagans/composer-patches": true,
+            "composer/installers": true,
+            "drupal/core-composer-scaffold": true,
+            "drupal/core-project-message": true,
+            "zaporylie/composer-drupal-optimizations": true,
+            "drupal/console-extend-plugin": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "oomphinc/composer-installers-extender": true,
+            "phpstan/extension-installer": true,
+            "php-http/discovery": true
+        }
     },
     "autoload": {
         "classmap": [
             "scripts/composer/ScriptHandler.php"
         ],
-        "files": ["load.environment.php"]
+        "files": [
+            "load.environment.php"
+        ]
     },
     "scripts": {
         "pre-install-cmd": [
@@ -141,12 +243,14 @@
         "patchLevel": {
             "drupal/core": "-p2"
         },
-	       "installer-paths": {
+        "installer-paths": {
             "web/core": [
                 "type:drupal-core"
             ],
             "web/libraries/{$name}": [
-                "type:drupal-library"
+                "type:drupal-library",
+                "vendor:npm-asset",
+                "vendor:bower-asset"
             ],
             "web/modules/contrib/{$name}": [
                 "type:drupal-module"
@@ -196,34 +300,46 @@
                 ".editorconfig": "../.editorconfig",
                 ".gitattributes": "../.gitattributes"
             },
-	    "locations": {
+            "locations": {
                 "web-root": "web/"
             }
         },
         "patches": {
             "drupal/context": {
                 "Views integration": "https://www.drupal.org/files/issues/context-views-condition-2938094-6.patch"
-	    },
-	    "drupal/core": {
-		"fix for taxo term save": "https://www.drupal.org/files/issues/2020-10-29/2893747-33.patch",
-		"fix for blocks not showing up": "https://www.drupal.org/files/issues/2018-10-27/2997898-21.patch"
-	    },
-	    "drupal/s3fs": {
-                "fix for s3fs images": "https://www.drupal.org/files/issues/2020-07-24/use_isValidScheme_method-3161279.patch"
-	    },
-	    "drupal/google_analytics": {
-		"fix for GA version 4": "https://www.drupal.org/files/issues/2020-12-01/3178179-google-analytics-4.patch"
-	    },
-	    "drupal/facets": {
-		"another fix for slider in d9": "https://www.drupal.org/files/issues/2020-12-14/3186953--7.patch"
+            },
+            "drupal/core": {
+                "fix for taxo term save": "https://www.drupal.org/files/issues/2020-10-29/2893747-33.patch",
+                "fix for blocks not showing up": "https://www.drupal.org/files/issues/2018-10-27/2997898-21.patch",
+                "temp patch for drupal_view": "https://www.drupal.org/files/issues/2024-07-12/issuee-2876229.patch"
+            },
+	    "drupal/facets_range_nouislider": {
+                "fix missing config wsod": "https://www.drupal.org/files/issues/2024-09-17/facets_range_nouislider.patch"
+            },
+            "drupal/inline_entity_form": {
+                "increase max_limit": "https://www.drupal.org/files/issues/2020-12-22/match_limit_3189534.patch"
+            },
+            "drupal/rest_oai_pmh": {
+                "fix for empty values and incorrect namespaces": "https://raw.githubusercontent.com/asulibraries/islandora-repo/develop/web/modules/custom/asu_custom_rdf/ns_and_empty_fixes.patch"
+            },
+            "drupal/views_data_export": {
+                "fix for batch export": "https://www.drupal.org/files/issues/2021-02-12/3173296-9-batch-query-alter.patch"
+            },
+            "drupal/webform": {
+                "Issue 3409599. Fix file upload.": "https://www.drupal.org/files/issues/2023-12-22/3409599-28.mr388.webform_file_validate_extensions-plugin.patch",
+                "Issue 3435903. Devel compatibility.": "https://git.drupalcode.org/project/webform/-/merge_requests/429.patch"
 	    }
         },
-	"installer-types": ["npm-asset", "bower-asset"]
+        "installer-types": [
+            "npm-asset",
+            "bower-asset"
+        ]
     },
     "require-dev": {
-        "drupal/core-dev": "^9.0.0",
+        "drupal/core-dev": "^10",
+        "drupal/masquerade": "^2.0@RC",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpunit/phpunit": "^9.5",
-        "symfony/phpunit-bridge": "^5.2"
+        "symfony/phpunit-bridge": "^5.2 || ^6"
     }
 }

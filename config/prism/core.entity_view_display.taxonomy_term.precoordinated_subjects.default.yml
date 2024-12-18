@@ -1,0 +1,55 @@
+uuid: 04d54e95-4c5a-4c2c-9b4a-4a3399ce63a5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.precoordinated_subjects.field_authority_link
+    - field.field.taxonomy_term.precoordinated_subjects.field_subject_part
+    - field.field.taxonomy_term.precoordinated_subjects.field_subject_type
+    - taxonomy.vocabulary.precoordinated_subjects
+  module:
+    - controlled_access_terms
+    - options
+    - text
+id: taxonomy_term.precoordinated_subjects.default
+targetEntityType: taxonomy_term
+bundle: precoordinated_subjects
+mode: default
+content:
+  description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_authority_link:
+    type: authority_formatter_default
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: _blank
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_subject_part:
+    type: entity_reference_label
+    label: above
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_subject_type:
+    type: list_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+hidden:
+  langcode: true
+  search_api_excerpt: true

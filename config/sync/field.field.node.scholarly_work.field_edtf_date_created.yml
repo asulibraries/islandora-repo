@@ -1,0 +1,21 @@
+uuid: 286f4240-aa5a-4039-95e6-b3100cd9d4c7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_edtf_date_created
+    - node.type.scholarly_work
+  module:
+    - controlled_access_terms
+id: node.scholarly_work.field_edtf_date_created
+field_name: field_edtf_date_created
+entity_type: node
+bundle: scholarly_work
+label: 'Date Created'
+description: 'This field is an EDTF field. Simplest format is YYYY-MM-DD.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: edtf

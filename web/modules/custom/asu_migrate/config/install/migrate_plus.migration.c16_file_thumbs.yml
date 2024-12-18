@@ -1,0 +1,77 @@
+# Uninstall this config when the feature is uninstalled
+dependencies:
+  enforced:
+    module:
+      - asu_migrate
+
+id: c16_file_thumbs
+label: Import Collection 16 Derivative Files
+migration_group: migrate_c16_csv
+
+source:
+  plugin: csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/data/migration_data/c16_missing_thumbs.csv
+  delimiter: ','
+
+  # 1 means you have a header row, 0 means you don't
+  header_row_count: 1
+
+  # Each migration needs a unique key per row in the csv.  Here we're using the file path.
+  ids:
+    - its_nid
+
+  # You can't enter string literals into a process plugin, but you can give it a constant as a 'source'.
+  constants:
+    # Islandora uses flysystem and stream wrappers to work with files.  What we're really saying here is
+    # to put these files in Fedora in a 'csv_migration' folder.  It doesn't matter if the directory
+    # doesn't exist yet, it will get created for you automatically.
+    destination_dir: 'public://c16'
+
+    # Hard-code mime type to jpeg.  This could easily come from a column in the CSV if you have
+    # different mimetypes.
+    # mime: image/jpeg
+
+    # Everything gets created as admin
+    uid: 1
+    baseurl: "https://repository.asu.edu"
+    basepath: "/mnt/libfile/Repository/old-repo-data/filestore/"
+    local_dir: '/home/ubuntu/salad_thumbs'
+
+process:
+  uid: constants/uid
+  type: file type
+
+  # field_original_name/value: file original_filename
+  filename: thumbnail_filename
+
+  # Construct the destination URI using the file name.
+  destination:
+    plugin: concat
+    delimiter: /
+    source:
+      - constants/destination_dir
+      - thumbnail_filename
+
+  localfilelocation:
+    plugin: concat
+    delimiter: /
+    source:
+      - constants/local_dir
+      - thumbnail_filename
+
+  uri:
+    plugin: file_copy
+    source:
+      - '@localfilelocation'
+      - '@destination' # The destination entry from above
+
+  # uri: file url
+  # uri:
+  #   plugin: s3_download
+  #   source: file url
+  #   profile: legacy-repository
+  #   bucket: digital-repository-media
+  #   dest_dir: c4
+
+destination:
+  plugin: 'entity:file'

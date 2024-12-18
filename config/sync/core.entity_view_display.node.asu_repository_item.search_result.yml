@@ -1,3 +1,4 @@
+uuid: 91aab531-8cd0-47c8-8272-cf5585c8c3dd
 langcode: en
 status: true
 dependencies:
@@ -6,7 +7,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_additional_memberships
     - field.field.node.asu_repository_item.field_cataloging_standards
     - field.field.node.asu_repository_item.field_complex_object_child
-    - field.field.node.asu_repository_item.field_complex_subjects
+    - field.field.node.asu_repository_item.field_complex_subject
     - field.field.node.asu_repository_item.field_coordinates
     - field.field.node.asu_repository_item.field_copyright_statement
     - field.field.node.asu_repository_item.field_date_digitized
@@ -24,6 +25,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_geographic_subject
     - field.field.node.asu_repository_item.field_handle
     - field.field.node.asu_repository_item.field_history
+    - field.field.node.asu_repository_item.field_internal_note
     - field.field.node.asu_repository_item.field_issuance
     - field.field.node.asu_repository_item.field_keyword
     - field.field.node.asu_repository_item.field_language
@@ -46,6 +48,7 @@ dependencies:
     - field.field.node.asu_repository_item.field_reuse_permissions
     - field.field.node.asu_repository_item.field_rich_description
     - field.field.node.asu_repository_item.field_series
+    - field.field.node.asu_repository_item.field_source
     - field.field.node.asu_repository_item.field_statement_responsibility
     - field.field.node.asu_repository_item.field_subject
     - field.field.node.asu_repository_item.field_subjects_name
@@ -66,13 +69,18 @@ targetEntityType: node
 bundle: asu_repository_item
 mode: search_result
 content:
-  display_media_thumbnail:
-    weight: 0
-    region: content
-    settings: {  }
+  field_complex_object_child:
+    type: boolean
+    label: above
+    settings:
+      format: boolean
+      format_custom_false: ''
+      format_custom_true: ''
     third_party_settings: {  }
+    weight: 7
+    region: content
   field_edtf_date_created:
-    weight: 4
+    type: edtf_default
     label: visually_hidden
     settings:
       date_separator: dash
@@ -80,51 +88,51 @@ content:
       month_format: mm
       day_format: dd
     third_party_settings: {  }
-    type: edtf_default
+    weight: 4
     region: content
   field_linked_agent:
     type: typed_relation_brief
-    weight: 3
-    region: content
     label: visually_hidden
     settings:
       link: '1'
     third_party_settings: {  }
+    weight: 3
+    region: content
   field_member_of:
     type: entity_reference_entity_id
-    weight: 0
-    region: content
     label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
   field_model:
     type: entity_reference_label
-    weight: 6
-    region: content
     label: hidden
     settings:
       link: false
     third_party_settings: {  }
+    weight: 6
+    region: content
   field_rich_description:
     type: text_default
-    weight: 2
-    region: content
     label: above
     settings: {  }
     third_party_settings: {  }
+    weight: 2
+    region: content
   field_title:
     type: complex_title_formatter
-    weight: 1
-    region: content
     label: visually_hidden
     settings:
       link: ''
     third_party_settings: {  }
-  search_api_excerpt:
-    weight: 5
+    weight: 1
     region: content
+  search_api_excerpt:
     settings: {  }
     third_party_settings: {  }
+    weight: 5
+    region: content
 hidden:
   content_moderation_control: true
   display_media_child_thumbnail: true
@@ -134,10 +142,11 @@ hidden:
   display_media_entity_view_3: true
   display_media_entity_view_4: true
   display_media_service_file: true
+  display_media_thumbnail: true
+  display_media_thumbnail_card: true
   field_additional_memberships: true
   field_cataloging_standards: true
-  field_complex_object_child: true
-  field_complex_subjects: true
+  field_complex_subject: true
   field_coordinates: true
   field_copyright_statement: true
   field_date_digitized: true
@@ -150,11 +159,11 @@ hidden:
   field_embargo_release_date: true
   field_extent: true
   field_frequency: true
-  field_gemini_uri: true
   field_genre: true
   field_geographic_subject: true
   field_handle: true
   field_history: true
+  field_internal_note: true
   field_issuance: true
   field_keyword: true
   field_language: true
@@ -173,6 +182,7 @@ hidden:
   field_resource_type: true
   field_reuse_permissions: true
   field_series: true
+  field_source: true
   field_statement_responsibility: true
   field_subject: true
   field_subjects_name: true
@@ -193,3 +203,4 @@ hidden:
   video_media_evas_original_file: true
   video_media_evas_preservation_master: true
   video_media_evas_service_file: true
+  video_media_evas_smallest: true

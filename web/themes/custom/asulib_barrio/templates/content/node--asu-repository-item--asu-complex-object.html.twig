@@ -97,6 +97,10 @@
   </header>
   <div{{ content_attributes.addClass('node__content', 'clearfix', 'container') }}>
     <div class="content-section row">
+      {% if content.field_model[0]['#plain_text'] == "Paged Content" %}
+        {% set iiif_mani_url = "/node/" ~ node.id ~ "/book-manifest" %}
+          {{ drupal_block('mirador_block', {'iiif_manifest_url': iiif_mani_url}, wrapper=false)  }}
+      {% endif %}
       {% if drupal_view('display_media', 'thumbnail', node.id)|render|striptags|trim|length > 0 %}
         <div class="col-md-5 file-container">
           <a href="{{ url }}/members" class="image-link">{{ drupal_view('display_media', 'thumbnail', node.id) }}</a>
@@ -108,35 +112,43 @@
       <div class="info-container {{ desc_width }}">
         <div>{{ content.field_rich_description }}</div>
         <div class="row">
-          <div class="col-md-6">{{ content.field_copyright_statement }}</div>
+          <div class="col-md-6">
+            {{ content.field_copyright_statement }}
+            {% if node.field_open_access.value == 1 %}
+              <div>{{ content.field_open_access }}</div>
+            {% endif %}
+          </div>
           <div class="col-md-6">{{ content.field_reuse_permissions }}</div>
+        </div>
+        <div class="altmetrics-info">
+          {{ drupal_block('asu_altmetrics', wrapper=false) }}
         </div>
       </div>
     </div>
     <div id="included-this-item" class="content-section">
-      <h2>{{ 'Included in this item'|t }}</h2>
+      <h2>{{ 'Included in this item'|t }} ({{ child_count }})</h2>
       <div class="children-3-wide">
-        {{ drupal_block('asu_included_in_item') }}
+        {{ drupal_view('included_in_complex_object', 'three_included_items') }}
       </div>
       <br class="clearfloat">
-      <div><p><strong>
-        <a href="{{ url }}/members">View all associated media</a></strong></p></div><br/>
+      {% if child_count > 3 %}
+        <div><p><strong>
+        <a href="{{ url }}/members" class="btn btn-primary">View all associated media</a></strong></p></div><br/>
+      {% endif %}
     </div>
     <div id="details" class="content-section details">
       <h2>{{ 'Details'|t }}</h2>
+        <div>{{ content.field_title }}</field>
       {% if node.field_peer_reviewed.value == 1 %}
         <div>{{ content.field_peer_reviewed }}</div>
       {% endif %}
-      {% if node.field_open_access.value == 1 %}
-        <div>{{ content.field_open_access }}</div>
-      {% endif %}
       {% if node.field_linked_agent is not empty %}
         <div class="agents">
-          <div class="field__label">{{ 'Author/Contributors'|t }}</div>
+          <div class="field__label">{{ 'Contributors'|t }}</div>
           {{ content.field_linked_agent }}
         </div>
       {% endif %}
-      <div>{{ content.field_date_created }}</div>
+      <div>{{ content.field_edtf_date_created }}</div>
       {# Use the node field to check if empty. Content field is less reliable. #}
       {% if (node.field_subject is not empty) or (node.field_geographic_subject is not empty) or (node.field_subjects_name is not empty) or (node.field_temporal_subject is not empty) or (node.field_title_subject is not empty) or (node.field_name_title_subject is not empty) %}
         <div class="all-subjects">
@@ -149,10 +161,14 @@
           {{ content.field_temporal_subject }}
         </div>
       {% endif %}
+      {% if node.field_keyword is not empty %}
+        <div class="keywords">
+          <div class="field__label">{{ 'Keywords'|t }}</div>
+          {{ content.field_keyword }}
+        </div>
+      {% endif %}
       <div>{{ content.field_resource_type }}</div>
        {{ drupal_block('asu_item_is_part_of', {'node': node}) }}
-      {% if node.field_member_of is not empty %}
-      {% endif %}
       {% if drupal_view('collaborating_institutions', 'block_1', node.id)|render|striptags|trim|length > 0 %}
         <div class="collab">
           <div class="field__label">{{ 'Collaborating institutions'|t }}</div>
@@ -163,6 +179,10 @@
       {% if (content.field_typed_identifier.0['#paragraph'].field_identifier_type is not empty) or (content.field_typed_identifier.0['#paragraph'].field_identifier_value is not empty) %}
         <div>{{ content.field_typed_identifier }}</div>
       {% endif %}
+      {% if content.field_note_para.0['#paragraph'].field_note_text is not empty %}
+        <div>{{ content.field_note_para }}</div>
+      {% endif %}
+      <div>{{content.field_table_of_contents}}</div>
       <div>
         <p>
           <strong>

@@ -1,0 +1,29 @@
+uuid: a049ba3d-df85-4bd6-93a7-7cdb5939ecfd
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_default_original_file_perm
+    - node.type.asu_repository_item
+    - taxonomy.vocabulary.islandora_access
+id: node.asu_repository_item.field_default_original_file_perm
+field_name: field_default_original_file_perm
+entity_type: node
+bundle: asu_repository_item
+label: 'Default Original File Permissions'
+description: 'Set the default permissions on the original files attached to this item'
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      islandora_access: islandora_access
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

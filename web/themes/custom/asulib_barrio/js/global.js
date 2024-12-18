@@ -9,6 +9,9 @@
 
   Drupal.behaviors.bootstrap_barrio_subtheme = {
     attach: function(context, settings) {
+      $('[data-toggle="tooltip"]').tooltip({
+        placement: 'top'
+      });
       var position = $(window).scrollTop();
       $(window).scroll(function () {
         if ($(this).scrollTop() > 50) {
@@ -28,6 +31,26 @@
         position = scroll;
       });
 
+      var adjustSearchButton = function() {
+        if ($(window).width() < 1261) {
+          if (Drupal.url.toAbsolute().includes("prism")) {
+            var sitename = "PRISM";
+          } else {
+            var sitename = "KEEP";
+          }
+          $('nav #search-form #edit-submit').val("Search " + sitename);
+        } else {
+          $('nav #search-form #edit-submit').val("Search");
+        }
+      }
+
+      $(window).resize(function () {
+        adjustSearchButton();
+      });
+
+      $(document).ready( function() {
+        adjustSearchButton();
+      })
     }
   };
 

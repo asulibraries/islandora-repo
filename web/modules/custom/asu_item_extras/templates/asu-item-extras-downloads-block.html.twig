@@ -1,0 +1,14 @@
+{% if asu_download_restricted|render|striptags|trim is not empty %}
+	<b>
+	{% if file_size and file_size > 0 %}
+	{{ file_size | format_bytes }}
+	{% endif %}
+	{{ asu_download_info }}
+	</b>
+	<br/>
+	<br/>
+	{{ asu_download_restricted }}
+{% elseif asu_download_links is not empty %}
+	<div class="field__label">Downloads</div>
+	{{ asu_download_links }}
+{% endif %}

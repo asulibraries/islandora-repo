@@ -1,0 +1,20 @@
+uuid: f6103422-4a5f-4eff-857a-d7c34bc3e4aa
+langcode: en
+status: true
+dependencies:
+  module:
+    - basic_auth
+    - field
+    - serialization
+_core:
+  default_config_hash: qsoK5HymO7sZOeYV8TBPHZk3xMyye6eAg8Jd8D_p79U
+id: entity.field_storage_config
+plugin_id: 'entity:field_storage_config'
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - basic_auth

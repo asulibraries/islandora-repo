@@ -1,0 +1,34 @@
+uuid: 097925d6-b989-497d-b8d4-9bfc5e2754ff
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_note_para
+    - node.type.asu_repository_item
+    - paragraphs.paragraphs_type.complex_note
+  module:
+    - entity_reference_revisions
+id: node.asu_repository_item.field_note_para
+field_name: field_note_para
+entity_type: node
+bundle: asu_repository_item
+label: Note
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      complex_note: complex_note
+    negate: 0
+    target_bundles_drag_drop:
+      complex_note:
+        weight: 3
+        enabled: true
+      complex_title:
+        weight: 4
+        enabled: false
+field_type: entity_reference_revisions

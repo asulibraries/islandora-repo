@@ -1,0 +1,47 @@
+uuid: 4e27fe42-f92c-4259-99f5-40cb19e3e319
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.taxonomy_term.simple_taxo_create
+    - field.field.taxonomy_term.geo_location.field_authority_link
+    - field.field.taxonomy_term.geo_location.field_geo_alt_name
+    - field.field.taxonomy_term.geo_location.field_geo_broader
+    - field.field.taxonomy_term.geo_location.field_geo_geolocation
+    - taxonomy.vocabulary.geo_location
+  module:
+    - asu_item_extras
+id: taxonomy_term.geo_location.simple_taxo_create
+targetEntityType: taxonomy_term
+bundle: geo_location
+mode: simple_taxo_create
+content:
+  field_authority_link:
+    type: authority_link_brief
+    weight: 1
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  description: true
+  field_geo_alt_name: true
+  field_geo_broader: true
+  field_geo_geolocation: true
+  langcode: true
+  path: true
+  promote: true
+  status: true
+  sticky: true
+  translation: true
+  uid: true

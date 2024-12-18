@@ -1,10 +1,10 @@
+uuid: 59fde6b4-a16b-4ef3-8ea2-4f4b5f835566
 langcode: en
 status: true
 dependencies:
   config:
     - views.view.solr_search_content
   module:
-    - context
     - system
     - views
   theme:
@@ -12,29 +12,19 @@ dependencies:
 id: views_block__solr_search_content_block_1
 theme: asulib_barrio
 region: content
-weight: -29
+weight: -42
 provider: null
 plugin: 'views_block:solr_search_content-block_1'
 settings:
   id: 'views_block:solr_search_content-block_1'
   label: ''
-  provider: views
   label_display: '0'
+  provider: views
   views_label: ''
   items_per_page: none
 visibility:
   request_path:
     id: request_path
-    pages: "/search/*\r\n/search?*"
     negate: false
     context_mapping: {  }
-  request_path_exclusion:
-    id: request_path_exclusion
-    pages: ''
-    negate: null
-    context_mapping: {  }
-  view_inclusion:
-    id: view_inclusion
-    negate: null
-    view_inclusion: {  }
-    context_mapping: {  }
+    pages: "/search/*\r\n/search?*"

@@ -38,7 +38,10 @@
         <li{{ item.attributes.addClass(inline_classes) }}>{{ item.value }}</li>
       {%- endfor -%}
     </{{ list_type }}>
-    <p><a href="/search" title="Clear all filters">Clear all filters</a></p>
+    <p>
+      <a href="{{url("<current>")}}?search_api_fulltext=" title="Clear all filters">Clear all filters</a>
+    </p>
+
   {%- else -%}
     {{- empty -}}
   {%- endif -%}

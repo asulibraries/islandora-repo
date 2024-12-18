@@ -1,0 +1,54 @@
+uuid: 13f58148-1c8e-4114-b9c5-3a7146e6febf
+langcode: en
+status: true
+dependencies:
+  config:
+    - image.style.width_400
+    - image.style.width_800
+  theme:
+    - asulib_barrio
+id: item_displays
+label: 'Item displays'
+image_style_mappings:
+  -
+    image_mapping_type: image_style
+    image_mapping: width_400
+    breakpoint_id: asulib_barrio.extra
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: width_800
+    breakpoint_id: asulib_barrio.extra
+    multiplier: 2x
+  -
+    image_mapping_type: image_style
+    image_mapping: width_400
+    breakpoint_id: asulib_barrio.large
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: width_800
+    breakpoint_id: asulib_barrio.large
+    multiplier: 2x
+  -
+    image_mapping_type: image_style
+    image_mapping: width_400
+    breakpoint_id: asulib_barrio.medium
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: width_800
+    breakpoint_id: asulib_barrio.medium
+    multiplier: 2x
+  -
+    image_mapping_type: image_style
+    image_mapping: width_400
+    breakpoint_id: asulib_barrio.small
+    multiplier: 1x
+  -
+    image_mapping_type: image_style
+    image_mapping: width_400
+    breakpoint_id: asulib_barrio.small
+    multiplier: 2x
+breakpoint_group: asulib_barrio
+fallback_image_style: width_400

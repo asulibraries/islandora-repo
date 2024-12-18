@@ -1,17 +1,42 @@
+uuid: 3f9c92de-a424-42c8-a188-d6810ce6545a
 langcode: en
 status: true
 dependencies:
   config:
     - user.role.administrator
-    - user.role.metadata_manager
 id: email_to_metadata_after_content_
 label: 'Email to Metadata After Content Approval'
+format: plain_text
 subject: 'New KEEP Self-Deposit Submission ready for metadata review'
-body:
-  value: "A new KEEP self-deposit is ready for metadata review: [node:title]\r\n[node:url]"
-  format: plain_text
-bundles: {  }
 recipient_types:
+  author:
+    id: author
+    provider: workbench_email
+    status: false
+    settings: {  }
+  email:
+    id: email
+    provider: workbench_email
+    status: false
+    settings:
+      fields: {  }
+  entity_reference_user:
+    id: entity_reference_user
+    provider: workbench_email
+    status: false
+    settings:
+      fields: {  }
+  fixed_email:
+    id: fixed_email
+    provider: workbench_email
+    status: false
+    settings:
+      recipients: ''
+  last_revision_author:
+    id: last_revision_author
+    provider: workbench_email
+    status: false
+    settings: {  }
   role:
     id: role
     provider: workbench_email
@@ -19,4 +44,14 @@ recipient_types:
     settings:
       roles:
         administrator: administrator
-        metadata_manager: metadata_manager
+  roles_with_access:
+    id: roles_with_access
+    provider: workbench_email
+    status: false
+    settings:
+      roles: {  }
+bundles: {  }
+body:
+  value: "A new KEEP self-deposit is ready for metadata review: [node:title]\r\n[node:url]"
+  format: plain_text
+replyTo: null

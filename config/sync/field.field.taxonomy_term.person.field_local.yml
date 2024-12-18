@@ -1,0 +1,21 @@
+uuid: 99d31fb8-8fdd-434d-9898-fce0f911cee2
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.taxonomy_term.field_local
+    - taxonomy.vocabulary.person
+id: taxonomy_term.person.field_local
+field_name: field_local
+entity_type: taxonomy_term
+bundle: person
+label: 'Local Name Only'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  on_label: 'Yes'
+  off_label: 'No'
+field_type: boolean

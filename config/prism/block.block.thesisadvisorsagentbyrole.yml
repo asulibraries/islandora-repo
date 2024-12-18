@@ -1,0 +1,29 @@
+uuid: 3bcec0ce-8490-4b8d-8aa1-5db51d25f300
+langcode: en
+status: false
+dependencies:
+  config:
+    - facets.facet.thesis_advisors_agent_by_role_
+  module:
+    - facets
+    - system
+  theme:
+    - asulib_barrio
+id: thesisadvisorsagentbyrole
+theme: asulib_barrio
+region: sidebar_first
+weight: 11
+provider: null
+plugin: 'facet_block:thesis_advisors_agent_by_role_'
+settings:
+  id: 'facet_block:thesis_advisors_agent_by_role_'
+  label: 'Thesis Advisors (Agent by Role)'
+  label_display: visible
+  provider: facets
+  block_id: thesisadvisorsagentbyrole
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    context_mapping: {  }
+    pages: '/search*'

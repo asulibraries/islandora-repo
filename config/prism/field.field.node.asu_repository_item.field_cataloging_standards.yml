@@ -1,0 +1,29 @@
+uuid: 939ad310-50ed-4936-9e40-b24d5c12f9ac
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_cataloging_standards
+    - node.type.asu_repository_item
+    - taxonomy.vocabulary.cataloging_standards
+id: node.asu_repository_item.field_cataloging_standards
+field_name: field_cataloging_standards
+entity_type: node
+bundle: asu_repository_item
+label: 'Cataloging Standards'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      cataloging_standards: cataloging_standards
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

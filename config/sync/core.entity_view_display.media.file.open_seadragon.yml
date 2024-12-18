@@ -1,3 +1,4 @@
+uuid: bbd6cff2-6a86-4b52-bf3d-68fc366221f2
 langcode: en
 status: true
 dependencies:
@@ -12,28 +13,26 @@ dependencies:
     - field.field.media.file.field_mime_type
     - field.field.media.file.field_original_name
     - media.type.file
-  enforced:
-    module:
-      - islandora_defaults
   module:
     - openseadragon
+  enforced:
+    module: {  }
 id: media.file.open_seadragon
 targetEntityType: media
 bundle: file
 mode: open_seadragon
 content:
   field_media_file:
+    type: openseadragon_image
     label: hidden
     settings: {  }
     third_party_settings: {  }
-    type: openseadragon_image
     weight: 0
     region: content
 hidden:
   created: true
   field_access_terms: true
   field_file_size: true
-  field_gemini_uri: true
   field_legacy_checksum: true
   field_media_of: true
   field_media_use: true

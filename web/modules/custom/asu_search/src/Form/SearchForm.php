@@ -2,8 +2,6 @@
 
 namespace Drupal\asu_search\Form;
 
-use Drupal\Component\Utility\Html;
-use Drupal\Component\Render\FormattableMarkup;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -49,20 +47,23 @@ class SearchForm extends FormBase {
    * {@inheritdoc}
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
+    $config = \Drupal::config('system.site');
+    $placeholder = 'Search ' . $config->get('name');
     $form['#attributes']['class'][] = 'form--inline';
     $form['search_api_fulltext'] = [
       '#type' => 'textfield',
       '#title' => $this->t('keyword'),
-      '#size' => 50,
+      '#size' => 30,
       '#weight' => '0',
       '#title_display' => 'invisible',
+      '#attributes' => ['placeholder' => $placeholder],
     ];
     $form['actions']['submit'] = [
       '#type' => 'submit',
       '#title' => $this->t('Search'),
       '#weight' => '0',
       '#value' => 'Search',
-      '#attributes' => ['class' => ['col-md-3', 'form--inline']],
+      '#attributes' => ['class' => ['col-md-3', 'form--inline'], 'aria-label' => $placeholder],
     ];
     return $form;
   }

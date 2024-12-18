@@ -1,0 +1,16 @@
+uuid: a1294014-4b05-4767-93bc-e507378a1e0b
+langcode: en
+status: true
+dependencies:
+  module:
+    - group
+id: group_content
+label: 'Group content'
+type: 'canonical_entities:group_content'
+pattern: 'group/[group_content:group:id]/[group_content:pretty-path-key]/[group_content:id]'
+selection_criteria: {  }
+selection_logic: and
+weight: -5
+relationships:
+  'group_content:langcode:language':
+    label: Language

@@ -1,13 +1,14 @@
+uuid: 103dfa85-d711-43bb-a86a-02e649a560c2
 langcode: en
 status: true
 dependencies:
   config:
     - taxonomy.vocabulary.islandora_display
+  module:
+    - taxonomy
   enforced:
     module:
       - islandora_core_feature
-  module:
-    - taxonomy
 id: taxonomy_term.islandora_display
 targetEntityType: taxonomy_term
 bundle: islandora_display

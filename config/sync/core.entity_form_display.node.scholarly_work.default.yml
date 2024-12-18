@@ -1,0 +1,570 @@
+uuid: d25b1cec-1f0a-400b-95b4-3834eb86245d
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.media.work_product
+    - field.field.node.scholarly_work.field_additional_memberships
+    - field.field.node.scholarly_work.field_copyright_statement
+    - field.field.node.scholarly_work.field_edition
+    - field.field.node.scholarly_work.field_edtf_copyright_date
+    - field.field.node.scholarly_work.field_edtf_date_created
+    - field.field.node.scholarly_work.field_embargo_release_date
+    - field.field.node.scholarly_work.field_extent
+    - field.field.node.scholarly_work.field_genre
+    - field.field.node.scholarly_work.field_geographic_subject
+    - field.field.node.scholarly_work.field_handle
+    - field.field.node.scholarly_work.field_keyword
+    - field.field.node.scholarly_work.field_language
+    - field.field.node.scholarly_work.field_linked_agent
+    - field.field.node.scholarly_work.field_member_of
+    - field.field.node.scholarly_work.field_note_para
+    - field.field.node.scholarly_work.field_open_access
+    - field.field.node.scholarly_work.field_peer_reviewed
+    - field.field.node.scholarly_work.field_pid
+    - field.field.node.scholarly_work.field_place_of_publication_code
+    - field.field.node.scholarly_work.field_place_published
+    - field.field.node.scholarly_work.field_preferred_citation
+    - field.field.node.scholarly_work.field_resource_type
+    - field.field.node.scholarly_work.field_reuse_permissions
+    - field.field.node.scholarly_work.field_rich_description
+    - field.field.node.scholarly_work.field_series
+    - field.field.node.scholarly_work.field_statement_responsibility
+    - field.field.node.scholarly_work.field_subject
+    - field.field.node.scholarly_work.field_table_of_contents
+    - field.field.node.scholarly_work.field_title
+    - field.field.node.scholarly_work.field_typed_identifier
+    - field.field.node.scholarly_work.field_work_products
+    - node.type.scholarly_work
+  module:
+    - content_moderation
+    - controlled_access_terms
+    - datetime
+    - field_group
+    - inline_entity_form
+    - paragraphs
+    - path
+    - text
+third_party_settings:
+  field_group:
+    group_basic:
+      children:
+        - field_title
+        - field_work_products
+        - field_member_of
+        - field_additional_memberships
+        - field_rich_description
+        - field_linked_agent
+        - langcode
+      label: Basic
+      region: content
+      parent_name: group_tab_container
+      weight: 1
+      format_type: tab
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+    group_system:
+      children:
+        - field_pid
+        - field_handle
+        - uid
+        - promote
+        - created
+        - moderation_state
+        - sticky
+        - path
+        - status
+      label: 'System Use and Display'
+      region: content
+      parent_name: group_tab_container
+      weight: 6
+      format_type: tab
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+    group_tab_container:
+      children:
+        - group_basic
+        - group_subjects
+        - group_access_and_rights
+        - group_types_and_notes
+        - group_additional_details_and_ide
+        - group_system
+      label: 'Tab Container'
+      region: content
+      parent_name: ''
+      weight: 0
+      format_type: tabs
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        description: ''
+        required_fields: true
+        direction: vertical
+        width_breakpoint: 640
+    group_subjects:
+      children:
+        - field_subject
+        - field_geographic_subject
+        - field_keyword
+      label: Subjects
+      region: content
+      parent_name: group_tab_container
+      weight: 2
+      format_type: tab
+      format_settings:
+        classes: ''
+        id: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+    group_access_and_rights:
+      children:
+        - field_copyright_statement
+        - field_reuse_permissions
+        - field_statement_responsibility
+        - field_embargo_release_date
+      label: 'Access and Rights'
+      region: content
+      parent_name: group_tab_container
+      weight: 3
+      format_type: tab
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+    group_types_and_notes:
+      children:
+        - field_resource_type
+        - field_genre
+        - field_open_access
+        - field_peer_reviewed
+        - field_note_para
+      label: 'Types and Notes'
+      region: content
+      parent_name: group_tab_container
+      weight: 4
+      format_type: tab
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+        direction: vertical
+    group_additional_details_and_ide:
+      children:
+        - field_typed_identifier
+        - field_edtf_date_created
+        - field_extent
+        - field_preferred_citation
+        - field_edtf_copyright_date
+        - field_place_published
+        - field_place_of_publication_code
+        - field_table_of_contents
+        - field_series
+        - field_edition
+      label: 'Identifiers, Dates, and Additional Details'
+      region: content
+      parent_name: group_tab_container
+      weight: 5
+      format_type: tab
+      format_settings:
+        classes: ''
+        show_empty_fields: false
+        id: ''
+        formatter: closed
+        description: ''
+        required_fields: true
+id: node.scholarly_work.default
+targetEntityType: node
+bundle: scholarly_work
+mode: default
+content:
+  created:
+    type: datetime_timestamp
+    weight: 109
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_additional_memberships:
+    type: entity_reference_autocomplete
+    weight: 7
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_copyright_statement:
+    type: options_select
+    weight: 8
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_edition:
+    type: string_textfield
+    weight: 15
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_edtf_copyright_date:
+    type: edtf_default
+    weight: 10
+    region: content
+    settings:
+      strict_dates: false
+      intervals: true
+      sets: false
+    third_party_settings: {  }
+  field_edtf_date_created:
+    type: edtf_default
+    weight: 7
+    region: content
+    settings:
+      strict_dates: false
+      intervals: true
+      sets: false
+    third_party_settings: {  }
+  field_embargo_release_date:
+    type: datetime_default
+    weight: 11
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_extent:
+    type: string_textfield
+    weight: 8
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_genre:
+    type: entity_reference_autocomplete
+    weight: 8
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_geographic_subject:
+    type: inline_entity_form_complex
+    weight: 5
+    region: content
+    settings:
+      form_mode: simple_taxo_create
+      override_labels: true
+      label_singular: 'geographic subject'
+      label_plural: 'topical subjects'
+      allow_new: true
+      allow_existing: true
+      match_operator: CONTAINS
+      match_limit: 10
+      allow_duplicate: false
+      collapsible: false
+      collapsed: false
+      revision: false
+      removed_reference: optional
+    third_party_settings: {  }
+  field_handle:
+    type: string_textfield
+    weight: 105
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_keyword:
+    type: entity_reference_autocomplete
+    weight: 7
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_language:
+    type: entity_reference_autocomplete
+    weight: 29
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_linked_agent:
+    type: typed_relation_default
+    weight: 9
+    region: content
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+      match_limit: 50
+    third_party_settings: {  }
+  field_member_of:
+    type: entity_reference_autocomplete
+    weight: 6
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_note_para:
+    type: entity_reference_paragraphs
+    weight: 11
+    region: content
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
+  field_open_access:
+    type: boolean_checkbox
+    weight: 9
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_peer_reviewed:
+    type: boolean_checkbox
+    weight: 10
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  field_pid:
+    type: string_textfield
+    weight: 104
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_place_of_publication_code:
+    type: entity_reference_autocomplete
+    weight: 12
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_place_published:
+    type: string_textfield
+    weight: 11
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_preferred_citation:
+    type: text_textarea
+    weight: 9
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_resource_type:
+    type: entity_reference_autocomplete
+    weight: 7
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_reuse_permissions:
+    type: options_select
+    weight: 9
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  field_rich_description:
+    type: text_textarea
+    weight: 8
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_series:
+    type: string_textfield
+    weight: 14
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_statement_responsibility:
+    type: string_textarea
+    weight: 10
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_subject:
+    type: inline_entity_form_complex
+    weight: 4
+    region: content
+    settings:
+      form_mode: simple_taxo_create
+      override_labels: true
+      label_singular: 'topical subject'
+      label_plural: 'topical subjects'
+      allow_new: true
+      allow_existing: true
+      match_operator: STARTS_WITH
+      match_limit: 10
+      allow_duplicate: false
+      collapsible: false
+      collapsed: false
+      revision: false
+      removed_reference: optional
+    third_party_settings: {  }
+  field_table_of_contents:
+    type: text_textarea
+    weight: 13
+    region: content
+    settings:
+      rows: 5
+      placeholder: ''
+    third_party_settings: {  }
+  field_title:
+    type: inline_entity_form_simple
+    weight: 4
+    region: content
+    settings:
+      form_mode: default
+      override_labels: false
+      label_singular: ''
+      label_plural: ''
+      collapsible: false
+      collapsed: false
+      revision: false
+    third_party_settings: {  }
+  field_typed_identifier:
+    type: entity_reference_paragraphs
+    weight: 5
+    region: content
+    settings:
+      title: Paragraph
+      title_plural: Paragraphs
+      edit_mode: open
+      add_mode: dropdown
+      form_display_mode: default
+      default_paragraph_type: ''
+    third_party_settings: {  }
+  field_work_products:
+    type: inline_entity_form_complex
+    weight: 5
+    region: content
+    settings:
+      form_mode: work_product
+      override_labels: false
+      label_singular: ''
+      label_plural: ''
+      allow_new: true
+      allow_existing: true
+      match_operator: CONTAINS
+      match_limit: 10
+      allow_duplicate: false
+      collapsible: false
+      collapsed: false
+      revision: false
+      removed_reference: optional
+    third_party_settings: {  }
+  langcode:
+    type: language_select
+    weight: 10
+    region: content
+    settings:
+      include_locked: true
+    third_party_settings: {  }
+  moderation_state:
+    type: moderation_state_default
+    weight: 110
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 112
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  promote:
+    type: boolean_checkbox
+    weight: 108
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  simple_sitemap:
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 113
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  sticky:
+    type: boolean_checkbox
+    weight: 111
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+  uid:
+    type: entity_reference_autocomplete
+    weight: 107
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  url_redirects:
+    weight: 3
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+hidden:
+  field_display_hints: true
+  title: true

@@ -1,0 +1,31 @@
+uuid: e5575ade-bfff-424f-be67-c87e99ccd925
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora
+  enforced:
+    module:
+      - islandora_fits
+label: 'Technical Metadata on Ingest'
+name: technical_metadata_on_ingest
+group: Islandora
+description: 'Defines FITS harvesting behavior'
+requireAllConditions: false
+disabled: false
+conditions:
+  media_has_term:
+    id: media_has_term
+    negate: false
+    uuid: b270cb14-b960-4494-9ccf-1c9433092837
+    context_mapping:
+      media: '@islandora.media_route_context_provider:media'
+    uri: 'http://pcdm.org/use#OriginalFile'
+    logic: and
+reactions:
+  derivative:
+    id: derivative
+    actions:
+      generate_a_technical_metadata_derivative: generate_a_technical_metadata_derivative
+    saved: false
+weight: 0

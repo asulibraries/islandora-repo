@@ -1,0 +1,35 @@
+uuid: 136b8ef7-98ca-4e12-b2db-aa1135dcc367
+langcode: en
+status: true
+dependencies:
+  config:
+    - system.menu.about
+  module:
+    - islandora
+    - system
+  theme:
+    - asulib_barrio
+id: about
+theme: asulib_barrio
+region: sidebar_first
+weight: 4
+provider: null
+plugin: 'system_menu_block:about'
+settings:
+  id: 'system_menu_block:about'
+  label: About
+  label_display: '0'
+  provider: system
+  level: 1
+  depth: 0
+  expand_all_items: false
+visibility:
+  media_source_mimetype:
+    id: media_source_mimetype
+    negate: false
+    context_mapping: {  }
+    mimetype: ''
+  request_path:
+    id: request_path
+    negate: false
+    pages: '/about*'

@@ -1,0 +1,22 @@
+uuid: 94581b06-e7e8-4543-9d3e-7b4e1041a02b
+langcode: en
+status: true
+dependencies:
+  module:
+    - node
+id: items_nids
+label: 'Items Nids'
+type: 'canonical_entities:node'
+pattern: '/items/[node:nid]'
+selection_criteria:
+  0cf7f18b-57d1-4589-8922-dc56561518cd:
+    id: 'entity_bundle:node'
+    negate: false
+    uuid: 0cf7f18b-57d1-4589-8922-dc56561518cd
+    context_mapping:
+      node: node
+    bundles:
+      asu_repository_item: asu_repository_item
+selection_logic: and
+weight: -5
+relationships: {  }

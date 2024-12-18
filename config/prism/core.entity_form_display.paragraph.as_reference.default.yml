@@ -1,0 +1,39 @@
+uuid: bb4306ae-a5cb-4f40-8a93-1a8911d480f4
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.as_reference.field_as_do_id
+    - field.field.paragraph.as_reference.field_as_ref_id
+    - field.field.paragraph.as_reference.field_as_repository_id
+    - paragraphs.paragraphs_type.as_reference
+id: paragraph.as_reference.default
+targetEntityType: paragraph
+bundle: as_reference
+mode: default
+content:
+  field_as_do_id:
+    type: number
+    weight: 2
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+  field_as_ref_id:
+    type: string_textfield
+    weight: 1
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_as_repository_id:
+    type: number
+    weight: 0
+    region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

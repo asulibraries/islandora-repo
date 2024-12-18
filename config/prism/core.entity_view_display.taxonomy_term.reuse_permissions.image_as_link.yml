@@ -1,0 +1,40 @@
+uuid: de788db9-2fd0-4b28-ad8c-55fd5edea31f
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.taxonomy_term.image_as_link
+    - field.field.taxonomy_term.reuse_permissions.field_copyright_logo
+    - field.field.taxonomy_term.reuse_permissions.field_source
+    - taxonomy.vocabulary.reuse_permissions
+  module:
+    - file
+    - link
+id: taxonomy_term.reuse_permissions.image_as_link
+targetEntityType: taxonomy_term
+bundle: reuse_permissions
+mode: image_as_link
+content:
+  field_copyright_logo:
+    type: file_url_plain
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_source:
+    type: link
+    label: hidden
+    settings:
+      trim_length: 80
+      url_only: true
+      url_plain: true
+      rel: '0'
+      target: '0'
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  description: true
+  langcode: true
+  search_api_excerpt: true

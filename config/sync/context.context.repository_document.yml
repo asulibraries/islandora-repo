@@ -1,10 +1,11 @@
+uuid: 51c64b65-09b2-48c8-90e6-9d63a545df5e
 langcode: en
 status: true
 dependencies:
   module:
     - islandora
-name: repository_document
 label: 'Repository document'
+name: repository_document
 group: Display
 description: 'Document view mode and related'
 requireAllConditions: false
@@ -12,12 +13,12 @@ disabled: true
 conditions:
   node_has_term:
     id: node_has_term
-    logic: or
     negate: false
     uuid: 6bb142b4-13da-40b2-bcff-e6fe3a10b087
-    uri: 'https://schema.org/DigitalDocument'
     context_mapping:
       node: '@node.node_route_context:node'
+    uri: 'https://schema.org/DigitalDocument'
+    logic: or
 reactions:
   view_mode_alter:
     id: view_mode_alter

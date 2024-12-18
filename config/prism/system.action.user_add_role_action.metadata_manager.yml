@@ -1,0 +1,14 @@
+uuid: a98dd0ec-ac86-4767-a06b-cc84d495e49c
+langcode: en
+status: true
+dependencies:
+  config:
+    - user.role.metadata_manager
+  module:
+    - user
+id: user_add_role_action.metadata_manager
+label: 'Add the Metadata Manager role to the selected user(s)'
+type: user
+plugin: user_add_role_action
+configuration:
+  rid: metadata_manager

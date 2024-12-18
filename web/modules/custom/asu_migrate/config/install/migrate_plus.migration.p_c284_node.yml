@@ -494,6 +494,18 @@ process:
 # todo statically set cataloging standards
 # todo statitically set the level of coding
 
+  field_source:
+    # plugin: entity_lookup_by_field
+    entity_type: node
+    bundle: archival_object
+    # field: field_as_ref_id
+    source: Archival Object Ref ID
+    plugin: entity_lookup
+    access_check: 0
+    bundle_key: type
+    value_key: field_as_ref_id
+
+
 
 # We're making nodes
 destination:

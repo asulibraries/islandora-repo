@@ -1,0 +1,42 @@
+_core:
+  default_config_hash: qe2dUQAR-0ZSZQPfmdq35dwjTJIz_LSrxzagXWazsHI
+batch_update:
+  uri_migration_map:
+    -
+      uri_regex: '#/repositories/\d*/resources/#'
+      migration_id: as_resources
+    -
+      uri_regex: '#/repositories/\d*/archival_objects/#'
+      migration_id: as_archival_objects
+    -
+      uri_regex: '#/agents/people/#'
+      migration_id: as_agents_people
+    -
+      uri_regex: '#/agents/corporate_entities/#'
+      migration_id: as_agents_corp
+    -
+      uri_regex: '#/agents/families/#'
+      migration_id: as_agents_family
+    -
+      uri_regex: '#/subjects/#'
+      migration_id: as_subjects
+    -
+      uri_regex: '#/repositories/\d*/top_containers/#'
+      migration_id: as_top_containers
+    -
+      uri_regex: '#/repositories/\d*$#'
+      migration_id: as_repositories
+    -
+      uri_regex: '#/repositories/\d*/classifications/#'
+      migration_id: as_classifications
+    -
+      uri_regex: '#/repositories/\d*/classification_terms/#'
+      migration_id: as_classification_terms
+breadcrumb:
+  content_types: {  }
+  parent_field: ''
+resource_description_files:
+  pdf_generate_action: update_archival_resource_pdf
+  enabled_types:
+    - pdf
+resource_description_queue_enabled: false

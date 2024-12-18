@@ -1,6 +1,14 @@
 <?php
 
 /**
+ * @file
+ * Item extra module.
+ */
+
+use Drupal\Core\Form\FormStateInterface;
+use Drupal\views\ViewExecutable;
+
+/**
  * Implements hook_theme().
  */
 function asu_item_extras_theme() {
@@ -11,42 +19,106 @@ function asu_item_extras_theme() {
         'caption' => NULL,
         'files' => [],
         'poster' => NULL,
-        'attributes' => NULL
-      ]
+        'attributes' => NULL,
+      ],
     ],
-    'file_audio_with_caption' => [
-      'template' => 'file-audio-caption',
+    'asu_item_extras_downloads_block' => [
+      'template' => 'asu-item-extras-downloads-block',
       'variables' => [
-        'caption' => NULL,
-        'files' => [],
-        'attributes' => NULL
-      ]
+        'asu_download_links' => NULL,
+        'asu_download_restricted' => NULL,
+        'asu_download_info' => NULL,
+        'file_size' => NULL,
+      ],
     ],
   ];
 }
 
-function asu_item_extras_get_complex_object_child_nodes($node_id, $howmany = 0) {
-  $query = \Drupal::database()->select('node_field_data', 'node_field_data');
-  $query->join('node__field_member_of', 'node__field_member_of',
-      'node__field_member_of.field_member_of_target_id = node_field_data.nid');
-  $query->join('node__field_title', 'node__field_title',
-      'node_field_data.nid = node__field_title.entity_id AND ' .
-      'node__field_title.deleted = 0 AND ' .
-      '(node__field_title.langcode = node_field_data.langcode OR node__field_title.bundle = \'asu_repository_item\')');
-  $query->join('paragraphs_item_field_data', 'paragraphs_item_field_data',
-      'node__field_title.field_title_target_revision_id = paragraphs_item_field_data.revision_id');
-  $query->join('paragraph__field_main_title', 'paragraph__field_main_title',
-      'paragraphs_item_field_data.id = paragraph__field_main_title.entity_id AND ' .
-      'paragraph__field_main_title.deleted = 0');
-  $query->condition('node_field_data.nid', $node_id);
-  $query->condition('node_field_data.status', 1);
-  $query->orderBy('paragraph__field_main_title.field_main_title_value' , 'ASC');
-  if ($howmany) {
-    $query->range(0, $howmany);
+/**
+ * Implements hook_views_pre_render().
+ *
+ * Views doesn't respect our permissions module. We need to check each media
+ * until we find one we can return.
+ */
+function asu_item_extras_views_pre_render(ViewExecutable $view) {
+  if ($view->id() == 'video_media_evas') {
+    // Unset everything we don't have permission for
+    // OR after we found an accessible item.
+    $found = FALSE;
+    foreach ($view->result as $key => $value) {
+      if (!$found && !empty($value->_entity) && $value->_entity->access('view')) {
+        $found = TRUE;
+      }
+      else {
+        unset($view->result[$key]);
+      }
+    }
   }
-  $children = $query
-    ->fields('node_field_data')
-    ->fields('node__field_member_of')
-    ->execute();
-  return $children;
+}
+
+/**
+ * Implements hook_views_data().
+ */
+function asu_item_extras_views_data() {
+  $data['views']['table']['group'] = t('Content');
+  $data['views']['table']['join'] = [
+    // #global is a special flag which allows a table to appear all the time.
+    '#global' => [],
+  ];
+
+  $data['views']['mime_url_field'] = [
+    'title' => t('Mime URL'),
+    'help' => t('Provides a related media file URL for a configured mime-type.'),
+    'field' => [
+      'id' => 'mime_url_field',
+    ],
+  ];
+  return $data;
+}
+
+/**
+ * Implements hook_preprocess_rest_oai_pmh_record().
+ *
+ * Taken from the deprecated islandora_rest_oaipmh module.
+ * See https://github.com/Islandora/islandora_defaults/blob/3.x/modules/islandora_oaipmh/islandora_oaipmh.module.
+ */
+function asu_item_extras_preprocess_rest_oai_pmh_record(&$variables) {
+  $entity = $variables['entity'];
+  if ($entity->hasField('field_linked_agent')) {
+    foreach ($entity->get('field_linked_agent') as $linked_agent) {
+      $creator_rels = [
+        'relators:cre',
+        'relators:art',
+        'relators:aut',
+        'relators:edc',
+        'relators:pht',
+        'relators:trl',
+      ];
+      $dc_field = in_array($linked_agent->rel_type, $creator_rels) ? 'dc:creator' : 'dc:contributor';
+      $variables['elements'][$dc_field][] = $linked_agent->entity->label();
+    }
+  }
+}
+
+/**
+ * Implements hook_form_form_id_alter().
+ */
+function asu_item_extras_form_google_tag_container_form_alter(&$form, FormStateInterface $form_state, $form_id) {
+  // Unset our custom conditions.  There's too many to use well within
+  // the core block placement UI, and no other reasonable way to filter
+  // them out.  See https://www.drupal.org/node/2284687.  Use
+  // /admin/structure/context instead if you want to use these conditions
+  // to alter block layout.
+  unset($form['conditions']['content_entity_type']);
+  unset($form['conditions']['file_uses_filesystem']);
+  unset($form['conditions']['media_has_mimetype']);
+  unset($form['conditions']['media_has_term']);
+  unset($form['conditions']['media_is_islandora_media']);
+  unset($form['conditions']['media_uses_filesystem']);
+  unset($form['conditions']['node_had_namespace']);
+  unset($form['conditions']['node_has_parent']);
+  unset($form['conditions']['node_has_term']);
+  unset($form['conditions']['node_is_islandora_object']);
+  unset($form['conditions']['node_referenced_by_node']);
+  unset($form['conditions']['parent_node_has_term']);
 }

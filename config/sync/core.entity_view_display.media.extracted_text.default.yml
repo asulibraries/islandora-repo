@@ -1,3 +1,4 @@
+uuid: a7c28f62-b45c-4f90-b2c2-4e7dbfb1387e
 langcode: en
 status: true
 dependencies:
@@ -18,45 +19,54 @@ bundle: extracted_text
 mode: default
 content:
   created:
-    label: hidden
     type: timestamp
-    weight: 1
-    region: content
+    label: hidden
     settings:
       date_format: medium
       custom_date_format: ''
       timezone: ''
+      tooltip:
+        date_format: ''
+        custom_date_format: ''
+      time_diff:
+        enabled: false
+        future_format: '@interval hence'
+        past_format: '@interval ago'
+        granularity: 2
+        refresh: 60
     third_party_settings: {  }
+    weight: 1
+    region: content
   field_edited_text:
     type: text_default
-    weight: 3
-    region: content
     label: above
     settings: {  }
     third_party_settings: {  }
+    weight: 3
+    region: content
   field_media_file:
     type: file_default
-    weight: 2
-    region: content
     label: above
     settings:
       use_description_as_link_text: true
     third_party_settings: {  }
+    weight: 2
+    region: content
   field_media_of:
     type: entity_reference_label
-    weight: 4
-    region: content
     label: above
     settings:
       link: true
     third_party_settings: {  }
-  uid:
-    label: hidden
-    type: author
-    weight: 0
+    weight: 4
     region: content
+  uid:
+    type: author
+    label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
 hidden:
   field_media_use: true
   field_mime_type: true

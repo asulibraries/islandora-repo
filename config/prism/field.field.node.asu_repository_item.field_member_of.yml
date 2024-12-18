@@ -1,0 +1,30 @@
+uuid: 1b4398bc-01d7-4dd0-8ddb-03c83d84831a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_member_of
+    - node.type.asu_repository_item
+    - node.type.collection
+id: node.asu_repository_item.field_member_of
+field_name: field_member_of
+entity_type: node
+bundle: asu_repository_item
+label: 'Primary Member of'
+description: ''
+required: false
+translatable: true
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: unpublished
+  handler_settings:
+    target_bundles:
+      asu_repository_item: asu_repository_item
+      collection: collection
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: 0
+    auto_create_bundle: asu_repository_item
+field_type: entity_reference

@@ -2,11 +2,10 @@
 
 namespace Drupal\asu_migrate\Plugin\migrate\process;
 
-use Drupal\migrate\ProcessPluginBase;
 use Drupal\migrate\MigrateExecutableInterface;
-use Drupal\migrate\MigrateSkipProcessException;
 use Drupal\migrate\Row;
 use Drupal\taxonomy\Entity\Term;
+
 /**
  * Check if term exists and create new if doesn't.
  *
@@ -22,7 +21,10 @@ class NameURIGenerate extends NameURILookup {
     'naf' => '|https?://lccn.loc.gov/n.+|',
     'lcsh' => '|https?://id.loc.gov/authorities/subjects/.+|',
     'lcnaf' => '|https?://id.loc.gov/authorities/names/.+|',
+    'aat' => '|https?://vocab.getty.edu/page/aat/.+|',
+    'lcgft' => '|https?://id.loc.gov/authorities/genreForms/.+|',
   ];
+
   /**
    * {@inheritdoc}
    */
@@ -41,16 +43,12 @@ class NameURIGenerate extends NameURILookup {
       if (!empty($this->uri)) {
         $source = 'other';
         foreach ($this->authority_uris as $code => $pattern) {
-        //   \Drupal::logger('name uri generate')->info($pattern);
           $matches = NULL;
           $return = preg_match($pattern, $this->uri, $matches);
           if (count($matches) > 0) {
             $source = $code;
             break;
           }
-        //   else {
-        //     \Drupal::logger('name uri generate')->info("no pregmatch on " . $this->uri);
-        //   }
         }
         $term_array[$uri_field] = [
           'uri' => $this->uri,
@@ -66,6 +64,7 @@ class NameURIGenerate extends NameURILookup {
       }
       return $tid;
     }
-    return  0 ;
+    return 0;
   }
+
 }

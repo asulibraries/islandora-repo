@@ -1,15 +1,16 @@
+uuid: c8ec3a7d-6100-47a2-ae25-2a6d1a4ada20
 langcode: en
 status: true
 dependencies:
   config:
     - field.storage.media.field_media_image
     - media.type.image
+  module:
+    - image
   enforced:
     module:
       - media
       - islandora_core_feature
-  module:
-    - image
 id: media.image.field_media_image
 field_name: field_media_image
 entity_type: media
@@ -21,6 +22,8 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
+  handler: 'default:file'
+  handler_settings: {  }
   file_directory: '[date:custom:Y]-[date:custom:m]'
   file_extensions: 'png gif jpg jpeg svg'
   max_filesize: ''
@@ -36,6 +39,4 @@ settings:
     title: ''
     width: null
     height: null
-  handler: 'default:file'
-  handler_settings: {  }
 field_type: image

@@ -34,7 +34,7 @@ function asu_breadcrumbs_system_breadcrumb_alter(Breadcrumb &$breadcrumb,
     if (!empty($links[0])) {
       if ($links[0]->getText() == 'Home') {
         $links[0]->setUrl(Url::fromRoute('<front>'));
-        $links[0]->setText(\Drupal::config('system.site')->get('slogan'));
+        $links[0]->setText(\Drupal::config('system.site')->get('name'));
       }
     }
   }

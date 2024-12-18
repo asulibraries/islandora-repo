@@ -62,7 +62,7 @@ class SecondI8ApiService implements BentoApiInterface {
         $request = $this->httpClient->request('GET', $request_url);
         if ($request->getStatusCode() == 200) {
           $body = $request->getBody()->getContents();
-          $this->logger->info(print_r($body, TRUE));
+          // $this->logger->info(print_r($body, TRUE));
           // dsm(print_r($body, TRUE));.
           return $body;
         }

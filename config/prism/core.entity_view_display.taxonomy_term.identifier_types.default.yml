@@ -1,0 +1,45 @@
+uuid: f37a9c47-a387-41f7-af46-b0d499919914
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.identifier_types.field_identifier_predicate
+    - field.field.taxonomy_term.identifier_types.field_link
+    - taxonomy.vocabulary.identifier_types
+  module:
+    - link
+    - text
+id: taxonomy_term.identifier_types.default
+targetEntityType: taxonomy_term
+bundle: identifier_types
+mode: default
+content:
+  description:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_identifier_predicate:
+    type: basic_string
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_link:
+    type: link
+    label: above
+    settings:
+      trim_length: 80
+      url_only: false
+      url_plain: false
+      rel: ''
+      target: ''
+    third_party_settings: {  }
+    weight: 2
+    region: content
+hidden:
+  langcode: true
+  search_api_excerpt: true

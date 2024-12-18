@@ -3,7 +3,6 @@
 namespace Drupal\asu_custom_rdf;
 
 use Drupal\rdf\CommonDataConverter;
-use Drupal\paragraphs\Entity\Paragraph;
 
 /**
  * {@inheritdoc}
@@ -56,6 +55,7 @@ class ParseBoolean extends CommonDataConverter {
         return $val;
       }
     }
+    return '';
   }
 
 }

@@ -1,3 +1,4 @@
+uuid: ff0633c5-6704-4814-933a-14ca521283b5
 langcode: en
 status: true
 dependencies:
@@ -20,11 +21,11 @@ mode: search_result
 content:
   body:
     type: text_summary_or_trimmed
-    weight: 1
+    label: hidden
     settings:
       trim_length: 300
     third_party_settings: {  }
-    label: hidden
+    weight: 1
     region: content
   display_media_child_thumbnail:
     weight: 10
@@ -32,73 +33,80 @@ content:
     third_party_settings: {  }
     region: content
   display_media_entity_view_1:
-    weight: 10
     settings: {  }
     third_party_settings: {  }
+    weight: 10
     region: content
   display_media_entity_view_2:
-    weight: 10
     settings: {  }
     third_party_settings: {  }
+    weight: 10
     region: content
   display_media_entity_view_4:
-    weight: 10
     settings: {  }
     third_party_settings: {  }
+    weight: 10
     region: content
   display_media_service_file:
-    weight: 10
     settings: {  }
     third_party_settings: {  }
+    weight: 10
     region: content
   display_media_thumbnail:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  display_media_thumbnail_card:
     weight: 10
     settings: {  }
     third_party_settings: {  }
     region: content
   field_image:
     type: image
-    weight: 0
-    settings:
-      image_style: thumbnail
-      image_link: content
-    third_party_settings: {  }
     label: hidden
+    settings:
+      image_link: content
+      image_style: thumbnail
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 0
     region: content
   links:
-    weight: 2
     settings: {  }
     third_party_settings: {  }
+    weight: 2
     region: content
   openseadragon_media_evas_entity_view_1:
-    weight: 10
     settings: {  }
     third_party_settings: {  }
+    weight: 10
     region: content
   openseadragon_media_evas_entity_view_2:
-    weight: 10
     settings: {  }
     third_party_settings: {  }
+    weight: 10
     region: content
   openseadragon_media_evas_service_file:
-    weight: 10
     settings: {  }
     third_party_settings: {  }
+    weight: 10
     region: content
   pdfjs_media_evas_entity_view_1:
-    weight: 10
     settings: {  }
     third_party_settings: {  }
+    weight: 10
     region: content
   pdfjs_media_evas_entity_view_2:
-    weight: 10
     settings: {  }
     third_party_settings: {  }
+    weight: 10
     region: content
   pdfjs_media_evas_service_file:
-    weight: 10
     settings: {  }
     third_party_settings: {  }
+    weight: 10
     region: content
   video_media_evas_original_file:
     weight: 10

@@ -1,0 +1,17 @@
+uuid: 3a7802b2-6cad-4926-b718-9e5cecc234c8
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.collection_group
+    - user.role.anonymous
+id: collection_group-anonymous
+label: Anonymous
+weight: -102
+admin: false
+scope: outsider
+global_role: anonymous
+group_type: collection_group
+permissions:
+  - 'view group_node:asu_repository_item entity'
+  - 'view group_node:collection entity'

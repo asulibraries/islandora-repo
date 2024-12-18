@@ -1,0 +1,20 @@
+uuid: 3fde8695-22bb-492f-a257-b6ffd360e03e
+langcode: en
+status: true
+dependencies:
+  module:
+    - basic_auth
+    - serialization
+    - taxonomy
+_core:
+  default_config_hash: fgn6TDMdvmVVdjg7rZYU8IH9jfVEIeD75UuxjjikalM
+id: entity.taxonomy_vocabulary
+plugin_id: 'entity:taxonomy_vocabulary'
+granularity: resource
+configuration:
+  methods:
+    - GET
+  formats:
+    - json
+  authentication:
+    - basic_auth

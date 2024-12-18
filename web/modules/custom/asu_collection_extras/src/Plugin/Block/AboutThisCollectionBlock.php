@@ -3,14 +3,13 @@
 namespace Drupal\asu_collection_extras\Plugin\Block;
 
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
-use Drupal\Core\Entity\EntityTypeManager;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Routing\CurrentRouteMatch;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Url;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Drupal\islandora_matomo\IslandoraMatomoService;
 use Drupal\Core\Database\Connection;
 
 /**
@@ -34,7 +33,7 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
   /**
    * The entityTypeManager definition.
    *
-   * @var \Drupal\Core\Entity\EntityTypeManager
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
    */
   protected $entityTypeManager;
 
@@ -44,13 +43,6 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
    * @var \Drupal\Core\Routing\RouteMatchInterface
    */
   protected $currentRouteMatch;
-
-  /**
-   * The islandoraMatomo definition.
-   *
-   * @var \Drupal\islandora_matomo\IslandoraMatomoService
-   */
-  protected $islandoraMatomo;
 
   /**
    * The database connection definition.
@@ -70,12 +62,10 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
    *   The plugin implementation definition.
    * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
    *   The request stack.
-   * @param \Drupal\Core\Entity\EntityTypeManager $entityTypeManager
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entityTypeManager definition.
    * @param \Drupal\Core\Routing\CurrentRouteMatch $currentRouteMatch
    *   The currentRouteMatch definition.
-   * @param \Drupal\islandora_matomo\IslandoraMatomoService $islandoraMatomo
-   *   The islandoraMatomo service.
    * @param \Drupal\Core\Database\Connection $connection
    *   The database service.
    */
@@ -84,16 +74,14 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
     $plugin_id,
     $plugin_definition,
     RequestStack $request_stack,
-    EntityTypeManager $entityTypeManager,
+    EntityTypeManagerInterface $entityTypeManager,
     CurrentRouteMatch $currentRouteMatch,
-    IslandoraMatomoService $islandoraMatomo,
     Connection $connection
     ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->requestStack = $request_stack;
     $this->entityTypeManager = $entityTypeManager;
     $this->currentRouteMatch = $currentRouteMatch;
-    $this->islandoraMatomo = $islandoraMatomo;
     $this->connection = $connection;
   }
 
@@ -119,7 +107,6 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
       $container->get('request_stack'),
       $container->get('entity_type.manager'),
       $container->get('current_route_match'),
-      $container->get('islandora_matomo.default'),
       $container->get('database')
     );
   }
@@ -158,46 +145,28 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
     // Run a solr query first to get ALL the items under the collection using
     // the ancestors field.
     $children = asu_collection_extras_solr_get_collection_children($collection_node);
-    \Drupal::logger('asu_collection_extras')->info('<pre><code>' . print_r($children, TRUE) . '</code></pre>');
     $items = $max_timestamp = 0;
-    $islandora_models = $stat_box_row1 = [];
-
-    $items = count($children);
-    $files = $max_timestamp = 0;
-
-    // The first $child_arr will have the most recent changed value.
-    foreach ($children as $nid => $child_arr) {
-      if ($nid) {
-        $files += $child_arr['original_file_count'];
-        if (!$max_timestamp) {
-          $max_timestamp = strtotime($child_arr['changed']);
-        }
-        $model = $child_arr['field_model'];
-        // Since it is possible that an asu_repository_item may be indexed w/o
-        // having a field_model value, we must omit any that are set = 0.
-        if ($model) {
-          if (array_key_exists($model, $islandora_models)) {
-            $islandora_models[$model]++;
-          }
-          else {
-            $islandora_models[$model] = 1;
-          }
-        }
-      }
+    $islandora_models = $stat_box_row1 = $stat_box_row2 = [];
+    if (array_key_exists('item_count', $children)) {
+      $items = $children['item_count'];
+    }
+    if (array_key_exists('model_count', $children)) {
+      $islandora_models = $children['model_count'];
+    }
+    if (array_key_exists('recent_change', $children)) {
+      $max_timestamp = strtotime($children['recent_change']);
     }
 
-    $collection_views = $this->getCollectionViews($collection_node);
     // Calculate the "Items" box link.
     $items_url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/collections/' .
        (($collection_node) ? $collection_node->id() : 0) . '/search/?search_api_fulltext=');
-    $stat_box_row1[] = $this->makeBox("<strong>" . $items . "</strong><br>items", $items_url);
-    $stat_box_row1[] = $this->makeBox("<strong>" . $files . "</strong><br>files");
-    $stat_box_row1[] = $this->makeBox("<strong>" . count($islandora_models) . "</strong><br>resource types");
-    $stat_box_row2[] = $this->makeBox("<strong>" . $collection_views . "</strong><br>views");
+    $stat_box_row1[] = $this->makeBox("<strong>" . number_format($items) . "</strong><br>items", $items_url);
+    // Skip number_format - should never be more than a 1,000 models.
+    $stat_box_row1[] = $this->makeBox("<strong>" . $islandora_models . "</strong><br>resource types");
     $stat_box_row2[] = $this->makeBox("<strong>" . (($collection_created) ? date('Y', $collection_created) : 'unknown') .
       "</strong><br>collection created");
     $stat_box_row2[] = $this->makeBox("<strong>" . (($max_timestamp) ? date('M d, Y', $max_timestamp) : 'unknown') .
-      "</strong><br>last updates</div>");
+      "</strong><br>last updated</div>");
     return [
       '#markup' =>
       (count($stat_box_row1) > 0) ?
@@ -218,25 +187,6 @@ class AboutThisCollectionBlock extends BlockBase implements ContainerFactoryPlug
         ],
       ],
     ];
-  }
-
-  /**
-   * Loads the collection views from the summary table.
-   *
-   * @param mixed $collection_node
-   *   This could be a node object or the integer id() value of a node.
-   *
-   * @return int
-   *   The number of views for the collection.
-   */
-  private function getCollectionViews($collection_node) {
-    $collection_node_id = (is_object($collection_node) ? $collection_node->id() : $collection_node);
-    $collection_views = $this->connection
-      ->query('SELECT views FROM asu_collection_extras_collection_usage WHERE nid = ' . $collection_node_id)
-      ->fetchAll();
-    foreach ($collection_views as $c_obj) {
-      return $c_obj->views;
-    }
   }
 
   /**

@@ -1,3 +1,4 @@
+uuid: null
 langcode: en
 status: true
 dependencies:
@@ -8,14 +9,14 @@ label: 'Items Nids'
 type: 'canonical_entities:node'
 pattern: '/items/[node:nid]'
 selection_criteria:
-  0cf7f18b-57d1-4589-8922-dc56561518cd:
-    id: node_type
-    bundles:
-      asu_repository_item: asu_repository_item
+  215a6726-9f4f-485f-a939-1828d5124af3:
+    id: 'entity_bundle:node'
     negate: false
+    uuid: 215a6726-9f4f-485f-a939-1828d5124af3
     context_mapping:
       node: node
-    uuid: 0cf7f18b-57d1-4589-8922-dc56561518cd
+    bundles:
+      asu_repository_item: asu_repository_item
 selection_logic: and
-weight: -5
+weight: -9
 relationships: {  }

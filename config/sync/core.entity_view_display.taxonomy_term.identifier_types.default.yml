@@ -1,3 +1,4 @@
+uuid: d50d5c15-e4de-41d5-8e82-57f812fc5acd
 langcode: en
 status: true
 dependencies:
@@ -14,21 +15,21 @@ bundle: identifier_types
 mode: default
 content:
   description:
-    label: hidden
     type: text_default
-    weight: 0
-    region: content
+    label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 0
+    region: content
   field_identifier_predicate:
-    weight: 1
+    type: basic_string
     label: above
     settings: {  }
     third_party_settings: {  }
-    type: basic_string
+    weight: 1
     region: content
   field_link:
-    weight: 2
+    type: link
     label: above
     settings:
       trim_length: 80
@@ -37,7 +38,7 @@ content:
       rel: ''
       target: ''
     third_party_settings: {  }
-    type: link
+    weight: 2
     region: content
 hidden:
   langcode: true

@@ -100,38 +100,47 @@
   </header>
   <div{{content_attributes.addClass('node__content','clearfix','container')}}>
     <div class="row">
-      <div class="col-md-5 file-container">
-        {{ drupal_view('video_media_evas', 'original_file', node.id) }}
+      <div class="col-md-12 file-container">
+        {% if drupal_view_result('video_media_evas', 'service_file', node.id) is empty and of_access %}
+          {{ drupal_view('video_media_evas', 'original_file', node.id) }}
+        {% elseif sf_access %}
+          {{ drupal_view('video_media_evas', 'service_file', node.id) }}
+        {% endif %}
       </div>
-      <div class="col-md-7 info-container">
+      <div class="col-md-12 info-container">
         <div>{{ content.field_rich_description }}</div>
         <div class="row">
-          <div class="col-md-6">{{ content.field_copyright_statement }}</div>
+          <div class="col-md-6">
+            {{ content.field_copyright_statement }}
+            {% if node.field_open_access.value == 1 %}
+              <div>{{ content.field_open_access }}</div>
+            {% endif %}
+          </div>
           <div class="col-md-6">{{ content.field_reuse_permissions }}</div>
         </div>
-        <div class="download-options">{{ content.display_media_download_button }}</div>
-        <div class="download-info">
-          <p>Download count:
-            {{ drupal_block('asu_item_downloads', wrapper=false) }}</p>
+        {% if drupal_view_result('media_of', 'page_1' ,node.id) is not empty%}
+          <div class="download-options">{{ drupal_block('downloads_block', {'origfile': original_file, 'servicefile': service_file}) }}</div>
+        {% endif %}
+        {{ drupal_block('asu_item_analytics_item_block') }}
+        <div class="altmetrics-info">
+          {{ drupal_block('asu_altmetrics', wrapper=false) }}
         </div>
       </div>
     </div>
     <div id="details" class="content-section details">
       <h2>{{ 'Details'|t }}</h2>
+        <div>{{ content.field_title }}</field>
       {% if node.field_peer_reviewed.value == 1 %}
         <div>{{ content.field_peer_reviewed }}</div>
       {% endif %}
-      {% if node.field_open_access.value == 1 %}
-        <div>{{ content.field_open_access }}</div>
-      {% endif %}
       {% if node.field_linked_agent is not empty %}
         <div class="agents">
-          <div class="field__label">{{ 'Author/Contributors'|t }}</div>
+          <div class="field__label">{{ 'Contributors'|t }}</div>
           {{ content.field_linked_agent }}
         </div>
       {% endif %}
-      <div>{{ content.field_date_created }}</div>
-      {# Use the node field to check if empty. Content field is less reliable. #}
+      <div>{{ content.field_edtf_date_created }}</div>
+            {# Use the node field to check if empty. Content field is less reliable. #}
       {% if (node.field_subject is not empty) or (node.field_geographic_subject is not empty) or (node.field_subjects_name is not empty) or (node.field_temporal_subject is not empty) or (node.field_title_subject is not empty) or (node.field_name_title_subject is not empty) %}
         <div class="all-subjects">
           <div class="field__label">{{ 'Subjects'|t }}</div>
@@ -141,6 +150,12 @@
           {{ content.field_name_title_subject }}
           {{ content.field_geographic_subject }}
           {{ content.field_temporal_subject }}
+        </div>
+      {% endif %}
+      {% if node.field_keyword is not empty %}
+        <div class="keywords">
+          <div class="field__label">{{ 'Keywords'|t }}</div>
+          {{ content.field_keyword }}
         </div>
       {% endif %}
       <div>{{ content.field_resource_type }}</div>
@@ -155,6 +170,10 @@
       {% if (content.field_typed_identifier.0['#paragraph'].field_identifier_type is not empty) or (content.field_typed_identifier.0['#paragraph'].field_identifier_value is not empty) %}
         <div>{{ content.field_typed_identifier }}</div>
       {% endif %}
+      {% if content.field_note_para.0['#paragraph'].field_note_text is not empty %}
+        <div>{{ content.field_note_para }}</div>
+      {% endif %}
+      <div>{{content.field_table_of_contents}}</div>
       <div>
         <p>
           <strong>

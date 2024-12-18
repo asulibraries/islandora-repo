@@ -1,0 +1,24 @@
+uuid: 75fb6ed1-28bd-41fb-84bb-8e4252cd1fed
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_preferred_citation
+    - filter.format.restricted_html
+    - node.type.scholarly_work
+  module:
+    - text
+id: node.scholarly_work.field_preferred_citation
+field_name: field_preferred_citation
+entity_type: node
+bundle: scholarly_work
+label: 'Preferred Citation'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - restricted_html
+field_type: text_long

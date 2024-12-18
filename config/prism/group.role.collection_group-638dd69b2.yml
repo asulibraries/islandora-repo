@@ -1,0 +1,22 @@
+uuid: 0ca8c6f8-fbfe-4344-afe1-3484934e43f2
+langcode: en
+status: true
+dependencies:
+  config:
+    - group.type.collection_group
+    - user.role.preservationist
+  enforced:
+    config:
+      - user.role.preservationist
+id: collection_group-638dd69b2
+label: Preservationist
+weight: 6
+admin: false
+scope: outsider
+global_role: preservationist
+group_type: collection_group
+permissions:
+  - 'view group_node:asu_repository_item entity'
+  - 'view group_node:collection entity'
+  - 'view unpublished group_node:asu_repository_item entity'
+  - 'view unpublished group_node:collection entity'

@@ -1,0 +1,30 @@
+uuid: 1db3ca85-8ef6-413e-97b3-eb3bfba35cbf
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.typed_identifier.field_identifier_type
+    - field.field.paragraph.typed_identifier.field_identifier_value
+    - paragraphs.paragraphs_type.typed_identifier
+id: paragraph.typed_identifier.default
+targetEntityType: paragraph
+bundle: typed_identifier
+mode: default
+content:
+  field_identifier_type:
+    type: entity_reference_label
+    label: visually_hidden
+    settings:
+      link: false
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_identifier_value:
+    type: basic_string
+    label: visually_hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  search_api_excerpt: true

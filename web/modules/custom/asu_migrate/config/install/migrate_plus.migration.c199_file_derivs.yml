@@ -1,0 +1,86 @@
+# Uninstall this config when the feature is uninstalled
+dependencies:
+  enforced:
+    module:
+      - asu_migrate
+
+id: c199_file_derivs
+label: Import Collection 199 Derivative Files
+migration_group: migrate_c199_csv
+
+source:
+  plugin: csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/data/migration_data/att_file_199_v2.csv
+  delimiter: ','
+
+  # 1 means you have a header row, 0 means you don't
+  header_row_count: 1
+
+  # Each migration needs a unique key per row in the csv.  Here we're using the file path.
+  ids:
+    - file id
+
+  # You can't enter string literals into a process plugin, but you can give it a constant as a 'source'.
+  constants:
+    # Islandora uses flysystem and stream wrappers to work with files.  What we're really saying here is
+    # to put these files in Fedora in a 'csv_migration' folder.  It doesn't matter if the directory
+    # doesn't exist yet, it will get created for you automatically.
+    destination_dir: 'public://2021-10'
+
+    # Hard-code mime type to jpeg.  This could easily come from a column in the CSV if you have
+    # different mimetypes.
+    # mime: image/jpeg
+
+    # Everything gets created as admin
+    uid: 1
+    baseurl: "https://repository.asu.edu"
+    basepath: "/mnt/libfile/Repository/old-repo-data/filestore/"
+    local_dir: '/home/ubuntu/legacy-repo-s3/repository'
+
+process:
+  has_deriv:
+    plugin: skip_on_empty
+    method: row
+    source: video deriv file
+  uid: constants/uid
+  type: file type
+  fname:
+    plugin: str_replace
+    source: video deriv file
+    search: "s3://digital-repository-media/repository/"
+    replace: ""
+
+  # field_original_name/value: file original_filename
+  filename: '@fname'
+
+  # Construct the destination URI using the file name.
+  destination:
+    plugin: concat
+    delimiter: /
+    source:
+      - constants/destination_dir
+      - file original_filename
+
+  localfilelocation:
+    plugin: concat
+    delimiter: /
+    source:
+      - constants/local_dir
+      - '@fname'
+
+  uri:
+    plugin: file_copy
+    source:
+      - '@localfilelocation'
+      - '@destination' # The destination entry from above
+
+  # uri: file url
+  # uri:
+  #   plugin: s3_download
+  #   source: file url
+  #   profile: legacy-repository
+  #   bucket: digital-repository-media
+  #   dest_dir: c4
+
+destination:
+  plugin: 'entity:file'

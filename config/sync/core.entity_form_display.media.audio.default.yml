@@ -1,3 +1,4 @@
+uuid: f157a5bb-2b55-4765-890a-33c00a36af97
 langcode: en
 status: true
 dependencies:
@@ -11,9 +12,11 @@ dependencies:
     - field.field.media.audio.field_media_use
     - field.field.media.audio.field_mime_type
     - field.field.media.audio.field_original_name
+    - field.field.media.audio.field_track
     - media.type.audio
   module:
     - file
+    - islandora
     - path
 id: media.audio.default
 targetEntityType: media
@@ -22,47 +25,58 @@ mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 6
+    weight: 12
     region: content
     settings: {  }
     third_party_settings: {  }
   field_access_terms:
-    weight: 3
-    settings: {  }
-    third_party_settings: {  }
-    type: options_buttons
+    type: entity_reference_autocomplete
+    weight: 6
     region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_captions:
-    weight: 11
+    type: file_generic
+    weight: 10
+    region: content
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
-    type: file_generic
+  field_file_size:
+    type: number
+    weight: 7
     region: content
+    settings:
+      placeholder: ''
+    third_party_settings: {  }
   field_legacy_checksum:
     type: string_textfield
-    weight: 12
+    weight: 9
     region: content
     settings:
       size: 60
       placeholder: ''
     third_party_settings: {  }
   field_media_audio_file:
+    type: file_generic
     weight: 1
+    region: content
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
-    type: file_generic
-    region: content
   field_media_of:
     type: entity_reference_autocomplete
-    weight: 4
+    weight: 3
     region: content
     settings:
       match_operator: CONTAINS
+      match_limit: 10
       size: 60
       placeholder: ''
-      match_limit: 10
     third_party_settings: {  }
   field_media_use:
     type: options_buttons
@@ -70,14 +84,29 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
+  field_mime_type:
+    type: string_textfield
+    weight: 8
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
   field_original_name:
-    weight: 10
+    type: string_textarea
+    weight: 4
+    region: content
     settings:
       rows: 5
       placeholder: ''
     third_party_settings: {  }
-    type: string_textarea
+  field_track:
+    type: media_track
+    weight: 5
     region: content
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
   name:
     type: string_textfield
     weight: 0
@@ -88,33 +117,31 @@ content:
     third_party_settings: {  }
   path:
     type: path
-    weight: 7
+    weight: 13
     region: content
     settings: {  }
     third_party_settings: {  }
   status:
     type: boolean_checkbox
+    weight: 14
+    region: content
     settings:
       display_label: true
-    weight: 8
-    region: content
     third_party_settings: {  }
   translation:
-    weight: 9
+    weight: 15
     region: content
     settings: {  }
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 5
+    weight: 11
+    region: content
     settings:
       match_operator: CONTAINS
+      match_limit: 10
       size: 60
       placeholder: ''
-      match_limit: 10
-    region: content
     third_party_settings: {  }
 hidden:
-  field_file_size: true
-  field_mime_type: true
   langcode: true

@@ -3,8 +3,8 @@
 namespace Drupal\asu_migrate\Plugin\migrate\process;
 
 use Drupal\migrate\MigrateExecutableInterface;
-use Drupal\migrate_plus\Plugin\migrate\process\Merge;
 use Drupal\migrate\Row;
+use Drupal\migrate_plus\Plugin\migrate\process\Merge;
 
 /**
  * This plugin merges arrays together.
@@ -50,7 +50,7 @@ class MergeSkipEmpty extends Merge {
   /**
    * {@inheritdoc}
    */
-  public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property) {
+  public function transform($value, MigrateExecutableInterface $migrate_executable, Row $row, $destination_property): array {
     if (!is_array($value)) {
       throw new MigrateException(sprintf('Merge process failed for destination property (%s): input is not an array.', $destination_property));
     }

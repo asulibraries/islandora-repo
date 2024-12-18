@@ -1,0 +1,37 @@
+uuid: 1fbfaffd-95ff-4d9a-8dd2-75050c5a71aa
+langcode: en
+status: true
+dependencies:
+  config:
+    - taxonomy.vocabulary.corporate_body
+  module:
+    - taxonomy
+id: taxonomy_term.corporate_body
+targetEntityType: taxonomy_term
+bundle: corporate_body
+types:
+  - 'schema:Organization'
+fieldMappings:
+  name:
+    properties:
+      - 'schema:name'
+  description:
+    properties:
+      - 'schema:description'
+  field_corp_alt_name:
+    properties:
+      - 'schema:alternateName'
+  field_cat_date_end:
+    properties:
+      - 'schema:dissolutionDate'
+  field_cat_date_begin:
+    properties:
+      - 'schema:foundingDate'
+  field_authority_link:
+    properties:
+      - 'schema:sameAs'
+  changed:
+    properties:
+      - 'schema:dateModified'
+    datatype_callback:
+      callable: 'Drupal\rdf\CommonDataConverter::dateIso8601Value'

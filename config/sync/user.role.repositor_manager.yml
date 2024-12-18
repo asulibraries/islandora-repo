@@ -1,16 +1,39 @@
+uuid: eb5211ba-2b45-4618-9cbd-e621418d284c
 langcode: en
 status: true
-dependencies: {  }
+dependencies:
+  config:
+    - workflows.workflow.ingest
+  module:
+    - content_moderation
+    - field_permissions
+    - file
+    - help
+    - islandora
+    - node
+    - paragraphs_type_permissions
+    - system
+    - toolbar
+    - webform
 id: repositor_manager
 label: 'Repository Manager'
 weight: 8
 is_admin: null
 permissions:
   - 'access administration pages'
+  - 'access content overview'
+  - 'access help pages'
   - 'access toolbar'
   - 'access webform overview'
   - 'access webform submission user'
-  - 'edit field_keyword'
+  - 'bypass paragraphs type content access'
+  - 'create field_internal_note'
+  - 'create field_local'
+  - 'delete own files'
+  - 'edit field_internal_note'
+  - 'edit field_local'
+  - 'edit own field_internal_note'
+  - 'edit own field_local'
   - 'manage media'
   - 'manage members'
   - 'use ingest transition create_new_draft'
@@ -18,12 +41,8 @@ permissions:
   - 'use ingest transition draft_to_triaged'
   - 'view any unpublished content'
   - 'view checksums'
-  - 'view field_cataloging_standards'
-  - 'view field_description_source'
-  - 'view field_keyword'
-  - 'view field_level_of_coding'
+  - 'view field_internal_note'
+  - 'view field_local'
   - 'view latest version'
-  - 'view own field_cataloging_standards'
-  - 'view own field_description_source'
-  - 'view own field_keyword'
-  - 'view own field_level_of_coding'
+  - 'view own field_internal_note'
+  - 'view own field_local'

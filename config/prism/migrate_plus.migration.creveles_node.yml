@@ -1,0 +1,421 @@
+uuid: bcabb936-84b4-449e-ac32-85733402f055
+langcode: en
+status: true
+dependencies:
+  enforced:
+    module:
+      - asu_migrate
+id: creveles_node
+class: null
+field_plugin_method: null
+cck_plugin_method: null
+migration_tags: null
+migration_group: migrate_creveles_csv
+label: 'Import Collection reveles from CSV'
+source:
+  plugin: csv
+  path: /var/www/html/drupal/web/modules/custom/asu_migrate/c_reveles_merged_v2.csv
+  header_row_count: 1
+  ids:
+    - ID
+  constants:
+    model: 'Digital Document'
+    uid: 1
+    collection_title: 'Roberto Reveles Papers'
+    pres_state: '558'
+    handle: 'https://hdl.handle.net/2286/R.I.'
+    cataloging_standards: asu1
+    level_of_coding: minimal
+process:
+  field_extent:
+    -
+      plugin: skip_on_empty
+      source: Extent
+      method: process
+    -
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: callback
+      callable: trim
+  field_edtf_date_created:
+    plugin: skip_on_empty
+    source: 'Date Created'
+    method: process
+  field_date_digitized:
+    plugin: skip_on_empty
+    source: 'Date Digitized'
+    method: process
+  field_copyright_statement:
+    -
+      plugin: skip_on_empty
+      source: Copyright
+      method: process
+    -
+      plugin: entity_lookup_by_field
+      lookup_field: field_source/uri
+      entity_type: taxonomy_term
+      bundle: copyright_statements
+  field_reuse_permissions:
+    -
+      plugin: skip_on_empty
+      source: Reuse
+      method: process
+    -
+      plugin: entity_lookup_by_field
+      lookup_field: field_source/uri
+      entity_type: taxonomy_term
+      bundle: reuse_permissions
+  created:
+    -
+      plugin: skip_on_empty
+      source: 'System Created'
+      method: process
+    -
+      plugin: format_date
+      from_format: 'Y-m-d G:i:s.uP'
+      to_format: U
+      from_timezone: UTC
+      to_timezone: UTC
+  moderation_state:
+    plugin: static_map
+    source: Visibility
+    map:
+      Private: draft
+      Public: published
+      1: published
+      0: draft
+    default_value: published
+  field_model:
+    source: Model
+    plugin: entity_lookup
+    entity_type: taxonomy_term
+    value_key: name
+    bundle_key: vid
+    bundle: islandora_models
+  field_rich_description/value:
+    plugin: skip_on_empty
+    source: Description
+    method: process
+  field_rich_description/format:
+    plugin: default_value
+    default_value: description_restricted_items
+  field_genre:
+    -
+      plugin: skip_on_empty
+      source: Genre
+      method: process
+    -
+      plugin: entity_lookup_by_field
+      lookup_field: field_authority_link/uri
+      entity_type: taxonomy_term
+      bundle: genre
+  field_preferred_citation:
+    plugin: skip_on_empty
+    source: Citation
+    method: process
+  uid:
+    -
+      plugin: skip_on_empty
+      source: 'System User'
+      method: process
+    -
+      plugin: user_lookup
+      default_value: constants/uid
+  field_open_access:
+    plugin: skip_on_empty
+    source: 'Open Access'
+    method: process
+  field_peer_reviewed:
+    plugin: skip_on_empty
+    source: Peer-reviewed
+    method: process
+  field_complex_object_child:
+    plugin: skip_on_empty
+    source: 'Complex Object Child'
+    method: process
+    default_value: 0
+  field_table_of_contents:
+    plugin: skip_on_empty
+    source: 'Table of Contents'
+    method: process
+  field_series:
+    plugin: skip_on_empty
+    source: Series
+    method: process
+  title:
+    -
+      plugin: explode
+      delimiter: '||'
+      source: 'Item Title'
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: substr
+      start: 0
+      length: 254
+  field_title:
+    -
+      plugin: explode
+      delimiter: '||'
+      source: 'Item Title'
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: paragraph_title_generate
+      paragraph_type: complex_title
+      split_into_parts: true
+      fields:
+        field_nonsort: ' '
+        field_main_title: ' '
+        field_subtitle: ' '
+  field_typed_identifier:
+    -
+      plugin: skip_on_empty
+      source: Identifiers
+      method: process
+    -
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: paragraph_generate
+      paragraph_type: typed_identifier
+      delimiter: '|'
+      fields:
+        field_identifier_value:
+          order: 0
+          type: text
+        field_identifier_type:
+          order: 1
+          type: taxonomy_term
+          lookup_field: field_identifier_predicate
+  field_note_para:
+    -
+      plugin: skip_on_empty
+      source: Notes
+      method: process
+    -
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: paragraph_generate
+      paragraph_type: complex_note
+      delimiter: '|'
+      fields:
+        field_note_text:
+          order: 0
+          type: text
+  field_pid: ID
+  field_preservation_state:
+    plugin: entity_lookup
+    source: constants/pres_state
+    entity_type: taxonomy_term
+    bundle_key: vid
+    value_key: tid
+    bundle: preservation_states
+  field_language:
+    -
+      plugin: skip_on_empty
+      source: Language
+      method: process
+    -
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: entity_lookup
+      entity_type: taxonomy_term
+      value_key: name
+      bundle_key: vid
+      bundle: language
+  field_handle:
+    plugin: skip_on_empty
+    source: Handle
+    method: process
+  field_member_of:
+    -
+      plugin: get
+      source:
+        - 'Parent Item'
+        - constants/collection_title
+    -
+      plugin: multi_entity_lookup
+      entity_type: node
+      access_check: 0
+      bundle_key: type
+      bundle: collection
+      value_key: title
+      lookup_field: field_pid
+  field_embargo_release_date:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: 'Embargo Date'
+    -
+      plugin: format_date
+      from_format: Y-m-d
+      to_format: 'Y-m-d\TH:i:s'
+      from_timezone: America/Phoenix
+      to_timezone: America/Phoenix
+  field_subject:
+    -
+      plugin: skip_on_empty
+      source: 'Topical Subjects'
+      method: process
+    -
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: name_uri_generate
+      delimiter: '|'
+      uri_field: field_authority_link
+      default_vocabulary: subject
+  field_geographic_subject:
+    -
+      plugin: skip_on_empty
+      source: 'Geographic Subjects'
+      method: process
+    -
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: name_uri_generate
+      delimiter: '|'
+      uri_field: field_authority_link
+      default_vocabulary: geo_location
+  field_name_title_subject:
+    -
+      plugin: skip_on_empty
+      source: 'Name Title Subjects'
+      method: process
+    -
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: name_uri_generate
+      delimiter: '|'
+      uri_field: field_authority_link
+      default_vocabulary: name_titles
+  pers_names:
+    -
+      plugin: skip_on_empty
+      source: 'Personal Name Subjects'
+      method: process
+    -
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: skip_on_empty
+      method: process
+    -
+      plugin: name_uri_generate
+      delimiter: '|'
+      uri_field: field_authority_link
+      default_vocabulary: person
+  corp_names:
+    -
+      plugin: skip_on_empty
+      source: 'Corporate Name Subjects'
+      method: process
+    -
+      plugin: explode
+      delimiter: '||'
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: skip_on_empty
+      method: process
+    -
+      plugin: name_uri_generate
+      delimiter: '|'
+      uri_field: field_authority_link
+      default_vocabulary: corporate_body
+  field_subjects_name:
+    -
+      plugin: merge_skip_empty
+      source:
+        - '@pers_names'
+        - '@corp_names'
+    -
+      plugin: skip_on_empty
+      method: process
+  corporations:
+    -
+      plugin: explode
+      delimiter: ' || '
+      source: Contributors-Corporate
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: skip_on_empty
+      method: process
+    -
+      plugin: typed_relation_generate
+      delimiter: '|'
+      uri_field: field_authority_link
+      default_vocabulary: corporate_body
+  contributors:
+    -
+      plugin: explode
+      delimiter: '||'
+      source: Contributors-Person
+    -
+      plugin: callback
+      callable: trim
+    -
+      plugin: skip_on_empty
+      method: process
+    -
+      plugin: typed_relation_generate
+      delimiter: '|'
+      uri_field: field_authority_link
+      default_vocabulary: person
+  field_linked_agent:
+    -
+      plugin: merge_skip_empty
+      source:
+        - '@contributors'
+        - '@corporations'
+    -
+      plugin: skip_on_empty
+      method: process
+  field_history:
+    -
+      plugin: skip_on_empty
+      method: process
+      source: 'History JSON'
+    -
+      plugin: string_to_json
+  field_cataloging_standards:
+    plugin: entity_generate
+    entity_type: taxonomy_term
+    value_key: name
+    bundle_key: vid
+    source: constants/cataloging_standards
+    bundle: cataloging_standards
+  field_level_of_coding: constants/level_of_coding
+destination:
+  plugin: 'entity:node'
+  default_bundle: asu_repository_item
+migration_dependencies: null

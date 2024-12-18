@@ -3,8 +3,10 @@
 namespace Drupal\asu_statistics\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\Link;
+use Drupal\Core\Url;
 use Drupal\search_api\Entity\Index;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 /**
@@ -98,7 +100,7 @@ class ASUStatisticsReportsController extends ControllerBase {
         $this->pathCurrent->getPath();
     $download_url = $current_path . '/download';
     $download_stat_summary_url = $current_path . '/downloadStatSummary';
-
+    $download_downloads_url = $current_path . '/downloadDownloadStats';
     // Private Items (total only)
     $total_file_sizes = $this->solrGetSum($collection_node_id, TRUE);
     $total_file_size = 0;
@@ -107,6 +109,7 @@ class ASUStatisticsReportsController extends ControllerBase {
     // Public Items.
     $public_items_stats = $this->getStats($collection_node_id, TRUE, TRUE);
     if ($collection_node_id) {
+      $collection_downloads = $this->getCollectionDownloads($collection_node_id);
       foreach ($total_file_sizes as $mime_type => $sum) {
         $total_file_size += $sum['Size'];
         $total_file_sizes[$mime_type]['Size'] = $this->asuUtils->formatBytes($sum['Size'], 1);
@@ -151,9 +154,21 @@ class ASUStatisticsReportsController extends ControllerBase {
     }
     $total_items['private'] = $total_items['total'] - $total_items['public'];
     if ($collection_node_id) {
+      foreach ($collection_downloads['collection_download_rows'] as $nid => $arr) {
+        unset($collection_downloads['collection_download_rows'][$nid]['raw_title']);
+      }
+      $downloads_header = ['Title', 'Downloads', 'URL'];
+      $downloads_table = [
+        '#type' => 'table',
+        '#rows' => $collection_downloads['collection_download_rows'],
+        '#header' => $downloads_header,
+        '#caption' => '',
+      ];
+      $downloads_total = $collection_downloads['collection_downloads'];
       $content_counts_header = ['Mime type', 'Attachment count', 'Size'];
     }
     else {
+      $downloads_table = $downloads_total = '';
       // Institution.
       $content_counts_header = ['Institution', '# of Collections', 'Size'];
       foreach ($collection_collections_stats as $totals) {
@@ -170,15 +185,17 @@ class ASUStatisticsReportsController extends ControllerBase {
       '#header' => $content_counts_header,
       '#caption' => '',
     ];
-
     $summary_row = $total_file_size;
     return [
+      '#theme' => 'asu_statistics_chart',
       '#download_url' => $download_url,
       '#download_stat_summary_url' => $download_stat_summary_url,
-      '#theme' => 'asu_statistics_chart',
+      '#download_downloads_url' => $download_downloads_url,
       '#total_items' => $total_items,
       '#stats_table' => $stats_table,
       '#content_counts_table' => $content_counts_table,
+      '#downloads_table' => $downloads_table,
+      '#downloads_total' => $downloads_total,
       '#summary_row' => $summary_row,
       '#total_collections' => $total_collections,
       '#collections_by_institution' => (($collection_node_id) ? NULL : TRUE),
@@ -202,12 +219,13 @@ class ASUStatisticsReportsController extends ControllerBase {
   }
 
   /**
-   * The download summary method for the controller.
+   * The download downloads method for the controller.
    *
    * @return binary
    *   Stream of the summary CSV file.
    */
   public function downloadStatSummary() {
+    $total_file_sizes = [];
     $node = $this->currentRouteMatch->getParameter('node');
     $collection_node_id = ($node) ? $node->id() : NULL;
     $tmp = $this->solrGetSum($collection_node_id, TRUE);
@@ -231,6 +249,33 @@ class ASUStatisticsReportsController extends ControllerBase {
       $total_file_sizes = $tmp;
     }
     $written_filename = $this->writeCsv('summary', $collection_node_id, $headers, $total_file_sizes);
+    return $this->doCsvDownload($written_filename);
+  }
+
+  /**
+   * The download summary method for the controller.
+   *
+   * @return binary
+   *   Stream of the summary CSV file.
+   */
+  public function downloadDownloadStats() {
+    $rows = [];
+    $node = $this->currentRouteMatch->getParameter('node');
+    $collection_node_id = ($node) ? $node->id() : NULL;
+    $tmp = $this->getCollectionDownloads($collection_node_id, FALSE);
+    $headers = ['Title', 'Downloads', 'URL'];
+    // Due to how the site-statistics array has three tiers, we must loop
+    // through and adjust it for output.
+    foreach ($tmp['collection_download_rows'] as $nid => $arr) {
+      unset($tmp['collection_download_rows'][$nid]['title']);
+      $inner_arr = [
+        'Title' => trim($arr['raw_title']),
+        'Downloads' => $arr['downloads'] + 0,
+        'URL' => $arr['url'],
+      ];
+      $rows[] = $inner_arr;
+    }
+    $written_filename = $this->writeCsv('downloads', $collection_node_id, $headers, $rows);
     return $this->doCsvDownload($written_filename);
   }
 
@@ -310,7 +355,7 @@ class ASUStatisticsReportsController extends ControllerBase {
    *   The title value.
    */
   public function getTitle($node = NULL) {
-    return (($node) ? $node->getTitle() . " " : "") . "Statistics";
+    return (($node) ? $node->getTitle() . " - " : "") . "Statistics";
   }
 
   /**
@@ -345,7 +390,8 @@ class ASUStatisticsReportsController extends ControllerBase {
     if ($status) {
       $query->condition('node_field_data.status', 1);
     }
-    $query->groupBy('YEAR(FROM_UNIXTIME(node_field_data.created)), MONTH(FROM_UNIXTIME(node_field_data.created))');
+    $query->groupBy('item_year');
+    $query->groupBy('item_month');
     $result = $query->execute()->fetchAll();
 
     return $this->makeTableRowsFromResult($result);
@@ -360,23 +406,9 @@ class ASUStatisticsReportsController extends ControllerBase {
    *   Default = TRUE, whether or not to split sums up by the mime_type values.
    */
   public function solrGetSum($collection_node_id = NULL, $mime_type_facet = TRUE) {
+    $sums = [];
     if ($collection_node_id) {
-      $index = Index::load('default_solr_index');
-      $server = $index->getServerInstance();
-      $backend = $server->getBackend();
-      $solrConnector = $backend->getSolrConnector();
-      $solariumQuery = $solrConnector->getSelectQuery();
-      // @todo Fix this so it loops through a reasonable amount of records
-      // instead of setting a dangerously high value.
-      $solariumQuery->setRows(2147483630);
-      $solariumQuery->addParam('q', 'itm_field_ancestors:' . $collection_node_id);
-      $solariumQuery->setFields(['its_nid']);
-
-      $nids = $solrConnector->execute($solariumQuery);
-      $nids_arr = [];
-      foreach ($nids as $nid_doc) {
-        $nids_arr[] = $nid_doc->its_nid;
-      }
+      $nids_arr = $this->getCollectionNids($collection_node_id);
       // Take the set of node ids and pass this into a mysql query for the
       // node media file_size sum grouped by mime_types.
       $query = $this->database->select('media_field_data', 'media_field_data');
@@ -433,6 +465,112 @@ class ASUStatisticsReportsController extends ControllerBase {
       }
     }
     return $sums;
+  }
+
+  /**
+   * Gets the Collection Nids using ancestors by running a Solr query.
+   *
+   * @param int $collection_node_id
+   *   Optional parameter to limit the stats to children of a collection.
+   */
+  public function getCollectionNids($collection_node_id = NULL) {
+    $nids_arr = [];
+    if (!is_null($collection_node_id)) {
+      $index = Index::load('default_solr_index');
+      $server = $index->getServerInstance();
+      $backend = $server->getBackend();
+      $solrConnector = $backend->getSolrConnector();
+      $solariumQuery = $solrConnector->getSelectQuery();
+      // @todo Fix this so it loops through a reasonable amount of records
+      // instead of setting a dangerously high value.
+      $solariumQuery->setRows(2147483630);
+      $solariumQuery->addParam('q', 'itm_field_ancestors:' . $collection_node_id);
+      $solariumQuery->setFields(['its_nid']);
+      $nids = $solrConnector->execute($solariumQuery);
+      foreach ($nids as $nid_doc) {
+        $nids_arr[] = $nid_doc->its_nid;
+      }
+    }
+    return $nids_arr;
+  }
+
+  /**
+   * Gets the Collection download sum for.
+   *
+   * @param int $collection_node_id
+   *   Optional parameter to limit the stats to children of a collection.
+   * @param bool $limited_display
+   *   Default is TRUE when FALSE all results for the collection are returned.
+   */
+  public function getCollectionDownloads($collection_node_id = NULL, $limited_display = TRUE) {
+    $collection_downloads = 0;
+    $collection_download_rows = [];
+    if (!$this->database->schema()->tableExists('asu_collection_extras_item_downloads')) {
+      \Drupal::logger('asu_collection_extras')->warning('asu_collection_extras_item_downloads table does not exist. Re-install asu_collection_extras module or run SQL:
+  ' . "CREATE TABLE `asu_collection_extras_item_downloads` (
+  `collection_nid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'The collection \"node\".nid this record affects.',
+  `nid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'The item \"node\".nid this record affects.',
+  `views` int(11) NOT NULL DEFAULT '0' COMMENT 'View total for all objects in the collection.',
+  `downloads` int(11) NOT NULL DEFAULT '0' COMMENT 'Download total for all objects in the collection.',
+  PRIMARY KEY (`collection_nid`,`nid`),
+  KEY `downloads` (`downloads`),
+  KEY `collection_nid` (`collection_nid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='Store the # of downloads for each asu_repository_item'");
+      return;
+    }
+    // Query the mysql summary table and order by downloads.
+    $query = $this->database
+      ->select('asu_collection_extras_item_downloads', 'a')
+      ->fields('a', ['nid', 'downloads'])
+      ->condition('a.collection_nid', $collection_node_id);
+    if ($limited_display) {
+      $query->condition('a.downloads', 0, '>');
+      $query->range(0, 50);
+    }
+    $query->orderBy('a.downloads', 'DESC');
+    $collection_item_views = $query
+      ->execute()
+      ->fetchAll();
+    $options = ['absolute' => TRUE];
+    foreach ($collection_item_views as $c_obj) {
+      $nid = $c_obj->nid;
+      $url = Url::fromRoute('entity.node.canonical', ['node' => $nid], $options);
+      $node_title = $this->getNodeComplexTitle($nid);
+      $link = Link::fromTextAndUrl($node_title, $url);
+      $link = $link->toRenderable();
+      $collection_download_rows[$nid] = [
+        'raw_title' => $node_title,
+        'title' => \Drupal::service('renderer')->render($link),
+        'downloads' => $c_obj->downloads,
+        'url' => $url->toString(),
+      ];
+      $collection_downloads += $c_obj->downloads;
+    }
+    return [
+      'collection_downloads' => $collection_downloads,
+      'collection_download_rows' => $collection_download_rows,
+    ];
+  }
+
+  /**
+   * Returns the complex title value of a node.
+   *
+   * @param int $nid
+   *   This is the node id() value.
+   *
+   * @return string
+   *   The title value of a node as rendered via complex title field values.
+   */
+  public function getNodeComplexTitle(int $nid) {
+    $title = '';
+    $node = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
+    if (is_object($node) && $node->bundle() == 'asu_repository_item') {
+      $first_title = $node->field_title[0];
+      $view = ['type' => 'complex_title_formatter'];
+      $first_title_view = $first_title->view($view);
+      $title = \Drupal::service('renderer')->render($first_title_view);
+    }
+    return $title;
   }
 
   /**

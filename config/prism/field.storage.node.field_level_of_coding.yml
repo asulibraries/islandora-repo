@@ -1,0 +1,34 @@
+uuid: e4954988-b46a-40a6-bef7-5a8b1a731d72
+langcode: en
+status: true
+dependencies:
+  module:
+    - field_permissions
+    - node
+    - options
+third_party_settings:
+  field_permissions:
+    permission_type: custom
+id: node.field_level_of_coding
+field_name: field_level_of_coding
+entity_type: node
+type: list_string
+settings:
+  allowed_values:
+    -
+      value: minimal
+      label: minimal
+    -
+      value: intermediate
+      label: intermediate
+    -
+      value: intensive
+      label: intensive
+  allowed_values_function: ''
+module: options
+locked: false
+cardinality: 1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

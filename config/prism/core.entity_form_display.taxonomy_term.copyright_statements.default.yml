@@ -1,0 +1,56 @@
+uuid: bd32689e-a15e-44d7-963f-312dc2e1adb9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.taxonomy_term.copyright_statements.field_copyright_logo
+    - field.field.taxonomy_term.copyright_statements.field_source
+    - taxonomy.vocabulary.copyright_statements
+  module:
+    - file
+    - link
+    - path
+id: taxonomy_term.copyright_statements.default
+targetEntityType: taxonomy_term
+bundle: copyright_statements
+mode: default
+content:
+  field_copyright_logo:
+    type: file_generic
+    weight: 4
+    region: content
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+  field_source:
+    type: link_default
+    weight: 1
+    region: content
+    settings:
+      placeholder_url: ''
+      placeholder_title: ''
+    third_party_settings: {  }
+  name:
+    type: string_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  path:
+    type: path
+    weight: 2
+    region: content
+    settings: {  }
+    third_party_settings: {  }
+  status:
+    type: boolean_checkbox
+    weight: 3
+    region: content
+    settings:
+      display_label: true
+    third_party_settings: {  }
+hidden:
+  description: true
+  langcode: true

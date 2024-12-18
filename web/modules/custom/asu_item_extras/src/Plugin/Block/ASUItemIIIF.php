@@ -3,8 +3,10 @@
 namespace Drupal\asu_item_extras\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Url;
-use Drupal\Core\Link;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
  * Provides a 'International Image Interoperability Framework' Block.
@@ -15,7 +17,59 @@ use Drupal\Core\Link;
  *   category = @Translation("Views"),
  * )
  */
-class ASUItemIIIF extends BlockBase {
+class ASUItemIIIF extends BlockBase implements ContainerFactoryPluginInterface {
+
+  /**
+   * The requestStack definition.
+   *
+   * @var requestStack
+   */
+  protected $requestStack;
+
+  /**
+   * Construct method.
+   *
+   * @param array $configuration
+   *   A configuration array containing information about the plugin instance.
+   * @param string $plugin_id
+   *   The plugin_id for the formatter.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   * @param \Symfony\Component\HttpFoundation\RequestStack $request_stack
+   *   The request_stack service.
+   */
+  public function __construct(
+    array $configuration,
+    $plugin_id,
+    $plugin_definition,
+    RequestStack $request_stack) {
+    parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->requestStack = $request_stack;
+  }
+
+  /**
+   * Initializes the block and set dependency injection variables.
+   *
+   * @param Symfony\Component\DependencyInjection\ContainerInterface $container
+   *   The parent class object.
+   * @param array $configuration
+   *   A configuration array containing information about the plugin instance.
+   * @param string $plugin_id
+   *   The plugin_id for the formatter.
+   * @param mixed $plugin_definition
+   *   The plugin implementation definition.
+   *
+   * @return mixed
+   *   The initialized form object.
+   */
+  public static function create(ContainerInterface $container, array $configuration, $plugin_id, $plugin_definition) {
+    return new static(
+      $configuration,
+      $plugin_id,
+      $plugin_definition,
+      $container->get('request_stack')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -32,65 +86,58 @@ class ASUItemIIIF extends BlockBase {
     // Since this block should be set to display on node/[nid] pages that are
     // "ASU Repository Item", or possibly "Collection", the underlying
     // node can be accessed via the path.
-    $node = \Drupal::routeMatch()->getParameter('node');
-    if ($node) {
-      $nid = $node->id();
-    } else {
-      $nid = 0;
-    }
-    $node_url = Url::fromRoute('<current>', array());
-    $iiif_section = $this->get_IIIF_section($node_url);
+    $node_url = Url::fromRoute('<current>', []);
+    $iiif_section = $this->getIiifSection($node_url);
     return [
       'iiif-section' => [
         '#type' => 'container',
-        $iiif_section
-      ]];
+        'section' => $iiif_section,
+      ],
+    ];
   }
 
-  private function get_IIIF_section($url) {
+  /**
+   * This will get a block for IIIF manifest for a given object.
+   *
+   * @param string $url
+   *   The given object's url.
+   *
+   * @return array
+   *   The build array to insert into the block build function.
+   */
+  private function getIiifSection($url) {
     static $id_suffix;
+    // Need to increment if there are multiple instances of this block.
     $id_suffix = !($id_suffix) ? '' : $id_suffix + 1;
     return [
       'iiif-container' => [
-        '#type' => 'item',
+        '#type' => 'container',
         '#id' => 'iiif_box',
-        'container' => [
+        '#attributes' => ['class' => ['row']],
+        'left-block' => [
           '#type' => 'container',
-          'left-block' => [
-            '#type' => 'item',
-            '#prefix' => '<div class="row"><div class="col-md-2">',
-            '#suffix' => '</div>',
-            '#markup' => '            <a class="icon-link" href="https://iiif.io/technical-details/" target="_blank">
+          '#attributes' => ['class' => ['col-md-2']],
+          '#markup' => '            <a class="icon-link" href="https://iiif.io/technical-details/" target="_blank">
                 <img class="img" src="' .
-                \Drupal::request()->getSchemeAndHttpHost() . "/" .
-                drupal_get_path("module", "asu_item_extras") . '/images/IIIF-logo-colored-text.svg">
-              </a>',
-          ],
+          $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . "/" .
+          \Drupal::service('extension.list.module')->getPath("asu_item_extras") . '/images/IIIF-logo-colored-text.svg" alt="IIIF logo"></a>',
+        ],
           // Drupal requires javascript to be attached to the render elements.
-          'right-block' => [
-            '#type' => 'item',
-            '#attached' => [
-              'library' => [
-                'asu_item_extras/interact',
-              ],
-            ],
-            'input-box' => [
-              '#type' => 'textfield',
-              '#id' => 'iiif_editbox' . $id_suffix,
-              '#value' => \Drupal::request()->getSchemeAndHttpHost() . $url->toString() . '/manifest',
-            ],
-            '#prefix' => '<div class="col-md-6 offset-md-1"><p>We support the <a href="https://iiif.io/technical-details/" target="_blank">IIIF</a> Presentation API</p><div class="row no-gutters"><div class="col-9">',
-            '#suffix' => '<!-- Unnamed (Rectangle) -->
-            </div>
-            <div class="col">
-              <a id="copy_manifest_link" class="btn btn-primary copy_button">Copy link</a>
-            </div>
-            </div>
-            </div>
-          </div>',
+        'right-block' => [
+          '#type' => 'container',
+          '#attributes' => ['class' => ['col-md-9', 'offset-md-1']],
+          'iiif-link-field' => [
+            '#type' => 'textfield',
+            '#title' => $this->t('Item IIIF Manifest URL'),
+            '#id' => 'iiif_editbox' . $id_suffix,
+            '#value' => str_replace('/items', '/node', $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . $url->toString()) . '/manifest',
           ],
-        ]
-      ]
+          // We attempted a link type but it wouldn't render, so markup instead.
+          'copy-button' => [
+            '#markup' => '<a id="copy_manifest_link" class="btn btn-maroon btn-md">Copy link</a>',
+          ],
+        ],
+      ],
     ];
   }
 
