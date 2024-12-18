@@ -1,0 +1,24 @@
+uuid: fdea48f8-0191-4fb6-ba13-dc4e7895b223
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_table_of_contents
+    - filter.format.restricted_html
+    - node.type.scholarly_work
+  module:
+    - text
+id: node.scholarly_work.field_table_of_contents
+field_name: field_table_of_contents
+entity_type: node
+bundle: scholarly_work
+label: 'Table Of Contents'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - restricted_html
+field_type: text_long

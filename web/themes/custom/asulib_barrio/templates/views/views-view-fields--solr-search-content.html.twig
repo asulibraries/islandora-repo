@@ -55,6 +55,8 @@
   {# Use the collection thumbnail if it returns a value with the img tag. #}
   {% if (fields.field_collection_thumbnail is defined) and ('img' in fields.field_collection_thumbnail.content|render) %}
     {{ fields.field_collection_thumbnail.content }}
+  {% elseif (fields.field_work_products is defined) and ('img' in fields.field_work_products.content|render) %}
+    {{ fields.field_work_products.content }}
   {% elseif fields.field_model is defined %}
     {% if drupal_view_result('display_media', 'thumbnail', row._entity.id) is empty %}
     {% for k, v in model_icons|filter((v, k) => k == fields.field_model.content|striptags|trim) %}
@@ -69,7 +71,7 @@
   </div>
 {# Fields, sans model field used for thumbnail. #}
   <div class="col-md-10">  
-{% for fid, field in fields | filter((v, k) => k not in ['field_model','field_collection_thumbnail'] ) -%}
+{% for fid, field in fields | filter((v, k) => k not in ['field_model','field_collection_thumbnail','field_work_products'] ) -%}
   {{ field.separator }}
   {# The show-more is more complex than a regular field template... #}
   {% set word_list = field.content|trim|split(' ') %}

@@ -1,0 +1,21 @@
+uuid: 05d4f044-3ee7-445c-8fad-cb854fce0ca8
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_embargo_release_date
+    - node.type.scholarly_work
+  module:
+    - datetime
+id: node.scholarly_work.field_embargo_release_date
+field_name: field_embargo_release_date
+entity_type: node
+bundle: scholarly_work
+label: 'Embargo Release Date'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings: {  }
+field_type: datetime

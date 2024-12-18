@@ -52,6 +52,7 @@ dependencies:
     - paragraphs
     - search_api
     - asu_search
+    - search_api_attachments
 third_party_settings:
   search_api_solr:
     finalize: false
@@ -640,6 +641,10 @@ field_settings:
         - field.storage.node.field_resource_type
       module:
         - taxonomy
+  saa_field_work_products:
+    label: 'Search api attachments: Work Products'
+    property_path: saa_field_work_products
+    type: text
   status:
     label: 'Publishing status'
     datasource_id: 'entity:node'
@@ -706,6 +711,13 @@ processor_settings:
   descendant_extracted_text: {  }
   entity_type: {  }
   etdf_created_year_only: {  }
+  file_attachments:
+    excluded_extensions: 'aif art avi bmp gif ico mov oga ogv png psd ra ram rgb flv'
+    number_indexed: 0
+    number_first_bytes: '10 GB'
+    max_filesize: '0'
+    excluded_private: 0
+    excluded_mimes: 'audio/x-aiff image/x-jg video/x-msvideo image/x-ms-bmp image/gif image/vnd.microsoft.icon video/quicktime audio/ogg video/ogg image/png image/x-photoshop audio/x-realaudio audio/x-pn-realaudio image/x-rgb video/x-flv'
   hierarchy:
     weights:
       preprocess_index: -45

@@ -1,0 +1,23 @@
+uuid: 7952111b-62c3-4add-a4c8-00e4c53ea8bb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_peer_reviewed
+    - node.type.scholarly_work
+id: node.scholarly_work.field_peer_reviewed
+field_name: field_peer_reviewed
+entity_type: node
+bundle: scholarly_work
+label: Peer-reviewed
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    value: 0
+default_value_callback: ''
+settings:
+  on_label: 'Yes'
+  off_label: 'No'
+field_type: boolean

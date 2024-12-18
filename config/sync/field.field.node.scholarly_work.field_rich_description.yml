@@ -1,0 +1,24 @@
+uuid: 15a66a75-0a96-4326-8dc6-f347d1f85e04
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_rich_description
+    - filter.format.restricted_html
+    - node.type.scholarly_work
+  module:
+    - text
+id: node.scholarly_work.field_rich_description
+field_name: field_rich_description
+entity_type: node
+bundle: scholarly_work
+label: Description
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - restricted_html
+field_type: text_long

@@ -1,0 +1,37 @@
+uuid: 50af32d9-b4f3-44c8-8770-10121988cfd5
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_note_para
+    - node.type.scholarly_work
+    - paragraphs.paragraphs_type.complex_note
+  module:
+    - entity_reference_revisions
+id: node.scholarly_work.field_note_para
+field_name: field_note_para
+entity_type: node
+bundle: scholarly_work
+label: Note
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      complex_note: complex_note
+    negate: 0
+    target_bundles_drag_drop:
+      complex_note:
+        weight: 4
+        enabled: true
+      complex_title:
+        weight: 5
+        enabled: false
+      typed_identifier:
+        weight: 6
+        enabled: false
+field_type: entity_reference_revisions
