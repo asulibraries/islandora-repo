@@ -100,8 +100,10 @@ foreach ($nids as $nid) {
     // The media name is usually the name of the item whereas
     // the child component is the filename, which is what we want.
     $keeper = return_original_purge_others($child, $this->io());
-    $keeper->set('name', $child->label())->save();
-    $work_products[] = $keeper;
+    if ($keeper) {
+      $keeper->set('name', $child->label())->save();
+      $work_products[] = $keeper;
+    }
     $this->io()->writeln("\tDeleting component \"{$child->label()}\" ({$child->id()})");
     $child->delete();
   }
