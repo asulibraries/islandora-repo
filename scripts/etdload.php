@@ -67,6 +67,9 @@ function create_media(string $path, string $name = '') {
   elseif (in_array($ext, ['mp4', 'mkv', 'avi', 'mov', 'dpx'])) {
     $model = 'video';
   }
+  else {
+    $model = 'file';
+  }
 
   $new_name = preg_replace('/[ ,()&\[\]#]+/', '_', $filename);
   $destination = "private://c7";
@@ -269,7 +272,7 @@ foreach (array_filter(scandir($path), function ($value) {
       'name' => $name,
       'vid' => 'subject',
     ]),
-  ], $subjects);
+  ], array_filter($subjects));
 
   // Embargo.
   $accept_date = date_create_from_format('m/d/Y', current($xml->xpath('DISS_description/DISS_dates/DISS_accept_date')));
