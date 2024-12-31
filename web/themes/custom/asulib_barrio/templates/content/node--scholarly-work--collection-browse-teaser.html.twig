@@ -90,6 +90,8 @@
         <div{{content_attributes.addClass('node__content','card-img-top')}}>
             {% if complex_obj_thumb is not empty %}
               <img src=" {{ complex_obj_thumb }}"/>
+            {% elseif content.field_work_products.0 %}
+              {{ content.field_work_products.0 }}
             {% elseif drupal_view_result('display_media', 'thumbnail', node.id) is empty %}
               {% set mod = content.field_model[0]|render|trim %}
               {% for k, v in model_icons|filter((v, k) => k == mod) -%}
