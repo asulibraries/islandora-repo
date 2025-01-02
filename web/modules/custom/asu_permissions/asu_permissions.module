@@ -5,11 +5,11 @@
  * Contains asu_permissions.module.
  */
 
-use Drupal\asu_permissions\Exception\LibauthException;
 use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\Core\Entity\EntityStorageException;
 use Drupal\Core\Session\AccountInterface;
+use Drupal\asu_permissions\Exception\LibauthException;
 use Drupal\group\Entity\Group;
 use Drupal\node\NodeInterface;
 use Drupal\user\UserInterface;
@@ -345,6 +345,10 @@ function asu_permissions_media_access(EntityInterface $entity, $operation, Accou
       $date = new \DateTime();
       $today = $date->format("c");
       $all_parents = _walk_membership($item, [$item]);
+      // Adding the item to the _walk_membership parents parameter wasn't
+      // including it in the final result. Using unshift to explicitly add
+      // it to the front until we can figure out why.
+      array_unshift($all_parents, $item);
       foreach ($all_parents as $par) {
         if ($par->hasField('field_embargo_release_date') && $par->get('field_embargo_release_date') && $par->get('field_embargo_release_date')->value != "T23:59:59" && $par->get('field_embargo_release_date')->value >= $today) {
           $access_result = $access_result->orIf(AccessResult::forbidden());
@@ -427,15 +431,13 @@ function asu_permissions_file_download($uri) {
       return NULL;
     }
     foreach ($medias as $media) {
-      $node = $utils->getParentNode($media);
       if (!$media->access('view', $user)) {
         // If the user isn't allowed to view the media, disable cache and
         // return -1 to tell Drupal to block access to the requested file.
         \Drupal::service('page_cache_kill_switch')->trigger();
         return -1;
       }
-      if ($node) {
-        $node = $media->get('field_media_of')->entity;
+      if ($node = $utils->getParentNode($media)) {
         $date = new \DateTime();
         $today = $date->format("c");
         if (
