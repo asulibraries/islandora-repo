@@ -33,7 +33,7 @@ function asu_permissions_node_insert(NodeInterface $node) {
     $col_group->addRelationship($node, $pluginId);
     $col_group->save();
   }
-  elseif ($node->bundle() == 'asu_repository_item') {
+  elseif (in_array($node->bundle(), ['asu_repository_item', 'scholarly_work'])) {
     // Add the asu_repository_item to the parent collection's group.
     // We are assumming here one member_of relationship.
     $parent = _get_collection_parent($node);
@@ -107,7 +107,7 @@ function asu_permissions_node_delete(NodeInterface $node) {
       $group->delete();
     }
   }
-  elseif ($node->bundle() == 'asu_repository_item') {
+  elseif (in_array($node->bundle(), ['asu_repository_item', 'scholarly_work'])) {
     $parent = _get_collection_parent($node);
     if ($parent) {
       _remove_object_from_parent_group($node, $parent);
@@ -146,7 +146,7 @@ function _add_object_to_parent_group($node) {
  * Implements hook_node_update().
  */
 function asu_permissions_node_update(NodeInterface $node) {
-  if ($node != NULL && $node->bundle() == 'asu_repository_item') {
+  if ($node != NULL && in_array($node->bundle(), ['asu_repository_item', 'scholarly_work'])) {
     $utils = \Drupal::service('islandora.utils');
     if (!$utils->haveFieldsChanged($node, $node->original)) {
       return;
@@ -164,46 +164,49 @@ function asu_permissions_node_update(NodeInterface $node) {
       _add_object_to_parent_group($node);
     }
 
-    $of_items = $node
-      ->get('field_default_original_file_perm')
-      ->filterEmptyItems();
-    $of_original_items = $node->original
-      ->get('field_default_original_file_perm')
-      ->filterEmptyItems();
+    if ($node->hasField('field_default_original_file_perm')) {
+      $of_items = $node
+        ->get('field_default_original_file_perm')
+        ->filterEmptyItems();
+      $of_original_items = $node->original
+        ->get('field_default_original_file_perm')
+        ->filterEmptyItems();
 
-    // If the field items are not equal, we need to save.
-    if (!$of_items->equals($of_original_items)) {
-      // Change the media with type OF.
-      $medias = $utils->getMedia($node);
-      foreach ($medias as $media) {
-        $term = $media->get('field_media_use')->entity;
-        $term_name = $term->getName();
-        if ($term_name == "Original File") {
-          $media->set('field_access_terms', $node->field_default_original_file_perm->getValue());
-          $media->save();
+      // If the field items are not equal, we need to save.
+      if (!$of_items->equals($of_original_items)) {
+        // Change the media with type OF.
+        $medias = $utils->getMedia($node);
+        foreach ($medias as $media) {
+          $term = $media->get('field_media_use')->entity;
+          $term_name = $term->getName();
+          if ($term_name == "Original File") {
+            $media->set('field_access_terms', $node->field_default_original_file_perm->getValue());
+            $media->save();
+          }
         }
       }
     }
+    if ($node->hasField('field_default_derivative_file_pe')) {
+      $df_items = $node
+        ->get('field_default_derivative_file_pe')
+        ->filterEmptyItems();
+      $df_original_items = $node->original
+        ->get('field_default_derivative_file_pe')
+        ->filterEmptyItems();
 
-    $df_items = $node
-      ->get('field_default_derivative_file_pe')
-      ->filterEmptyItems();
-    $df_original_items = $node->original
-      ->get('field_default_derivative_file_pe')
-      ->filterEmptyItems();
-
-    // If the field items are not equal, we need to save.
-    if (!$df_items->equals($df_original_items)) {
-      // Change the media with service file.
-      if (!isset($medias)) {
-        $medias = $utils->getMedia($node);
-      }
-      foreach ($medias as $media) {
-        $term = $media->get('field_media_use')->entity;
-        $term_name = $term->getName();
-        if ($term_name == "Service File") {
-          $media->set('field_access_terms', $node->field_default_derivative_file_pe->getValue());
-          $media->save();
+      // If the field items are not equal, we need to save.
+      if (!$df_items->equals($df_original_items)) {
+        // Change the media with service file.
+        if (!isset($medias)) {
+          $medias = $utils->getMedia($node);
+        }
+        foreach ($medias as $media) {
+          $term = $media->get('field_media_use')->entity;
+          $term_name = $term->getName();
+          if ($term_name == "Service File") {
+            $media->set('field_access_terms', $node->field_default_derivative_file_pe->getValue());
+            $media->save();
+          }
         }
       }
     }
