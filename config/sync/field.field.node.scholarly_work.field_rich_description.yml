@@ -4,7 +4,6 @@ status: true
 dependencies:
   config:
     - field.storage.node.field_rich_description
-    - filter.format.restricted_html
     - node.type.scholarly_work
   module:
     - text
@@ -19,6 +18,5 @@ translatable: false
 default_value: {  }
 default_value_callback: ''
 settings:
-  allowed_formats:
-    - restricted_html
+  allowed_formats: {  }
 field_type: text_long
