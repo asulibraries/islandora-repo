@@ -15,7 +15,7 @@
 * @ingroup themeable
 */
 #}
-<video {{ attributes }} controlslist="nodownload">
+<video crossorigin {{ attributes }} controlslist="nodownload">
   {% for file in files %}
     <source {{ file.source_attributes }} />
   {% endfor %}
