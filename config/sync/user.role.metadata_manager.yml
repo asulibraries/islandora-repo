@@ -14,6 +14,7 @@ dependencies:
     - media.type.video
     - node.type.asu_repository_item
     - node.type.collection
+    - node.type.scholarly_work
     - taxonomy.vocabulary.collaborating_institutions
     - taxonomy.vocabulary.conference
     - taxonomy.vocabulary.corporate_body
@@ -110,6 +111,7 @@ permissions:
   - 'edit any fits_technical_metadata media'
   - 'edit any image media'
   - 'edit any remote_video media'
+  - 'edit any scholarly_work content'
   - 'edit any video media'
   - 'edit field_internal_note'
   - 'edit field_local'
@@ -134,6 +136,7 @@ permissions:
   - 'replace files'
   - 'revert asu_repository_item revisions'
   - 'revert collection revisions'
+  - 'revert scholarly_work revisions'
   - 'update any media'
   - 'use editorial transition archive'
   - 'use editorial transition archived_draft'
@@ -158,3 +161,4 @@ permissions:
   - 'view own field_local'
   - 'view own field_pid'
   - 'view own unpublished content'
+  - 'view scholarly_work revisions'

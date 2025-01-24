@@ -5,17 +5,16 @@
  * Contains asu_permissions.module.
  */
 
-use Drupal\Core\Access\AccessResultNeutral;
+use Drupal\Core\Access\AccessResult;
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\Entity\EntityStorageException;
+use Drupal\Core\Session\AccountInterface;
+use Drupal\asu_permissions\Exception\LibauthException;
 use Drupal\group\Entity\Group;
 use Drupal\node\NodeInterface;
-use Drupal\Core\Session\AccountInterface;
-use Drupal\Core\Access\AccessResult;
 use Drupal\user\UserInterface;
 use GuzzleHttp\Exception\ClientException;
 use GuzzleHttp\Exception\ConnectException;
-use Drupal\asu_permissions\Exception\LibauthException;
-use Drupal\Core\Entity\EntityStorageException;
 
 /**
  * Implements hook_node_insert().
@@ -34,7 +33,7 @@ function asu_permissions_node_insert(NodeInterface $node) {
     $col_group->addRelationship($node, $pluginId);
     $col_group->save();
   }
-  elseif ($node->bundle() == 'asu_repository_item') {
+  elseif (in_array($node->bundle(), ['asu_repository_item', 'scholarly_work'])) {
     // Add the asu_repository_item to the parent collection's group.
     // We are assumming here one member_of relationship.
     $parent = _get_collection_parent($node);
@@ -108,7 +107,7 @@ function asu_permissions_node_delete(NodeInterface $node) {
       $group->delete();
     }
   }
-  elseif ($node->bundle() == 'asu_repository_item') {
+  elseif (in_array($node->bundle(), ['asu_repository_item', 'scholarly_work'])) {
     $parent = _get_collection_parent($node);
     if ($parent) {
       _remove_object_from_parent_group($node, $parent);
@@ -147,7 +146,7 @@ function _add_object_to_parent_group($node) {
  * Implements hook_node_update().
  */
 function asu_permissions_node_update(NodeInterface $node) {
-  if ($node != NULL && $node->bundle() == 'asu_repository_item') {
+  if ($node != NULL && in_array($node->bundle(), ['asu_repository_item', 'scholarly_work'])) {
     $utils = \Drupal::service('islandora.utils');
     if (!$utils->haveFieldsChanged($node, $node->original)) {
       return;
@@ -165,46 +164,49 @@ function asu_permissions_node_update(NodeInterface $node) {
       _add_object_to_parent_group($node);
     }
 
-    $of_items = $node
-      ->get('field_default_original_file_perm')
-      ->filterEmptyItems();
-    $of_original_items = $node->original
-      ->get('field_default_original_file_perm')
-      ->filterEmptyItems();
+    if ($node->hasField('field_default_original_file_perm')) {
+      $of_items = $node
+        ->get('field_default_original_file_perm')
+        ->filterEmptyItems();
+      $of_original_items = $node->original
+        ->get('field_default_original_file_perm')
+        ->filterEmptyItems();
 
-    // If the field items are not equal, we need to save.
-    if (!$of_items->equals($of_original_items)) {
-      // Change the media with type OF.
-      $medias = $utils->getMedia($node);
-      foreach ($medias as $media) {
-        $term = $media->get('field_media_use')->entity;
-        $term_name = $term->getName();
-        if ($term_name == "Original File") {
-          $media->set('field_access_terms', $node->field_default_original_file_perm->getValue());
-          $media->save();
+      // If the field items are not equal, we need to save.
+      if (!$of_items->equals($of_original_items)) {
+        // Change the media with type OF.
+        $medias = $utils->getMedia($node);
+        foreach ($medias as $media) {
+          $term = $media->get('field_media_use')->entity;
+          $term_name = $term->getName();
+          if ($term_name == "Original File") {
+            $media->set('field_access_terms', $node->field_default_original_file_perm->getValue());
+            $media->save();
+          }
         }
       }
     }
+    if ($node->hasField('field_default_derivative_file_pe')) {
+      $df_items = $node
+        ->get('field_default_derivative_file_pe')
+        ->filterEmptyItems();
+      $df_original_items = $node->original
+        ->get('field_default_derivative_file_pe')
+        ->filterEmptyItems();
 
-    $df_items = $node
-      ->get('field_default_derivative_file_pe')
-      ->filterEmptyItems();
-    $df_original_items = $node->original
-      ->get('field_default_derivative_file_pe')
-      ->filterEmptyItems();
-
-    // If the field items are not equal, we need to save.
-    if (!$df_items->equals($df_original_items)) {
-      // Change the media with service file.
-      if (!isset($medias)) {
-        $medias = $utils->getMedia($node);
-      }
-      foreach ($medias as $media) {
-        $term = $media->get('field_media_use')->entity;
-        $term_name = $term->getName();
-        if ($term_name == "Service File") {
-          $media->set('field_access_terms', $node->field_default_derivative_file_pe->getValue());
-          $media->save();
+      // If the field items are not equal, we need to save.
+      if (!$df_items->equals($df_original_items)) {
+        // Change the media with service file.
+        if (!isset($medias)) {
+          $medias = $utils->getMedia($node);
+        }
+        foreach ($medias as $media) {
+          $term = $media->get('field_media_use')->entity;
+          $term_name = $term->getName();
+          if ($term_name == "Service File") {
+            $media->set('field_access_terms', $node->field_default_derivative_file_pe->getValue());
+            $media->save();
+          }
         }
       }
     }
@@ -215,7 +217,7 @@ function asu_permissions_node_update(NodeInterface $node) {
  * Implements hook_node_access().
  */
 function asu_permissions_node_access(NodeInterface $node, $op, AccountInterface $account) {
-  if ($node->bundle() == "collection" || $node->bundle() == "asu_repository_item") {
+  if (in_array($node->bundle(), ["collection", "asu_repository_item", "scholarly_work"])) {
     if ($account->isAuthenticated() && (in_array("administrator", $account->getRoles()) || in_array("metadata_manager", $account->getRoles()))) {
       // Allow if admin or metadata manager.
       return AccessResult::allowed();
@@ -223,7 +225,7 @@ function asu_permissions_node_access(NodeInterface $node, $op, AccountInterface 
     // If the node is published and there is parent access,
     // don't bother checking the groups.
     if ($node->isPublished()) {
-      $access_result = AccessResult::allowed();
+      $access_result = AccessResult::neutral();
       $parents = _walk_membership($node, []);
       if (count($parents) > 0) {
         foreach ($parents as $par) {
@@ -287,72 +289,84 @@ function asu_permissions_node_access(NodeInterface $node, $op, AccountInterface 
  * Which is also hook_entity_type_access().
  */
 function asu_permissions_media_access(EntityInterface $entity, $operation, AccountInterface $account) {
-  $item = $entity->get('field_media_of')->entity;
-  if (!$item) {
-    // Return neutral because it isn't an Islandora media;
-    // it isn't attached to an item.
-    return new AccessResultNeutral();
-  }
+  // Allow if admin.
+  // @todo potentially do a lookup here for additional all-seeing roles.
   if ($account->isAuthenticated() && (in_array("administrator", $account->getRoles()) || in_array("metadata_manager", $account->getRoles()))) {
-    // Allow if admin.
-    // @todo potentially do a lookup here for additional all-seeing roles.
     $access_result = AccessResult::allowed();
-  }
-  if ($entity->hasField('field_access_terms') && $entity->get('field_access_terms')->entity) {
-    $access_term = $entity->get('field_access_terms')->entity->getName();
-  }
-  else {
-    // Assume its public if not access is set.
-    $access_term = "Public";
-  }
-  if (!$account->isAuthenticated() && $access_term != "Public") {
-    $access_result = AccessResult::forbidden();
-  }
-  if (!isset($access_result)) {
-    // Depend on the permission of the parent item.
-    $taccess = $item->access($operation, $account);
-    $all_parents = _walk_membership($item, [$item]);
-    foreach ($all_parents as $par) {
-      $date = new \DateTime();
-      $today = $date->format("c");
-      if ($par->hasField('field_embargo_release_date') && $par->get('field_embargo_release_date') && $par->get('field_embargo_release_date')->value != "T23:59:59" && $par->get('field_embargo_release_date')->value >= $today) {
-        $access_term = "Private";
-        $taccess = 0;
-      }
-    }
-    if ($taccess == 1) {
-
-      if ($account->isAuthenticated() && $access_term == "Private") {
-        $access_result = AccessResult::forbidden();
-        $groups = _get_groups_from_node($item);
-        foreach ($groups as $g) {
-          if ($g->getMember($account)) {
-            $access_result = AccessResult::allowed();
-            break;
-          }
-        }
-      }
-      else {
-        if ($access_term == "Public") {
-          $access_result = AccessResult::forbiddenIf($taccess == 0);
-        }
-      }
-    }
-    else {
-      // \Drupal::logger('asu permissions')->info("access is not 1");
-      $access_result = AccessResult::forbiddenIf($taccess == 0);
-    }
-
-  }
-  if (isset($access_result)) {
     $access_result->addCacheableDependency($entity);
     $access_result->addCacheableDependency($account);
-    $access_result->addCacheContexts(['theme']);
     return $access_result;
   }
-  else {
-    return AccessResult::neutral();
+
+  // Check Media Access Terms.
+  if ($entity->hasField('field_access_terms') && $entity->get('field_access_terms')->entity) {
+    $access_term = $entity->get('field_access_terms')->entity->getName();
+    if ($access_term == 'Public') {
+      return AccessResult::allowed();
+    }
+
+    // Anon are only allowed 'Public' when the terms field is populated.
+    if (!$account->isAuthenticated() && $access_term != "Public") {
+      $access_result = AccessResult::forbidden();
+      $access_result->addCacheableDependency($entity);
+      $access_result->addCacheableDependency($account);
+      return $access_result;
+    }
+
+    // Anyone authenticated is "ASU".
+    if ($account->isAuthenticated() && $access_term == "ASU Only") {
+      $access_result = AccessResult::allowed();
+      $access_result->addCacheableDependency($entity);
+      $access_result->addCacheableDependency($account);
+      return $access_result;
+    }
   }
+
+  // Since the Media doesn't appear to care, we check related nodes.
+  // Get a node from the Islandora Media→Node or Standard Drupal Node→Media
+  // models.
+  // First, Islandora...
+  $item = $entity->field_media_of?->entity;
+  // Second, grab the first node field that references this media.
+  if (!$item) {
+    foreach (array_map(fn($f): string => substr($f, strpos($f, '.') + 1), \Drupal::service('islandora.utils')->getReferencingFields('node', 'media')) as $field) {
+      if ($item = current(\Drupal::entityTypeManager()->getStorage('node')->loadByProperties([$field => $entity->id()]))) {
+        break;
+      }
+    }
+  }
+  $access_result = AccessResult::neutral();
+  if ($item) {
+    $access_result->addCacheableDependency($item);
+    // Default to what the parent access is.
+    if (!$item->access($operation, $account)) {
+      $access_result = $access_result->orIf(AccessResult::forbidden());
+    }
+    else {
+      // Check embargos set by parent objects.
+      // We have to walk parents to support complex objects.
+      $date = new \DateTime();
+      $today = $date->format("c");
+      $all_parents = _walk_membership($item, [$item]);
+      // Adding the item to the _walk_membership parents parameter wasn't
+      // including it in the final result. Using unshift to explicitly add
+      // it to the front until we can figure out why.
+      array_unshift($all_parents, $item);
+      foreach ($all_parents as $par) {
+        if ($par->hasField('field_embargo_release_date') && $par->get('field_embargo_release_date') && $par->get('field_embargo_release_date')->value != "T23:59:59" && $par->get('field_embargo_release_date')->value >= $today) {
+          $access_result = $access_result->orIf(AccessResult::forbidden());
+          // Since parent permissions can change, add it as a cache dependency.
+          $access_result->addCacheableDependency($par);
+          break;
+        }
+      }
+    }
+  }
+
+  $access_result->addCacheableDependency($entity);
+  $access_result->addCacheableDependency($account);
+  $access_result->addCacheContexts(['theme']);
+  return $access_result;
 
 }
 
@@ -420,15 +434,13 @@ function asu_permissions_file_download($uri) {
       return NULL;
     }
     foreach ($medias as $media) {
-      $node = $utils->getParentNode($media);
       if (!$media->access('view', $user)) {
         // If the user isn't allowed to view the media, disable cache and
         // return -1 to tell Drupal to block access to the requested file.
         \Drupal::service('page_cache_kill_switch')->trigger();
         return -1;
       }
-      if ($node) {
-        $node = $media->get('field_media_of')->entity;
+      if ($node = $utils->getParentNode($media)) {
         $date = new \DateTime();
         $today = $date->format("c");
         if (

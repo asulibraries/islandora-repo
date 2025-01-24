@@ -1,0 +1,31 @@
+uuid: 8be7b1ff-3e3c-4dc9-9a43-80b9adcc865a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_geographic_subject
+    - node.type.scholarly_work
+    - taxonomy.vocabulary.country_codes
+    - taxonomy.vocabulary.geo_location
+id: node.scholarly_work.field_geographic_subject
+field_name: field_geographic_subject
+entity_type: node
+bundle: scholarly_work
+label: 'Geographic Subject'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      country_codes: country_codes
+      geo_location: geo_location
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: country_codes
+field_type: entity_reference

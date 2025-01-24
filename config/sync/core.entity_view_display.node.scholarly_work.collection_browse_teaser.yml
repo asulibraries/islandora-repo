@@ -1,0 +1,112 @@
+uuid: b3958b21-26b3-4c23-b7b3-db4fa8d6ec78
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.collection_browse_teaser
+    - field.field.node.scholarly_work.field_additional_memberships
+    - field.field.node.scholarly_work.field_copyright_statement
+    - field.field.node.scholarly_work.field_edition
+    - field.field.node.scholarly_work.field_edtf_copyright_date
+    - field.field.node.scholarly_work.field_edtf_date_created
+    - field.field.node.scholarly_work.field_embargo_release_date
+    - field.field.node.scholarly_work.field_extent
+    - field.field.node.scholarly_work.field_genre
+    - field.field.node.scholarly_work.field_geographic_subject
+    - field.field.node.scholarly_work.field_handle
+    - field.field.node.scholarly_work.field_keyword
+    - field.field.node.scholarly_work.field_language
+    - field.field.node.scholarly_work.field_linked_agent
+    - field.field.node.scholarly_work.field_member_of
+    - field.field.node.scholarly_work.field_note_para
+    - field.field.node.scholarly_work.field_open_access
+    - field.field.node.scholarly_work.field_peer_reviewed
+    - field.field.node.scholarly_work.field_pid
+    - field.field.node.scholarly_work.field_place_of_publication_code
+    - field.field.node.scholarly_work.field_place_published
+    - field.field.node.scholarly_work.field_preferred_citation
+    - field.field.node.scholarly_work.field_resource_type
+    - field.field.node.scholarly_work.field_reuse_permissions
+    - field.field.node.scholarly_work.field_rich_description
+    - field.field.node.scholarly_work.field_series
+    - field.field.node.scholarly_work.field_statement_responsibility
+    - field.field.node.scholarly_work.field_subject
+    - field.field.node.scholarly_work.field_table_of_contents
+    - field.field.node.scholarly_work.field_title
+    - field.field.node.scholarly_work.field_typed_identifier
+    - field.field.node.scholarly_work.field_work_products
+    - node.type.scholarly_work
+  module:
+    - media
+    - user
+id: node.scholarly_work.collection_browse_teaser
+targetEntityType: node
+bundle: scholarly_work
+mode: collection_browse_teaser
+content:
+  field_download_count:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_work_products:
+    type: media_thumbnail
+    label: above
+    settings:
+      image_link: ''
+      image_style: ''
+      image_loading:
+        attribute: lazy
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  display_media_child_thumbnail: true
+  display_media_entity_view_1: true
+  display_media_entity_view_2: true
+  display_media_entity_view_4: true
+  display_media_service_file: true
+  display_media_thumbnail: true
+  display_media_thumbnail_card: true
+  field_additional_memberships: true
+  field_copyright_statement: true
+  field_edition: true
+  field_edtf_copyright_date: true
+  field_edtf_date_created: true
+  field_embargo_release_date: true
+  field_extent: true
+  field_genre: true
+  field_geographic_subject: true
+  field_handle: true
+  field_keyword: true
+  field_language: true
+  field_linked_agent: true
+  field_member_of: true
+  field_note_para: true
+  field_open_access: true
+  field_peer_reviewed: true
+  field_pid: true
+  field_place_of_publication_code: true
+  field_place_published: true
+  field_preferred_citation: true
+  field_resource_type: true
+  field_reuse_permissions: true
+  field_rich_description: true
+  field_series: true
+  field_statement_responsibility: true
+  field_subject: true
+  field_table_of_contents: true
+  field_title: true
+  field_typed_identifier: true
+  langcode: true
+  links: true
+  openseadragon_media_evas_entity_view_1: true
+  openseadragon_media_evas_entity_view_2: true
+  openseadragon_media_evas_service_file: true
+  pdfjs_media_evas_entity_view_1: true
+  pdfjs_media_evas_entity_view_2: true
+  pdfjs_media_evas_service_file: true
+  search_api_excerpt: true
+  video_media_evas_original_file: true
+  video_media_evas_preservation_master: true
+  video_media_evas_service_file: true

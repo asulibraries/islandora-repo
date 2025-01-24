@@ -1,0 +1,37 @@
+uuid: 3903e1c4-dc47-484b-b90c-51029b4beeb7
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_typed_identifier
+    - node.type.scholarly_work
+    - paragraphs.paragraphs_type.typed_identifier
+  module:
+    - entity_reference_revisions
+id: node.scholarly_work.field_typed_identifier
+field_name: field_typed_identifier
+entity_type: node
+bundle: scholarly_work
+label: Identifier
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      typed_identifier: typed_identifier
+    negate: 0
+    target_bundles_drag_drop:
+      complex_note:
+        weight: 4
+        enabled: false
+      complex_title:
+        weight: 5
+        enabled: false
+      typed_identifier:
+        weight: 6
+        enabled: true
+field_type: entity_reference_revisions

@@ -5,6 +5,7 @@ dependencies:
   config:
     - filter.format.basic_html
     - filter.format.description_restricted_items
+    - filter.format.restricted_html
     - filter.format.webform_default
     - media.type.audio
     - media.type.document
@@ -15,6 +16,7 @@ dependencies:
     - media.type.remote_video
     - media.type.video
     - node.type.asu_repository_item
+    - node.type.scholarly_work
     - rest.resource.oai_pmh
     - taxonomy.vocabulary.keywords
   module:
@@ -49,6 +51,7 @@ permissions:
   - 'create image media'
   - 'create media'
   - 'create remote_video media'
+  - 'create scholarly_work content'
   - 'create terms in keywords'
   - 'create video media'
   - 'delete own files'
@@ -61,6 +64,7 @@ permissions:
   - 'edit own fits_technical_metadata media'
   - 'edit own image media'
   - 'edit own remote_video media'
+  - 'edit own scholarly_work content'
   - 'edit own video media'
   - 'post comments'
   - 'restful get oai_pmh'
@@ -68,6 +72,7 @@ permissions:
   - 'update media'
   - 'use text format basic_html'
   - 'use text format description_restricted_items'
+  - 'use text format restricted_html'
   - 'use text format webform_default'
   - 'view media'
   - 'view own unpublished content'

@@ -1,0 +1,29 @@
+uuid: c76bcc51-3c89-4502-a6fe-ba74b06a3c60
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_member_of
+    - node.type.collection
+    - node.type.scholarly_work
+id: node.scholarly_work.field_member_of
+field_name: field_member_of
+entity_type: node
+bundle: scholarly_work
+label: 'Primary Member of'
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:node'
+  handler_settings:
+    target_bundles:
+      collection: collection
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

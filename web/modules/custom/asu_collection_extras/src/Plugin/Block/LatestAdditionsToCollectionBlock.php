@@ -3,11 +3,13 @@
 namespace Drupal\asu_collection_extras\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\Link;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\CurrentRouteMatch;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\Core\Url;
 use Drupal\asu_islandora_utils\AsuUtils;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * Provides a 'Latest additions to collection' Block.
@@ -54,7 +56,7 @@ class LatestAdditionsToCollectionBlock extends BlockBase implements ContainerFac
    *   The entityTypeManager definition.
    * @param \Drupal\Core\Routing\CurrentRouteMatch $currentRouteMatch
    *   The currentRouteMatch definition.
-   * @param $ASUUtils
+   * @param \Drupal\asu_islandora_utils\AsuUtils $asuUtils
    *   The ASU Utils service.
    */
   public function __construct(
@@ -63,11 +65,12 @@ class LatestAdditionsToCollectionBlock extends BlockBase implements ContainerFac
     $plugin_definition,
     EntityTypeManagerInterface $entityTypeManager,
     CurrentRouteMatch $currentRouteMatch,
-    AsuUtils $ASUUtils) {
+    AsuUtils $asuUtils,
+  ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->entityTypeManager = $entityTypeManager;
     $this->currentRouteMatch = $currentRouteMatch;
-    $this->asuUtils = $ASUUtils;
+    $this->asuUtils = $asuUtils;
   }
 
   /**
@@ -101,19 +104,12 @@ class LatestAdditionsToCollectionBlock extends BlockBase implements ContainerFac
   public function build() {
     $collection_node = $this->currentRouteMatch->getParameter('node');
     $children_nids = $this->asuUtils->getNodeChildren($collection_node, TRUE, 4);
-
-    $rendered_nodes = $this->renderNodes($children_nids);
-    if (count($children_nids) > 0) {
-      $rendered_nodes .= '<br class="clearfloat"><div><p><strong><a class="btn btn-maroon" href="' .
-         '/collections/' . $collection_node->id() . '/search/?search_api_fulltext=">Explore all items</a></strong></p></div>';
+    if (empty($children_nids)) {
+      return [];
     }
 
-    $return = [
+    $render_array = [
       '#cache' => ['max-age' => 0],
-      '#markup' =>
-      ((count($children_nids) > 0) ?
-        $rendered_nodes :
-        ""),
       'lib' => [
         '#attached' => [
           'library' => [
@@ -122,28 +118,38 @@ class LatestAdditionsToCollectionBlock extends BlockBase implements ContainerFac
         ],
       ],
     ];
-    return $return;
-  }
-
-  /**
-   * Renders the nodes to provide content for the template.
-   *
-   * @param array $nids
-   *   An array of node nid values.
-   *
-   * @return string
-   *   The rendered HTML markup for the nodes as needed for the template.
-   */
-  private function renderNodes(array $nids) {
     $view_builder = $this->entityTypeManager->getViewBuilder('node');
     $storage = $this->entityTypeManager->getStorage('node');
-    $output = [];
-    foreach ($nids as $nid) {
-      $node = $storage->load($nid);
-      $build = $view_builder->view($node, 'collection_browse_teaser');
-      $output[] = \Drupal::service('renderer')->render($build);
+    $items_container = ['#type' => 'container', '#attributes' => ['class' => ['row']]];
+    foreach ($children_nids as $nid) {
+      $items_container[$nid] = $view_builder->view($storage->load($nid), 'collection_browse_teaser');
     }
-    return '<div class="row">' . implode('', $output) . "</div>";
+    $render_array['node_list'] = $items_container;
+    $render_array['see_more'] = [
+      [
+        '#type' => 'html_tag',
+        '#tag' => 'br',
+        '#attributes' => ['class' => ['clearfloat']],
+      ],
+      [
+        '#type' => 'container',
+        [
+          '#type' => 'html_tag',
+          '#tag' => 'strong',
+          'link' => Link::fromTextAndUrl(
+            'Explore all items',
+            Url::fromUri(
+              "base:/collections/{$collection_node->id()}/search",
+              [
+                'query' => ['search_api_fulltext' => ''],
+                'attributes' => ['class' => ['btn', 'btn-maroon']],
+              ]
+            )
+          )->toRenderable(),
+        ],
+      ],
+    ];
+    return $render_array;
   }
 
 }
