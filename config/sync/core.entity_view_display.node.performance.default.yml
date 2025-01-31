@@ -1,0 +1,190 @@
+uuid: b2571996-5c0a-4dcc-8ae3-d7dc16ab1daa
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.node.performance.body
+    - field.field.node.performance.field_date_created
+    - field.field.node.performance.field_genre
+    - field.field.node.performance.field_identifier
+    - field.field.node.performance.field_performer
+    - field.field.node.performance.field_program
+    - field.field.node.performance.field_publisher
+    - field.field.node.performance.field_subject
+    - field.field.node.performance.field_tracks
+    - node.type.performance
+  module:
+    - controlled_access_terms
+    - entity_reference_revisions
+    - text
+    - user
+id: node.performance.default
+targetEntityType: node
+bundle: performance
+mode: default
+content:
+  body:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  display_media_child_thumbnail:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  display_media_entity_view_1:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  display_media_entity_view_2:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  display_media_entity_view_4:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  display_media_service_file:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  display_media_thumbnail:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  display_media_thumbnail_card:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  field_date_created:
+    type: edtf_default
+    label: inline
+    settings:
+      date_separator: dash
+      date_order: big_endian
+      month_format: mm
+      day_format: dd
+      year_format: 'y'
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_genre:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 8
+    region: content
+  field_identifier:
+    type: string
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 9
+    region: content
+  field_performer:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_program:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: pdfjs
+      link: false
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_publisher:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_subject:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 7
+    region: content
+  field_tracks:
+    type: entity_reference_revisions_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  links:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  openseadragon_media_evas_entity_view_1:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  openseadragon_media_evas_entity_view_2:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  openseadragon_media_evas_service_file:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  pdfjs_media_evas_entity_view_1:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  pdfjs_media_evas_entity_view_2:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  pdfjs_media_evas_service_file:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  video_media_evas_original_file:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  video_media_evas_preservation_master:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+  video_media_evas_service_file:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 10
+    region: content
+hidden:
+  langcode: true
+  search_api_excerpt: true

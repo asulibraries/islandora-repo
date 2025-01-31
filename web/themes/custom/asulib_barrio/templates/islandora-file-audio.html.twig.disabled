@@ -15,17 +15,17 @@
 * @ingroup themeable
 */
 #}
-<div id="audioTrack"></div>
-<audio {{ attributes }} controlslist="nodownload">
+{# <audio id="{{ random() }}" {{ attributes }} controlslist="nodownload" data-able-player data-lyrics-mode data-transcript-title='Captions'> #}
+<audio id="{{ random() }}" {{ attributes }} controlslist="nodownload">
   {% for file in files %}
     <source {{ file.source_attributes }} />
     {% if tracks %}
     {% for track in tracks %}
-      <track {{ track.track_attributes }} />
+      <track {{ track.track_attributes }} kind="captions"/>
     {% endfor %}
     {% endif %}
   {% endfor %}
 </audio>
 
-{{ attach_library('islandora_audio/audio') }}
+{{ attach_library('asulib_barrio/able-player') }}
 

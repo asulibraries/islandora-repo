@@ -1,0 +1,29 @@
+uuid: 8c90af85-396f-4b62-b62c-64ae7afb5202
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_composer
+    - paragraphs.paragraphs_type.track
+    - taxonomy.vocabulary.person
+id: paragraph.track.field_composer
+field_name: field_composer
+entity_type: paragraph
+bundle: track
+label: Composer
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      person: person
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

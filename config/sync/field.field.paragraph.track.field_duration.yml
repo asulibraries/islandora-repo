@@ -1,0 +1,21 @@
+uuid: 91e69585-81b3-46b9-bebb-0590c86ebff3
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_duration
+    - paragraphs.paragraphs_type.track
+id: paragraph.track.field_duration
+field_name: field_duration
+entity_type: paragraph
+bundle: track
+label: Duration
+description: "Length of the track in human-readable form (hh:mm:ss) without leading zeros OR '--' for unknown."
+required: false
+translatable: false
+default_value:
+  -
+    value: '--'
+default_value_callback: ''
+settings: {  }
+field_type: string

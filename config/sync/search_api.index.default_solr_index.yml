@@ -372,14 +372,21 @@ field_settings:
         - taxonomy
   field_linked_agent:
     label: Creators
-    datasource_id: 'entity:node'
-    property_path: 'field_linked_agent:entity:name'
+    property_path: aggregated_field
     type: string
+    configuration:
+      type: union
+      fields:
+        - 'entity:node/field_linked_agent:entity:name'
+        - 'entity:node/field_tracks:entity:field_composer:entity:name'
     dependencies:
       config:
         - field.storage.node.field_linked_agent
+        - field.storage.node.field_tracks
+        - field.storage.paragraph.field_composer
       module:
         - taxonomy
+        - paragraphs
   field_linked_agent_tid:
     label: 'Linked Agent'
     datasource_id: 'entity:node'

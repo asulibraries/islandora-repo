@@ -1,0 +1,29 @@
+uuid: a60ed373-aa35-4276-858b-fd4a11993ce0
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_performer
+    - node.type.performance
+    - taxonomy.vocabulary.person
+id: node.performance.field_performer
+field_name: field_performer
+entity_type: node
+bundle: performance
+label: Performer
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      person: person
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

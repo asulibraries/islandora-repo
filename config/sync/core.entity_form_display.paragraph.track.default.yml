@@ -1,0 +1,61 @@
+uuid: 8e9791ca-3443-4c7b-bbc1-77d21d10db83
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.media.performance_track
+    - field.field.paragraph.track.field_audio
+    - field.field.paragraph.track.field_composer
+    - field.field.paragraph.track.field_duration
+    - field.field.paragraph.track.field_title
+    - paragraphs.paragraphs_type.track
+  module:
+    - inline_entity_form
+    - text
+id: paragraph.track.default
+targetEntityType: paragraph
+bundle: track
+mode: default
+content:
+  field_audio:
+    type: inline_entity_form_simple
+    weight: 2
+    region: content
+    settings:
+      form_mode: performance_track
+      override_labels: false
+      label_singular: ''
+      label_plural: ''
+      collapsible: false
+      collapsed: false
+      revision: false
+    third_party_settings: {  }
+  field_composer:
+    type: entity_reference_autocomplete
+    weight: 1
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_duration:
+    type: string_textfield
+    weight: 3
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_title:
+    type: text_textfield
+    weight: 0
+    region: content
+    settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+hidden:
+  created: true
+  status: true

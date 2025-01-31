@@ -1,0 +1,29 @@
+uuid: e7fe09de-9bf3-4572-8167-fcd6370617b4
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_publisher
+    - node.type.performance
+    - taxonomy.vocabulary.corporate_body
+id: node.performance.field_publisher
+field_name: field_publisher
+entity_type: node
+bundle: performance
+label: Publisher
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      corporate_body: corporate_body
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

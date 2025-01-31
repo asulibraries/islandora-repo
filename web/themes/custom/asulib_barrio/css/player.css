@@ -1,0 +1,52 @@
+#player_tracks audio {
+    display: none;
+}
+
+#player_tracks .list-group-item {
+    cursor: pointer;
+}
+
+#player_tracks .list-group-item::before {
+    font-weight: bolder;
+    font-size: 2em;
+    width: 1.75em;
+}
+
+#player_tracks .list-group-item:hover:before,
+#player_tracks .list-group-item:focus:before {
+    width: 1.75em;
+    font: var(--fa-font-solid);
+    font-size: 2em;
+    font-weight: 900;
+    content: '\f144';
+    padding-top: .33em;
+}
+
+#player_tracks .playing {
+    background-color: lightgrey;
+}
+
+#player_tracks .field--type-entity-reference {
+    margin: 0;
+}
+
+#player_bar {
+    /* Hide to start. */
+    display: none;
+    background-color: lightgrey;
+    padding: 1em;
+}
+
+#player_bar_status {
+    /* Hide to start. */
+    display: none;
+}
+
+#player_bar audio {
+    width: 100%;
+    padding: .2em;
+}
+
+#player_bar audio:hover {
+    transform: revert;
+}

@@ -1,0 +1,48 @@
+uuid: 166b6f83-e161-49c4-82d2-da8d110c4545
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_form_mode.media.performance_track
+    - field.field.media.audio.field_access_terms
+    - field.field.media.audio.field_captions
+    - field.field.media.audio.field_file_size
+    - field.field.media.audio.field_legacy_checksum
+    - field.field.media.audio.field_media_audio_file
+    - field.field.media.audio.field_media_of
+    - field.field.media.audio.field_media_use
+    - field.field.media.audio.field_mime_type
+    - field.field.media.audio.field_original_name
+    - field.field.media.audio.field_track
+    - media.type.audio
+  module:
+    - file
+id: media.audio.performance_track
+targetEntityType: media
+bundle: audio
+mode: performance_track
+content:
+  field_media_audio_file:
+    type: file_generic
+    weight: 0
+    region: content
+    settings:
+      progress_indicator: throbber
+    third_party_settings: {  }
+hidden:
+  created: true
+  field_access_terms: true
+  field_captions: true
+  field_file_size: true
+  field_legacy_checksum: true
+  field_media_of: true
+  field_media_use: true
+  field_mime_type: true
+  field_original_name: true
+  field_track: true
+  langcode: true
+  name: true
+  path: true
+  status: true
+  translation: true
+  uid: true
