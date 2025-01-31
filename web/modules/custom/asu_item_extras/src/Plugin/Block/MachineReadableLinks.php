@@ -96,6 +96,13 @@ class MachineReadableLinks extends BlockBase implements ContainerFactoryPluginIn
   /**
    * {@inheritdoc}
    */
+  public function getCacheContexts() {
+    return ['route'];
+  }
+
+  /**
+   * {@inheritdoc}
+   */
   public function build() {
     $node = $this->routeMatch->getParameter('node');
     $node = is_string($node) ? $this->entityTypeManager->getStorage('node')->load($node) : $node;
