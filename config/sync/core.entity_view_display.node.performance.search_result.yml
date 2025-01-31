@@ -1,9 +1,9 @@
-uuid: 329516c0-f5c4-4423-8dcc-f13e943c22a4
+uuid: ce05960d-94dc-4ace-a539-8867a5d11455
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.node.teaser
+    - core.entity_view_mode.node.search_result
     - field.field.node.performance.body
     - field.field.node.performance.field_date_created
     - field.field.node.performance.field_genre
@@ -16,21 +16,12 @@ dependencies:
     - field.field.node.performance.field_tracks
     - node.type.performance
   module:
-    - text
     - user
-id: node.performance.teaser
+id: node.performance.search_result
 targetEntityType: node
 bundle: performance
-mode: teaser
+mode: search_result
 content:
-  body:
-    type: text_summary_or_trimmed
-    label: hidden
-    settings:
-      trim_length: 600
-    third_party_settings: {  }
-    weight: 101
-    region: content
   display_media_child_thumbnail:
     settings: {  }
     third_party_settings: {  }
@@ -65,6 +56,13 @@ content:
     settings: {  }
     third_party_settings: {  }
     weight: 10
+    region: content
+  field_member_of:
+    type: entity_reference_entity_id
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
     region: content
   links:
     settings: {  }
@@ -117,10 +115,10 @@ content:
     weight: 10
     region: content
 hidden:
+  body: true
   field_date_created: true
   field_genre: true
   field_identifier: true
-  field_member_of: true
   field_performer: true
   field_program: true
   field_publisher: true

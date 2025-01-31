@@ -8,12 +8,14 @@ dependencies:
     - field.field.node.performance.field_date_created
     - field.field.node.performance.field_genre
     - field.field.node.performance.field_identifier
+    - field.field.node.performance.field_member_of
     - field.field.node.performance.field_performer
     - field.field.node.performance.field_program
     - field.field.node.performance.field_publisher
     - field.field.node.performance.field_subject
     - field.field.node.performance.field_tracks
     - node.type.performance
+    - workflows.workflow.ingest
   module:
     - content_moderation
     - controlled_access_terms
@@ -66,6 +68,16 @@ content:
     weight: 127
     region: content
     settings:
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_member_of:
+    type: entity_reference_autocomplete
+    weight: 24
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
       size: 60
       placeholder: ''
     third_party_settings: {  }

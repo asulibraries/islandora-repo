@@ -1,8 +1,9 @@
-uuid: b2571996-5c0a-4dcc-8ae3-d7dc16ab1daa
+uuid: 59951f22-7c68-4f57-ad45-7d5450463f58
 langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.node.recent_item_teaser
     - field.field.node.performance.body
     - field.field.node.performance.field_date_created
     - field.field.node.performance.field_genre
@@ -16,21 +17,12 @@ dependencies:
     - node.type.performance
   module:
     - controlled_access_terms
-    - entity_reference_revisions
-    - text
     - user
-id: node.performance.default
+id: node.performance.recent_item_teaser
 targetEntityType: node
 bundle: performance
-mode: default
+mode: recent_item_teaser
 content:
-  body:
-    type: text_default
-    label: hidden
-    settings: {  }
-    third_party_settings: {  }
-    weight: 3
-    region: content
   field_date_created:
     type: edtf_default
     label: inline
@@ -41,72 +33,18 @@ content:
       day_format: dd
       year_format: 'y'
     third_party_settings: {  }
-    weight: 4
+    weight: 0
     region: content
-  field_genre:
+  field_member_of:
     type: entity_reference_label
-    label: inline
-    settings:
-      link: true
-    third_party_settings: {  }
-    weight: 8
-    region: content
-  field_identifier:
-    type: string
-    label: inline
-    settings:
-      link_to_entity: false
-    third_party_settings: {  }
-    weight: 9
-    region: content
-  field_performer:
-    type: entity_reference_label
-    label: inline
-    settings:
-      link: true
-    third_party_settings: {  }
-    weight: 5
-    region: content
-  field_program:
-    type: entity_reference_entity_view
     label: hidden
     settings:
-      view_mode: pdfjs
-      link: false
-    third_party_settings: {  }
-    weight: 2
-    region: content
-  field_publisher:
-    type: entity_reference_label
-    label: inline
-    settings:
       link: true
-    third_party_settings: {  }
-    weight: 6
-    region: content
-  field_subject:
-    type: entity_reference_label
-    label: inline
-    settings:
-      link: true
-    third_party_settings: {  }
-    weight: 7
-    region: content
-  field_tracks:
-    type: entity_reference_revisions_entity_view
-    label: hidden
-    settings:
-      view_mode: default
-      link: ''
     third_party_settings: {  }
     weight: 1
     region: content
-  links:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 0
-    region: content
 hidden:
+  body: true
   display_media_child_thumbnail: true
   display_media_entity_view_1: true
   display_media_entity_view_2: true
@@ -114,8 +52,15 @@ hidden:
   display_media_service_file: true
   display_media_thumbnail: true
   display_media_thumbnail_card: true
-  field_member_of: true
+  field_genre: true
+  field_identifier: true
+  field_performer: true
+  field_program: true
+  field_publisher: true
+  field_subject: true
+  field_tracks: true
   langcode: true
+  links: true
   openseadragon_media_evas_entity_view_1: true
   openseadragon_media_evas_entity_view_2: true
   openseadragon_media_evas_service_file: true
