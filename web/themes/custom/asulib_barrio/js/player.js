@@ -154,7 +154,7 @@ Drupal.behaviors.performance = {
 
       /** Track Play Analytics. **/
       player.addEventListener('timeupdate', (e) => {
-        const playThreshold = 5
+        const playThreshold = 30
         if (player.dataset.analyticsPlayed == 'true') {
           return
         }
@@ -163,7 +163,6 @@ Drupal.behaviors.performance = {
         for (let i = 0; i < playTimes.length; i++) {
           timePlayed += playTimes.end(i) - playTimes.start(i)
           if (timePlayed >= playThreshold) {
-            console.log(`Track played for more than ${playThreshold} seconds.`)
             // We've played it and won't count it again until played set to false.
             player.dataset.analyticsPlayed = true
             fetch(`/asu-item-analytics/track/${currentTrack.dataset.trackId}/played`).then(response => {
