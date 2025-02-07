@@ -11,6 +11,7 @@ dependencies:
     - field.field.node.performance.field_member_of
     - field.field.node.performance.field_program
     - field.field.node.performance.field_subject
+    - field.field.node.performance.field_title
     - field.field.node.performance.field_tracks
     - node.type.performance
   module:
@@ -83,6 +84,14 @@ content:
       link: true
     third_party_settings: {  }
     weight: 6
+    region: content
+  field_title:
+    type: complex_title_formatter
+    label: hidden
+    settings:
+      link: ''
+    third_party_settings: {  }
+    weight: 0
     region: content
   field_tracks:
     type: entity_reference_revisions_entity_view

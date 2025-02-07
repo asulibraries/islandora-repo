@@ -8,121 +8,118 @@ dependencies:
     - field.field.node.performance.field_date_created
     - field.field.node.performance.field_genre
     - field.field.node.performance.field_identifier
+    - field.field.node.performance.field_linked_agent
     - field.field.node.performance.field_member_of
-    - field.field.node.performance.field_performer
     - field.field.node.performance.field_program
-    - field.field.node.performance.field_publisher
     - field.field.node.performance.field_subject
+    - field.field.node.performance.field_title
     - field.field.node.performance.field_tracks
     - node.type.performance
   module:
+    - asu_search
+    - controlled_access_terms
+    - entity_reference_revisions
+    - text
     - user
 id: node.performance.search_result
 targetEntityType: node
 bundle: performance
 mode: search_result
 content:
-  display_media_child_thumbnail:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 10
-    region: content
-  display_media_entity_view_1:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 10
-    region: content
-  display_media_entity_view_2:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 10
-    region: content
-  display_media_entity_view_4:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 10
-    region: content
-  display_media_service_file:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 10
-    region: content
-  display_media_thumbnail:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 10
-    region: content
-  display_media_thumbnail_card:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 10
-    region: content
-  field_member_of:
-    type: entity_reference_entity_id
+  body:
+    type: text_default
     label: hidden
     settings: {  }
     third_party_settings: {  }
+    weight: 6
+    region: content
+  field_date_created:
+    type: edtf_default
+    label: inline
+    settings:
+      date_separator: dash
+      date_order: big_endian
+      month_format: mm
+      day_format: dd
+      year_format: 'y'
+    third_party_settings: {  }
+    weight: 5
+    region: content
+  field_genre:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_identifier:
+    type: string
+    label: inline
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_linked_agent:
+    type: typed_relation_brief
+    label: inline
+    settings:
+      link: '1'
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_member_of:
+    type: entity_reference_label
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
     weight: 0
     region: content
-  links:
-    settings: {  }
+  field_subject:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: true
     third_party_settings: {  }
-    weight: 100
+    weight: 7
     region: content
-  openseadragon_media_evas_entity_view_1:
-    settings: {  }
+  field_title:
+    type: complex_title_formatter
+    label: hidden
+    settings:
+      link: ''
     third_party_settings: {  }
-    weight: 10
+    weight: 1
     region: content
-  openseadragon_media_evas_entity_view_2:
-    settings: {  }
+  field_tracks:
+    type: entity_reference_revisions_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
     third_party_settings: {  }
-    weight: 10
-    region: content
-  openseadragon_media_evas_service_file:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 10
-    region: content
-  pdfjs_media_evas_entity_view_1:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 10
-    region: content
-  pdfjs_media_evas_entity_view_2:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 10
-    region: content
-  pdfjs_media_evas_service_file:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 10
-    region: content
-  video_media_evas_original_file:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 10
-    region: content
-  video_media_evas_preservation_master:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 10
-    region: content
-  video_media_evas_service_file:
-    settings: {  }
-    third_party_settings: {  }
-    weight: 10
+    weight: 8
     region: content
 hidden:
-  body: true
-  field_date_created: true
-  field_genre: true
-  field_identifier: true
-  field_performer: true
+  display_media_child_thumbnail: true
+  display_media_entity_view_1: true
+  display_media_entity_view_2: true
+  display_media_entity_view_4: true
+  display_media_service_file: true
+  display_media_thumbnail: true
+  display_media_thumbnail_card: true
   field_program: true
-  field_publisher: true
-  field_subject: true
-  field_tracks: true
   langcode: true
+  links: true
+  openseadragon_media_evas_entity_view_1: true
+  openseadragon_media_evas_entity_view_2: true
+  openseadragon_media_evas_service_file: true
+  pdfjs_media_evas_entity_view_1: true
+  pdfjs_media_evas_entity_view_2: true
+  pdfjs_media_evas_service_file: true
   search_api_excerpt: true
+  video_media_evas_original_file: true
+  video_media_evas_preservation_master: true
+  video_media_evas_service_file: true
