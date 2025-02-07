@@ -7,6 +7,7 @@ dependencies:
     - field.field.paragraph.track.field_audio
     - field.field.paragraph.track.field_composer
     - field.field.paragraph.track.field_duration
+    - field.field.paragraph.track.field_plays
     - field.field.paragraph.track.field_title
     - paragraphs.paragraphs_type.track
   module:
@@ -41,11 +42,10 @@ content:
       placeholder: ''
     third_party_settings: {  }
   field_duration:
-    type: string_textfield
+    type: number
     weight: 3
     region: content
     settings:
-      size: 60
       placeholder: ''
     third_party_settings: {  }
   field_title:
@@ -58,4 +58,5 @@ content:
     third_party_settings: {  }
 hidden:
   created: true
+  field_plays: true
   status: true
