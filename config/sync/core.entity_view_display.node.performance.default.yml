@@ -7,14 +7,14 @@ dependencies:
     - field.field.node.performance.field_date_created
     - field.field.node.performance.field_genre
     - field.field.node.performance.field_identifier
+    - field.field.node.performance.field_linked_agent
     - field.field.node.performance.field_member_of
-    - field.field.node.performance.field_performer
     - field.field.node.performance.field_program
-    - field.field.node.performance.field_publisher
     - field.field.node.performance.field_subject
     - field.field.node.performance.field_tracks
     - node.type.performance
   module:
+    - asu_search
     - controlled_access_terms
     - entity_reference_revisions
     - text
@@ -41,7 +41,7 @@ content:
       day_format: dd
       year_format: 'y'
     third_party_settings: {  }
-    weight: 4
+    weight: 5
     region: content
   field_genre:
     type: entity_reference_label
@@ -49,7 +49,7 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-    weight: 8
+    weight: 7
     region: content
   field_identifier:
     type: string
@@ -57,15 +57,15 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 9
+    weight: 8
     region: content
-  field_performer:
-    type: entity_reference_label
-    label: inline
+  field_linked_agent:
+    type: typed_relation_brief
+    label: hidden
     settings:
       link: true
     third_party_settings: {  }
-    weight: 5
+    weight: 4
     region: content
   field_program:
     type: entity_reference_entity_view
@@ -76,21 +76,13 @@ content:
     third_party_settings: {  }
     weight: 2
     region: content
-  field_publisher:
-    type: entity_reference_label
-    label: inline
-    settings:
-      link: true
-    third_party_settings: {  }
-    weight: 6
-    region: content
   field_subject:
     type: entity_reference_label
     label: inline
     settings:
       link: true
     third_party_settings: {  }
-    weight: 7
+    weight: 6
     region: content
   field_tracks:
     type: entity_reference_revisions_entity_view

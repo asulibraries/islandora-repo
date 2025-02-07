@@ -1,9 +1,9 @@
-uuid: fa16a85f-87a3-4e1b-9a16-6a766a3dac18
+uuid: f55e2646-7a27-47a6-ab6d-e30fb15d73ab
 langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_form_mode.media.performance_track
+    - core.entity_form_mode.node.sheet_music_child
     - field.field.node.performance.body
     - field.field.node.performance.field_date_created
     - field.field.node.performance.field_genre
@@ -18,67 +18,27 @@ dependencies:
   module:
     - content_moderation
     - controlled_access_terms
-    - inline_entity_form
-    - paragraphs
     - path
-    - text
-id: node.performance.default
+id: node.performance.sheet_music_child
 targetEntityType: node
 bundle: performance
-mode: default
+mode: sheet_music_child
 content:
-  body:
-    type: text_textarea_with_summary
-    weight: 121
-    region: content
-    settings:
-      rows: 9
-      summary_rows: 3
-      placeholder: ''
-      show_summary: false
-    third_party_settings: {  }
   created:
     type: datetime_timestamp
     weight: 10
     region: content
     settings: {  }
     third_party_settings: {  }
-  field_date_created:
-    type: edtf_default
-    weight: 122
-    region: content
-    settings:
-      strict_dates: false
-      intervals: true
-      sets: false
-    third_party_settings: {  }
-  field_genre:
-    type: entity_reference_autocomplete
-    weight: 126
-    region: content
-    settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_identifier:
-    type: string_textfield
-    weight: 127
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
   field_linked_agent:
     type: typed_relation_default
-    weight: 28
+    weight: 25
     region: content
     settings:
       match_operator: CONTAINS
       size: 60
       placeholder: ''
-      match_limit: 50
+      match_limit: 30
     third_party_settings: {  }
   field_member_of:
     type: entity_reference_autocomplete
@@ -89,49 +49,6 @@ content:
       match_limit: 10
       size: 60
       placeholder: ''
-    third_party_settings: {  }
-  field_program:
-    type: inline_entity_form_simple
-    weight: 128
-    region: content
-    settings:
-      form_mode: performance_track
-      override_labels: false
-      label_singular: ''
-      label_plural: ''
-      collapsible: false
-      collapsed: false
-      revision: false
-    third_party_settings: {  }
-  field_subject:
-    type: entity_reference_autocomplete
-    weight: 125
-    region: content
-    settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
-  field_tracks:
-    type: paragraphs
-    weight: 129
-    region: content
-    settings:
-      title: track
-      title_plural: tracks
-      edit_mode: open
-      closed_mode: summary
-      autocollapse: none
-      closed_mode_threshold: 0
-      add_mode: dropdown
-      form_display_mode: default
-      default_paragraph_type: track
-      features:
-        add_above: '0'
-        collapse_edit_all: collapse_edit_all
-        convert: '0'
-        duplicate: duplicate
     third_party_settings: {  }
   langcode:
     type: language_select
@@ -201,4 +118,11 @@ content:
     region: content
     settings: {  }
     third_party_settings: {  }
-hidden: {  }
+hidden:
+  body: true
+  field_date_created: true
+  field_genre: true
+  field_identifier: true
+  field_program: true
+  field_subject: true
+  field_tracks: true

@@ -4,14 +4,14 @@ status: true
 dependencies:
   config:
     - field.field.paragraph.track.field_audio
-    - field.field.paragraph.track.field_composer
     - field.field.paragraph.track.field_duration
+    - field.field.paragraph.track.field_linked_agent
     - field.field.paragraph.track.field_plays
     - field.field.paragraph.track.field_title
     - paragraphs.paragraphs_type.track
   module:
     - asu_item_extras
-    - asu_searchable_entity_formatter
+    - asu_search
     - text
 id: paragraph.track.default
 targetEntityType: paragraph
@@ -27,23 +27,20 @@ content:
     third_party_settings: {  }
     weight: 4
     region: content
-  field_composer:
-    type: searchable_entity_formatter
-    label: hidden
-    settings:
-      search_link: 'search?f[0]'
-      search_var: linked_agents
-      search_term: true
-      link: true
-    third_party_settings: {  }
-    weight: 1
-    region: content
   field_duration:
     type: human_time_duration
     label: hidden
     settings: {  }
     third_party_settings: {  }
     weight: 3
+    region: content
+  field_linked_agent:
+    type: typed_relation_brief
+    label: hidden
+    settings:
+      link: '1'
+    third_party_settings: {  }
+    weight: 1
     region: content
   field_plays:
     type: number_integer

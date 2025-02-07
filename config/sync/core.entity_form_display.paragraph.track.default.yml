@@ -5,12 +5,13 @@ dependencies:
   config:
     - core.entity_form_mode.media.performance_track
     - field.field.paragraph.track.field_audio
-    - field.field.paragraph.track.field_composer
     - field.field.paragraph.track.field_duration
+    - field.field.paragraph.track.field_linked_agent
     - field.field.paragraph.track.field_plays
     - field.field.paragraph.track.field_title
     - paragraphs.paragraphs_type.track
   module:
+    - controlled_access_terms
     - inline_entity_form
     - text
 id: paragraph.track.default
@@ -31,22 +32,22 @@ content:
       collapsed: false
       revision: false
     third_party_settings: {  }
-  field_composer:
-    type: entity_reference_autocomplete
-    weight: 1
-    region: content
-    settings:
-      match_operator: CONTAINS
-      match_limit: 10
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
   field_duration:
     type: number
     weight: 3
     region: content
     settings:
       placeholder: ''
+    third_party_settings: {  }
+  field_linked_agent:
+    type: typed_relation_default
+    weight: 4
+    region: content
+    settings:
+      match_operator: CONTAINS
+      size: 60
+      placeholder: ''
+      match_limit: 10
     third_party_settings: {  }
   field_title:
     type: text_textfield
