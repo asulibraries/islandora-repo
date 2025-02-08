@@ -139,7 +139,7 @@ function asu_default_fields_media_presave(MediaInterface $media) {
  */
 function asu_default_fields_node_presave(NodeInterface $node) {
   // @todo make the supported bundles part of a configuration.
-  if (in_array($node->bundle(), ["collection", "asu_repository_item", 'scholarly_work'])) {
+  if (in_array($node->bundle(), ["collection", "asu_repository_item", 'scholarly_work', 'performance'])) {
     if ($node->hasField('field_title')) {
       $pgs = $node->field_title->getValue();
       if ($pgs) {
