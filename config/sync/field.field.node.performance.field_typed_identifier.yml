@@ -1,0 +1,40 @@
+uuid: feb140d8-a362-4d4e-8f16-ea7570b780dd
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_typed_identifier
+    - node.type.performance
+    - paragraphs.paragraphs_type.typed_identifier
+  module:
+    - entity_reference_revisions
+id: node.performance.field_typed_identifier
+field_name: field_typed_identifier
+entity_type: node
+bundle: performance
+label: Identifier
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      typed_identifier: typed_identifier
+    negate: 0
+    target_bundles_drag_drop:
+      complex_note:
+        weight: 4
+        enabled: false
+      complex_title:
+        weight: 5
+        enabled: false
+      track:
+        weight: 7
+        enabled: false
+      typed_identifier:
+        weight: 6
+        enabled: true
+field_type: entity_reference_revisions

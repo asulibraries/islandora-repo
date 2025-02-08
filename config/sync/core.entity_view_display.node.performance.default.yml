@@ -3,16 +3,21 @@ langcode: en
 status: true
 dependencies:
   config:
-    - field.field.node.performance.body
-    - field.field.node.performance.field_date_created
+    - field.field.node.performance.field_copyright_statement
+    - field.field.node.performance.field_edtf_date_created
     - field.field.node.performance.field_genre
-    - field.field.node.performance.field_identifier
+    - field.field.node.performance.field_handle
     - field.field.node.performance.field_linked_agent
     - field.field.node.performance.field_member_of
+    - field.field.node.performance.field_note_para
     - field.field.node.performance.field_program
+    - field.field.node.performance.field_reuse_permissions
+    - field.field.node.performance.field_rich_description
+    - field.field.node.performance.field_series
     - field.field.node.performance.field_subject
     - field.field.node.performance.field_title
     - field.field.node.performance.field_tracks
+    - field.field.node.performance.field_typed_identifier
     - node.type.performance
   module:
     - asu_search
@@ -25,16 +30,18 @@ targetEntityType: node
 bundle: performance
 mode: default
 content:
-  body:
-    type: text_default
-    label: hidden
-    settings: {  }
+  field_copyright_statement:
+    type: entity_reference_entity_view
+    label: above
+    settings:
+      view_mode: image_as_link
+      link: false
     third_party_settings: {  }
-    weight: 3
+    weight: 18
     region: content
-  field_date_created:
+  field_edtf_date_created:
     type: edtf_default
-    label: inline
+    label: above
     settings:
       date_separator: dash
       date_order: big_endian
@@ -42,7 +49,7 @@ content:
       day_format: dd
       year_format: 'y'
     third_party_settings: {  }
-    weight: 5
+    weight: 9
     region: content
   field_genre:
     type: entity_reference_label
@@ -52,9 +59,9 @@ content:
     third_party_settings: {  }
     weight: 7
     region: content
-  field_identifier:
+  field_handle:
     type: string
-    label: inline
+    label: above
     settings:
       link_to_entity: false
     third_party_settings: {  }
@@ -68,6 +75,15 @@ content:
     third_party_settings: {  }
     weight: 4
     region: content
+  field_note_para:
+    type: entity_reference_revisions_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 16
+    region: content
   field_program:
     type: entity_reference_entity_view
     label: hidden
@@ -76,6 +92,30 @@ content:
       link: false
     third_party_settings: {  }
     weight: 2
+    region: content
+  field_reuse_permissions:
+    type: entity_reference_entity_view
+    label: above
+    settings:
+      view_mode: image_as_link
+      link: false
+    third_party_settings: {  }
+    weight: 19
+    region: content
+  field_rich_description:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 45
+    region: content
+  field_series:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 27
     region: content
   field_subject:
     type: entity_reference_label
@@ -101,6 +141,15 @@ content:
       link: ''
     third_party_settings: {  }
     weight: 1
+    region: content
+  field_typed_identifier:
+    type: entity_reference_revisions_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 17
     region: content
   links:
     settings: {  }
