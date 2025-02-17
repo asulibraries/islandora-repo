@@ -95,9 +95,14 @@
   </header>
   <div{{ content_attributes.addClass('node__content', 'clearfix') }}>
     <div class="row">
+      {% if node.field_tracks is not empty %}
       <div class="col-md"><h2>Tracks</h2>{{ content.field_tracks }}</div>
+      {% endif %}
+      {% if node.field_program is not empty %}
       <div class="col-md"><h2>Program</h2>{{ content.field_program }}</div>
+      {% endif %}
     </div>
+
     <div class="row"><div class="col">
       <h2>Details</h2>
       {{ content | without('field_tracks', 'field_program') }}
