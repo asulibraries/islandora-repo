@@ -51,15 +51,13 @@
   ]
 %}
 {% block paragraph %}
-  <li{{ attributes.addClass(classes) }} data-track-id="{{ paragraph.id() }}" tabindex="0">
     {% block content %}
-      <div class="ms-2 me-auto">
+      <td>
         <div class="fw-bold">{{content.field_title}}</div>
           {{content.field_linked_agent}}
-      </div>
-      <span class="track-plays me-3" data-bs-toggle="tooltip" data-bs-title="Play count">{{content.field_plays}}</span>
-      <span class="track-duration" data-bs-toggle="tooltip" data-bs-title="Track duration">{{content.field_duration}}</span>
-      <div style="display: none">{{content.field_audio}}</div>
+      </td>
+      <td class="track-plays text-end">{{content.field_plays}}</td>
+      <td class="track-duration text-end">{{content.field_duration}}</td>
+      <td class="track-audio" style="display: none">{{content.field_audio}}</td>
     {% endblock %}
-  </li>
 {% endblock paragraph %}

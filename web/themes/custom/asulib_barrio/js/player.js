@@ -72,8 +72,8 @@ Drupal.behaviors.performance = {
         currentTrackIndex = trackList.indexOf(currentTrack);
 
         // Set playing status.
-        document.querySelectorAll('#player_tracks > .playing')?.forEach((playing) => playing.classList.remove('playing'))
-        currentTrack.classList.add('playing')
+        document.querySelectorAll('.player_track.table-active')?.forEach((playing) => playing.classList.remove('table-active'))
+        currentTrack.classList.add('table-active')
 
         // Grab the player, set it to the current track's source,
         // load, and play it.
@@ -116,7 +116,8 @@ Drupal.behaviors.performance = {
       }
 
       // Add the track click event listeners.
-      document.querySelectorAll('#player_tracks > li').forEach(function (e) {
+      document.querySelectorAll('#player_tracks .player_track').forEach(function (e) {
+
         if (e.querySelector('audio')) {
           trackList.push(e);
           e.addEventListener('click', loadTrackEvent)
@@ -198,7 +199,7 @@ Drupal.behaviors.performance = {
               }
               return response.json()
             }).then(data => {
-              currentTrack.querySelector('span.track-plays').textContent = data.play_count.toLocaleString()
+              currentTrack.querySelector('.track-plays').textContent = data.play_count.toLocaleString()
             })
             break
           }

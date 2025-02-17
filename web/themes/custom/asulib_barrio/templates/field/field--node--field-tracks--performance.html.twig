@@ -44,8 +44,8 @@
     'field--name-' ~ field_name|clean_class,
     'field--type-' ~ field_type|clean_class,
     'field--label-' ~ label_display,
-    'list-group',
-    'list-group-numbered'
+    'table',
+    'table-sm'
   ]
 %}
 {%
@@ -55,17 +55,30 @@
   ]
 %}
 
-<ol{{ attributes.addClass(classes) }} id="player_tracks">
-  {% for item in items %}
-    {{ item.content }}
-  {% endfor %}
-</ol>
+<table{{attributes.addClass(classes)}} id="player_tracks">
+  <thead>
+    <tr>
+      <th scope="col" aria-label="Track Number" class="text-center">#</th>
+      <th scope="col">Track</th>
+      <th scope="col" class='text-end'>Plays</th>
+      <th scope="col" class='text-end'>Duration</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in items %}
+      <tr class="player_track" data-track-id="{{ item.content["#paragraph"].id() }}" tabindex="0">
+        <th scope="row" class="text-end">{{ loop.index }}</th>
+        {{ item.content }}
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
 <div id="player_bar" class="row justify-content-evenly" role="group">
   <div id="player_bar_status" class="alert alert-info">
     <div class="spinner-border spinner-border-sm" aria-hidden="true"></div>
     &nbsp;<strong id="player_bar_status_msg" role="status">Buffering track...</strong>
   </div>
-  <audio id="player_bar_player" class="col-sm" controls controlsList="nodownload"></audio>
+  <audio id="player_bar_player" class="col-sm" controls controlslist="nodownload"></audio>
   <div tabindex="0" id="player_bar_prev_track" class="col-sm-1 btn btn-primary">
     <i class="fa fa-step-backward"></i>
   </div>
