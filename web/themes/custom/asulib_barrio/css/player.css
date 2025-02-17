@@ -2,7 +2,7 @@
     display: none;
 }
 
-#player_tracks .list-group-item {
+#player_tracks .list-group-item:has(audio) {
     cursor: pointer;
 }
 
@@ -12,8 +12,8 @@
     width: 1.75em;
 }
 
-#player_tracks .list-group-item:hover:before,
-#player_tracks .list-group-item:focus:before {
+#player_tracks .list-group-item:has(audio):hover:before,
+#player_tracks .list-group-item:has(audio):focus:before {
     width: 1.75em;
     font: var(--fa-font-solid);
     font-size: 2em;

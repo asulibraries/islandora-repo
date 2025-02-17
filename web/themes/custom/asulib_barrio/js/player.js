@@ -16,13 +16,21 @@ Drupal.behaviors.performance = {
        * previous and next elements for the previous and next buttons.
        */
       let currentTrack = null
+      let currentTrackIndex = null;
+      let trackList = [];
 
       /** Next Track Button */
-      function nextTrackListener (e) {
-        if (currentTrack) {
-          const next = currentTrack.nextElementSibling ?? currentTrack.parentElement.firstElementChild
-          loadTrack(next)
+      function nextTrackListener(e) {
+        // Do nothing if we have no tracks or nothing has loaded yet.
+        if (trackList.length < 1 || currentTrackIndex == null) {
+          return;
         }
+
+        // Next if in the list or circle back to the start.
+        let next = currentTrackIndex + 1;
+        currentTrackIndex = (next in trackList) ? next : 0;
+
+        loadTrack(trackList[currentTrackIndex]);
       }
       const playerBarNextTrack = document.getElementById('player_bar_next_track')
       playerBarNextTrack.addEventListener('click', nextTrackListener)
@@ -31,12 +39,19 @@ Drupal.behaviors.performance = {
       })
 
       /** Previous Track Button */
-      function previousTrackListener (e) {
-        if (currentTrack) {
-          const previous = currentTrack.previousElementSibling ?? currentTrack.parentElement.lastElementChild
-          loadTrack(previous)
+      function previousTrackListener(e) {
+        // Do nothing if we have no tracks or nothing has loaded yet.
+        if (trackList.length < 1 || currentTrackIndex == null) {
+          return;
         }
+
+        // Previous if in the list or circle back to the last.
+        let prev = currentTrackIndex - 1;
+        currentTrackIndex = (prev in trackList) ? prev : trackList.length - 1;
+
+        loadTrack(trackList[currentTrackIndex]);
       }
+
       const playerBarPrevTrack = document.getElementById('player_bar_prev_track')
       playerBarPrevTrack.addEventListener('click', previousTrackListener)
       playerBarPrevTrack.addEventListener('keydown', (e) => {
@@ -50,10 +65,11 @@ Drupal.behaviors.performance = {
        * We made it separate from the event listener so it can be
        * called by the next and previous buttons.
        */
-      function loadTrack (targetTrack) {
+      function loadTrack(targetTrack) {
         // Set the current track so the prev/next buttons
         // can reference it.
         currentTrack = targetTrack
+        currentTrackIndex = trackList.indexOf(currentTrack);
 
         // Set playing status.
         document.querySelectorAll('#player_tracks > .playing')?.forEach((playing) => playing.classList.remove('playing'))
@@ -63,9 +79,16 @@ Drupal.behaviors.performance = {
         // load, and play it.
         const player = document.getElementById('player_bar_player')
         player.dataset.analyticsPlayed = 'false'
-        player.innerHTML = currentTrack.querySelector('audio')?.innerHTML
-        player.load()
-        player.play()
+        trackAudio = currentTrack.querySelector('audio');
+        if (trackAudio) {
+          player.innerHTML = trackAudio.innerHTML
+          player.load()
+          player.play()
+        }
+        else {
+          // No audio for the track. Move on to the next track.
+          document.getElementById('player_bar_player').onended();
+        }
       }
 
       /**
@@ -75,7 +98,7 @@ Drupal.behaviors.performance = {
        * Includes a catch for anchor tags within the track item
        * (currently used for composer search links).
        */
-      function loadTrackEvent (e) {
+      function loadTrackEvent(e) {
         // Allow links within the track box to work.
         if (e.target.href) {
           window.location = e.target.href
@@ -89,33 +112,37 @@ Drupal.behaviors.performance = {
           playerBar.style.display = 'flex'
         }
 
-        loadTrack(e.currentTarget)
+        loadTrack(e.currentTarget);
       }
 
       // Add the track click event listeners.
       document.querySelectorAll('#player_tracks > li').forEach(function (e) {
-        e.addEventListener('click', loadTrackEvent)
-        e.addEventListener('keydown', (e) => {
-          if (e.key == 'Enter') { loadTrackEvent(e) }
-        })
+        if (e.querySelector('audio')) {
+          trackList.push(e);
+          e.addEventListener('click', loadTrackEvent)
+          e.addEventListener('keydown', (e) => {
+            if (e.key == 'Enter') { loadTrackEvent(e) }
+          })
+        }
       })
 
       // Auto-advance track.
       document.getElementById('player_bar_player').onended = function () {
         if (currentTrack) {
+          let next = currentTrackIndex + 1;
           switch (playerRepeatMode) {
             case 'none':
-              const next = currentTrack.nextElementSibling
-              if (next) {
-                loadTrack(next)
+              if (next in trackList){
+                loadTrack(trackList[currentTrackIndex]);
               }
-              break
-            case 'all':
-              loadTrack(currentTrack.nextElementSibling ?? currentTrack.parentElement.firstElementChild)
-              break
+              break;
             case 'track':
               loadTrack(currentTrack)
-              break
+              break;
+            case 'all':
+              currentTrackIndex = (next in trackList) ? next : 0;
+              loadTrack(trackList[currentTrackIndex]);
+              break;
           }
         }
       }
@@ -123,7 +150,7 @@ Drupal.behaviors.performance = {
       // Repeat Toggle
       const repeatToggle = document.getElementById('player_bar_repeat')
       let playerRepeatMode = 'none'
-      function toggleRepeatMode () {
+      function toggleRepeatMode() {
         switch (playerRepeatMode) {
           case 'none':
             playerRepeatMode = 'all'
