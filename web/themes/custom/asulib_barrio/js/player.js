@@ -84,6 +84,7 @@ Drupal.behaviors.performance = {
           player.innerHTML = trackAudio.innerHTML
           player.load()
           player.play()
+          player.focus()
         }
         else {
           // No audio for the track. Move on to the next track.

@@ -54,7 +54,7 @@
     label_display == 'visually_hidden' ? 'visually-hidden',
   ]
 %}
-
+<div class="track_scroll_window">
 <table{{attributes.addClass(classes)}} id="player_tracks">
   <thead>
     <tr>
@@ -67,12 +67,13 @@
   <tbody>
     {% for item in items %}
       <tr class="player_track" data-track-id="{{ item.content["#paragraph"].id() }}" tabindex="0">
-        <th scope="row" class="text-center">{{ loop.index }}</th>
+        <td scope="row" class="text-center track_number">{{ loop.index }}</td>
         {{ item.content }}
       </tr>
     {% endfor %}
   </tbody>
 </table>
+</div>
 <div id="player_bar" class="row justify-content-evenly" role="group">
   <div id="player_bar_status" class="alert alert-info">
     <div class="spinner-border spinner-border-sm" aria-hidden="true"></div>

@@ -10,21 +10,23 @@
     margin: 0;
 }
 
-.player_track th {
+.player_track .track_number {
     font-weight: bolder;
     font-size: 2em;
     padding: .25em;
 }
 
-/* #player_tracks tr:has(audio):hover th,
-#player_tracks tr:has(audio):focus th {
-    width: 1.75em;
-    font: var(--fa-font-solid);
-    font-size: 2em;
-    font-weight: 900;
-    content: '\f144';
-    padding-top: .33em;
-} */
+.track_scroll_window {
+    max-height: clamp(5em,800px,800px);
+    overflow-y: auto;
+    /* Provide room for the scroll-bar. */
+    padding-right: 0.5em;
+}
+
+#player_tracks tr:has(audio):hover td,
+#player_tracks tr:has(audio):focus td {
+    background-color: lightgrey;
+}
 
 #player_tracks .playing {
     background-color: lightgrey;
