@@ -134,7 +134,7 @@ Drupal.behaviors.performance = {
           switch (playerRepeatMode) {
             case 'none':
               if (next in trackList){
-                loadTrack(trackList[currentTrackIndex]);
+                loadTrack(trackList[next]);
               }
               break;
             case 'track':
@@ -142,7 +142,7 @@ Drupal.behaviors.performance = {
               break;
             case 'all':
               currentTrackIndex = (next in trackList) ? next : 0;
-              loadTrack(trackList[currentTrackIndex]);
+              loadTrack(trackList[next]);
               break;
           }
         }
@@ -182,7 +182,10 @@ Drupal.behaviors.performance = {
 
       /** Track Play Analytics. **/
       player.addEventListener('timeupdate', (e) => {
-        const playThreshold = 30
+        let playThreshold = 30
+        if (player.duration < playThreshold) {
+          playThreshold = player.duration * 0.75;
+        }
         if (player.dataset.analyticsPlayed == 'true') {
           return
         }
@@ -191,15 +194,19 @@ Drupal.behaviors.performance = {
         for (let i = 0; i < playTimes.length; i++) {
           timePlayed += playTimes.end(i) - playTimes.start(i)
           if (timePlayed >= playThreshold) {
-            // We've played it and won't count it again until played set to false.
+            // We've played it and won't count it again until
+            // played set to false.
+            // We also save a reference to it in case it advances
+            // before the query returns.
+            let trackToUpdate = currentTrack;
             player.dataset.analyticsPlayed = true
-            fetch(`/asu-item-analytics/track/${currentTrack.dataset.trackId}/played`).then(response => {
+            fetch(`/asu-item-analytics/track/${trackToUpdate.dataset.trackId}/played`).then(response => {
               if (!response.ok) {
-                console.error(`Could not increment play count for ${currentTrack.dataset.trackId}`)
+                console.error(`Could not increment play count for ${trackToUpdate.dataset.trackId}`)
               }
               return response.json()
             }).then(data => {
-              currentTrack.querySelector('.track-plays').textContent = data.play_count.toLocaleString()
+              trackToUpdate.querySelector('.track-plays').textContent = data.play_count.toLocaleString()
             })
             break
           }
