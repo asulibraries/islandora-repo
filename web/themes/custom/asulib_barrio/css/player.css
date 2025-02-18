@@ -1,12 +1,13 @@
+/* Tracks */
 .player_track td.track-audio {
     display: none;
 }
 
-.player_track:has(audio) {
-    cursor: pointer;
+.player_track td div {
+    margin: 0;
 }
 
-.player_track td div {
+#player_tracks .field--type-entity-reference {
     margin: 0;
 }
 
@@ -14,13 +15,28 @@
     font-weight: bolder;
     font-size: 2em;
     padding: .25em;
+    position: relative;
 }
 
-.track_scroll_window {
-    max-height: clamp(5em,800px,800px);
-    overflow-y: auto;
-    /* Provide room for the scroll-bar. */
-    padding-right: 0.5em;
+/* Display play icon on track hover/focus. */
+.player_track .track_number i {
+    position:absolute;
+    top: 25%;
+    right: 0;
+    background-color: lightgrey;
+}
+
+.player_track i {
+    opacity: 0;
+}
+
+tr.player_track:has(audio):focus i,
+tr.player_track:has(audio):hover i {
+    opacity: 1;
+}
+tr.player_track:has(audio):focus span,
+tr.player_track:has(audio):hover span {
+    opacity: 0;
 }
 
 #player_tracks tr:has(audio):hover td,
@@ -28,13 +44,19 @@
     background-color: lightgrey;
 }
 
-#player_tracks .playing {
-    background-color: lightgrey;
+.player_track:has(audio) {
+    cursor: pointer;
 }
 
-#player_tracks .field--type-entity-reference {
-    margin: 0;
+/* Constrain tracks to a scrollable window so details are not so far down. */
+.track_scroll_window {
+    max-height: clamp(5em,800px,800px);
+    overflow-y: auto;
+    /* Provide room for the scroll-bar. */
+    padding-right: 0.5em;
 }
+
+/* Player */
 
 #player_bar {
     /* Hide to start. */
