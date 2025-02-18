@@ -67,7 +67,7 @@
   <tbody>
     {% for item in items %}
       <tr class="player_track" data-track-id="{{ item.content["#paragraph"].id() }}" tabindex="0">
-        <th scope="row" class="text-end">{{ loop.index }}</th>
+        <th scope="row" class="text-center">{{ loop.index }}</th>
         {{ item.content }}
       </tr>
     {% endfor %}

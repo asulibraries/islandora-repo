@@ -53,7 +53,7 @@
 {% block paragraph %}
     {% block content %}
       <td>
-        <div class="fw-bold">{{content.field_title}}</div>
+        <div class="fw-bold">{{content.field_title|render|striptags('<em><i><strong>')}}</div>
           {{content.field_linked_agent}}
       </td>
       <td class="track-plays text-end">{{content.field_plays}}</td>
