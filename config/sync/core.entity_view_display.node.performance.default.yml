@@ -37,7 +37,7 @@ content:
       view_mode: image_as_link
       link: false
     third_party_settings: {  }
-    weight: 18
+    weight: 10
     region: content
   field_edtf_date_created:
     type: edtf_default
@@ -49,15 +49,15 @@ content:
       day_format: dd
       year_format: 'y'
     third_party_settings: {  }
-    weight: 9
+    weight: 7
     region: content
   field_genre:
     type: entity_reference_label
-    label: inline
+    label: above
     settings:
       link: true
     third_party_settings: {  }
-    weight: 7
+    weight: 5
     region: content
   field_handle:
     type: string
@@ -65,15 +65,15 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 8
+    weight: 6
     region: content
   field_linked_agent:
     type: typed_relation_brief
-    label: hidden
+    label: above
     settings:
       link: true
     third_party_settings: {  }
-    weight: 4
+    weight: 3
     region: content
   field_note_para:
     type: entity_reference_revisions_entity_view
@@ -82,7 +82,7 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
-    weight: 16
+    weight: 8
     region: content
   field_program:
     type: entity_reference_entity_view
@@ -100,14 +100,14 @@ content:
       view_mode: image_as_link
       link: false
     third_party_settings: {  }
-    weight: 19
+    weight: 11
     region: content
   field_rich_description:
     type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 45
+    weight: 13
     region: content
   field_series:
     type: string
@@ -115,23 +115,15 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 27
+    weight: 12
     region: content
   field_subject:
     type: entity_reference_label
-    label: inline
+    label: above
     settings:
       link: true
     third_party_settings: {  }
-    weight: 6
-    region: content
-  field_title:
-    type: complex_title_formatter
-    label: hidden
-    settings:
-      link: ''
-    third_party_settings: {  }
-    weight: 0
+    weight: 4
     region: content
   field_tracks:
     type: entity_reference_revisions_entity_view
@@ -149,7 +141,7 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
-    weight: 17
+    weight: 9
     region: content
   links:
     settings: {  }
@@ -165,6 +157,7 @@ hidden:
   display_media_thumbnail: true
   display_media_thumbnail_card: true
   field_member_of: true
+  field_title: true
   langcode: true
   openseadragon_media_evas_entity_view_1: true
   openseadragon_media_evas_entity_view_2: true

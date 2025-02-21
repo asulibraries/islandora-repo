@@ -104,7 +104,7 @@ content:
       default_paragraph_type: ''
     third_party_settings: {  }
   field_program:
-    type: inline_entity_form_simple
+    type: inline_entity_form_complex
     weight: 9
     region: content
     settings:
@@ -112,9 +112,15 @@ content:
       override_labels: false
       label_singular: ''
       label_plural: ''
+      allow_new: true
+      allow_existing: false
+      match_operator: CONTAINS
+      match_limit: 10
+      allow_duplicate: false
       collapsible: false
       collapsed: false
       revision: false
+      removed_reference: optional
     third_party_settings: {  }
   field_reuse_permissions:
     type: options_select
