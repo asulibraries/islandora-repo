@@ -6,6 +6,8 @@ dependencies:
     - field.storage.node.field_member_of
     - node.type.collection
     - node.type.performance
+  content:
+    - 'node:collection:92f15f0a-1ae4-42cd-a1b7-e9b690df3853'
 id: node.performance.field_member_of
 field_name: field_member_of
 entity_type: node
@@ -14,7 +16,9 @@ label: 'Primary Member of'
 description: ''
 required: false
 translatable: false
-default_value: {  }
+default_value:
+  -
+    target_uuid: 92f15f0a-1ae4-42cd-a1b7-e9b690df3853
 default_value_callback: ''
 settings:
   handler: unpublished

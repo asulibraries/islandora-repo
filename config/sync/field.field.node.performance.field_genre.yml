@@ -6,6 +6,8 @@ dependencies:
     - field.storage.node.field_genre
     - node.type.performance
     - taxonomy.vocabulary.genre
+  content:
+    - 'taxonomy_term:genre:dfbf5fa1-18d3-43ca-abe8-2e4535c60b14'
 id: node.performance.field_genre
 field_name: field_genre
 entity_type: node
@@ -14,7 +16,9 @@ label: Genre
 description: ''
 required: false
 translatable: false
-default_value: {  }
+default_value:
+  -
+    target_uuid: dfbf5fa1-18d3-43ca-abe8-2e4535c60b14
 default_value_callback: ''
 settings:
   handler: 'default:taxonomy_term'
