@@ -54,6 +54,42 @@ tr.player_track:has(audio):hover span {
     overflow-y: auto;
     /* Provide room for the scroll-bar. */
     padding-right: 0.5em;
+
+    /* Scroll shadow. */
+    background:
+    /* Shadow Cover TOP */
+    linear-gradient(
+      white 30%,
+      rgba(255, 255, 255, 0)
+    ) center top,
+    
+    /* Shadow Cover BOTTOM */
+    linear-gradient(
+      rgba(255, 255, 255, 0), 
+      white 70%
+    ) center bottom,
+    
+    /* Shadow TOP */
+    radial-gradient(
+      farthest-side at 50% 0,
+      rgba(0, 0, 0, 0.33),
+      rgba(0, 0, 0, 0)
+    ) center top,
+    
+    /* Shadow BOTTOM */
+    radial-gradient(
+      farthest-side at 50% 100%,
+      rgba(0, 0, 0, 0.33),
+      rgba(0, 0, 0, 0)
+    ) center bottom;
+  
+    background-repeat: no-repeat;
+    background-size: 100% 60px, 100% 60px, 100% 20px, 100% 20px;
+    background-attachment: local, local, scroll, scroll;
+}
+
+.track_scroll_window td {
+    background: transparent;
 }
 
 /* Player */
