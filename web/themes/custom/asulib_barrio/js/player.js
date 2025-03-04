@@ -85,6 +85,9 @@ Drupal.behaviors.performance = {
           player.load()
           player.play()
           player.focus()
+          if (isTrackOverflowing(currentTrack)){
+            currentTrack.scrollIntoView({behavior: "smooth", block: "center"});
+          }
         }
         else {
           // No audio for the track. Move on to the next track.
@@ -213,6 +216,23 @@ Drupal.behaviors.performance = {
           }
         }
       })
+
+      /** Track Visibility */
+      function isTrackOverflowing(track) {
+        const trackRect = track.getBoundingClientRect();
+        const scrollWindow = document.querySelector('div.track_scroll_window')
+
+        if (!scrollWindow) {
+          return false; // Or handle the case where the element has no scrollWindow
+        }
+
+        const scrollWindowRect = scrollWindow.getBoundingClientRect();
+
+        return  trackRect.top < scrollWindowRect.top ||
+          trackRect.left < scrollWindowRect.left ||
+          trackRect.right > scrollWindowRect.right ||
+          trackRect.bottom > scrollWindowRect.bottom;
+      }
     })
   }
 }
