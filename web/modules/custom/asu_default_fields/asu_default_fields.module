@@ -257,10 +257,6 @@ function asu_default_fields_node_insert(NodeInterface $node) {
   }
   $moduleHandler = \Drupal::service('module_handler');
   if ($moduleHandler->moduleExists('hdl')) {
-    if (!$node->getEntityTypeId() == 'node') {
-      return;
-    }
-
     $handle_field = \Drupal::config('persistent_identifiers.settings')->get('persistent_identifiers_target_field');
     if ($node->hasField($handle_field) && $node->get($handle_field)->isEmpty()) {
       // Only run the minter if the field handle is empty.
