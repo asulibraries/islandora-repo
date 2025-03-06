@@ -78,11 +78,7 @@
 	<div class="card-header card-header-icon">
 		<i class="far fa-file-audio fa-2x"></i>
 		<h3 class="card-title">
-			{% set title = content.field_title[0]|render|trim|slice(0, 60) %}
-			{{ title|raw }}
-			{% if content.field_title[0]|render|length > 60 %}
-				...
-			{% endif %}
+			{{ label }}
 		</h3>
 	</div>
 	<div class="card-body">
