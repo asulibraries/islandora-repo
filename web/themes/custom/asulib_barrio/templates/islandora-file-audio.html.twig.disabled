@@ -1,0 +1,31 @@
+{#
+/**
+* @file
+* Default theme implementation to display the file entity as an audio tag.
+*
+* Available variables:
+* - attributes: An array of HTML attributes, intended to be added to the
+*   audio tag.
+* - files: And array of files to be added as sources for the audio tag. Each
+*   element is an array with the following elements:
+*   - file: The full file object.
+*   - source_attributes: An array of HTML attributes for to be added to the
+*     source tag.
+*
+* @ingroup themeable
+*/
+#}
+{# <audio id="{{ random() }}" {{ attributes }} controlslist="nodownload" data-able-player data-lyrics-mode data-transcript-title='Captions'> #}
+<audio id="{{ random() }}" {{ attributes }} controlslist="nodownload">
+  {% for file in files %}
+    <source {{ file.source_attributes }} />
+    {% if tracks %}
+    {% for track in tracks %}
+      <track {{ track.track_attributes }} kind="captions"/>
+    {% endfor %}
+    {% endif %}
+  {% endfor %}
+</audio>
+
+{{ attach_library('asulib_barrio/able-player') }}
+

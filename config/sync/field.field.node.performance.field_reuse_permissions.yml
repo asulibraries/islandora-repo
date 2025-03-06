@@ -1,0 +1,33 @@
+uuid: 8bd4800c-d87a-4b04-9da0-a9f1789f565a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_reuse_permissions
+    - node.type.performance
+    - taxonomy.vocabulary.reuse_permissions
+  content:
+    - 'taxonomy_term:reuse_permissions:5967065a-2476-45ec-988f-10617c93ac72'
+id: node.performance.field_reuse_permissions
+field_name: field_reuse_permissions
+entity_type: node
+bundle: performance
+label: 'Reuse Permissions'
+description: ''
+required: false
+translatable: false
+default_value:
+  -
+    target_uuid: 5967065a-2476-45ec-988f-10617c93ac72
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      reuse_permissions: reuse_permissions
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

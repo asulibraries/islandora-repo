@@ -1,0 +1,151 @@
+uuid: ce05960d-94dc-4ace-a539-8867a5d11455
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.search_result
+    - field.field.node.performance.field_copyright_statement
+    - field.field.node.performance.field_edtf_date_created
+    - field.field.node.performance.field_genre
+    - field.field.node.performance.field_handle
+    - field.field.node.performance.field_linked_agent
+    - field.field.node.performance.field_member_of
+    - field.field.node.performance.field_note_para
+    - field.field.node.performance.field_program
+    - field.field.node.performance.field_reuse_permissions
+    - field.field.node.performance.field_rich_description
+    - field.field.node.performance.field_series
+    - field.field.node.performance.field_subject
+    - field.field.node.performance.field_title
+    - field.field.node.performance.field_tracks
+    - field.field.node.performance.field_typed_identifier
+    - node.type.performance
+  module:
+    - asu_search
+    - controlled_access_terms
+    - entity_reference_revisions
+    - text
+    - user
+id: node.performance.search_result
+targetEntityType: node
+bundle: performance
+mode: search_result
+content:
+  field_edtf_date_created:
+    type: edtf_default
+    label: visually_hidden
+    settings:
+      date_separator: dash
+      date_order: big_endian
+      month_format: mm
+      day_format: dd
+      year_format: 'y'
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_genre:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_linked_agent:
+    type: typed_relation_brief
+    label: inline
+    settings:
+      link: '1'
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_member_of:
+    type: entity_reference_label
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_note_para:
+    type: entity_reference_revisions_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 8
+    region: content
+  field_rich_description:
+    type: text_default
+    label: above
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_series:
+    type: string
+    label: above
+    settings:
+      link_to_entity: false
+    third_party_settings: {  }
+    weight: 9
+    region: content
+  field_subject:
+    type: entity_reference_label
+    label: inline
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 6
+    region: content
+  field_title:
+    type: complex_title_formatter
+    label: hidden
+    settings:
+      link: ''
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_tracks:
+    type: entity_reference_revisions_entity_view
+    label: hidden
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 7
+    region: content
+  field_typed_identifier:
+    type: entity_reference_revisions_entity_view
+    label: above
+    settings:
+      view_mode: default
+      link: ''
+    third_party_settings: {  }
+    weight: 10
+    region: content
+hidden:
+  display_media_child_thumbnail: true
+  display_media_entity_view_1: true
+  display_media_entity_view_2: true
+  display_media_entity_view_4: true
+  display_media_service_file: true
+  display_media_thumbnail: true
+  display_media_thumbnail_card: true
+  field_copyright_statement: true
+  field_handle: true
+  field_program: true
+  field_reuse_permissions: true
+  langcode: true
+  links: true
+  openseadragon_media_evas_entity_view_1: true
+  openseadragon_media_evas_entity_view_2: true
+  openseadragon_media_evas_service_file: true
+  pdfjs_media_evas_entity_view_1: true
+  pdfjs_media_evas_entity_view_2: true
+  pdfjs_media_evas_service_file: true
+  search_api_excerpt: true
+  video_media_evas_original_file: true
+  video_media_evas_preservation_master: true
+  video_media_evas_service_file: true

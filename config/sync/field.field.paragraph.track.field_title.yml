@@ -1,0 +1,24 @@
+uuid: bb07fe52-6ef4-45bc-9fe3-42c5394db93f
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_title
+    - filter.format.basic_html
+    - paragraphs.paragraphs_type.track
+  module:
+    - text
+id: paragraph.track.field_title
+field_name: field_title
+entity_type: paragraph
+bundle: track
+label: Title
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  allowed_formats:
+    - basic_html
+field_type: text

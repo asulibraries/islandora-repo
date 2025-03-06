@@ -1,0 +1,73 @@
+uuid: 59951f22-7c68-4f57-ad45-7d5450463f58
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.recent_item_teaser
+    - field.field.node.performance.body
+    - field.field.node.performance.field_date_created
+    - field.field.node.performance.field_genre
+    - field.field.node.performance.field_identifier
+    - field.field.node.performance.field_member_of
+    - field.field.node.performance.field_performer
+    - field.field.node.performance.field_program
+    - field.field.node.performance.field_publisher
+    - field.field.node.performance.field_subject
+    - field.field.node.performance.field_tracks
+    - node.type.performance
+  module:
+    - controlled_access_terms
+    - user
+id: node.performance.recent_item_teaser
+targetEntityType: node
+bundle: performance
+mode: recent_item_teaser
+content:
+  field_date_created:
+    type: edtf_default
+    label: inline
+    settings:
+      date_separator: dash
+      date_order: big_endian
+      month_format: mm
+      day_format: dd
+      year_format: 'y'
+    third_party_settings: {  }
+    weight: 0
+    region: content
+  field_member_of:
+    type: entity_reference_label
+    label: hidden
+    settings:
+      link: true
+    third_party_settings: {  }
+    weight: 1
+    region: content
+hidden:
+  body: true
+  display_media_child_thumbnail: true
+  display_media_entity_view_1: true
+  display_media_entity_view_2: true
+  display_media_entity_view_4: true
+  display_media_service_file: true
+  display_media_thumbnail: true
+  display_media_thumbnail_card: true
+  field_genre: true
+  field_identifier: true
+  field_performer: true
+  field_program: true
+  field_publisher: true
+  field_subject: true
+  field_tracks: true
+  langcode: true
+  links: true
+  openseadragon_media_evas_entity_view_1: true
+  openseadragon_media_evas_entity_view_2: true
+  openseadragon_media_evas_service_file: true
+  pdfjs_media_evas_entity_view_1: true
+  pdfjs_media_evas_entity_view_2: true
+  pdfjs_media_evas_service_file: true
+  search_api_excerpt: true
+  video_media_evas_original_file: true
+  video_media_evas_preservation_master: true
+  video_media_evas_service_file: true

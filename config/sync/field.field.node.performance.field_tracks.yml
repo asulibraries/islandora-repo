@@ -1,0 +1,31 @@
+uuid: 608ceec3-3bdc-4700-8169-c00084abb3e9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_tracks
+    - node.type.performance
+    - paragraphs.paragraphs_type.track
+  module:
+    - entity_reference_revisions
+id: node.performance.field_tracks
+field_name: field_tracks
+entity_type: node
+bundle: performance
+label: Tracks
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      track: track
+    negate: 0
+    target_bundles_drag_drop:
+      track:
+        weight: 2
+        enabled: true
+field_type: entity_reference_revisions

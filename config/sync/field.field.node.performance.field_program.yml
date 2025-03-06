@@ -1,0 +1,29 @@
+uuid: 96d69ce5-5c9b-4891-9684-80ba5414b8a4
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_program
+    - media.type.document
+    - node.type.performance
+id: node.performance.field_program
+field_name: field_program
+entity_type: node
+bundle: performance
+label: Program
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:media'
+  handler_settings:
+    target_bundles:
+      document: document
+    sort:
+      field: _none
+      direction: ASC
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

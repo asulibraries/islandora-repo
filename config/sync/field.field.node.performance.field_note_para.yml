@@ -1,0 +1,40 @@
+uuid: 98dc645a-96d0-4775-aff0-ac26b72483eb
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_note_para
+    - node.type.performance
+    - paragraphs.paragraphs_type.complex_note
+  module:
+    - entity_reference_revisions
+id: node.performance.field_note_para
+field_name: field_note_para
+entity_type: node
+bundle: performance
+label: Note
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:paragraph'
+  handler_settings:
+    target_bundles:
+      complex_note: complex_note
+    negate: 0
+    target_bundles_drag_drop:
+      complex_note:
+        weight: 3
+        enabled: true
+      complex_title:
+        weight: 4
+        enabled: false
+      track:
+        weight: 7
+        enabled: false
+      typed_identifier:
+        weight: 8
+        enabled: false
+field_type: entity_reference_revisions
