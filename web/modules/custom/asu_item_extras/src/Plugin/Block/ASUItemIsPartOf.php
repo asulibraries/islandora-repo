@@ -38,10 +38,12 @@ class ASUItemIsPartOf extends BlockBase implements ContainerFactoryPluginInterfa
    * @param \Drupal\Core\Render\Renderer $renderer
    *   The renderer class.
    */
-  public function __construct(array $configuration,
+  public function __construct(
+    array $configuration,
     $plugin_id,
     $plugin_definition,
-    Renderer $renderer) {
+    Renderer $renderer,
+  ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->renderer = $renderer;
   }
@@ -53,7 +55,8 @@ class ASUItemIsPartOf extends BlockBase implements ContainerFactoryPluginInterfa
     ContainerInterface $container,
     array $configuration,
     $plugin_id,
-    $plugin_definition) {
+    $plugin_definition,
+  ) {
     return new static(
       $configuration,
       $plugin_id,
@@ -83,7 +86,10 @@ class ASUItemIsPartOf extends BlockBase implements ContainerFactoryPluginInterfa
           $parents_output[] = $this->makeLinkAndLabel($this->t('Part of'), $is_metadata_page, $complex_object_parent);
           $direct_complex_obj_parent = $complex_object_parent->get('field_member_of')->entity;
           if (is_object($direct_complex_obj_parent)) {
-            $additional_complex_obj_parents = $complex_object_parent->get('field_additional_memberships')->referencedEntities();
+            $additional_complex_obj_parents = [];
+            if ($complex_object_parent->hasField('field_additional_memberships')) {
+              $additional_complex_obj_parents = $complex_object_parent->get('field_additional_memberships')->referencedEntities();
+            }
             $parents_output[] = $this->makeLinkAndLabel(
               $this->t('Collections this item is in'),
               $is_metadata_page,
@@ -130,7 +136,7 @@ class ASUItemIsPartOf extends BlockBase implements ContainerFactoryPluginInterfa
    * @return string
    *   HTML that represents the label div and the link to the provided node/s.
    */
-  private function makeLinkAndLabel($label_text, $is_metadata_page, $parent_node, array $additional_parents = NULL) {
+  private function makeLinkAndLabel($label_text, $is_metadata_page, $parent_node, ?array $additional_parents = NULL) {
     $html_of_links[] = $this->getHtmlOfEntity($parent_node);
     if (is_array($additional_parents)) {
       foreach ($additional_parents as $additional_parent) {
