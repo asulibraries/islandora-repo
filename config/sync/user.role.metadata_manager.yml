@@ -14,6 +14,7 @@ dependencies:
     - media.type.video
     - node.type.asu_repository_item
     - node.type.collection
+    - node.type.performance
     - node.type.scholarly_work
     - taxonomy.vocabulary.collaborating_institutions
     - taxonomy.vocabulary.conference
@@ -65,6 +66,7 @@ permissions:
   - 'create field_keyword'
   - 'create field_local'
   - 'create field_pid'
+  - 'create performance content'
   - 'create terms in collaborating_institutions'
   - 'create terms in conference'
   - 'create terms in corporate_body'
@@ -111,6 +113,7 @@ permissions:
   - 'edit any file media'
   - 'edit any fits_technical_metadata media'
   - 'edit any image media'
+  - 'edit any performance content'
   - 'edit any remote_video media'
   - 'edit any scholarly_work content'
   - 'edit any video media'
@@ -139,6 +142,7 @@ permissions:
   - 'replace files'
   - 'revert asu_repository_item revisions'
   - 'revert collection revisions'
+  - 'revert performance revisions'
   - 'revert scholarly_work revisions'
   - 'update any media'
   - 'use editorial transition archive'
@@ -166,4 +170,5 @@ permissions:
   - 'view own field_local'
   - 'view own field_pid'
   - 'view own unpublished content'
+  - 'view performance revisions'
   - 'view scholarly_work revisions'

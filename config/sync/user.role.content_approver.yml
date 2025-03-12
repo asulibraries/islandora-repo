@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - node.type.collection
+    - node.type.performance
     - workflows.workflow.ingest
   module:
     - content_moderation
@@ -28,6 +29,7 @@ permissions:
   - 'access workbench'
   - 'bypass paragraphs type content access'
   - 'create collection content'
+  - 'create performance content'
   - 'delete own files'
   - 'use ingest transition create_new_draft'
   - 'use ingest transition decline_submission'

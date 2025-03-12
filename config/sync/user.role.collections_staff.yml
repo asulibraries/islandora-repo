@@ -4,6 +4,7 @@ status: true
 dependencies:
   config:
     - node.type.collection
+    - node.type.performance
     - workflows.workflow.ingest
   module:
     - content_moderation
@@ -25,6 +26,7 @@ permissions:
   - 'bypass paragraphs type content access'
   - 'create collection content'
   - 'create collection_group group'
+  - 'create performance content'
   - 'delete own files'
   - 'edit any collection content'
   - 'edit own collection content'
