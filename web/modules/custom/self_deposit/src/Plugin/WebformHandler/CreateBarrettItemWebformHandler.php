@@ -316,8 +316,11 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
       $user->set('field_honors', TRUE);
       $user->set('field_emplid', $values['student_id']);
       $user->save();
-      \Drupal::moduleHandler()->invoke('asu_permissions', 'user_insert', [$user]);
     }
+    // Update user information and reload.
+    \Drupal::moduleHandler()->invoke('asu_permissions', 'user_insert', [$user]);
+    $user = user_load_by_name($values['student_asurite']);
+
     $node = $this->createNode($webform_submission, $values, $values['item_title'], $copyright_term, $perm_term, $member_of, $user);
     $files = $values['file'];
     $file_repository = \Drupal::service('file.repository');
