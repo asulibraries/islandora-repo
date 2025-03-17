@@ -18,6 +18,7 @@ dependencies:
     - field.field.node.scholarly_work.field_language
     - field.field.node.scholarly_work.field_linked_agent
     - field.field.node.scholarly_work.field_member_of
+    - field.field.node.scholarly_work.field_name_title_subject
     - field.field.node.scholarly_work.field_note_para
     - field.field.node.scholarly_work.field_open_access
     - field.field.node.scholarly_work.field_peer_reviewed
@@ -33,9 +34,11 @@ dependencies:
     - field.field.node.scholarly_work.field_subject
     - field.field.node.scholarly_work.field_table_of_contents
     - field.field.node.scholarly_work.field_title
+    - field.field.node.scholarly_work.field_title_subject
     - field.field.node.scholarly_work.field_typed_identifier
     - field.field.node.scholarly_work.field_work_products
     - node.type.scholarly_work
+    - workflows.workflow.ingest
   module:
     - content_moderation
     - controlled_access_terms
@@ -116,6 +119,8 @@ third_party_settings:
       children:
         - field_subject
         - field_geographic_subject
+        - field_title_subject
+        - field_name_title_subject
         - field_keyword
       label: Subjects
       region: content
@@ -197,7 +202,7 @@ mode: default
 content:
   created:
     type: datetime_timestamp
-    weight: 109
+    weight: 43
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -236,7 +241,7 @@ content:
     third_party_settings: {  }
   field_edtf_date_created:
     type: edtf_default
-    weight: 7
+    weight: 6
     region: content
     settings:
       strict_dates: false
@@ -245,13 +250,13 @@ content:
     third_party_settings: {  }
   field_embargo_release_date:
     type: datetime_default
-    weight: 11
+    weight: 12
     region: content
     settings: {  }
     third_party_settings: {  }
   field_extent:
     type: string_textfield
-    weight: 8
+    weight: 7
     region: content
     settings:
       size: 60
@@ -288,7 +293,7 @@ content:
     third_party_settings: {  }
   field_handle:
     type: string_textfield
-    weight: 105
+    weight: 39
     region: content
     settings:
       size: 60
@@ -296,7 +301,7 @@ content:
     third_party_settings: {  }
   field_keyword:
     type: entity_reference_autocomplete
-    weight: 7
+    weight: 8
     region: content
     settings:
       match_operator: CONTAINS
@@ -334,9 +339,28 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+  field_name_title_subject:
+    type: inline_entity_form_complex
+    weight: 7
+    region: content
+    settings:
+      form_mode: simple_taxo_create
+      override_labels: true
+      label_singular: 'name title subject'
+      label_plural: 'name title subjects'
+      allow_new: true
+      allow_existing: true
+      match_operator: CONTAINS
+      match_limit: 10
+      allow_duplicate: false
+      collapsible: false
+      collapsed: false
+      revision: false
+      removed_reference: keep
+    third_party_settings: {  }
   field_note_para:
     type: entity_reference_paragraphs
-    weight: 11
+    weight: 12
     region: content
     settings:
       title: Paragraph
@@ -348,21 +372,21 @@ content:
     third_party_settings: {  }
   field_open_access:
     type: boolean_checkbox
-    weight: 9
+    weight: 10
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   field_peer_reviewed:
     type: boolean_checkbox
-    weight: 10
+    weight: 11
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   field_pid:
     type: string_textfield
-    weight: 104
+    weight: 38
     region: content
     settings:
       size: 60
@@ -388,7 +412,7 @@ content:
     third_party_settings: {  }
   field_preferred_citation:
     type: text_textarea
-    weight: 9
+    weight: 8
     region: content
     settings:
       rows: 5
@@ -474,6 +498,25 @@ content:
       collapsed: false
       revision: false
     third_party_settings: {  }
+  field_title_subject:
+    type: inline_entity_form_complex
+    weight: 6
+    region: content
+    settings:
+      form_mode: simple_taxo_create
+      override_labels: true
+      label_singular: 'title subject'
+      label_plural: 'title subjects'
+      allow_new: true
+      allow_existing: true
+      match_operator: CONTAINS
+      match_limit: 10
+      allow_duplicate: false
+      collapsible: false
+      collapsed: false
+      revision: false
+      removed_reference: keep
+    third_party_settings: {  }
   field_typed_identifier:
     type: entity_reference_paragraphs
     weight: 5
@@ -514,19 +557,19 @@ content:
     third_party_settings: {  }
   moderation_state:
     type: moderation_state_default
-    weight: 110
+    weight: 44
     region: content
     settings: {  }
     third_party_settings: {  }
   path:
     type: path
-    weight: 112
+    weight: 46
     region: content
     settings: {  }
     third_party_settings: {  }
   promote:
     type: boolean_checkbox
-    weight: 108
+    weight: 42
     region: content
     settings:
       display_label: true
@@ -538,21 +581,21 @@ content:
     third_party_settings: {  }
   status:
     type: boolean_checkbox
-    weight: 113
+    weight: 47
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   sticky:
     type: boolean_checkbox
-    weight: 111
+    weight: 45
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   uid:
     type: entity_reference_autocomplete
-    weight: 107
+    weight: 40
     region: content
     settings:
       match_operator: CONTAINS
