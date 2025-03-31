@@ -31,6 +31,7 @@ dependencies:
     - field.field.node.scholarly_work.field_series
     - field.field.node.scholarly_work.field_statement_responsibility
     - field.field.node.scholarly_work.field_subject
+    - field.field.node.scholarly_work.field_subjects_name
     - field.field.node.scholarly_work.field_table_of_contents
     - field.field.node.scholarly_work.field_title
     - field.field.node.scholarly_work.field_title_subject
@@ -108,6 +109,7 @@ third_party_settings:
         - field_subject
         - field_title_subject
         - field_name_title_subject
+        - field_subjects_name
         - field_resource_type
         - field_language
         - field_additional_memberships
@@ -144,7 +146,7 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-    weight: 12
+    weight: 13
     region: content
   field_download_count:
     settings: {  }
@@ -198,7 +200,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 15
+    weight: 13
     region: content
   field_genre:
     type: searchable_entity_formatter
@@ -209,7 +211,7 @@ content:
       search_term: false
       link: true
     third_party_settings: {  }
-    weight: 16
+    weight: 15
     region: content
   field_geographic_subject:
     type: searchable_entity_formatter
@@ -220,7 +222,7 @@ content:
       search_term: false
       link: true
     third_party_settings: {  }
-    weight: 17
+    weight: 16
     region: content
   field_keyword:
     type: entity_reference_label
@@ -228,7 +230,7 @@ content:
     settings:
       link: false
     third_party_settings: {  }
-    weight: 18
+    weight: 17
     region: content
   field_language:
     type: entity_reference_label
@@ -236,7 +238,7 @@ content:
     settings:
       link: false
     third_party_settings: {  }
-    weight: 11
+    weight: 12
     region: content
   field_linked_agent:
     type: typed_relation_brief
@@ -264,27 +266,27 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
-    weight: 13
+    weight: 14
     region: content
   field_open_access:
     type: boolean
     label: above
     settings:
-      format: custom
+      format: default
       format_custom_false: ''
       format_custom_true: 'Open Access'
     third_party_settings: {  }
-    weight: 19
+    weight: 18
     region: content
   field_peer_reviewed:
     type: boolean
     label: above
     settings:
-      format: custom
+      format: default
       format_custom_false: ''
       format_custom_true: Peer-reviewed
     third_party_settings: {  }
-    weight: 20
+    weight: 19
     region: content
   field_place_of_publication_code:
     type: entity_reference_label
@@ -292,7 +294,7 @@ content:
     settings:
       link: false
     third_party_settings: {  }
-    weight: 21
+    weight: 20
     region: content
   field_place_published:
     type: string
@@ -300,7 +302,7 @@ content:
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 22
+    weight: 21
     region: content
   field_preferred_citation:
     type: text_default
@@ -318,7 +320,7 @@ content:
       search_term: true
       link: true
     third_party_settings: {  }
-    weight: 10
+    weight: 11
     region: content
   field_rich_description:
     type: text_default
@@ -353,12 +355,23 @@ content:
     third_party_settings: {  }
     weight: 7
     region: content
+  field_subjects_name:
+    type: searchable_entity_formatter
+    label: above
+    settings:
+      search_link: 'search?f[0]'
+      search_var: all_subjects
+      search_term: false
+      link: true
+    third_party_settings: {  }
+    weight: 10
+    region: content
   field_table_of_contents:
     type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 24
+    weight: 23
     region: content
   field_title_subject:
     type: searchable_entity_formatter
@@ -378,7 +391,7 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
-    weight: 23
+    weight: 22
     region: content
   langcode:
     type: language

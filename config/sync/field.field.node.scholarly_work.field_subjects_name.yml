@@ -1,0 +1,37 @@
+uuid: 6e8cab01-232e-4a10-b324-5dd4cf3f6a9a
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_subjects_name
+    - node.type.scholarly_work
+    - taxonomy.vocabulary.conference
+    - taxonomy.vocabulary.corporate_body
+    - taxonomy.vocabulary.family
+    - taxonomy.vocabulary.geo_location
+    - taxonomy.vocabulary.person
+id: node.scholarly_work.field_subjects_name
+field_name: field_subjects_name
+entity_type: node
+bundle: scholarly_work
+label: 'Name Subject'
+description: 'If your name subject, is not found, add it to either the <a href="/admin/structure/taxonomy/manage/conference/add" target="_blank">conference</a>, <a href="/admin/structure/taxonomy/manage/corporate_body/add" target="_blank">corporate body</a>, <a href="/admin/structure/taxonomy/manage/family/add" target="_blank">family</a>, or <a href="/admin/structure/taxonomy/manage/person/add" target="_blank">person</a> taxonomies.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      conference: conference
+      corporate_body: corporate_body
+      family: family
+      geo_location: geo_location
+      person: person
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: corporate_body
+field_type: entity_reference

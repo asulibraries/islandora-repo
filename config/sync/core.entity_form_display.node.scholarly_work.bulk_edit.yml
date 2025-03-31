@@ -32,6 +32,7 @@ dependencies:
     - field.field.node.scholarly_work.field_series
     - field.field.node.scholarly_work.field_statement_responsibility
     - field.field.node.scholarly_work.field_subject
+    - field.field.node.scholarly_work.field_subjects_name
     - field.field.node.scholarly_work.field_table_of_contents
     - field.field.node.scholarly_work.field_title
     - field.field.node.scholarly_work.field_title_subject
@@ -65,6 +66,16 @@ content:
   field_name_title_subject:
     type: entity_reference_autocomplete
     weight: 11
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_subjects_name:
+    type: entity_reference_autocomplete
+    weight: 9
     region: content
     settings:
       match_operator: CONTAINS
