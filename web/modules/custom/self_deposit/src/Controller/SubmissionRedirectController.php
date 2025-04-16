@@ -1,6 +1,6 @@
 <?php
 
-namespace Drupal\share_your_work\Controller;
+namespace Drupal\self_deposit\Controller;
 
 use Drupal\Core\Config\Config;
 use Drupal\Core\Controller\ControllerBase;
@@ -52,7 +52,7 @@ final class SubmissionRedirectController extends ControllerBase {
   public static function create(ContainerInterface $container): self {
     return new self(
       $container->get('current_user'),
-      $container->get('config.factory')->get('submission_redirect.settings'),
+      $container->get('config.factory')->get('self_deposit.selfdepositsettings'),
       $container->get('url_generator'),
     );
   }
@@ -75,7 +75,7 @@ final class SubmissionRedirectController extends ControllerBase {
     // If authorized, redirect to configured webform.
     $webform = Webform::load($this->submissionRedirectConfig->get('target_webform'));
     if ($webform && $webform->access('submission_create', $this->currentUser)) {
-      return new RedirectResponse($webform->toUrl->toString());
+      return new RedirectResponse($webform->toUrl()->toString());
     }
 
     // Redirect to `/form/askalib-ticket`.
