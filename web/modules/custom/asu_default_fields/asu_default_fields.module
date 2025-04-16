@@ -6,6 +6,7 @@
  */
 
 use Drupal\Core\Entity\EntityInterface;
+use Drupal\Core\File\Exception\FileNotExistsException;
 use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\file\Plugin\Field\FieldType\FileFieldItemList;
@@ -93,7 +94,20 @@ function asu_default_fields_update_file_schema(EntityInterface $entity) {
             // Only write out the first line of the exception,
             // which is usually good enough, so we don't have
             // to deal with commenting out each line.
-            $this->output->writeln("# Failed to copy file {$file->getFileUri()}: " . rtrim(strtok($e->getMessage(), PHP_EOL)));
+            \Drupal::logger('asu_default_fields')->warning("Failed to move file '@uri' to '@new_uri' for Media '@label': @message", [
+              '@uri' => $file->getFileUri(),
+              '@new_uri' => $fileTargetUri,
+              '@label' => $entity->label(),
+              '@message' => rtrim(strtok($e->getMessage(), PHP_EOL)),
+            ]);
+          }
+          catch (FileNotExistsException $e) {
+            \Drupal::logger('asu_default_fields')->warning("Failed to move non-existent file '@uri' to '@new_uri' for Media '@label': @message", [
+              '@uri' => $file->getFileUri(),
+              '@new_uri' => $fileTargetUri,
+              '@label' => $entity->label(),
+              '@message' => rtrim(strtok($e->getMessage(), PHP_EOL)),
+            ]);
           }
         }
       }
