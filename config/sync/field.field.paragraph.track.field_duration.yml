@@ -1,0 +1,23 @@
+uuid: 1d2b37b9-9b95-4760-8ed1-f576057475e6
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_duration
+    - paragraphs.paragraphs_type.track
+id: paragraph.track.field_duration
+field_name: field_duration
+entity_type: paragraph
+bundle: track
+label: Duration
+description: 'Length of audio track in seconds.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

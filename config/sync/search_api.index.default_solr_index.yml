@@ -3,6 +3,7 @@ langcode: en
 status: true
 dependencies:
   config:
+    - core.entity_view_mode.node.search_result
     - field.storage.node.field_additional_memberships
     - field.storage.node.field_complex_object_child
     - field.storage.node.field_copyright_statement
@@ -372,14 +373,13 @@ field_settings:
         - taxonomy
   field_linked_agent:
     label: Creators
-    datasource_id: 'entity:node'
-    property_path: 'field_linked_agent:entity:name'
+    property_path: aggregated_field
     type: string
-    dependencies:
-      config:
-        - field.storage.node.field_linked_agent
-      module:
-        - taxonomy
+    configuration:
+      type: union
+      fields:
+        - 'entity:node/field_linked_agent:entity:name'
+        - 'entity:node/field_tracks:entity:field_linked_agent:entity:name'
   field_linked_agent_tid:
     label: 'Linked Agent'
     datasource_id: 'entity:node'
@@ -625,11 +625,13 @@ field_settings:
         - anonymous
       view_mode:
         'entity:node':
+          ':default': default
           article: ''
-          asu_repository_item: ''
-          collection: ''
+          asu_repository_item: search_result
+          collection: search_result
           page: ''
-          scholarly_work: ''
+          performance: search_result
+          scholarly_work: search_result
   resource_type_name:
     label: 'Resource Type'
     datasource_id: 'entity:node'
@@ -770,6 +772,7 @@ tracker_settings:
     indexing_order: fifo
 options:
   cron_limit: 50
+  delete_on_fail: true
   index_directly: true
   track_changes_in_references: true
 server: default_solr_server

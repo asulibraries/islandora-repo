@@ -75,6 +75,9 @@ class WorkbenchEntityReferenceFormatter extends EntityReferenceLabelFormatter {
     $subfield_delimiter = $this->getSetting('subfield_delimiter');
     foreach ($items as $delta => $item) {
       $term = $item->entity;
+      if (!is_array($elements[$delta])) {
+        continue;
+      }
       // Even if the config is to output links, this is not ever intended
       // for CSV output of these.
       if (array_key_exists("#title", $elements[$delta])) {

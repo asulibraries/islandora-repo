@@ -1,0 +1,62 @@
+uuid: 0abea2b2-6a7d-4be0-b69e-dc14f25cfcc9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.field.paragraph.track.field_audio
+    - field.field.paragraph.track.field_duration
+    - field.field.paragraph.track.field_linked_agent
+    - field.field.paragraph.track.field_plays
+    - field.field.paragraph.track.field_title
+    - paragraphs.paragraphs_type.track
+  module:
+    - asu_item_extras
+    - asu_search
+    - text
+id: paragraph.track.default
+targetEntityType: paragraph
+bundle: track
+mode: default
+content:
+  field_audio:
+    type: entity_reference_entity_view
+    label: hidden
+    settings:
+      view_mode: source
+      link: false
+    third_party_settings: {  }
+    weight: 4
+    region: content
+  field_duration:
+    type: human_time_duration
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
+    region: content
+  field_linked_agent:
+    type: typed_relation_brief
+    label: hidden
+    settings:
+      link: '1'
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  field_plays:
+    type: number_integer
+    label: hidden
+    settings:
+      thousand_separator: ','
+      prefix_suffix: true
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  field_title:
+    type: text_default
+    label: hidden
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  search_api_excerpt: true

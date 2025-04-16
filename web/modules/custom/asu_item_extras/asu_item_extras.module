@@ -6,7 +6,9 @@
  */
 
 use Drupal\Core\Form\FormStateInterface;
+use Drupal\paragraphs\ParagraphInterface;
 use Drupal\views\ViewExecutable;
+use Kiwilan\Audio\Audio;
 
 /**
  * Implements hook_theme().
@@ -121,4 +123,17 @@ function asu_item_extras_form_google_tag_container_form_alter(&$form, FormStateI
   unset($form['conditions']['node_is_islandora_object']);
   unset($form['conditions']['node_referenced_by_node']);
   unset($form['conditions']['parent_node_has_term']);
+}
+
+/**
+ * Implements hook_paragraph_presave().
+ *
+ * Auto-populates the audio duration of a track when empty.
+ */
+function asu_item_extras_paragraph_presave(ParagraphInterface $paragraph) {
+  if ($paragraph->bundle() == 'track' && $paragraph->hasField('field_duration') && $paragraph->field_duration->isEmpty() && $paragraph->hasField('field_audio') && !$paragraph->field_audio->isEmpty()) {
+    $file = $paragraph->field_audio->entity?->get('field_media_audio_file')?->entity->getFileUri();
+    $audio = Audio::read($file);
+    $paragraph->set('field_duration', ceil($audio->getDuration()));
+  }
 }

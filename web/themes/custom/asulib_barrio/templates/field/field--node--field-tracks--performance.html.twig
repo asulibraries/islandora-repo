@@ -1,0 +1,92 @@
+{#
+/**
+ * @file
+ * Theme override for a field.
+ *
+ * To override output, copy the "field.html.twig" from the templates directory
+ * to your theme's directory and customize it, just like customizing other
+ * Drupal templates such as page.html.twig or node.html.twig.
+ *
+ * Instead of overriding the theming for all fields, you can also just override
+ * theming for a subset of fields using
+ * @link themeable Theme hook suggestions. @endlink For example,
+ * here are some theme hook suggestions that can be used for a field_foo field
+ * on an article node type:
+ * - field--node--field-foo--article.html.twig
+ * - field--node--field-foo.html.twig
+ * - field--node--article.html.twig
+ * - field--field-foo.html.twig
+ * - field--text-with-summary.html.twig
+ * - field.html.twig
+ *
+ * Available variables:
+ * - attributes: HTML attributes for the containing element.
+ * - label_hidden: Whether to show the field label or not.
+ * - title_attributes: HTML attributes for the title.
+ * - label: The label for the field.
+ * - multiple: TRUE if a field can contain multiple items.
+ * - items: List of all the field items. Each item contains:
+ *   - attributes: List of HTML attributes for each item.
+ *   - content: The field item's content.
+ * - entity_type: The entity type to which the field belongs.
+ * - field_name: The name of the field.
+ * - field_type: The type of the field.
+ * - label_display: The display settings for the label.
+ *
+ *
+ * @see template_preprocess_field()
+ */
+#}
+{{ attach_library('asulib_barrio/performance-player') }}
+{%
+  set classes = [
+    'field',
+    'field--name-' ~ field_name|clean_class,
+    'field--type-' ~ field_type|clean_class,
+    'field--label-' ~ label_display,
+    'table',
+    'table-sm'
+  ]
+%}
+{%
+  set title_classes = [
+    'field__label',
+    label_display == 'visually_hidden' ? 'visually-hidden',
+  ]
+%}
+<div class="track_scroll_window">
+<table{{attributes.addClass(classes)}} id="player_tracks">
+  <thead>
+    <tr>
+      <th scope="col" aria-label="Track Number" class="text-center">#</th>
+      <th scope="col">Track</th>
+      <th scope="col" class='text-end'>Plays</th>
+      <th scope="col" class='text-end'>Duration</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in items %}
+      <tr class="player_track" data-track-id="{{ item.content["#paragraph"].id() }}" tabindex="0">
+        <td scope="row" class="text-center track_number"><span>{{ loop.index }}</span><i class="fas fa-circle-play"></i></td>
+        {{ item.content }}
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+<div id="player_bar" class="row justify-content-evenly" role="group">
+  <div id="player_bar_status" class="alert alert-info">
+    <div class="spinner-border spinner-border-sm" aria-hidden="true"></div>
+    &nbsp;<strong id="player_bar_status_msg" role="status">Buffering track...</strong>
+  </div>
+  <audio id="player_bar_player" class="col-sm" controls controlslist="nodownload"></audio>
+  <div tabindex="0" id="player_bar_prev_track" class="col-sm-1 btn btn-primary">
+    <i class="fa fa-step-backward"></i>
+  </div>
+  <div tabindex="0" id='player_bar_next_track' class="col-sm-1 btn btn-primary">
+    <i class="fa fa-step-forward"></i>
+  </div>
+  <div tabindex="0" id='player_bar_repeat' class="col-sm-1 btn btn-primary">
+    <i class="fa fa-sync"></i>&nbsp;<span>none</span>
+  </div>
+</div>

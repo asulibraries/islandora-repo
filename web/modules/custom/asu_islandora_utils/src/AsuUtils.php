@@ -96,7 +96,7 @@ class AsuUtils {
       ->condition('status', 1);
     if ($items_only) {
       $childrenQuery
-        ->condition('type', ['scholarly_work','asu_repository_item'], 'IN');
+        ->condition('type', ['scholarly_work','asu_repository_item', 'performance'], 'IN');
     }
     if ($sort_by_date) {
       $childrenQuery

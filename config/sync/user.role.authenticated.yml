@@ -16,6 +16,7 @@ dependencies:
     - media.type.remote_video
     - media.type.video
     - node.type.asu_repository_item
+    - node.type.performance
     - node.type.scholarly_work
     - rest.resource.oai_pmh
     - taxonomy.vocabulary.keywords
@@ -50,6 +51,7 @@ permissions:
   - 'create fits_technical_metadata media'
   - 'create image media'
   - 'create media'
+  - 'create performance content'
   - 'create remote_video media'
   - 'create scholarly_work content'
   - 'create terms in keywords'
@@ -63,6 +65,7 @@ permissions:
   - 'edit own file media'
   - 'edit own fits_technical_metadata media'
   - 'edit own image media'
+  - 'edit own performance content'
   - 'edit own remote_video media'
   - 'edit own scholarly_work content'
   - 'edit own video media'
@@ -79,4 +82,5 @@ permissions:
   - 'view own unpublished media'
   - 'view paragraph content complex_note'
   - 'view paragraph content complex_title'
+  - 'view paragraph content track'
   - 'view paragraph content typed_identifier'

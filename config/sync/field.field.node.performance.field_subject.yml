@@ -1,0 +1,29 @@
+uuid: 8e4d47b6-36ac-450c-b7fc-85f859b269a9
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_subject
+    - node.type.performance
+    - taxonomy.vocabulary.subject
+id: node.performance.field_subject
+field_name: field_subject
+entity_type: node
+bundle: performance
+label: Subject
+description: ''
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      subject: subject
+    sort:
+      field: name
+      direction: asc
+    auto_create: true
+    auto_create_bundle: ''
+field_type: entity_reference

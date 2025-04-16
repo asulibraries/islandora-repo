@@ -166,7 +166,7 @@ foreach (array_filter(scandir($path), function ($value) {
     continue;
   }
   // Load all the elements for each field.
-  $node_metadata = ['type' => 'scholarly_work', 'field_member_of' => ['target_id' => $collection_nid]];
+  $node_metadata = ['type' => 'scholarly_work', 'field_member_of' => ['target_id' => $collection_nid], 'moderation_state' => 'published'];
 
   $title = (string) current($xml->xpath('DISS_description/DISS_title'));
   $node_metadata['title'] = $title;

@@ -8,6 +8,8 @@ dependencies:
     - field.storage.node.field_rich_description
     - field.storage.node.field_title
     - node.type.asu_repository_item
+    - node.type.performance
+    - node.type.scholarly_work
   module:
     - asu_search
     - media
@@ -685,6 +687,8 @@ display:
           operator: in
           value:
             asu_repository_item: asu_repository_item
+            performance: performance
+            scholarly_work: scholarly_work
           group: 1
           exposed: false
           expose:

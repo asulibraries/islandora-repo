@@ -18,6 +18,7 @@ dependencies:
     - field.field.node.scholarly_work.field_language
     - field.field.node.scholarly_work.field_linked_agent
     - field.field.node.scholarly_work.field_member_of
+    - field.field.node.scholarly_work.field_name_title_subject
     - field.field.node.scholarly_work.field_note_para
     - field.field.node.scholarly_work.field_open_access
     - field.field.node.scholarly_work.field_peer_reviewed
@@ -31,8 +32,10 @@ dependencies:
     - field.field.node.scholarly_work.field_series
     - field.field.node.scholarly_work.field_statement_responsibility
     - field.field.node.scholarly_work.field_subject
+    - field.field.node.scholarly_work.field_subjects_name
     - field.field.node.scholarly_work.field_table_of_contents
     - field.field.node.scholarly_work.field_title
+    - field.field.node.scholarly_work.field_title_subject
     - field.field.node.scholarly_work.field_typed_identifier
     - field.field.node.scholarly_work.field_work_products
     - node.type.scholarly_work
@@ -66,12 +69,14 @@ third_party_settings:
       label: 'Additional Information'
       parent_name: ''
       region: content
-      weight: 4
-      format_type: html_element
+      weight: 8
+      format_type: fieldset
       format_settings:
         classes: ''
         show_empty_fields: false
         id: ''
+        label_as_html: false
+        description: ''
         element: div
         show_label: true
         label_element: h2
@@ -86,12 +91,14 @@ third_party_settings:
       label: 'Citation and reuse'
       parent_name: ''
       region: content
-      weight: 3
-      format_type: html_element
+      weight: 7
+      format_type: fieldset
       format_settings:
         classes: ''
         show_empty_fields: false
         id: ''
+        label_as_html: false
+        description: ''
         element: div
         show_label: true
         label_element: h2
@@ -105,6 +112,9 @@ third_party_settings:
         - field_edtf_date_created
         - field_embargo_release_date
         - field_subject
+        - field_title_subject
+        - field_name_title_subject
+        - field_subjects_name
         - field_resource_type
         - field_language
         - field_additional_memberships
@@ -112,7 +122,7 @@ third_party_settings:
       label: Details
       parent_name: ''
       region: content
-      weight: 2
+      weight: 6
       format_type: html_element
       format_settings:
         classes: ''
@@ -130,13 +140,18 @@ targetEntityType: node
 bundle: scholarly_work
 mode: full
 content:
+  content_moderation_control:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 0
+    region: content
   field_additional_memberships:
     type: entity_reference_label
     label: above
     settings:
       link: true
     third_party_settings: {  }
-    weight: 10
+    weight: 13
     region: content
   field_download_count:
     settings: {  }
@@ -186,22 +201,22 @@ content:
     region: content
   field_extent:
     type: string
-    label: above
+    label: inline
     settings:
       link_to_entity: false
     third_party_settings: {  }
-    weight: 14
+    weight: 13
     region: content
   field_genre:
     type: searchable_entity_formatter
-    label: above
+    label: inline
     settings:
       search_link: 'search?f[0]'
       search_var: genre
-      search_term: true
+      search_term: false
       link: true
     third_party_settings: {  }
-    weight: 15
+    weight: 14
     region: content
   field_geographic_subject:
     type: searchable_entity_formatter
@@ -212,7 +227,7 @@ content:
       search_term: false
       link: true
     third_party_settings: {  }
-    weight: 16
+    weight: 15
     region: content
   field_keyword:
     type: entity_reference_label
@@ -220,7 +235,7 @@ content:
     settings:
       link: false
     third_party_settings: {  }
-    weight: 17
+    weight: 16
     region: content
   field_language:
     type: entity_reference_label
@@ -228,7 +243,7 @@ content:
     settings:
       link: false
     third_party_settings: {  }
-    weight: 9
+    weight: 12
     region: content
   field_linked_agent:
     type: typed_relation_brief
@@ -238,6 +253,17 @@ content:
     third_party_settings: {  }
     weight: 4
     region: content
+  field_name_title_subject:
+    type: searchable_entity_formatter
+    label: above
+    settings:
+      search_link: 'search?f[0]'
+      search_var: all_subjects
+      search_term: false
+      link: true
+    third_party_settings: {  }
+    weight: 9
+    region: content
   field_note_para:
     type: entity_reference_revisions_entity_view
     label: above
@@ -245,27 +271,27 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
-    weight: 11
+    weight: 14
     region: content
   field_open_access:
     type: boolean
-    label: inline
+    label: above
     settings:
       format: custom
       format_custom_false: ''
       format_custom_true: 'Open Access'
     third_party_settings: {  }
-    weight: 18
+    weight: 17
     region: content
   field_peer_reviewed:
     type: boolean
-    label: inline
+    label: above
     settings:
       format: custom
       format_custom_false: ''
       format_custom_true: Peer-reviewed
     third_party_settings: {  }
-    weight: 19
+    weight: 18
     region: content
   field_place_of_publication_code:
     type: entity_reference_label
@@ -288,7 +314,7 @@ content:
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 24
+    weight: 12
     region: content
   field_resource_type:
     type: searchable_entity_formatter
@@ -296,17 +322,17 @@ content:
     settings:
       search_link: 'search?f[0]'
       search_var: resource_type
-      search_term: true
+      search_term: false
       link: true
     third_party_settings: {  }
-    weight: 8
+    weight: 11
     region: content
   field_rich_description:
     type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 1
+    weight: 5
     region: content
   field_series:
     type: string
@@ -321,7 +347,7 @@ content:
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 26
+    weight: 13
     region: content
   field_subject:
     type: searchable_entity_formatter
@@ -334,12 +360,34 @@ content:
     third_party_settings: {  }
     weight: 7
     region: content
+  field_subjects_name:
+    type: searchable_entity_formatter
+    label: above
+    settings:
+      search_link: 'search?f[0]'
+      search_var: all_subjects
+      search_term: false
+      link: true
+    third_party_settings: {  }
+    weight: 10
+    region: content
   field_table_of_contents:
     type: text_default
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 23
+    weight: 22
+    region: content
+  field_title_subject:
+    type: searchable_entity_formatter
+    label: above
+    settings:
+      search_link: 'search?f[0]'
+      search_var: all_subjects
+      search_term: false
+      link: true
+    third_party_settings: {  }
+    weight: 8
     region: content
   field_typed_identifier:
     type: entity_reference_revisions_entity_view
@@ -348,7 +396,7 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
-    weight: 22
+    weight: 21
     region: content
   langcode:
     type: language
@@ -362,7 +410,22 @@ content:
   links:
     settings: {  }
     third_party_settings: {  }
-    weight: 0
+    weight: 4
+    region: content
+  search_api_excerpt:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 2
+    region: content
+  video_media_evas_preservation_master:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 1
+    region: content
+  video_media_evas_service_file:
+    settings: {  }
+    third_party_settings: {  }
+    weight: 3
     region: content
 hidden:
   display_media_child_thumbnail: true
@@ -385,7 +448,4 @@ hidden:
   pdfjs_media_evas_entity_view_1: true
   pdfjs_media_evas_entity_view_2: true
   pdfjs_media_evas_service_file: true
-  search_api_excerpt: true
   video_media_evas_original_file: true
-  video_media_evas_preservation_master: true
-  video_media_evas_service_file: true

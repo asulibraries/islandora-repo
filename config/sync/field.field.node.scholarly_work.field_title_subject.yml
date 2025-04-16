@@ -1,0 +1,29 @@
+uuid: 36af64e2-5a94-4a31-9814-0d49363ec061
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.node.field_title_subject
+    - node.type.scholarly_work
+    - taxonomy.vocabulary.titles
+id: node.scholarly_work.field_title_subject
+field_name: field_title_subject
+entity_type: node
+bundle: scholarly_work
+label: 'Title Subject'
+description: 'If your title subject, is not found, add it <a href="/admin/structure/taxonomy/manage/titles/add" target="_blank">here</a>'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  handler: 'default:taxonomy_term'
+  handler_settings:
+    target_bundles:
+      titles: titles
+    sort:
+      field: name
+      direction: asc
+    auto_create: false
+    auto_create_bundle: ''
+field_type: entity_reference

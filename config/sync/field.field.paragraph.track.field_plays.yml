@@ -1,0 +1,23 @@
+uuid: ebd77531-fdee-4117-b6c3-ec3c498a558c
+langcode: en
+status: true
+dependencies:
+  config:
+    - field.storage.paragraph.field_plays
+    - paragraphs.paragraphs_type.track
+id: paragraph.track.field_plays
+field_name: field_plays
+entity_type: paragraph
+bundle: track
+label: Plays
+description: 'Number of times a track has been played.'
+required: false
+translatable: false
+default_value: {  }
+default_value_callback: ''
+settings:
+  min: 0
+  max: null
+  prefix: ''
+  suffix: ''
+field_type: integer

@@ -1,0 +1,21 @@
+uuid: 6ef63256-ae6d-4853-9186-9667e4007b39
+langcode: en
+status: true
+dependencies:
+  module:
+    - controlled_access_terms
+    - paragraphs
+    - taxonomy
+id: paragraph.field_linked_agent
+field_name: field_linked_agent
+entity_type: paragraph
+type: typed_relation
+settings:
+  target_type: taxonomy_term
+module: controlled_access_terms
+locked: false
+cardinality: -1
+translatable: true
+indexes: {  }
+persist_with_no_fields: false
+custom_storage: false

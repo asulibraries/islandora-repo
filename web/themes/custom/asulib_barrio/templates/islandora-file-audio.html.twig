@@ -15,8 +15,8 @@
 * @ingroup themeable
 */
 #}
-<div id="audioTrack"></div>
-<audio {{ attributes }} controlslist="nodownload">
+<div class="audioTrack"></div>
+<audio {{ attributes }}>
   {% for file in files %}
     <source {{ file.source_attributes }} />
     {% if tracks %}
@@ -26,6 +26,8 @@
     {% endif %}
   {% endfor %}
 </audio>
+{% if tracks %}
+<div><a href="{{ tracks[0].track_attributes['src'] }}" type="button" class="btn btn-md btn-gray" target="_blank" rel="noopener noreferrer">Download default caption file</a></div>
+{% endif %}
 
 {{ attach_library('islandora_audio/audio') }}
-
