@@ -298,30 +298,6 @@ function asu_permissions_media_access(EntityInterface $entity, $operation, Accou
     return $access_result;
   }
 
-  // Check Media Access Terms.
-  if ($entity->hasField('field_access_terms') && $entity->get('field_access_terms')->entity) {
-    $access_term = $entity->get('field_access_terms')->entity->getName();
-    if ($access_term == 'Public') {
-      return AccessResult::allowed();
-    }
-
-    // Anon are only allowed 'Public' when the terms field is populated.
-    if (!$account->isAuthenticated() && $access_term != "Public") {
-      $access_result = AccessResult::forbidden();
-      $access_result->addCacheableDependency($entity);
-      $access_result->addCacheableDependency($account);
-      return $access_result;
-    }
-
-    // Anyone authenticated is "ASU".
-    if ($account->isAuthenticated() && $access_term == "ASU Only") {
-      $access_result = AccessResult::allowed();
-      $access_result->addCacheableDependency($entity);
-      $access_result->addCacheableDependency($account);
-      return $access_result;
-    }
-  }
-
   // Since the Media doesn't appear to care, we check related nodes.
   // Get a node from the Islandora Media→Node or Standard Drupal Node→Media
   // models.
@@ -360,6 +336,24 @@ function asu_permissions_media_access(EntityInterface $entity, $operation, Accou
           break;
         }
       }
+    }
+  }
+
+  // Check Media Access Terms.
+  if ($entity->hasField('field_access_terms') && $entity->get('field_access_terms')->entity) {
+    $access_term = $entity->get('field_access_terms')->entity->getName();
+    if ($access_term == 'Public') {
+      $access_result = $access_result->orIf(AccessResult::allowed());
+    }
+
+    // Anon are only allowed 'Public' when the terms field is populated.
+    if (!$account->isAuthenticated() && $access_term != "Public") {
+      $access_result = $access_result->orIf(AccessResult::forbidden());
+    }
+
+    // Anyone authenticated is "ASU".
+    if ($account->isAuthenticated() && $access_term == "ASU Only") {
+      $access_result = $access_result->orIf(AccessResult::allowed());
     }
   }
 
