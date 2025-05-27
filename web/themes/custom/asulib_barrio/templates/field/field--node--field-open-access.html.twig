@@ -52,33 +52,38 @@
 ]
 %}
 
-{% if label_hidden %}
-  {% for item in items %}
-    <div{{ attributes.addClass(classes, 'field__item') }}>
-      <a class="icon-link" href="/search?f[0]=open_access%3A1">
-        <svg id="open-access_cache126" width="100%" height="100%" viewBox="0 0 24 24" y="1634" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false">
-          <path d="M17.9,11.9V6.1c0-3.3-2.7-5.9-5.9-5.9c-3.3,0-5.9,2.6-5.9,5.9c0,0,0,0,0,1.3h2.4c0-1.3,0-1.3,0-1.3c0-2,1.6-3.5,3.6-3.5
-            c2,0,3.6,1.6,3.6,3.6v3.8c-1.1-0.6-2.3-0.9-3.6-0.9c-4.1,0-7.5,3.4-7.5,7.5s3.4,7.5,7.5,7.5s7.5-3.4,7.5-7.5
-            C19.5,14.7,18.9,13.1,17.9,11.9z M12,21.6c-2.8,0-5.1-2.3-5.1-5.1c0-2.8,2.3-5.1,5.1-5.1c2.8,0,5.1,2.3,5.1,5.1
-            C17.1,19.3,14.9,21.6,12,21.6z M14.1,16.5c0,1.1-0.9,2.1-2.1,2.1s-2.1-0.9-2.1-2.1c0-1.1,0.9-2.1,2.1-2.1S14.1,15.3,14.1,16.5z"></path>
-        </svg>
-        <span>{{ item.content }}</span></a>
-    </div>
-  {% endfor %}
-{% else %}
-  <div{{ attributes.addClass(classes) }}>
-    <div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
+{# Hide the whole field if it is empty. #}
+{% set rendered_field = items[0].content|render %}
+
+{% if rendered_field|trim %}
+  {% if label_hidden %}
     {% for item in items %}
       <div{{ attributes.addClass(classes, 'field__item') }}>
         <a class="icon-link" href="/search?f[0]=open_access%3A1">
           <svg id="open-access_cache126" width="100%" height="100%" viewBox="0 0 24 24" y="1634" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false">
             <path d="M17.9,11.9V6.1c0-3.3-2.7-5.9-5.9-5.9c-3.3,0-5.9,2.6-5.9,5.9c0,0,0,0,0,1.3h2.4c0-1.3,0-1.3,0-1.3c0-2,1.6-3.5,3.6-3.5
-            c2,0,3.6,1.6,3.6,3.6v3.8c-1.1-0.6-2.3-0.9-3.6-0.9c-4.1,0-7.5,3.4-7.5,7.5s3.4,7.5,7.5,7.5s7.5-3.4,7.5-7.5
-            C19.5,14.7,18.9,13.1,17.9,11.9z M12,21.6c-2.8,0-5.1-2.3-5.1-5.1c0-2.8,2.3-5.1,5.1-5.1c2.8,0,5.1,2.3,5.1,5.1
-            C17.1,19.3,14.9,21.6,12,21.6z M14.1,16.5c0,1.1-0.9,2.1-2.1,2.1s-2.1-0.9-2.1-2.1c0-1.1,0.9-2.1,2.1-2.1S14.1,15.3,14.1,16.5z"></path>
+              c2,0,3.6,1.6,3.6,3.6v3.8c-1.1-0.6-2.3-0.9-3.6-0.9c-4.1,0-7.5,3.4-7.5,7.5s3.4,7.5,7.5,7.5s7.5-3.4,7.5-7.5
+              C19.5,14.7,18.9,13.1,17.9,11.9z M12,21.6c-2.8,0-5.1-2.3-5.1-5.1c0-2.8,2.3-5.1,5.1-5.1c2.8,0,5.1,2.3,5.1,5.1
+              C17.1,19.3,14.9,21.6,12,21.6z M14.1,16.5c0,1.1-0.9,2.1-2.1,2.1s-2.1-0.9-2.1-2.1c0-1.1,0.9-2.1,2.1-2.1S14.1,15.3,14.1,16.5z"></path>
           </svg>
           <span>{{ item.content }}</span></a>
       </div>
     {% endfor %}
-  </div>
+  {% else %}
+    <div{{ attributes.addClass(classes) }}>
+      <div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
+      {% for item in items %}
+        <div{{ attributes.addClass(classes, 'field__item') }}>
+          <a class="icon-link" href="/search?f[0]=open_access%3A1">
+            <svg id="open-access_cache126" width="100%" height="100%" viewBox="0 0 24 24" y="1634" xmlns="http://www.w3.org/2000/svg" fit="" preserveAspectRatio="xMidYMid meet" focusable="false">
+              <path d="M17.9,11.9V6.1c0-3.3-2.7-5.9-5.9-5.9c-3.3,0-5.9,2.6-5.9,5.9c0,0,0,0,0,1.3h2.4c0-1.3,0-1.3,0-1.3c0-2,1.6-3.5,3.6-3.5
+              c2,0,3.6,1.6,3.6,3.6v3.8c-1.1-0.6-2.3-0.9-3.6-0.9c-4.1,0-7.5,3.4-7.5,7.5s3.4,7.5,7.5,7.5s7.5-3.4,7.5-7.5
+              C19.5,14.7,18.9,13.1,17.9,11.9z M12,21.6c-2.8,0-5.1-2.3-5.1-5.1c0-2.8,2.3-5.1,5.1-5.1c2.8,0,5.1,2.3,5.1,5.1
+              C17.1,19.3,14.9,21.6,12,21.6z M14.1,16.5c0,1.1-0.9,2.1-2.1,2.1s-2.1-0.9-2.1-2.1c0-1.1,0.9-2.1,2.1-2.1S14.1,15.3,14.1,16.5z"></path>
+            </svg>
+            <span>{{ item.content }}</span></a>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
 {% endif %}

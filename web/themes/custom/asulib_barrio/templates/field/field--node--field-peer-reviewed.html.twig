@@ -52,19 +52,24 @@ label_display == 'visually_hidden' ? 'visually-hidden',
 ]
 %}
 
-{% if label_hidden %}
-  {% for item in items %}
-    <div{{ attributes.addClass(classes, 'field__item') }}>
-      <a class="icon-link" href="/search?f[0]=peer_reviewed%3A1"><i class="far fa-eye"></i><span>{{ item.content }}</span></a>
+{# Hide the whole field if it is empty. #}
+{% set rendered_field = items[0].content|render %}
+
+{% if rendered_field|trim %}
+  {% if label_hidden %}
+    {% for item in items %}
+      <div{{ attributes.addClass(classes, 'field__item') }}>
+        <a class="icon-link" href="/search?f[0]=peer_reviewed%3A1"><i class="far fa-eye"></i><span>{{ item.content }}</span></a>
+      </div>
+    {% endfor %}
+  {% else %}
+    <div{{ attributes.addClass(classes) }}>
+    <div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
+    {% for item in items %}
+      <div{{ item.attributes.addClass('field__item') }}>
+        <a class="icon-link" href="/search?f[0]=peer_reviewed%3A1"><i class="far fa-eye"></i><span>{{ item.content }}</span></a>
+      </div>
+    {% endfor %}
     </div>
-  {% endfor %}
-{% else %}
-  <div{{ attributes.addClass(classes) }}>
-  <div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
-  {% for item in items %}
-    <div{{ item.attributes.addClass('field__item') }}>
-      <a class="icon-link" href="/search?f[0]=peer_reviewed%3A1"><i class="far fa-eye"></i><span>{{ item.content }}</span></a>
-    </div>
-  {% endfor %}
-  </div>
+  {% endif %}
 {% endif %}
