@@ -1,0 +1,46 @@
+#interactive-captions-window {
+  display: none;
+  border: solid lightgrey 1px;
+  height: 7lh;
+  resize: vertical;
+  overflow-y: scroll;
+
+  /* Provide room for the scroll-bar. */
+  padding-right: 0.5em;
+
+  /* Scroll shadow. */
+  background:
+    /* Shadow Cover TOP */
+    linear-gradient(white 30%,
+      rgba(255, 255, 255, 0)) center top,
+
+    /* Shadow Cover BOTTOM */
+    linear-gradient(rgba(255, 255, 255, 0),
+      white 70%) center bottom,
+
+    /* Shadow TOP */
+    radial-gradient(farthest-side at 50% 0,
+      rgba(0, 0, 0, 0.33),
+      rgba(0, 0, 0, 0)) center top,
+
+    /* Shadow BOTTOM */
+    radial-gradient(farthest-side at 50% 100%,
+      rgba(0, 0, 0, 0.33),
+      rgba(0, 0, 0, 0)) center bottom;
+
+  background-repeat: no-repeat;
+  background-size: 100% 60px, 100% 60px, 100% 20px, 100% 20px;
+  background-attachment: local, local, scroll, scroll;
+}
+
+#interactive-captions-window div:hover,
+#interactive-captions-window div:focus,
+#interactive-captions-window div.active {
+  background-color: lightgrey;
+}
+
+#interactive-captions-window .formatted-time {
+  font-style: italic;
+  font-family: monospace;
+  margin-right: 1em;
+}
