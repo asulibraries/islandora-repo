@@ -89,7 +89,6 @@
             let cueWindow = document.getElementById('interactive-captions-window');
             cues.forEach((cue, index) => {
               let cueDiv = document.createElement('div');
-              // cueDiv.classList.add('row')
               cueDiv.setAttribute('tabindex', 0);
               cueDiv.setAttribute('data-start', cue.start);
               cueDiv.setAttribute('data-end', cue.end);
@@ -99,20 +98,10 @@
                   updateAVTime(e)
                 }
               })
-              // let timeDiv = document.createElement('div');
-              // timeDiv.classList.add('formattedTime', 'col');
               let formattedTime = `${String(Math.floor(cue.start/3600)).padStart(2, '0')}:${String(Math.floor((cue.start % 3600) / 60)).padStart(2,'0')}:${String(Math.trunc(cue.start % 60)).padStart(2, '0')}` 
-              // while (formattedTime.charAt(0) == '0' || formattedTime.charAt(0) == ':') formattedTime = formattedTime.substring(1);
-              // timeDiv.innerText = formattedTime
-              // cueDiv.appendChild(timeDiv);
-              // let textDiv = document.createElement('div');
-              // textDiv.classList.add('col');
-              // cueDiv.appendChild(textDiv)
               if (cue?.text) {
-                // textDiv.innerHTML = cue.text.replace(/\n/g, " ");
                 cueDiv.innerHTML = `<span class="formatted-time">${formattedTime}</span> ${cue.text.replace(/\n/g, " ")}`;
               } else {
-                // textDiv.innerHTML = '';
                 cueDiv.innerHTML = '';
               }
               cueWindow.appendChild(cueDiv);
@@ -133,12 +122,6 @@
                   // Only set active and get focus on first encounter.
                   if (!cue.classList.contains('active')) {
                     cue.classList.add('active');
-                    // if (isOverflowing(cue)) {
-                    //   cue.scrollIntoView({
-                    //     behavior: "smooth",
-                    //     block: "center"
-                    //   });
-                    // }
                   }
                 } else {
                   cue.classList.remove('active');
