@@ -22,8 +22,8 @@ elements: |-
       '#options':
         article: Article
         unit: 'Unit/Center Work'
-        research: 'Research/Lab group'
-        data: 'Data only'
+        research: 'Research/Lab Group'
+        data: 'Data Only'
       '#required': true
     rdr:
       '#type': webform_markup
@@ -64,10 +64,6 @@ elements: |-
       '#type': textfield
       '#title': 'Unit/Center Name'
       '#required': true
-    unit_center_members:
-      '#type': textfield
-      '#title': 'Unit/Center Member(s)'
-      '#multiple': true
     unity_center_what_type_of_work:
       '#type': textfield
       '#title': 'What type of work?'
@@ -108,7 +104,7 @@ elements: |-
     '#title': 'Schedule Consultation'
     article_calendar_note:
       '#type': processed_text
-      '#text': '<p>In order to proceed, we will need to have a brief 15 minute consultation regarding your deposit.</p><p><iframe style="border-width:0;" src="https://outlook.office.com/book/ASULibraryResearchDataServices@arizonastateu.onmicrosoft.com/s/KsppFv3LFkiHbxh7L73FJQ2" width="100%" height="800rem" scrolling="yes"></iframe></p>'
+      '#text': '<div class="display-2">Schedule a consultation</div><p>In order to proceed, we will need to have a brief 15 minute consultation regarding your deposit. Please select a time that works with your availability and you will receive a calendar invitation. We look forward to meeting with you!</p><p><iframe style="border-width:0;" src="https://outlook.office.com/book/ASULibraryResearchDataServices@arizonastateu.onmicrosoft.com/s/KsppFv3LFkiHbxh7L73FJQ2" width="100%" height="800rem" scrolling="yes"></iframe></p>'
       '#format': full_html
   actions:
     '#type': webform_actions
@@ -324,8 +320,8 @@ handlers:
       return_path: ''
       sender_mail: ''
       sender_name: ''
-      subject: 'KEEP Self-Deposit Consultation Request From [webform_submission:user]'
-      body: '<p>A new self deposit consultation request has been submitted on KEEP<br>The submission can be accessed here:&nbsp;[webform_submission:url]<br><br>Submitted on [webform_submission:created]</p><p>Submitted by: [webform_submission:user]</p><p>Submitted values are:</p><p>[webform_submission:values]<br>&nbsp;</p>'
+      subject: 'KEEP Deposit Consultation Request From [webform_submission:user]'
+      body: '<p>A new deposit consultation request has been submitted on KEEP<br>The submission can be accessed here:&nbsp;[webform_submission:url]<br><br>Submitted on [webform_submission:created]</p><p>Submitted by: [webform_submission:user]</p><p>Submitted values are:</p><p>[webform_submission:values]<br>&nbsp;</p>'
       excluded_elements:
         rdr: rdr
         article_calendar_note: article_calendar_note

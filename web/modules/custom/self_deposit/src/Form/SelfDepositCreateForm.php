@@ -141,8 +141,6 @@ class SelfDepositCreateForm extends FormBase {
   protected function createItem(WebformSubmissionInterface $webform_submission, $content_type) {
     // Get an array of the values from the submission.
     $values = $webform_submission->getData();
-    $files = $values['file'];
-    $new_dest = "private://c160/";
     $taxo_manager = $this->entityTypeManager->getStorage('taxonomy_term');
 
     $copyright_term_arr = $taxo_manager->loadByProperties(['name' => 'In Copyright']);
@@ -200,16 +198,17 @@ class SelfDepositCreateForm extends FormBase {
 
     if ($values['reuse_permissions']) {
       $node_args['field_reuse_permissions'] = [['target_id' => $values['reuse_permissions']]];
+      // Set OA true if a CC license selected.
+      $reuse_permissions = $taxo_manager->load($values['reuse_permissions']);
+      if ($reuse_permissions->hasField('field_source') && str_contains($reuse_permissions->get('field_source')->first()?->getUrl()?->getUri(), 'creativecommons.org')) {
+        $node_args['field_open_access'] = [['value' => '1']];
+      }
     }
-    $node = Node::create($node_args);
-
-    $perm_term = current($taxo_manager->loadByProperties([
-      'name' => $values['file_permissions_select'],
-      'vid' => 'islandora_access',
-    ]));
 
     // Save an initial version so asu_repository_items can link components.
+    $node = Node::create($node_args);
     $node->save();
+
     $files = $values['file'];
     $new_dest = "private://c130/";
 
@@ -226,9 +225,6 @@ class SelfDepositCreateForm extends FormBase {
           'uid' => $this->currentUser->id(),
           $file_model_properties[2] => ['target_id' => $file_copy->id()],
         ];
-        if ($perm_term) {
-          $media_properties['field_access_terms'] = ['target_id' => $perm_term->id()];
-        }
         $media = Media::create($media_properties);
         $media->save();
         $work_products[] = ['target_id' => $media->id()];
@@ -249,7 +245,7 @@ class SelfDepositCreateForm extends FormBase {
           [$fmodel, $fmedia_type, $ffield_name] = $this->depositUtils->getModel($mime, $filename);
           $ftaxo_terms = $taxo_manager->loadByProperties(['name' => $fmodel]);
           $ftaxo_term = reset($ftaxo_terms);
-          $child_node = $this->createNode($webform_submission, $values, $filename, $ftaxo_term, $copyright_term, $perm_term, $node->id());
+          $child_node = $this->createNode($webform_submission, $values, $filename, $ftaxo_term, $copyright_term, $node->id());
           $this->depositUtils->createMedia($fmedia_type, $ffield_name, $fkey, $child_node->id());
         }
       }
@@ -275,7 +271,7 @@ class SelfDepositCreateForm extends FormBase {
   /**
    * Helper for asu repository items complex objects.
    */
-  private function createNode($webform_submission, $values, $title, $model, $copyright_term, $perm_term, $member_of) {
+  private function createNode($webform_submission, $values, $title, $model, $copyright_term, $member_of) {
     $paragraph = Paragraph::create(
       ['type' => 'complex_title', 'field_main_title' => $title]
     );
@@ -311,12 +307,6 @@ class SelfDepositCreateForm extends FormBase {
       'field_subjects' => $keywords,
       'field_copyright_statement' => [
         ['target_id' => $copyright_term->id()],
-      ],
-      'field_default_derivative_file_pe' => [
-        ['target_id' => $perm_term->id()],
-      ],
-      'field_default_original_file_perm' => [
-        ['target_id' => $perm_term->id()],
       ],
       'field_embargo_release_date' => [
         $values['embargo_release_date'] . "T23:59:59",

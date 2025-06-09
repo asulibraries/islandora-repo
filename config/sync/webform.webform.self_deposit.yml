@@ -15,88 +15,60 @@ categories: {  }
 elements: |-
   into_text:
     '#type': processed_text
-    '#text': |
-      <h1>Share your work</h1>
-
-      <p style="text-align:start; margin-bottom:16px"><span style="color:#000000"><span style="font-style:normal"><span style="font-weight:normal"><span style="white-space:normal"><span style="text-decoration:none"><span style="background-color:#ffffff"><span style="box-sizing:border-box"><span style="font-size:12pt"><span style="font-family:Arial, sans-serif"><span style="color:#282d31">KEEP is the new and improved home for the preservation of scholarship produced by ASU faculty, staff, and students. Find and submit open access articles, collaborative research projects, musical performances, theses and dissertations and more!</span></span></span></span></span></span></span></span></span></span></p>
-
-      <p style="text-align:start; margin-bottom:16px"><span style="color:#000000"><span style="font-style:normal"><span style="font-weight:normal"><span style="white-space:normal"><span style="text-decoration:none"><span style="background-color:#ffffff"><span style="box-sizing:border-box"><span style="font-size:12pt"><span style="font-family:Arial, sans-serif"><span style="color:#282d31">We are now accepting submissions of scholarly and academic works from ASU faculty and staff. ASU students should contact their program in order to submit a work to an existing collection. Program faculty and staff may fill out the <a href="https://keep.lib.asu.edu/form/new-collection-request">"New Collection Request" form</a> to initiate the process with Digital Repository Services staff for starting a new collection in KEEP.&nbsp;</span></span></span></span></span></span></span></span></span></span></p>
-
-      <p>&nbsp;</p>
-
-      <h3>Please note</h3>
-
-      <p>If you have any questions or concerns, please&nbsp;<a href="/contact">contact the Digital Repository Services team</a>&nbsp;for assistance with deposit.</p>
-
-      <p>If materials include data sets or were the product of funded research,&nbsp;<a href="https://lib.asu.edu/research/contact">contact the Research Data Management team</a>&nbsp;for assistance with deposit.</p>
+    '#text': '<p>Thank you for your interest in depositing works to KEEP. Please use this form to provide as much information as possible about the work you are submitting, and only describe one work per form submission. This information will help streamline the process to publish your work in KEEP. &nbsp;</p><p>If this deposit is for a new or different collection than previous works you have submitted, please instead use the "<a href="/form/new-collection-request">New Collection Request</a>" form to initiate the process. If you have any questions about the KEEP deposit process or if your submission includes research data, please contact the <a href="https://lib.asu.edu/research/contact">Researcher Support</a> team.</p>'
     '#format': full_html
-  about_you:
-    '#type': webform_wizard_page
-    '#title': 'About you'
-    '#open': true
-    your_name:
-      '#type': textfield
-      '#title': 'Your name'
-      '#required': true
-    your_asurite:
-      '#type': textfield
-      '#title': 'Your ASUrite'
-      '#default_value': '[current-user:account-name]'
-    your_email:
-      '#type': email
-      '#title': 'Your email'
-      '#required': true
-    your_role_at_asu:
-      '#type': webform_checkboxes_other
-      '#title': 'Your role at ASU'
-      '#options':
-        Faculty: Faculty
-        'Academic Professional': 'Academic Professional'
-        Staff: Staff
-        'Graduate Student': 'Graduate Student'
-        'Undergraduate Student': 'Undergraduate Student'
-        TA/RA: TA/RA
-      '#other__option_label': Other
-    asu_unit:
-      '#type': textfield
-      '#title': 'ASU unit'
-      '#description': 'Please provide us with the ASU unit you are associated with.'
   about_your_item_page:
     '#type': webform_wizard_page
     '#title': 'About your item'
     '#open': true
-    item_title:
-      '#type': textarea
-      '#title': 'Item title'
-      '#description': 'The title of the item'
-      '#rows': 2
-      '#required': true
     material_type:
       '#type': webform_checkboxes_other
-      '#title': 'Material type'
+      '#title': 'What material are you depositing?'
       '#options':
-        'Individual materials (examples: pre- or post-print articles, presentations, grey literature, faculty works or graduate student materials)': 'Individual materials (examples: pre- or post-print articles, presentations, grey literature, faculty works or graduate student materials)'
-        'Group project materials (examples: faculty or graduate student group project materials)': 'Group project materials (examples: faculty or graduate student group project materials)'
-        'Academic or research unit, department, center, label, or institute materials (examples: ASU-hosted conference proceedings, outreach or event publications, unit brochures, materials about the unit history)': 'Academic or research unit, department, center, label, or institute materials (examples: ASU-hosted conference proceedings, outreach or event publications, unit brochures, materials about the unit history)'
+        'Preprint/Research article ': 'Preprint/Research article '
+        Presentation: Presentation
+        'Book chapter': 'Book chapter'
+        Book/Monograph: Book/Monograph
+        'Audiovisual material': 'Audiovisual material'
       '#other__option_label': Other
       '#other__placeholder': 'please describe'
-    item_description:
-      '#type': textarea
-      '#title': 'Item description'
-      '#description': 'A description of the item. This could be an abstract or a table of contents.'
+      '#required': true
+    doi:
+      '#type': textfield
+      '#title': 'Enter external DOI if applicable'
+      '#pattern': '(.*)(10\.\d+\/[\d\w\-\._;()\/#<>:]+)'
+      '#pattern_error': 'This DOI does not appear to be valid.'
     suggested_collection:
-      '#type': entity_autocomplete
-      '#title': 'Suggested collection'
-      '#description': 'If you know which collection this item belongs to, please select it here.'
+      '#type': webform_entity_select
+      '#title': 'KEEP Collection'
+      '#description': '<p>If you know the name of the collection your material belongs with, please enter it here.</p>'
+      '#select2': true
       '#target_type': node
       '#selection_handler': 'default:node'
       '#selection_settings':
         target_bundles:
           collection: collection
+        sort:
+          field: title
+          direction: ASC
+    item_title:
+      '#type': textarea
+      '#title': Title
+      '#description': '<p>The title of the item</p>'
+      '#rows': 2
+      '#required': true
+    recommended_citation:
+      '#type': textarea
+      '#title': 'Recommended Citation'
+    item_description:
+      '#type': textarea
+      '#title': Description/Abstract
+      '#description': '<p>A description of the item. This could be an abstract or a table of contents.</p>'
+      '#required': true
     creation_date:
       '#type': textfield
-      '#title': 'Creation date'
-      '#description': 'Please provide the date the item was created with the most accuracy possible. The format should be YYYY-MM-DD'
+      '#title': 'Creation Date'
+      '#description': '<p>If published, please indicate that date in this field.</p><p>If &nbsp;NOT published, please indicate the date of creation for the item. &nbsp;Do NOT use the date added to KEEP in this field.</p><p><span>If you know the full date, enter it in this format: YYYY-MM-DD. If you know the month and year, enter it in this format: YYYY-MM. If you only know the year, enter it in this format: YYYY.</span></p>'
       '#required': true
       '#pattern': '^[0-9]{4}(-[0-9]{2}(-[0-9]{2})?)?$'
       '#pattern_error': 'Date must be in YYYY-MM-DD format where at least the year is required.'
@@ -122,17 +94,15 @@ elements: |-
       '#multiple__add_more': false
       '#multiple__add_more_input': false
       '#multiple__add_more_input_label': 'more contributors'
-    file_permissions_select:
-      '#type': select
-      '#title': 'File Permissions'
-      '#options':
-        Public: Public
-        'ASU Only': 'ASU Only'
-      '#default_value': Public
+      '#required': true
+    asu_unit:
+      '#type': textfield
+      '#title': 'ASU unit'
+      '#description': 'Please provide us with the ASU unit you are associated with.'
     reuse_permissions:
       '#type': webform_term_select
-      '#title': 'Reuse permissions'
-      '#description': '<a href="https://keep.lib.asu.edu/about/copyright">Learn more about your copyright options.</a>'
+      '#title': 'Reuse Permissions'
+      '#description': '<p><a href="https://keep.lib.asu.edu/about/copyright">Learn more about your copyright options.</a></p>'
       '#default_value': '1090'
       '#vocabulary': reuse_permissions
       '#breadcrumb_delimiter': ''
@@ -146,10 +116,13 @@ elements: |-
       '#title': 'Item Node'
     dataset:
       '#type': textarea
-      '#title': 'Please indicate how you will archive and share your related researcher data'
-      '#description': '<a href="https://libguides.asu.edu/data/dataverse">Learn more about research datasets and the ASU Research Data Repository.</a>'
+      '#title': 'If there is related research data, how will related data be archived and shared?'
+      '#description': '<p>Include name of repository where data are stored.</p><p><a href="https://libguides.asu.edu/data/dataverse">Learn more about research datasets and the ASU Research Data Repository.</a></p>'
       '#title_display': before
       '#description_display': after
+    peer_reviewed:
+      '#type': checkbox
+      '#title': 'Peer Reviewed?'
   add_files:
     '#type': webform_wizard_page
     '#title': 'Add files'
@@ -271,10 +244,10 @@ settings:
   draft_loaded_message: ''
   draft_pending_single_message: ''
   draft_pending_multiple_message: ''
-  confirmation_type: url_message
+  confirmation_type: page
   confirmation_url: ''
   confirmation_title: ''
-  confirmation_message: 'Thank you for submitting your item to KEEP. The staff will contact you to discuss your submission shortly.'
+  confirmation_message: '<p>Thank you for submitting your item to KEEP. The staff will contact you to discuss your submission shortly.</p><p>To submit another item, <a href="/share">click here</a>. Go to the <a href="/">KEEP homepage</a>.</p>'
   confirmation_attributes: {  }
   confirmation_back: true
   confirmation_back_label: ''
@@ -378,14 +351,14 @@ handlers:
       bcc_options: {  }
       cc_mail: ''
       cc_options: {  }
-      from_mail: '[webform_submission:values:your_email:raw]'
+      from_mail: '[current-user:mail]'
       from_options: {  }
-      from_name: '[webform_submission:values:your_name:raw]'
-      reply_to: '[webform_submission:values:name] <[webform_submission:values:email:raw]>'
+      from_name: '[current-user:display-name]'
+      reply_to: '[current-user:field_first_name] [current-user:field_last_name] <[current-user:mail]>'
       return_path: ''
       sender_mail: ''
       sender_name: ''
-      subject: 'KEEP self deposit from [webform_submission:user]'
+      subject: 'KEEP self deposit from [current-user:field_first_name] [current-user:field_last_name]'
       body: '<p>A new self deposit has been submitted on KEEP<br>The submission can be accessed here:&nbsp;[webform_submission:url]<br><br>&nbsp;</p><p>Submitted on [webform_submission:created]</p><p><br>&nbsp;</p><p>Submitted by: [webform_submission:user]</p><p><br>&nbsp;</p><p>Submitted values are:</p><p><br>[webform_submission:values]<br>&nbsp;</p>'
       excluded_elements: {  }
       ignore_access: false
