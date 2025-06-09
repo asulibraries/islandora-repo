@@ -50,3 +50,11 @@ self_deposit.perf_archive.add_child:
         type: entity:node_type
       parent:
         type: entity:node
+
+self_deposit.share_faculty_staff_work:
+  path: '/share-faculty-staff-work'
+  defaults:
+    _title: 'Share Faculty Staff Work'
+    _controller: '\Drupal\self_deposit\Controller\SubmissionRedirectController::checkAccess'
+  requirements:
+    _permission: 'access content'

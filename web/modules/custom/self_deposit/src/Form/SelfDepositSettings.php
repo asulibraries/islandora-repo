@@ -5,6 +5,7 @@ namespace Drupal\self_deposit\Form;
 use Drupal\Core\Form\ConfigFormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Drupal\webform\Entity\Webform;
 
 /**
  * Provides settings for the self deposit functionality.
@@ -165,6 +166,22 @@ class SelfDepositSettings extends ConfigFormBase {
       '#default_value' => $config ? $this->entityTypeManager->getStorage('node')->load($config->get('perf_archive_default_collection')) : '',
     ];
 
+    $form['target_webform'] = [
+      '#type' => 'entity_autocomplete',
+      '#title' => $this->t('Target Webform'),
+      '#description' => $this->t('Select the webform we will check access for.'),
+      '#target_type' => 'webform',
+      '#default_value' => Webform::load($config->get('target_webform')),
+    ];
+
+    $form['redirect_webform'] = [
+      '#type' => 'entity_autocomplete',
+      '#title' => $this->t('Webform Redirect'),
+      '#description' => $this->t('Select the webform entity to which users will be redirected they they do not have access to the target webform.'),
+      '#target_type' => 'webform',
+      '#default_value' => Webform::load($config->get('redirect_webform')),
+    ];
+
     return parent::buildForm($form, $form_state);
   }
 
@@ -187,6 +204,8 @@ class SelfDepositSettings extends ConfigFormBase {
       ->set('perf_archive_default_model', $form_state->getValue('perf_archive_default_model'))
       ->set('perf_archive_default_identifier_type', $form_state->getValue('perf_archive_default_identifier_type'))
       ->set('perf_archive_default_collection', $form_state->getValue('perf_archive_default_collection'))
+      ->set('target_webform', $form_state->getValue('target_webform'))
+      ->set('redirect_webform', $form_state->getValue('redirect_webform'))
       ->save();
   }
 
