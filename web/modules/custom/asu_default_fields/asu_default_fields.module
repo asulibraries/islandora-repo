@@ -146,6 +146,16 @@ function asu_default_fields_media_presave(MediaInterface $media) {
       }
     }
   }
+
+  // Ensure we have the default 'captions' type for tracks so that it works
+  // with our interactive captions display if none is set.
+  if ($media->hasField('field_track') && !$media->field_track->isEmpty()) {
+    $tracks = $media->field_track->getValue();
+    foreach ($tracks as $delta => $track) {
+      $tracks[$delta]['kind'] ??= 'captions';
+    }
+    $media->set('field_track', $tracks);
+  }
 }
 
 /**
