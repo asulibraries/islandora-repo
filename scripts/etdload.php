@@ -89,7 +89,7 @@ function create_media(string $path, string $name = '') {
 $path = $extra[0];
 
 if (!is_dir($path) || !is_writable($path)) {
-  $this - io()->error("The path {$path} is either not a directory or not writable.");
+  $this->io()->error("The path {$path} is either not a directory or not writable.");
   die("The path {$path} is either not a directory or not writable.");
 }
 
@@ -315,7 +315,7 @@ foreach (array_filter(scandir($path), function ($value) {
   // Create node. (Move after media later.)
   $node = $ns->create($node_metadata);
   $node->save();
-  $this->io()->writeln("Created '{$node->label()} ({$node->id()}) from ETD $etd_id");
+  $this->io()->writeln("Created '{$node->label()}' ({$node->id()}) from ETD $etd_id");
 
   // Move Zip file to completed location.
   rename($zip_path, $processed_zip_dir . DIRECTORY_SEPARATOR . $zip_name);
