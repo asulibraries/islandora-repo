@@ -58,7 +58,6 @@ third_party_settings:
         - field_edtf_copyright_date
         - field_extent
         - field_genre
-        - field_geographic_subject
         - field_keyword
         - field_open_access
         - field_peer_reviewed
@@ -115,6 +114,7 @@ third_party_settings:
         - field_title_subject
         - field_name_title_subject
         - field_subjects_name
+        - field_geographic_subject
         - field_resource_type
         - field_language
         - field_additional_memberships
@@ -151,7 +151,7 @@ content:
     settings:
       link: true
     third_party_settings: {  }
-    weight: 13
+    weight: 14
     region: content
   field_download_count:
     settings: {  }
@@ -227,7 +227,7 @@ content:
       search_term: false
       link: true
     third_party_settings: {  }
-    weight: 15
+    weight: 11
     region: content
   field_keyword:
     type: entity_reference_label
@@ -243,7 +243,7 @@ content:
     settings:
       link: false
     third_party_settings: {  }
-    weight: 12
+    weight: 13
     region: content
   field_linked_agent:
     type: typed_relation_brief
@@ -271,7 +271,7 @@ content:
       view_mode: default
       link: ''
     third_party_settings: {  }
-    weight: 14
+    weight: 15
     region: content
   field_open_access:
     type: boolean
@@ -325,7 +325,7 @@ content:
       search_term: false
       link: true
     third_party_settings: {  }
-    weight: 11
+    weight: 12
     region: content
   field_rich_description:
     type: text_default

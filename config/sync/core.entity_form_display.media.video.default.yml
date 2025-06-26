@@ -24,7 +24,27 @@ mode: default
 content:
   field_access_terms:
     type: entity_reference_autocomplete
-    weight: 3
+    weight: 5
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_media_of:
+    type: entity_reference_autocomplete
+    weight: 1
+    region: content
+    settings:
+      match_operator: CONTAINS
+      match_limit: 10
+      size: 60
+      placeholder: ''
+    third_party_settings: {  }
+  field_media_use:
+    type: entity_reference_autocomplete
+    weight: 2
     region: content
     settings:
       match_operator: CONTAINS
@@ -34,14 +54,14 @@ content:
     third_party_settings: {  }
   field_media_video_file:
     type: file_generic
-    weight: 1
+    weight: 3
     region: content
     settings:
       progress_indicator: throbber
     third_party_settings: {  }
   field_track:
     type: media_track
-    weight: 2
+    weight: 4
     region: content
     settings:
       progress_indicator: throbber
@@ -59,8 +79,6 @@ hidden:
   field_captions: true
   field_file_size: true
   field_legacy_checksum: true
-  field_media_of: true
-  field_media_use: true
   field_mime_type: true
   field_original_name: true
   langcode: true
