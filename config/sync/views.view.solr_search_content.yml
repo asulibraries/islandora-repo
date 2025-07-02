@@ -1977,7 +1977,11 @@ display:
           tokenize: true
       footer: {  }
       exposed_block: false
-      display_extenders: {  }
+      display_extenders:
+        metatag_display_extender:
+          metatags:
+            robots: 'noindex, nofollow, noarchive, nosnippet'
+          tokenize: false
       path: search
     cache_metadata:
       max-age: 0
@@ -2572,7 +2576,11 @@ display:
           tokenize: true
           bypass_access: true
       exposed_block: true
-      display_extenders: {  }
+      display_extenders:
+        metatag_display_extender:
+          metatags:
+            robots: 'noindex, nofollow, noarchive, nosnippet'
+          tokenize: false
       path: collections/%/search
     cache_metadata:
       max-age: 0
