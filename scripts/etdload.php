@@ -134,6 +134,10 @@ $language_map = [
 // Collection we are populating w/ node ID passed from commandline.
 // 149053.
 $collection_nid = $extra[1];
+if (!$collection_nid) {
+  $this->io()->error("No collection ID provided.");
+  return;
+}
 
 // DateTimeFormat for embargo release date.
 $embargo_field_format = DateTimeItemInterface::DATETIME_STORAGE_FORMAT;
@@ -305,14 +309,25 @@ foreach (array_filter(scandir($path), function ($value) {
 
   // Attachments.
   foreach ($xml->xpath('DISS_content/DISS_attachment') as $attachment) {
-    $attachment_path = current(glob($extract_destination . DIRECTORY_SEPARATOR . '*' . DIRECTORY_SEPARATOR . (string) $attachment->DISS_file_name));
+    $attachment_path = current(glob(
+      $extract_destination . DIRECTORY_SEPARATOR . '*' . DIRECTORY_SEPARATOR .
+      // Escape glob special characters.
+      str_replace(
+        [' ','[',']','{','}' ],
+        ['\ ','\[','\]','\{','\}'],
+        $attachment->DISS_file_name
+      )
+    ));
+    if (!$attachment_path) {
+      $this->io()->warning("Could not find attachment '{$attachment->DISS_file_name}' for {$etd_id}");
+      continue;
+    }
     $attachment_name = (string) $attachment->DISS_file_descr;
-
     $media = create_media($attachment_path, $attachment_name);
     $node_metadata['field_work_products'][] = ['target_id' => $media->id()];
   }
 
-  // Create node. (Move after media later.)
+  // Create node.
   $node = $ns->create($node_metadata);
   $node->save();
   $this->io()->writeln("Created '{$node->label()}' ({$node->id()}) from ETD $etd_id");
