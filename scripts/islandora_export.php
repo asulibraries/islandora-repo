@@ -50,7 +50,7 @@ function export_entity($e, &$context) {
     // Base fields and non-entity reference fields can be exported directly.
     if ($fd instanceof FieldConfig && $e->get($f) instanceof EntityReferenceFieldItemListInterface) {
       if (!$field_storage = FieldStorageConfig::loadByName($e->getEntityTypeId(), $f)) {
-        \Drupal::logger('export')->warning("Field storage for {$e->getEntityTypeId()}:{$f} not found for {$e->id()}");
+        print("WARNING:Field storage for {$e->getEntityTypeId()}:{$f} not found for {$e->id()}\n");
         continue;
       }
       switch ($target_type = $field_storage->getSetting('target_type')) {
@@ -68,7 +68,7 @@ function export_entity($e, &$context) {
         case 'paragraph':
           foreach ($e->get($f) as $delta => $ref) {
             if (!$ref->entity) {
-              \Drupal::logger('export')->warning("Could not find entity {$target_type}:{$ref->target_id} for {$e->getEntityTypeId()}:{$e->id()}:{$f}");
+              print("WARNING:Could not find entity {$target_type}:{$ref->target_id} for {$e->getEntityTypeId()}:{$e->id()}:{$f}\n");
               continue;
             }
             export_entity($ref->entity, $context);
@@ -80,7 +80,7 @@ function export_entity($e, &$context) {
           break;
 
         default:
-          \Drupal::logger('export')->warning("Can't map {$e->get($f)->entity?->getEntityTypeId()} in {$f} for {$e->id()} yet.");
+          print("WARNING:Can't map {$e->get($f)->entity?->getEntityTypeId()} in {$f} for {$e->id()} yet.\n");
       }
     }
     // With the exception of users.
