@@ -27,12 +27,21 @@ function export_entity($e, &$context) {
   foreach ($e->getFieldDefinitions() as $f => $fd) {
     // Skip site-specific fields or empty.
     if (in_array($f, [
-      'vid', 'uuid', 'metatag',
-      'revision_timestamp', 'revision_uid', 'revision_log',
-      'revision_default', 'revision_translated_affected',
-      'revision_created', 'menu_link',
-      'content_translation_source', 'content_translation_outdated',
-      'revision_translation_affected', 'path',
+      'vid',
+      'uuid',
+      'metatag',
+      'revision_id',
+      'revision_timestamp',
+      'revision_uid',
+      'revision_log',
+      'revision_default',
+      'revision_translated_affected',
+      'revision_created',
+      'menu_link',
+      'content_translation_source',
+      'content_translation_outdated',
+      'revision_translation_affected',
+      'path',
       'thumbnail',
     ]) || $e->get($f)->isEmpty()) {
       continue;
@@ -45,19 +54,6 @@ function export_entity($e, &$context) {
         continue;
       }
       switch ($target_type = $field_storage->getSetting('target_type')) {
-        case 'taxonomy_term':
-          foreach ($e->get($f) as $ref) {
-            if (array_key_exists($ref->target_id, $context[$target_type] ?? [])) {
-              continue;
-            }
-            $context[$target_type][$ref->target_id] = [
-              $ref->entity->bundle(),
-              $ref->entity->label(),
-              \Drupal::service('islandora.utils')->getUriForTerm($ref->entity),
-            ];
-          }
-          break;
-
         case 'file':
           foreach ($e->get($f) as $delta => $ref) {
             $values[$delta] = [
@@ -67,9 +63,14 @@ function export_entity($e, &$context) {
           }
           break;
 
+        case 'taxonomy_term':
         case 'media':
         case 'paragraph':
           foreach ($e->get($f) as $delta => $ref) {
+            if (!$ref->entity) {
+              \Drupal::logger('export')->warning("Could not find entity {$target_type}:{$ref->target_id} for {$e->getEntityTypeId()}:{$e->id()}:{$f}");
+              continue;
+            }
             export_entity($ref->entity, $context);
           }
           break;
@@ -81,6 +82,14 @@ function export_entity($e, &$context) {
         default:
           \Drupal::logger('export')->warning("Can't map {$e->get($f)->entity?->getEntityTypeId()} in {$f} for {$e->id()} yet.");
       }
+    }
+    // With the exception of users.
+    if ($f == 'uid') {
+      $values = $e->get($f)->entity->getAccountName() ?? '';
+    }
+    // And the taxonomy term vocabulary.
+    if ($f == 'vid' && $e->getEntityTypeId() == 'taxonomy_term') {
+      $values = $e->get($f)->value;
     }
     $context[$e->getEntityTypeId()][$e->id()][$f] = $values;
   }
