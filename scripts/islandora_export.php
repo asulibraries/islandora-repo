@@ -1,41 +1,88 @@
 <?php
 
+/**
+ * @file
+ * Export a node and its related entities to JSON.
+ *
+ * Usage: drush scr islandora_export.php /path/to/export/dir nid.
+ *
+ * KEEP Collection 259 is a useful small test case.
+ */
+
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
+use Drupal\field\Entity\FieldConfig;
+use Drupal\field\Entity\FieldStorageConfig;
 
 /**
- *
+ * Saves an entity to the context array.
  */
 function export_entity($e, &$context) {
-  print("Processing {$e->id()} {$e->label()}\n");
-  $key = "{$e->getEntityTypeId()}-{$e->id()}";
+  if (array_key_exists($e->id(), $context[$e->getEntityTypeId()] ?? [])) {
+    print("Skipping existing {$e->getEntityTypeId()}:{$e->id()}\n");
+    return;
+  }
+  print("Processing {$e->getEntityTypeId()}:{$e->id()} {$e->label()}\n");
+
   // Export Fields.
   foreach ($e->getFieldDefinitions() as $f => $fd) {
-    if (in_array($f, ['vid', 'uuid'])) {
+    // Skip site-specific fields or empty.
+    if (in_array($f, [
+      'vid', 'uuid', 'metatag',
+      'revision_timestamp', 'revision_uid', 'revision_log',
+      'revision_default', 'revision_translated_affected',
+      'revision_created', 'menu_link',
+      'content_translation_source', 'content_translation_outdated',
+      'revision_translation_affected', 'path',
+      'thumbnail',
+    ]) || $e->get($f)->isEmpty()) {
       continue;
     }
     $values = $e->get($f)->getValue();
-    if ($e->get($f) instanceof EntityReferenceFieldItemListInterface) {
-      // Save away taxonomy reference.
-      if ($e->get($f)->entity && $e->get($f)->entity?->getEntityTypeId() == 'taxonomy_term') {
-        foreach ($e->get($f) as $ref) {
-          if (array_key_exists($ref->target_id, $context['terms'])) {
-            continue;
+    // Base fields and non-entity reference fields can be exported directly.
+    if ($fd instanceof FieldConfig && $e->get($f) instanceof EntityReferenceFieldItemListInterface) {
+      if (!$field_storage = FieldStorageConfig::loadByName($e->getEntityTypeId(), $f)) {
+        \Drupal::logger('export')->warning("Field storage for {$e->getEntityTypeId()}:{$f} not found for {$e->id()}");
+        continue;
+      }
+      switch ($target_type = $field_storage->getSetting('target_type')) {
+        case 'taxonomy_term':
+          foreach ($e->get($f) as $ref) {
+            if (array_key_exists($ref->target_id, $context[$target_type] ?? [])) {
+              continue;
+            }
+            $context[$target_type][$ref->target_id] = [
+              $ref->entity->bundle(),
+              $ref->entity->label(),
+              \Drupal::service('islandora.utils')->getUriForTerm($ref->entity),
+            ];
           }
-          $context['terms'][$ref->target_id] = [$ref->entity->vid, $ref->entity->label(), \Drupal::service('islandora.utils')->getUriForTerm($ref->entity)];
-        }
-      }
-      // Process file references.
-      if ($e->get($f)->entity?->getEntityTypeId() == 'file') {
-        foreach ($e->get($f) as $delta => $ref) {
-          $values[$delta] = $ref->entity->uri->value;
-        }
-      }
-      // TODO: process paragraphs.
-      else {
-        \Drupal::logger('export')->warning("Can't map {$e->get($f)->entity?->getEntityTypeId()} in {$f} for {$e->id()} yet.");
+          break;
+
+        case 'file':
+          foreach ($e->get($f) as $delta => $ref) {
+            $values[$delta] = [
+              'type' => $target_type,
+              'uri' => $ref->entity->uri->value,
+            ];
+          }
+          break;
+
+        case 'media':
+        case 'paragraph':
+          foreach ($e->get($f) as $delta => $ref) {
+            export_entity($ref->entity, $context);
+          }
+          break;
+
+        case 'node':
+          // Don't recurse nodes, they are handled separately.
+          break;
+
+        default:
+          \Drupal::logger('export')->warning("Can't map {$e->get($f)->entity?->getEntityTypeId()} in {$f} for {$e->id()} yet.");
       }
     }
-    $context[$key][$f] = $values;
+    $context[$e->getEntityTypeId()][$e->id()][$f] = $values;
   }
   if ($e->getEntityTypeId() == 'node') {
     // Recurse Media.
@@ -65,6 +112,6 @@ if (!$source = $ns->load($nid)) {
   die("");
 }
 
-$context = ['items' => [], 'terms' => []];
+$context = ['node' => []];
 export_entity($source, $context);
 file_put_contents($path . DIRECTORY_SEPARATOR . "{$nid}.json", json_encode($context, JSON_PRETTY_PRINT));
