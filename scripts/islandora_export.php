@@ -2,23 +2,26 @@
 
 use Drupal\Core\Field\EntityReferenceFieldItemListInterface;
 
+/**
+ *
+ */
 function export_entity($e, &$context) {
+  print("Processing {$e->id()} {$e->label()}\n");
   $key = "{$e->getEntityTypeId()}-{$e->id()}";
   // Export Fields.
-  
-  foreach($e->getFieldDefinitions() as $f => $fd) {
-    if (in_array($f, ['vid', 'uuid']) {
+  foreach ($e->getFieldDefinitions() as $f => $fd) {
+    if (in_array($f, ['vid', 'uuid'])) {
       continue;
     }
     $values = $e->get($f)->getValue();
     if ($e->get($f) instanceof EntityReferenceFieldItemListInterface) {
       // Save away taxonomy reference.
-      if ($e->get($f)->entity?->getEntityTypeId() == 'taxonomy_term') {
-        foreach ($e->get($f) as $delta => $ref) {
-          if (array_key_exists($ref->target_id, $terms)) {
+      if ($e->get($f)->entity && $e->get($f)->entity?->getEntityTypeId() == 'taxonomy_term') {
+        foreach ($e->get($f) as $ref) {
+          if (array_key_exists($ref->target_id, $context['terms'])) {
             continue;
           }
-          $context['terms'][$ref->target_id] = [$ref->entity->vid, $ref->entity->label(), \Drupal::service('islandora.utils')->getUriForTerm($f->entity)];
+          $context['terms'][$ref->target_id] = [$ref->entity->vid, $ref->entity->label(), \Drupal::service('islandora.utils')->getUriForTerm($ref->entity)];
         }
       }
       // Process file references.
@@ -27,8 +30,9 @@ function export_entity($e, &$context) {
           $values[$delta] = $ref->entity->uri->value;
         }
       }
+      // TODO: process paragraphs.
       else {
-        $this->io->warning("Can't map {$e->get($f)->entity->getEntityTypeId()} in {$f} for {$e->id()} yet.");
+        \Drupal::logger('export')->warning("Can't map {$e->get($f)->entity?->getEntityTypeId()} in {$f} for {$e->id()} yet.");
       }
     }
     $context[$key][$f] = $values;
@@ -38,14 +42,12 @@ function export_entity($e, &$context) {
     foreach (\Drupal::service('islandora.utils')->getMedia($e) as $m) {
       export_entity($m, $context);
     }
-    
+
     // Recurse Members.
-    foreach (\Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['field_member_of' = $e->id()]) as $m) {
+    foreach (\Drupal::entityTypeManager()->getStorage('node')->loadByProperties(['field_member_of' => $e->id()]) as $m) {
       export_entity($m, $context);
     }
   }
-  
-  return $return;
 }
 
 $path = $extra[0];
@@ -64,6 +66,5 @@ if (!$source = $ns->load($nid)) {
 }
 
 $context = ['items' => [], 'terms' => []];
-$this->io->writeln("Processing {$nid} {$source->label()}");
 export_entity($source, $context);
 file_put_contents($path . DIRECTORY_SEPARATOR . "{$nid}.json", json_encode($context, JSON_PRETTY_PRINT));
