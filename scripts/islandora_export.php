@@ -121,6 +121,16 @@ if (!$source = $ns->load($nid)) {
   die("");
 }
 
-$context = ['node' => []];
+$context = [];
+foreach (['public', 'private'] as $scheme) {
+  if ($real_path = \Drupal::service('file_system')->realpath("{$scheme}://")) {
+    $context['settings'][$scheme] = $real_path;
+  }
+  else {
+    $this->io()->warning("Could not find real path for {$scheme}://");
+    $context['settings'][$scheme] = '';
+  }
+}
+$context['node'] = [];
 export_entity($source, $context);
 file_put_contents($path . DIRECTORY_SEPARATOR . "{$nid}.json", json_encode($context, JSON_PRETTY_PRINT));
