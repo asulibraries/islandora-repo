@@ -26,8 +26,9 @@ function export_entity($e, &$context) {
   // Export Fields.
   foreach ($e->getFieldDefinitions() as $f => $fd) {
     // Skip site-specific fields or empty.
+    // NOTE: vid is used for the bundle for taxonomy terms,
+    // so we keep it even though it is used as a version id for nodes.
     if (in_array($f, [
-      'vid',
       'uuid',
       'metatag',
       'revision_id',
@@ -89,7 +90,7 @@ function export_entity($e, &$context) {
     }
     // And the taxonomy term vocabulary.
     if ($f == 'vid' && $e->getEntityTypeId() == 'taxonomy_term') {
-      $values = $e->get($f)->value;
+      $values = $e->get($f)->getValue();
     }
     $context[$e->getEntityTypeId()][$e->id()][$f] = $values;
   }
