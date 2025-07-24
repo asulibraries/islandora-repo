@@ -95,6 +95,21 @@ function export_entity($e, &$context) {
     $context[$e->getEntityTypeId()][$e->id()][$f] = $values;
   }
   if ($e->getEntityTypeId() == 'node') {
+
+    // Export analytics counts.
+    $q = \Drupal::database()->select('item_analytics_counts', 'iac')
+      ->fields('iac', ['event', 'period', 'count'])
+      ->condition('iac.iid', $e->id())
+      ->condition('iac.type', $e->getEntityTypeId());
+    $results = $q->execute();
+    foreach ($results as $result) {
+      $context['analytics'][$e->id()][] = [
+        'event' => $result->event,
+        'period' => $result->period,
+        'count' => $result->count,
+      ];
+    }
+
     // Recurse Media.
     foreach (\Drupal::service('islandora.utils')->getMedia($e) as $m) {
       export_entity($m, $context);
@@ -133,5 +148,6 @@ foreach (['public', 'private'] as $scheme) {
   }
 }
 $context['node'] = [];
+$context['analytics'] = [];
 export_entity($source, $context);
 file_put_contents($path . DIRECTORY_SEPARATOR . "{$nid}.json", json_encode($context, JSON_PRETTY_PRINT));

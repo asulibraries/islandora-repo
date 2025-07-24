@@ -291,6 +291,13 @@ function import_entity($type, $id, &$import) {
     $entity->set('moderation_state', 'published');
     $entity->save();
     update_handle($entity);
+
+    // Add analytics counts.
+    if (array_key_exists($id, $import['analytics'] ?? [])) {
+      foreach ($import['analytics'][$id] as $row) {
+        \Drupal::service('asu_item_analytics.update')->setEntityMonthly($entity, $row['event'], $row['period'], $row['count']);
+      }
+    }
   }
   return $import['map'][$type][$id];
 }
@@ -313,6 +320,7 @@ foreach ($import['node'] as $nid => $fields) {
   $new_nid = import_entity('node', $nid, $import);
   print("Imported node '{$fields['title'][0]['value']}' {$nid} as {$new_nid}.\n");
 }
+
 // Print TSV of the import map.
 $export_path = dirname($path) . DIRECTORY_SEPARATOR . basename($path, '.json') . '_import_map.tsv';
 $fp = fopen($export_path, 'w');
