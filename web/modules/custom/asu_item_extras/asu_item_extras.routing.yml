@@ -50,3 +50,10 @@ asu_item_extras.thumbnail_controller_get_thumbnail:
         type: entity:node
     no_cache: 'TRUE'
 
+asu_item_extras.batch_populate_thumbnails:
+  path: '/admin/config/system/batch-populate-compound-thumbnails'
+  defaults:
+    _form: '\Drupal\asu_item_extras\Form\BatchPopulateCompoundObjThumbs'
+    _title: 'Populate Compound Object Thumbnails'
+  requirements:
+    _permission: 'administer site configuration'

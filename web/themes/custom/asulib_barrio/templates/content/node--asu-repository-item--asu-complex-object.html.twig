@@ -125,6 +125,7 @@
         </div>
       </div>
     </div>
+    {% if content.field_model[0]['#plain_text'] != "Paged Content" %}
     <div id="included-this-item" class="content-section">
       <h2>{{ 'Included in this item'|t }} ({{ child_count }})</h2>
       <div class="children-3-wide">
@@ -136,6 +137,7 @@
         <a href="{{ url }}/members" class="btn btn-primary">View all associated media</a></strong></p></div><br/>
       {% endif %}
     </div>
+    {% endif %}
     <div id="details" class="content-section details">
       <h2>{{ 'Details'|t }}</h2>
         <div>{{ content.field_title }}</field>

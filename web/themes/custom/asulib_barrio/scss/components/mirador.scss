@@ -1,0 +1,37 @@
+/** Adjust Search Results Display Padding (mostly unsetting styling from the base theme) **/
+aside div.MuiPaper-root.mirador-scrollto-scrollable ul.MuiList-root {
+    padding: unset;
+    max-width: unset
+}
+
+div.MuiPaper-root ul.MuiList-root li.MuiListItem-root {
+    padding: 0.75em;
+    margin: 0;
+    list-style: none;
+}
+
+div.MuiPaper-root ul.MuiList-root li.MuiListItem-root::before {
+    content: '';
+    margin: 0;
+    padding: 0;
+}
+
+.MuiInputBase-root.MuiInput-root.MuiInput-underline.MuiAutocomplete-inputRoot.MuiInputBase-fullWidth.MuiInput-fullWidth.MuiInputBase-formControl.MuiInput-formControl.MuiInputBase-adornedEnd {
+  padding-right: unset;
+}
+
+/** Search Bar Width **/
+.mirador-companion-window-title-controls {
+  /** 100% forces the close button around. **/
+  width: 85%;
+}
+
+/** Hide the dots in the search result item. It isn't clear what they are for. **/
+ul.MuiList-root li.MuiListItem-root .MuiTypography-subtitle2 span.MuiChip-root {
+  display: none;
+}
+
+/** Hide the second subtitle, holding the matching term, in the search result. It isn't useful when we have AND matching. **/
+ul.MuiList-root li.MuiListItem-root h6.MuiTypography-subtitle2:nth-of-type(2) {
+  display: none;
+}

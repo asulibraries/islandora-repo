@@ -111,6 +111,7 @@
                 {{ drupal_view('collections', 'sub_collections', node.id) }}
             </div>
         {% endif %}
+        {{ drupal_view('browse_collection_items', 'block_1', node.id) }}
         <div class="xs-padding-top">
             {{ content.field_preferred_citation }}
         </div>

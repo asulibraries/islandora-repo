@@ -4,16 +4,16 @@ status: true
 dependencies:
   module:
     - asu_admin_toolbox
-    - context
     - islandora
     - node
     - system
+    - user
   theme:
     - asulib_barrio
 id: admintoolbox
 theme: asulib_barrio
 region: sidebar_first
-weight: -43
+weight: -41
 provider: null
 plugin: admin_toolbox
 settings:
@@ -39,11 +39,13 @@ visibility:
     bundles:
       asu_repository_item: asu_repository_item
       collection: collection
-  request_path_exclusion:
-    id: request_path_exclusion
-    negate: null
-    pages: ''
-  view_inclusion:
-    id: view_inclusion
-    negate: null
-    view_inclusion: {  }
+  user_role:
+    id: user_role
+    negate: false
+    context_mapping:
+      user: '@user.current_user_context:current_user'
+    roles:
+      administrator: administrator
+      preservationist: preservationist
+      repositor_manager: repositor_manager
+      collections_staff: collections_staff

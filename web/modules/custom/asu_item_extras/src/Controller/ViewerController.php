@@ -33,6 +33,8 @@ class ViewerController extends ControllerBase {
 
   /**
    * IslandoraUtils class.
+   * 
+   * @var \Drupal\islandora\IslandoraUtils
    */
   protected $islandoraUtils;
 
@@ -124,7 +126,7 @@ class ViewerController extends ControllerBase {
         $node = Node::load($node);
       }
       $user_roles = $account->getRoles();
-      if (in_array('administrator', $user_roles ) || in_array("metadata_manager", $user_roles)) {
+      if (in_array('administrator', $user_roles) || in_array("metadata_manager", $user_roles)) {
         return AccessResult::allowed();
       }
       // @todo this may be too restrictive?

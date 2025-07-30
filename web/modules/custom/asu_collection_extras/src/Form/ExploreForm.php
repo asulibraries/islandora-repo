@@ -2,6 +2,7 @@
 
 namespace Drupal\asu_collection_extras\Form;
 
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Url;
@@ -12,6 +13,14 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
  * ExploreForm to search the collection by calling the search GET address.
  */
 class ExploreForm extends FormBase {
+
+  /**
+   * The entityTypeManager definition.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
   /**
    * The requestStack definition.
    *
@@ -39,6 +48,7 @@ class ExploreForm extends FormBase {
     $instance = parent::create($container);
     $instance->requestStack = $container->get('request_stack');
     $instance->currentRouteMatch = $container->get('current_route_match');
+    $instance->entityTypeManager = $container->get('entity_type.manager');
     return $instance;
   }
 
@@ -54,6 +64,9 @@ class ExploreForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
     $node = $this->currentRouteMatch->getParameter('node');
+    if (is_string($node)) {
+        $node = $this->entityTypeManager->getStorage('node')->load($node);
+    }
     $url = Url::fromUri(
       $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
       '/collections/' . (($node) ? $node->id() : 0) .

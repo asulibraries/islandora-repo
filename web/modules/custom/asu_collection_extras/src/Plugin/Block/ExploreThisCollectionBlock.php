@@ -4,8 +4,9 @@ namespace Drupal\asu_collection_extras\Plugin\Block;
 
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
-use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\FormBuilderInterface;
+use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -28,6 +29,13 @@ class ExploreThisCollectionBlock extends BlockBase implements ContainerFactoryPl
   protected $formBuilder;
 
   /**
+   * The entityTypeManager definition.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
    * The routeMatch definition.
    *
    * @var \Drupal\Core\Routing\RouteMatchInterface
@@ -45,6 +53,8 @@ class ExploreThisCollectionBlock extends BlockBase implements ContainerFactoryPl
    *   The plugin implementation definition.
    * @param \Drupal\Core\Form\FormBuilderInterface $form_builder
    *   The Form Builder.
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
+   *   The entityTypeManager definition.
    * @param \Drupal\Core\Routing\RouteMatchInterface $route_match
    *   The route match.
    */
@@ -53,9 +63,11 @@ class ExploreThisCollectionBlock extends BlockBase implements ContainerFactoryPl
     $plugin_id,
     $plugin_definition,
     FormBuilderInterface $form_builder,
+    EntityTypeManagerInterface $entityTypeManager,
     RouteMatchInterface $route_match) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->formBuilder = $form_builder;
+    $this->entityTypeManager = $entityTypeManager;
     $this->routeMatch = $route_match;
   }
 
@@ -72,6 +84,7 @@ class ExploreThisCollectionBlock extends BlockBase implements ContainerFactoryPl
       $plugin_id,
       $plugin_definition,
       $container->get('form_builder'),
+      $container->get('entity_type.manager'),
       $container->get('current_route_match')
     );
   }
@@ -90,6 +103,9 @@ class ExploreThisCollectionBlock extends BlockBase implements ContainerFactoryPl
   public function getCacheTags() {
     // With this when your node change your block will rebuild.
     if ($node = $this->routeMatch->getParameter('node')) {
+      if (is_string($node)) {
+        $node = $this->entityTypeManager->getStorage('node')->load($node);
+      }
       // If there is node add its cachetag.
       return Cache::mergeTags(parent::getCacheTags(), ['node:' . $node->id()]);
     }

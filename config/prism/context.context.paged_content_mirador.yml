@@ -12,7 +12,7 @@ name: paged_content_mirador
 group: Display
 description: 'Displayed paged content with Mirador'
 requireAllConditions: false
-disabled: false
+disabled: true
 conditions:
   node_has_term:
     id: node_has_term
@@ -20,7 +20,7 @@ conditions:
     uuid: d43d2644-848e-46e7-a3ff-2023277aacc3
     context_mapping:
       node: '@node.node_route_context:node'
-    uri: 'https://schema.org/Book,https://projectmirador.org'
+    uri: 'https://schema.org/Book'
     logic: and
 reactions:
   blocks:

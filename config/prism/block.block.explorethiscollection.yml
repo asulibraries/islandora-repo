@@ -4,42 +4,29 @@ status: true
 dependencies:
   module:
     - asu_collection_extras
-    - context
-    - node
+    - islandora
     - system
   theme:
     - asulib_barrio
 id: explorethiscollection
 theme: asulib_barrio
 region: sidebar_first
-weight: -39
+weight: -36
 provider: null
 plugin: explore_this_collection_block
 settings:
   id: explore_this_collection_block
-  label: 'Explore this collection'
+  label: 'Search this collection'
   label_display: visible
   provider: asu_collection_extras
 visibility:
   request_path:
     id: request_path
-    negate: true
-    context_mapping: {  }
-    pages: "/node/add/collection\r\n/node/*/edit"
-  'entity_bundle:node':
-    id: 'entity_bundle:node'
     negate: false
-    context_mapping:
-      node: '@node.node_route_context:node'
-    bundles:
-      collection: collection
-  request_path_exclusion:
-    id: request_path_exclusion
-    negate: null
     context_mapping: {  }
-    pages: ''
-  view_inclusion:
-    id: view_inclusion
-    negate: null
+    pages: '/collections/*'
+  media_source_mimetype:
+    id: media_source_mimetype
+    negate: false
     context_mapping: {  }
-    view_inclusion: {  }
+    mimetype: ''
