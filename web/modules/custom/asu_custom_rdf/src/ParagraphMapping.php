@@ -28,10 +28,11 @@ class ParagraphMapping extends CommonDataConverter {
     else {
       $paragraph = $data;
     }
+    if (!$paragraph) { return '';}
     $nonsort = $arguments['nonsort'];
     $main_title = $arguments['main'];
     $subtitle = $arguments['subtitle'];
-    $nonsort_val = $paragraph->$nonsort->getValue();
+    $nonsort_val = $paragraph->$nonsort?->getValue();
     $main_title_val = $paragraph->$main_title->getValue();
     $subtitle_val = $paragraph->$subtitle->getValue();
     $string = "";

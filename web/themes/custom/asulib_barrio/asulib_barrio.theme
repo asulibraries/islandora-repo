@@ -167,6 +167,21 @@ function asulib_barrio_preprocess_node(&$variables) {
         }
       }
     }
+    if ($node->hasField('field_model') && !$node->get('field_model')->isEmpty() && $node->field_model->entity->label() == 'Paged Content' && !array_key_exists('display_media_thumbnail', $variables['content'])) {
+      $query = \Drupal::database()->select('node__field_member_of', 'n');
+      $query->addField('n', 'entity_id', 'nid');
+      $query->condition('n.field_member_of_target_id', $node->id(), '=');
+      $query->join('node__field_weight', 'nw', 'n.entity_id = nw.entity_id');
+      $query->join('node_field_data', 'nfd', 'n.entity_id = nfd.nid');
+      $query->orderBy('nw.field_weight_value', 'ASC');
+      $query->orderBy('nfd.title', 'ASC');
+      $query->orderBy('nfd.created', 'ASC');
+      $query->range(0, 1);
+      $nid = $query->execute()->fetchField(0);
+      if ($nid && $first_member = \Drupal::entityTypeManager()->getStorage('node')->load($nid)) {
+        $variables['content']['display_media_thumbnail'] = views_embed_view('display_media', 'thumbnail', $first_member->id());
+      }
+    }
     if ($variables['view_mode'] == 'asu_video' || $variables['view_mode'] == 'asu_audio' || $variables['view_mode'] == 'asu_document' || $variables['view_mode'] == 'asu_image' || $variables['view_mode'] == 'complex_object_child_box' || $variables['view_mode'] == 'full') {
       $default_config = \Drupal::config('asu_default_fields.settings');
       $origfile_term = $default_config->get('original_file_taxonomy_term');
@@ -300,10 +315,29 @@ function asulib_barrio_preprocess_user(&$variables) {
  */
 function asulib_barrio_preprocess_page(&$variables) {
   $variables['site_name'] = \Drupal::config('system.site')->get('name');
-  if (isset($variables['page']['sidebar_first']) && count($variables['page']['sidebar_first']) > 0) {
+  // Unset 'Explore this item' for Paged Content.
+  if (
+    array_key_exists('explorethisitem', $variables['page']['sidebar_first']) &&
+    $variables['node']?->hasField('field_model') &&
+    $variables['node']->get('field_model')->entity?->label() == 'Paged Content'
+  ) {
+    unset($variables['page']['sidebar_first']['explorethisitem']);
+  }
+  // Adjust content and sidebar column classes, IF we have any sidebar blocks.
+  if (
+    isset($variables['page']['sidebar_first']) &&
+    count(array_filter($variables['page']['sidebar_first'], function ($k) {
+      // Filter out keys prepended with '#'
+      // as those are metadata, not actual blocks.
+      return !str_starts_with($k, '#');
+    }, ARRAY_FILTER_USE_KEY)) > 0
+  ) {
     $variables['content_attributes']['class'][] = 'col-md-8 mt-2';
     $variables['sidebar_first_attributes']['class'][] = 'collapse';
     $variables['sidebar_first_attributes']->removeClass('col-md-4');
+  }
+  else {
+    unset($variables['page']['sidebar_first']);
   }
 }
 
@@ -329,10 +363,74 @@ function asulib_barrio_preprocess_views_exposed_form(&$variables) {
 }
 
 /**
- * Implements hoot_preprocess_media()
+ * Implements hook_preprocess_media()
  */
 function asulib_barrio_preprocess_media(&$variables) {
-  if($variables['view_mode'] == 'scholarly_work_sidebar') {
+  if ($variables['view_mode'] == 'scholarly_work_sidebar') {
     $variables['attributes']['class'][] = 'row d-flex align-items-center';
   }
+}
+
+/**
+ * Implements hook_preprocess_mirador().
+ *
+ * The initial pageNumber code Graciously provided by Joe Corall @ Lehigh University.
+ * The pageIdentifier code is our own addition.
+ */
+function asulib_barrio_preprocess_mirador(&$variables) {
+  $node = \Drupal::routeMatch()->getParameter('node');
+  if (!$node) {
+    return;
+  }
+  $variables['#cache']['contexts'][] = 'url.query_args';
+
+  // Add some default overrides for Lehigh's Mirador viewer.
+  $id = '#' . $variables['mirador_view_id'];
+  $viewer = &$variables['#attached']['drupalSettings']['mirador']['viewers'][$id];
+
+  $viewer['workspace'] = [
+    'showZoomControls' => TRUE,
+    'allowNewWindows' => FALSE,
+    'isWorkspaceAddVisible' => FALSE,
+  ];
+  $viewer['workspaceControlPanel'] = [
+    'enabled' => FALSE,
+  ];
+  $viewer['window']['allowClose'] = FALSE;
+  $viewer['window']['allowFullscreen'] = TRUE;
+  $viewer['window']['allowMaximize'] = FALSE;
+  $viewer['window']['hideWindowTitle'] = TRUE;
+  $viewer['window']['sideBarOpen'] = TRUE;
+  $viewer['window']['imageToolsOpen'] = FALSE;
+  $viewer['window']['panels']['attribution'] = FALSE;
+  $viewer['window']['views'] = [
+                   ['key' => 'single'],
+                   ['key' => 'book'],
+                   ['key' => 'gallery'],
+  ];
+
+  // Settings For Simple Images.
+  if ($node->hasField('field_model') && $node->field_model->entity?->label() == 'Image') {
+    $viewer['window']['sideBarOpen'] = FALSE;
+    $viewer['window']['views'] = [['key' => 'single']];
+    $viewer['windows'][0]['thumbnailNavigationPosition'] = 'off';
+  }
+  // Complex object page jump.
+  else {
+    // Allow skipping to a default page.
+    if (isset($_GET['pageNumber']) && is_numeric($_GET['pageNumber'])) {
+      $viewer['windows'][0]['canvasIndex'] = $_GET['pageNumber'] - 1;
+    }
+    // Or find a page based on a node.
+    elseif (isset($_GET['pageIdentifier']) && is_numeric($_GET['pageIdentifier'])) {
+      $nid = $_GET['pageIdentifier'];
+      foreach (views_get_view_result('iiif_manifest', 'rest_export_1', $node->id()) as $i => $r) {
+        if ($r->node_field_data_media__field_media_of_nid && intval($r->node_field_data_media__field_media_of_nid) == $nid) {
+          $viewer['windows'][0]['canvasIndex'] = $i;
+          break;
+        }
+      }
+    }
+  }
+  $variables['#attached']['library'][] = 'asu_item_analytics/mirador-analytics';
 }

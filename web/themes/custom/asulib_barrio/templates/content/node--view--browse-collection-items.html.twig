@@ -60,7 +60,6 @@
  */
 #}
 {{ attach_library('bootstrap_barrio/node') }}
-
 {%
     set classes = [
     'node',
@@ -69,51 +68,46 @@
     node.isSticky() ? 'node--sticky',
     not node.isPublished() ? 'node--unpublished',
     view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
-    'clearfix',
+    'clearfix','row','item-result'
 ]
 %}
-<article{{ attributes.addClass(classes) }}>
-    <header>
-        {{ title_prefix }}
-        {% if label and not page %}
-            <h2{{ title_attributes.addClass('node__title') }}>
-                <a href="{{ url }}" rel="bookmark">{{ label }}</a>
-            </h2>
-        {% endif %}
-        {{ title_suffix }}
-        {% if display_submitted %}
-            <div class="node__meta">
-                {{ author_picture }}
-                {% block submitted %}
-                    <em{{ author_attributes }}>
-                        {% trans %}Submitted by {{ author_name }} on {{ date }}{% endtrans %}
-                    </em>
-                {% endblock %}
-                {{ metadata }}
-            </div>
-        {% endif %}
-    </header>
-    <div{{ content_attributes.addClass('node__content', 'clearfix') }}>
-        <!-- note that the title, thumbnail, description and collaborating institutions have been moved to a view so they can be in a different region of the page -->
+{%
+    set model_icons = {
+        "Image": "far fa-file-image",
+        "Audio": "far fa-file-audio",
+        "Video": "far fa-file-video",
+        "Digital Document": "far fa-file-alt",
+        "Binary": "far fa-file",
+        "Complex Object": "complex-object-icon",
+        "Paged Content": "complex-object-icon",
+    }
 
-        {% if drupal_view_result('collections', 'sub_collections', node.id) is empty %}
-            <h2>{{ 'About this collection'|t }}</h2>
-            <div class="col-md-12 xs-padding-bottom">
-                {{ drupal_block('about_this_collection_block') }}
-            </div>
-            <h2 class="xs-margin-top">{{ 'Latest additions'|t }}</h2>
-            <div class="col-md-12 xs-padding-bottom">
-                {{ drupal_block('latest_additions_to_collection_block') }}
-            </div>
-        {% else %}
-            <h2 class="xs-margin-top">{{ 'Included in this collection'|t }}</h2>
-            <div class="col-md-12 xs-padding-bottom">
-                {{ drupal_view('collections', 'sub_collections', node.id) }}
-            </div>
-        {% endif %}
-        {{ drupal_view('browse_collection_items', 'block_1', node.id) }}
-        <div class="xs-padding-top">
-            {{ content.field_preferred_citation }}
+%}
+<div{{ attributes.addClass(classes) }}>
+{# Show thumbnail or icon. #}
+  <div class="col-md-2 thumb-image-border">
+  {# Use the collection thumbnail if it returns a value with the img tag. #}
+  {% if (content.field_collection_thumbnail is defined) and ('img' in content.field_collection_thumbnail.content|render) %}
+  <!-- collection thumbnail -->
+    {{ content.field_collection_thumbnail.content }}
+  {% elseif (content.field_work_products is defined) and ('img' in content.field_work_products.content|render) %}
+  <!-- work products -->
+    {{ content.field_work_products.content }}
+  {% elseif content.field_model is defined %}
+  <!-- field_model -->
+    {% if drupal_view_result('display_media', 'thumbnail', node.id) is empty %}
+    {% for k, v in model_icons|filter((v, k) => k == content.field_model.content|striptags|trim) %}
+        <div class="icon-container">
+            <i class="{{ v }} fa-6x"></i>
         </div>
-    </div>
-</article>
+    {% endfor %}
+    {% else %}
+    {{ drupal_view('display_media', 'thumbnail', node.id) }}
+    {% endif %}
+  {% endif %}
+  </div>
+  <div class="col-md-10">  
+    <a class="h2" href="{{url}}">{{ label }}</a>
+    {{ content|without('field_model','field_collection_thumbnail','field_work_products')}}
+  </div>
+</div>

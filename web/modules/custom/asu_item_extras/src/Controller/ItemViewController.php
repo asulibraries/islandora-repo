@@ -4,6 +4,8 @@ namespace Drupal\asu_item_extras\Controller;
 
 use Drupal\Core\Entity\EntityInterface;
 use Drupal\node\Controller\NodeViewController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Drupal\Core\Url;
 
 /**
  * Custom node redirect controller.
@@ -32,6 +34,17 @@ class ItemViewController extends NodeViewController {
         }
         elseif ($model == 'Audio') {
           $view_mode = 'asu_audio';
+        }
+        elseif ($model == 'Page' && !$node->field_member_of->isEmpty()) {
+          return new RedirectResponse(Url::fromRoute('entity.node.canonical', [
+            'node' => $node->field_member_of->target_id,
+          ],
+          [
+            'query' => [
+              'pageIdentifier' => $node->id(),
+            ],
+          ]
+          )->toString());
         }
       }
       return parent::view($node, $view_mode, $langcode);

@@ -11,7 +11,7 @@ name: mirador
 group: Display
 description: 'Context for enabling mirador viewer on select nodes'
 requireAllConditions: false
-disabled: false
+disabled: true
 conditions:
   node_has_term:
     id: node_has_term
@@ -23,6 +23,6 @@ conditions:
 reactions:
   view_mode_alter:
     id: view_mode_alter
-    mode: node.mirador
     saved: false
+    mode: node.mirador
 weight: 0

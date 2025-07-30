@@ -198,7 +198,7 @@ function asu_search_views_pre_render(ViewExecutable $view) {
  */
 function asu_search_media_presave($media) {
   if ($media->bundle() == 'extracted_text' && $media->hasField('field_edited_text') && !$media->get('field_edited_text')->isEmpty()) {
-    if (!$media->get('field_edited_text')->equals($media->original->get('field_edited_text'))) {
+    if (!$media->original || !$media->get('field_edited_text')->equals($media->original?->get('field_edited_text'))) {
       $iu = \Drupal::service('islandora.utils');
       $n = $iu->getParentNode($media);
       if (!$n) {
