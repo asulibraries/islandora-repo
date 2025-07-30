@@ -13,6 +13,7 @@ domains: {  }
 field_type:
   name: islandora_hocr_und
   class: solr.TextField
+  storeOffsetsWithPositions: true
   analyzers:
     -
       type: index
@@ -83,7 +84,6 @@ field_type:
           class: solr.LowerCaseFilterFactory
         -
           class: solr.RemoveDuplicatesTokenFilterFactory
-  storeOffsetsWithPositions: true
 unstemmed_field_type: null
 spellcheck_field_type: null
 collated_field_type: null

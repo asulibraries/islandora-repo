@@ -319,7 +319,7 @@ function asulib_barrio_preprocess_page(&$variables) {
   if (
     array_key_exists('explorethisitem', $variables['page']['sidebar_first']) &&
     $variables['node']?->hasField('field_model') &&
-    $variables['node']->get('field_model')->entity?->label() == 'Paged Content'
+    in_array($variables['node']->get('field_model')->entity?->label(), ['Paged Content','Image'])
   ) {
     unset($variables['page']['sidebar_first']['explorethisitem']);
   }

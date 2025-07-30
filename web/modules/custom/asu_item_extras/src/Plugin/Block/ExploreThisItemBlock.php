@@ -138,15 +138,7 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
     $output_links = [];
     $search_form = NULL;
     if ($field_model == 'Image') {
-      if ($this->canAccessItemMedia($node)) {
-        $view_url = $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/items/' . $nid . '/view';
-        $url = Url::fromUri($view_url, ['attributes' => ['class' => 'nav-link']]);
-        $link = Link::fromTextAndUrl($this->t('View Image'), $url);
-        // Get the node's service file information from the node - just use the
-        // openseadragon view.
-        $link = $link->toRenderable();
-        $output_links[] = \Drupal::service('renderer')->render($link);
-      }
+      return [];
     }
     elseif ($field_model == 'Complex Object') {
       $search_form = $this->formBuilder->getForm('Drupal\asu_item_extras\Form\ExploreForm');
