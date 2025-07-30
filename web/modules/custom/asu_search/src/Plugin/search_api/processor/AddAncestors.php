@@ -297,11 +297,6 @@ class AddAncestors extends ProcessorPluginBase implements PluginFormInterface {
 
         if ($entity = $item->getOriginalObject()->getEntity()) {
           foreach ($this->utils->findAncestors($entity, $fields_to_crawl) as $ancestor) {
-            \Drupal::logger('asu_search')->debug('Adding ancestor {ancestor} to field {field} on item {item}.', [
-              'ancestor' => $ancestor,
-              'field' => $field_id,
-              'item' => $entity->label(),
-            ]);
             // Deduplicate values.
             if (!in_array($ancestor, $field->getValues())) {
               $field->addValue($ancestor);

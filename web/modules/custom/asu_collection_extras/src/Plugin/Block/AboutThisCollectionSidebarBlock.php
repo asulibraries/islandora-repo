@@ -111,7 +111,7 @@ class AboutThisCollectionSidebarBlock extends BlockBase implements ContainerFact
     $output_links[] = \Drupal::service('renderer')->render($link);
     // Add a link to get the Permalink for this node. Could this be a javascript
     // event that will send the current node's URL to the copy buffer?
-    if ($node->hasField('field_handle') && $node->get('field_handle')->value != NULL) {
+    if ($node && $node->hasField('field_handle') && !$node->get('field_handle')->isEmpty()) {
       $hdl = $node->get('field_handle')->value;
       $output_links[] = '<a class="nav-link copy_permalink_link" title="' . $hdl . '">Permalink</span>&nbsp; <span class="far fa-copy fa-lg copy_permalink_link" title="' . $hdl . '">&nbsp;</a>';
     }
