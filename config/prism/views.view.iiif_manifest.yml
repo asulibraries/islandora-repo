@@ -11,6 +11,7 @@ dependencies:
     - taxonomy.vocabulary.islandora_media_use
   content:
     - 'taxonomy_term:islandora_media_use:23e61f94-7e5b-48b0-b24b-57db86899516'
+    - 'taxonomy_term:islandora_media_use:60707743-e7ee-444e-8b0e-cb6f62809a01'
   module:
     - asu_search
     - controlled_access_terms
@@ -1231,9 +1232,27 @@ display:
     position: 1
     display_options:
       pager:
-        type: none
+        type: some
         options:
           offset: 0
+          items_per_page: 1
+      sorts:
+        created_1:
+          id: created_1
+          table: media_field_data
+          field: created
+          relationship: none
+          group_type: group
+          admin_label: ''
+          entity_type: media
+          entity_field: created
+          plugin_id: date
+          order: DESC
+          expose:
+            label: ''
+            field_identifier: ''
+          exposed: false
+          granularity: second
       arguments:
         field_media_of_target_id:
           id: field_media_of_target_id
@@ -1293,6 +1312,7 @@ display:
           plugin_id: taxonomy_index_tid
           operator: or
           value:
+            20: 20
             22: 22
           group: 1
           exposed: false
@@ -1348,6 +1368,7 @@ display:
               raw_output: false
       defaults:
         relationships: false
+        sorts: false
         arguments: false
         filters: false
         filter_groups: false

@@ -11,7 +11,7 @@ dependencies:
     - taxonomy.vocabulary.islandora_media_use
   content:
     - 'taxonomy_term:islandora_media_use:0275f595-4de7-4719-ab28-f4547934dd2b'
-    - 'taxonomy_term:islandora_media_use:4075ec0f-14a4-44e5-acac-9be7d1f92381'
+    - 'taxonomy_term:islandora_media_use:1516b6b7-591f-4023-aa8c-90eb4ad14312'
   module:
     - asu_search
     - controlled_access_terms
@@ -1232,9 +1232,24 @@ display:
     position: 1
     display_options:
       pager:
-        type: none
+        type: some
         options:
           offset: 0
+          items_per_page: 1
+      sorts:
+        field_weight_value:
+          id: field_weight_value
+          table: node__field_weight
+          field: field_weight_value
+          relationship: field_media_of
+          group_type: group
+          admin_label: ''
+          plugin_id: standard
+          order: ASC
+          expose:
+            label: ''
+            field_identifier: field_weight_value
+          exposed: false
       arguments:
         field_media_of_target_id:
           id: field_media_of_target_id
@@ -1294,7 +1309,8 @@ display:
           plugin_id: taxonomy_index_tid
           operator: or
           value:
-            22: 22
+            19: 19
+            21: 21
           group: 1
           exposed: false
           expose:
@@ -1349,6 +1365,7 @@ display:
               raw_output: false
       defaults:
         relationships: false
+        sorts: false
         arguments: false
         filters: false
         filter_groups: false
@@ -1363,7 +1380,10 @@ display:
           plugin_id: standard
           required: true
       display_description: ''
-      display_extenders: {  }
+      display_extenders:
+        metatag_display_extender:
+          metatags: {  }
+          tokenize: false
       path: node/%node/manifest
     cache_metadata:
       max-age: -1

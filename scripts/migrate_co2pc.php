@@ -73,6 +73,7 @@ foreach ($nids as $nid) {
   $non_image_count = $query->countQuery()->execute()->fetchField();
   if ($non_image_count > 0) {
     $this->io()->writeln("Skipping \"{$n->label()}\" ({$n->id()}) which has {$non_image_count} non-image items.");
+    continue;
   }
   // Change the item's `field_model` to 'Paged Content'.
   $this->io()->writeln("Updating \"{$n->label()}\" ({$n->id()}) to 'Paged Content'");
