@@ -30,6 +30,13 @@ class BatchPopulateCompoundObjThumbs extends FormBase {
   protected $entityTypeManager;
 
   /**
+   * The database connection.
+   *
+   * @var \Drupal\Core\Database\Connection
+   */
+  protected $connection;
+
+  /**
    * Constructs a new BatchPopulateCompoundObjThumbs form.
    *
    * @param Drupal\Core\Action\ActionManager $actionManager
