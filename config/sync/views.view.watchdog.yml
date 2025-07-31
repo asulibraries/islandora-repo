@@ -580,30 +580,29 @@ display:
             default_group: All
             default_group_multiple: {  }
             group_items: {  }
-        uid:
-          id: uid
-          table: watchdog
+        uid_1:
+          id: uid_1
+          table: users_field_data
           field: uid
-          relationship: none
+          relationship: uid
           group_type: group
           admin_label: ''
-          plugin_id: numeric
-          operator: '='
-          value:
-            min: ''
-            max: ''
-            value: ''
+          entity_type: user
+          entity_field: uid
+          plugin_id: user_name
+          operator: in
+          value: {  }
           group: 1
           exposed: true
           expose:
-            operator_id: uid_op
-            label: UID
+            operator_id: uid_1_op
+            label: 'Name (autocomplete)'
             description: ''
             use_operator: false
-            operator: uid_op
+            operator: uid_1_op
             operator_limit_selection: false
             operator_list: {  }
-            identifier: uid
+            identifier: uid_1
             required: false
             remember: false
             multiple: false
@@ -622,9 +621,7 @@ display:
               honors_student: '0'
               honors_staff: '0'
               some_metadata: '0'
-            min_placeholder: ''
-            max_placeholder: ''
-            placeholder: ''
+            reduce: false
           is_grouped: false
           group_info:
             label: ''
