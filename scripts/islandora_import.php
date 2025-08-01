@@ -295,7 +295,7 @@ function import_entity($type, $id, &$import) {
     // Add analytics counts.
     if (array_key_exists($id, $import['analytics'] ?? [])) {
       foreach ($import['analytics'][$id] as $row) {
-        \Drupal::service('asu_item_analytics.update')->setEntityMonthly($entity, $row['event'], $row['period'], $row['count']);
+        \Drupal::service('asu_item_analytics.update')->entityPeriodEventCount($entity, $row['event'], $row['period'], intval($row['count']));
       }
     }
   }

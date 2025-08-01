@@ -4,6 +4,7 @@ namespace Drupal\asu_item_extras\Plugin\Action;
 
 use Drupal\Core\Action\ActionBase;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
+use Drupal\Core\File\FileSystemInterface;
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
 use Drupal\Core\Plugin\ContainerFactoryPluginInterface;
 use Drupal\Core\Session\AccountInterface;
@@ -46,6 +47,13 @@ class CopyFirstMemberThumbnail extends ActionBase implements ContainerFactoryPlu
   protected $fileRepository;
 
   /**
+   * Filesystem service.
+   *
+   * @var \Drupal\Core\FileSystemInterface
+   */
+  protected $fileSystem;
+
+  /**
    * Logger service.
    *
    * @var \Drupal\Core\Logger\LoggerChannelInterface
@@ -77,12 +85,14 @@ class CopyFirstMemberThumbnail extends ActionBase implements ContainerFactoryPlu
     IslandoraUtils $utils,
     EntityTypeManagerInterface $entity_type_manager,
     FileRepositoryInterface $file_repository,
+    FileSystemInterface $file_system,
     LoggerChannelFactoryInterface $logger_factory,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->utils = $utils;
     $this->entityTypeManager = $entity_type_manager;
     $this->fileRepository = $file_repository;
+    $this->fileSystem = $file_system;
     $this->logger = $logger_factory->get('asu_item_extras');
   }
 
@@ -109,6 +119,7 @@ class CopyFirstMemberThumbnail extends ActionBase implements ContainerFactoryPlu
       $container->get('islandora.utils'),
       $container->get('entity_type.manager'),
       $container->get('file.repository'),
+      $container->get('file_system'),
       $container->get('logger.factory')
     );
   }
@@ -163,6 +174,8 @@ class CopyFirstMemberThumbnail extends ActionBase implements ContainerFactoryPlu
         }
         // Copy the file & media.
         try {
+          $path = dirname($original_file->uri->value);
+          $this->fileSystem->prepareDirectory($path, FileSystemInterface::CREATE_DIRECTORY);
           $new_file = $this->fileRepository->copy($original_file, str_replace($member->id(), $entity->id(), $original_file->uri->value));
           $new_file->setPermanent();
           $new_file->save();

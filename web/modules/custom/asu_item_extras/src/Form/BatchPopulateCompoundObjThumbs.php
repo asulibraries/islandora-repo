@@ -147,7 +147,7 @@ class BatchPopulateCompoundObjThumbs extends FormBase {
     }
 
     $batch = [
-      'title' => $this->t('Processing repository nodes...'),
+      'title' => $this->t('Copying Compount Object thumbnails.'),
       'operations' => $operations,
       'finished' => [static::class, 'batchFinished'],
     ];
