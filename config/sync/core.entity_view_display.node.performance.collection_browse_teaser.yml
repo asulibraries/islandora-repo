@@ -1,0 +1,72 @@
+uuid: 791d9d7d-9d24-4ab0-acd5-90e691388d3c
+langcode: en
+status: true
+dependencies:
+  config:
+    - core.entity_view_mode.node.collection_browse_teaser
+    - field.field.node.performance.field_copyright_statement
+    - field.field.node.performance.field_edtf_date_created
+    - field.field.node.performance.field_genre
+    - field.field.node.performance.field_handle
+    - field.field.node.performance.field_linked_agent
+    - field.field.node.performance.field_member_of
+    - field.field.node.performance.field_note_para
+    - field.field.node.performance.field_program
+    - field.field.node.performance.field_reuse_permissions
+    - field.field.node.performance.field_rich_description
+    - field.field.node.performance.field_series
+    - field.field.node.performance.field_subject
+    - field.field.node.performance.field_title
+    - field.field.node.performance.field_tracks
+    - field.field.node.performance.field_typed_identifier
+    - node.type.performance
+  module:
+    - asu_search
+    - user
+id: node.performance.collection_browse_teaser
+targetEntityType: node
+bundle: performance
+mode: collection_browse_teaser
+content:
+  field_title:
+    type: complex_title_formatter
+    label: above
+    settings:
+      link: ''
+    third_party_settings: {  }
+    weight: 0
+    region: content
+hidden:
+  display_media_child_thumbnail: true
+  display_media_entity_view_1: true
+  display_media_entity_view_2: true
+  display_media_entity_view_4: true
+  display_media_service_file: true
+  display_media_thumbnail: true
+  display_media_thumbnail_card: true
+  field_copyright_statement: true
+  field_edtf_date_created: true
+  field_genre: true
+  field_handle: true
+  field_linked_agent: true
+  field_member_of: true
+  field_note_para: true
+  field_program: true
+  field_reuse_permissions: true
+  field_rich_description: true
+  field_series: true
+  field_subject: true
+  field_tracks: true
+  field_typed_identifier: true
+  langcode: true
+  links: true
+  openseadragon_media_evas_entity_view_1: true
+  openseadragon_media_evas_entity_view_2: true
+  openseadragon_media_evas_service_file: true
+  pdfjs_media_evas_entity_view_1: true
+  pdfjs_media_evas_entity_view_2: true
+  pdfjs_media_evas_service_file: true
+  search_api_excerpt: true
+  video_media_evas_original_file: true
+  video_media_evas_preservation_master: true
+  video_media_evas_service_file: true

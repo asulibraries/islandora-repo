@@ -3,7 +3,6 @@ langcode: en
 status: true
 dependencies:
   config:
-    - core.entity_view_mode.node.full_metadata
     - field.storage.node.field_additional_memberships
     - field.storage.node.field_complex_object_child
     - field.storage.node.field_copyright_statement
@@ -645,7 +644,7 @@ field_settings:
         'entity:node':
           ':default': ''
           article: ''
-          asu_repository_item: full_metadata
+          asu_repository_item: ''
           collection: ''
           page: ''
   resource_type_name:
