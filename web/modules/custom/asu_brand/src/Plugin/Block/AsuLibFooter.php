@@ -68,7 +68,7 @@ class AsuLibFooter extends BlockBase {
                   <a class="nav-link" href="https://repository.lib.asu.edu" title="Repository Services Home">Home</a>
                   <a class="nav-link" href="https://keep.lib.asu.edu" title="KEEP">KEEP</a>
                   <a class="nav-link" href="https://prism.lib.asu.edu" title="PRISM">PRISM</a>
-                  <a class="nav-link" href="https://dataverse.asu.edu" title="ASU Research Data Repository">ASU Research Data Repository</a>
+                  <a class="nav-link" href="https://lib.asu.edu/research/research-data-repository" title="ASU Research Data Repository">ASU Research Data Repository</a>
                 </div>
               </div>
             </div>
@@ -82,7 +82,6 @@ class AsuLibFooter extends BlockBase {
                 </div>
                 <div id="footlink-three" class="card-body" aria-labelledby="footlink-header-three">
                   <a class="nav-link" href="https://keep.lib.asu.edu/about/termsofdeposit" title="Terms of Deposit">Terms of Deposit</a>
-                  <a class="nav-link" href="https://libguides.asu.edu/digitalrepository/home" title="ASU Digital Repository Guide">Sharing Materials: ASU Digital Repository Guide</a>
                   <a class="nav-link" href="http://libguides.asu.edu/openaccess" title="Open Access at ASU">Open Access at ASU</a>
                 </div>
               </div>
