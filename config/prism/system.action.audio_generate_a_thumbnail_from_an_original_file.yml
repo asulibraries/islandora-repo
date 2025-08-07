@@ -1,0 +1,20 @@
+uuid: 3c970144-2d8f-4dc1-b6c5-f83d5a1709c3
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora_image
+id: audio_generate_a_thumbnail_from_an_original_file
+label: 'Audio - Generate a thumbnail from an original file'
+type: node
+plugin: generate_image_derivative
+configuration:
+  queue: islandora-connector-homarus
+  event: 'Generate Derivative'
+  destination_media_type: image
+  source_term_uri: 'http://pcdm.org/use#OriginalFile'
+  derivative_term_uri: 'http://pcdm.org/use#ThumbnailImage'
+  mimetype: image/png
+  args: '-filter_complex "aformat=channel_layouts=mono,compand,showwavespic=colors=#FFC627" -frames:v 1'
+  scheme: public
+  path: '[date:custom:Y]-[date:custom:m]/[node:nid]-[term:name].png'
