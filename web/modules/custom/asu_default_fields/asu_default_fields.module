@@ -251,7 +251,7 @@ function asu_default_fields_form_alter(&$form, FormStateInterface $form_state, $
  * Implements hook_node_insert().
  */
 function asu_default_fields_node_insert(NodeInterface $node) {
-  if ($node->hasField('field_member_of') && $node->get('field_member_of') != NULL) {
+  if ($node->hasField('field_member_of') && !$node->get('field_member_of')->isEmpty()) {
     $parent = $node->get('field_member_of')->entity;
     if ($parent) {
       $save = FALSE;
@@ -271,7 +271,7 @@ function asu_default_fields_node_insert(NodeInterface $node) {
         $save = TRUE;
       }
       if ($parent->bundle() == "asu_repository_item") {
-        $node->set('field_complex_object_child', 1);
+        $node->set('field_complex_object_child', TRUE);
         $save = TRUE;
       }
       if ($save) {
