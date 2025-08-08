@@ -152,18 +152,7 @@ class CopyFirstMemberThumbnail extends ActionBase implements ContainerFactoryPlu
 
     foreach ($nids as $nid) {
       $member = $this->entityTypeManager->getStorage('node')->load($nid);
-      // Only use a node that is likely to have a thumbnail.
-      if (!$member->hasField('field_model') ||
-      $member->field_model->isEmpty() ||
-      !$member->field_model->entity ||
-      !in_array($member->field_model->entity->label(), [
-        'Page', 'Image', 'Document', 'Video', 'Digital Document',
-      ])) {
-        continue;
-      }
-
       $thumbnail_media = $this->utils->getMediaWithTerm($member, $thumbnail_term);
-
       if ($thumbnail_media) {
         $original_file = $thumbnail_media->field_media_image->entity ?? NULL;
         if (!$original_file) {
