@@ -251,6 +251,7 @@ function asu_default_fields_form_alter(&$form, FormStateInterface $form_state, $
  * Implements hook_node_insert().
  */
 function asu_default_fields_node_insert(NodeInterface $node) {
+  // Inherit parent access policies & set other parent-based fields.
   if ($node->hasField('field_member_of') && !$node->get('field_member_of')->isEmpty()) {
     $parent = $node->get('field_member_of')->entity;
     if ($parent) {
@@ -279,6 +280,38 @@ function asu_default_fields_node_insert(NodeInterface $node) {
       }
     }
   }
+
+  // Set Open Access if applicable.
+  $fields_config = \Drupal::configFactory()->getEditable('asu_default_fields.settings');
+  if (
+    $node->hasField('field_open_access') &&
+    ($fields_config->get('auto_update_oa') ?? FALSE) &&
+    // Active embargoes aren't eligible.
+    (!$node->hasField('field_embargo_release_date') || $node->field_embargo_release_date?->isEmpty() || $node->field_embargo_release_date->value > date('Y-m-d')) &&
+    // Restricted items aren't eligible.
+    (!in_array(asu_permissions_find_original_access_policy($node)?->label(), ['ASU Only','Private'])) &&
+    // One of the following copyright or reuse permissions must be true.
+    (
+      ($node->field_copyright_statement?->entity?->field_source?->uri == 'http://rightsstatements.org/vocab/NoC-US/1.0/') ||
+      (in_array($node->field_reuse_permissions?->entity?->field_source?->uri, [
+        'http://creativecommons.org/licenses/by/4.0',
+        'http://creativecommons.org/licenses/by-nd/4.0',
+        'http://creativecommons.org/licenses/by-nc/4.0',
+        'http://creativecommons.org/licenses/by-nc-nd/4.0',
+        'http://creativecommons.org/licenses/by-nc-sa/4.0',
+        'http://creativecommons.org/licenses/by-nc-sa/3.0/',
+        'http://creativecommons.org/licenses/by-sa/4.0',
+        'http://creativecommons.org/licenses/by-sa/3.0/',
+        'https://creativecommons.org/share-your-work/public-domain/cc0/',
+      ])) ||
+      ($node->field_reuse_permissions?->entity?->label() == 'Public Domain')
+    )
+    ) {
+    $node->set('field_open_access', TRUE);
+    $node->save();
+  }
+
+  // Mint Handles.
   $moduleHandler = \Drupal::service('module_handler');
   if ($moduleHandler->moduleExists('hdl')) {
     $handle_field = \Drupal::config('persistent_identifiers.settings')->get('persistent_identifiers_target_field');
@@ -287,9 +320,8 @@ function asu_default_fields_node_insert(NodeInterface $node) {
       $config = \Drupal::config('persistent_identifiers.settings');
       $content_type = $node->bundle();
       $allowed_types = $config->get('persistent_identifiers_bundles');
-      $config = \Drupal::configFactory()->getEditable('asu_default_fields.settings');
       if ($node->getEntityTypeId() == 'node' && in_array($content_type, $allowed_types, TRUE) &&
-        !($config->get('disable_handle_generation'))) {
+        !($fields_config->get('disable_handle_generation'))) {
         if ($node->bundle() == "collection") {
           asu_default_fields_mint_handle($node, 'R.2.C');
         }

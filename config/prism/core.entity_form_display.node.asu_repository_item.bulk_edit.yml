@@ -93,8 +93,6 @@ third_party_settings:
         - field_default_original_file_perm
         - field_resource_type
         - field_genre
-        - field_open_access
-        - field_peer_reviewed
         - field_note_para
         - field_typed_identifier
         - field_edtf_date_created
@@ -481,14 +479,14 @@ content:
     third_party_settings: {  }
   field_open_access:
     type: boolean_checkbox
-    weight: 20
+    weight: 6
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   field_peer_reviewed:
     type: boolean_checkbox
-    weight: 21
+    weight: 5
     region: content
     settings:
       display_label: true
@@ -677,7 +675,7 @@ content:
       display_label: true
     third_party_settings: {  }
   simple_sitemap:
-    weight: 10
+    weight: 3
     region: content
     settings: {  }
     third_party_settings: {  }

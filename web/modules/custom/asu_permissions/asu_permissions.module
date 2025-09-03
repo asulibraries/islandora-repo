@@ -563,3 +563,16 @@ function asu_permissions_theme() {
     ],
   ];
 }
+
+/**
+ * Crawls a node's ancestry to find an original file access policy.
+ */
+function asu_permissions_find_original_access_policy(NodeInterface $node) {
+  if ($policy = $node->field_default_original_file_perm?->entity) {
+    return $policy;
+  }
+  elseif ($parent = $node->field_member_of?->entity) {
+    return asu_permissions_find_original_access_policy($parent);
+  }
+  return NULL;
+}

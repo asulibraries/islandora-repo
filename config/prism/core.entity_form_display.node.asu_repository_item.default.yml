@@ -185,8 +185,6 @@ third_party_settings:
       children:
         - field_resource_type
         - field_genre
-        - field_open_access
-        - field_peer_reviewed
         - field_note_para
         - field_internal_note
       label: 'Types and Notes'
@@ -526,14 +524,14 @@ content:
     third_party_settings: {  }
   field_open_access:
     type: boolean_checkbox
-    weight: 22
+    weight: 3
     region: content
     settings:
       display_label: true
     third_party_settings: {  }
   field_peer_reviewed:
     type: boolean_checkbox
-    weight: 23
+    weight: 4
     region: content
     settings:
       display_label: true
@@ -780,7 +778,7 @@ content:
       display_label: true
     third_party_settings: {  }
   simple_sitemap:
-    weight: 10
+    weight: 1
     region: content
     settings: {  }
     third_party_settings: {  }
@@ -809,7 +807,7 @@ content:
       placeholder: ''
     third_party_settings: {  }
   url_redirects:
-    weight: 50
+    weight: 2
     region: content
     settings: {  }
     third_party_settings: {  }
