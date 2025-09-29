@@ -47,6 +47,7 @@ dependencies:
     - search_api.server.default_solr_server
   module:
     - asu_search
+    - islandora_hocr
     - node
     - paragraphs
     - search_api_attachments
@@ -204,6 +205,11 @@ field_settings:
     datasource_id: 'entity:node'
     property_path: 'search_api_reverse_entity_references_node__field_member_of:field_subject:entity:name'
     type: text
+  content:
+    label: hOCR
+    datasource_id: 'entity:node'
+    property_path: 'islandora_hocr_field:content'
+    type: 'solr_text_custom_omit_norms:islandora_hocr'
   created:
     label: 'Authored on'
     datasource_id: 'entity:node'
@@ -765,6 +771,7 @@ processor_settings:
         node-field_additional_memberships: node-field_additional_memberships
         node-field_member_of: node-field_member_of
         node-field_source: 0
+  islandora_hocr_field: {  }
   language_with_fallback: {  }
   note_value: {  }
   original_file_count: {  }
