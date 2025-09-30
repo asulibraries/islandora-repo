@@ -52,7 +52,6 @@ third_party_settings:
   field_group:
     group_additional_information:
       children:
-        - langcode
         - field_series
         - field_edition
         - field_edtf_copyright_date
@@ -398,15 +397,6 @@ content:
     third_party_settings: {  }
     weight: 21
     region: content
-  langcode:
-    type: language
-    label: above
-    settings:
-      link_to_entity: false
-      native_language: false
-    third_party_settings: {  }
-    weight: 9
-    region: content
   links:
     settings: {  }
     third_party_settings: {  }
@@ -442,6 +432,7 @@ hidden:
   field_reuse_permissions: true
   field_title: true
   field_work_products: true
+  langcode: true
   openseadragon_media_evas_entity_view_1: true
   openseadragon_media_evas_entity_view_2: true
   openseadragon_media_evas_service_file: true

@@ -51,7 +51,6 @@ third_party_settings:
   field_group:
     group_additional_information:
       children:
-        - langcode
         - field_series
         - field_edition
         - field_edtf_copyright_date
@@ -67,7 +66,7 @@ third_party_settings:
       label: 'Additional Information'
       parent_name: ''
       region: content
-      weight: 4
+      weight: 5
       format_type: html_element
       format_settings:
         classes: ''
@@ -87,7 +86,7 @@ third_party_settings:
       label: 'Citation and reuse'
       parent_name: ''
       region: content
-      weight: 3
+      weight: 4
       format_type: html_element
       format_settings:
         classes: ''
@@ -117,7 +116,7 @@ third_party_settings:
       label: Details
       parent_name: ''
       region: content
-      weight: 2
+      weight: 3
       format_type: html_element
       format_settings:
         classes: ''
@@ -138,7 +137,7 @@ content:
   content_moderation_control:
     settings: {  }
     third_party_settings: {  }
-    weight: -20
+    weight: 0
     region: content
   field_additional_memberships:
     type: entity_reference_label
@@ -327,7 +326,7 @@ content:
     label: above
     settings: {  }
     third_party_settings: {  }
-    weight: 1
+    weight: 2
     region: content
   field_series:
     type: string
@@ -400,12 +399,12 @@ content:
       link_to_entity: false
       native_language: false
     third_party_settings: {  }
-    weight: 9
+    weight: 7
     region: content
   links:
     settings: {  }
     third_party_settings: {  }
-    weight: 0
+    weight: 1
     region: content
 hidden:
   display_media_child_thumbnail: true
