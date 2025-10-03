@@ -119,7 +119,7 @@ class AboutThisItemBlock extends BlockBase implements ContainerFactoryPluginInte
       $hdl = $node->get('field_handle')->value;
       $output_links[] = [
         '#type' => 'container',
-        '#attributes' => ['class' => 'permalink_button'],
+        '#attributes' => ['class' => 'permalink_button ms-3 mb-3'],
         'link' => [
           '#type' => 'html_tag',
           '#tag' => 'a',
