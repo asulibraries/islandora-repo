@@ -248,7 +248,7 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     $links = array_map(function ($v) use ($link_hreflang, $asuUtils) {
       return Link::fromTextAndUrl(strtoupper($v['ext']) . " (" . $asuUtils->formatBytes($v['file_size'], 1) . ")", Url::fromUri($v['link'], [
         'attributes' => array_merge($link_hreflang, [
-          'class' => ['btn btn-md btn-gray resource_engagement_link'],
+          'class' => ['btn btn-md btn-gray download-counter'],
           'title' => $this->t('Download %type file %ext', [
             '%type' => $v['type'],
             '%ext' => $v['ext'],
@@ -265,6 +265,11 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
       '#theme' => 'asu_item_extras_downloads_block',
       '#cache' => [
         'tags' => ["node:$nid"],
+      ],
+      '#attached' => [
+        'library' => [
+          'asu_item_analytics/download-counter',
+        ],
       ],
     ];
 
