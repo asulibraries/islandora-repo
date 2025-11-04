@@ -61,7 +61,7 @@ class ComplexObjectMembersController extends ControllerBase implements Container
         $field_model_term->getName() : '';
 
       // Check that the model for this node is set to "Complex Object".
-      if (($content_type == 'asu_repository_item') && $field_model == 'Complex Object') {
+      if ($content_type == 'asu_repository_item') {
         $view = Views::getView('included_in_complex_object');
         $args = [$node->id];
         if (is_object($view)) {

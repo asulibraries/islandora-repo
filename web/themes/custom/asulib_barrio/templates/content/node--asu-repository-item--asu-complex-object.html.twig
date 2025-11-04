@@ -97,7 +97,7 @@
   </header>
   <div{{ content_attributes.addClass('node__content', 'clearfix', 'container') }}>
     <div class="content-section row">
-      {% if content.field_model[0]['#plain_text'] == "Paged Content" %}
+      {% if 'node--unpublished' not in attributes['class'] and content.field_model[0]['#plain_text'] == "Paged Content" and drupal_view_result('iiif_manifest', 'rest_export_1' ,node.id) is not empty%}
         {% set iiif_mani_url = "/node/" ~ node.id ~ "/book-manifest" %}
           {{ drupal_block('mirador_block', {'iiif_manifest_url': iiif_mani_url}, wrapper=false)  }}
       {% endif %}
@@ -123,9 +123,13 @@
         <div class="altmetrics-info">
           {{ drupal_block('asu_altmetrics', wrapper=false) }}
         </div>
+      {{ drupal_block('asu_item_analytics_item_block') }}
+    {% if drupal_view_result('media_of', 'page_1' ,node.id) is not empty%}
+      <div class="download-options">{{ drupal_block('downloads_block', {'origfile': original_file, 'servicefile': service_file}) }}</div>
+    {% endif %}
       </div>
     </div>
-    {% if content.field_model[0]['#plain_text'] != "Paged Content" %}
+    {% if 'node--unpublished' in attributes['class'] or content.field_model[0]['#plain_text'] != "Paged Content" or drupal_view_result('iiif_manifest', 'rest_export_1' ,node.id) is empty%}
     <div id="included-this-item" class="content-section">
       <h2>{{ 'Included in this item'|t }} ({{ child_count }})</h2>
       <div class="children-3-wide">
