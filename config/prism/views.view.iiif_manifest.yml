@@ -8,8 +8,11 @@ dependencies:
     - field.storage.node.field_edtf_date_created
     - field.storage.node.field_linked_agent
     - field.storage.node.field_rich_description
+    - taxonomy.vocabulary.islandora_access
     - taxonomy.vocabulary.islandora_media_use
   content:
+    - 'taxonomy_term:islandora_access:152fbe22-70dd-419f-95f4-c4cbbf714392'
+    - 'taxonomy_term:islandora_access:16e0c0d4-48f1-4244-9220-b806f5935c95'
     - 'taxonomy_term:islandora_media_use:23e61f94-7e5b-48b0-b24b-57db86899516'
     - 'taxonomy_term:islandora_media_use:60707743-e7ee-444e-8b0e-cb6f62809a01'
   module:
@@ -475,6 +478,53 @@ display:
           reduce_duplicates: false
           vid: islandora_media_use
           type: select
+          hierarchy: false
+          limit: true
+          error_message: true
+        field_access_terms_target_id:
+          id: field_access_terms_target_id
+          table: media__field_access_terms
+          field: field_access_terms_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: taxonomy_index_tid
+          operator: not
+          value:
+            - 559
+            - 560
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          vid: islandora_access
+          type: textfield
           hierarchy: false
           limit: true
           error_message: true
@@ -1055,8 +1105,8 @@ display:
           label: 'File Download'
           exclude: false
           alter:
-            alter_text: false
-            text: ''
+            alter_text: true
+            text: '<a href="{{ field_media_file_1 }}" target="download">{{ title }}</a>'
             make_link: false
             path: ''
             absolute: false
@@ -1119,7 +1169,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: '<a href="{{ field_media_image_1 }}">{{ title }}</a>'
+            text: '<a href="{{ field_media_image_1 }}" target="download">{{ title }}</a>'
             make_link: false
             path: ''
             absolute: false
@@ -1346,6 +1396,53 @@ display:
           reduce_duplicates: false
           vid: islandora_media_use
           type: select
+          hierarchy: false
+          limit: true
+          error_message: true
+        field_access_terms_target_id:
+          id: field_access_terms_target_id
+          table: media__field_access_terms
+          field: field_access_terms_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: taxonomy_index_tid
+          operator: not
+          value:
+            - 560
+            - 559
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          vid: islandora_access
+          type: textfield
           hierarchy: false
           limit: true
           error_message: true

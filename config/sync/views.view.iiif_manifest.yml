@@ -8,8 +8,11 @@ dependencies:
     - field.storage.node.field_edtf_date_created
     - field.storage.node.field_linked_agent
     - field.storage.node.field_rich_description
+    - taxonomy.vocabulary.islandora_access
     - taxonomy.vocabulary.islandora_media_use
   content:
+    - 'taxonomy_term:islandora_access:4e4d4829-931b-4aa8-97ab-2fb09a6b8fdb'
+    - 'taxonomy_term:islandora_access:f15a45d0-293d-465f-93d0-20210193a514'
     - 'taxonomy_term:islandora_media_use:0275f595-4de7-4719-ab28-f4547934dd2b'
     - 'taxonomy_term:islandora_media_use:1516b6b7-591f-4023-aa8c-90eb4ad14312'
   module:
@@ -1343,6 +1346,53 @@ display:
           reduce_duplicates: false
           vid: islandora_media_use
           type: select
+          hierarchy: false
+          limit: true
+          error_message: true
+        field_access_terms_target_id:
+          id: field_access_terms_target_id
+          table: media__field_access_terms
+          field: field_access_terms_target_id
+          relationship: none
+          group_type: group
+          admin_label: ''
+          plugin_id: taxonomy_index_tid
+          operator: not
+          value:
+            - 562
+            - 561
+          group: 1
+          exposed: false
+          expose:
+            operator_id: ''
+            label: ''
+            description: ''
+            use_operator: false
+            operator: ''
+            operator_limit_selection: false
+            operator_list: {  }
+            identifier: ''
+            required: false
+            remember: false
+            multiple: false
+            remember_roles:
+              authenticated: authenticated
+            reduce: false
+          is_grouped: false
+          group_info:
+            label: ''
+            description: ''
+            identifier: ''
+            optional: true
+            widget: select
+            multiple: false
+            remember: false
+            default_group: All
+            default_group_multiple: {  }
+            group_items: {  }
+          reduce_duplicates: false
+          vid: islandora_access
+          type: textfield
           hierarchy: false
           limit: true
           error_message: true

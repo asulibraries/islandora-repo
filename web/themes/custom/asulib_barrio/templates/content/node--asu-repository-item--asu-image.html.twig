@@ -97,8 +97,12 @@
   </header>
   <div{{ content_attributes.addClass('node__content', 'clearfix', 'container') }}>
     <div class="content-section row">
+    {% if drupal_view_result('iiif_manifest', 'rest_export_2') is not empty %}
       {% set iiif_mani_url = "/node/" ~ node.id ~ "/manifest" %}
       {{ drupal_block('mirador_block', {'iiif_manifest_url': iiif_mani_url}, wrapper=false)  }}
+    {% else %}
+      {{ content.display_media_thumbnail }}
+    {% endif %}
       <div class="altmetrics-info">
       {{ drupal_block('asu_altmetrics', wrapper=false) }}
       </div>

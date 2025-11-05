@@ -38,16 +38,19 @@ class ItemViewController extends NodeViewController {
         }
         // We check to ensure the Mirador viewer will have something to display
         // before redirecting.
-        elseif ($model == 'Page' && !$node->field_member_of->isEmpty() && $node->isPublished() && $node->field_member_of->entity->isPublished() && $this->checkIiifAccess($node->field_member_of->entity)) {
-          return new RedirectResponse(Url::fromRoute('entity.node.canonical', [
-            'node' => $node->field_member_of->target_id,
-          ],
-          [
-            'query' => [
-              'pageIdentifier' => $node->id(),
+        elseif ($model == 'Page') {
+          if (!$node->field_member_of->isEmpty() && $node->isPublished() && $node->field_member_of->entity->isPublished() && $this->checkIiifAccess($node->field_member_of->entity)) {
+            return new RedirectResponse(Url::fromRoute('entity.node.canonical', [
+              'node' => $node->field_member_of->target_id,
             ],
-          ]
-          )->toString());
+            [
+              'query' => [
+                'pageIdentifier' => $node->id(),
+              ],
+            ]
+            )->toString());
+          }
+          $view_mode = 'asu_image';
         }
       }
       return parent::view($node, $view_mode, $langcode);
