@@ -80,6 +80,8 @@ display:
           buttons: false
           action_title: Action
           clear_on_exposed: true
+          show_multipage_selection_box: default
+          show_select_all: default
           selected_actions:
             19:
               action_id: views_bulk_edit
@@ -474,6 +476,7 @@ display:
         type: full
         options:
           offset: 0
+          pagination_heading_level: h4
           items_per_page: 50
           total_pages: null
           id: 0
@@ -491,7 +494,6 @@ display:
             offset: false
             offset_label: Offset
           quantity: 9
-          pagination_heading_level: h4
       exposed_form:
         type: basic
         options:
@@ -852,8 +854,7 @@ display:
         - url.query_args
         - 'user.node_grants:view'
         - user.permissions
-      tags:
-        - 'config:workflow_list'
+      tags: {  }
   moderated_content:
     id: moderated_content
     display_title: 'Moderated content'
@@ -872,5 +873,4 @@ display:
         - url.query_args
         - 'user.node_grants:view'
         - user.permissions
-      tags:
-        - 'config:workflow_list'
+      tags: {  }
