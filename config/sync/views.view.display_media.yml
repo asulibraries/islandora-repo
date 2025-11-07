@@ -1225,15 +1225,12 @@ display:
         - url
         - user.permissions
       tags:
-        - 'config:field.storage.media.field_file_size'
-        - 'config:field.storage.media.field_height'
         - 'config:field.storage.media.field_media_audio_file'
         - 'config:field.storage.media.field_media_document'
         - 'config:field.storage.media.field_media_file'
         - 'config:field.storage.media.field_media_image'
         - 'config:field.storage.media.field_media_video_file'
         - 'config:field.storage.media.field_mime_type'
-        - 'config:field.storage.media.field_width'
   entity_view_1:
     id: entity_view_1
     display_title: 'Preservation Master - Download'
@@ -1677,7 +1674,6 @@ display:
         - user.permissions
       tags:
         - 'config:field.storage.media.field_media_image'
-        - 'config:field.storage.media.field_width'
   service_file:
     id: service_file
     display_title: 'Service File'
@@ -1829,7 +1825,7 @@ display:
           type: responsive_image
           settings:
             responsive_image_style: item_displays
-            image_link: ''
+            image_link: content
             image_loading:
               attribute: eager
           group_column: ''

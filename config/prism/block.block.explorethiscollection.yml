@@ -4,7 +4,7 @@ status: true
 dependencies:
   module:
     - asu_collection_extras
-    - islandora
+    - node
     - system
   theme:
     - asulib_barrio
@@ -22,11 +22,13 @@ settings:
 visibility:
   request_path:
     id: request_path
-    negate: false
+    negate: true
     context_mapping: {  }
-    pages: '/collections/*'
-  media_source_mimetype:
-    id: media_source_mimetype
+    pages: '/collections/*/search'
+  'entity_bundle:node':
+    id: 'entity_bundle:node'
     negate: false
-    context_mapping: {  }
-    mimetype: ''
+    context_mapping:
+      node: '@node.node_route_context:node'
+    bundles:
+      collection: collection

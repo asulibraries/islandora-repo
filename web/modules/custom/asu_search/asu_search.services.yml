@@ -1,0 +1,6 @@
+services:
+  asu_search.query_alter:
+    class: Drupal\asu_search\EventSubscriber\SolrQueryAlterEventSubscriber
+    arguments: ['@request_stack']
+    tags:
+      - { name: event_subscriber }

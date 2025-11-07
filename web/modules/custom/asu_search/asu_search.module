@@ -2,6 +2,7 @@
 
 /**
  * @file
+ * ASU Search Hooks.
  */
 
 use Drupal\Core\Form\FormStateInterface;
@@ -13,11 +14,7 @@ use Drupal\user\Entity\User;
 use Drupal\views\ViewExecutable;
 
 /**
- * Implements hook_form_alter().
- *
- * @param $form
- * @param \Drupal\Core\Form\FormStateInterface $form_state
- * @param $form_id
+ * Implements views exposed form alter hook.
  */
 function asu_search_form_views_exposed_form_alter(&$form, FormStateInterface $form_state, $form_id) {
   $current_path = \Drupal::service('path.current')->getPath();
@@ -27,10 +24,40 @@ function asu_search_form_views_exposed_form_alter(&$form, FormStateInterface $fo
   }
   if ($form['#id'] == 'views-exposed-form-solr-search-content-page-3' || $form['#id'] == 'views-exposed-form-solr-search-content-page-4') {
     // Collection searching.
-    // Since this block is configured to only display on content type = "Collection"
-    // we don't need to check the node's content type.
+    // This block is configured to only display on content type = "Collection"
+    // so we don't need to check the node's content type.
     $new_search_path = ($node) ? '/collections/' . $node->id() . '/search/' : $current_path;
     $form['#action'] = $new_search_path;
+
+    // Add option to exclude page-level elements.
+    $form['no_page_container'] = [
+      '#type' => 'container',
+      '#attributes' => ['class' => 'mb-3 d-flex align-items-center me-2'],
+      'no_pages' => [
+        '#type' => 'checkbox',
+        '#title' => t('Exclude individual page results'),
+        '#default_value' => \Drupal::request()->query->get('no_pages', 0),
+      ],
+      'no_page_info' => [
+        '#type' => 'html_tag',
+        '#tag' => 'span',
+        'icon' => [
+          '#type' => 'html_tag',
+          '#tag' => 'i',
+          '#attributes' => ['class' => 'fas fa-info-circle'],
+        ],
+        '#attributes' => [
+          'tabindex' => '0',
+          'role' => 'button',
+          'data-bs-placement' => 'bottom',
+          'data-bs-toggle' => 'popover',
+          'data-bs-trigger' => 'focus',
+          'data-bs-content' => 'Selecting this option will remove item component parts from the results.',
+          'class' => 'mx-2',
+        ],
+        '#attached' => ['library' => ['asu_search/collection_search']],
+      ],
+    ];
   }
   elseif ($form['#id'] == 'views-exposed-form-solr-search-content-page-2') {
     // Complex object searching.
@@ -108,8 +135,9 @@ function asu_search_preprocess_views_view(&$variables) {
 
       // Inspect the query from the URL and if there are any facets, suppress
       // the inclusion of the collections block at the top of the /search page.
-      $facet_filters = \Drupal::request()->query->all()['f'];
-      if (is_array($facet_filters) && count($facet_filters) > 0) {
+      $parameters = \Drupal::request()->query->all();
+      $facet_filters = (array_key_exists('f', $parameters)) ? $parameters['f'] : [];
+      if (count($facet_filters) > 0) {
         // Since there are multiple header elements, check to be sure that the
         // "view" is in the header... and only get rid of the header element that
         // matches for a theme name of "view_view__solr_search_content__block_1".

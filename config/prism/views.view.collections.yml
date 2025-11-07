@@ -626,7 +626,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "<div class=\"col-md-8\">\r\n{{ field_rich_description }}\r\n{% if field_collaborating_institutions is not empty %}\r\n<div class=\"field__label\">Collaborating Institutions: </div>\r\n{{ field_collaborating_institutions }}\r\n{% endif %}\r\n</div>"
+            text: "<div class=\"col-md-8\">\r\n{{ field_rich_description }}\r\n{% if field_collaborating_institutions is not empty %}\r\n<div class=\"field__label\">Collaborating Institutions: </div>\r\n{{ field_collaborating_institutions }}\r\n{% endif %}\r\n<a href=\"/collections/{{ raw_arguments.nid }}/search/?search_api_fulltext=&sort_by=main_sub_title&no_pages=1\" class=\"btn btn-primary\">Browse Collection</a>\r\n</div>"
             make_link: false
             path: ''
             absolute: false
@@ -1575,7 +1575,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "{% set published_class = [\r\nstatus != \"1\" ? 'node--unpublished',\r\n 'col']\r\n%}\r\n<div class=\"card card-horizontal\">\r\n  {% if field_collection_thumbnail %}\r\n   {{ field_collection_thumbnail }} \r\n  {% endif %}\r\n <div class=\"card-content-wrapper\">\r\n    <div class=\"card-header\">\r\n     <h3 class=\"card-title\">{% if status != \"1\" %}<i class=\"fa fa-lock\"></i> {% endif %}{{ field_title }}</h3>\r\n    </div>\r\n    <div class=\"card-body\">\r\n     <div class=\"card-text\">{{ field_rich_description }}</div>\r\n    </div>\r\n    <div class=\"card-tags\">\r\n     <a role=\"button\" href=\"/collections/{{nid}}/search?search_api_fulltext=\" class=\"btn btn-md btn-gray\">Browse</a>\r\n    </div>\r\n  </div>\r\n</div>"
+            text: "{% set published_class = [\r\nstatus != \"1\" ? 'node--unpublished',\r\n 'col']\r\n%}\r\n<div class=\"card card-horizontal\">\r\n  {% if field_collection_thumbnail %}\r\n   {{ field_collection_thumbnail }} \r\n  {% endif %}\r\n <div class=\"card-content-wrapper\">\r\n    <div class=\"card-header\">\r\n     <h3 class=\"card-title\">{% if status != \"1\" %}<i class=\"fa fa-lock\"></i> {% endif %}{{ field_title }}</h3>\r\n    </div>\r\n    <div class=\"card-body\">\r\n     <div class=\"card-text\">{{ field_rich_description }}</div>\r\n    </div>\r\n    <div class=\"card-tags\">\r\n     <a role=\"button\" href=\"/collections/{{nid}}/search?search_api_fulltext=&sort_by=main_sub_title&no_pages=1\" class=\"btn btn-md btn-gray\">Browse</a>\r\n    </div>\r\n  </div>\r\n</div>"
             make_link: false
             path: ''
             absolute: false
@@ -2286,7 +2286,7 @@ display:
           exclude: false
           alter:
             alter_text: true
-            text: "{% set published_class = [\r\nstatus != \"1\" ? 'node--unpublished',\r\n 'col']\r\n%}\r\n<div class=\"card card-horizontal\">\r\n  {% if field_collection_thumbnail %}\r\n   {{ field_collection_thumbnail }} \r\n  {% endif %}\r\n <div class=\"card-content-wrapper\">\r\n    <div class=\"card-header\">\r\n     <h3 class=\"card-title\">{% if status != \"1\" %}<i class=\"fa fa-lock\"></i> {% endif %}{{ field_title }}</h3>\r\n    </div>\r\n    <div class=\"card-body\">\r\n     <div class=\"card-text\">{{ field_rich_description }}</div>\r\n    </div>\r\n    <div class=\"card-tags\">\r\n     <a role=\"button\" href=\"/collections/{{nid}}\" class=\"btn btn-md btn-gray\">About</a>\r\n     <a role=\"button\" href=\"/collections/{{nid}}/search?search_api_fulltext=\" class=\"btn btn-md btn-gray\">Browse</a>\r\n    </div>\r\n  </div>\r\n</div>"
+            text: "{% set published_class = [\r\nstatus != \"1\" ? 'node--unpublished',\r\n 'col']\r\n%}\r\n<div class=\"card card-horizontal\">\r\n  {% if field_collection_thumbnail %}\r\n   {{ field_collection_thumbnail }} \r\n  {% endif %}\r\n <div class=\"card-content-wrapper\">\r\n    <div class=\"card-header\">\r\n     <h3 class=\"card-title\">{% if status != \"1\" %}<i class=\"fa fa-lock\"></i> {% endif %}{{ field_title }}</h3>\r\n    </div>\r\n    <div class=\"card-body\">\r\n     <div class=\"card-text\">{{ field_rich_description }}</div>\r\n    </div>\r\n    <div class=\"card-tags\">\r\n     <a role=\"button\" href=\"/collections/{{nid}}/search?search_api_fulltext=&sort_by=main_sub_title&no_pages=1\" class=\"btn btn-md btn-gray\">Browse</a>\r\n    </div>\r\n  </div>\r\n</div>"
             make_link: false
             path: ''
             absolute: false
@@ -3187,6 +3187,7 @@ display:
         type: full
         options:
           offset: 0
+          pagination_heading_level: h4
           items_per_page: 10
           total_pages: null
           id: 0
@@ -3204,7 +3205,6 @@ display:
             offset: false
             offset_label: Offset
           quantity: 9
-          pagination_heading_level: h4
       arguments:
         field_member_of_target_id:
           id: field_member_of_target_id

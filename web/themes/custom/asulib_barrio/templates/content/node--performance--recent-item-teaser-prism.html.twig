@@ -1,3 +1,4 @@
+
 {#
 /**
  * @file
@@ -69,47 +70,23 @@
     node.isSticky() ? 'node--sticky',
     not node.isPublished() ? 'node--unpublished',
     view_mode ? 'node--view-mode-' ~ view_mode|clean_class,
-    'clearfix',
+    'card'
 ]
 %}
-<article{{ attributes.addClass(classes) }}>
-    <header>
-        {{ title_prefix }}
-        {% if label and not page %}
-            <h2{{ title_attributes.addClass('node__title') }}>
-                <a href="{{ url }}" rel="bookmark">{{ label }}</a>
-            </h2>
-        {% endif %}
-        {{ title_suffix }}
-        {% if display_submitted %}
-            <div class="node__meta">
-                {{ author_picture }}
-                {% block submitted %}
-                    <em{{ author_attributes }}>
-                        {% trans %}Submitted by {{ author_name }} on {{ date }}{% endtrans %}
-                    </em>
-                {% endblock %}
-                {{ metadata }}
-            </div>
-        {% endif %}
-    </header>
-    <div{{ content_attributes.addClass('node__content', 'clearfix') }}>
-        <!-- note that the title, thumbnail, description and collaborating institutions have been moved to a view so they can be in a different region of the page -->
 
-        {% if drupal_view_result('collections', 'sub_collections', node.id) is empty %}
-            <h2 class="xs-margin-top">{{ 'Featured Items'|t }}</h2>
-            <div class="col-md-12 xs-padding-bottom">
-                {{ drupal_view('featured_items', 'block_1', node.id) }}
-            </div>
-        {% else %}
-            <h2 class="xs-margin-top">{{ 'Included in this collection'|t }}</h2>
-            <div class="col-md-12 xs-padding-bottom">
-                {{ drupal_view('collections', 'sub_collections', node.id) }}
-            </div>
-        {% endif %}
-        {{ drupal_view('browse_collection_items', 'block_1', node.id) }}
-        <div class="xs-padding-top">
-            {{ content.field_preferred_citation }}
-        </div>
-    </div>
-</article>
+<div {{ attributes.addClass(classes) }}>
+	<div class="card-header card-header-icon">
+  {% if not node.field_program.isEmpty %}
+  {{content.field_program}}
+  {% else %}
+		<i class="far fa-file-audio fa-10x mb-4"></i>
+  {% endif %}
+		<h3 class="card-title">
+			{{ label }}
+		</h3>
+	</div>
+  <div class="card-buttons">
+    <div class="card-button"><a role="button" href="/items/{{ node.id }}" class="btn btn-md btn-primary">View Item</a></div>
+  </div>
+</div>
+

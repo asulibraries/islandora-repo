@@ -1,0 +1,25 @@
+uuid: c347813d-57f0-4bac-b532-449d5488acdb
+langcode: en
+status: true
+dependencies:
+  module:
+    - asu_webform_extras
+    - system
+  theme:
+    - asulib_barrio
+id: asulib_barrio_feedbackformitempreview
+theme: asulib_barrio
+region: sidebar_first
+weight: 0
+provider: null
+plugin: feedback_item_preview
+settings:
+  id: feedback_item_preview
+  label: 'Feedback Form Item Preview'
+  label_display: '0'
+  provider: asu_webform_extras
+visibility:
+  request_path:
+    id: request_path
+    negate: false
+    pages: /form/feedback

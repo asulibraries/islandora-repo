@@ -67,13 +67,6 @@ class ExploreForm extends FormBase {
     if (is_string($node)) {
         $node = $this->entityTypeManager->getStorage('node')->load($node);
     }
-    $url = Url::fromUri(
-      $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() .
-      '/collections/' . (($node) ? $node->id() : 0) .
-      '/search/?search_api_fulltext=',
-      ['attributes' => ['class' => 'nav-link']]);
-    $link = Link::fromTextAndUrl($this->t('Explore items'), $url);
-    $link = $link->toRenderable();
     $form['explore_link'] = [
       '#markup' =>
       (($link) ?

@@ -64,7 +64,8 @@ class ExploreThisCollectionBlock extends BlockBase implements ContainerFactoryPl
     $plugin_definition,
     FormBuilderInterface $form_builder,
     EntityTypeManagerInterface $entityTypeManager,
-    RouteMatchInterface $route_match) {
+    RouteMatchInterface $route_match,
+  ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->formBuilder = $form_builder;
     $this->entityTypeManager = $entityTypeManager;
@@ -78,7 +79,8 @@ class ExploreThisCollectionBlock extends BlockBase implements ContainerFactoryPl
     ContainerInterface $container,
     array $configuration,
     $plugin_id,
-    $plugin_definition) {
+    $plugin_definition,
+  ) {
     return new static(
       $configuration,
       $plugin_id,

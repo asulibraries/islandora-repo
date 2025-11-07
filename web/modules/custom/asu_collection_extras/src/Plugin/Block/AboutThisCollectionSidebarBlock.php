@@ -84,47 +84,88 @@ class AboutThisCollectionSidebarBlock extends BlockBase implements ContainerFact
    * {@inheritdoc}
    */
   public function build() {
-    /*
-     * The title of the block could be dependant on the underlying Islandora
-     * Model used. In liey of that, the title should just be "About this item".
-     *
-     * The links within this block should be:
-     *  - Overview
-     *  - Permalink
-     */
-    // Since this block should be set to display on node/[nid] pages that are
-    // either "Repository Item", "ASU Repository Item", or "Collection",
-    // the underlying node can be accessed via the path.
     $node = $this->routeMatch->getParameter('node');
-    if ($node) {
-      $nid = $node->id();
-    }
-    else {
-      $nid = 0;
+    if (!$node) {
+      return [];
     }
     $output_links = [];
-    // Add a link for the "Overview" of this node.
-    $variables['nodeid'] = $nid;
-    $url = Url::fromUri($this->requestStack->getCurrentRequest()->getSchemeAndHttpHost() . '/collections/' . $nid, ['attributes' => ['class' => 'nav-link']]);
-    $link = Link::fromTextAndUrl($this->t('Overview'), $url);
-    $link = $link->toRenderable();
-    $output_links[] = \Drupal::service('renderer')->render($link);
+
     // Add a link to get the Permalink for this node. Could this be a javascript
     // event that will send the current node's URL to the copy buffer?
-    if ($node && $node->hasField('field_handle') && !$node->get('field_handle')->isEmpty()) {
+    if ($node->hasField('field_handle') && !$node->get('field_handle')->isEmpty()) {
       $hdl = $node->get('field_handle')->value;
-      $output_links[] = '<a class="nav-link copy_permalink_link" title="' . $hdl . '">Permalink</span>&nbsp; <span class="far fa-copy fa-lg copy_permalink_link" title="' . $hdl . '">&nbsp;</a>';
-    }
-    return [
-      '#markup' => (count($output_links) > 0) ?
-      "<nav class='sidebar'>" . implode("", $output_links) . "</nav>" :
-      "",
-      '#attached' => [
-        'library' => [
-          'asu_collection_extras/style',
+      $output_links['permalink'] = [
+        '#type' => 'container',
+        '#attributes' => ['class' => ['nav-link', 'title' => $hdl]],
+        'link' => Link::fromTextAndUrl($this->t('Permalink'), Url::fromUri('https://hdl.handle.net/' . $hdl))->toRenderable(),
+        'copy_button' => [
+          '#type' => 'html_tag',
+          '#tag' => 'i',
+          '#attributes' => ['class' => "far fa-copy fa-lg copy_permalink_link mx-2", "title" => $hdl],
         ],
-      ],
-    ];
+
+      ];
+    }
+
+    $children = asu_collection_extras_solr_get_collection_children($node);
+
+    $items = $children['item_count'] ?? 0;
+    if ($items > 0) {
+      $output_links['items'] = [
+        'link' => Link::fromTextAndUrl(
+          [
+            [
+              '#type' => 'html_tag',
+              '#tag' => 'span',
+              '#value' => number_format($items),
+              '#attributes' => ['class' => 'stats-value'],
+            ],
+            ['#plain_text' => ' items'],
+          ],
+          Url::fromUri("{$this->requestStack->getCurrentRequest()->getSchemeAndHttpHost()}/collections/{$node->id()}/search/?search_api_fulltext=&no_pages=1&sort_by=main_sub_title")
+        )->toRenderable(),
+      ];
+    }
+    $islandora_models = $children['model_count'] ?? 0;
+    if ($islandora_models > 0) {
+      $output_links['resource_types'] = [
+        'count' => [
+          '#type' => 'html_tag',
+          '#tag' => 'span',
+          '#value' => $islandora_models,
+          '#attributes' => ['class' => 'stats-value'],
+        ],
+        'text' => [
+          '#plain_text' => ' resource types',
+        ],
+      ];
+    }
+    $time = $children['recent_change'] ?? NULL;
+    if ($time) {
+      $output_links['last_updated'] = [
+        'text' => [
+          '#plain_text' => 'Last updated ',
+        ],
+        'date' => [
+          '#type' => 'html_tag',
+          '#tag' => 'span',
+          '#value' => date('Y M', strtotime($time)),
+          '#attributes' => ['class' => 'stats-value'],
+        ],
+      ];
+    }
+
+    if (empty($output_links)) {
+      return [];
+    }
+    $build = ['#attached' => ['library' => ['asu_collection_extras/style']]];
+    foreach ($output_links as $name => $render_array) {
+      $build[$name] = array_merge($render_array, [
+        '#type' => 'container',
+        '#attributes' => ['class' => ['stats_border_box']],
+      ]);
+    }
+    return $build;
   }
 
   /**

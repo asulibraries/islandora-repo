@@ -98,6 +98,7 @@
   <div{{ content_attributes.addClass('node__content', 'clearfix', 'container') }}>
     <div class="content-section row">
     {% if drupal_view_result('iiif_manifest', 'rest_export_2') is not empty %}
+      <a href="#details">Skip to metadata.</a>
       {% set iiif_mani_url = "/node/" ~ node.id ~ "/manifest" %}
       {{ drupal_block('mirador_block', {'iiif_manifest_url': iiif_mani_url}, wrapper=false)  }}
     {% else %}

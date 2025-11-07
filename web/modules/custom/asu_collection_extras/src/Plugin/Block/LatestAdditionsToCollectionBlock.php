@@ -141,7 +141,7 @@ class LatestAdditionsToCollectionBlock extends BlockBase implements ContainerFac
             Url::fromUri(
               "base:/collections/{$collection_node->id()}/search",
               [
-                'query' => ['search_api_fulltext' => ''],
+                'query' => ['search_api_fulltext' => '', 'no_pages' => 1, 'sort_by' => 'main_sub_title'],
                 'attributes' => ['class' => ['btn', 'btn-maroon']],
               ]
             )

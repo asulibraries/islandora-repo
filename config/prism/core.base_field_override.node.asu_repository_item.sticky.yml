@@ -1,0 +1,22 @@
+uuid: 9ed9f324-3e4a-4390-a6df-298f6fc27e73
+langcode: en
+status: true
+dependencies:
+  config:
+    - node.type.asu_repository_item
+id: node.asu_repository_item.sticky
+field_name: sticky
+entity_type: node
+bundle: asu_repository_item
+label: 'Sticky at top of lists'
+description: ''
+required: false
+translatable: true
+default_value:
+  -
+    value: 1
+default_value_callback: ''
+settings:
+  on_label: 'On'
+  off_label: 'Off'
+field_type: boolean

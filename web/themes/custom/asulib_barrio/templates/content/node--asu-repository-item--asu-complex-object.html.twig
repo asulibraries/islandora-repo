@@ -98,6 +98,7 @@
   <div{{ content_attributes.addClass('node__content', 'clearfix', 'container') }}>
     <div class="content-section row">
       {% if 'node--unpublished' not in attributes['class'] and content.field_model[0]['#plain_text'] == "Paged Content" and drupal_view_result('iiif_manifest', 'rest_export_1' ,node.id) is not empty%}
+        <a href="#details">Skip to item metadata.</a>
         {% set iiif_mani_url = "/node/" ~ node.id ~ "/book-manifest" %}
           {{ drupal_block('mirador_block', {'iiif_manifest_url': iiif_mani_url}, wrapper=false)  }}
       {% endif %}

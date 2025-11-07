@@ -5,7 +5,6 @@ dependencies:
   config:
     - views.view.about_this_item
   module:
-    - islandora
     - node
     - system
     - views
@@ -26,11 +25,6 @@ settings:
   views_label: ''
   items_per_page: none
 visibility:
-  media_source_mimetype:
-    id: media_source_mimetype
-    negate: false
-    context_mapping: {  }
-    mimetype: ''
   request_path:
     id: request_path
     negate: true
@@ -41,4 +35,5 @@ visibility:
     context_mapping:
       node: '@node.node_route_context:node'
     bundles:
+      asu_repository_item: asu_repository_item
       scholarly_work: scholarly_work
