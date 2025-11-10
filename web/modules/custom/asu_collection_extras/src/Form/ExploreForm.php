@@ -67,12 +67,6 @@ class ExploreForm extends FormBase {
     if (is_string($node)) {
         $node = $this->entityTypeManager->getStorage('node')->load($node);
     }
-    $form['explore_link'] = [
-      '#markup' =>
-      (($link) ?
-        \Drupal::service('renderer')->render($link) :
-        ""),
-    ];
     $form['search_api_fulltext'] = [
       '#type' => 'textfield',
       '#title' => $this->t('Fulltext search'),
