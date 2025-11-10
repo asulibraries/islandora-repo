@@ -3,7 +3,6 @@ langcode: en
 status: true
 dependencies:
   module:
-    - islandora
     - node
     - rrssb
     - system
@@ -27,11 +26,6 @@ visibility:
     negate: true
     context_mapping: {  }
     pages: "/node/add/*\r\n/node/*/edit\r\n/node/*/revisions/*"
-  media_source_mimetype:
-    id: media_source_mimetype
-    negate: false
-    context_mapping: {  }
-    mimetype: ''
   'entity_bundle:node':
     id: 'entity_bundle:node'
     negate: false
