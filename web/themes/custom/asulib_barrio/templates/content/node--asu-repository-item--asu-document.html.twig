@@ -97,14 +97,16 @@
   </header>
   <div{{ content_attributes.addClass('node__content', 'clearfix', 'container') }}>
     <div class="content-section row">
+    {% if drupal_view_result('pdfjs_media_evas','entity_view_1', node.id) is not empty %}
       <a href="#details">Skip to metadata.</a>
       {{ drupal_view('pdfjs_media_evas','entity_view_1', node.id)}}
       {{ attach_library('asu_item_analytics/pdfjs-analytics') }}
+    {% endif %}
       <div class="altmetrics-info">
         {{ drupal_block('asu_altmetrics', wrapper=false) }}
       </div>
       {{ drupal_block('asu_item_analytics_item_block') }}
-      {% if drupal_view_result('media_of', 'page_1' ,node.id) is not empty%}
+      {% if drupal_view_result('media_of', 'page_1', node.id) is not empty %}
       <div class="download-options">{{ drupal_block('downloads_block', {'origfile': original_file, 'servicefile': service_file}) }}</div>
       {% endif %}
     </div>
