@@ -1,9 +1,8 @@
-uuid: 29399b86-4b94-4fbb-9a2c-db2ec4a8e213
+uuid: 09478f70-383c-4d26-a88b-754087deb015
 langcode: en
 status: true
 dependencies:
   config:
-    - field.field.group.collection_group.field_group_description
     - group.type.collection_group
   module:
     - path
@@ -12,14 +11,6 @@ targetEntityType: group
 bundle: collection_group
 mode: default
 content:
-  field_group_description:
-    type: string_textfield
-    weight: 3
-    region: content
-    settings:
-      size: 60
-      placeholder: ''
-    third_party_settings: {  }
   langcode:
     type: language_select
     weight: 0
