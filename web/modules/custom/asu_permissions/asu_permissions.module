@@ -39,11 +39,11 @@ function asu_permissions_node_insert(NodeInterface $node) {
     $parent = _get_collection_parent($node);
     if ($parent) {
       $pluginId = 'group_node:' . $node->bundle();
-      $group_contents = _get_group($parent);
-      if (!empty($group_contents)) {
-        foreach ($group_contents as $group_content) {
-          /** @var \Drupal\group\Entity\GroupContentInterface $group_content */
-          $group = $group_content->getGroup();
+      $group_relationships = _get_group($parent);
+      if (!empty($group_relationships)) {
+        foreach ($group_relationships as $group_relationship) {
+          /** @var \Drupal\group\Entity\GroupContentInterface $group_relationship */
+          $group = $group_relationship->getGroup();
           $group->addRelationship($node, $pluginId);
         }
       }
@@ -68,25 +68,25 @@ function _get_collection_parent($entity) {
  * Gets the groups that an entity belongs to.
  */
 function _get_group($entity) {
-  $group_contents = \Drupal::entityTypeManager()
-    ->getStorage('group_content')
+  $group_relationships = \Drupal::entityTypeManager()
+    ->getStorage('group_relationship')
     ->loadByEntity($entity);
-  return $group_contents;
+  return $group_relationships;
 }
 
 /**
  * Removes an entity from a collection group.
  */
 function _remove_object_from_parent_group($entity, $parent) {
-  $group_contents = _get_group($entity);
-  if (empty($group_contents)) {
+  $group_relationships = _get_group($entity);
+  if (empty($group_relationships)) {
     return;
   }
-  foreach ($group_contents as $group_content) {
-    /** @var \Drupal\group\Entity\GroupContentInterface $group_content */
-    $group = $group_content->getGroup();
+  foreach ($group_relationships as $group_relationship) {
+    /** @var \Drupal\group\Entity\GroupContentInterface $group_relationship */
+    $group = $group_relationship->getGroup();
     if ($group->label() == 'Collection ' . $parent->id() . ' Group') {
-      $group_content->delete();
+      $group_relationship->delete();
     }
   }
 }
@@ -97,13 +97,13 @@ function _remove_object_from_parent_group($entity, $parent) {
 function asu_permissions_node_delete(NodeInterface $node) {
   if ($node->bundle() == "collection") {
     // Delete the collection group.
-    $group_contents = _get_group($node);
-    if (empty($group_contents)) {
+    $group_relationships = _get_group($node);
+    if (empty($group_relationships)) {
       return;
     }
-    foreach ($group_contents as $group_content) {
-      /** @var \Drupal\group\Entity\GroupContentInterface $group_content */
-      $group = $group_content->getGroup();
+    foreach ($group_relationships as $group_relationship) {
+      /** @var \Drupal\group\Entity\GroupContentInterface $group_relationship */
+      $group = $group_relationship->getGroup();
       $group->delete();
     }
   }
@@ -120,12 +120,12 @@ function asu_permissions_node_delete(NodeInterface $node) {
  */
 function _add_object_to_parent_group($node) {
   $pluginId = 'group_node:' . $node->bundle();
-  $group_contents = _get_group($node->get('field_member_of')->entity);
+  $group_relationships = _get_group($node->get('field_member_of')->entity);
 
   // Check if the node is already in the group.
-  $node_group_contents = _get_group($node);
-  if (!empty($node_group_contents)) {
-    foreach ($node_group_contents as $gc) {
+  $node_group_relationships = _get_group($node);
+  if (!empty($node_group_relationships)) {
+    foreach ($node_group_relationships as $gc) {
       $group = $gc->getGroup();
       if ($group->label() == 'Collection ' . $node->get('field_member_of')->entity->id() . ' Group') {
         return;
@@ -133,10 +133,10 @@ function _add_object_to_parent_group($node) {
     }
   }
 
-  if (!empty($group_contents)) {
-    foreach ($group_contents as $group_content) {
-      /** @var \Drupal\group\Entity\GroupContentInterface $group_content */
-      $group = $group_content->getGroup();
+  if (!empty($group_relationships)) {
+    foreach ($group_relationships as $group_relationship) {
+      /** @var \Drupal\group\Entity\GroupContentInterface $group_relationship */
+      $group = $group_relationship->getGroup();
       $group->addRelationship($node, $pluginId);
     }
   }
@@ -453,15 +453,15 @@ function asu_permissions_file_download($uri) {
  */
 function _get_groups_from_node(EntityInterface $node) {
   // Load all of the group content for this node.
-  $group_contents = \Drupal::entityTypeManager()
-    ->getStorage('group_content')
+  $group_relationships = \Drupal::entityTypeManager()
+    ->getStorage('group_relationship')
     ->loadByEntity($node);
 
   /** @var \Drupal\group\Entity\GroupInterface[] $groups */
   $groups = [];
-  foreach ($group_contents as $group_content) {
-    /** @var \Drupal\group\Entity\GroupContentInterface $group_content */
-    $group = $group_content->getGroup();
+  foreach ($group_relationships as $group_relationship) {
+    /** @var \Drupal\group\Entity\GroupContentInterface $group_relationship */
+    $group = $group_relationship->getGroup();
     $groups[$group->id()] = $group;
   }
   return $groups;

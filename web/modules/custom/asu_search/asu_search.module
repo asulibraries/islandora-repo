@@ -54,6 +54,7 @@ function asu_search_form_views_exposed_form_alter(&$form, FormStateInterface $fo
           'data-bs-trigger' => 'focus',
           'data-bs-content' => 'Selecting this option will remove item component parts from the results.',
           'class' => 'mx-2',
+          'aria-label' => 'view information pop-over',
         ],
         '#attached' => ['library' => ['asu_search/collection_search']],
       ],

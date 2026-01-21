@@ -240,13 +240,13 @@ class AdminToolboxBlock extends BlockBase implements ContainerFactoryPluginInter
         $link = $link->toRenderable();
         $output_links[] = \Drupal::service('renderer')->render($link);
 
-        $group_contents = \Drupal::entityTypeManager()
-          ->getStorage('group_content')
+        $group_relationships = \Drupal::entityTypeManager()
+          ->getStorage('group_relationship')
           ->loadByEntity($node);
-        if (count($group_contents) > 0) {
-          foreach ($group_contents as $group_content) {
-            /** @var \Drupal\group\Entity\GroupContentInterface $group_content */
-            $group = $group_content->getGroup();
+        if (count($group_relationships) > 0) {
+          foreach ($group_relationships as $group_relationship) {
+            /** @var \Drupal\group\Entity\GroupContentInterface $group_relationship */
+            $group = $group_relationship->getGroup();
           }
           $group_url = Url::fromRoute('view.group_members.page_1', ['group' => $group->id()], ['attributes' => ['class' => 'nav-link']]);
           $group_link = Link::fromTextAndUrl($this->t('Manage Users &nbsp; <i class="fas fa-users"></i>'), $group_url);

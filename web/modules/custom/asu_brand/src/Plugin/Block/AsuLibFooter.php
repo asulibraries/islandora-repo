@@ -51,7 +51,7 @@ class AsuLibFooter extends BlockBase {
                 <div class="card-header">
                   <strong>' . \Drupal::config('system.site')->get('name') . '</strong>
                 </div>
-                <div id="footlink-two" class="collapse card-body show" aria-labelledby="footlink-header-two">
+                <div id="footlink-two" class="collapse card-body show">
                   <a class="contact-link nav-link" href="/contact">Contact Us</a>
                 </div>
               </div>
@@ -64,7 +64,7 @@ class AsuLibFooter extends BlockBase {
                     <a id="footlink-header-two" aria-controls="footlink-two">Repository Services</a>
                   </strong>
                 </div>
-                <div id="footlink-two" class="card-body" aria-labelledby="footlink-header-two">
+                <div id="footlink-two" class="card-body">
                   <a class="nav-link" href="https://repository.lib.asu.edu" title="Repository Services Home">Home</a>
                   <a class="nav-link" href="https://keep.lib.asu.edu" title="KEEP">KEEP</a>
                   <a class="nav-link" href="https://prism.lib.asu.edu" title="PRISM">PRISM</a>
@@ -77,10 +77,10 @@ class AsuLibFooter extends BlockBase {
               <div class="card card-foldable desktop-disable-xl">
                 <div class="card-header">
                   <strong>
-                    <a id="footlink-header-three" aria-expanded="false" aria-controls="footlink-three">Resources</a>
+                    <a id="footlink-header-three" aria-controls="footlink-three">Resources</a>
                   </strong>
                 </div>
-                <div id="footlink-three" class="card-body" aria-labelledby="footlink-header-three">
+                <div id="footlink-three" class="card-body">
                   <a class="nav-link" href="https://keep.lib.asu.edu/about/termsofdeposit" title="Terms of Deposit">Terms of Deposit</a>
                   <a class="nav-link" href="http://libguides.asu.edu/openaccess" title="Open Access at ASU">Open Access at ASU</a>
                 </div>

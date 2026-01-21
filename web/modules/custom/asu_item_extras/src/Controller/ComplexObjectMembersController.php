@@ -3,11 +3,12 @@
 namespace Drupal\asu_item_extras\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
-use Drupal\user\UserInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
+use Drupal\user\UserInterface;
 use Drupal\views\Views;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Controller for Complex Object Members "Included in this item" view page.
@@ -48,30 +49,32 @@ class ComplexObjectMembersController extends ControllerBase implements Container
    * @return array
    *   The render array.
    */
-  public function buildContent(UserInterface $user = NULL) {
+  public function buildContent(?UserInterface $user = NULL) {
     $node = $this->routeMatch->getParameter('node');
-    $build_output = [];
-    if ($node) {
-      // What is the type for this node?
-      $content_type = $node->getType();
 
-      // What is the model for this node?
-      $field_model_term = $node->get('field_model')->entity;
-      $field_model = (isset($field_model_term) && is_object($field_model_term)) ?
+    // Check if it is a node that can have a model with members.
+    if (!$node || !in_array($node->getType(), ['asu_repository_item']) || !$node->hasField('field_model')) {
+      throw new NotFoundHttpException("This item cannot have members.");
+    }
+
+    // Check that the model can have members.
+    $field_model_term = $node->get('field_model')?->entity;
+    $field_model = (isset($field_model_term) && is_object($field_model_term)) ?
         $field_model_term->getName() : '';
+    if (!in_array($field_model, ['Complex Object', 'Paged Content', 'Collection'])) {
+      throw new NotFoundHttpException("This item cannot have members.");
+    }
 
-      // Check that the model for this node is set to "Complex Object".
-      if ($content_type == 'asu_repository_item') {
-        $view = Views::getView('included_in_complex_object');
-        $args = [$node->id];
-        if (is_object($view)) {
-          $view->setArguments($args);
-          $view->setDisplay('all_included_items');
-          $view->preExecute();
-          $view->execute();
-          $build_output[0] = $view->buildRenderable('all_included_items', $args);
-        }
-      }
+    // Run the view that will display the members.
+    $view = Views::getView('included_in_complex_object');
+    $args = [$node->id];
+    $build_output = [];
+    if (is_object($view)) {
+      $view->setArguments($args);
+      $view->setDisplay('all_included_items');
+      $view->preExecute();
+      $view->execute();
+      $build_output[0] = $view->buildRenderable('all_included_items', $args);
     }
     return [
       '#markup' => '<h2>' . $this->t('Included in this item') . '</h2><div class="row">',

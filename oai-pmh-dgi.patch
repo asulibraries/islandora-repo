@@ -1,0 +1,24 @@
+diff --git a/src/Plugin/rest/resource/OaiPmh.php b/src/Plugin/rest/resource/OaiPmh.php
+index 8e13b81..f67019b 100644
+--- a/src/Plugin/rest/resource/OaiPmh.php
++++ b/src/Plugin/rest/resource/OaiPmh.php
+@@ -550,7 +550,7 @@ protected function getHeaderById($identifier) {
+ 
+     // If the entity being exposed to OAI has a changed field.
+     // print that in the header.
+-    if ($this->entity->hasField('changed')) {
++    if (!is_bool($this->entity) && $this->entity->hasField('changed')) {
+       $header['datestamp'] = gmdate(self::OAI_DATE_FORMAT, $this->entity->changed->value);
+     }
+ 
+@@ -573,6 +573,10 @@ protected function getRecordMetadata() {
+       $this->metadataPrefix = $this->currentRequest->get('metadataPrefix');
+     }
+ 
++    if (is_bool($this->entity)) {
++      return;
++    }
++
+     // Transform the record with the relevant plugin.
+     // Process the transformation to isolate any early rendering.
+     $context = new RenderContext();
