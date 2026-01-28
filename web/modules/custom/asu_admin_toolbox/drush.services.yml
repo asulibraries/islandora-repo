@@ -1,0 +1,6 @@
+services:
+  asu_admin_toolbox.add_media_to:
+    class: Drupal\asu_admin_toolbox\Drush\Commands\AddMediaTo
+    arguments: ['@entity_type.manager', '@file_system']
+    tags:
+      - { name: drush.command }

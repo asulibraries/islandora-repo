@@ -1,0 +1,13 @@
+uuid: f4f0dc3d-ba4c-469f-a932-de9c7a58ac46
+langcode: en
+status: true
+dependencies:
+  module:
+    - islandora
+id: generate_compound_object_pdf
+label: 'Generate Compound Object PDF'
+type: node
+plugin: emit_node_event
+configuration:
+  queue: islandora-connector-mergepdf
+  event: 'Generate Derivative'

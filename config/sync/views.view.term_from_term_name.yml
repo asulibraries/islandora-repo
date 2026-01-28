@@ -305,10 +305,15 @@ display:
         cache: false
         arguments: false
       display_description: ''
-      display_extenders: {  }
+      display_extenders:
+        metatag_display_extender:
+          metatags: {  }
+          tokenize: false
       path: term_from_term_name
       auth:
         - basic_auth
+        - jwt_auth
+        - cookie
     cache_metadata:
       max-age: -1
       contexts:
