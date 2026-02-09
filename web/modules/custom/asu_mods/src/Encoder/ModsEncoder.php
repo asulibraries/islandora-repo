@@ -95,6 +95,10 @@ class ModsEncoder extends XmlEncoder {
    *   A field's property name for extraction.
    */
   private static function getFieldValues($data, $field_name, $config, $sub_field = NULL) {
+    if (is_string($data)) {
+     \Drupal::logger('asu_mods')->error("Expected an entity for field '{$field_name}' and sub_field '{$sub_field}' but got a string: {$data}");
+      return NULL;
+    }
     if (!is_array($field_name) && str_contains($field_name, '/')) {
       $field_name_parts = explode('/', $field_name);
       $field_name = $field_name_parts[0];
@@ -281,6 +285,10 @@ class ModsEncoder extends XmlEncoder {
    *   Array representing a MODS structure
    */
   public function processNode(ImmutableConfig $mods_config, $node) {
+    if (!is_object($node)) {
+      // If the node is gone 'node' is simply the string 'No route found for "GET ..."'.
+      throw new \Symfony\Component\HttpKernel\Exception\NotFoundHttpException();
+    }
     $new_data = [];
     foreach ($mods_config->getRawData() as $field_name => $field_config) {
       if (!is_array($field_config)) {
