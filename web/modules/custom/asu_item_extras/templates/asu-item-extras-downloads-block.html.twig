@@ -1,13 +1,7 @@
 {% if asu_download_restricted|render|striptags|trim is not empty %}
-	<b>
-	{% if file_size and file_size > 0 %}
-	{{ file_size | format_bytes }}
-	{% endif %}
-	{{ asu_download_info }}
-	</b>
-	<br/>
 	{{ asu_download_restricted }}
-{% elseif asu_download_links is not empty %}
+{% endif %}
+{% if asu_download_links is not empty %}
 	<details class='download-options'>
 		<summary>Download Options</summary>
 		{{ asu_download_links }}

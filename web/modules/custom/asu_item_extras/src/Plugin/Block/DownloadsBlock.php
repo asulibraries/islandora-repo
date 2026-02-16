@@ -2,7 +2,6 @@
 
 namespace Drupal\asu_item_extras\Plugin\Block;
 
-use Drupal\asu_islandora_utils\AsuUtils;
 use Drupal\Core\Block\BlockBase;
 use Drupal\Core\Cache\Cache;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
@@ -46,11 +45,11 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
   protected $currentUser;
 
   /**
-   * The AsuUtils definition.
+   * Module handler definition.
    *
-   * @var \Drupal\asu_islandora_utils\AsuUtils
+   * @var \Drupal\Core\Extension\ModuleHandlerInterface
    */
-  protected $asuUtils;
+  protected $moduleHandler;
 
   /**
    * IslandoraUtils class.
@@ -65,6 +64,20 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
    * @var mixed
    */
   protected $mediaSourceService;
+
+  /**
+   * Renderer definition.
+   *
+   * @var \Drupal\Core\Render\RendererInterface
+   */
+  protected $renderer;
+
+  /**
+   * CurrentPathStack definition.
+   *
+   * @var \Drupal\Core\Path\CurrentPathStack
+   */
+  protected $currentPath;
 
   /**
    * Constructor for About this Collection Block.
@@ -83,19 +96,25 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
    *   The current user.
    * @param mixed $islandora_utils
    *   IslandoraUtils Utility class.
-   * @param \Drupal\asu_islandora_utils\AsuUtils $asu_utils
-   *   The ASU Utils service.
    * @param mixed $media_source_service
    *   MediaSourceService Utility class.
+   * @param \Drupal\Core\Extension\ModuleHandlerInterface $module_handler
+   *   The module handler.
+   * @param \Drupal\Core\Render\RendererInterface $renderer
+   *   The renderer.
+   * @param \Drupal\Core\Path\CurrentPathStack $current_path
+   *   The current path.
    */
-  public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $route_match, EntityTypeManagerInterface $entityTypeManager, AccountProxy $current_user, $islandora_utils, AsuUtils $asu_utils, $media_source_service) {
+  public function __construct(array $configuration, $plugin_id, $plugin_definition, RouteMatchInterface $route_match, EntityTypeManagerInterface $entityTypeManager, AccountProxy $current_user, $islandora_utils, $media_source_service, $module_handler, $renderer, $current_path,) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->routeMatch = $route_match;
     $this->entityTypeManager = $entityTypeManager;
     $this->currentUser = $current_user;
     $this->islandoraUtils = $islandora_utils;
-    $this->asuUtils = $asu_utils;
+    $this->moduleHandler = $module_handler;
     $this->mediaSourceService = $media_source_service;
+    $this->renderer = $renderer;
+    $this->currentPath = $current_path;
   }
 
   /**
@@ -110,8 +129,10 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
       $container->get('entity_type.manager'),
       $container->get('current_user'),
       $container->get('islandora.utils'),
-      $container->get('asu_utils'),
-      $container->get('islandora.media_source_service')
+      $container->get('islandora.media_source_service'),
+      $container->get('module_handler'),
+      $container->get('renderer'),
+      $container->get('path.current'),
     );
   }
 
@@ -133,87 +154,70 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
         }
       }
     }
-    $all_files = [];
-
-    $default_config = \Drupal::config('asu_default_fields.settings');
-    $user_roles = $this->currentUser->getRoles();
-
-    if (array_key_exists('origfile', $block_config)) {
-      $origfile = $block_config['origfile'];
-    }
-    else {
-      $origfile_term = $default_config->get('original_file_taxonomy_term');
-      $origfile = $this->entityTypeManager->getStorage('media')->loadByProperties([
-        'field_media_use' => ['target_id' => $origfile_term],
-        'field_media_of' => ['target_id' => $nid],
-      ]);
-      if (count($origfile) > 0) {
-        $origfile = reset($origfile);
-      }
-      else {
-        $origfile = NULL;
-      }
-    }
-
-    if (array_key_exists('servicefile', $block_config)) {
-      $servicefile_term = $default_config->get('service_file_taxonomy_term');
-      $servicefile = $this->entityTypeManager->getStorage('media')->loadByProperties([
-        'field_media_use' => ['target_id' => $servicefile_term],
-        'field_media_of' => ['target_id' => $nid],
-      ]);
-      if (count($servicefile) > 0) {
-        $servicefile = reset($servicefile);
-      }
-      else {
-        $servicefile = NULL;
-      }
-    }
-    $presfile_term =
-    $default_config->get('preservation_master_taxonomy_term');
-    $presfile = $this->entityTypeManager->getStorage('media')->loadByProperties([
-      'field_media_use' => ['target_id' => $presfile_term],
-      'field_media_of' => ['target_id' => $nid],
-    ]);
-    if (count($presfile) > 0) {
-      $presfile = reset($presfile);
-    }
-    else {
-      $presfile = NULL;
-    }
 
     $markup = '';
-    $links = array_filter($all_files, function ($v) {
-      return $v["access"];
-    });
 
-    // Downloads are restrictd. Display the appropriate messages.
-    if ($links == [] && in_array('anonymous', $user_roles)) {
-      $asu_only_links = array_filter($all_files, function ($v) {
-        return $v["perms"] == "ASU Only";
-      });
-      if (count($asu_only_links) > 0) {
-        $moduleHandler = \Drupal::service('module_handler');
-        if ($moduleHandler->moduleExists('cas')) {
-          $url = Url::fromRoute('cas.login')->toString();
+    $all_media = $this->islandoraUtils->getMedia($node);
+
+    $all_media = array_filter($all_media, function ($media) {
+      // Filter out media without a media use term, thumbnails, and FITS files.
+      return (
+        $media->hasField('field_media_use') &&
+        !$media->get('field_media_use')->isEmpty() &&
+        !in_array($media->get('field_media_use')->entity->field_external_uri->uri, [
+          'http://pcdm.org/use#ThumbnailImage', 'https://projects.iq.harvard.edu/fits',
+        ]));
+    });
+    $accessible_media = array_filter($all_media, function ($m) {
+      return $m->access('view');
+    });
+    // At least some downloads are restrictd. Display the appropriate messages.
+    if (count($all_media) > count($accessible_media)) {
+      $restriction = FALSE;
+      $asu_only = FALSE;
+      foreach ($all_media as $m) {
+        switch ($m->field_access_terms?->entity?->label()) {
+          case "ASU Only":
+            $asu_only = TRUE;
+          case "Private":
+            $restriction = TRUE;
+            break;
+        }
+        if ($m->field_access_terms?->entity?->label() == "Private") {
+          $restriction = TRUE;
+        }
+        elseif ($m->field_access_terms?->entity?->label() == "ASU Only") {
+          $restriction = TRUE;
+          $asu_only = TRUE;
+        }
+      }
+      if ($restriction) {
+        if (count($accessible_media) > 0) {
+          $markup = "<i class='fas fa-lock'></i> Some downloads are restricted.";
         }
         else {
-          $url = "/user/login";
+          $markup = "<i class='fas fa-lock'></i> Download restricted.";
         }
-        $currentPath = \Drupal::service('path.current')->getPath();
-        $markup = "<i class='fas fa-lock'></i> Download restricted. Please <a href='$url?returnto=$currentPath'>sign in</a>.";
-      }
-      else {
-        $markup = "<i class='fas fa-lock'></i> Download restricted.";
-      }
-      // Add the collection-level statement if it exists.
-      $collections = array_filter($this->entityTypeManager->getStorage('node')->loadMultiple($this->islandoraUtils->findAncestors($node)), function ($a) {
-        return ($a->bundle() == 'collection' && $a->hasField('field_restrictions_statement') && !$a->get('field_restrictions_statement')->isEmpty());
-      });
-      // Allows both collection and sub-collection statements.
-      foreach ($collections as $c) {
-        if (!$c->get('field_restrictions_statement')->isEmpty()) {
-          $statement = $c->field_restrictions_statement->view();
-          $markup .= \Drupal::service('renderer')->renderRoot($statement);
+        if ($asu_only) {
+          if ($this->moduleHandler->moduleExists('cas')) {
+            $url = Url::fromRoute('cas.login')->toString();
+          }
+          else {
+            $url = "/user/login";
+          }
+          $currentPath = $this->currentPath->getPath();
+          $markup .= " Please <a href='$url?returnto=$currentPath'>sign in</a>.";
+        }
+        // Add the collection-level statement if it exists.
+        $collections = array_filter($this->entityTypeManager->getStorage('node')->loadMultiple($this->islandoraUtils->findAncestors($node)), function ($a) {
+          return ($a->bundle() == 'collection' && $a->hasField('field_restrictions_statement') && !$a->get('field_restrictions_statement')->isEmpty());
+        });
+        // Allows both collection and sub-collection statements.
+        foreach ($collections as $c) {
+          if (!$c->get('field_restrictions_statement')->isEmpty()) {
+            $statement = $c->field_restrictions_statement->view();
+            $markup .= $this->renderer->renderRoot($statement);
+          }
         }
       }
     }
@@ -225,18 +229,8 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
       $markup = "<i class='fas fa-lock'></i> Download restricted until " . $node->get('field_embargo_release_date')->date->format('Y-m-d') . ".";
     }
 
-    foreach ($this->islandoraUtils->getMedia($node) as $media) {
+    foreach ($accessible_media as $media) {
       if (!$media?->access('view')) {
-        continue;
-      }
-
-      // Filter out media without a media use term, thumbnails, and FITS files.
-      if (
-        !$media->hasField('field_media_use') ||
-        $media->get('field_media_use')->isEmpty() ||
-        in_array($media->get('field_media_use')->entity->field_external_uri->uri, [
-          'http://pcdm.org/use#ThumbnailImage', 'https://projects.iq.harvard.edu/fits',
-        ])) {
         continue;
       }
 
@@ -324,9 +318,7 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
     }
 
     $return = [
-      '#asu_download_info' => $download_info ?? '',
       '#asu_download_restricted' => ['#markup' => $markup],
-      '#file_size' => $file_size ?? 0,
       '#theme' => 'asu_item_extras_downloads_block',
       '#cache' => [
         'tags' => ["node:$nid"],
