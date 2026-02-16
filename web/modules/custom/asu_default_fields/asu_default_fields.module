@@ -238,7 +238,7 @@ function asu_default_fields_form_alter(&$form, FormStateInterface $form_state, $
         // original file only, because we assume that most manual
         // additions of files are for original files.
         $parent = \Drupal::entityTypeManager()->getStorage('node')->load($nid);
-        if ($parent->hasField('field_default_original_file_perm') && !$parent->get('field_default_original_file_perm')->isEmpty() && $media->get('field_access_terms')->isEmpty()) {
+        if ($parent && $parent->hasField('field_default_original_file_perm') && !$parent->get('field_default_original_file_perm')->isEmpty() && $media->get('field_access_terms')->isEmpty()) {
           $of_default_perms = $parent->get('field_default_original_file_perm')->entity;
           $form['field_access_terms']['widget']['#default_value'] = [$of_default_perms->id()];
         }
@@ -289,7 +289,7 @@ function asu_default_fields_node_insert(NodeInterface $node) {
     // Active embargoes aren't eligible.
     (!$node->hasField('field_embargo_release_date') || $node->field_embargo_release_date?->isEmpty() || $node->field_embargo_release_date->value > date('Y-m-d')) &&
     // Restricted items aren't eligible.
-    (!in_array(asu_permissions_find_original_access_policy($node)?->label(), ['ASU Only','Private'])) &&
+    (!in_array(asu_permissions_find_original_access_policy($node)?->label(), ['ASU Only', 'Private'])) &&
     // One of the following copyright or reuse permissions must be true.
     (
       ($node->field_copyright_statement?->entity?->field_source?->uri == 'http://rightsstatements.org/vocab/NoC-US/1.0/') ||
