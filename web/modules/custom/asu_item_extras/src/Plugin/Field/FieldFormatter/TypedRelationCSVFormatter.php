@@ -61,7 +61,7 @@ class TypedRelationCSVFormatter extends EntityReferenceLabelFormatter {
   public function settingsSummary() {
     $summary = [];
     $summary[] = $this->t('Sub-Field delimiter: @subfield_delimiter', [
-	    '@subfield_delimiter' => $this->getSetting('subfield_delimiter')
+      '@subfield_delimiter' => $this->getSetting('subfield_delimiter'),
     ]);
     return $summary;
   }

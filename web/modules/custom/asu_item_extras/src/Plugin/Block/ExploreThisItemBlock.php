@@ -201,7 +201,7 @@ class ExploreThisItemBlock extends BlockBase implements ContainerFactoryPluginIn
     // Get the media for "Original File" and check for any access restrictions
     // on it.
     $roles = $this->currentUser->getRoles();
-    if (in_array('administrator', $roles , TRUE) || in_array('metadata_manager', $roles, TRUE)) {
+    if (in_array('administrator', $roles, TRUE) || in_array('metadata_manager', $roles, TRUE)) {
       return TRUE;
     }
     $default_config = \Drupal::config('asu_default_fields.settings');

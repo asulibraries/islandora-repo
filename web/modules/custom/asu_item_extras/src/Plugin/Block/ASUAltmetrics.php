@@ -53,7 +53,8 @@ class ASUAltmetrics extends BlockBase implements ContainerFactoryPluginInterface
     $plugin_id,
     $plugin_definition,
     EntityTypeManagerInterface $entityTypeManager,
-    CurrentRouteMatch $currentRouteMatch) {
+    CurrentRouteMatch $currentRouteMatch,
+  ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->entityTypeManager = $entityTypeManager;
     $this->currentRouteMatch = $currentRouteMatch;
@@ -162,7 +163,6 @@ class ASUAltmetrics extends BlockBase implements ContainerFactoryPluginInterface
           ],
         ],
       ] : []);
-    ;
   }
 
   /**

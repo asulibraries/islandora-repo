@@ -10,10 +10,7 @@ use Drupal\Core\Cache\Cache;
 use Drupal\Core\Url;
 use Drupal\Core\Link;
 use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
 use Drupal\Core\Entity\EntityTypeManagerInterface;
-
-
 
 /**
  * Provides an Unpaywall Block.
@@ -44,8 +41,6 @@ class UnpaywallBlock extends BlockBase implements ContainerFactoryPluginInterfac
    */
   protected $entityTypeManager;
 
-
-
   /**
    * Constructs a StringFormatter instance.
    *
@@ -62,12 +57,14 @@ class UnpaywallBlock extends BlockBase implements ContainerFactoryPluginInterfac
    * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entityTypeManager
    *   The entityTypeManager definition.
    */
-  public function __construct(array $configuration,
+  public function __construct(
+    array $configuration,
     $plugin_id,
     $plugin_definition,
     Renderer $renderer,
     Client $httpClient,
-    EntityTypeManagerInterface $entityTypeManager) {
+    EntityTypeManagerInterface $entityTypeManager,
+  ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->renderer = $renderer;
     $this->httpClient = $httpClient;
@@ -81,7 +78,8 @@ class UnpaywallBlock extends BlockBase implements ContainerFactoryPluginInterfac
     ContainerInterface $container,
     array $configuration,
     $plugin_id,
-    $plugin_definition) {
+    $plugin_definition,
+  ) {
     return new static(
       $configuration,
       $plugin_id,
@@ -125,20 +123,20 @@ class UnpaywallBlock extends BlockBase implements ContainerFactoryPluginInterfac
 
     }
     return [
-      '#markup' => $return_val
+      '#markup' => $return_val,
     ];
   }
 
   /**
    * Gets OA article link if one exists.
-   * 
+   *
    * @param string $doi
-   *  The doi.
-   * 
+   *   The doi.
+   *
    * @return string
-   *  The url.
+   *   The url.
    */
-  function callUnpayApi($doi) {
+  public function callUnpayApi($doi) {
     $query = "https://api.unpaywall.org/v2/" . $doi . "?email=digitalrepository@asu.edu";
 
     $response = $this->httpClient->get($query);
@@ -149,7 +147,7 @@ class UnpaywallBlock extends BlockBase implements ContainerFactoryPluginInterfac
       return $resource['best_oa_location']['url'];
     }
     else {
-      return null;
+      return NULL;
     }
   }
 

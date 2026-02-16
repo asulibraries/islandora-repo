@@ -33,7 +33,7 @@ class ViewerController extends ControllerBase {
 
   /**
    * IslandoraUtils class.
-   * 
+   *
    * @var \Drupal\islandora\IslandoraUtils
    */
   protected $islandoraUtils;

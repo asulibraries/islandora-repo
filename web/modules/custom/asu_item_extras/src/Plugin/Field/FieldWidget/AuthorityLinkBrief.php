@@ -23,12 +23,12 @@ class AuthorityLinkBrief extends LinkWidget {
    * {@inheritdoc}
    */
   public function formElement(
-        FieldItemListInterface $items,
-        $delta,
-        array $element,
-        array &$form,
-        FormStateInterface $form_state
-    ) {
+    FieldItemListInterface $items,
+    $delta,
+    array $element,
+    array &$form,
+    FormStateInterface $form_state,
+  ) {
     // Item of interest.
     $item = &$items[$delta];
     $settings = $item->getFieldDefinition()->getSettings();
@@ -41,7 +41,7 @@ class AuthorityLinkBrief extends LinkWidget {
       '#title' => $this->t('Source'),
       '#type' => 'select',
       '#options' => $settings['authority_sources'],
-      '#default_value' => isset($item->source) ? $item->source : '',
+      '#default_value' => $item->source ?? '',
     ];
     $element['uri'] = [
       '#type' => 'url',

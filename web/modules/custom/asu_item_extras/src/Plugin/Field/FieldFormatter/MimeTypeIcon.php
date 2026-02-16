@@ -142,7 +142,7 @@ class MimeTypeIcon extends StringFormatter {
       '#tag' => 'i',
       '#attributes' => [
         'class' => $settings,
-	'title' => $item->value,
+        'title' => $item->value,
       ],
       '#value' => '',
     ];
@@ -206,4 +206,3 @@ class MimeTypeIcon extends StringFormatter {
   }
 
 }
-

@@ -43,7 +43,8 @@ class ASUItemCitations extends BlockBase implements ContainerFactoryPluginInterf
     array $configuration,
     $plugin_id,
     $plugin_definition,
-    CurrentRouteMatch $currentRouteMatch) {
+    CurrentRouteMatch $currentRouteMatch,
+  ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->currentRouteMatch = $currentRouteMatch;
   }

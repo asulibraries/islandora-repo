@@ -49,11 +49,13 @@ class ASUSearchItemIsPartOf extends BlockBase implements ContainerFactoryPluginI
    * @param \Drupal\Core\Render\Renderer $renderer
    *   The renderer class.
    */
-  public function __construct(array $configuration,
+  public function __construct(
+    array $configuration,
     $plugin_id,
     $plugin_definition,
     EntityTypeManagerInterface $entityTypeManager,
-    Renderer $renderer) {
+    Renderer $renderer,
+  ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
     $this->entityTypeManager = $entityTypeManager;
     $this->renderer = $renderer;
@@ -66,7 +68,8 @@ class ASUSearchItemIsPartOf extends BlockBase implements ContainerFactoryPluginI
     ContainerInterface $container,
     array $configuration,
     $plugin_id,
-    $plugin_definition) {
+    $plugin_definition,
+  ) {
     return new static(
       $configuration,
       $plugin_id,
