@@ -181,18 +181,6 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
       $presfile = NULL;
     }
 
-    if ($origfile && $origfile->bundle() <> 'remote_video') {
-      $all_files["original"] = $this->getFileDetails($origfile, "original");
-      $download_info = $all_files["original"]["mime_type"];
-      $file_size = $all_files["original"]["file_size"];
-    }
-    if ($servicefile && ($servicefile->bundle() <> 'remote_video' && $servicefile->bundle() <> "audio" && $servicefile->bundle() <> "video")) {
-      $all_files["derivative"] = $this->getFileDetails($servicefile, "derivative");
-    }
-    if ($presfile && $presfile->bundle() <> 'remote_video') {
-      $all_files["preservation"] = $this->getFileDetails($presfile, "preservation");
-    }
-
     $markup = '';
     $links = array_filter($all_files, function ($v) {
       return $v["access"];
@@ -212,7 +200,7 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
           $url = "/user/login";
         }
         $currentPath = \Drupal::service('path.current')->getPath();
-        $markup = "<i class='fas fa-lock'></i> Download restricted. Please <a href='" . $url . "?returnto=" . $currentPath . "'>sign in</a>.";
+        $markup = "<i class='fas fa-lock'></i> Download restricted. Please <a href='$url?returnto=$currentPath'>sign in</a>.";
       }
       else {
         $markup = "<i class='fas fa-lock'></i> Download restricted.";
@@ -237,30 +225,107 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
       $markup = "<i class='fas fa-lock'></i> Download restricted until " . $node->get('field_embargo_release_date')->date->format('Y-m-d') . ".";
     }
 
-    $node_language = $node->get('field_language')->entity;
-    $link_hreflang = [];
-    if ($node_language) {
-      if ($node_language->hasField('field_langcode_2digits') && $node_language->get('field_langcode_2digits')->value) {
-        $link_hreflang = ['hreflang' => $node_language->get('field_langcode_2digits')->value];
+    foreach ($this->islandoraUtils->getMedia($node) as $media) {
+      if (!$media?->access('view')) {
+        continue;
+      }
+
+      // Filter out media without a media use term, thumbnails, and FITS files.
+      if (
+        !$media->hasField('field_media_use') ||
+        $media->get('field_media_use')->isEmpty() ||
+        in_array($media->get('field_media_use')->entity->field_external_uri->uri, [
+          'http://pcdm.org/use#ThumbnailImage', 'https://projects.iq.harvard.edu/fits',
+        ])) {
+        continue;
+      }
+
+      // Filter out media that doesn't have a file.
+      $source_field = $this->mediaSourceService->getSourceFieldName($media->bundle());
+      if (empty($source_field) || !$media->hasField($source_field) || $media->get($source_field)->isEmpty()) {
+        continue;
+      }
+
+      $downloads[] = [
+        // File Name with link to download.
+        [
+          'data' => Link::fromTextAndUrl($media->name->value, Url::fromUri($this->islandoraUtils->getDownloadUrl($media->get($this->mediaSourceService->getSourceFieldName($media->bundle()))->entity), [
+            'attributes' => [
+              'class' => ['download-counter'],
+              'target' => '_blank',
+              'rel' => 'noopener noreferrer',
+            ],
+          ]))->toRenderable(),
+        ],
+        // Media Use Type.
+        [
+          'data' => ($media->hasField('field_media_use') && !$media->get('field_media_use')->isEmpty()) ? $media->get('field_media_use')->entity->label() : '',
+        ],
+        // File Type with icon.
+        [
+          'data' => ($media->field_mime_type) ? $media->field_mime_type->view([
+            'type' => 'mime_type_icon',
+            'label' => 'hidden',
+            'settings' => [
+              'size' => 'fa-lg',
+              'fixed_width' => 'fa-fw',
+              'link_to_entity' => FALSE,
+            ],
+          ]) : ['#markup' => 'Unknown type'],
+        ],
+        // File Size.
+        [
+          'data' => ($media->field_file_size) ? $media->field_file_size->view([
+            'type' => 'file_size',
+            'label' => 'hidden',
+          ]) : ['#markup' => 'Unknown size'],
+        ],
+      ];
+
+      // Add captions from audio/video if we haven't yet.
+      if (in_array($media->bundle(), ['audio', 'video']) && !isset($captions_added) && $captions = $media->get('field_track')?->entity) {
+        $downloads[] = [
+            // File Name with link to download.
+            [
+              'data' => Link::fromTextAndUrl($captions->filename->value, Url::fromUri($this->islandoraUtils->getDownloadUrl($captions), [
+                'attributes' => [
+                  'class' => ['download-counter'],
+                  'target' => '_blank',
+                  'rel' => 'noopener noreferrer',
+                ],
+              ]))->toRenderable(),
+            ],
+            // Media Use Type.
+            [
+              'data' => 'Captions',
+            ],
+            // File Type with icon.
+            [
+              'data' => $captions->filemime->view([
+                'type' => 'mime_type_icon',
+                'label' => 'hidden',
+                'settings' => [
+                  'size' => 'fa-lg',
+                  'fixed_width' => 'fa-fw',
+                  'link_to_entity' => FALSE,
+                ],
+              ]) ?? ['#markup' => 'Unknown type'],
+            ],
+            // File Size.
+            [
+              'data' => $captions->filesize->view([
+                'type' => 'file_size',
+                'label' => 'hidden',
+              ]) ?? ['#markup' => 'Unknown size'],
+            ],
+        ];
+        $captions_added = TRUE;
       }
     }
-    $asuUtils = $this->asuUtils;
-    $links = array_map(function ($v) use ($link_hreflang, $asuUtils) {
-      return Link::fromTextAndUrl(strtoupper($v['ext']) . " (" . $asuUtils->formatBytes($v['file_size'], 1) . ")", Url::fromUri($v['link'], [
-        'attributes' => array_merge($link_hreflang, [
-          'class' => ['btn btn-md btn-gray download-counter'],
-          'title' => $this->t('Download %type file %ext', [
-            '%type' => $v['type'],
-            '%ext' => $v['ext'],
-          ]),
-        ]),
-      ]))->toRenderable();
-    }, $links);
 
     $return = [
       '#asu_download_info' => $download_info ?? '',
       '#asu_download_restricted' => ['#markup' => $markup],
-      '#asu_download_links' => $links,
       '#file_size' => $file_size ?? 0,
       '#theme' => 'asu_item_extras_downloads_block',
       '#cache' => [
@@ -272,6 +337,19 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
         ],
       ],
     ];
+
+    if (!empty($downloads)) {
+      $return['#asu_download_links'] = [
+        '#type' => 'table',
+        '#header' => [
+          $this->t('Name'),
+          $this->t('Type'),
+          $this->t('Format'),
+          $this->t('Size'),
+        ],
+        '#rows' => $downloads,
+      ];
+    }
 
     return $return;
   }

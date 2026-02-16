@@ -6,9 +6,10 @@
 	{{ asu_download_info }}
 	</b>
 	<br/>
-	<br/>
 	{{ asu_download_restricted }}
 {% elseif asu_download_links is not empty %}
-	<div class="field__label">Downloads</div>
-	{{ asu_download_links }}
+	<details class='download-options'>
+		<summary>Download Options</summary>
+		{{ asu_download_links }}
+	</details>
 {% endif %}

@@ -27,6 +27,5 @@
   {% endfor %}
 </audio>
 {% if tracks %}
-<div><a href="{{ tracks[0].track_attributes['src'] }}" type="button" class="btn btn-md btn-gray" target="_blank" rel="noopener noreferrer">Download default caption file</a></div>
 {{ include('@asulib_barrio/interactive-captions.html.twig') }}
 {% endif %}
