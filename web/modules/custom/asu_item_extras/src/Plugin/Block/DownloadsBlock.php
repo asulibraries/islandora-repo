@@ -183,13 +183,6 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
             $restriction = TRUE;
             break;
         }
-        if ($m->field_access_terms?->entity?->label() == "Private") {
-          $restriction = TRUE;
-        }
-        elseif ($m->field_access_terms?->entity?->label() == "ASU Only") {
-          $restriction = TRUE;
-          $asu_only = TRUE;
-        }
       }
       if ($restriction) {
         if (count($accessible_media) > 0) {
