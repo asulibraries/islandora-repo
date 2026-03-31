@@ -229,14 +229,14 @@ class DownloadsBlock extends BlockBase implements ContainerFactoryPluginInterfac
 
       // Filter out media that doesn't have a file.
       $source_field = $this->mediaSourceService->getSourceFieldName($media->bundle());
-      if (empty($source_field) || !$media->hasField($source_field) || $media->get($source_field)->isEmpty()) {
+      if (empty($source_field) || !$media->hasField($source_field) || $media->get($source_field)->isEmpty() || !$media->get($source_field)->entity) {
         continue;
       }
 
       $downloads[] = [
         // File Name with link to download.
         [
-          'data' => Link::fromTextAndUrl($media->name->value, Url::fromUri($this->islandoraUtils->getDownloadUrl($media->get($this->mediaSourceService->getSourceFieldName($media->bundle()))->entity), [
+          'data' => Link::fromTextAndUrl($media->name->value, Url::fromUri($this->islandoraUtils->getDownloadUrl($media->get($source_field)->entity), [
             'attributes' => [
               'class' => ['download-counter'],
               'target' => '_blank',
