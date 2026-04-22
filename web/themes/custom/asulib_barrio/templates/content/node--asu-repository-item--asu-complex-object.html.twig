@@ -101,6 +101,7 @@
         <a href="#details">Skip to item metadata.</a>
         {% set iiif_mani_url = "/node/" ~ node.id ~ "/book-manifest" %}
           {{ drupal_block('mirador_block', {'iiif_manifest_url': iiif_mani_url}, wrapper=false)  }}
+          {{ include('@asulib_barrio/mirador-help.html.twig') }}
       {% endif %}
       {% if drupal_view('display_media', 'thumbnail', node.id)|render|striptags|trim|length > 0 %}
         <div class="col-md-5 file-container">
