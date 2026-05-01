@@ -205,6 +205,10 @@ class SelfDepositCreateForm extends FormBase {
       }
     }
 
+    if (array_key_exists('peer_reviewed', $values)) {
+      $node_args['field_peer_reviewed'] = $values['peer_reviewed'];
+    }
+
     // Save an initial version so asu_repository_items can link components.
     $node = Node::create($node_args);
     $node->save();

@@ -280,6 +280,10 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
       $node_args['field_language'] = [['target_id' => $values['language1']]];
     }
 
+    if (array_key_exists('peer_reviewed', $values)) {
+      $node_args['field_peer_reviewed'] = $values['peer_reviewed'];
+    }
+
     $node = Node::create($node_args);
     $node->save();
 

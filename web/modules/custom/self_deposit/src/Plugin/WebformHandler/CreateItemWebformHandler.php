@@ -151,6 +151,10 @@ class CreateItemWebformHandler extends WebformHandlerBase {
         ['target_id' => $member_of],
       ],
     ];
+    
+    if (array_key_exists('peer_reviewed', $values)) {
+      $node_args['field_peer_reviewed'] = $values['peer_reviewed'];
+    }
 
     $node = Node::create($node_args);
     $node->save();
