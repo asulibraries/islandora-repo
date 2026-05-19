@@ -5,7 +5,6 @@ dependencies:
   config:
     - field.storage.node.field_place_of_publication_code
     - node.type.scholarly_work
-    - taxonomy.vocabulary.country_codes
     - taxonomy.vocabulary.geo_location
 id: node.scholarly_work.field_place_of_publication_code
 field_name: field_place_of_publication_code
@@ -21,11 +20,10 @@ settings:
   handler: 'default:taxonomy_term'
   handler_settings:
     target_bundles:
-      country_codes: country_codes
       geo_location: geo_location
     sort:
       field: name
       direction: asc
     auto_create: false
-    auto_create_bundle: country_codes
+    auto_create_bundle: ''
 field_type: entity_reference

@@ -11,7 +11,6 @@ dependencies:
     - taxonomy.vocabulary.conference
     - taxonomy.vocabulary.copyright_statements
     - taxonomy.vocabulary.corporate_body
-    - taxonomy.vocabulary.country_codes
     - taxonomy.vocabulary.family
     - taxonomy.vocabulary.genre
     - taxonomy.vocabulary.geo_location
@@ -748,7 +747,6 @@ display:
             conference: conference
             copyright_statements: copyright_statements
             corporate_body: corporate_body
-            country_codes: country_codes
             family: family
             genre: genre
             geo_location: geo_location
@@ -930,7 +928,7 @@ display:
           expose:
             operator_id: external_authority_uri_operator
             label: 'External Authority Link URI'
-            description: 'For country codes and resource types.'
+            description: 'For resource types.'
             use_operator: true
             operator: field_external_authority_link_uri_op
             operator_limit_selection: false
