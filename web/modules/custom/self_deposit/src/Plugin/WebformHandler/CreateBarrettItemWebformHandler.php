@@ -332,7 +332,7 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
     $work_products = [];
     foreach ($files as $file_id) {
       $file = $this->entityTypeManager->getStorage('file')->load(intval($file_id));
-      $file_copy = $file_repository->copy($file, $new_dest . $filename);
+      $file_copy = $file_repository->copy($file, $new_dest . $file->getFilename());
       $file_model_properties = $this->depositUtils->getModel($file_copy->getMimeType(), $file_copy->getFilename());
       $media = Media::create([
         'bundle' => $file_model_properties[1],
