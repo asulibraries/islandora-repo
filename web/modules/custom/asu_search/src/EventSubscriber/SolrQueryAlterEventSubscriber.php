@@ -49,6 +49,10 @@ class SolrQueryAlterEventSubscriber implements EventSubscriberInterface {
     // Add a filter query to exclude child objects from the results.
     $solarium = $event->getSolariumQuery();
     $solarium->addFilterQuery(
+    $solarium->createFilterQuery('exclude_components_keep')
+      ->setQuery('-bs_complex_object_child:true')
+    );
+    $solarium->addFilterQuery(
       $solarium->createFilterQuery('exclude_components')
         ->setQuery('-bs_field_complex_object_child:true')
     );
