@@ -177,13 +177,21 @@
         <div>{{ content.field_note_para }}</div>
       {% endif %}
       <div>{{content.field_table_of_contents}}</div>
-      <div>
-        <p>
-          <strong>
-            <a class="icon-link" href="{{ url }}/metadata"><i class="fa fa-lg fa-list-ul"></i><span>{{ 'View full metadata'|t }}</span></a>
-          </strong>
-        </p>
-      </div>
+      <div>{{ content.field_genre }}</div>
+      <div>{{ content.field_extent }}</div>
+      <div>{{ content.field_edtf_copyright_date }}</div>
+      <div>{{ content.field_date_digitized }}</div>
+      <div>{{ content.field_place_published }}</div>
+      <div>{{ content.field_place_of_publication_code }}</div>
+      <div>{{ content.field_coordinates }}</div>
+      <div>{{ content.field_series }}</div>
+      <div>{{ content.field_edition }}</div>
+      <div>{{ content.field_issuance }}</div>
+      <div>{{ content.field_frequency }}</div>
+      <div>{{ content.field_language }}</div>
+      <div>{{ content.field_cataloging_standards }}</div>
+      <div>{{ content.field_description_source }}</div>
+      <div>{{ content.field_level_of_coding }}</div>
     </div>
     {% if (node.field_preferred_citation is not empty) or (node.field_statement_responsibility is not empty) %}
       <div id="interact" class="content-section interact">

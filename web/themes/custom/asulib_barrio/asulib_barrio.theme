@@ -120,9 +120,6 @@ function asulib_barrio_preprocess_region(&$variables) {
       ) {
         $variables['backtosearch'] = $referer_url;
       }
-      if ($current_route == 'asu_item_extras.full_metadata_view' && $node instanceof NodeInterface) {
-        $variables['backtoitem'] = Url::fromRoute('entity.node.canonical', ['node' => $node->id()]);
-      }
     }
   }
 }
@@ -280,9 +277,6 @@ function asulib_barrio_theme_suggestions_field_alter(&$suggestions, $variables) 
  * Process block content.
  */
 function asulib_barrio_preprocess_block(&$variables) {
-  if ($variables['plugin_id'] == 'asu_item_is_part_of') {
-    $variables['is_metadata_page'] = (\Drupal::routeMatch()->getRouteName() == "asu_item_extras.full_metadata_view");
-  }
   if ($variables['plugin_id'] == "explore_this_item_block" && empty($variables['content'])) {
     $variables['attributes']['hidden'] = TRUE;
   }

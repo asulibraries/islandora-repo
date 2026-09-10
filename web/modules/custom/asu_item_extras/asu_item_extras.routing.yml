@@ -1,15 +1,3 @@
-asu_item_extras.full_metadata_view:
-  path: '/items/{node}/metadata'
-  defaults:
-    _title: 'Full metadata'
-    _entity_view: node.full_metadata
-  requirements:
-    _entity_access: 'node.view'
-    node: \d+
-  options:
-    parameters:
-      node:
-        type: entity:node
 asu_item_extras.complex_object_members:
   path: '/items/{node}/members'
   defaults:

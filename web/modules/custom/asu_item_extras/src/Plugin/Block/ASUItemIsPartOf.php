@@ -76,14 +76,13 @@ class ASUItemIsPartOf extends BlockBase implements ContainerFactoryPluginInterfa
     $parents_output = [];
     $block_config = BlockBase::getConfiguration();
     if (is_array($block_config) && array_key_exists('node', $block_config)) {
-      $is_metadata_page = (array_key_exists('is_metadata_page', $block_config)) ? $block_config['is_metadata_page'] : FALSE;
       $node = $block_config['node'];
       $field_complex_object_child = $node->get('field_complex_object_child')->getString();
       if ($field_complex_object_child) {
         // First look at the node's field_member_of.
         $complex_object_parent = $node->get('field_member_of')->entity;
         if (is_object($complex_object_parent)) {
-          $parents_output[] = $this->makeLinkAndLabel($this->t('Part of'), $is_metadata_page, $complex_object_parent);
+          $parents_output[] = $this->makeLinkAndLabel($this->t('Part of'), $complex_object_parent);
           $direct_complex_obj_parent = $complex_object_parent->get('field_member_of')->entity;
           if (is_object($direct_complex_obj_parent)) {
             $additional_complex_obj_parents = [];
@@ -92,7 +91,6 @@ class ASUItemIsPartOf extends BlockBase implements ContainerFactoryPluginInterfa
             }
             $parents_output[] = $this->makeLinkAndLabel(
               $this->t('Collections this item is in'),
-              $is_metadata_page,
               $direct_complex_obj_parent,
               $additional_complex_obj_parents
             );
@@ -105,16 +103,15 @@ class ASUItemIsPartOf extends BlockBase implements ContainerFactoryPluginInterfa
           $additional_parents = $node->get('field_additional_memberships')->referencedEntities();
           $parents_output[] = $this->makeLinkAndLabel(
             $this->t('Collections this item is in'),
-            $is_metadata_page,
             $collection_parent,
             $additional_parents
           );
         }
       }
     }
-    $split_html = ($is_metadata_page) ? '</div><div class="field--label-inline row field">' : '<br>';
+    $split_html = '<br>';
     return [
-      '#markup' => (($is_metadata_page) ? '<div class="field--label-inline row field">' : '<div>') .
+      '#markup' => '<div>' .
       implode($split_html, $parents_output) .
       '</div>',
     ];
@@ -125,8 +122,6 @@ class ASUItemIsPartOf extends BlockBase implements ContainerFactoryPluginInterfa
    *
    * @param string $label_text
    *   The lable div to output before the link.
-   * @param bool $is_metadata_page
-   *   Whether or not the display is being wrapped with a field row class.
    * @param object $parent_node
    *   The referenced entity by way of the node's field_member_of->entity.
    * @param array $additional_parents
@@ -136,15 +131,15 @@ class ASUItemIsPartOf extends BlockBase implements ContainerFactoryPluginInterfa
    * @return string
    *   HTML that represents the label div and the link to the provided node/s.
    */
-  private function makeLinkAndLabel($label_text, $is_metadata_page, $parent_node, ?array $additional_parents = NULL) {
+  private function makeLinkAndLabel($label_text, $parent_node, ?array $additional_parents = NULL) {
     $html_of_links[] = $this->getHtmlOfEntity($parent_node);
     if (is_array($additional_parents)) {
       foreach ($additional_parents as $additional_parent) {
         $html_of_links[] = $this->getHtmlOfEntity($additional_parent);
       }
     }
-    return '  <div class="field__label' . (($is_metadata_page) ? ' col-sm-2' : '') . '">' . $label_text . '</div>' .
-      '  <div class="field__item' . (($is_metadata_page) ? ' col-sm-9' : '') . '">' . implode(", ", $html_of_links) . '</div>';
+    return '  <div class="field__label">' . $label_text . '</div>' .
+      '  <div class="field__item">' . implode(", ", $html_of_links) . '</div>';
   }
 
   /**

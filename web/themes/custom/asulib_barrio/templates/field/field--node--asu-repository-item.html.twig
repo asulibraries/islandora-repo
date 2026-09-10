@@ -69,12 +69,13 @@
     <div{{ title_attributes.addClass(title_classes) }}>{{ label }}</div>
     {% if multiple %}
       <ul class='field__items inline-list'>
-    {% endif %}
-    {% for item in items %}
+      {% for item in items %}
       <li{{ item.attributes.addClass('field__item') }}>{{ item.content }}</li>
-    {% endfor %}
-    {% if multiple %}
-      </ul>
+      {% endfor %}
+    {% else %}
+    {% for item in items %}
+      {{ item.content }}
+      {% endfor %}
     {% endif %}
   </div>
 {% endif %}

@@ -157,13 +157,6 @@
         <div>{{ content.field_typed_identifier }}</div>
       {% endif %}
       <div>{{content.field_table_of_contents}}</div>
-      <div>
-        <p>
-          <strong>
-            <a class="icon-link" href="{{ url }}/metadata"><i class="fa fa-lg fa-list-ul"></i><span>{{ 'View full metadata'|t }}</span></a>
-          </strong>
-        </p>
-      </div>
     </div>
     {% if (node.field_preferred_citation is not empty) or (node.field_statement_responsibility is not empty) %}
       <div id="interact" class="content-section interact">

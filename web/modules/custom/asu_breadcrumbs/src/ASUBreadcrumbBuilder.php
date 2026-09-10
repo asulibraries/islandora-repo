@@ -130,7 +130,6 @@ class ASUBreadcrumbBuilder implements BreadcrumbBuilderInterface {
       $route_name = $route_match->getRouteName();
       // Need to also include the canonical view of any node.
       $is_node_or_node_subpage = (
-        ($route_name == 'asu_item_extras.full_metadata_view') ||
         ($route_name == 'asu_item_extras.complex_object_members') ||
         ($route_name == 'asu_item_extras.viewer_controller_render_view') ||
         ($route_name == 'view.media_of.page_1'));
