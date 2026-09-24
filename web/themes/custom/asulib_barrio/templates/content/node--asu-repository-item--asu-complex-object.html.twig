@@ -75,17 +75,6 @@
 %}
 {{content.content_moderation_control}}
 <article{{ attributes.addClass(classes) }}>
-  {% set current_site_url = url('<current>', {}, {'absolute': true})|render|trim %}
-  {% set current_host = current_site_url|replace({'https://': '', 'http://': ''})|split('/')[0] %}
-  {% set is_prism_site =
-    current_host == 'prism-dev.lib.asu.edu'
-    or current_host == 'prism-qa.lib.asu.edu'
-    or current_host == 'prism.lib.asu.edu'
-  %}
-  {% set item_model = content.field_model[0]['#plain_text']|default('')|trim %}
-  {% set is_paged_content = item_model == 'Paged Content' %}
-  {% set has_iiif_manifest = drupal_view_result('iiif_manifest', 'rest_export_1', node.id) is not empty %}
-  {% set show_prism_iiif = is_prism_site and is_paged_content and has_iiif_manifest %}
   <header>
     {{ title_prefix }}
     {% if label and not page %}
@@ -213,21 +202,11 @@
         </p>
       </div>
     </div>
-    {% if
-      (node.field_preferred_citation is not empty)
-      or (node.field_statement_responsibility is not empty)
-      or show_prism_iiif
-    %}
+    {% if (node.field_preferred_citation is not empty) or (node.field_statement_responsibility is not empty) %}
       <div id="interact" class="content-section interact">
         <h2>{{ 'Citation and reuse'|t }}</h2>
         {{ content.field_preferred_citation }}
         {{ content.field_statement_responsibility }}
-        {% if show_prism_iiif %}
-          <div class="iiif">
-            <h3>{{ 'International Image Interoperability Framework' |t }}</h3>
-            {{ drupal_block('asu_item_iiif', wrapper=false) }}
-          </div>
-        {% endif %}
       </div>
     {% endif %}
   <div id="machine" class="content-section machine">
