@@ -90,6 +90,9 @@ class ASUItemIIIF extends BlockBase implements ContainerFactoryPluginInterface {
     $node_url = Url::fromRoute('<current>', []);
     $iiif_section = $this->getIiifSection($node_url);
     return [
+      '#cache' => [
+        'contexts' => ['url.path'],
+      ],
       'iiif-section' => [
         '#type' => 'container',
         'section' => $iiif_section,
