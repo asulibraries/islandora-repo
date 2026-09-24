@@ -17,20 +17,7 @@ categories: {  }
 elements: |-
   into_text:
     '#type': processed_text
-    '#text': |
-      <h2>Thesis/Creative Project Digital Submission Form</h2>
-
-      <p><strong>Before filling out this form, please prepare:</strong></p>
-
-      <ol>
-      	<li><strong>a brief summary of your project</strong></li>
-      	<li><strong>a PDF of your final approved written thesis saved as LastName_Semester_Year (Ex: Schultz_Spring_2021)</strong></li>
-      	<li><strong>If applicable, additional files or creative components (photos, videos, etc.)</strong></li>
-      </ol>
-
-      <p>&nbsp;</p>
-
-      <p><strong>Group Projects</strong>: Each Barrett student is required to upload a digital submission. Consult with your group to ensure you each have the same title, summary, and documentation.</p>
+    '#text': '<h2>Final Thesis Submission Form</h2><p><strong>Congratulations on successfully defending and completing your Honors Thesis!</strong> Please use this form to upload your approved final thesis.</p><p>Before filling out this form, please prepare:</p><ol><li data-list-item-id="efcaaa376ea2959abc1dc1d0363f1abf1">Final thesis title</li><li data-list-item-id="eebb1158cf332970f3ee25f1dff6cdba0">Abstract or brief summary of your project</li><li data-list-item-id="e1d0b172a57deb3583ee5057b50c63c05">PDF of your written component saved as <strong>LastName_Semester_Year.pdf</strong> (for example, <em>Schultz_Spring_2026.pdf</em>)</li><li data-list-item-id="e56d7817e52c053e148b623094fb6d605">If applicable, any supplemental media or creative files</li></ol><p><strong>Group Projects:</strong> Each student must individually upload their approved final thesis. Please consult with your group members beforehand to ensure you are all submitting the same title, summary, and documentation.</p>'
     '#format': full_html
   item_title:
     '#type': textarea
@@ -77,14 +64,14 @@ elements: |-
     '#type': textfield
     '#title': Keywords
     '#multiple': true
-    '#description': 'Please describe the topics that this item is about.'
+    '#description': '<p>Describe the topics this item is about. Add one keyword at a time using the + button.</p>'
+    '#required': true
     '#multiple__item_label': keyword
-    '#multiple__no_items_message': 'No keywords entered. Please add items below.'
+    '#multiple__no_items_message': '<p>No keywords entered. Please add items below.</p>'
     '#multiple__sorting': false
     '#multiple__add_more': false
     '#multiple__add_more_input': false
     '#multiple__add_more_input_label': 'more keywords'
-    '#required': true
   group_members:
     '#type': webform_name
     '#title': 'Group Members'
@@ -153,12 +140,7 @@ elements: |-
     '#sanitize': true
   end_text:
     '#type': processed_text
-    '#text': |
-      <p><strong>Embargo</strong>&nbsp;An embargo delays the release of a thesis/creative project to protect information of commercial value, patentable rights, pending publication or sensitive information. To place your project into embargo status please email&nbsp;<a href="mailto:barrettadvising@asu.edu">barrettadvising@asu.edu</a>&nbsp;and specify the length of request up to two years.</p>
-
-      <p>&nbsp;</p>
-
-      <p>This project will be published to the digital collection&nbsp;<a href="https://keep.lib.asu.edu/collections/130827">https://keep.lib.asu.edu/collections/130827</a>&nbsp;after it is manually reviewed for submission accuracy and embargo conditions.</p>
+    '#text': '<p><strong>Embargo Options &amp; Processing</strong></p><p><strong>Embargo Request:</strong> An embargo delays the release of an honors thesis to protect information of commercial value, patentable rights, pending publication, or sensitive information. To request an embargo, email <a href="mailto:barrettadvising@asu.edu">barrettadvising@asu.edu</a> after uploading your approved final thesis and specify the length of your request, up to two years.</p><p><strong>Digital Collection Availability:</strong> Following a manual review of your submission, your honors thesis will be made available in the <a href="https://keep.lib.asu.edu/collections/130827">Barrett, The Honors College Thesis Collection</a>. Please note that processing times vary, and a delay in public availability does not indicate an issue with your honors thesis.</p>'
     '#format': basic_html
   reuse_permissions:
     '#type': webform_entity_select
@@ -415,91 +397,11 @@ handlers:
       debug: false
   create_a_barrett_repository_item:
     id: 'Create a Barrett repository item'
-    handler_id: null
+    handler_id: create_a_barrett_repository_item
     label: 'Create a Barrett repository item'
     notes: ''
     status: true
     conditions: {  }
-    weight: null
-    settings:
-      id: 'Create a Barrett repository item'
-      label: 'Create a Barrett repository item'
-      notes: ''
-      handler_id: null
-      status: true
-      conditions: {  }
-      weight: null
-      settings:
-        id: 'Create a Barrett repository item'
-        label: 'Create a Barrett repository item'
-        notes: ''
-        handler_id: null
-        status: true
-        conditions: {  }
-        weight: null
-        settings:
-          id: 'Create a Barrett repository item'
-          label: 'Create a Barrett repository item'
-          notes: ''
-          handler_id: null
-          status: true
-          conditions: {  }
-          weight: null
-          settings:
-            id: 'Create a Barrett repository item'
-            label: 'Create a Barrett repository item'
-            notes: ''
-            handler_id: null
-            status: true
-            conditions: {  }
-            weight: null
-            settings:
-              id: 'Create a Barrett repository item'
-              label: 'Create a Barrett repository item'
-              notes: ''
-              handler_id: null
-              status: true
-              conditions: {  }
-              weight: null
-              settings:
-                id: 'Create a Barrett repository item'
-                label: 'Create a Barrett repository item'
-                notes: ''
-                handler_id: null
-                status: 1
-                conditions: {  }
-                weight: ''
-                settings:
-                  id: 'Create a Barrett repository item'
-                  label: 'Create a Barrett repository item'
-                  notes: ''
-                  handler_id: null
-                  status: 1
-                  conditions: {  }
-                  weight: ''
-                  settings:
-                    id: 'Create a Barrett repository item'
-                    label: 'Create a Barrett repository item'
-                    notes: ''
-                    handler_id: null
-                    status: true
-                    conditions: {  }
-                    weight: null
-                    settings:
-                      id: 'Create a Barrett repository item'
-                      label: 'Create a Barrett repository item'
-                      notes: ''
-                      handler_id: null
-                      status: true
-                      conditions: {  }
-                      weight: null
-                      settings:
-                        id: 'Create a Barrett repository item'
-                        label: 'Create a Barrett repository item'
-                        notes: ''
-                        handler_id: create_a_barrett_repository_item
-                        status: true
-                        conditions: {  }
-                        weight: 0
-                        settings: {  }
+    weight: 0
+    settings: {  }
 variants: {  }

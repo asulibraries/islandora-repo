@@ -72,6 +72,7 @@ class CreateBarrettItemWebformHandler extends WebformHandlerBase {
     DepositUtils $deposit_utils,
   ) {
     parent::__construct($configuration, $plugin_id, $plugin_definition);
+    $this->setConfiguration($configuration);
     $this->loggerFactory = $logger_factory->get('custom_webform_handler');
     $this->configFactory = $config_factory;
     $this->conditionsValidator = $conditions_validator;
