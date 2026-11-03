@@ -16,6 +16,7 @@ third_party_settings:
     workbench_email_templates:
       draft_to_triaged:
         new_triaged_item_ready_for_revie: new_triaged_item_ready_for_revie
+      create_new_draft: {  }
 id: ingest
 label: Ingest
 type: content_moderation
@@ -62,6 +63,7 @@ type_settings:
       from:
         - approved_by_content_lead
         - approved_by_metadata_team
+        - declined
         - draft
         - initial_triage
         - published
